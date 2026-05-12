@@ -1,0 +1,158 @@
+==============================
+Slurm job started
+Job ID: 49447171
+Job name: dmc-walker-100k
+Node: midway3-0294.rcc.local
+Start time: Sat May  9 22:26:06 CDT 2026
+User: rickybao
+Working directory: /home/rickybao/projects/dreamerv3
+==============================
+Checking paths...
+PROJECT_DIR=/home/rickybao/projects/dreamerv3
+ENV_PATH=/scratch/midway3/rickybao/conda_envs/dreamerv3
+PYTHON=/scratch/midway3/rickybao/conda_envs/dreamerv3/bin/python
+LOGDIR=/scratch/midway3/rickybao/dreamerv3_runs/dmc_walker_walk_100k_seed0
+Checking repository...
+Python executable:
+/scratch/midway3/rickybao/conda_envs/dreamerv3/bin/python
+Python 3.11.15
+GPU check:
+Sat May  9 22:26:07 2026       
++---------------------------------------------------------------------------------------+
+| NVIDIA-SMI 535.216.03             Driver Version: 535.216.03   CUDA Version: 12.2     |
+|-----------------------------------------+----------------------+----------------------+
+| GPU  Name                 Persistence-M | Bus-Id        Disp.A | Volatile Uncorr. ECC |
+| Fan  Temp   Perf          Pwr:Usage/Cap |         Memory-Usage | GPU-Util  Compute M. |
+|                                         |                      |               MIG M. |
+|=========================================+======================+======================|
+|   0  NVIDIA A100-PCIE-40GB          On  | 00000000:2F:00.0 Off |                    0 |
+| N/A   33C    P0              31W / 250W |      0MiB / 40960MiB |      0%      Default |
+|                                         |                      |             Disabled |
++-----------------------------------------+----------------------+----------------------+
+                                                                                         
++---------------------------------------------------------------------------------------+
+| Processes:                                                                            |
+|  GPU   GI   CI        PID   Type   Process name                            GPU Memory |
+|        ID   ID                                                             Usage      |
+|=======================================================================================|
+|  No running processes found                                                           |
++---------------------------------------------------------------------------------------+
+JAX check:
+JAX devices: [CudaDevice(id=0)]
+JAX backend: gpu
+DMC EGL render check:
+MUJOCO_GL = egl
+PYOPENGL_PLATFORM = egl
+DMC render OK: (64, 64, 3) uint8
+Starting DreamerV3 DMC proprio smoke run...
+---  ___                           __   ______ ---
+--- |   \ _ _ ___ __ _ _ __  ___ _ \ \ / /__ / ---
+--- | |) | '_/ -_) _` | '  \/ -_) '/\ V / |_ \ ---
+--- |___/|_| \___\__,_|_|_|_\___|_|  \_/ |___/ ---
+Replica: 0 / 1
+Logdir: /scratch/midway3/rickybao/dreamerv3_runs/dmc_walker_walk_100k_seed0
+Run script: train
+Observations
+  reward           Space(float32, shape=(), low=-inf, high=inf)
+  is_first         Space(bool, shape=(), low=False, high=True)
+  is_last          Space(bool, shape=(), low=False, high=True)
+  is_terminal      Space(bool, shape=(), low=False, high=True)
+  orientations     Space(float32, shape=(14,), low=-inf, high=inf)
+  height           Space(float32, shape=(), low=-inf, high=inf)
+  velocity         Space(float32, shape=(9,), low=-inf, high=inf)
+Actions
+  action           Space(float32, shape=(6,), low=-1.0, high=1.0)
+Extras
+  consec           Space(int32, shape=(), low=-2147483648, high=2147483647)
+  stepid           Space(uint8, shape=(20,), low=0, high=255)
+  dyn/deter        Space(float32, shape=(512,), low=-inf, high=inf)
+  dyn/stoch        Space(float32, shape=(32, 4), low=-inf, high=inf)
+JAX devices (1): [cuda:0]
+Policy devices: cuda:0
+Train devices:  cuda:0
+Initializing parameters...
+Optimizer opt has 640,867 params:
+       364,416 dyn
+        66,111 val
+        57,663 rew
+        51,096 dec
+        50,316 pol
+        41,153 con
+        10,112 enc
+Done initializing!
+Compiling 1 checkpoint groups...
+Largest checkpoint group: 0 GB
+Compiling train and report...
+Train cost analysis:
+  FLOPS:            1.5e+10
+  Memory (temp):    1.9e+08
+  Memory (inputs):  1.1e+07
+  Memory (outputs): 9.3e+06
+  Memory (code):    2.5e+06
+
+Report cost analysis:
+  FLOPS:            1.2e+07
+  Memory (temp):    7.8e+05
+  Memory (inputs):  2.8e+06
+  Memory (outputs): 2.1e+04
+  Memory (code):    1.1e+05
+
+Done compiling!
+Did not find any checkpoint.
+Saving checkpoint: /scratch/midway3/rickybao/dreamerv3_runs/dmc_walker_walk_100k_seed0/ckpt/20260509T222644F841910
+Saved checkpoint.
+Start training loop
+Start JAX profiler: /scratch/midway3/rickybao/dreamerv3_runs/dmc_walker_walk_100k_seed0
+Stop JAX profiler
+
+--------------------[Agent Step 15_968]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+episode/score 43.83 / episode/length 1001 / train/loss/con 0.16 / train/loss/dyn 5.93 / train/loss/height 0.07 / train/loss/orientations 3.23 / train/loss/policy 0.66 / train/loss/rep 5.93 / train/loss/repval 6.91 / train/loss/rew 2.82 / train/loss/value 3.45 / train/loss/velocity 11.36 / replay/replay_ratio 121.52 / fps/policy 129.33 / fps/train 1.5e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/dmc_walker_walk_100k_seed0/metrics.jsonl
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/dmc_walker_walk_100k_seed0/scores.jsonl
+
+--------------------[Agent Step 31_392]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+episode/score 32.76 / episode/length 1001 / train/loss/con 0.02 / train/loss/dyn 8.3 / train/loss/height 0.02 / train/loss/orientations 1.04 / train/loss/policy 1.25 / train/loss/rep 8.3 / train/loss/repval 3.48 / train/loss/rew 0.51 / train/loss/value 1.68 / train/loss/velocity 2.97 / replay/replay_ratio 130 / fps/policy 128.49 / fps/train 1.6e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/dmc_walker_walk_100k_seed0/scores.jsonlWriting metrics: /scratch/midway3/rickybao/dreamerv3_runs/dmc_walker_walk_100k_seed0/metrics.jsonl
+
+
+--------------------[Agent Step 47_200]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+episode/score 23.5 / episode/length 1001 / train/loss/con 0.02 / train/loss/dyn 8.57 / train/loss/height 0.01 / train/loss/orientations 0.65 / train/loss/policy 1.27 / train/loss/rep 8.57 / train/loss/repval 2.63 / train/loss/rew 0.48 / train/loss/value 1.39 / train/loss/velocity 2.34 / replay/replay_ratio 130 / fps/policy 131.68 / fps/train 1.7e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/dmc_walker_walk_100k_seed0/metrics.jsonlWriting metrics: /scratch/midway3/rickybao/dreamerv3_runs/dmc_walker_walk_100k_seed0/scores.jsonl
+
+
+--------------------[Agent Step 63_072]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+episode/score 46.93 / episode/length 1001 / train/loss/con 0.02 / train/loss/dyn 8.68 / train/loss/height 8.9e-3 / train/loss/orientations 0.59 / train/loss/policy 1.7 / train/loss/rep 8.68 / train/loss/repval 2.15 / train/loss/rew 0.49 / train/loss/value 1.34 / train/loss/velocity 2.11 / replay/replay_ratio 130 / fps/policy 132.16 / fps/train 1.7e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/dmc_walker_walk_100k_seed0/metrics.jsonlWriting metrics: /scratch/midway3/rickybao/dreamerv3_runs/dmc_walker_walk_100k_seed0/scores.jsonl
+
+
+--------------------[Agent Step 78_928]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+episode/score 74.85 / episode/length 1001 / train/loss/con 0.02 / train/loss/dyn 8.55 / train/loss/height 7.7e-3 / train/loss/orientations 0.55 / train/loss/policy 1.77 / train/loss/rep 8.55 / train/loss/repval 1.69 / train/loss/rew 0.5 / train/loss/value 1.18 / train/loss/velocity 1.94 / replay/replay_ratio 130 / fps/policy 132.1 / fps/train 1.7e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/dmc_walker_walk_100k_seed0/scores.jsonl
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/dmc_walker_walk_100k_seed0/metrics.jsonl
+
+--------------------[Agent Step 94_816]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+episode/score 68.81 / episode/length 1001 / train/loss/con 0.02 / train/loss/dyn 8.05 / train/loss/height 6.2e-3 / train/loss/orientations 0.45 / train/loss/policy 1.24 / train/loss/rep 8.05 / train/loss/repval 1.4 / train/loss/rew 0.52 / train/loss/value 1.11 / train/loss/velocity 1.75 / replay/replay_ratio 130 / fps/policy 132.29 / fps/train 1.7e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/dmc_walker_walk_100k_seed0/scores.jsonlWriting metrics: /scratch/midway3/rickybao/dreamerv3_runs/dmc_walker_walk_100k_seed0/metrics.jsonl
+
+
+--------------------[Agent Step 96_096]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+episode/score 68.85 / episode/length 1001
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/dmc_walker_walk_100k_seed0/metrics.jsonlWriting metrics: /scratch/midway3/rickybao/dreamerv3_runs/dmc_walker_walk_100k_seed0/scores.jsonl
+
+DreamerV3 run finished
+End time: Sat May  9 22:39:28 CDT 2026
+Logdir: /scratch/midway3/rickybao/dreamerv3_runs/dmc_walker_walk_100k_seed0

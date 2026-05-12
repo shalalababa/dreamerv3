@@ -1,0 +1,491 @@
+==============================
+Slurm job started
+Job ID: 49453133
+Job name: dmc-proprio-walker-walk-seed0
+Node: midway3-0284.rcc.local
+Start time: Sun May 10 10:47:23 CDT 2026
+User: rickybao
+Working directory: /home/rickybao/projects/dreamerv3
+==============================
+Checking paths...
+PROJECT_DIR=/home/rickybao/projects/dreamerv3
+ENV_PATH=/scratch/midway3/rickybao/conda_envs/dreamerv3
+PYTHON=/scratch/midway3/rickybao/conda_envs/dreamerv3/bin/python
+LOGDIR=/scratch/midway3/rickybao/dreamerv3_runs/dmc_proprio_walker_walk_seed0
+Checking repository...
+Python executable:
+/scratch/midway3/rickybao/conda_envs/dreamerv3/bin/python
+Python 3.11.15
+GPU check:
+Sun May 10 10:47:23 2026       
++---------------------------------------------------------------------------------------+
+| NVIDIA-SMI 535.216.03             Driver Version: 535.216.03   CUDA Version: 12.2     |
+|-----------------------------------------+----------------------+----------------------+
+| GPU  Name                 Persistence-M | Bus-Id        Disp.A | Volatile Uncorr. ECC |
+| Fan  Temp   Perf          Pwr:Usage/Cap |         Memory-Usage | GPU-Util  Compute M. |
+|                                         |                      |               MIG M. |
+|=========================================+======================+======================|
+|   0  Quadro RTX 6000                On  | 00000000:D8:00.0 Off |                  Off |
+| N/A   29C    P8              13W / 250W |      0MiB / 24576MiB |      0%      Default |
+|                                         |                      |                  N/A |
++-----------------------------------------+----------------------+----------------------+
+                                                                                         
++---------------------------------------------------------------------------------------+
+| Processes:                                                                            |
+|  GPU   GI   CI        PID   Type   Process name                            GPU Memory |
+|        ID   ID                                                             Usage      |
+|=======================================================================================|
+|  No running processes found                                                           |
++---------------------------------------------------------------------------------------+
+JAX check:
+JAX devices: [CudaDevice(id=0)]
+JAX backend: gpu
+DMC EGL render check:
+MUJOCO_GL = egl
+PYOPENGL_PLATFORM = egl
+DMC render OK: (64, 64, 3) uint8
+Starting DreamerV3 DMC proprio smoke run...
+---  ___                           __   ______ ---
+--- |   \ _ _ ___ __ _ _ __  ___ _ \ \ / /__ / ---
+--- | |) | '_/ -_) _` | '  \/ -_) '/\ V / |_ \ ---
+--- |___/|_| \___\__,_|_|_|_\___|_|  \_/ |___/ ---
+Replica: 0 / 1
+Logdir: /scratch/midway3/rickybao/dreamerv3_runs/dmc_proprio_walker_walk_seed0
+Run script: train
+Observations
+  reward           Space(float32, shape=(), low=-inf, high=inf)
+  is_first         Space(bool, shape=(), low=False, high=True)
+  is_last          Space(bool, shape=(), low=False, high=True)
+  is_terminal      Space(bool, shape=(), low=False, high=True)
+  orientations     Space(float32, shape=(14,), low=-inf, high=inf)
+  height           Space(float32, shape=(), low=-inf, high=inf)
+  velocity         Space(float32, shape=(9,), low=-inf, high=inf)
+Actions
+  action           Space(float32, shape=(6,), low=-1.0, high=1.0)
+Extras
+  consec           Space(int32, shape=(), low=-2147483648, high=2147483647)
+  stepid           Space(uint8, shape=(20,), low=0, high=255)
+  dyn/deter        Space(float32, shape=(512,), low=-inf, high=inf)
+  dyn/stoch        Space(float32, shape=(32, 4), low=-inf, high=inf)
+JAX devices (1): [cuda:0]
+Policy devices: cuda:0
+Train devices:  cuda:0
+Initializing parameters...
+Optimizer opt has 640,867 params:
+       364,416 dyn
+        66,111 val
+        57,663 rew
+        51,096 dec
+        50,316 pol
+        41,153 con
+        10,112 enc
+Done initializing!
+Compiling 1 checkpoint groups...
+Largest checkpoint group: 0 GB
+Compiling train and report...
+Train cost analysis:
+  FLOPS:            7.3e+09
+  Memory (temp):    2.3e+08
+  Memory (inputs):  1.1e+07
+  Memory (outputs): 9.3e+06
+  Memory (code):    2.2e+06
+
+Report cost analysis:
+  FLOPS:            2.0e+06
+  Memory (temp):    9.3e+05
+  Memory (inputs):  2.8e+06
+  Memory (outputs): 2.1e+04
+  Memory (code):    9.7e+04
+
+Done compiling!
+Did not find any checkpoint.
+Saving checkpoint: /scratch/midway3/rickybao/dreamerv3_runs/dmc_proprio_walker_walk_seed0/ckpt/20260510T104819F270027
+Saved checkpoint.
+Start training loop
+Start JAX profiler: /scratch/midway3/rickybao/dreamerv3_runs/dmc_proprio_walker_walk_seed0
+Stop JAX profiler
+
+--------------------[Agent Step 4_496]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+train/loss/con 0.12 / train/loss/dyn 6.14 / train/loss/height 0.07 / train/loss/orientations 2.85 / train/loss/policy 1.41 / train/loss/rep 6.14 / train/loss/repval 6.36 / train/loss/rew 2.33 / train/loss/value 3.23 / train/loss/velocity 9.52 / replay/replay_ratio 733.87 / fps/policy 36.28 / fps/train 2e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/dmc_proprio_walker_walk_seed0/metrics.jsonlWriting metrics: /scratch/midway3/rickybao/dreamerv3_runs/dmc_proprio_walker_walk_seed0/scores.jsonl
+
+
+--------------------[Agent Step 7_216]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+train/loss/con 0.02 / train/loss/dyn 7.03 / train/loss/height 0.01 / train/loss/orientations 0.87 / train/loss/policy 1.81 / train/loss/rep 7.03 / train/loss/repval 3.07 / train/loss/rew 0.61 / train/loss/value 1.61 / train/loss/velocity 2.52 / replay/replay_ratio 1040 / fps/policy 22.61 / fps/train 2.3e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/dmc_proprio_walker_walk_seed0/metrics.jsonlWriting metrics: /scratch/midway3/rickybao/dreamerv3_runs/dmc_proprio_walker_walk_seed0/scores.jsonl
+
+
+--------------------[Agent Step 9_936]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+train/loss/con 0.02 / train/loss/dyn 6.54 / train/loss/height 8.1e-3 / train/loss/orientations 0.7 / train/loss/policy 1.9 / train/loss/rep 6.54 / train/loss/repval 2.14 / train/loss/rew 0.54 / train/loss/value 1.53 / train/loss/velocity 2 / replay/replay_ratio 1040 / fps/policy 22.66 / fps/train 2.3e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/dmc_proprio_walker_walk_seed0/metrics.jsonlWriting metrics: /scratch/midway3/rickybao/dreamerv3_runs/dmc_proprio_walker_walk_seed0/scores.jsonl
+
+
+--------------------[Agent Step 12_656]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+train/loss/con 0.02 / train/loss/dyn 6.17 / train/loss/height 7.3e-3 / train/loss/orientations 0.64 / train/loss/policy 0.14 / train/loss/rep 6.17 / train/loss/repval 1.56 / train/loss/rew 0.54 / train/loss/value 1.33 / train/loss/velocity 1.76 / replay/replay_ratio 1040 / fps/policy 22.66 / fps/train 2.3e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/dmc_proprio_walker_walk_seed0/metrics.jsonlWriting metrics: /scratch/midway3/rickybao/dreamerv3_runs/dmc_proprio_walker_walk_seed0/scores.jsonl
+
+
+--------------------[Agent Step 15_376]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+train/loss/con 0.02 / train/loss/dyn 6.18 / train/loss/height 6.7e-3 / train/loss/orientations 0.59 / train/loss/policy -0.08 / train/loss/rep 6.18 / train/loss/repval 1.33 / train/loss/rew 0.56 / train/loss/value 1.16 / train/loss/velocity 1.64 / replay/replay_ratio 1040 / fps/policy 22.64 / fps/train 2.3e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/dmc_proprio_walker_walk_seed0/metrics.jsonlWriting metrics: /scratch/midway3/rickybao/dreamerv3_runs/dmc_proprio_walker_walk_seed0/scores.jsonl
+
+
+--------------------[Agent Step 18_096]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+episode/score 76.28 / episode/length 1001 / train/loss/con 0.02 / train/loss/dyn 6.4 / train/loss/height 7.2e-3 / train/loss/orientations 0.58 / train/loss/policy -0.23 / train/loss/rep 6.4 / train/loss/repval 1.18 / train/loss/rew 0.57 / train/loss/value 0.95 / train/loss/velocity 1.61 / replay/replay_ratio 1040 / fps/policy 22.62 / fps/train 2.3e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/dmc_proprio_walker_walk_seed0/metrics.jsonlWriting metrics: /scratch/midway3/rickybao/dreamerv3_runs/dmc_proprio_walker_walk_seed0/scores.jsonl
+
+
+--------------------[Agent Step 20_768]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+train/loss/con 0.02 / train/loss/dyn 6.52 / train/loss/height 7.1e-3 / train/loss/orientations 0.55 / train/loss/policy -0.31 / train/loss/rep 6.52 / train/loss/repval 1.17 / train/loss/rew 0.58 / train/loss/value 1.04 / train/loss/velocity 1.55 / replay/replay_ratio 1040 / fps/policy 22.25 / fps/train 2.3e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/dmc_proprio_walker_walk_seed0/metrics.jsonlWriting metrics: /scratch/midway3/rickybao/dreamerv3_runs/dmc_proprio_walker_walk_seed0/scores.jsonl
+
+Saving checkpoint: /scratch/midway3/rickybao/dreamerv3_runs/dmc_proprio_walker_walk_seed0/ckpt/20260510T110321F300838
+Saved checkpoint.
+
+--------------------[Agent Step 23_472]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+train/loss/con 0.02 / train/loss/dyn 6.63 / train/loss/height 6.5e-3 / train/loss/orientations 0.52 / train/loss/policy -0.59 / train/loss/rep 6.63 / train/loss/repval 1.05 / train/loss/rew 0.58 / train/loss/value 0.84 / train/loss/velocity 1.5 / replay/replay_ratio 1040 / fps/policy 22.47 / fps/train 2.3e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/dmc_proprio_walker_walk_seed0/metrics.jsonlWriting metrics: /scratch/midway3/rickybao/dreamerv3_runs/dmc_proprio_walker_walk_seed0/scores.jsonl
+
+
+--------------------[Agent Step 26_192]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+train/loss/con 0.02 / train/loss/dyn 6.69 / train/loss/height 6.1e-3 / train/loss/orientations 0.5 / train/loss/policy -0.53 / train/loss/rep 6.69 / train/loss/repval 1.09 / train/loss/rew 0.58 / train/loss/value 0.81 / train/loss/velocity 1.46 / replay/replay_ratio 1040 / fps/policy 22.64 / fps/train 2.3e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/dmc_proprio_walker_walk_seed0/scores.jsonlWriting metrics: /scratch/midway3/rickybao/dreamerv3_runs/dmc_proprio_walker_walk_seed0/metrics.jsonl
+
+
+--------------------[Agent Step 28_912]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+train/loss/con 0.02 / train/loss/dyn 6.61 / train/loss/height 5.6e-3 / train/loss/orientations 0.5 / train/loss/policy -0.37 / train/loss/rep 6.61 / train/loss/repval 1.2 / train/loss/rew 0.58 / train/loss/value 0.98 / train/loss/velocity 1.39 / replay/replay_ratio 1040 / fps/policy 22.63 / fps/train 2.3e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/dmc_proprio_walker_walk_seed0/metrics.jsonlWriting metrics: /scratch/midway3/rickybao/dreamerv3_runs/dmc_proprio_walker_walk_seed0/scores.jsonl
+
+
+--------------------[Agent Step 31_632]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+train/loss/con 0.02 / train/loss/dyn 6.65 / train/loss/height 5.3e-3 / train/loss/orientations 0.49 / train/loss/policy -0.31 / train/loss/rep 6.65 / train/loss/repval 1.12 / train/loss/rew 0.57 / train/loss/value 0.93 / train/loss/velocity 1.36 / replay/replay_ratio 1040 / fps/policy 22.64 / fps/train 2.3e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/dmc_proprio_walker_walk_seed0/metrics.jsonlWriting metrics: /scratch/midway3/rickybao/dreamerv3_runs/dmc_proprio_walker_walk_seed0/scores.jsonl
+
+
+--------------------[Agent Step 34_352]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+episode/score 121.93 / episode/length 1001 / train/loss/con 0.02 / train/loss/dyn 6.71 / train/loss/height 5.6e-3 / train/loss/orientations 0.49 / train/loss/policy -0.3 / train/loss/rep 6.71 / train/loss/repval 1.23 / train/loss/rew 0.57 / train/loss/value 1.01 / train/loss/velocity 1.35 / replay/replay_ratio 1040 / fps/policy 22.6 / fps/train 2.3e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/dmc_proprio_walker_walk_seed0/metrics.jsonlWriting metrics: /scratch/midway3/rickybao/dreamerv3_runs/dmc_proprio_walker_walk_seed0/scores.jsonl
+
+
+--------------------[Agent Step 37_072]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+train/loss/con 0.02 / train/loss/dyn 6.68 / train/loss/height 5.7e-3 / train/loss/orientations 0.49 / train/loss/policy -0.29 / train/loss/rep 6.68 / train/loss/repval 1.1 / train/loss/rew 0.57 / train/loss/value 1.04 / train/loss/velocity 1.32 / replay/replay_ratio 1040 / fps/policy 22.62 / fps/train 2.3e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/dmc_proprio_walker_walk_seed0/metrics.jsonlWriting metrics: /scratch/midway3/rickybao/dreamerv3_runs/dmc_proprio_walker_walk_seed0/scores.jsonl
+
+
+--------------------[Agent Step 39_792]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+train/loss/con 0.02 / train/loss/dyn 6.64 / train/loss/height 5.5e-3 / train/loss/orientations 0.47 / train/loss/policy -0.14 / train/loss/rep 6.64 / train/loss/repval 1.27 / train/loss/rew 0.56 / train/loss/value 1.03 / train/loss/velocity 1.29 / replay/replay_ratio 1040 / fps/policy 22.59 / fps/train 2.3e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/dmc_proprio_walker_walk_seed0/metrics.jsonlWriting metrics: /scratch/midway3/rickybao/dreamerv3_runs/dmc_proprio_walker_walk_seed0/scores.jsonl
+
+Saving checkpoint: /scratch/midway3/rickybao/dreamerv3_runs/dmc_proprio_walker_walk_seed0/ckpt/20260510T111821F777545
+Saved checkpoint.
+
+--------------------[Agent Step 42_496]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+train/loss/con 0.02 / train/loss/dyn 6.67 / train/loss/height 5.3e-3 / train/loss/orientations 0.44 / train/loss/policy -0.21 / train/loss/rep 6.67 / train/loss/repval 1.09 / train/loss/rew 0.57 / train/loss/value 0.9 / train/loss/velocity 1.27 / replay/replay_ratio 1040 / fps/policy 22.51 / fps/train 2.3e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/dmc_proprio_walker_walk_seed0/metrics.jsonlWriting metrics: /scratch/midway3/rickybao/dreamerv3_runs/dmc_proprio_walker_walk_seed0/scores.jsonl
+
+
+--------------------[Agent Step 45_232]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+train/loss/con 0.02 / train/loss/dyn 6.73 / train/loss/height 5.2e-3 / train/loss/orientations 0.43 / train/loss/policy -0.21 / train/loss/rep 6.73 / train/loss/repval 1.19 / train/loss/rew 0.58 / train/loss/value 1.15 / train/loss/velocity 1.27 / replay/replay_ratio 1040 / fps/policy 22.67 / fps/train 2.3e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/dmc_proprio_walker_walk_seed0/metrics.jsonlWriting metrics: /scratch/midway3/rickybao/dreamerv3_runs/dmc_proprio_walker_walk_seed0/scores.jsonl
+
+
+--------------------[Agent Step 47_968]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+train/loss/con 0.02 / train/loss/dyn 6.71 / train/loss/height 5e-3 / train/loss/orientations 0.41 / train/loss/policy -0.22 / train/loss/rep 6.71 / train/loss/repval 1.09 / train/loss/rew 0.58 / train/loss/value 0.93 / train/loss/velocity 1.25 / replay/replay_ratio 1040 / fps/policy 22.67 / fps/train 2.3e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/dmc_proprio_walker_walk_seed0/metrics.jsonlWriting metrics: /scratch/midway3/rickybao/dreamerv3_runs/dmc_proprio_walker_walk_seed0/scores.jsonl
+
+
+--------------------[Agent Step 50_688]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+episode/score 199.96 / episode/length 1001 / train/loss/con 0.02 / train/loss/dyn 6.73 / train/loss/height 5.4e-3 / train/loss/orientations 0.4 / train/loss/policy -0.14 / train/loss/rep 6.73 / train/loss/repval 1.16 / train/loss/rew 0.59 / train/loss/value 1.14 / train/loss/velocity 1.24 / replay/replay_ratio 1040 / fps/policy 22.63 / fps/train 2.3e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/dmc_proprio_walker_walk_seed0/metrics.jsonlWriting metrics: /scratch/midway3/rickybao/dreamerv3_runs/dmc_proprio_walker_walk_seed0/scores.jsonl
+
+
+--------------------[Agent Step 53_408]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+train/loss/con 0.02 / train/loss/dyn 6.72 / train/loss/height 5.3e-3 / train/loss/orientations 0.39 / train/loss/policy -0.13 / train/loss/rep 6.72 / train/loss/repval 1.22 / train/loss/rew 0.59 / train/loss/value 0.99 / train/loss/velocity 1.23 / replay/replay_ratio 1040 / fps/policy 22.66 / fps/train 2.3e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/dmc_proprio_walker_walk_seed0/metrics.jsonlWriting metrics: /scratch/midway3/rickybao/dreamerv3_runs/dmc_proprio_walker_walk_seed0/scores.jsonl
+
+
+--------------------[Agent Step 56_144]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+train/loss/con 0.02 / train/loss/dyn 6.68 / train/loss/height 5.1e-3 / train/loss/orientations 0.38 / train/loss/policy -0.11 / train/loss/rep 6.68 / train/loss/repval 1.12 / train/loss/rew 0.59 / train/loss/value 0.85 / train/loss/velocity 1.21 / replay/replay_ratio 1040 / fps/policy 22.68 / fps/train 2.3e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/dmc_proprio_walker_walk_seed0/metrics.jsonlWriting metrics: /scratch/midway3/rickybao/dreamerv3_runs/dmc_proprio_walker_walk_seed0/scores.jsonl
+
+
+--------------------[Agent Step 58_880]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+train/loss/con 0.02 / train/loss/dyn 6.69 / train/loss/height 4.8e-3 / train/loss/orientations 0.36 / train/loss/policy -0.1 / train/loss/rep 6.69 / train/loss/repval 1.04 / train/loss/rew 0.59 / train/loss/value 1.03 / train/loss/velocity 1.19 / replay/replay_ratio 1040 / fps/policy 22.68 / fps/train 2.3e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/dmc_proprio_walker_walk_seed0/metrics.jsonlWriting metrics: /scratch/midway3/rickybao/dreamerv3_runs/dmc_proprio_walker_walk_seed0/scores.jsonl
+
+
+--------------------[Agent Step 61_616]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+train/loss/con 0.02 / train/loss/dyn 6.75 / train/loss/height 4.6e-3 / train/loss/orientations 0.36 / train/loss/policy -0.09 / train/loss/rep 6.75 / train/loss/repval 1.16 / train/loss/rew 0.59 / train/loss/value 1.14 / train/loss/velocity 1.19 / replay/replay_ratio 1040 / fps/policy 22.68 / fps/train 2.3e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/dmc_proprio_walker_walk_seed0/metrics.jsonlWriting metrics: /scratch/midway3/rickybao/dreamerv3_runs/dmc_proprio_walker_walk_seed0/scores.jsonl
+
+Saving checkpoint: /scratch/midway3/rickybao/dreamerv3_runs/dmc_proprio_walker_walk_seed0/ckpt/20260510T113322F480464
+Saved checkpoint.
+
+--------------------[Agent Step 64_336]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+episode/score 247.91 / episode/length 1001 / train/loss/con 0.02 / train/loss/dyn 6.8 / train/loss/height 4.6e-3 / train/loss/orientations 0.35 / train/loss/policy -0.07 / train/loss/rep 6.8 / train/loss/repval 1.13 / train/loss/rew 0.59 / train/loss/value 0.99 / train/loss/velocity 1.19 / replay/replay_ratio 1040 / fps/policy 22.53 / fps/train 2.3e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/dmc_proprio_walker_walk_seed0/metrics.jsonlWriting metrics: /scratch/midway3/rickybao/dreamerv3_runs/dmc_proprio_walker_walk_seed0/scores.jsonl
+
+
+--------------------[Agent Step 67_056]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+train/loss/con 0.02 / train/loss/dyn 6.83 / train/loss/height 4.8e-3 / train/loss/orientations 0.35 / train/loss/policy -0.1 / train/loss/rep 6.83 / train/loss/repval 1.04 / train/loss/rew 0.59 / train/loss/value 0.87 / train/loss/velocity 1.19 / replay/replay_ratio 1040 / fps/policy 22.62 / fps/train 2.3e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/dmc_proprio_walker_walk_seed0/metrics.jsonlWriting metrics: /scratch/midway3/rickybao/dreamerv3_runs/dmc_proprio_walker_walk_seed0/scores.jsonl
+
+
+--------------------[Agent Step 69_776]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+train/loss/con 0.02 / train/loss/dyn 6.81 / train/loss/height 4.6e-3 / train/loss/orientations 0.34 / train/loss/policy -0.1 / train/loss/rep 6.81 / train/loss/repval 1.01 / train/loss/rew 0.59 / train/loss/value 1.05 / train/loss/velocity 1.18 / replay/replay_ratio 1040 / fps/policy 22.65 / fps/train 2.3e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/dmc_proprio_walker_walk_seed0/metrics.jsonlWriting metrics: /scratch/midway3/rickybao/dreamerv3_runs/dmc_proprio_walker_walk_seed0/scores.jsonl
+
+
+--------------------[Agent Step 72_512]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+train/loss/con 0.02 / train/loss/dyn 6.79 / train/loss/height 4.5e-3 / train/loss/orientations 0.33 / train/loss/policy -0.08 / train/loss/rep 6.79 / train/loss/repval 1.09 / train/loss/rew 0.59 / train/loss/value 1.12 / train/loss/velocity 1.16 / replay/replay_ratio 1040 / fps/policy 22.68 / fps/train 2.3e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/dmc_proprio_walker_walk_seed0/metrics.jsonlWriting metrics: /scratch/midway3/rickybao/dreamerv3_runs/dmc_proprio_walker_walk_seed0/scores.jsonl
+
+
+--------------------[Agent Step 75_248]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+train/loss/con 0.02 / train/loss/dyn 6.81 / train/loss/height 4.3e-3 / train/loss/orientations 0.32 / train/loss/policy -0.07 / train/loss/rep 6.81 / train/loss/repval 1.11 / train/loss/rew 0.6 / train/loss/value 1.14 / train/loss/velocity 1.15 / replay/replay_ratio 1040 / fps/policy 22.67 / fps/train 2.3e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/dmc_proprio_walker_walk_seed0/metrics.jsonl
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/dmc_proprio_walker_walk_seed0/scores.jsonl
+
+--------------------[Agent Step 77_984]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+train/loss/con 0.02 / train/loss/dyn 6.79 / train/loss/height 4.2e-3 / train/loss/orientations 0.31 / train/loss/policy -0.06 / train/loss/rep 6.79 / train/loss/repval 1.08 / train/loss/rew 0.6 / train/loss/value 1.19 / train/loss/velocity 1.14 / replay/replay_ratio 1040 / fps/policy 22.68 / fps/train 2.3e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/dmc_proprio_walker_walk_seed0/scores.jsonlWriting metrics: /scratch/midway3/rickybao/dreamerv3_runs/dmc_proprio_walker_walk_seed0/metrics.jsonl
+
+
+--------------------[Agent Step 80_704]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+episode/score 400.12 / episode/length 1001 / train/loss/con 0.02 / train/loss/dyn 6.79 / train/loss/height 4.1e-3 / train/loss/orientations 0.3 / train/loss/policy -0.05 / train/loss/rep 6.79 / train/loss/repval 1.07 / train/loss/rew 0.6 / train/loss/value 1.2 / train/loss/velocity 1.14 / replay/replay_ratio 1040 / fps/policy 22.66 / fps/train 2.3e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/dmc_proprio_walker_walk_seed0/metrics.jsonlWriting metrics: /scratch/midway3/rickybao/dreamerv3_runs/dmc_proprio_walker_walk_seed0/scores.jsonl
+
+Saving checkpoint: /scratch/midway3/rickybao/dreamerv3_runs/dmc_proprio_walker_walk_seed0/ckpt/20260510T114822F958174
+Saved checkpoint.
+
+--------------------[Agent Step 83_408]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+train/loss/con 0.02 / train/loss/dyn 6.84 / train/loss/height 4.1e-3 / train/loss/orientations 0.3 / train/loss/policy -0.06 / train/loss/rep 6.84 / train/loss/repval 1.1 / train/loss/rew 0.6 / train/loss/value 1.19 / train/loss/velocity 1.14 / replay/replay_ratio 1040 / fps/policy 22.51 / fps/train 2.3e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/dmc_proprio_walker_walk_seed0/metrics.jsonlWriting metrics: /scratch/midway3/rickybao/dreamerv3_runs/dmc_proprio_walker_walk_seed0/scores.jsonl
+
+
+--------------------[Agent Step 86_128]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+train/loss/con 0.02 / train/loss/dyn 6.81 / train/loss/height 4e-3 / train/loss/orientations 0.29 / train/loss/policy -0.07 / train/loss/rep 6.81 / train/loss/repval 1.12 / train/loss/rew 0.6 / train/loss/value 1.13 / train/loss/velocity 1.13 / replay/replay_ratio 1040 / fps/policy 22.66 / fps/train 2.3e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/dmc_proprio_walker_walk_seed0/metrics.jsonlWriting metrics: /scratch/midway3/rickybao/dreamerv3_runs/dmc_proprio_walker_walk_seed0/scores.jsonl
+
+
+--------------------[Agent Step 88_864]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+train/loss/con 0.02 / train/loss/dyn 6.79 / train/loss/height 3.9e-3 / train/loss/orientations 0.29 / train/loss/policy -0.06 / train/loss/rep 6.79 / train/loss/repval 1.08 / train/loss/rew 0.59 / train/loss/value 0.99 / train/loss/velocity 1.12 / replay/replay_ratio 1040 / fps/policy 22.68 / fps/train 2.3e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/dmc_proprio_walker_walk_seed0/metrics.jsonlWriting metrics: /scratch/midway3/rickybao/dreamerv3_runs/dmc_proprio_walker_walk_seed0/scores.jsonl
+
+
+--------------------[Agent Step 91_600]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+train/loss/con 0.02 / train/loss/dyn 6.73 / train/loss/height 3.7e-3 / train/loss/orientations 0.28 / train/loss/policy -0.08 / train/loss/rep 6.73 / train/loss/repval 1.03 / train/loss/rew 0.59 / train/loss/value 0.82 / train/loss/velocity 1.1 / replay/replay_ratio 1040 / fps/policy 22.67 / fps/train 2.3e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/dmc_proprio_walker_walk_seed0/metrics.jsonlWriting metrics: /scratch/midway3/rickybao/dreamerv3_runs/dmc_proprio_walker_walk_seed0/scores.jsonl
+
+
+--------------------[Agent Step 94_336]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+train/loss/con 0.02 / train/loss/dyn 6.68 / train/loss/height 3.6e-3 / train/loss/orientations 0.27 / train/loss/policy -0.07 / train/loss/rep 6.68 / train/loss/repval 1.01 / train/loss/rew 0.59 / train/loss/value 0.84 / train/loss/velocity 1.09 / replay/replay_ratio 1040 / fps/policy 22.67 / fps/train 2.3e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/dmc_proprio_walker_walk_seed0/metrics.jsonlWriting metrics: /scratch/midway3/rickybao/dreamerv3_runs/dmc_proprio_walker_walk_seed0/scores.jsonl
+
+
+--------------------[Agent Step 97_056]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+episode/score 491.06 / episode/length 1001 / train/loss/con 0.02 / train/loss/dyn 6.64 / train/loss/height 3.5e-3 / train/loss/orientations 0.26 / train/loss/policy -0.07 / train/loss/rep 6.64 / train/loss/repval 1.01 / train/loss/rew 0.59 / train/loss/value 0.98 / train/loss/velocity 1.07 / replay/replay_ratio 1040 / fps/policy 22.66 / fps/train 2.3e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/dmc_proprio_walker_walk_seed0/metrics.jsonlWriting metrics: /scratch/midway3/rickybao/dreamerv3_runs/dmc_proprio_walker_walk_seed0/scores.jsonl
+
+
+--------------------[Agent Step 99_776]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+train/loss/con 0.02 / train/loss/dyn 6.67 / train/loss/height 3.5e-3 / train/loss/orientations 0.26 / train/loss/policy -0.07 / train/loss/rep 6.67 / train/loss/repval 1.02 / train/loss/rew 0.59 / train/loss/value 1.03 / train/loss/velocity 1.08 / replay/replay_ratio 1040 / fps/policy 22.62 / fps/train 2.3e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/dmc_proprio_walker_walk_seed0/metrics.jsonlWriting metrics: /scratch/midway3/rickybao/dreamerv3_runs/dmc_proprio_walker_walk_seed0/scores.jsonl
+
+
+--------------------[Agent Step 102_512]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+train/loss/con 0.02 / train/loss/dyn 6.67 / train/loss/height 3.3e-3 / train/loss/orientations 0.26 / train/loss/policy -0.07 / train/loss/rep 6.67 / train/loss/repval 1.03 / train/loss/rew 0.59 / train/loss/value 1.08 / train/loss/velocity 1.07 / replay/replay_ratio 1040 / fps/policy 22.67 / fps/train 2.3e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/dmc_proprio_walker_walk_seed0/metrics.jsonlWriting metrics: /scratch/midway3/rickybao/dreamerv3_runs/dmc_proprio_walker_walk_seed0/scores.jsonl
+
+Saving checkpoint: /scratch/midway3/rickybao/dreamerv3_runs/dmc_proprio_walker_walk_seed0/ckpt/20260510T120323F183673
+Saved checkpoint.
+
+--------------------[Agent Step 105_216]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+train/loss/con 0.02 / train/loss/dyn 6.68 / train/loss/height 3.3e-3 / train/loss/orientations 0.25 / train/loss/policy -0.07 / train/loss/rep 6.68 / train/loss/repval 1.03 / train/loss/rew 0.59 / train/loss/value 1.08 / train/loss/velocity 1.07 / replay/replay_ratio 1040 / fps/policy 22.5 / fps/train 2.3e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/dmc_proprio_walker_walk_seed0/metrics.jsonl
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/dmc_proprio_walker_walk_seed0/scores.jsonl
+
+--------------------[Agent Step 107_952]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+train/loss/con 0.02 / train/loss/dyn 6.67 / train/loss/height 3.2e-3 / train/loss/orientations 0.25 / train/loss/policy -0.07 / train/loss/rep 6.67 / train/loss/repval 1.05 / train/loss/rew 0.59 / train/loss/value 1.09 / train/loss/velocity 1.06 / replay/replay_ratio 1040 / fps/policy 22.67 / fps/train 2.3e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/dmc_proprio_walker_walk_seed0/metrics.jsonl
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/dmc_proprio_walker_walk_seed0/scores.jsonl
+
+--------------------[Agent Step 110_672]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+train/loss/con 0.02 / train/loss/dyn 6.7 / train/loss/height 3.2e-3 / train/loss/orientations 0.24 / train/loss/policy -0.07 / train/loss/rep 6.7 / train/loss/repval 1.07 / train/loss/rew 0.59 / train/loss/value 1.08 / train/loss/velocity 1.06 / replay/replay_ratio 1040 / fps/policy 22.66 / fps/train 2.3e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/dmc_proprio_walker_walk_seed0/metrics.jsonlWriting metrics: /scratch/midway3/rickybao/dreamerv3_runs/dmc_proprio_walker_walk_seed0/scores.jsonl
+
+
+--------------------[Agent Step 113_392]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+episode/score 225 / episode/length 1001 / train/loss/con 0.02 / train/loss/dyn 6.69 / train/loss/height 3.2e-3 / train/loss/orientations 0.24 / train/loss/policy -0.05 / train/loss/rep 6.69 / train/loss/repval 1.12 / train/loss/rew 0.59 / train/loss/value 1.09 / train/loss/velocity 1.06 / replay/replay_ratio 1040 / fps/policy 22.64 / fps/train 2.3e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/dmc_proprio_walker_walk_seed0/metrics.jsonlWriting metrics: /scratch/midway3/rickybao/dreamerv3_runs/dmc_proprio_walker_walk_seed0/scores.jsonl
+
+
+--------------------[Agent Step 116_112]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+train/loss/con 0.02 / train/loss/dyn 6.7 / train/loss/height 3.2e-3 / train/loss/orientations 0.24 / train/loss/policy -0.05 / train/loss/rep 6.7 / train/loss/repval 1.16 / train/loss/rew 0.59 / train/loss/value 1.15 / train/loss/velocity 1.06 / replay/replay_ratio 1040 / fps/policy 22.6 / fps/train 2.3e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/dmc_proprio_walker_walk_seed0/metrics.jsonlWriting metrics: /scratch/midway3/rickybao/dreamerv3_runs/dmc_proprio_walker_walk_seed0/scores.jsonl
+
+
+--------------------[Agent Step 118_832]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+train/loss/con 0.02 / train/loss/dyn 6.7 / train/loss/height 3.2e-3 / train/loss/orientations 0.24 / train/loss/policy -0.06 / train/loss/rep 6.7 / train/loss/repval 1.15 / train/loss/rew 0.59 / train/loss/value 1.14 / train/loss/velocity 1.06 / replay/replay_ratio 1040 / fps/policy 22.67 / fps/train 2.3e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/dmc_proprio_walker_walk_seed0/metrics.jsonlWriting metrics: /scratch/midway3/rickybao/dreamerv3_runs/dmc_proprio_walker_walk_seed0/scores.jsonl
+
+
+--------------------[Agent Step 121_568]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+train/loss/con 0.02 / train/loss/dyn 6.67 / train/loss/height 3.2e-3 / train/loss/orientations 0.23 / train/loss/policy -0.07 / train/loss/rep 6.67 / train/loss/repval 1.16 / train/loss/rew 0.59 / train/loss/value 1.13 / train/loss/velocity 1.04 / replay/replay_ratio 1040 / fps/policy 22.67 / fps/train 2.3e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/dmc_proprio_walker_walk_seed0/metrics.jsonlWriting metrics: /scratch/midway3/rickybao/dreamerv3_runs/dmc_proprio_walker_walk_seed0/scores.jsonl
+
+Saving checkpoint: /scratch/midway3/rickybao/dreamerv3_runs/dmc_proprio_walker_walk_seed0/ckpt/20260510T121823F782882
+Saved checkpoint.
+
+--------------------[Agent Step 124_272]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+train/loss/con 0.02 / train/loss/dyn 6.64 / train/loss/height 3.2e-3 / train/loss/orientations 0.22 / train/loss/policy -0.06 / train/loss/rep 6.64 / train/loss/repval 1.17 / train/loss/rew 0.59 / train/loss/value 1.11 / train/loss/velocity 1.04 / replay/replay_ratio 1040 / fps/policy 22.5 / fps/train 2.3e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/dmc_proprio_walker_walk_seed0/scores.jsonlWriting metrics: /scratch/midway3/rickybao/dreamerv3_runs/dmc_proprio_walker_walk_seed0/metrics.jsonl
+
+
+--------------------[Agent Step 127_008]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+train/loss/con 0.02 / train/loss/dyn 6.63 / train/loss/height 3.1e-3 / train/loss/orientations 0.22 / train/loss/policy -0.07 / train/loss/rep 6.63 / train/loss/repval 1.11 / train/loss/rew 0.59 / train/loss/value 1.1 / train/loss/velocity 1.03 / replay/replay_ratio 1040 / fps/policy 22.67 / fps/train 2.3e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/dmc_proprio_walker_walk_seed0/metrics.jsonlWriting metrics: /scratch/midway3/rickybao/dreamerv3_runs/dmc_proprio_walker_walk_seed0/scores.jsonl
+
+
+--------------------[Agent Step 129_728]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+episode/score 265.53 / episode/length 1001 / train/loss/con 0.02 / train/loss/dyn 6.64 / train/loss/height 3.1e-3 / train/loss/orientations 0.22 / train/loss/policy -0.06 / train/loss/rep 6.64 / train/loss/repval 1.05 / train/loss/rew 0.59 / train/loss/value 1.06 / train/loss/velocity 1.03 / replay/replay_ratio 1040 / fps/policy 22.63 / fps/train 2.3e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/dmc_proprio_walker_walk_seed0/metrics.jsonlWriting metrics: /scratch/midway3/rickybao/dreamerv3_runs/dmc_proprio_walker_walk_seed0/scores.jsonl
+
+
+--------------------[Agent Step 132_448]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+train/loss/con 0.02 / train/loss/dyn 6.64 / train/loss/height 3.1e-3 / train/loss/orientations 0.22 / train/loss/policy -0.06 / train/loss/rep 6.64 / train/loss/repval 1.03 / train/loss/rew 0.59 / train/loss/value 1.01 / train/loss/velocity 1.03 / replay/replay_ratio 1040 / fps/policy 22.64 / fps/train 2.3e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/dmc_proprio_walker_walk_seed0/scores.jsonlWriting metrics: /scratch/midway3/rickybao/dreamerv3_runs/dmc_proprio_walker_walk_seed0/metrics.jsonl
+
+
+--------------------[Agent Step 135_184]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+train/loss/con 0.02 / train/loss/dyn 6.62 / train/loss/height 3e-3 / train/loss/orientations 0.21 / train/loss/policy -0.06 / train/loss/rep 6.62 / train/loss/repval 0.99 / train/loss/rew 0.59 / train/loss/value 0.9 / train/loss/velocity 1.02 / replay/replay_ratio 1040 / fps/policy 22.67 / fps/train 2.3e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/dmc_proprio_walker_walk_seed0/metrics.jsonlWriting metrics: /scratch/midway3/rickybao/dreamerv3_runs/dmc_proprio_walker_walk_seed0/scores.jsonl
+
+
+--------------------[Agent Step 137_904]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+train/loss/con 0.02 / train/loss/dyn 6.58 / train/loss/height 2.9e-3 / train/loss/orientations 0.21 / train/loss/policy -0.07 / train/loss/rep 6.58 / train/loss/repval 0.96 / train/loss/rew 0.59 / train/loss/value 0.78 / train/loss/velocity 1.01 / replay/replay_ratio 1040 / fps/policy 22.67 / fps/train 2.3e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/dmc_proprio_walker_walk_seed0/metrics.jsonlWriting metrics: /scratch/midway3/rickybao/dreamerv3_runs/dmc_proprio_walker_walk_seed0/scores.jsonl
+
+
+--------------------[Agent Step 140_640]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+train/loss/con 0.02 / train/loss/dyn 6.55 / train/loss/height 2.9e-3 / train/loss/orientations 0.2 / train/loss/policy -0.07 / train/loss/rep 6.55 / train/loss/repval 1 / train/loss/rew 0.59 / train/loss/value 0.88 / train/loss/velocity 1 / replay/replay_ratio 1040 / fps/policy 22.68 / fps/train 2.3e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/dmc_proprio_walker_walk_seed0/metrics.jsonlWriting metrics: /scratch/midway3/rickybao/dreamerv3_runs/dmc_proprio_walker_walk_seed0/scores.jsonl
+
+
+--------------------[Agent Step 143_376]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+train/loss/con 0.02 / train/loss/dyn 6.52 / train/loss/height 2.8e-3 / train/loss/orientations 0.2 / train/loss/policy -0.07 / train/loss/rep 6.52 / train/loss/repval 0.99 / train/loss/rew 0.59 / train/loss/value 0.84 / train/loss/velocity 0.99 / replay/replay_ratio 1040 / fps/policy 22.68 / fps/train 2.3e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/dmc_proprio_walker_walk_seed0/metrics.jsonlWriting metrics: /scratch/midway3/rickybao/dreamerv3_runs/dmc_proprio_walker_walk_seed0/scores.jsonl
+
+Saving checkpoint: /scratch/midway3/rickybao/dreamerv3_runs/dmc_proprio_walker_walk_seed0/ckpt/20260510T123324F216101
+Saved checkpoint.
+
+--------------------[Agent Step 146_080]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+episode/score 614.93 / episode/length 1001 / train/loss/con 0.02 / train/loss/dyn 6.5 / train/loss/height 2.8e-3 / train/loss/orientations 0.2 / train/loss/policy -0.07 / train/loss/rep 6.5 / train/loss/repval 0.98 / train/loss/rew 0.59 / train/loss/value 0.77 / train/loss/velocity 0.99 / replay/replay_ratio 1040 / fps/policy 22.52 / fps/train 2.3e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/dmc_proprio_walker_walk_seed0/metrics.jsonlWriting metrics: /scratch/midway3/rickybao/dreamerv3_runs/dmc_proprio_walker_walk_seed0/scores.jsonl
+
