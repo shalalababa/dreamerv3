@@ -1,17 +1,22 @@
 #!/usr/bin/env python3
-"""Analyze a DreamerV3 single-run result directory.
+"""Analyze DreamerV3 result directories.
 
-This script reads the JSONL files written by DreamerV3, prints a compact
-summary, and saves matplotlib plots for episode scores and common train metrics.
-It is intentionally independent from the benchmark-oriented plot.py so it works
-with a flat run directory such as results/dmc_proprio_walker_walk_seed0.
+For one run directory, this script reads the JSONL files written by DreamerV3,
+prints a compact summary, and saves matplotlib plots for episode scores and
+common train metrics.
+
+For multiple seed directories, it compares scores at a shared horizon, plotting
+individual seeds plus the mean and standard deviation band, and writing final
+window and AUC summaries.
 """
 
 from __future__ import annotations
 
 import argparse
+import csv
 import json
 import math
+import re
 import statistics
 from pathlib import Path
 
@@ -20,6 +25,7 @@ import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 from matplotlib.ticker import FuncFormatter
+import numpy as np
 
 
 DEFAULT_RUN_DIR = Path("results/dmc_proprio_walker_walk_seed0")
@@ -298,6 +304,349 @@ def save_custom_metrics(records_by_source, outdir, keys, window, dpi):
     return filename
 
 
+def truncate_series(xs, ys, max_step=None):
+    pairs = sorted(zip(xs, ys))
+    if max_step is not None:
+        pairs = [(x, y) for x, y in pairs if x <= max_step]
+    if not pairs:
+        return [], []
+    xs, ys = zip(*pairs)
+    return list(xs), list(ys)
+
+
+def get_limited_series(records, key, max_step=None):
+    xs, ys = get_series(records, key)
+    return truncate_series(xs, ys, max_step)
+
+
+def run_label(run_dir):
+    match = re.search(r"(seed\d+)$", run_dir.name)
+    return match.group(1) if match else run_dir.name
+
+
+def strip_seed_suffix(name):
+    return re.sub(r"[_-]?seed\d+$", "", name)
+
+
+def default_compare_outdir(run_dirs):
+    parents = {run_dir.parent.resolve() for run_dir in run_dirs}
+    parent = run_dirs[0].parent if len(parents) == 1 else Path(".")
+    bases = {strip_seed_suffix(run_dir.name) for run_dir in run_dirs}
+    name = bases.pop() if len(bases) == 1 else "multi_run"
+    return parent / f"{name}_compare_analysis"
+
+
+def load_result_dir(run_dir):
+    metrics, bad_metrics = read_jsonl(run_dir / "metrics.jsonl")
+    scores, bad_scores = read_jsonl(run_dir / "scores.jsonl")
+    return {
+        "run_dir": run_dir,
+        "label": run_label(run_dir),
+        "records": {"metrics": metrics, "scores": scores},
+        "bad_lines": {"metrics": bad_metrics, "scores": bad_scores},
+    }
+
+
+def score_curve(run, max_step, window):
+    xs, ys = get_limited_series(run["records"]["scores"], "episode/score", max_step)
+    if not xs:
+        return [], []
+    return xs, rolling_mean(ys, window)
+
+
+def horizon_curve(xs, ys, max_step):
+    if not xs:
+        return [], []
+    xs, ys = list(xs), list(ys)
+    if xs[0] > 0:
+        xs.insert(0, 0.0)
+        ys.insert(0, ys[0])
+    if max_step is not None and xs[-1] < max_step:
+        xs.append(float(max_step))
+        ys.append(ys[-1])
+    return xs, ys
+
+
+def interp_curve(xs, ys, grid, max_step):
+    xs, ys = horizon_curve(xs, ys, max_step)
+    if not xs:
+        return np.full_like(grid, np.nan, dtype=float)
+    return np.interp(grid, xs, ys, left=np.nan, right=np.nan)
+
+
+def nanstd_sample(values, axis=0):
+    values = np.asarray(values, dtype=float)
+    counts = np.sum(np.isfinite(values), axis=axis)
+    std = np.nanstd(values, axis=axis, ddof=1)
+    return np.where(counts >= 2, std, 0.0)
+
+
+def trapezoid_area(ys, xs):
+    if hasattr(np, "trapezoid"):
+        return np.trapezoid(ys, xs)
+    return np.trapz(ys, xs)
+
+
+def auc_to_horizon(xs, ys, max_step):
+    xs, ys = horizon_curve(xs, ys, max_step)
+    if len(xs) < 2 or not max_step:
+        return float("nan")
+    xs = np.asarray(xs, dtype=float)
+    ys = np.asarray(ys, dtype=float)
+    return float(trapezoid_area(ys, xs) / max_step)
+
+
+def final_window_stats(run, max_step, last_n):
+    xs, ys = get_limited_series(run["records"]["scores"], "episode/score", max_step)
+    if not ys:
+        return {
+            "count": 0,
+            "last_step": float("nan"),
+            "first_score": float("nan"),
+            "last_score": float("nan"),
+            "best_score": float("nan"),
+            "final_count": 0,
+            "final_mean": float("nan"),
+            "final_std": float("nan"),
+            "auc": float("nan"),
+        }
+    tail = ys[-last_n:] if last_n > 0 else ys
+    return {
+        "count": len(ys),
+        "last_step": xs[-1],
+        "first_score": ys[0],
+        "last_score": ys[-1],
+        "best_score": max(ys),
+        "final_count": len(tail),
+        "final_mean": statistics.fmean(tail),
+        "final_std": statistics.stdev(tail) if len(tail) >= 2 else 0.0,
+        "auc": auc_to_horizon(xs, ys, max_step),
+    }
+
+
+def save_seed_score_plot(runs, outdir, max_step, window, grid_points, dpi):
+    setup_plot_style()
+    fig, ax = plt.subplots(figsize=(10, 5.8), constrained_layout=True)
+    grid = np.linspace(0, max_step, grid_points)
+    curves = []
+    colors = plt.rcParams["axes.prop_cycle"].by_key()["color"]
+
+    for index, run in enumerate(runs):
+        color = colors[index % len(colors)]
+        raw_xs, raw_ys = get_limited_series(
+            run["records"]["scores"], "episode/score", max_step
+        )
+        curve_xs, curve_ys = score_curve(run, max_step, window)
+        if not raw_xs:
+            continue
+        ax.scatter(raw_xs, raw_ys, s=8, alpha=0.08, color=color)
+        ax.plot(
+            curve_xs,
+            curve_ys,
+            lw=1.4,
+            alpha=0.75,
+            color=color,
+            label=run["label"],
+        )
+        curves.append(interp_curve(curve_xs, curve_ys, grid, max_step))
+
+    if curves:
+        stacked = np.vstack(curves)
+        mean = np.nanmean(stacked, axis=0)
+        std = nanstd_sample(stacked, axis=0)
+        ax.fill_between(
+            grid,
+            mean - std,
+            mean + std,
+            color="#222222",
+            alpha=0.12,
+            label="mean +/- std",
+        )
+        ax.plot(grid, mean, color="#111111", lw=2.7, label="mean")
+
+    ax.set_title(f"Episode Score Across Seeds, <= {fmt_value(max_step)} Steps")
+    ax.set_xlabel("environment steps")
+    ax.set_ylabel("episode score")
+    ax.set_xlim(0, max_step)
+    ax.xaxis.set_major_formatter(FuncFormatter(fmt_step))
+    ax.legend(fontsize=9, ncol=2)
+    filename = outdir / "scores_by_seed.png"
+    fig.savefig(filename, dpi=dpi)
+    plt.close(fig)
+    return filename
+
+
+def save_final_score_plot(seed_stats, outdir, dpi):
+    setup_plot_style()
+    labels = [row["label"] for row in seed_stats]
+    final_means = np.asarray([row["final_mean"] for row in seed_stats], dtype=float)
+    final_stds = np.asarray([row["final_std"] for row in seed_stats], dtype=float)
+    aggregate_mean = float(np.nanmean(final_means))
+    aggregate_std = float(np.nanstd(final_means, ddof=1)) if len(final_means) >= 2 else 0.0
+
+    fig, ax = plt.subplots(figsize=(8.5, 5.2), constrained_layout=True)
+    positions = np.arange(len(labels))
+    ax.errorbar(
+        positions,
+        final_means,
+        yerr=final_stds,
+        fmt="o",
+        ms=8,
+        capsize=5,
+        lw=1.8,
+        color="#1f77b4",
+        label="seed final window",
+    )
+    ax.axhline(aggregate_mean, color="#111111", lw=2.0, label="seed mean")
+    if len(final_means) >= 2:
+        ax.axhspan(
+            aggregate_mean - aggregate_std,
+            aggregate_mean + aggregate_std,
+            color="#222222",
+            alpha=0.10,
+            label="seed mean +/- std",
+        )
+    for position, value in zip(positions, final_means):
+        if math.isfinite(value):
+            ax.text(
+                position,
+                value,
+                fmt_value(value),
+                ha="center",
+                va="bottom",
+                fontsize=9,
+            )
+    finite_low = final_means - final_stds
+    finite_high = final_means + final_stds
+    finite_low = finite_low[np.isfinite(finite_low)]
+    finite_high = finite_high[np.isfinite(finite_high)]
+    if len(finite_low) and len(finite_high):
+        low = float(np.min(finite_low))
+        high = float(np.max(finite_high))
+        padding = max(5.0, 0.25 * (high - low))
+        ax.set_ylim(max(0.0, low - padding), high + padding)
+    ax.set_xticks(positions)
+    ax.set_xticklabels(labels)
+    ax.set_title("Final-Window Episode Score By Seed")
+    ax.set_ylabel("mean episode score")
+    ax.legend(fontsize=9)
+    filename = outdir / "final_score_by_seed.png"
+    fig.savefig(filename, dpi=dpi)
+    plt.close(fig)
+    return filename
+
+
+def save_seed_summary_csv(seed_stats, outdir):
+    filename = outdir / "seed_summary.csv"
+    columns = [
+        "label",
+        "run_dir",
+        "score_count",
+        "last_step",
+        "first_score",
+        "last_score",
+        "best_score",
+        "final_count",
+        "final_mean",
+        "final_std",
+        "final_zscore",
+        "auc",
+    ]
+    with filename.open("w", newline="", encoding="utf-8") as file:
+        writer = csv.DictWriter(file, fieldnames=columns)
+        writer.writeheader()
+        for row in seed_stats:
+            data = dict(row)
+            data["score_count"] = row.get("count", "")
+            writer.writerow({column: data.get(column, "") for column in columns})
+    return filename
+
+
+def build_compare_summary(run_dirs, seed_stats, max_step, last_n, window):
+    final_means = np.asarray([row["final_mean"] for row in seed_stats], dtype=float)
+    aucs = np.asarray([row["auc"] for row in seed_stats], dtype=float)
+    final_mean = float(np.nanmean(final_means))
+    final_std = float(np.nanstd(final_means, ddof=1)) if len(final_means) >= 2 else 0.0
+    auc_mean = float(np.nanmean(aucs))
+    auc_std = float(np.nanstd(aucs, ddof=1)) if len(aucs) >= 2 else 0.0
+
+    lines = []
+    lines.append(f"Comparison horizon: <= {fmt_value(max_step)} environment steps")
+    lines.append(f"Runs: {len(run_dirs)}")
+    lines.append(f"Score curve smoothing: rolling mean over {window} episodes")
+    lines.append(
+        f"Final score: mean of last {last_n} episode scores at or before the horizon"
+    )
+    lines.append("AUC: score area over 0-horizon, normalized back to score units")
+    lines.append("")
+    lines.append("Aggregate:")
+    lines.append(
+        f"  final score over seeds: {fmt_value(final_mean)} +/- {fmt_value(final_std)}"
+    )
+    lines.append(f"  AUC over seeds: {fmt_value(auc_mean)} +/- {fmt_value(auc_std)}")
+    lines.append("")
+    lines.append("Per seed:")
+    for row in seed_stats:
+        zscore = row["final_zscore"]
+        ztext = "nan" if not math.isfinite(zscore) else f"{zscore:+.2f} std"
+        lines.append(
+            "  "
+            f"{row['label']}: final={fmt_value(row['final_mean'])} "
+            f"+/- {fmt_value(row['final_std'])} "
+            f"(n={row['final_count']}, z={ztext}), "
+            f"last={fmt_value(row['last_score'])}, "
+            f"best={fmt_value(row['best_score'])}, "
+            f"AUC={fmt_value(row['auc'])}, "
+            f"last_step={fmt_value(row['last_step'])}"
+        )
+    lines.append("")
+    lines.append(
+        "Variance note: with only 3 seeds, treat the standard deviation as descriptive. "
+        "A concerning seed is one that learns much later, collapses, or finishes well "
+        "outside the others without an infrastructure/config explanation."
+    )
+    return "\n".join(lines)
+
+
+def compare_runs(run_dirs, outdir, max_step, last_n, window, grid_points, dpi):
+    runs = [load_result_dir(run_dir) for run_dir in run_dirs]
+    missing = [run["run_dir"] for run in runs if not run["records"]["scores"]]
+    if missing:
+        joined = ", ".join(str(path) for path in missing)
+        raise SystemExit(f"No scores.jsonl records found for: {joined}")
+
+    if max_step is None:
+        max_step = 500_000
+    outdir.mkdir(parents=True, exist_ok=True)
+
+    seed_stats = []
+    for run in runs:
+        stats = final_window_stats(run, max_step, last_n)
+        stats.update(label=run["label"], run_dir=str(run["run_dir"]))
+        seed_stats.append(stats)
+
+    final_means = np.asarray([row["final_mean"] for row in seed_stats], dtype=float)
+    aggregate_mean = float(np.nanmean(final_means))
+    aggregate_std = float(np.nanstd(final_means, ddof=1)) if len(final_means) >= 2 else 0.0
+    for row in seed_stats:
+        if aggregate_std > 0 and math.isfinite(row["final_mean"]):
+            row["final_zscore"] = (row["final_mean"] - aggregate_mean) / aggregate_std
+        else:
+            row["final_zscore"] = float("nan")
+
+    summary = build_compare_summary(run_dirs, seed_stats, max_step, last_n, window)
+    summary_file = outdir / "summary_compare.txt"
+    summary_file.write_text(summary + "\n", encoding="utf-8")
+
+    files = [
+        summary_file,
+        save_seed_summary_csv(seed_stats, outdir),
+        save_seed_score_plot(runs, outdir, max_step, window, grid_points, dpi),
+        save_final_score_plot(seed_stats, outdir, dpi),
+    ]
+    return summary, files
+
+
 def step_range(records):
     steps = [record["step"] for record in records if is_number(record.get("step"))]
     if not steps:
@@ -362,20 +711,34 @@ def list_available_keys(records_by_source):
 
 def parse_args():
     parser = argparse.ArgumentParser(
-        description="Analyze a DreamerV3 run directory containing metrics.jsonl and scores.jsonl."
+        description=(
+            "Analyze one DreamerV3 run directory, or compare multiple seed "
+            "directories containing metrics.jsonl and scores.jsonl."
+        )
     )
     parser.add_argument(
-        "run_dir",
-        nargs="?",
+        "run_dirs",
+        nargs="*",
         type=Path,
-        default=DEFAULT_RUN_DIR,
-        help=f"Run directory to analyze. Default: {DEFAULT_RUN_DIR}",
+        help=f"Run directories to analyze. Default: {DEFAULT_RUN_DIR}",
     )
     parser.add_argument(
         "--outdir",
         type=Path,
         default=None,
-        help="Directory for summary and figures. Default: <run_dir>/analysis",
+        help=(
+            "Directory for summary and figures. Default: <run_dir>/analysis for "
+            "one run, or results/<task>_compare_analysis for multiple runs."
+        ),
+    )
+    parser.add_argument(
+        "--max-step",
+        type=float,
+        default=None,
+        help=(
+            "Only use scores at or before this step. In multi-run mode, the "
+            "default is 500000. In single-run mode, the default is no truncation."
+        ),
     )
     parser.add_argument(
         "--window",
@@ -403,13 +766,59 @@ def parse_args():
         action="store_true",
         help="Print available numeric metric keys and exit.",
     )
+    parser.add_argument(
+        "--grid-points",
+        type=int,
+        default=300,
+        help="Interpolation points for multi-seed mean/std curves. Default: 300",
+    )
     parser.add_argument("--dpi", type=int, default=150, help="Figure DPI. Default: 150")
     return parser.parse_args()
 
 
 def main():
     args = parse_args()
-    run_dir = args.run_dir
+    run_dirs = args.run_dirs or [DEFAULT_RUN_DIR]
+
+    if len(run_dirs) > 1:
+        skipped_run_dirs = [
+            run_dir for run_dir in run_dirs if not (run_dir / "scores.jsonl").exists()
+        ]
+        run_dirs = [
+            run_dir for run_dir in run_dirs if (run_dir / "scores.jsonl").exists()
+        ]
+        if not run_dirs:
+            raise SystemExit("No run directories with scores.jsonl were found.")
+        if skipped_run_dirs:
+            print(
+                "Skipping directories without scores.jsonl: "
+                + ", ".join(str(path) for path in skipped_run_dirs)
+            )
+        outdir = args.outdir or default_compare_outdir(run_dirs)
+        runs = [load_result_dir(run_dir) for run_dir in run_dirs]
+        if args.list_keys:
+            records_by_source = {"metrics": [], "scores": []}
+            for run in runs:
+                for source in records_by_source:
+                    records_by_source[source].extend(run["records"][source])
+            print(list_available_keys(records_by_source))
+            return
+        summary, files = compare_runs(
+            run_dirs=run_dirs,
+            outdir=outdir,
+            max_step=args.max_step,
+            last_n=args.last_n,
+            window=args.window,
+            grid_points=args.grid_points,
+            dpi=args.dpi,
+        )
+        print(summary)
+        print("")
+        for filename in files:
+            print(f"Wrote {filename}")
+        return
+
+    run_dir = run_dirs[0]
     outdir = args.outdir or (run_dir / "analysis")
     outdir.mkdir(parents=True, exist_ok=True)
 
@@ -417,6 +826,14 @@ def main():
     scores, bad_scores = read_jsonl(run_dir / "scores.jsonl")
     records_by_source = {"metrics": metrics, "scores": scores}
     bad_lines = {"metrics": bad_metrics, "scores": bad_scores}
+
+    if args.max_step is not None:
+        for source in records_by_source:
+            records_by_source[source] = [
+                record
+                for record in records_by_source[source]
+                if not is_number(record.get("step")) or record["step"] <= args.max_step
+            ]
 
     if not metrics and not scores:
         raise SystemExit(f"No metrics.jsonl or scores.jsonl records found in {run_dir}")
