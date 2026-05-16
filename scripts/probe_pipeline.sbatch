@@ -30,7 +30,8 @@ PYTHON="${ENV_PATH}/bin/python"
 RUN_ROOT="/scratch/midway3/${USER}/dreamerv3_runs"
 DV3_RUN="${RUN_ROOT}/dmc_proprio_walker_walk_seed${SEED}"
 VAE_CKPT="${RUN_ROOT}/vae_walker_walk_seed${SEED}/vae.ckpt"
-OUT="${RUN_ROOT}/probing_walker_walk_seed${SEED}"
+OUT="${RUN_ROOT}/probing_walker_walk_seed${SEED}"               # scratch: heavy .npz
+RESULTS="${PROJECT_DIR}/results/probing_walker_walk_seed${SEED}"  # repo: small results
 
 export MUJOCO_GL=egl
 export PYOPENGL_PLATFORM=egl
@@ -40,7 +41,7 @@ export PATH="${ENV_PATH}/bin:${PATH}"
 export LD_LIBRARY_PATH="${ENV_PATH}/lib:${LD_LIBRARY_PATH:-}"
 
 cd "${PROJECT_DIR}"
-mkdir -p "${OUT}"
+mkdir -p "${OUT}" "${RESULTS}"
 [ -x "${PYTHON}" ]      || { echo "ERROR: missing python";   exit 1; }
 [ -d "${DV3_RUN}/ckpt" ] || { echo "ERROR: no DreamerV3 ckpt"; exit 1; }
 [ -f "${VAE_CKPT}" ]     || { echo "ERROR: no VAE ckpt; run vae_train first"; exit 1; }
@@ -60,10 +61,14 @@ echo "--- [2/3] extracting features ---"
   --horizons 1 5 20 --ep_batch 8 --seed "${SEED}"
 
 echo "--- [3/3] running probing battery ---"
+# Heavy traj.npz/features.npz stay on scratch (${OUT}); the small probe
+# results are written into the repo so they are versioned with the code.
 "${PYTHON}" -u -m probing.probe \
   --traj     "${OUT}/traj.npz" \
   --features "${OUT}/features.npz" \
-  --output   "${OUT}/probes" \
+  --output   "${RESULTS}" \
   --horizons 0 1 5 20 --mlp_steps 2000
 
-echo "Probe pipeline seed ${SEED} done | $(date) | -> ${OUT}"
+echo "Probe pipeline seed ${SEED} done | $(date)"
+echo "  scratch intermediates: ${OUT}"
+echo "  repo results:          ${RESULTS}"

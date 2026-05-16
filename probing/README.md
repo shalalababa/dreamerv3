@@ -81,7 +81,7 @@ receptive-field) sweep and writes `probe_results.csv`, `probe_summary.txt`,
 python -m probing.probe \
   --traj     <RUN>/probing_walker_walk_seed0/traj.npz \
   --features <RUN>/probing_walker_walk_seed0/features.npz \
-  --output   <RUN>/probing_walker_walk_seed0/probes
+  --output   results/probing_walker_walk_seed0
 ```
 
 ## Cluster
@@ -91,6 +91,13 @@ sbatch scripts/vae_train.sbatch        # array 0-2: trains all three VAEs
 sbatch scripts/probe_pipeline.sbatch   # array 0-2: collect + features + probe
 ```
 Run `vae_train` first; `probe_pipeline` needs both checkpoints.
+
+**Output split.** Inputs (`replay/`, `ckpt/`, `config.yaml`) and heavy
+intermediates (`vae.ckpt`, `traj.npz`, `features.npz`) live on cluster scratch
+under `/scratch/midway3/$USER/dreamerv3_runs/`. The small, analysis-relevant
+results (`probe_results.csv`, `probe_summary.txt`, `likelihood.json`, figures,
+and the VAE training log) are written into the repo at
+`results/probing_walker_walk_seed{N}/` so they are versioned with the code.
 
 ## Design notes / fairness controls
 

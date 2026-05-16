@@ -53,4 +53,13 @@ cd "${PROJECT_DIR}"
   --seed "${SEED}" \
   --dtype float32
 
-echo "VAE seed ${SEED} done | $(date) | -> ${VAE_DIR}"
+# vae.ckpt stays on scratch (it is an input to probing.features); copy the
+# small training curve and metadata into the repo so they are versioned.
+RESULTS="${PROJECT_DIR}/results/probing_walker_walk_seed${SEED}"
+mkdir -p "${RESULTS}"
+cp "${VAE_DIR}/metrics.jsonl" "${RESULTS}/vae_metrics.jsonl"
+cp "${VAE_DIR}/meta.json"     "${RESULTS}/vae_meta.json"
+
+echo "VAE seed ${SEED} done | $(date)"
+echo "  scratch checkpoint: ${VAE_DIR}"
+echo "  repo training log:  ${RESULTS}"
