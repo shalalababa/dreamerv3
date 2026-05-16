@@ -1,0 +1,278 @@
+==============================
+Probe pipeline | seed 0 | job 49697429 | Fri May 15 20:04:15 CDT 2026
+==============================
+--- [1/3] collecting probe trajectories ---
+Task: dmc_walker_walk  |  checkpoint: /scratch/midway3/rickybao/dreamerv3_runs/dmc_proprio_walker_walk_seed0/ckpt  |  mode: eval
+Observations
+  reward           Space(float32, shape=(), low=-inf, high=inf)
+  is_first         Space(bool, shape=(), low=False, high=True)
+  is_last          Space(bool, shape=(), low=False, high=True)
+  is_terminal      Space(bool, shape=(), low=False, high=True)
+  orientations     Space(float32, shape=(14,), low=-inf, high=inf)
+  height           Space(float32, shape=(), low=-inf, high=inf)
+  velocity         Space(float32, shape=(9,), low=-inf, high=inf)
+Actions
+  action           Space(float32, shape=(6,), low=-1.0, high=1.0)
+Extras
+  consec           Space(int32, shape=(), low=-2147483648, high=2147483647)
+  stepid           Space(uint8, shape=(20,), low=0, high=255)
+  dyn/deter        Space(float32, shape=(512,), low=-inf, high=inf)
+  dyn/stoch        Space(float32, shape=(32, 4), low=-inf, high=inf)
+JAX devices (1): [cuda:0]
+Policy devices: cuda:0
+Train devices:  cuda:0
+Initializing parameters...
+Optimizer opt has 640,867 params:
+       364,416 dyn
+        66,111 val
+        57,663 rew
+        51,096 dec
+        50,316 pol
+        41,153 con
+        10,112 enc
+Done initializing!
+Compiling 1 checkpoint groups...
+Largest checkpoint group: 0 GB
+Compiling train and report...
+Train cost analysis:
+  FLOPS:            1.5e+10
+  Memory (temp):    1.9e+08
+  Memory (inputs):  1.1e+07
+  Memory (outputs): 9.3e+06
+  Memory (code):    2.5e+06
+
+Report cost analysis:
+  FLOPS:            1.2e+07
+  Memory (temp):    7.8e+05
+  Memory (inputs):  2.8e+06
+  Memory (outputs): 2.1e+04
+  Memory (code):    1.1e+05
+
+Done compiling!
+Loading checkpoint: /scratch/midway3/rickybao/dreamerv3_runs/dmc_proprio_walker_walk_seed0/ckpt/20260511T023954F222902
+Loaded checkpoint.
+Loaded frozen DreamerV3 checkpoint.
+Observation keys: ['height', 'orientations', 'velocity']  |  action keys: ['action']
+  episode   0: len=1000  return=  959.7
+  episode   1: len=1000  return=  974.4
+  episode   2: len=1000  return=  958.8
+  episode   3: len=1000  return=  961.0
+  episode   4: len=1000  return=  980.8
+  episode   5: len=1000  return=  973.1
+  episode   6: len=1000  return=  964.0
+  episode   7: len=1000  return=  971.9
+  episode   8: len=1000  return=  907.6
+  episode   9: len=1000  return=  980.5
+  episode  10: len=1000  return=  963.6
+  episode  11: len=1000  return=  973.4
+  episode  12: len=1000  return=  985.1
+  episode  13: len=1000  return=  991.5
+  episode  14: len=1000  return=  975.5
+  episode  15: len=1000  return=  963.2
+  episode  16: len=1000  return=  987.9
+  episode  17: len=1000  return=  991.4
+  episode  18: len=1000  return=  956.0
+  episode  19: len=1000  return=  945.0
+  episode  20: len=1000  return=  973.0
+  episode  21: len=1000  return=  958.8
+  episode  22: len=1000  return=  984.5
+  episode  23: len=1000  return=  939.7
+  episode  24: len=1000  return=  983.7
+  episode  25: len=1000  return=  983.4
+  episode  26: len=1000  return=  961.9
+  episode  27: len=1000  return=  933.9
+  episode  28: len=1000  return=  963.4
+  episode  29: len=1000  return=  973.4
+  episode  30: len=1000  return=  981.3
+  episode  31: len=1000  return=  962.5
+  episode  32: len=1000  return=  989.6
+  episode  33: len=1000  return=  972.2
+  episode  34: len=1000  return=  969.6
+  episode  35: len=1000  return=  969.4
+  episode  36: len=1000  return=  984.8
+  episode  37: len=1000  return=  985.6
+  episode  38: len=1000  return=  975.9
+  episode  39: len=1000  return=  953.5
+Saved 40 x 1000 steps -> /scratch/midway3/rickybao/dreamerv3_runs/probing_walker_walk_seed0/traj.npz
+Return over episodes: 969.1 +/- 16.8
+--- [2/3] extracting features ---
+Probe trajectories: 40 episodes x 1000 steps
+Observations
+  reward           Space(float32, shape=(), low=-inf, high=inf)
+  is_first         Space(bool, shape=(), low=False, high=True)
+  is_last          Space(bool, shape=(), low=False, high=True)
+  is_terminal      Space(bool, shape=(), low=False, high=True)
+  orientations     Space(float32, shape=(14,), low=-inf, high=inf)
+  height           Space(float32, shape=(), low=-inf, high=inf)
+  velocity         Space(float32, shape=(9,), low=-inf, high=inf)
+Actions
+  action           Space(float32, shape=(6,), low=-1.0, high=1.0)
+Extras
+  consec           Space(int32, shape=(), low=-2147483648, high=2147483647)
+  stepid           Space(uint8, shape=(20,), low=0, high=255)
+  dyn/deter        Space(float32, shape=(512,), low=-inf, high=inf)
+  dyn/stoch        Space(float32, shape=(32, 4), low=-inf, high=inf)
+JAX devices (1): [cuda:0]
+Policy devices: cuda:0
+Train devices:  cuda:0
+Initializing parameters...
+Optimizer opt has 640,867 params:
+       364,416 dyn
+        66,111 val
+        57,663 rew
+        51,096 dec
+        50,316 pol
+        41,153 con
+        10,112 enc
+Done initializing!
+Compiling 1 checkpoint groups...
+Largest checkpoint group: 0 GB
+Compiling train and report...
+Train cost analysis:
+  FLOPS:            1.5e+10
+  Memory (temp):    1.9e+08
+  Memory (inputs):  1.1e+07
+  Memory (outputs): 9.3e+06
+  Memory (code):    2.5e+06
+
+Report cost analysis:
+  FLOPS:            1.2e+07
+  Memory (temp):    7.8e+05
+  Memory (inputs):  2.8e+06
+  Memory (outputs): 2.1e+04
+  Memory (code):    1.1e+05
+
+Done compiling!
+Loading checkpoint: /scratch/midway3/rickybao/dreamerv3_runs/dmc_proprio_walker_walk_seed0/ckpt/20260511T023954F222902
+Loaded checkpoint.
+World model: obs=['height', 'orientations', 'velocity']  act=['action']  horizons=[1, 5, 20]
+  world-model features: episodes 0-7
+  world-model features: episodes 8-15
+  world-model features: episodes 16-23
+  world-model features: episodes 24-31
+  world-model features: episodes 32-39
+Feature arrays:
+  vae_enc                (40, 1000, 64)
+  vae_logstd             (40, 1000, 128)
+  vae_mean               (40, 1000, 128)
+  vae_recon_nll          (40, 1000)
+  wm_enc                 (40, 1000, 64)
+  wm_imag1_deter         (40, 1000, 512)
+  wm_imag1_stoch         (40, 1000, 128)
+  wm_imag20_deter        (40, 1000, 512)
+  wm_imag20_stoch        (40, 1000, 128)
+  wm_imag5_deter         (40, 1000, 512)
+  wm_imag5_stoch         (40, 1000, 128)
+  wm_post_deter          (40, 1000, 512)
+  wm_post_nll            (40, 1000)
+  wm_post_stoch          (40, 1000, 128)
+  wm_prior_deter         (40, 1000, 512)
+  wm_prior_nll           (40, 1000)
+  wm_prior_stoch         (40, 1000, 128)
+Saved -> /scratch/midway3/rickybao/dreamerv3_runs/probing_walker_walk_seed0/features.npz
+--- [3/3] running probing battery ---
+Episodes: 40 (test 12)  |  sites: ['enc', 'imag1', 'imag20', 'imag5', 'post_deter', 'post_stoch', 'posterior', 'prior', 'vae_enc', 'vae_latent']
+Targets: ['gait_phase', 'horizontal_velocity', 'qpos', 'qvel', 'return_to_go', 'state', 'time_to_fall', 'torso_height', 'torso_upright']
+  [  1/73] rssm/enc        state         h=0  K=1  R2_ridge=0.72423  R2_mlp=0.75919
+  [  2/73] rssm/posterior  state         h=0  K=1  R2_ridge=0.76607  R2_mlp=0.689
+  [  3/73] rssm/post_deter state         h=0  K=1  R2_ridge=0.74523  R2_mlp=0.6851
+  [  4/73] rssm/post_stoch state         h=0  K=1  R2_ridge=0.38895  R2_mlp=0.5553
+  [  5/73] rssm/prior      state         h=0  K=1  R2_ridge=0.75506  R2_mlp=0.68703
+  [  6/73]  vae/vae_enc    state         h=0  K=1  R2_ridge=0.71076  R2_mlp=0.75824
+  [  7/73]  vae/vae_latent state         h=0  K=1  R2_ridge=0.71077  R2_mlp=0.7584
+  [  8/73]  vae/vae_latent state         h=0  K=4  R2_ridge=0.72203  R2_mlp=0.71358
+  [  9/73]  vae/vae_latent state         h=0  K=16  R2_ridge=0.72471  R2_mlp=0.61825
+  [ 10/73]  vae/vae_latent state         h=0  K=all  R2_ridge=0.76954  R2_mlp=0.75368
+  [ 11/73] rssm/enc        state         h=1  K=1  R2_ridge=0.41917  R2_mlp=0.50667
+  [ 12/73] rssm/posterior  state         h=1  K=1  R2_ridge=0.5088  R2_mlp=0.42984
+  [ 13/73] rssm/post_deter state         h=1  K=1  R2_ridge=0.50634  R2_mlp=0.44271
+  [ 14/73] rssm/post_stoch state         h=1  K=1  R2_ridge=0.25893  R2_mlp=0.32721
+  [ 15/73] rssm/prior      state         h=1  K=1  R2_ridge=0.50906  R2_mlp=0.42853
+  [ 16/73]  vae/vae_enc    state         h=1  K=1  R2_ridge=0.31126  R2_mlp=0.37495
+  [ 17/73]  vae/vae_latent state         h=1  K=1  R2_ridge=0.31127  R2_mlp=0.38903
+  [ 18/73]  vae/vae_latent state         h=1  K=4  R2_ridge=0.36323  R2_mlp=0.34065
+  [ 19/73]  vae/vae_latent state         h=1  K=16  R2_ridge=0.37768  R2_mlp=0.15925
+  [ 20/73]  vae/vae_latent state         h=1  K=all  R2_ridge=0.37061  R2_mlp=0.28961
+  [ 21/73] rssm/imag1      state         h=1  K=1  R2_ridge=0.75497  R2_mlp=0.68356
+  [ 22/73] rssm/enc        state         h=5  K=1  R2_ridge=0.23742  R2_mlp=0.29102
+  [ 23/73] rssm/posterior  state         h=5  K=1  R2_ridge=0.27592  R2_mlp=0.17234
+  [ 24/73] rssm/post_deter state         h=5  K=1  R2_ridge=0.27617  R2_mlp=0.21127
+  [ 25/73] rssm/post_stoch state         h=5  K=1  R2_ridge=0.169  R2_mlp=0.18258
+  [ 26/73] rssm/prior      state         h=5  K=1  R2_ridge=0.27636  R2_mlp=0.1854
+  [ 27/73]  vae/vae_enc    state         h=5  K=1  R2_ridge=0.16642  R2_mlp=0.20882
+  [ 28/73]  vae/vae_latent state         h=5  K=1  R2_ridge=0.16647  R2_mlp=0.21242
+  [ 29/73]  vae/vae_latent state         h=5  K=4  R2_ridge=0.20306  R2_mlp=0.12146
+  [ 30/73]  vae/vae_latent state         h=5  K=16  R2_ridge=0.2173  R2_mlp=-0.1061
+  [ 31/73]  vae/vae_latent state         h=5  K=all  R2_ridge=0.22724  R2_mlp=0.13725
+  [ 32/73] rssm/imag5      state         h=5  K=1  R2_ridge=0.71088  R2_mlp=0.63792
+  [ 33/73] rssm/enc        state         h=20 K=1  R2_ridge=0.12915  R2_mlp=0.10893
+  [ 34/73] rssm/posterior  state         h=20 K=1  R2_ridge=0.14059  R2_mlp=-0.04988
+  [ 35/73] rssm/post_deter state         h=20 K=1  R2_ridge=0.14206  R2_mlp=-0.00603
+  [ 36/73] rssm/post_stoch state         h=20 K=1  R2_ridge=0.1009  R2_mlp=0.06235
+  [ 37/73] rssm/prior      state         h=20 K=1  R2_ridge=0.14134  R2_mlp=-0.03146
+  [ 38/73]  vae/vae_enc    state         h=20 K=1  R2_ridge=0.09577  R2_mlp=0.09773
+  [ 39/73]  vae/vae_latent state         h=20 K=1  R2_ridge=0.09555  R2_mlp=0.08703
+  [ 40/73]  vae/vae_latent state         h=20 K=4  R2_ridge=0.11292  R2_mlp=-0.06283
+  [ 41/73]  vae/vae_latent state         h=20 K=16  R2_ridge=0.11126  R2_mlp=-0.28787
+  [ 42/73]  vae/vae_latent state         h=20 K=all  R2_ridge=0.15707  R2_mlp=0.00312
+  [ 43/73] rssm/imag20     state         h=20 K=1  R2_ridge=0.54571  R2_mlp=0.46536
+  [ 44/73] rssm/enc        gait_phase    h=0  K=1  R2_ridge=0.88958  R2_mlp=0.93734
+  [ 45/73] rssm/posterior  gait_phase    h=0  K=1  R2_ridge=0.93763  R2_mlp=0.93498
+  [ 46/73] rssm/post_deter gait_phase    h=0  K=1  R2_ridge=0.93781  R2_mlp=0.93658
+  [ 47/73] rssm/post_stoch gait_phase    h=0  K=1  R2_ridge=0.72924  R2_mlp=0.83644
+  [ 48/73] rssm/prior      gait_phase    h=0  K=1  R2_ridge=0.93723  R2_mlp=0.93328
+  [ 49/73]  vae/vae_enc    gait_phase    h=0  K=1  R2_ridge=0.7051  R2_mlp=0.84579
+  [ 50/73]  vae/vae_latent gait_phase    h=0  K=1  R2_ridge=0.70505  R2_mlp=0.86026
+  [ 51/73]  vae/vae_latent gait_phase    h=0  K=4  R2_ridge=0.82129  R2_mlp=0.86037
+  [ 52/73]  vae/vae_latent gait_phase    h=0  K=16  R2_ridge=0.87569  R2_mlp=0.87127
+  [ 53/73]  vae/vae_latent gait_phase    h=0  K=all  R2_ridge=0.71828  R2_mlp=0.81628
+  [ 54/73] rssm/enc        return_to_go  h=0  K=1  R2_ridge=-0.00262  R2_mlp=-0.18239
+  [ 55/73] rssm/posterior  return_to_go  h=0  K=1  R2_ridge=-0.01252  R2_mlp=-0.55475
+  [ 56/73] rssm/post_deter return_to_go  h=0  K=1  R2_ridge=-0.01156  R2_mlp=-0.52024
+  [ 57/73] rssm/post_stoch return_to_go  h=0  K=1  R2_ridge=-0.00076  R2_mlp=-0.28894
+  [ 58/73] rssm/prior      return_to_go  h=0  K=1  R2_ridge=-0.01235  R2_mlp=-0.54473
+  [ 59/73]  vae/vae_enc    return_to_go  h=0  K=1  R2_ridge=-0.00135  R2_mlp=-0.06811
+  [ 60/73]  vae/vae_latent return_to_go  h=0  K=1  R2_ridge=-0.00256  R2_mlp=-0.12533
+  [ 61/73]  vae/vae_latent return_to_go  h=0  K=4  R2_ridge=-0.00941  R2_mlp=-0.61587
+  [ 62/73]  vae/vae_latent return_to_go  h=0  K=16  R2_ridge=-0.03299  R2_mlp=-0.44847
+  [ 63/73]  vae/vae_latent return_to_go  h=0  K=all  R2_ridge=-0.0242  R2_mlp=-12.81516
+  [ 64/73] rssm/enc        time_to_fall  h=0  K=1  R2_ridge=0.6077  R2_mlp=0.80331
+  [ 65/73] rssm/posterior  time_to_fall  h=0  K=1  R2_ridge=0.69116  R2_mlp=0.70255
+  [ 66/73] rssm/post_deter time_to_fall  h=0  K=1  R2_ridge=0.71299  R2_mlp=0.76898
+  [ 67/73] rssm/post_stoch time_to_fall  h=0  K=1  R2_ridge=-0.10449  R2_mlp=-1.35946
+  [ 68/73] rssm/prior      time_to_fall  h=0  K=1  R2_ridge=0.69448  R2_mlp=0.7814
+  [ 69/73]  vae/vae_enc    time_to_fall  h=0  K=1  R2_ridge=0.02412  R2_mlp=-0.63954
+  [ 70/73]  vae/vae_latent time_to_fall  h=0  K=1  R2_ridge=-0.03575  R2_mlp=-0.60968
+  [ 71/73]  vae/vae_latent time_to_fall  h=0  K=4  R2_ridge=0.00973  R2_mlp=-0.37653
+  [ 72/73]  vae/vae_latent time_to_fall  h=0  K=16  R2_ridge=-0.17322  R2_mlp=0.36757
+  [ 73/73]  vae/vae_latent time_to_fall  h=0  K=all  R2_ridge=-0.03865  R2_mlp=-0.33549
+
+Probing summary (held-out ridge R^2)
+======================================
+
+Per-frame content (target: state, horizon 0):
+  RSSM posterior          R^2 = 0.76607
+  static VAE latent (K=1) R^2 = 0.71077
+  static-vs-sequential gap    = +0.0553
+
+Predictive content (RSSM posterior, target: state):
+  horizon  0: R^2 = 0.76607
+  horizon  1: R^2 = 0.5088
+  horizon  5: R^2 = 0.27592
+  horizon 20: R^2 = 0.14059
+
+VAE receptive field (target: state, horizon 0):
+  K=  1: R^2 = 0.71077
+  K=  4: R^2 = 0.72203
+  K= 16: R^2 = 0.72471
+  K=all: R^2 = 0.76954
+
+Held-out likelihood (mean NLL, lower is better):
+  rssm_posterior_recon       0.3541
+  rssm_prior_predictive      0.7710
+  vae_recon                  1.6143
+
+Wrote results -> /home/rickybao/projects/dreamerv3/results/probing_walker_walk_seed0
+Probe pipeline seed 0 done | Fri May 15 20:18:21 CDT 2026
+  scratch intermediates: /scratch/midway3/rickybao/dreamerv3_runs/probing_walker_walk_seed0
+  repo results:          /home/rickybao/projects/dreamerv3/results/probing_walker_walk_seed0

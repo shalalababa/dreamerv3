@@ -1,0 +1,24 @@
+Probing summary (held-out ridge R^2)
+======================================
+
+Per-frame content (target: state, horizon 0):
+  RSSM posterior          R^2 = 0.74944
+  static VAE latent (K=1) R^2 = 0.70758
+  static-vs-sequential gap    = +0.0419
+
+Predictive content (RSSM posterior, target: state):
+  horizon  0: R^2 = 0.74944
+  horizon  1: R^2 = 0.53125
+  horizon  5: R^2 = 0.32519
+  horizon 20: R^2 = 0.17064
+
+VAE receptive field (target: state, horizon 0):
+  K=  1: R^2 = 0.70758
+  K=  4: R^2 = 0.72175
+  K= 16: R^2 = 0.72883
+  K=all: R^2 = 0.80195
+
+Held-out likelihood (mean NLL, lower is better):
+  rssm_posterior_recon       0.6662
+  rssm_prior_predictive      1.7827
+  vae_recon                  1.9112

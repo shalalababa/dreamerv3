@@ -1,0 +1,142 @@
+==============================
+VAE training | seed 2 | job 49697356 | Fri May 15 19:49:09 CDT 2026
+==============================
+Auto-detected vector obs keys: ['height', 'orientations', 'velocity']
+Loaded encoder hparams from /scratch/midway3/rickybao/dreamerv3_runs/dmc_proprio_walker_walk_seed2/config.yaml: {'act': 'silu', 'depth': 4, 'kernel': 5, 'layers': 3, 'mults': (2, 3, 4, 4), 'norm': 'rms', 'outer': False, 'strided': False, 'symlog': True, 'units': 64, 'winit': 'trunc_normal_in'}
+  /scratch/midway3/rickybao/dreamerv3_runs/dmc_proprio_walker_walk_seed2/replay: 800 chunks
+Loaded 483728 frames; keys: {'height': 1, 'orientations': 14, 'velocity': 9}
+Train frames: 459542  |  Val frames: 24186
+Optimizer opt has 45,080 params:
+        45,080 vae
+        16,768 vae/decmlp
+        10,112 vae/enc
+         8,320 vae/mean
+         8,320 vae/logstd
+         1,560 vae/dechead
+StaticVAE parameters: 45,080
+Training StaticVAE for 60000 steps...
+step       1  loss 140.8334  recon 36.7242  kl 104.1093  val_elbo -137.7932  active 4/128
+step     500  loss 17.0273  recon 13.9043  kl 3.1230  val_elbo -17.1373  active 0/128
+step    1000  loss 17.3545  recon 13.7652  kl 3.5894  val_elbo -15.8492  active 0/128
+step    1500  loss 15.6423  recon 11.4180  kl 4.2243  val_elbo -15.5228  active 0/128
+step    2000  loss 14.0859  recon 9.8484  kl 4.2376  val_elbo -13.9931  active 0/128
+step    2500  loss 12.8344  recon 8.5914  kl 4.2431  val_elbo -12.5299  active 2/128
+step    3000  loss 12.3870  recon 8.1430  kl 4.2440  val_elbo -11.7475  active 2/128
+step    3500  loss 12.0010  recon 7.6918  kl 4.3093  val_elbo -11.7817  active 2/128
+step    4000  loss 11.2521  recon 6.9987  kl 4.2534  val_elbo -11.3244  active 3/128
+step    4500  loss 11.1180  recon 6.6397  kl 4.4783  val_elbo -11.2651  active 3/128
+step    5000  loss 11.2002  recon 6.6505  kl 4.5497  val_elbo -11.1387  active 3/128
+step    5500  loss 11.4412  recon 6.8533  kl 4.5880  val_elbo -10.7925  active 3/128
+step    6000  loss 11.0532  recon 6.4170  kl 4.6362  val_elbo -10.7254  active 3/128
+step    6500  loss 10.2980  recon 5.7971  kl 4.5009  val_elbo -10.3626  active 3/128
+step    7000  loss 10.4181  recon 5.6142  kl 4.8039  val_elbo -10.2567  active 3/128
+step    7500  loss 10.7304  recon 6.0105  kl 4.7199  val_elbo -10.4743  active 4/128
+step    8000  loss 10.4215  recon 5.7774  kl 4.6442  val_elbo -10.2794  active 4/128
+step    8500  loss 10.5617  recon 5.8847  kl 4.6770  val_elbo -10.3359  active 4/128
+step    9000  loss 10.7502  recon 5.8297  kl 4.9205  val_elbo -10.2417  active 4/128
+step    9500  loss 10.2958  recon 5.3638  kl 4.9321  val_elbo -10.0914  active 4/128
+step   10000  loss 10.0642  recon 5.2650  kl 4.7991  val_elbo -10.2547  active 4/128
+step   10500  loss 10.1154  recon 5.1915  kl 4.9240  val_elbo -10.0490  active 4/128
+step   11000  loss 10.3362  recon 5.3627  kl 4.9736  val_elbo -9.9855  active 4/128
+step   11500  loss 10.2398  recon 5.3395  kl 4.9003  val_elbo -10.0353  active 4/128
+step   12000  loss 10.1415  recon 5.1877  kl 4.9538  val_elbo -10.0658  active 4/128
+step   12500  loss 10.0309  recon 5.0931  kl 4.9379  val_elbo -10.0454  active 4/128
+step   13000  loss 10.3560  recon 5.3920  kl 4.9640  val_elbo -9.9101  active 4/128
+step   13500  loss 10.0658  recon 5.1836  kl 4.8821  val_elbo -9.9673  active 4/128
+step   14000  loss 10.1984  recon 5.1680  kl 5.0304  val_elbo -9.9440  active 4/128
+step   14500  loss 10.0565  recon 5.1510  kl 4.9055  val_elbo -9.8775  active 4/128
+step   15000  loss 10.3781  recon 5.2409  kl 5.1372  val_elbo -10.0516  active 4/128
+step   15500  loss 10.0383  recon 5.1564  kl 4.8819  val_elbo -10.0072  active 4/128
+step   16000  loss 10.0944  recon 5.1615  kl 4.9329  val_elbo -10.1840  active 4/128
+step   16500  loss 10.0585  recon 5.1095  kl 4.9489  val_elbo -9.8693  active 4/128
+step   17000  loss 10.0971  recon 5.1341  kl 4.9630  val_elbo -9.8573  active 4/128
+step   17500  loss 10.2371  recon 5.3457  kl 4.8914  val_elbo -9.8967  active 4/128
+step   18000  loss 9.8868  recon 4.8997  kl 4.9871  val_elbo -9.9587  active 4/128
+step   18500  loss 9.8841  recon 5.0082  kl 4.8759  val_elbo -10.0859  active 4/128
+step   19000  loss 10.2550  recon 5.2906  kl 4.9643  val_elbo -9.8560  active 4/128
+step   19500  loss 10.3157  recon 5.2984  kl 5.0173  val_elbo -9.9290  active 4/128
+step   20000  loss 9.9317  recon 4.9073  kl 5.0244  val_elbo -9.9447  active 4/128
+step   20500  loss 10.1834  recon 5.1882  kl 4.9952  val_elbo -9.6932  active 4/128
+step   21000  loss 10.1195  recon 5.1000  kl 5.0195  val_elbo -9.8936  active 4/128
+step   21500  loss 9.8516  recon 4.8404  kl 5.0112  val_elbo -9.7914  active 4/128
+step   22000  loss 10.0155  recon 5.0193  kl 4.9962  val_elbo -9.7921  active 4/128
+step   22500  loss 10.0025  recon 4.9069  kl 5.0956  val_elbo -9.7391  active 4/128
+step   23000  loss 9.9091  recon 4.8877  kl 5.0215  val_elbo -9.9064  active 4/128
+step   23500  loss 10.3357  recon 5.2380  kl 5.0977  val_elbo -9.8747  active 4/128
+step   24000  loss 10.2347  recon 5.0849  kl 5.1498  val_elbo -9.8653  active 4/128
+step   24500  loss 9.7772  recon 4.7906  kl 4.9866  val_elbo -9.8475  active 4/128
+step   25000  loss 10.1704  recon 5.2121  kl 4.9583  val_elbo -10.0120  active 4/128
+step   25500  loss 9.9675  recon 4.8868  kl 5.0807  val_elbo -9.9430  active 4/128
+step   26000  loss 9.8419  recon 4.7534  kl 5.0885  val_elbo -9.7516  active 4/128
+step   26500  loss 10.0561  recon 4.9667  kl 5.0894  val_elbo -10.0181  active 4/128
+step   27000  loss 9.8175  recon 4.9785  kl 4.8390  val_elbo -9.6834  active 4/128
+step   27500  loss 10.0599  recon 5.0894  kl 4.9705  val_elbo -9.5176  active 4/128
+step   28000  loss 10.0794  recon 5.0153  kl 5.0641  val_elbo -9.7661  active 4/128
+step   28500  loss 9.6809  recon 4.7684  kl 4.9125  val_elbo -9.9283  active 4/128
+step   29000  loss 10.5890  recon 5.3840  kl 5.2051  val_elbo -9.6159  active 4/128
+step   29500  loss 9.9161  recon 4.9332  kl 4.9828  val_elbo -9.7719  active 4/128
+step   30000  loss 9.9597  recon 5.0145  kl 4.9451  val_elbo -9.6445  active 4/128
+step   30500  loss 9.9902  recon 4.9187  kl 5.0715  val_elbo -9.6806  active 4/128
+step   31000  loss 9.5617  recon 4.5641  kl 4.9975  val_elbo -9.6892  active 4/128
+step   31500  loss 10.0515  recon 5.0189  kl 5.0326  val_elbo -9.7938  active 4/128
+step   32000  loss 9.7372  recon 4.7683  kl 4.9688  val_elbo -9.7981  active 4/128
+step   32500  loss 10.1416  recon 5.0158  kl 5.1258  val_elbo -9.8348  active 4/128
+step   33000  loss 9.9818  recon 5.0047  kl 4.9771  val_elbo -9.9552  active 4/128
+step   33500  loss 10.1259  recon 5.0271  kl 5.0988  val_elbo -9.6579  active 4/128
+step   34000  loss 9.8418  recon 4.8038  kl 5.0381  val_elbo -9.6898  active 4/128
+step   34500  loss 10.1746  recon 5.1056  kl 5.0691  val_elbo -9.7507  active 4/128
+step   35000  loss 9.7125  recon 4.7055  kl 5.0071  val_elbo -9.9554  active 4/128
+step   35500  loss 9.5527  recon 4.5736  kl 4.9791  val_elbo -9.8343  active 4/128
+step   36000  loss 10.0440  recon 4.9306  kl 5.1133  val_elbo -9.6639  active 4/128
+step   36500  loss 9.8999  recon 4.8935  kl 5.0065  val_elbo -9.7672  active 4/128
+step   37000  loss 9.8098  recon 4.6894  kl 5.1203  val_elbo -9.7433  active 4/128
+step   37500  loss 9.7394  recon 4.5962  kl 5.1431  val_elbo -9.8082  active 4/128
+step   38000  loss 9.9706  recon 4.8676  kl 5.1031  val_elbo -9.8523  active 4/128
+step   38500  loss 9.6952  recon 4.7027  kl 4.9925  val_elbo -9.9513  active 5/128
+step   39000  loss 9.9702  recon 4.9046  kl 5.0656  val_elbo -10.0095  active 4/128
+step   39500  loss 10.0290  recon 4.9957  kl 5.0333  val_elbo -9.7371  active 4/128
+step   40000  loss 10.2395  recon 5.1047  kl 5.1348  val_elbo -9.7610  active 4/128
+step   40500  loss 9.9618  recon 4.8671  kl 5.0946  val_elbo -9.8125  active 4/128
+step   41000  loss 10.0546  recon 4.9475  kl 5.1071  val_elbo -9.7453  active 4/128
+step   41500  loss 9.8816  recon 4.6882  kl 5.1934  val_elbo -9.9569  active 4/128
+step   42000  loss 9.8178  recon 4.7910  kl 5.0268  val_elbo -9.8856  active 4/128
+step   42500  loss 9.6691  recon 4.5879  kl 5.0812  val_elbo -9.8093  active 5/128
+step   43000  loss 9.6370  recon 4.5518  kl 5.0852  val_elbo -9.5806  active 4/128
+step   43500  loss 9.7313  recon 4.6425  kl 5.0887  val_elbo -9.8276  active 4/128
+step   44000  loss 9.6269  recon 4.5879  kl 5.0389  val_elbo -9.6960  active 4/128
+step   44500  loss 9.8439  recon 4.6860  kl 5.1579  val_elbo -9.5184  active 5/128
+step   45000  loss 9.7283  recon 4.6377  kl 5.0906  val_elbo -9.7296  active 4/128
+step   45500  loss 10.1656  recon 4.9626  kl 5.2031  val_elbo -9.9989  active 4/128
+step   46000  loss 10.2063  recon 5.0361  kl 5.1702  val_elbo -9.6165  active 4/128
+step   46500  loss 9.8998  recon 4.8114  kl 5.0883  val_elbo -9.6727  active 4/128
+step   47000  loss 9.9354  recon 4.8552  kl 5.0802  val_elbo -9.7020  active 5/128
+step   47500  loss 9.9363  recon 4.7675  kl 5.1688  val_elbo -9.7959  active 5/128
+step   48000  loss 9.8893  recon 4.7639  kl 5.1254  val_elbo -9.5989  active 5/128
+step   48500  loss 9.9549  recon 4.8892  kl 5.0657  val_elbo -9.6256  active 5/128
+step   49000  loss 9.9852  recon 4.8998  kl 5.0854  val_elbo -10.0463  active 4/128
+step   49500  loss 9.7729  recon 4.6529  kl 5.1200  val_elbo -9.6143  active 4/128
+step   50000  loss 9.6520  recon 4.6539  kl 4.9982  val_elbo -9.7036  active 4/128
+step   50500  loss 9.8251  recon 4.6250  kl 5.2001  val_elbo -9.5917  active 4/128
+step   51000  loss 9.9663  recon 4.6534  kl 5.3129  val_elbo -9.7487  active 5/128
+step   51500  loss 9.7266  recon 4.7030  kl 5.0237  val_elbo -9.6510  active 4/128
+step   52000  loss 9.6361  recon 4.6689  kl 4.9672  val_elbo -9.4566  active 5/128
+step   52500  loss 9.7848  recon 4.5867  kl 5.1982  val_elbo -9.6970  active 5/128
+step   53000  loss 10.0471  recon 4.8816  kl 5.1655  val_elbo -9.5961  active 5/128
+step   53500  loss 9.8342  recon 4.6871  kl 5.1471  val_elbo -9.8035  active 5/128
+step   54000  loss 9.9518  recon 4.8323  kl 5.1195  val_elbo -9.6595  active 5/128
+step   54500  loss 9.5955  recon 4.5248  kl 5.0707  val_elbo -9.7028  active 5/128
+step   55000  loss 9.8551  recon 4.5242  kl 5.3309  val_elbo -9.6152  active 5/128
+step   55500  loss 10.0102  recon 4.9020  kl 5.1082  val_elbo -9.8613  active 5/128
+step   56000  loss 9.8307  recon 4.8259  kl 5.0048  val_elbo -9.8930  active 4/128
+step   56500  loss 9.7825  recon 4.5897  kl 5.1929  val_elbo -9.6207  active 5/128
+step   57000  loss 10.0612  recon 4.8713  kl 5.1900  val_elbo -9.5908  active 5/128
+step   57500  loss 10.2211  recon 4.9019  kl 5.3192  val_elbo -9.7292  active 5/128
+step   58000  loss 9.5556  recon 4.5391  kl 5.0165  val_elbo -9.7427  active 5/128
+step   58500  loss 9.8646  recon 4.7864  kl 5.0782  val_elbo -9.6652  active 5/128
+step   59000  loss 10.1910  recon 5.0427  kl 5.1483  val_elbo -9.6463  active 5/128
+step   59500  loss 9.7721  recon 4.5803  kl 5.1918  val_elbo -9.9850  active 5/128
+step   60000  loss 9.8351  recon 4.6869  kl 5.1482  val_elbo -9.7545  active 5/128
+Saved VAE checkpoint -> /scratch/midway3/rickybao/dreamerv3_runs/vae_walker_walk_seed2/vae.ckpt
+VAE seed 2 done | Fri May 15 19:51:34 CDT 2026
+  scratch checkpoint: /scratch/midway3/rickybao/dreamerv3_runs/vae_walker_walk_seed2
+  repo training log:  /home/rickybao/projects/dreamerv3/results/probing_walker_walk_seed2
