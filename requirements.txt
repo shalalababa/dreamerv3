@@ -15,5 +15,7 @@ numpy<2  # DMLab: <2, MineRLv1.0: <1.24
 nvidia-cuda-nvcc-cu12<=12.2
 optax
 portal>=3.5.0
+matplotlib  # probing/: result figures
+scipy  # probing/: gait-phase estimation via the analytic signal
 scope>=0.4.4
 tqdm

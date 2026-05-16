@@ -10,6 +10,7 @@ import ninjax as nj
 import numpy as np
 import optax
 
+from . import explore
 from . import rssm
 
 f32 = jnp.float32
@@ -71,8 +72,37 @@ class Agent(embodied.jax.Agent):
     self.valnorm = embodied.jax.Normalize(**config.valnorm, name='valnorm')
     self.advnorm = embodied.jax.Normalize(**config.advnorm, name='advnorm')
 
-    self.modules = [
-        self.dyn, self.enc, self.dec, self.rew, self.con, self.pol, self.val]
+    # Exploration / adaptation mode (see configs.yaml `agent.expl`).
+    self.expl_mode = config.expl.mode
+    assert self.expl_mode in ('task', 'random', 'p2e', 'apt'), self.expl_mode
+    self.reward_free = (self.expl_mode != 'task')
+
+    # Plan2Explore disagreement ensemble (predicts the next stochastic latent).
+    self.disag = None
+    if self.expl_mode == 'p2e':
+      rssm_kw = config.dyn[config.dyn.typ]
+      target_dim = rssm_kw['stoch'] * rssm_kw['classes']
+      self.disag = explore.Disag(
+          target_dim, ensemble=config.expl.disag_ens,
+          units=config.expl.disag_units, layers=config.expl.disag_layers,
+          name='disag')
+
+    # Which modules receive gradients. The world model is always
+    # (enc, dyn, dec); (rew, con, pol, val) form the task head. Frozen-readout
+    # adaptation trains only the head; the exploration modes train the world
+    # model plus, for p2e/apt, an intrinsic-reward actor-critic.
+    wm = [self.dyn, self.enc, self.dec]
+    head = [self.rew, self.con, self.pol, self.val]
+    if self.expl_mode == 'random':
+      self.modules = wm
+    elif self.expl_mode == 'p2e':
+      self.modules = wm + [self.con, self.pol, self.val, self.disag]
+    elif self.expl_mode == 'apt':
+      self.modules = wm + [self.con, self.pol, self.val]
+    elif config.frozen_wm:
+      self.modules = head
+    else:
+      self.modules = wm + head
     self.opt = embodied.jax.Optimizer(
         self.modules, self._make_opt(**config.opt), summary_depth=1,
         name='opt')
@@ -80,7 +110,16 @@ class Agent(embodied.jax.Agent):
     scales = self.config.loss_scales.copy()
     rec = scales.pop('rec')
     scales.update({k: rec for k in dec_space})
-    self.scales = scales
+    if self.expl_mode == 'random':
+      keep = {'dyn', 'rep', *dec_space}
+    elif self.expl_mode == 'p2e':
+      keep = {'dyn', 'rep', 'con', 'policy', 'value', 'disag', *dec_space}
+    elif self.expl_mode == 'apt':
+      keep = {'dyn', 'rep', 'con', 'policy', 'value', *dec_space}
+    else:
+      keep = {'dyn', 'rep', 'rew', 'con', 'policy', 'value', 'repval',
+              *dec_space}
+    self.scales = {k: v for k, v in scales.items() if k in keep}
 
   @property
   def policy_keys(self):
@@ -122,8 +161,16 @@ class Agent(embodied.jax.Agent):
     dec_entry = {}
     if dec_carry:
       dec_carry, dec_entry, recons = self.dec(dec_carry, feat, reset, **kw)
-    policy = self.pol(self.feat2tensor(feat), bdims=1)
-    act = sample(policy)
+    if self.expl_mode == 'random':
+      # C2: uniform random actions over the normalized [-1, 1] DMC action box.
+      # No policy network is instantiated or trained; the world model learns
+      # purely from this random-policy data stream. (DMC is continuous control.)
+      B = reset.shape[0]
+      act = {k: jax.random.uniform(nj.seed(), (B, *v.shape), f32, -1.0, 1.0)
+             for k, v in self.act_space.items()}
+    else:
+      policy = self.pol(self.feat2tensor(feat), bdims=1)
+      act = sample(policy)
     out = {}
     out['finite'] = elements.tree.flatdict(jax.tree.map(
         lambda x: jnp.isfinite(x).all(range(1, x.ndim)),
@@ -139,7 +186,8 @@ class Agent(embodied.jax.Agent):
     metrics, (carry, entries, outs, mets) = self.opt(
         self.loss, carry, obs, prevact, training=True, has_aux=True)
     metrics.update(mets)
-    self.slowval.update()
+    if 'value' in self.scales:
+      self.slowval.update()
     outs = {}
     if self.config.replay_context:
       updates = elements.tree.flatdict(dict(
@@ -169,12 +217,14 @@ class Agent(embodied.jax.Agent):
     metrics.update(mets)
     dec_carry, dec_entries, recons = self.dec(
         dec_carry, repfeat, reset, training)
-    inp = sg(self.feat2tensor(repfeat), skip=self.config.reward_grad)
-    losses['rew'] = self.rew(inp, 2).loss(obs['reward'])
-    con = f32(~obs['is_terminal'])
-    if self.config.contdisc:
-      con *= 1 - 1 / self.config.horizon
-    losses['con'] = self.con(self.feat2tensor(repfeat), 2).loss(con)
+    if not self.reward_free:
+      inp = sg(self.feat2tensor(repfeat), skip=self.config.reward_grad)
+      losses['rew'] = self.rew(inp, 2).loss(obs['reward'])
+    if self.expl_mode != 'random':
+      con = f32(~obs['is_terminal'])
+      if self.config.contdisc:
+        con *= 1 - 1 / self.config.horizon
+      losses['con'] = self.con(self.feat2tensor(repfeat), 2).loss(con)
     for key, recon in recons.items():
       space, value = self.obs_space[key], obs[key]
       assert value.dtype == space.dtype, (key, space, value.dtype)
@@ -185,38 +235,62 @@ class Agent(embodied.jax.Agent):
     shapes = {k: v.shape for k, v in losses.items()}
     assert all(x == (B, T) for x in shapes.values()), ((B, T), shapes)
 
-    # Imagination
-    K = min(self.config.imag_last or T, T)
-    H = self.config.imag_length
-    starts = self.dyn.starts(dyn_entries, dyn_carry, K)
-    policyfn = lambda feat: sample(self.pol(self.feat2tensor(feat), 1))
-    _, imgfeat, imgprevact = self.dyn.imagine(starts, policyfn, H, training)
-    first = jax.tree.map(
-        lambda x: x[:, -K:].reshape((B * K, 1, *x.shape[2:])), repfeat)
-    imgfeat = concat([sg(first, skip=self.config.ac_grads), sg(imgfeat)], 1)
-    lastact = policyfn(jax.tree.map(lambda x: x[:, -1], imgfeat))
-    lastact = jax.tree.map(lambda x: x[:, None], lastact)
-    imgact = concat([imgprevact, lastact], 1)
-    assert all(x.shape[:2] == (B * K, H + 1) for x in jax.tree.leaves(imgfeat))
-    assert all(x.shape[:2] == (B * K, H + 1) for x in jax.tree.leaves(imgact))
-    inp = self.feat2tensor(imgfeat)
-    los, imgloss_out, mets = imag_loss(
-        imgact,
-        self.rew(inp, 2).pred(),
-        self.con(inp, 2).prob(1),
-        self.pol(inp, 2),
-        self.val(inp, 2),
-        self.slowval(inp, 2),
-        self.retnorm, self.valnorm, self.advnorm,
-        update=training,
-        contdisc=self.config.contdisc,
-        horizon=self.config.horizon,
-        **self.config.imag_loss)
-    losses.update({k: v.mean(1).reshape((B, K)) for k, v in los.items()})
-    metrics.update(mets)
+    # Plan2Explore: train the one-step latent-disagreement ensemble on replay.
+    # Predict the next stochastic latent from the current model state + action.
+    if self.expl_mode == 'p2e':
+      dfeat = self.feat2tensor(repfeat)[:, :-1]
+      dact = self._act2tensor(prevact)[:, 1:]
+      dtarget = repfeat['stoch'][:, 1:].reshape((B, T - 1, -1))
+      losses['disag'] = self.disag.loss(dfeat, dact, dtarget)
+      metrics['expl/disag_loss'] = losses['disag'].mean()
+
+    # Imagination. C2 (random) trains only the world model and skips this.
+    if self.expl_mode != 'random':
+      K = min(self.config.imag_last or T, T)
+      H = self.config.imag_length
+      starts = self.dyn.starts(dyn_entries, dyn_carry, K)
+      policyfn = lambda feat: sample(self.pol(self.feat2tensor(feat), 1))
+      _, imgfeat, imgprevact = self.dyn.imagine(starts, policyfn, H, training)
+      first = jax.tree.map(
+          lambda x: x[:, -K:].reshape((B * K, 1, *x.shape[2:])), repfeat)
+      imgfeat = concat([sg(first, skip=self.config.ac_grads), sg(imgfeat)], 1)
+      lastact = policyfn(jax.tree.map(lambda x: x[:, -1], imgfeat))
+      lastact = jax.tree.map(lambda x: x[:, None], lastact)
+      imgact = concat([imgprevact, lastact], 1)
+      assert all(
+          x.shape[:2] == (B * K, H + 1) for x in jax.tree.leaves(imgfeat))
+      assert all(
+          x.shape[:2] == (B * K, H + 1) for x in jax.tree.leaves(imgact))
+      inp = self.feat2tensor(imgfeat)
+      # Reward-free conditions replace the task reward head with an intrinsic
+      # reward; it is stop-gradient'd so it acts as a fixed return signal.
+      if self.expl_mode == 'p2e':
+        imgrew = sg(self.disag.reward(inp, self._act2tensor(imgact)))
+      elif self.expl_mode == 'apt':
+        imgrew = sg(explore.apt_reward(
+            inp, self.config.expl.apt_knn, self.config.expl.apt_logc))
+      else:
+        imgrew = self.rew(inp, 2).pred()
+      if self.reward_free:
+        metrics['expl/intr_rew'] = imgrew.mean()
+        metrics['expl/intr_rew_std'] = imgrew.std()
+      los, imgloss_out, mets = imag_loss(
+          imgact,
+          imgrew,
+          self.con(inp, 2).prob(1),
+          self.pol(inp, 2),
+          self.val(inp, 2),
+          self.slowval(inp, 2),
+          self.retnorm, self.valnorm, self.advnorm,
+          update=training,
+          contdisc=self.config.contdisc,
+          horizon=self.config.horizon,
+          **self.config.imag_loss)
+      losses.update({k: v.mean(1).reshape((B, K)) for k, v in los.items()})
+      metrics.update(mets)
 
     # Replay
-    if self.config.repval_loss:
+    if self.config.repval_loss and not self.reward_free:
       feat = sg(repfeat, skip=self.config.repval_grad)
       last, term, rew = [obs[k] for k in ('is_last', 'is_terminal', 'reward')]
       boot = imgloss_out['ret'][:, 0].reshape(B, K)
@@ -338,6 +412,13 @@ class Agent(embodied.jax.Agent):
         (carry, rhs(obs), rhs(prevact), rhs(stepid)),
         (rep_carry, rep_obs, rep_prevact, rep_stepid))
     return carry, obs, prevact, stepid
+
+  def _act2tensor(self, act):
+    # Flatten an action dict into a single tensor, keeping the leading two
+    # (batch, time) dims. Mirrors feat2tensor for the disagreement ensemble.
+    return jnp.concatenate([
+        nn.cast(act[k]).reshape((*act[k].shape[:2], -1))
+        for k in sorted(self.act_space)], -1)
 
   def _make_opt(
       self,
