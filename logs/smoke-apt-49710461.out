@@ -1,0 +1,220 @@
+Smoke pretraining | Cond: apt | Job ID: 49710461 | Sat May 16 12:52:54 CDT 2026
+GPU check:
+Sat May 16 12:52:54 2026       
++---------------------------------------------------------------------------------------+
+| NVIDIA-SMI 535.216.03             Driver Version: 535.216.03   CUDA Version: 12.2     |
+|-----------------------------------------+----------------------+----------------------+
+| GPU  Name                 Persistence-M | Bus-Id        Disp.A | Volatile Uncorr. ECC |
+| Fan  Temp   Perf          Pwr:Usage/Cap |         Memory-Usage | GPU-Util  Compute M. |
+|                                         |                      |               MIG M. |
+|=========================================+======================+======================|
+|   0  Tesla V100-PCIE-16GB           On  | 00000000:86:00.0 Off |                  Off |
+| N/A   35C    P0              27W / 250W |      0MiB / 16384MiB |      0%      Default |
+|                                         |                      |                  N/A |
++-----------------------------------------+----------------------+----------------------+
+                                                                                         
++---------------------------------------------------------------------------------------+
+| Processes:                                                                            |
+|  GPU   GI   CI        PID   Type   Process name                            GPU Memory |
+|        ID   ID                                                             Usage      |
+|=======================================================================================|
+|  No running processes found                                                           |
++---------------------------------------------------------------------------------------+
+Starting 20K-step smoke run: condition=apt
+---  ___                           __   ______ ---
+--- |   \ _ _ ___ __ _ _ __  ___ _ \ \ / /__ / ---
+--- | |) | '_/ -_) _` | '  \/ -_) '/\ V / |_ \ ---
+--- |___/|_| \___\__,_|_|_|_\___|_|  \_/ |___/ ---
+Replica: 0 / 1
+Logdir: /scratch/midway3/rickybao/dreamerv3_runs/smoke_pretrain_apt_49710461
+Run script: train
+Observations
+  reward           Space(float32, shape=(), low=-inf, high=inf)
+  is_first         Space(bool, shape=(), low=False, high=True)
+  is_last          Space(bool, shape=(), low=False, high=True)
+  is_terminal      Space(bool, shape=(), low=False, high=True)
+  orientations     Space(float32, shape=(14,), low=-inf, high=inf)
+  height           Space(float32, shape=(), low=-inf, high=inf)
+  velocity         Space(float32, shape=(9,), low=-inf, high=inf)
+Actions
+  action           Space(float32, shape=(6,), low=-1.0, high=1.0)
+Extras
+  consec           Space(int32, shape=(), low=-2147483648, high=2147483647)
+  stepid           Space(uint8, shape=(20,), low=0, high=255)
+  dyn/deter        Space(float32, shape=(512,), low=-inf, high=inf)
+  dyn/stoch        Space(float32, shape=(32, 4), low=-inf, high=inf)
+JAX devices (1): [cuda:0]
+Policy devices: cuda:0
+Train devices:  cuda:0
+Initializing parameters...
+Optimizer opt has 583,204 params:
+       364,416 dyn
+        66,111 val
+        51,096 dec
+        50,316 pol
+        41,153 con
+        10,112 enc
+Done initializing!
+Compiling 1 checkpoint groups...
+Largest checkpoint group: 0 GB
+Compiling train and report...
+Train cost analysis:
+  FLOPS:            3.6e+10
+  Memory (temp):    2.2e+08
+  Memory (inputs):  1.0e+07
+  Memory (outputs): 8.6e+06
+  Memory (code):    2.0e+06
+
+Report cost analysis:
+  FLOPS:            1.9e+06
+  Memory (temp):    9.3e+05
+  Memory (inputs):  2.8e+06
+  Memory (outputs): 2.1e+04
+  Memory (code):    9.7e+04
+
+Done compiling!
+Did not find any checkpoint.
+Saving checkpoint: /scratch/midway3/rickybao/dreamerv3_runs/smoke_pretrain_apt_49710461/ckpt/20260516T125343F308697
+Saved checkpoint.
+Start training loop
+Start JAX profiler: /scratch/midway3/rickybao/dreamerv3_runs/smoke_pretrain_apt_49710461
+Stop JAX profiler
+
+--------------------[Agent Step 2_896]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+train/loss/con 0.25 / train/loss/dyn 4.78 / train/loss/height 0.06 / train/loss/orientations 4.32 / train/loss/policy 4.36 / train/loss/rep 4.78 / train/loss/value 5.44 / train/loss/velocity 18.48 / replay/replay_ratio 472.22 / fps/policy 23.43 / fps/train 7035.03
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/smoke_pretrain_apt_49710461/metrics.jsonlWriting metrics: /scratch/midway3/rickybao/dreamerv3_runs/smoke_pretrain_apt_49710461/scores.jsonl
+
+
+--------------------[Agent Step 3_840]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+train/loss/con 0.02 / train/loss/dyn 6.25 / train/loss/height 0.03 / train/loss/orientations 1.64 / train/loss/policy 5.08 / train/loss/rep 6.25 / train/loss/value 5.79 / train/loss/velocity 5.2 / replay/replay_ratio 1040 / fps/policy 7.84 / fps/train 8033.01
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/smoke_pretrain_apt_49710461/metrics.jsonlWriting metrics: /scratch/midway3/rickybao/dreamerv3_runs/smoke_pretrain_apt_49710461/scores.jsonl
+
+
+--------------------[Agent Step 4_784]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+train/loss/con 0.02 / train/loss/dyn 6.87 / train/loss/height 0.02 / train/loss/orientations 1.12 / train/loss/policy 5.1 / train/loss/rep 6.87 / train/loss/value 4.24 / train/loss/velocity 2.96 / replay/replay_ratio 1040 / fps/policy 7.84 / fps/train 8029.42
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/smoke_pretrain_apt_49710461/metrics.jsonlWriting metrics: /scratch/midway3/rickybao/dreamerv3_runs/smoke_pretrain_apt_49710461/scores.jsonl
+
+
+--------------------[Agent Step 5_728]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+train/loss/con 0.02 / train/loss/dyn 6.7 / train/loss/height 0.01 / train/loss/orientations 0.92 / train/loss/policy 5.13 / train/loss/rep 6.7 / train/loss/value 3.63 / train/loss/velocity 2.44 / replay/replay_ratio 1040 / fps/policy 7.84 / fps/train 8033.27
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/smoke_pretrain_apt_49710461/metrics.jsonlWriting metrics: /scratch/midway3/rickybao/dreamerv3_runs/smoke_pretrain_apt_49710461/scores.jsonl
+
+
+--------------------[Agent Step 6_672]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+train/loss/con 0.02 / train/loss/dyn 6.49 / train/loss/height 0.01 / train/loss/orientations 0.79 / train/loss/policy 5.22 / train/loss/rep 6.49 / train/loss/value 3.33 / train/loss/velocity 2.17 / replay/replay_ratio 1040 / fps/policy 7.85 / fps/train 8033.37
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/smoke_pretrain_apt_49710461/scores.jsonlWriting metrics: /scratch/midway3/rickybao/dreamerv3_runs/smoke_pretrain_apt_49710461/metrics.jsonl
+
+
+--------------------[Agent Step 7_616]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+train/loss/con 0.02 / train/loss/dyn 6.27 / train/loss/height 0.01 / train/loss/orientations 0.73 / train/loss/policy 5.25 / train/loss/rep 6.27 / train/loss/value 3.07 / train/loss/velocity 2 / replay/replay_ratio 1040 / fps/policy 7.85 / fps/train 8033.31
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/smoke_pretrain_apt_49710461/scores.jsonlWriting metrics: /scratch/midway3/rickybao/dreamerv3_runs/smoke_pretrain_apt_49710461/metrics.jsonl
+
+
+--------------------[Agent Step 8_560]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+train/loss/con 0.02 / train/loss/dyn 6.14 / train/loss/height 9.2e-3 / train/loss/orientations 0.69 / train/loss/policy 5.31 / train/loss/rep 6.14 / train/loss/value 2.8 / train/loss/velocity 1.86 / replay/replay_ratio 1040 / fps/policy 7.84 / fps/train 8024.4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/smoke_pretrain_apt_49710461/scores.jsonlWriting metrics: /scratch/midway3/rickybao/dreamerv3_runs/smoke_pretrain_apt_49710461/metrics.jsonl
+
+Saving checkpoint: /scratch/midway3/rickybao/dreamerv3_runs/smoke_pretrain_apt_49710461/ckpt/20260516T130846F959944
+Saved checkpoint.
+
+--------------------[Agent Step 9_504]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+train/loss/con 0.02 / train/loss/dyn 6.05 / train/loss/height 8.1e-3 / train/loss/orientations 0.66 / train/loss/policy 5.45 / train/loss/rep 6.05 / train/loss/value 2.7 / train/loss/velocity 1.76 / replay/replay_ratio 1040 / fps/policy 7.77 / fps/train 7961.06
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/smoke_pretrain_apt_49710461/scores.jsonlWriting metrics: /scratch/midway3/rickybao/dreamerv3_runs/smoke_pretrain_apt_49710461/metrics.jsonl
+
+
+--------------------[Agent Step 10_448]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+train/loss/con 0.02 / train/loss/dyn 5.91 / train/loss/height 7.3e-3 / train/loss/orientations 0.63 / train/loss/policy 5.43 / train/loss/rep 5.91 / train/loss/value 2.54 / train/loss/velocity 1.67 / replay/replay_ratio 1040 / fps/policy 7.83 / fps/train 8020.1
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/smoke_pretrain_apt_49710461/metrics.jsonlWriting metrics: /scratch/midway3/rickybao/dreamerv3_runs/smoke_pretrain_apt_49710461/scores.jsonl
+
+
+--------------------[Agent Step 11_392]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+train/loss/con 0.02 / train/loss/dyn 5.83 / train/loss/height 6.7e-3 / train/loss/orientations 0.6 / train/loss/policy 5.96 / train/loss/rep 5.83 / train/loss/value 2.48 / train/loss/velocity 1.59 / replay/replay_ratio 1040 / fps/policy 7.83 / fps/train 8019.56
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/smoke_pretrain_apt_49710461/metrics.jsonlWriting metrics: /scratch/midway3/rickybao/dreamerv3_runs/smoke_pretrain_apt_49710461/scores.jsonl
+
+
+--------------------[Agent Step 12_336]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+train/loss/con 0.02 / train/loss/dyn 5.73 / train/loss/height 6.1e-3 / train/loss/orientations 0.56 / train/loss/policy 5.36 / train/loss/rep 5.73 / train/loss/value 2.27 / train/loss/velocity 1.51 / replay/replay_ratio 1040 / fps/policy 7.83 / fps/train 8019.91
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/smoke_pretrain_apt_49710461/metrics.jsonlWriting metrics: /scratch/midway3/rickybao/dreamerv3_runs/smoke_pretrain_apt_49710461/scores.jsonl
+
+
+--------------------[Agent Step 13_280]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+train/loss/con 0.02 / train/loss/dyn 5.84 / train/loss/height 5.7e-3 / train/loss/orientations 0.54 / train/loss/policy 5.35 / train/loss/rep 5.84 / train/loss/value 2 / train/loss/velocity 1.48 / replay/replay_ratio 1040 / fps/policy 7.83 / fps/train 8019.57
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/smoke_pretrain_apt_49710461/metrics.jsonlWriting metrics: /scratch/midway3/rickybao/dreamerv3_runs/smoke_pretrain_apt_49710461/scores.jsonl
+
+
+--------------------[Agent Step 14_224]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+train/loss/con 0.02 / train/loss/dyn 5.96 / train/loss/height 5.5e-3 / train/loss/orientations 0.53 / train/loss/policy 5.47 / train/loss/rep 5.96 / train/loss/value 1.99 / train/loss/velocity 1.5 / replay/replay_ratio 1040 / fps/policy 7.83 / fps/train 8018.87
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/smoke_pretrain_apt_49710461/metrics.jsonlWriting metrics: /scratch/midway3/rickybao/dreamerv3_runs/smoke_pretrain_apt_49710461/scores.jsonl
+
+
+--------------------[Agent Step 15_168]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+train/loss/con 0.02 / train/loss/dyn 5.99 / train/loss/height 5.6e-3 / train/loss/orientations 0.54 / train/loss/policy 5.96 / train/loss/rep 5.99 / train/loss/value 1.92 / train/loss/velocity 1.5 / replay/replay_ratio 1040 / fps/policy 7.83 / fps/train 8019.82
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/smoke_pretrain_apt_49710461/metrics.jsonlWriting metrics: /scratch/midway3/rickybao/dreamerv3_runs/smoke_pretrain_apt_49710461/scores.jsonl
+
+Saving checkpoint: /scratch/midway3/rickybao/dreamerv3_runs/smoke_pretrain_apt_49710461/ckpt/20260516T132348F764447
+Saved checkpoint.
+
+--------------------[Agent Step 16_112]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+episode/score 30.26 / episode/length 1001 / train/loss/con 0.02 / train/loss/dyn 6.01 / train/loss/height 5.4e-3 / train/loss/orientations 0.54 / train/loss/policy 5.4 / train/loss/rep 6.01 / train/loss/value 1.85 / train/loss/velocity 1.49 / replay/replay_ratio 1040 / fps/policy 7.79 / fps/train 7980.45
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/smoke_pretrain_apt_49710461/metrics.jsonlWriting metrics: /scratch/midway3/rickybao/dreamerv3_runs/smoke_pretrain_apt_49710461/scores.jsonl
+
+
+--------------------[Agent Step 17_056]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+train/loss/con 0.02 / train/loss/dyn 6.09 / train/loss/height 7.3e-3 / train/loss/orientations 0.56 / train/loss/policy 5.25 / train/loss/rep 6.09 / train/loss/value 1.69 / train/loss/velocity 1.5 / replay/replay_ratio 1040 / fps/policy 7.74 / fps/train 7922.66
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/smoke_pretrain_apt_49710461/metrics.jsonlWriting metrics: /scratch/midway3/rickybao/dreamerv3_runs/smoke_pretrain_apt_49710461/scores.jsonl
+
+
+--------------------[Agent Step 18_000]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+train/loss/con 0.02 / train/loss/dyn 6.14 / train/loss/height 8.8e-3 / train/loss/orientations 0.58 / train/loss/policy 5.96 / train/loss/rep 6.14 / train/loss/value 1.66 / train/loss/velocity 1.52 / replay/replay_ratio 1040 / fps/policy 7.85 / fps/train 8033.38
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/smoke_pretrain_apt_49710461/metrics.jsonlWriting metrics: /scratch/midway3/rickybao/dreamerv3_runs/smoke_pretrain_apt_49710461/scores.jsonl
+
+
+--------------------[Agent Step 18_944]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+train/loss/con 0.02 / train/loss/dyn 6.06 / train/loss/height 8.6e-3 / train/loss/orientations 0.57 / train/loss/policy 5.23 / train/loss/rep 6.06 / train/loss/value 1.43 / train/loss/velocity 1.5 / replay/replay_ratio 1040 / fps/policy 7.84 / fps/train 8033.05
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/smoke_pretrain_apt_49710461/metrics.jsonl
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/smoke_pretrain_apt_49710461/scores.jsonl
+
+--------------------[Agent Step 19_888]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+train/loss/con 0.02 / train/loss/dyn 6.1 / train/loss/height 8.5e-3 / train/loss/orientations 0.56 / train/loss/policy 5.37 / train/loss/rep 6.1 / train/loss/value 1.35 / train/loss/velocity 1.49 / replay/replay_ratio 1040 / fps/policy 7.84 / fps/train 8032.35
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/smoke_pretrain_apt_49710461/metrics.jsonlWriting metrics: /scratch/midway3/rickybao/dreamerv3_runs/smoke_pretrain_apt_49710461/scores.jsonl
+
+Smoke run finished | Sat May 16 13:32:14 CDT 2026 | Logdir: /scratch/midway3/rickybao/dreamerv3_runs/smoke_pretrain_apt_49710461
+Check /scratch/midway3/rickybao/dreamerv3_runs/smoke_pretrain_apt_49710461/metrics.jsonl for expl/intr_rew and train/loss/disag.
