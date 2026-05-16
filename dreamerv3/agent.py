@@ -77,11 +77,19 @@ class Agent(embodied.jax.Agent):
     assert self.expl_mode in ('task', 'random', 'p2e', 'apt'), self.expl_mode
     self.reward_free = (self.expl_mode != 'task')
 
-    # Plan2Explore disagreement ensemble (predicts the next stochastic latent).
+    # Plan2Explore disagreement ensemble. By default, predict deterministic
+    # posterior features (deter + categorical probabilities) rather than the
+    # sampled one-hot stochastic state, whose sampling noise makes all ensemble
+    # members converge to the same mean predictor.
     self.disag = None
     if self.expl_mode == 'p2e':
       rssm_kw = config.dyn[config.dyn.typ]
-      target_dim = rssm_kw['stoch'] * rssm_kw['classes']
+      if config.expl.disag_target == 'postfeat':
+        target_dim = rssm_kw['deter'] + rssm_kw['stoch'] * rssm_kw['classes']
+      elif config.expl.disag_target == 'stoch':
+        target_dim = rssm_kw['stoch'] * rssm_kw['classes']
+      else:
+        raise NotImplementedError(config.expl.disag_target)
       self.disag = explore.Disag(
           target_dim, ensemble=config.expl.disag_ens,
           units=config.expl.disag_units, layers=config.expl.disag_layers,
@@ -236,13 +244,22 @@ class Agent(embodied.jax.Agent):
     assert all(x == (B, T) for x in shapes.values()), ((B, T), shapes)
 
     # Plan2Explore: train the one-step latent-disagreement ensemble on replay.
-    # Predict the next stochastic latent from the current model state + action.
+    # Predict the next deterministic posterior feature target from the current
+    # model state + action. The previous sampled-stoch target made disagreement
+    # collapse while preserving an irreducible MSE floor.
     if self.expl_mode == 'p2e':
       dfeat = self.feat2tensor(repfeat)[:, :-1]
       dact = self._act2tensor(prevact)[:, 1:]
-      dtarget = repfeat['stoch'][:, 1:].reshape((B, T - 1, -1))
-      losses['disag'] = self.disag.loss(dfeat, dact, dtarget)
+      dtarget = self._disag_target(repfeat)[:, 1:]
+      losses['disag'] = self.disag.loss(
+          dfeat, dact, dtarget,
+          bootstrap=self.config.expl.disag_bootstrap,
+          bootstrap_prob=self.config.expl.disag_bootstrap_prob)
       metrics['expl/disag_loss'] = losses['disag'].mean()
+      replay_rew = self.disag.reward(dfeat, dact)
+      metrics['expl/disag_replay_rew'] = replay_rew.mean()
+      metrics['expl/disag_replay_rew_std'] = replay_rew.std()
+      metrics['expl/disag_target_std'] = dtarget.std()
 
     # Imagination. C2 (random) trains only the world model and skips this.
     if self.expl_mode != 'random':
@@ -265,7 +282,11 @@ class Agent(embodied.jax.Agent):
       # Reward-free conditions replace the task reward head with an intrinsic
       # reward; it is stop-gradient'd so it acts as a fixed return signal.
       if self.expl_mode == 'p2e':
-        imgrew = sg(self.disag.reward(inp, self._act2tensor(imgact)))
+        raw_imgrew = self.disag.reward(inp, self._act2tensor(imgact))
+        imgrew = sg(raw_imgrew * self.config.expl.disag_scale)
+        metrics['expl/intr_rew_raw'] = raw_imgrew.mean()
+        metrics['expl/intr_rew_raw_std'] = raw_imgrew.std()
+        metrics['expl/disag_scale'] = self.config.expl.disag_scale
       elif self.expl_mode == 'apt':
         imgrew = sg(explore.apt_reward(
             inp, self.config.expl.apt_knn, self.config.expl.apt_logc))
@@ -419,6 +440,17 @@ class Agent(embodied.jax.Agent):
     return jnp.concatenate([
         nn.cast(act[k]).reshape((*act[k].shape[:2], -1))
         for k in sorted(self.act_space)], -1)
+
+  def _disag_target(self, feat):
+    target = self.config.expl.disag_target
+    if target == 'postfeat':
+      probs = jax.nn.softmax(f32(feat['logit']), -1)
+      probs = probs.reshape((*probs.shape[:-2], -1))
+      return jnp.concatenate([nn.cast(feat['deter']), nn.cast(probs)], -1)
+    elif target == 'stoch':
+      return feat['stoch'].reshape((*feat['stoch'].shape[:-2], -1))
+    else:
+      raise NotImplementedError(target)
 
   def _make_opt(
       self,

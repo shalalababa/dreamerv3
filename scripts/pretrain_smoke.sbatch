@@ -60,4 +60,5 @@ echo "Starting 20K-step smoke run: condition=${COND}"
   --jax.prealloc False
 
 echo "Smoke run finished | $(date) | Logdir: ${LOGDIR}"
-echo "Check ${LOGDIR}/metrics.jsonl for expl/intr_rew and train/loss/disag."
+echo "Check ${LOGDIR}/metrics.jsonl for train/expl/intr_rew_raw,"
+echo "train/expl/intr_rew, train/expl/disag_replay_rew, and train/loss/disag."

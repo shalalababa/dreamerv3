@@ -48,7 +48,7 @@
 ### Implement
 
 1. **Random data collection (C2).** Uniform random action sampling; the world model trains on this replay stream with its standard reconstruction + KL objective and no actor.
-2. **Plan2Explore intrinsic reward (C3).** An ensemble of one-step latent predictors (small MLPs) predicting the next model state from current state + action. Intrinsic reward = ensemble disagreement (variance of predictions). The ensemble trains on replay data; the exploration actor is trained in imagination to maximize discounted intrinsic reward.
+2. **Plan2Explore intrinsic reward (C3).** An ensemble of one-step latent predictors (small MLPs) predicting the next deterministic posterior feature target (`deter` + categorical probabilities, not the sampled one-hot stochastic latent) from current state + action. Intrinsic reward = scaled ensemble disagreement (variance of predictions). The ensemble trains on bootstrapped replay data; the exploration actor is trained in imagination to maximize discounted intrinsic reward.
 3. **APT intrinsic reward (C4).** A particle-based entropy estimate over world-model latents: per-latent reward ∝ `log(c + mean k-NN distance)` in latent space, computed over a batch / latent buffer. The exploration actor maximizes discounted intrinsic reward. (APT's intrinsic reward is typically simpler to implement than P2E's ensemble.)
 
 ### Train / Run

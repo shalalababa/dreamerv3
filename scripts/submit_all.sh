@@ -40,8 +40,9 @@ phase_smoke () {
 phase1_gate () {
   echo "[phase1-gate] pretrain p2e + apt seed 1 -- the implementation gate."
   echo "  After these finish, verify (procedure C): world-model losses"
-  echo "  converge; p2e ensemble disagreement (train/loss/disag, expl/disag_loss)"
-  echo "  is non-zero and varies; expl/intr_rew rises then plateaus. Only then"
+  echo "  converge; p2e raw disagreement (train/expl/intr_rew_raw,"
+  echo "  train/expl/disag_replay_rew) is non-zero and varies; scaled"
+  echo "  train/expl/intr_rew rises then plateaus. Only then"
   echo "  run phase1-rest."
   submit "pretrain-p2e-seed1" scripts/pretrain.sbatch p2e 1
   submit "pretrain-apt-seed1" scripts/pretrain.sbatch apt 1

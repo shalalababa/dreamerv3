@@ -4,10 +4,10 @@ Two intrinsic-reward mechanisms, selected by `agent.expl.mode`:
 
   * Disag       -- Plan2Explore (C3). An ensemble of one-step latent
                    predictors; the intrinsic reward is the disagreement
-                   (variance) of their predictions of the next stochastic
-                   latent. Disagreement is high in states the world model is
-                   still uncertain about, so the exploration actor is pulled
-                   toward novel dynamics.
+                   (variance) of their predictions of the next deterministic
+                   posterior feature target. Disagreement is high in states the
+                   world model is still uncertain about, so the exploration
+                   actor is pulled toward novel dynamics.
   * apt_reward  -- APT (C4). A particle-based entropy estimate over
                    world-model latents: per-state reward proportional to
                    log(c + mean k-NN distance) within the batch of imagined
@@ -29,11 +29,10 @@ sg = jax.lax.stop_gradient
 class Disag(nj.Module):
   """Plan2Explore one-step latent-disagreement ensemble.
 
-  Each ensemble member is a small MLP that predicts the next stochastic
-  latent from the current model state and action. Members are initialised
-  independently (distinct ninjax paths), so their predictions diverge
-  precisely where the training data was sparse -- that spread is the
-  intrinsic reward.
+  Each ensemble member is a small MLP that predicts the next feature target
+  from the current model state and action. Members are initialised
+  independently (distinct ninjax paths), and optional bootstrap masks keep their
+  training data slightly different so predictions diverge where data is sparse.
   """
 
   ensemble: int = 8
@@ -56,7 +55,7 @@ class Disag(nj.Module):
     x = jnp.concatenate([nn.cast(feat), nn.cast(action)], -1)
     return jnp.stack([self._member(i, x) for i in range(self.ensemble)], 0)
 
-  def loss(self, feat, action, target):
+  def loss(self, feat, action, target, bootstrap=False, bootstrap_prob=0.8):
     """Mean squared one-step prediction error, averaged over the ensemble.
 
     Inputs are stop-gradient'd: the ensemble adapts to the world model's
@@ -64,7 +63,11 @@ class Disag(nj.Module):
     """
     pred = f32(self.predict(sg(feat), sg(action)))
     target = sg(f32(target))[None]
-    return ((pred - target) ** 2).mean(-1).mean(0)
+    err = ((pred - target) ** 2).mean(-1)
+    if bootstrap:
+      keep = jax.random.bernoulli(nj.seed(), bootstrap_prob, err.shape)
+      err *= keep.astype(err.dtype) / jnp.maximum(f32(bootstrap_prob), 1e-6)
+    return err.mean(0)
 
   def reward(self, feat, action):
     """Intrinsic reward: variance of the ensemble's predictions."""

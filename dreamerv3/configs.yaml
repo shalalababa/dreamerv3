@@ -123,7 +123,18 @@ defaults:
     #       p2e    -> C3: Plan2Explore, latent-disagreement intrinsic reward.
     #       apt    -> C4: APT, particle-entropy intrinsic reward.
     frozen_wm: False
-    expl: {mode: task, disag_ens: 8, disag_units: 256, disag_layers: 2, apt_knn: 12, apt_logc: 1.0}
+    expl: {
+      mode: task,
+      disag_ens: 8,
+      disag_units: 256,
+      disag_layers: 2,
+      disag_target: postfeat,
+      disag_bootstrap: True,
+      disag_bootstrap_prob: 0.8,
+      disag_scale: 1000.0,
+      apt_knn: 12,
+      apt_logc: 1.0,
+    }
 
 size1m: &size1m
   .*\.rssm: {deter: 512, hidden: 64, classes: 4}
