@@ -14,7 +14,7 @@
 #SBATCH --gres=gpu:1
 #SBATCH --cpus-per-task=8
 #SBATCH --mem=32G
-#SBATCH --time=16:00:00
+#SBATCH --time=30:00:00
 #SBATCH --chdir=/home/rickybao/projects/dreamerv3
 #SBATCH --output=/home/rickybao/projects/dreamerv3/logs/%x-%j.out
 #SBATCH --error=/home/rickybao/projects/dreamerv3/logs/%x-%j.err
