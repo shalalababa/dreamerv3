@@ -1,0 +1,42 @@
+Section-H synthesis: early-adaptation AUC vs representation
+============================================================
+
+Early-AUC window: first 125000 steps.
+Correlations over pretrained conditions ('random', 'p2e', 'apt') x seeds [1, 2].
+
+[task: stand]  AUC available for 6/6 runs
+  corr(AUC, state_h0        ) = -0.896   (n=6)
+  corr(AUC, state_h5        ) = -0.079   (n=6)
+  corr(AUC, state_h20       ) = +0.912   (n=6)
+  corr(AUC, gait_phase      ) = -0.340   (n=6)
+  corr(AUC, time_to_fall    ) = +0.901   (n=6)
+  corr(AUC, reward_stand    ) = +0.841   (n=6)
+  corr(AUC, reward_walk     ) = +0.618   (n=6)
+  corr(AUC, reward_run      ) = +0.822   (n=6)
+  corr(AUC, particle_entropy) = +0.788   (n=6)
+  corr(AUC, hist_entropy_2d ) = +0.817   (n=6)
+
+[task: walk]  AUC available for 6/6 runs
+  corr(AUC, state_h0        ) = -0.899   (n=6)
+  corr(AUC, state_h5        ) = -0.376   (n=6)
+  corr(AUC, state_h20       ) = +0.923   (n=6)
+  corr(AUC, gait_phase      ) = -0.642   (n=6)
+  corr(AUC, time_to_fall    ) = +0.673   (n=6)
+  corr(AUC, reward_stand    ) = +0.431   (n=6)
+  corr(AUC, reward_walk     ) = +0.582   (n=6)
+  corr(AUC, reward_run      ) = +0.532   (n=6)
+  corr(AUC, particle_entropy) = +0.863   (n=6)
+  corr(AUC, hist_entropy_2d ) = +0.901   (n=6)
+
+[task: run]  AUC available for 6/6 runs
+  corr(AUC, state_h0        ) = -0.849   (n=6)
+  corr(AUC, state_h5        ) = -0.027   (n=6)
+  corr(AUC, state_h20       ) = +0.836   (n=6)
+  corr(AUC, gait_phase      ) = -0.267   (n=6)
+  corr(AUC, time_to_fall    ) = +0.840   (n=6)
+  corr(AUC, reward_stand    ) = +0.813   (n=6)
+  corr(AUC, reward_walk     ) = +0.481   (n=6)
+  corr(AUC, reward_run      ) = +0.757   (n=6)
+  corr(AUC, particle_entropy) = +0.676   (n=6)
+  corr(AUC, hist_entropy_2d ) = +0.717   (n=6)
+

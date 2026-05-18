@@ -1,0 +1,44 @@
+{
+  "obs_keys": [
+    "height",
+    "orientations",
+    "velocity"
+  ],
+  "obs_dim": 24,
+  "knn": 12,
+  "logc": 1.0,
+  "bins": 24,
+  "max_frames": 3000,
+  "results": {
+    "random_seed1": {
+      "n_frames": 3000,
+      "particle_entropy": 1.0989255905151367,
+      "hist_entropy_2d": 4.866304531078505
+    },
+    "random_seed2": {
+      "n_frames": 3000,
+      "particle_entropy": 1.101792812347412,
+      "hist_entropy_2d": 4.897949812171218
+    },
+    "p2e_seed1": {
+      "n_frames": 3000,
+      "particle_entropy": 1.4325683116912842,
+      "hist_entropy_2d": 5.624081290938677
+    },
+    "p2e_seed2": {
+      "n_frames": 3000,
+      "particle_entropy": 1.3404005765914917,
+      "hist_entropy_2d": 5.510025908459096
+    },
+    "apt_seed1": {
+      "n_frames": 3000,
+      "particle_entropy": 1.2274326086044312,
+      "hist_entropy_2d": 5.230453464618196
+    },
+    "apt_seed2": {
+      "n_frames": 3000,
+      "particle_entropy": 1.2963978052139282,
+      "hist_entropy_2d": 5.359425725906829
+    }
+  }
+}
