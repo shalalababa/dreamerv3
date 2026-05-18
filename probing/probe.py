@@ -247,8 +247,9 @@ def build_jobs(sites, targets, masks, horizons, recfields):
       if h > 0 and f'imag{h}' in sites:
         add('rssm', f'imag{h}', 'state', h, 1)
 
-  # Derived dynamical targets, probed at horizon 0.
-  for tname in ('gait_phase', 'return_to_go', 'time_to_fall'):
+  # Derived dynamical targets and downstream task-reward probes, horizon 0.
+  for tname in ('gait_phase', 'return_to_go', 'time_to_fall',
+                'reward_stand', 'reward_walk', 'reward_run'):
     if tname not in targets:
       continue
     for s in rssm_sites:
@@ -295,6 +296,34 @@ def plot_horizon(rows, outpath):
   ax.set_title('Probe R^2 vs horizon: per-frame vs predictive content')
   ax.axhline(0, color='#999999', lw=0.8)
   ax.legend(fontsize=7, ncol=2)
+  fig.savefig(outpath, dpi=150)
+  plt.close(fig)
+
+
+def plot_latent_pca(sites, targets, outpath, max_points=4000, seed=0):
+  """PCA scatter of the RSSM posterior latent, coloured by a task variable
+  (research_procedure.md section G, probe 5 -- qualitative separability)."""
+  if 'posterior' not in sites:
+    return
+  feat = sites['posterior'].reshape(-1, sites['posterior'].shape[-1])
+  color_key = next((k for k in ('reward_walk', 'torso_height', 'return_to_go')
+                    if k in targets), None)
+  if color_key is None:
+    return
+  color = targets[color_key].reshape(-1, targets[color_key].shape[-1])[:, 0]
+  rng = np.random.default_rng(seed)
+  if len(feat) > max_points:
+    idx = rng.choice(len(feat), max_points, replace=False)
+    feat, color = feat[idx], color[idx]
+  X = feat - feat.mean(0, keepdims=True)
+  _, _, Vt = np.linalg.svd(X, full_matrices=False)        # top-2 PCs via SVD
+  proj = X @ Vt[:2].T
+  fig, ax = plt.subplots(figsize=(5.5, 4.5), constrained_layout=True)
+  sc = ax.scatter(proj[:, 0], proj[:, 1], c=color, s=4, cmap='viridis')
+  fig.colorbar(sc, ax=ax, label=color_key)
+  ax.set_xlabel('PC1')
+  ax.set_ylabel('PC2')
+  ax.set_title(f'RSSM posterior latent (PCA), coloured by {color_key}')
   fig.savefig(outpath, dpi=150)
   plt.close(fig)
 
@@ -390,8 +419,10 @@ def main():
     json.dump(likelihood, f, indent=2)
 
   plot_horizon(rows, os.path.join(args.output, 'r2_vs_horizon.png'))
-  plot_receptive_field(
-      rows, os.path.join(args.output, 'r2_vs_receptive_field.png'))
+  if 'vae_latent' in sites:                  # VAE-comparison plot, course only
+    plot_receptive_field(
+        rows, os.path.join(args.output, 'r2_vs_receptive_field.png'))
+  plot_latent_pca(sites, targets, os.path.join(args.output, 'latent_pca.png'))
   write_summary(rows, likelihood, args.output)
   print(f'Wrote results -> {args.output}')
 
@@ -421,6 +452,10 @@ def write_summary(rows, likelihood, outdir):
   lines.append('VAE receptive field (target: state, horizon 0):')
   for rf in (1, 4, 16, 'all'):
     lines.append(f'  K={str(rf):>3}: R^2 = {get("vae_latent", "state", 0, rf)}')
+  lines.append('')
+  lines.append('Reward probe (RSSM posterior, target: task reward, h=0):')
+  for tname in ('reward_stand', 'reward_walk', 'reward_run'):
+    lines.append(f'  {tname:<13} R^2 = {get("posterior", tname, 0)}')
   lines.append('')
   lines.append('Held-out likelihood (mean NLL, lower is better):')
   for k, v in likelihood.items():
