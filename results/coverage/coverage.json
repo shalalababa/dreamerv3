@@ -9,6 +9,7 @@
   "logc": 1.0,
   "bins": 24,
   "max_frames": 3000,
+  "time_buckets": 6,
   "results": {
     "random_seed1": {
       "n_frames": 3000,
@@ -40,5 +41,235 @@
       "particle_entropy": 1.2963978052139282,
       "hist_entropy_2d": 5.359425725906829
     }
+  },
+  "coverage_over_time": {
+    "random_seed1": [
+      {
+        "bucket": 0,
+        "n_frames": 3000,
+        "particle_entropy": 1.104123592376709,
+        "hist_entropy_2d": 4.902101736480784
+      },
+      {
+        "bucket": 1,
+        "n_frames": 3000,
+        "particle_entropy": 1.1063495874404907,
+        "hist_entropy_2d": 4.860594663159548
+      },
+      {
+        "bucket": 2,
+        "n_frames": 3000,
+        "particle_entropy": 1.099459171295166,
+        "hist_entropy_2d": 4.909772680121335
+      },
+      {
+        "bucket": 3,
+        "n_frames": 3000,
+        "particle_entropy": 1.0945682525634766,
+        "hist_entropy_2d": 4.850490524909516
+      },
+      {
+        "bucket": 4,
+        "n_frames": 3000,
+        "particle_entropy": 1.1045963764190674,
+        "hist_entropy_2d": 4.892072457542381
+      },
+      {
+        "bucket": 5,
+        "n_frames": 3000,
+        "particle_entropy": 1.1045805215835571,
+        "hist_entropy_2d": 4.839870582076664
+      }
+    ],
+    "random_seed2": [
+      {
+        "bucket": 0,
+        "n_frames": 3000,
+        "particle_entropy": 1.1057813167572021,
+        "hist_entropy_2d": 4.892725891762315
+      },
+      {
+        "bucket": 1,
+        "n_frames": 3000,
+        "particle_entropy": 1.1009774208068848,
+        "hist_entropy_2d": 4.901777636918862
+      },
+      {
+        "bucket": 2,
+        "n_frames": 3000,
+        "particle_entropy": 1.106303095817566,
+        "hist_entropy_2d": 4.922442661122114
+      },
+      {
+        "bucket": 3,
+        "n_frames": 3000,
+        "particle_entropy": 1.107183814048767,
+        "hist_entropy_2d": 4.896041326869106
+      },
+      {
+        "bucket": 4,
+        "n_frames": 3000,
+        "particle_entropy": 1.1019433736801147,
+        "hist_entropy_2d": 4.896362688561146
+      },
+      {
+        "bucket": 5,
+        "n_frames": 3000,
+        "particle_entropy": 1.1148416996002197,
+        "hist_entropy_2d": 4.966341999388936
+      }
+    ],
+    "p2e_seed1": [
+      {
+        "bucket": 0,
+        "n_frames": 3000,
+        "particle_entropy": 0.9872727990150452,
+        "hist_entropy_2d": 4.9820010339655285
+      },
+      {
+        "bucket": 1,
+        "n_frames": 3000,
+        "particle_entropy": 1.1262149810791016,
+        "hist_entropy_2d": 5.20398644857339
+      },
+      {
+        "bucket": 2,
+        "n_frames": 3000,
+        "particle_entropy": 1.24443781375885,
+        "hist_entropy_2d": 5.443932709188004
+      },
+      {
+        "bucket": 3,
+        "n_frames": 3000,
+        "particle_entropy": 1.403720736503601,
+        "hist_entropy_2d": 5.622483540782733
+      },
+      {
+        "bucket": 4,
+        "n_frames": 3000,
+        "particle_entropy": 1.578026533126831,
+        "hist_entropy_2d": 5.945594825253238
+      },
+      {
+        "bucket": 5,
+        "n_frames": 3000,
+        "particle_entropy": 1.6294127702713013,
+        "hist_entropy_2d": 5.965648079754381
+      }
+    ],
+    "p2e_seed2": [
+      {
+        "bucket": 0,
+        "n_frames": 3000,
+        "particle_entropy": 0.976776123046875,
+        "hist_entropy_2d": 4.835632844914938
+      },
+      {
+        "bucket": 1,
+        "n_frames": 3000,
+        "particle_entropy": 1.0822117328643799,
+        "hist_entropy_2d": 5.067790070375734
+      },
+      {
+        "bucket": 2,
+        "n_frames": 3000,
+        "particle_entropy": 1.133194923400879,
+        "hist_entropy_2d": 5.250959533287532
+      },
+      {
+        "bucket": 3,
+        "n_frames": 3000,
+        "particle_entropy": 1.3486956357955933,
+        "hist_entropy_2d": 5.613512347920523
+      },
+      {
+        "bucket": 4,
+        "n_frames": 3000,
+        "particle_entropy": 1.3804322481155396,
+        "hist_entropy_2d": 5.747150187120724
+      },
+      {
+        "bucket": 5,
+        "n_frames": 3000,
+        "particle_entropy": 1.5478001832962036,
+        "hist_entropy_2d": 5.975117084673881
+      }
+    ],
+    "apt_seed1": [
+      {
+        "bucket": 0,
+        "n_frames": 3000,
+        "particle_entropy": 1.0044951438903809,
+        "hist_entropy_2d": 5.029197776293391
+      },
+      {
+        "bucket": 1,
+        "n_frames": 3000,
+        "particle_entropy": 0.8740687370300293,
+        "hist_entropy_2d": 4.574021138869316
+      },
+      {
+        "bucket": 2,
+        "n_frames": 3000,
+        "particle_entropy": 1.0925229787826538,
+        "hist_entropy_2d": 5.008333217851162
+      },
+      {
+        "bucket": 3,
+        "n_frames": 3000,
+        "particle_entropy": 1.2243516445159912,
+        "hist_entropy_2d": 5.25704439886049
+      },
+      {
+        "bucket": 4,
+        "n_frames": 3000,
+        "particle_entropy": 1.336624026298523,
+        "hist_entropy_2d": 5.415280599009661
+      },
+      {
+        "bucket": 5,
+        "n_frames": 3000,
+        "particle_entropy": 1.395783543586731,
+        "hist_entropy_2d": 5.497246408458221
+      }
+    ],
+    "apt_seed2": [
+      {
+        "bucket": 0,
+        "n_frames": 3000,
+        "particle_entropy": 1.1088268756866455,
+        "hist_entropy_2d": 5.250462861609078
+      },
+      {
+        "bucket": 1,
+        "n_frames": 3000,
+        "particle_entropy": 1.0096251964569092,
+        "hist_entropy_2d": 4.784275340904975
+      },
+      {
+        "bucket": 2,
+        "n_frames": 3000,
+        "particle_entropy": 1.2183163166046143,
+        "hist_entropy_2d": 5.136379199480862
+      },
+      {
+        "bucket": 3,
+        "n_frames": 3000,
+        "particle_entropy": 1.319340705871582,
+        "hist_entropy_2d": 5.345125466734485
+      },
+      {
+        "bucket": 4,
+        "n_frames": 3000,
+        "particle_entropy": 1.4026463031768799,
+        "hist_entropy_2d": 5.504195679652962
+      },
+      {
+        "bucket": 5,
+        "n_frames": 3000,
+        "particle_entropy": 1.4409375190734863,
+        "hist_entropy_2d": 5.502667965171808
+      }
+    ]
   }
 }
