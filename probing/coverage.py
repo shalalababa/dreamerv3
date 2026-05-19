@@ -19,6 +19,15 @@ single shared standardiser and PCA on the pooled frames:
   * hist_entropy_2d  -- Shannon entropy of a 2-D histogram over the top two
     shared principal components; higher = more uniform occupancy.
 
+With `--time_buckets N` the script additionally splits each buffer's
+time-ordered replay chunks into N windows and re-estimates coverage per
+window, yielding a coverage-over-time curve. DreamerV3 writes replay chunks
+in collection order, so this shows *when* a condition accumulated its
+coverage -- e.g. whether P2E built its spread early, while its disagreement
+reward was still large, and then merely retained it. That distinguishes a
+"coverage was created by early exploration" account from one relying on a
+sustained intrinsic signal (research_procedure.md section H).
+
 Run from the repository root:
 
     python -m probing.coverage \
@@ -59,6 +68,9 @@ def parse_args():
   p.add_argument('--knn', type=int, default=12)
   p.add_argument('--logc', type=float, default=1.0)
   p.add_argument('--bins', type=int, default=24)
+  p.add_argument('--time_buckets', type=int, default=1,
+                 help='If > 1, also report coverage per time window of the '
+                      'time-ordered replay (coverage-over-time curve).')
   p.add_argument('--seed', type=int, default=0)
   return p.parse_args()
 
@@ -76,6 +88,23 @@ def load_obs(replay_dir, keys, max_frames, seed):
   frames = replay_dataset.load_frames(
       replay_dir, keys, max_frames=max_frames, rng=seed, verbose=True)
   return np.concatenate([frames[k] for k in keys], -1).astype(np.float32)
+
+
+def load_obs_from_chunks(chunk_paths, keys, max_frames, seed):
+  """Flatten an explicit, time-ordered list of replay chunks into (N, D)."""
+  buffers = {k: [] for k in keys}
+  for path in chunk_paths:
+    with np.load(path) as data:
+      for k in keys:
+        arr = np.asarray(data[k], np.float32)
+        buffers[k].append(arr.reshape(arr.shape[0], -1))
+  x = np.concatenate(
+      [np.concatenate(buffers[k], 0) for k in keys], -1).astype(np.float32)
+  if max_frames and len(x) > max_frames:
+    idx = np.random.default_rng(seed).choice(len(x), max_frames, replace=False)
+    idx.sort()
+    x = x[idx]
+  return x
 
 
 def particle_entropy(x, knn, logc):
@@ -141,9 +170,34 @@ def main():
     print(f'  {label:<18} particle_entropy={r["particle_entropy"]:.4f}  '
           f'hist_entropy_2d={r["hist_entropy_2d"]:.4f}')
 
+  # Coverage-over-time: bucket each buffer's time-ordered chunks into windows
+  # and re-estimate coverage per window, on the same shared standardiser/PCA.
+  over_time = {}
+  if args.time_buckets > 1:
+    print(f'Coverage over {args.time_buckets} time buckets (0 = earliest):')
+    for label, directory in entries:
+      chunks = replay_dataset.list_chunks(directory)
+      idx_groups = np.array_split(np.arange(len(chunks)), args.time_buckets)
+      curve = []
+      for bi, idxs in enumerate(idx_groups):
+        if len(idxs) == 0:
+          curve.append(None)
+          continue
+        group = [chunks[i] for i in idxs]
+        xb = (load_obs_from_chunks(group, keys, args.max_frames, args.seed)
+              - mean) / std
+        curve.append(dict(
+            bucket=bi, n_frames=int(len(xb)),
+            particle_entropy=particle_entropy(xb, args.knn, args.logc),
+            hist_entropy_2d=hist_entropy_2d(xb @ pcs, edges_x, edges_y)))
+      over_time[label] = curve
+      pe = [f'{c["particle_entropy"]:.3f}' if c else 'na' for c in curve]
+      print(f'  {label:<18} particle_entropy/bucket = [{", ".join(pe)}]')
+
   meta = dict(obs_keys=keys, obs_dim=int(pooled.shape[1]),
               knn=args.knn, logc=args.logc, bins=args.bins,
-              max_frames=args.max_frames, results=results)
+              max_frames=args.max_frames, time_buckets=args.time_buckets,
+              results=results, coverage_over_time=over_time)
   with open(os.path.join(args.output, 'coverage.json'), 'w') as f:
     json.dump(meta, f, indent=2)
 
@@ -161,6 +215,21 @@ def main():
   fig.suptitle('Pretraining-replay state coverage (shared PCA)', fontsize=10)
   fig.savefig(os.path.join(args.output, 'coverage.png'), dpi=150)
   plt.close(fig)
+
+  # Coverage-over-time curve: one line per condition.
+  if over_time:
+    fig, ax = plt.subplots(figsize=(6.5, 4.2), constrained_layout=True)
+    for label, curve in over_time.items():
+      pts = [(c['bucket'], c['particle_entropy']) for c in curve if c]
+      if pts:
+        ax.plot([p[0] for p in pts], [p[1] for p in pts], 'o-', label=label)
+    ax.set_xlabel(f'pretraining time bucket '
+                  f'(0 = earliest .. {args.time_buckets - 1} = latest)')
+    ax.set_ylabel('particle entropy (k-NN coverage)')
+    ax.set_title('Replay coverage over pretraining time')
+    ax.legend(fontsize=7, ncol=2)
+    fig.savefig(os.path.join(args.output, 'coverage_over_time.png'), dpi=150)
+    plt.close(fig)
   print(f'Wrote -> {args.output}/coverage.json')
 
 

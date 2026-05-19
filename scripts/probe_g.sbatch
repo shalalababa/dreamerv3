@@ -110,7 +110,8 @@ done
 if [ "${#COV_ARGS[@]}" -gt 0 ]; then
   "${PYTHON}" -m probing.coverage \
     --replay "${COV_ARGS[@]}" \
-    --output "${RUN_ROOT}/coverage"
+    --output "${RUN_ROOT}/coverage" \
+    --time_buckets 6
 else
   echo "    no replay buffers found; skipping coverage"
 fi
