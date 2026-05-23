@@ -71,9 +71,10 @@ def load_run_config(run_logdir, platform, output_dir, random_agent, task=''):
   with open(cfg_path) as f:
     saved = yaml.YAML(typ='safe').load(f)
   config = elements.Config(saved)
-  updates = {'logdir': output_dir, 'random_agent': random_agent}
-  if platform:
-    updates['jax'] = {'platform': platform}    # 'jax.platform' already exists
+  # Empty platform => let JAX auto-select the backend (GPU if visible, else
+  # CPU) rather than forcing the saved training config's 'cuda' on a CPU node.
+  updates = {'logdir': output_dir, 'random_agent': random_agent,
+             'jax': {'platform': platform}}
   if task:
     updates['task'] = task                     # cross-task probing extension
   config = config.update(updates)
