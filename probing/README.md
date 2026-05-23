@@ -84,6 +84,31 @@ python -m probing.probe \
   --output   results/probing_walker_walk_seed0
 ```
 
+### 5. Dynamics figures — `recon_over_time.py`, `openloop.py`
+"How the world model works" visualisations that complement the probe tables
+and the PCA/UMAP geometry view.
+
+* `recon_over_time.py` — RSSM vs VAE reconstruction error within an episode
+  and the RSSM advantage vs motion intensity (`||qvel||`), showing *when*
+  sequential context helps. Reads only `features.npz` + `traj.npz`; no model.
+* `openloop.py` — establishes the posterior on the first `--context` steps,
+  rolls the prior forward `--horizon` steps on the recorded actions, decodes
+  both to observation units, and plots predicted-vs-true (posterior solid,
+  prior dashed) plus prediction RMSE vs horizon. Needs the frozen checkpoint.
+
+```bash
+python -m probing.recon_over_time \
+  --features <RUN>/probing_walker_walk_seed0/features.npz \
+  --traj     <RUN>/probing_walker_walk_seed0/traj.npz \
+  --output   results/probing_walker_walk_seed0
+
+python -m probing.openloop \
+  --traj       <RUN>/probing_walker_walk_seed0/traj.npz \
+  --run_logdir <RUN>/dmc_proprio_walker_walk_seed0 \
+  --output     results/probing_walker_walk_seed0 \
+  --context 25 --horizon 75
+```
+
 ## Cluster
 
 ```bash

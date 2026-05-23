@@ -60,14 +60,24 @@ echo "--- [2/3] extracting features ---"
   --output     "${OUT}/features.npz" \
   --horizons 1 5 20 --ep_batch 8 --seed "${SEED}"
 
-echo "--- [3/3] running probing battery ---"
+echo "--- [3/4] running probing battery ---"
 # Heavy traj.npz/features.npz stay on scratch (${OUT}); the small probe
-# results are written into the repo so they are versioned with the code.
+# results and figures are written into the repo so they are versioned.
 "${PYTHON}" -u -m probing.probe \
   --traj     "${OUT}/traj.npz" \
   --features "${OUT}/features.npz" \
   --output   "${RESULTS}" \
   --horizons 0 1 5 20 --mlp_steps 2000
+
+echo "--- [4/4] dynamics figures (how the world model works) ---"
+"${PYTHON}" -u -m probing.recon_over_time \
+  --features "${OUT}/features.npz" \
+  --traj     "${OUT}/traj.npz" \
+  --output   "${RESULTS}" --episode 0
+"${PYTHON}" -u -m probing.openloop \
+  --traj       "${OUT}/traj.npz" \
+  --run_logdir "${DV3_RUN}" \
+  --output     "${RESULTS}" --context 25 --horizon 75 --episode 0
 
 echo "Probe pipeline seed ${SEED} done | $(date)"
 echo "  scratch intermediates: ${OUT}"

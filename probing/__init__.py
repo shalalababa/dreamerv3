@@ -18,6 +18,10 @@ features       : run both frozen models over the probe trajectories and
 targets        : derive probe targets (current/future state, gait phase,
                  time-to-fall) from the logged physics state.
 probe          : the probing battery (ridge + MLP probes, R^2, likelihood).
+recon_over_time: RSSM vs VAE reconstruction error over time (when sequential
+                 context helps); reads features.npz, no model needed.
+openloop       : open-loop posterior/prior prediction vs true state -- the
+                 "how the world model works" figure.
 
 See probing/README.md for the end-to-end run instructions.
 """
