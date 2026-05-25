@@ -23,149 +23,105 @@ University of Chicago \\
 \maketitle
 
 \begin{abstract}
-World models such as DreamerV3 learn a sequential generative latent by training
-a recurrent latent-dynamics model on streams of observations. Unsupervised
-representation learning, by contrast, is usually studied on static data. We ask
-what the sequential latent encodes that a static, per-frame model does not. We
-freeze a DreamerV3 recurrent state-space model (RSSM) and a static frame-level
-variational autoencoder (VAE) trained on the same DeepMind Control
-proprioceptive Walker-Walk observation stream, then probe both with held-out
-ridge and MLP regression across three axes: the probe target (current or future
-simulator state, and derived dynamical quantities), the probe site (encoder,
-RSSM posterior, RSSM prior, VAE latent), and the temporal receptive field given
-to the static model. We find that (i) in this near-fully observed proprioceptive
-setting, per-frame current state is decoded comparably well by both models, with
-this content carried primarily by the RSSM's deterministic state and only weakly
-by its categorical stochastic latent; and
-(ii) the static VAE's per-frame latents, aggregated post-hoc over the past,
-match and slightly exceed the RSSM at current-state decoding, while a few recent
-frames do not. These current-state results are scoped to proprioception; pixel
-and other partially observed settings remain untested. For prediction, the
-RSSM's action-conditioned prior reaches
-$R^2\approx0.50$ at a 20-step horizon, versus $0.16$ for a linear readout of its
-posterior and $0.46$ for a learned dynamics model in the static VAE's latent
-space; under the primary linear probe, the RSSM leads at every horizon, though
-the margin narrows as the horizon grows. The recurrent posterior also makes gait
-phase linearly decodable. Finally, generative likelihood and probe \rtwo{}
-decouple: the RSSM
-has lower reconstruction NLL than the VAE without a matching gain in linearly
-decodable state.
+World models such as DreamerV3 learn sequential generative latents from streams
+of observations, while unsupervised representation learning is often studied on
+static data. We ask what this sequential latent encodes beyond a static,
+per-frame model. We freeze a DreamerV3 recurrent state-space model (RSSM) and a
+static frame-level VAE trained on the same proprioceptive Walker-Walk stream,
+then probe both with held-out ridge and MLP regressors across targets (current
+state, future state, gait phase), probe sites, and the static model's temporal
+receptive field. In this near-fully observed proprioceptive setting, per-frame
+current state is decoded comparably well by both models; static VAE latents
+aggregated post-hoc over the past match and slightly exceed the RSSM at
+current-state decoding, while a few recent frames do not. These current-state
+results do not cover pixel or partially observed settings. For prediction, the
+RSSM prior reaches $R^2\approx0.50$ at a 20-step horizon, versus $0.16$ for a
+posterior readout and $0.46$ for learned dynamics in the VAE latent space; under
+the primary linear probe, the RSSM leads at every horizon, though the margin
+narrows. The recurrent posterior also makes gait phase linearly decodable.
+Finally, generative likelihood and probe \rtwo{} decouple: the RSSM has lower
+reconstruction NLL than the VAE without a matching gain in linearly decodable
+state.
 \end{abstract}
 
 \section{Introduction}
 
-A world model is a learned representation of states that can be rolled forward
-to predict future states \citep{ha2018worldmodels}. DreamerV3
-\citep{hafner2025dreamerv3} instantiates this with a recurrent state-space model
-(RSSM) \citep{hafner2019planet}: an observation is encoded into a stochastic
-latent that is concatenated with a deterministic recurrent state, and the model
-is trained to reconstruct observations and to predict its own next latent. The
-resulting representation is sequential, shaped by temporal context and a learned
-transition model. Most unsupervised representation learning, by contrast, is
-developed and analyzed on static data, for example a VAE \citep{kingma2014vae}
-over images. Because world models are increasingly reused as pretrained
-representations for downstream control, what their sequential latent captures,
-relative to a static encoder of the same inputs, bears on when sequential
-pretraining is worthwhile. We ask what a sequential generative latent encodes
-beyond what a static, per-frame model extracts from the same observations.
+A world model is a learned state representation that can be rolled forward to
+predict future states \citep{ha2018worldmodels}. DreamerV3
+\citep{hafner2025dreamerv3} uses an RSSM \citep{hafner2019planet}: observations
+enter a stochastic latent concatenated with a deterministic recurrent state, and
+the model reconstructs observations while predicting its next latent. Because
+world models are increasingly reused as pretrained representations for control,
+we ask what this sequential generative latent encodes beyond a static,
+per-frame encoder trained on the same observations.
 
-We study this contrast with a controlled probing comparison. We freeze a trained
-DreamerV3 RSSM and a static frame-level VAE that uses the same encoder and decoder
-architecture as DreamerV3 (trained from scratch, not shared weights), the same
-observation model, and the same training frames, so that architecture and data
-are held fixed and sequential structure is the principal difference. We probe
-both with held-out
-regression \citep{alain2016probes}, varying the probe target, the probe site
-(including the RSSM prior and open-loop imagination), and the temporal receptive
-field given to the static model, and we report held-out generative likelihood
-alongside. Section~\ref{sec:results} previews the findings: in proprioceptive
-Walker-Walk, per-frame state content is shared between the two models; a
-post-hoc temporal aggregation of the static latents closes the current-state
-gap; the RSSM prior retains much higher future-state \rtwo{} than a posterior
-readout and makes gait phase linearly decodable; and lower generative NLL does
-not imply a richer linear state code. Code and figures are released for
-reproducibility.\footnote{Code: \texttt{probing/} in the project repository;
-figures are regenerated by \texttt{result\_images/build\_summary\_figures.py}.}
+We freeze a trained DreamerV3 RSSM and a static VAE with the same encoder and
+decoder architecture (trained from scratch, not shared weights), observation
+model, and training frames, so architecture and data are held fixed. We probe
+both with held-out regression \citep{alain2016probes}, varying target, probe
+site, and the static model's temporal receptive field, and report held-out
+generative likelihood. In proprioceptive Walker-Walk, per-frame state content is
+shared, post-hoc aggregation closes the current-state gap, the RSSM prior
+retains higher future-state \rtwo{} than a posterior readout and makes gait phase
+linearly decodable, and lower generative NLL does not imply a richer linear state
+code. Code and figures are released for reproducibility.\footnote{Code:
+\texttt{probing/} in the project repository; figures are regenerated by
+\texttt{result\_images/build\_summary\_figures.py}.}
 
 \section{Related work}
-\paragraph{Probing representations.} Linear and shallow probes are a standard
-tool for asking what a frozen representation encodes, by measuring how well a
-simple readout recovers a target attribute \citep{alain2016probes}. A probe
-score depends on the probe family and the target: it lower-bounds decodable
-information rather than measuring it, a linear and a nonlinear probe can rank
-representations differently, and a pooled $R^2$ over a vector target is
-variance-weighted. We therefore fix the probe family across all comparisons,
-report a linear probe as primary with a nonlinear one as a robustness check, and
-flag where the two disagree. Closest in spirit, ST-DIM introduced an Atari
-benchmark for evaluating unsupervised representations by their recovery of
-ground-truth state variables \citep{anand2019atari}. We use the same diagnostic
-logic but ask a narrower controlled question: what changes when a sequential
-world-model latent is compared with a static VAE trained on the same observations
-and architecture.
+\paragraph{Probing representations.} Linear and shallow probes measure how well a
+frozen representation supports a simple readout of a target attribute
+\citep{alain2016probes}. Because probe scores lower-bound decodable information,
+depend on the probe family, and are variance-weighted for vector targets, we fix
+the probe family, use ridge as primary and an MLP as a robustness check, and flag
+disagreements. Closest in spirit, ST-DIM introduced an Atari benchmark that
+evaluates unsupervised representations by recovery of ground-truth state
+variables \citep{anand2019atari}; we use the same diagnostic logic for a
+narrower controlled RSSM-vs-VAE comparison.
 
-\paragraph{World-model representations.} World models learn representations by
-predicting future observations from latent state
-\citep{ha2018worldmodels,hafner2019planet,hafner2020dreamer,hafner2025dreamerv3},
-and related predictive objectives such as contrastive predictive coding also use
-future prediction as a representation-learning signal \citep{oord2018cpc}. World
-models are increasingly used to pretrain representations for downstream control
-without task reward \citep{sekar2020plan2explore,liu2021aps,laskin2021urlb}. That
-setting makes the content of the learned latent the object of interest, yet such
-work usually reports downstream return rather than what the latent itself
-captures. We instead probe the frozen latent directly and, to control for
-architecture and data while focusing on sequential structure, compare it against
-a static VAE \citep{kingma2014vae,higgins2017betavae} that shares the encoder and
-decoder architecture and the training data.
+\paragraph{World-model representations.} World models learn latent states by
+predicting future observations
+\citep{ha2018worldmodels,hafner2019planet,hafner2020dreamer,hafner2025dreamerv3};
+related objectives such as CPC also use future prediction as a representation
+signal \citep{oord2018cpc}. Reward-free world-model pretraining usually reports
+downstream return \citep{sekar2020plan2explore,liu2021aps,laskin2021urlb}; we
+instead probe the frozen latent directly and compare it with a static VAE
+\citep{kingma2014vae,higgins2017betavae} sharing architecture and data.
 
 \section{Background and setup}
 \label{sec:setup}
 
-\paragraph{RSSM world model.} At each step $t$ the RSSM maintains a
-deterministic recurrent state $h_t=f_\phi(h_{t-1},z_{t-1},a_{t-1})$ and a
-stochastic latent with a posterior $z_t\sim q_\phi(z_t\mid h_t,x_t)$ that sees
-the observation $x_t$ and a prior $\hat z_t\sim p_\phi(\hat z_t\mid h_t)$ that
-does not. The model state is $s_t=(h_t,z_t)$ and a decoder reconstructs
-$\hat x_t=d_\phi(s_t)$. In our configuration $z_t$ is a set of $32$ categorical
-variables with $4$ classes each ($128$ dimensions), and $h_t$ has $512$
-dimensions. The model is trained with reconstruction and a KL term that aligns
-posterior and prior \citep{hafner2025dreamerv3}.
+\paragraph{RSSM world model.} At each step, the RSSM keeps a deterministic state
+$h_t=f_\phi(h_{t-1},z_{t-1},a_{t-1})$, a posterior
+$z_t\sim q_\phi(z_t\mid h_t,x_t)$ that sees the observation, and a prior
+$\hat z_t\sim p_\phi(\hat z_t\mid h_t)$ that does not. A decoder reconstructs
+$\hat x_t=d_\phi(h_t,z_t)$. Our $z_t$ has $32$ categorical variables with $4$
+classes each ($128$ dimensions), and $h_t$ has $512$ dimensions. Training uses
+reconstruction and a KL term aligning posterior and prior
+\citep{hafner2025dreamerv3}.
 
-\paragraph{Static VAE.} Our baseline removes the recurrence and dynamics while
-holding the encoder and decoder architecture, observation model, and training
-frames fixed. It uses an encoder with the same architecture as DreamerV3's,
-trained from scratch, to map a single frame $x_t$ to a
-diagonal-Gaussian latent $q(z\mid x_t)=\mathcal{N}(\mu(x_t),
-\mathrm{diag}\,\sigma^2(x_t))$, and a decoder matched to the RSSM's vector
-decoder. It is trained on the per-frame objective
+\paragraph{Static VAE.} The baseline removes recurrence and dynamics while
+holding encoder/decoder architecture, observation model, and training frames
+fixed. It maps a single frame to a diagonal-Gaussian latent and is trained on
 \begin{equation}
 \mathcal{L}_\beta(x) = \underbrace{\E_{q(z\mid x)}\!\big[-\log p(x\mid z)\big]}_{\text{reconstruction}}
 \;+\; \beta\,\KL\!\big(q(z\mid x)\,\Vert\,\mathcal{N}(0,I)\big),
 \label{eq:elbo}
 \end{equation}
-the (negative) evidence lower bound for $\beta{=}1$ \citep{kingma2014vae,
-higgins2017betavae}, optimized with the reparameterization $z=\mu+\sigma\odot
-\epsilon$. Both models use the same observation model, a unit-variance Gaussian
-in $\mathrm{symlog}$ space, $\mathrm{symlog}(x)=\mathrm{sign}(x)\log(1+|x|)$, so
-that $-\log p(x\mid z)=\tfrac12\Vert\mathrm{symlog}(x)-d(z)\Vert^2+\text{const}$
-and held-out log-likelihoods are computed identically. We set the VAE latent to
-$128$ dimensions to match the RSSM's stochastic latent. Because the encoder and
-decoder architectures, observation model, and training frames are held fixed, a
-probe gap reflects sequential structure and the change of latent variable rather
-than the encoder or decoder; the latent family, objective, and dimensionality
-also differ, which we revisit in the limitations.
+the negative ELBO for $\beta{=}1$ \citep{kingma2014vae,higgins2017betavae}. Both
+models use the same unit-variance Gaussian observation model in symlog space, so
+held-out log-likelihoods are computed identically. The VAE latent has $128$
+dimensions to match the RSSM stochastic latent. A probe gap therefore reflects
+sequential structure and latent-family differences rather than the encoder,
+decoder, or data; remaining differences are revisited in the limitations.
 
-\paragraph{Task, models, and data.} We use DeepMind Control
-\citep{tassa2018dmc} Walker-Walk with proprioceptive observations
-(\texttt{orientations}, \texttt{height}, \texttt{velocity}). We train three
-DreamerV3 seeds and one VAE per seed on that seed's replay buffer; two seeds run
-to $500$K environment steps and one to $1.1$M. Probe figures show all three
-seeds as points with the bar or line at their mean. The $1.1$M seed is usually
-highest, but by no more than the gap between the two $500$K seeds, so we do not
-separate it in the probe figures; a possible training-length effect instead
-appears in generative likelihood, which we report per seed (\S\ref{sec:gen}). Probe
-trajectories are $40$ held-out episodes ($1000$ steps) rolled out from the frozen
-evaluation policy, logging the full MuJoCo physics state
-($q_{\text{pos}}\,|\,q_{\text{vel}}$), which the replay buffer does not store.
+\paragraph{Task, models, and data.} We use DeepMind Control Walker-Walk
+\citep{tassa2018dmc} with proprioceptive observations. We train three DreamerV3
+seeds and one VAE per seed on that seed's replay buffer; two seeds run to $500$K
+environment steps and one to $1.1$M. Probe figures show all seeds as points with
+the mean as bar or line. Probe trajectories are $40$ held-out episodes of
+$1000$ steps from the frozen evaluation policy, with full MuJoCo physics state
+logged for targets.
 
 \section{Probing methodology}
 \label{sec:method}
@@ -175,33 +131,24 @@ the held-out coefficient of determination
 \begin{equation}
 R^2 = 1 - \frac{\sum (y-g(z))^2}{\sum (y-\bar y_{\text{train}})^2},
 \end{equation}
-against the train-set mean baseline, so an uninformative representation scores
-$\approx 0$ and negative values are possible on held-out episodes. For vector
-targets we report the pooled $R^2$ over all dimensions, a variance-weighted
-average that counts high-variance components such as joint velocities more. The probe
-family is fixed across all sites and targets, namely a closed-form ridge
-regressor (regularization chosen on a validation split of the training episodes)
-and a small two-hidden-layer MLP, so differences reflect the representation
-rather than the probe. We report the ridge (linear) probe in the main text and
-treat the MLP as a robustness check, with its scores included in the released
-CSV; the conclusions below hold under both probes except where noted. Train and
-test splits are by episode. We vary three axes:
+against the train-set mean baseline; uninformative representations score
+$\approx 0$ and held-out scores can be negative. For vector targets we report
+pooled, variance-weighted $R^2$. We use the same ridge regressor and
+two-hidden-layer MLP at all sites, report ridge in the main text, and treat MLP
+as a robustness check; conclusions hold under both probes except where noted.
+Train and test splits are by episode. We vary:
 \begin{itemize}
-\item \textbf{Probe target:} the current simulator state; the future state at
-horizon $k\in\{1,5,20\}$; and derived dynamical quantities (gait phase, encoded
-as $(\cos,\sin)$ of the analytic-signal phase of the antiphase hip oscillation;
-discounted return-to-go; time-to-fall).
+\item \textbf{Probe target:} current state; future state at
+$k\in\{1,5,20\}$; gait phase; discounted return-to-go; and time-to-fall.
 \item \textbf{Probe site:} encoder output; RSSM posterior ($h_t$ and $\mathbb{E}[z_t]$,
 also probed separately); RSSM prior, both one-step and open-loop $k$-step
 (roll the prior forward with the recorded actions and probe the imagined state);
 VAE encoder output; VAE latent mean; and the VAE latent rolled open-loop by a
 learned action-conditioned dynamics model (\S\ref{sec:pred}), the static analog
 of the RSSM prior.
-\item \textbf{Receptive field:} the VAE latent with a growing causal temporal
-window. For $K\in\{1,4,16\}$ we concatenate the most recent $K$ latents; for
-$K{=}\text{all}$ we concatenate the current latent with the causal mean of all
-latents up to that step. This measures how much sequential content a static
-model recovers by post-hoc temporal aggregation.
+\item \textbf{Receptive field:} the VAE latent with a causal window. For
+$K\in\{1,4,16\}$ we concatenate recent latents; for $K{=}\text{all}$ we use the
+current latent plus the causal mean over the episode.
 \end{itemize}
 We additionally report held-out reconstruction and one-step predictive
 log-likelihood, computed identically for both models (\S\ref{sec:setup}).
@@ -214,126 +161,88 @@ log-likelihood, computed identically for both models (\S\ref{sec:setup}).
 \includegraphics[width=0.49\textwidth]{figures/current_state_probe_r2_by_site.png}
 \hfill
 \includegraphics[width=0.49\textwidth]{figures/future_state_r2_by_horizon_posterior_vs_prior.png}
-\caption{Held-out probe \rtwo{} (black dots are the three seeds; bars and lines
-are the mean). \textbf{Left:} current simulator state ($h{=}0$) is decoded
-equally well by the encoder, RSSM posterior, RSSM deterministic state, and the
-VAE ($\approx0.7$); the categorical stochastic latent alone is a weaker linear
-code ($\approx0.40$). \textbf{Right:} future-state \rtwo{} versus horizon. A linear readout of the
-posterior decays quickly; under the primary linear probe, the open-loop RSSM
-prior retains the most; a learned dynamics model rolled in the static VAE latent
-space is a strong baseline that narrows the gap.}
+\caption{Held-out probe \rtwo{} (points are seeds; bars/lines are means).
+\textbf{Left:} current state is decoded similarly by the encoder, RSSM
+posterior, RSSM deterministic state, and VAE; the stochastic latent alone is
+weaker. \textbf{Right:} the posterior readout decays quickly; the open-loop RSSM
+prior retains the most future-state \rtwo{} under the primary linear probe, with
+VAE-latent dynamics a strong baseline.}
 \label{fig:probes}
 \end{figure}
 
 \subsection{Per-frame current state is shared; within the RSSM it lies mainly in $h_t$}
 Figure~\ref{fig:probes} (left) shows that the encoder, RSSM posterior, RSSM
-deterministic state, VAE encoder, and VAE latent all decode the current state at
-$R^2\approx0.69$ to $0.74$. Within the RSSM, this content is carried mainly by
-the deterministic state ($R^2\approx0.70$); the categorical stochastic latent
-alone is weaker but not negligible ($\approx0.40$ under the linear probe,
-$\approx0.55$ under the MLP). The deterministic state on its own
-($0.70$) is about level with the VAE latent ($0.69$); the full posterior's small
-advantage ($0.74$) comes from combining it with complementary information in the
-stochastic latent. At equal width ($128$ dimensions), the continuous VAE latent
-($0.69$) is a much stronger linear state code than the RSSM's categorical latent
-($0.40$), so the edge does not come from the stochastic latent on its own. A
-nonlinear MLP probe does not favor the RSSM here either, consistent with
+deterministic state, VAE encoder, and VAE latent all decode current state at
+$R^2\approx0.69$--$0.74$. This content sits mainly in the RSSM deterministic
+state ($\approx0.70$); the categorical stochastic latent alone is weaker
+($\approx0.40$ linear, $\approx0.55$ MLP). At equal width, the continuous VAE
+latent is a stronger linear state code than the RSSM stochastic latent
+($0.69$ versus $0.40$). The MLP does not favor the RSSM either, consistent with
 per-frame content being shared.
 
 \subsection{Predictive content: open-loop prior versus posterior readout}
 \label{sec:pred}
-A linear readout of future state from the posterior decays sharply with horizon
+A linear readout of future state from the posterior decays sharply
 ($R^2 = 0.74,\,0.50,\,0.30,\,0.16$ at $k=0,1,5,20$; Figure~\ref{fig:probes},
-right). Rolling the prior forward with the recorded actions and probing the
-imagined state retains higher \rtwo{} ($R^2 = 0.72,\,0.66,\,0.50$ at
-$k=1,5,20$). At a $20$-step horizon the action-conditioned prior reaches
-$\approx0.50$ versus $0.16$ for a linear readout of the same future state from
-the posterior, about three times the future-state \rtwo{}. The pattern also
-appears under the MLP: the prior still reaches $R^2\approx0.43$
-at $20$ steps while the posterior readout falls to about zero. The RSSM's learned
-dynamics, not a readout of the current latent, carry the future. To test whether
-this reflects the sequential representation or merely the presence of a dynamics
-model, we give the static VAE its own: a forward model $g(z_t,a_t)\approx
-z_{t+1}-z_t$ trained on the probe train episodes with a curriculum multi-step
-rollout loss and rolled open-loop. This is a deliberately post-hoc comparison:
-the RSSM transition was co-trained with its latent, whereas the VAE dynamics
-model is fit after representation learning on frozen latents from the probe
-train episodes. The baseline nevertheless recovers far more future state than
-the static latent readout ($R^2 = 0.53,\,0.49,\,0.46$ at $k=1,5,20$ versus
-$0.32,\,0.19,\,0.11$), so much predictive content is accessible from a static
-representation once it has a learned transition model. Under the primary linear
-probe, the RSSM prior still leads at every horizon and within every seed
-($0.72,\,0.66,\,0.50$ versus $0.53,\,0.49,\,0.46$), giving the RSSM a clear
-linear-probe advantage over a static representation equipped with dynamics,
-rather than only over a static readout. The unrounded mean margin is largest at
-short horizon ($+0.18$ at $k=1$; seed range $+0.15$ to $+0.22$) and narrows to
-$+0.05$ at $k=20$ (range $+0.02$ to $+0.07$), where the two approach a similar
-ceiling. Under the MLP, the RSSM and VAE-dynamics models remain separated at
-$k=1$ and $k=5$ but are essentially tied at $k=20$, so we treat the head-to-head
-advantage as strongest in the linear-probe setting. Appendix
-Figure~\ref{fig:openloop} visualizes a single open-loop rollout and the
-prediction error growing with horizon.
+right). Rolling the prior forward with recorded actions retains higher \rtwo{}
+($0.72,\,0.66,\,0.50$ at $k=1,5,20$); at $20$ steps this is about three times
+the posterior-readout \rtwo{} ($0.50$ versus $0.16$), and the MLP shows the same
+prior-vs-posterior pattern ($0.43$ versus about zero). To test whether this is
+only the benefit of having dynamics, we fit a post-hoc VAE-latent forward model
+$g(z_t,a_t)\approx z_{t+1}-z_t$ on probe train episodes and roll it open-loop.
+This baseline is asymmetric by design: the RSSM transition was co-trained with
+its latent, whereas VAE dynamics are fit after representation learning on frozen
+latents. Even so, the baseline recovers much more future state than a static
+latent readout ($0.53,\,0.49,\,0.46$ versus $0.32,\,0.19,\,0.11$). Under the
+primary linear probe, the RSSM prior still leads within every seed
+($0.72,\,0.66,\,0.50$ versus $0.53,\,0.49,\,0.46$): the unrounded mean margin
+shrinks from $+0.18$ at $k=1$ (seed range $+0.15$ to $+0.22$) to $+0.05$ at
+$k=20$ (range $+0.02$ to $+0.07$). Under the MLP, the RSSM and VAE-dynamics
+models are separated at $k=1$ and $k=5$ but essentially tied at $k=20$, so the
+head-to-head advantage is strongest in the linear-probe setting. Appendix
+Figure~\ref{fig:openloop} shows a representative open-loop rollout.
 
 \begin{figure}[t]
 \centering
 \includegraphics[width=0.49\textwidth]{figures/vae_receptive_field_r2.png}
 \hfill
 \includegraphics[width=0.49\textwidth]{figures/gait_phase_r2_rssm_vs_vae.png}
-\caption{\textbf{Left:} the static VAE's current-state \rtwo{} rises with its
-temporal receptive field; concatenating a few recent frames stays below the RSSM
-posterior reference, and only whole-episode aggregation ($K{=}\text{all}$, the
-current latent plus the causal mean) overtakes it. \textbf{Right:} gait phase, a cyclic dynamical
-quantity, has higher linear-probe \rtwo{} under the recurrent posterior than
-under the single-frame VAE latent.}
+\caption{\textbf{Left:} VAE current-state \rtwo{} rises with temporal receptive
+field; only whole-episode aggregation overtakes the RSSM posterior reference.
+\textbf{Right:} gait phase has higher linear-probe \rtwo{} under the recurrent
+posterior than under the single-frame VAE latent.}
 \label{fig:gap}
 \end{figure}
 
 \subsection{Post-hoc temporal aggregation of static features closes the current-state gap}
-Figure~\ref{fig:gap} (left) shows the VAE latent's current-state \rtwo{} rising
-from $0.69$ (one frame) through $0.70$ and $0.71$ (the most recent $4$ and $16$
-frames) to $0.78$ once it also includes the causal mean over the whole episode,
-at which point it overtakes the RSSM posterior ($0.74$). Concatenating a handful
-of recent frames is not enough; only whole-episode aggregation closes and
-reverses the gap. This aggregation is a hand-specified causal summary applied on
-top of the per-frame latents, not learned recurrence. Thus, the current-state
-content the RSSM exposes is recoverable from static features by simple temporal
-pooling, so the sequential representation's value is not in richer current-state
-encoding.
+Figure~\ref{fig:gap} (left) shows VAE current-state \rtwo{} rising from $0.69$
+(one frame) to $0.78$ with the causal whole-episode mean, overtaking the RSSM
+posterior ($0.74$). Short windows ($K=4,16$) remain below it. Thus the
+current-state content the RSSM exposes is recoverable from static features by a
+hand-specified temporal summary, not learned recurrence.
 
 \subsection{Gait phase: the RSSM makes a cyclic quantity linearly decodable}
-Figure~\ref{fig:gap} (right) shows the largest RSSM--VAE gap under a linear
-probe: gait phase is decoded at $R^2\approx0.95$ from the
-posterior versus $\approx0.74$ from the VAE latent ($+0.21$, with seed ranges
-$0.93$--$0.96$ versus $0.72$--$0.77$). Phase is about position within a cycle, which a single frame
-cannot disambiguate from a linear readout. This advantage is largely one of
-linear accessibility, however: a nonlinear MLP probe recovers most of the gait
-phase from the static latent as well ($0.89$ versus $0.95$), so the RSSM mainly
-reorganizes this cyclic information into a more linear coordinate system; it
-does not appear to encode phase information absent from the VAE. (Return-to-go
-is near-zero for both models, and
-time-to-fall is unreliable due to censoring, since a competent walker rarely
-falls; see Appendix~\ref{app:nulls}.)
+Figure~\ref{fig:gap} (right) shows the largest linear RSSM--VAE gap: gait phase
+is decoded at $R^2\approx0.95$ from the posterior versus $\approx0.74$ from the
+VAE latent ($+0.21$; seed ranges $0.93$--$0.96$ versus $0.72$--$0.77$). A
+nonlinear MLP recovers much of this from the static latent ($0.89$ versus
+$0.95$), so the RSSM mainly makes cyclic information more linearly accessible.
+Return-to-go is near zero for both models, and time-to-fall is unreliable due to
+censoring (Appendix~\ref{app:nulls}).
 
 \subsection{Generative quality and probe quality decouple}
 \label{sec:gen}
-Table~\ref{tab:nll} reports held-out negative log-likelihood. At matched
-training, the RSSM reconstructs the current frame with lower NLL than the VAE
-($0.62$ to $0.67$ versus $1.77$ to $1.95$ for the two $500$K seeds, and lower
-per-frame NLL on $90$ to $97\%$ of frames), yet its current-state probe \rtwo{} is
-only marginally higher (Figure~\ref{fig:probes}, left). Lower reconstruction NLL
-therefore does not translate into proportionally more linearly decodable state.
-The longer-trained seed~0 points the same way, with NLL of $0.36$ but probe
-\rtwo{} within seed noise of the others; with a single $1.1$M run this is
-suggestive of a training-length effect rather than a controlled one. The two
-metrics agree only partially, so neither should be used alone as a proxy for
-representation quality.
+At matched training (Table~\ref{tab:nll}), the RSSM reconstructs the current
+frame with lower NLL than the VAE ($0.62$--$0.67$ versus $1.77$--$1.95$ for the
+two $500$K seeds, and lower per-frame NLL on $90$--$97\%$ of frames), yet its
+current-state probe \rtwo{} is only marginally higher. Seed~0, trained longer,
+has still lower NLL ($0.36$) but probe \rtwo{} within seed noise. Reconstruction
+likelihood and linear-probe decodability therefore agree only partially.
 
 \begin{table}[t]
-\caption{Held-out NLL (lower is better), mean over the held-out probe set,
-per seed (training steps in parentheses). The RSSM has lower reconstruction NLL
-than the VAE, and its one-step prior predictive NLL is also reported; the
-longer-trained seed~0 has lower NLL still, while current-state probe \rtwo{}
-(Fig.~\ref{fig:probes}) stays roughly flat across seeds.}
+\caption{Held-out NLL (lower is better), mean over the held-out probe set. The
+RSSM reconstructs better than the VAE, especially for the longer-trained seed~0,
+without a corresponding current-state probe gain.}
 \label{tab:nll}
 \begin{center}
 \begin{tabular}{lccc}
@@ -350,47 +259,28 @@ Static VAE reconstruction      & 1.58 & 1.95 & 1.77 \\
 
 \section{Discussion}
 
-In this near-fully observed proprioceptive Walker setting, and across a
-comparison that holds the encoder, decoder, observation model, and data fixed,
-the sequential generative latent does not encode more about the current
-observable state than a static VAE; a hand-specified causal summary of the
-static model's past latents matches it. The RSSM's future-state information
-lives in its action-conditioned prior, which forecasts with higher \rtwo{} than a
-linear readout of the posterior under both probe families. Equipping the static VAE with
-its own learned dynamics is a strong baseline that recovers much of this content.
-Under the primary linear probe, the RSSM prior still leads at every horizon and
-within every seed ($0.50$ versus $0.46$ at $20$ steps), giving the RSSM a
-measurable advantage over a static representation equipped with dynamics; under
-the MLP, the advantage is clear at short horizons but becomes a tie at $20$
-steps. The RSSM also makes gait phase linearly decodable, though a nonlinear
-probe recovers most of that from the static latent, so this is an advantage of
-linear accessibility, not evidence that the static model lacks the information.
-Separately, the RSSM has lower reconstruction NLL than the VAE without a
-matching gain in what a linear probe reads off, so reconstruction likelihood and
-probe \rtwo{} should not be treated as interchangeable measures of
-representation quality.
+In this near-fully observed proprioceptive Walker setting, the sequential latent
+does not encode more of the current observable state than a static VAE with a
+hand-specified causal summary of past latents. Its advantages are predictive and
+coordinate-shaping: the action-conditioned prior forecasts better than a
+posterior readout under both probe families, and under the primary linear probe
+it also beats the VAE-dynamics baseline in all seeds ($0.50$ versus $0.46$ at
+$20$ steps), although the MLP comparison ties at that horizon. The RSSM also
+makes gait phase linearly decodable, while a nonlinear probe recovers most of it
+from the static latent. Separately, lower reconstruction NLL does not yield a
+matching gain in linear state decodability, so likelihood and probe \rtwo{}
+should not be treated as interchangeable measures of representation quality.
 
-\textbf{Limitations.} Holding architecture and data fixed still leaves several
-differences between the models: the VAE latent is continuous rather than
-categorical, its prior and objective differ, and the probed posterior feature is
-higher-dimensional ($640$ versus $128$). We report matched-width stochastic- and
-deterministic-state probes to control for dimensionality, but the other
-differences remain, so sequential structure is the principal factor behind any
-gap, not the sole one. The VAE-latent dynamics baseline (\S\ref{sec:pred}) is one
-post-hoc forward-model design trained on frozen VAE latents from the probe
-episodes, whereas the RSSM transition was co-trained with its representation; a
-stronger architecture or more pretraining data could narrow the remaining gap,
-which is already small at long horizon. We report a
-pooled, variance-weighted $R^2$ over state dimensions, which counts high-variance
-components such as velocities more; per-component probing is left to future work.
-We study one domain (Walker), one modality (proprioception, where a single frame
-nearly determines the current state, which may inflate the shared per-frame
-content), and one model size. We do not test pixel observations or other
-partially observed regimes, where recurrence should matter more for current-state
-inference. Probe \rtwo{} lower-bounds decodable information under a fixed probe
-family and is not mutual information. Finally, only one seed ran to $1.1$M
-steps, so the training-length effect on generative likelihood is suggestive
-rather than controlled.
+\textbf{Limitations.} The comparison still differs in latent family, prior,
+objective, and probed dimensionality ($640$ versus $128$); matched-width probes
+control only part of this. The VAE-dynamics baseline is a post-hoc model trained
+on frozen VAE latents from probe episodes, whereas the RSSM transition was
+co-trained with its representation; stronger VAE dynamics could narrow the
+long-horizon gap. We report pooled, variance-weighted $R^2$, leaving
+per-component probes to future work. Finally, we study one domain, one model
+size, and proprioception, where a single frame nearly determines current state.
+Pixel and other partially observed regimes remain untested, and only one seed
+ran to $1.1$M steps, so the training-length effect on NLL is suggestive.
 
 \subsubsection*{Acknowledgments}
 Built on the open-source DreamerV3 implementation \citep{hafner2025dreamerv3}.
