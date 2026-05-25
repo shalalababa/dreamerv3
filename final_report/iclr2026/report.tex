@@ -119,7 +119,10 @@ decoder, or data; remaining differences are revisited in the limitations.
 \citep{tassa2018dmc} with proprioceptive observations. We train three DreamerV3
 seeds and one VAE per seed on that seed's replay buffer; two seeds run to $500$K
 environment steps and one to $1.1$M. Probe figures show all seeds as points with
-the mean as bar or line. Probe trajectories are $40$ held-out episodes of
+the mean as bar or line. The $1.1$M seed does not systematically dominate the
+probe scores, so we show it with the others; a possible training-length effect
+instead appears in generative likelihood, reported per seed (\S\ref{sec:gen}).
+Probe trajectories are $40$ held-out episodes of
 $1000$ steps from the frozen evaluation policy, with full MuJoCo physics state
 logged for targets.
 
@@ -139,7 +142,9 @@ as a robustness check; conclusions hold under both probes except where noted.
 Train and test splits are by episode. We vary:
 \begin{itemize}
 \item \textbf{Probe target:} current state; future state at
-$k\in\{1,5,20\}$; gait phase; discounted return-to-go; and time-to-fall.
+$k\in\{1,5,20\}$; gait phase (encoded as $(\cos,\sin)$ of the analytic-signal
+phase of the antiphase hip oscillation); discounted return-to-go; and
+time-to-fall.
 \item \textbf{Probe site:} encoder output; RSSM posterior ($h_t$ and $\mathbb{E}[z_t]$,
 also probed separately); RSSM prior, both one-step and open-loop $k$-step
 (roll the prior forward with the recorded actions and probe the imagined state);
@@ -175,7 +180,10 @@ Figure~\ref{fig:probes} (left) shows that the encoder, RSSM posterior, RSSM
 deterministic state, VAE encoder, and VAE latent all decode current state at
 $R^2\approx0.69$--$0.74$. This content sits mainly in the RSSM deterministic
 state ($\approx0.70$); the categorical stochastic latent alone is weaker
-($\approx0.40$ linear, $\approx0.55$ MLP). At equal width, the continuous VAE
+($\approx0.40$ linear, $\approx0.55$ MLP). The deterministic state alone
+($0.70$) is about level with the VAE latent ($0.69$); the posterior's small
+advantage ($0.74$) comes from combining it with complementary information in the
+stochastic latent. At equal width, the continuous VAE
 latent is a stronger linear state code than the RSSM stochastic latent
 ($0.69$ versus $0.40$). The MLP does not favor the RSSM either, consistent with
 per-frame content being shared.
@@ -199,8 +207,11 @@ primary linear probe, the RSSM prior still leads within every seed
 shrinks from $+0.18$ at $k=1$ (seed range $+0.15$ to $+0.22$) to $+0.05$ at
 $k=20$ (range $+0.02$ to $+0.07$). Under the MLP, the RSSM and VAE-dynamics
 models are separated at $k=1$ and $k=5$ but essentially tied at $k=20$, so the
-head-to-head advantage is strongest in the linear-probe setting. Appendix
-Figure~\ref{fig:openloop} shows a representative open-loop rollout.
+head-to-head advantage is strongest in the linear-probe setting. Both
+action-conditioned models approach similar long-horizon accuracy as open-loop
+error compounds (Appendix~\ref{app:openloop}, Figure~\ref{fig:openloop}); the
+RSSM advantage is sharpest at short horizons, where its co-trained transition is
+most accurate.
 
 \begin{figure}[t]
 \centering
@@ -216,16 +227,20 @@ posterior than under the single-frame VAE latent.}
 
 \subsection{Post-hoc temporal aggregation of static features closes the current-state gap}
 Figure~\ref{fig:gap} (left) shows VAE current-state \rtwo{} rising from $0.69$
-(one frame) to $0.78$ with the causal whole-episode mean, overtaking the RSSM
-posterior ($0.74$). Short windows ($K=4,16$) remain below it. Thus the
+(one frame) through $0.70$ and $0.71$ (the most recent $4$ and $16$ frames) to
+$0.78$ with the causal whole-episode mean, overtaking the RSSM posterior
+($0.74$). Concatenating a handful of recent frames is not enough; only
+whole-episode aggregation closes and reverses the gap. Thus the
 current-state content the RSSM exposes is recoverable from static features by a
 hand-specified temporal summary, not learned recurrence.
 
 \subsection{Gait phase: the RSSM makes a cyclic quantity linearly decodable}
 Figure~\ref{fig:gap} (right) shows the largest linear RSSM--VAE gap: gait phase
 is decoded at $R^2\approx0.95$ from the posterior versus $\approx0.74$ from the
-VAE latent ($+0.21$; seed ranges $0.93$--$0.96$ versus $0.72$--$0.77$). A
-nonlinear MLP recovers much of this from the static latent ($0.89$ versus
+VAE latent ($+0.21$; seed ranges $0.93$--$0.96$ versus $0.72$--$0.77$). Phase
+is position within a cycle, which a single frame cannot disambiguate from a
+linear readout. A nonlinear MLP recovers much of this from the static latent
+($0.89$ versus
 $0.95$), so the RSSM mainly makes cyclic information more linearly accessible.
 Return-to-go is near zero for both models, and time-to-fall is unreliable due to
 censoring (Appendix~\ref{app:nulls}).
@@ -270,6 +285,9 @@ makes gait phase linearly decodable, while a nonlinear probe recovers most of it
 from the static latent. Separately, lower reconstruction NLL does not yield a
 matching gain in linear state decodability, so likelihood and probe \rtwo{}
 should not be treated as interchangeable measures of representation quality.
+Practically, when only current-state decoding is needed, a static VAE with simple
+causal pooling is enough; sequential pretraining is most useful for multi-step
+prediction and for making cyclic structure linearly accessible.
 
 \textbf{Limitations.} The comparison still differs in latent family, prior,
 objective, and probed dimensionality ($640$ versus $128$); matched-width probes
