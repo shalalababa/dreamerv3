@@ -1,0 +1,125 @@
+==============================
+VAE-dynamics baseline | seed 2 | job 50092863 | Sun May 24 23:46:57 CDT 2026
+==============================
+--- training VAE-latent dynamics + open-loop rollout ---
+Episodes 40 (train 28, test 12); latent 128, act 6
+Training rollout model (curriculum 1->20) on 28 episodes...
+  step     1  h=1   rollout MSE 2.8854
+  step  1000  h=7   rollout MSE 0.4623
+  step  2000  h=13  rollout MSE 0.4052
+  step  3000  h=19  rollout MSE 0.3708
+  step  4000  h=20  rollout MSE 0.3438
+  step  5000  h=20  rollout MSE 0.3073
+  step  6000  h=20  rollout MSE 0.3157
+  wrote vae_imag1: (40, 1000, 128)
+  wrote vae_imag5: (40, 1000, 128)
+  wrote vae_imag20: (40, 1000, 128)
+Saved augmented features -> /scratch/midway3/rickybao/dreamerv3_runs/probing_walker_walk_seed2/features_vaedyn.npz
+--- re-probing with the baseline included ---
+Episodes: 40 (test 12)  |  sites: ['enc', 'imag1', 'imag20', 'imag5', 'post_deter', 'post_stoch', 'posterior', 'prior', 'vae_enc', 'vae_imag1', 'vae_imag20', 'vae_imag5', 'vae_latent']
+Targets: ['gait_phase', 'horizontal_velocity', 'qpos', 'qvel', 'return_to_go', 'state', 'time_to_fall', 'torso_height', 'torso_upright']
+  [  1/76] rssm/enc        state         h=0  K=1  R2_ridge=0.67796  R2_mlp=0.69397
+  [  2/76] rssm/posterior  state         h=0  K=1  R2_ridge=0.69383  R2_mlp=0.61409
+  [  3/76] rssm/post_deter state         h=0  K=1  R2_ridge=0.64065  R2_mlp=0.59331
+  [  4/76] rssm/post_stoch state         h=0  K=1  R2_ridge=0.38234  R2_mlp=0.52922
+  [  5/76] rssm/prior      state         h=0  K=1  R2_ridge=0.66787  R2_mlp=0.6019
+  [  6/76]  vae/vae_enc    state         h=0  K=1  R2_ridge=0.64956  R2_mlp=0.69241
+  [  7/76]  vae/vae_latent state         h=0  K=1  R2_ridge=0.64947  R2_mlp=0.69701
+  [  8/76]  vae/vae_latent state         h=0  K=4  R2_ridge=0.6581  R2_mlp=0.64647
+  [  9/76]  vae/vae_latent state         h=0  K=16  R2_ridge=0.66019  R2_mlp=0.54484
+  [ 10/76]  vae/vae_latent state         h=0  K=all  R2_ridge=0.7758  R2_mlp=0.82094
+  [ 11/76] rssm/enc        state         h=1  K=1  R2_ridge=0.37697  R2_mlp=0.46881
+  [ 12/76] rssm/posterior  state         h=1  K=1  R2_ridge=0.45789  R2_mlp=0.40563
+  [ 13/76] rssm/post_deter state         h=1  K=1  R2_ridge=0.44886  R2_mlp=0.41931
+  [ 14/76] rssm/post_stoch state         h=1  K=1  R2_ridge=0.17359  R2_mlp=0.28786
+  [ 15/76] rssm/prior      state         h=1  K=1  R2_ridge=0.45461  R2_mlp=0.40758
+  [ 16/76]  vae/vae_enc    state         h=1  K=1  R2_ridge=0.3013  R2_mlp=0.36618
+  [ 17/76]  vae/vae_latent state         h=1  K=1  R2_ridge=0.30121  R2_mlp=0.38516
+  [ 18/76]  vae/vae_latent state         h=1  K=4  R2_ridge=0.34384  R2_mlp=0.3419
+  [ 19/76]  vae/vae_latent state         h=1  K=16  R2_ridge=0.35908  R2_mlp=0.14457
+  [ 20/76]  vae/vae_latent state         h=1  K=all  R2_ridge=0.43003  R2_mlp=0.45032
+  [ 21/76] rssm/imag1      state         h=1  K=1  R2_ridge=0.66765  R2_mlp=0.60032
+  [ 22/76]  vae/vae_imag1  state         h=1  K=1  R2_ridge=0.51534  R2_mlp=0.533
+  [ 23/76] rssm/enc        state         h=5  K=1  R2_ridge=0.24691  R2_mlp=0.2957
+  [ 24/76] rssm/posterior  state         h=5  K=1  R2_ridge=0.29699  R2_mlp=0.20599
+  [ 25/76] rssm/post_deter state         h=5  K=1  R2_ridge=0.29644  R2_mlp=0.22473
+  [ 26/76] rssm/post_stoch state         h=5  K=1  R2_ridge=0.112  R2_mlp=0.16784
+  [ 27/76] rssm/prior      state         h=5  K=1  R2_ridge=0.29692  R2_mlp=0.20871
+  [ 28/76]  vae/vae_enc    state         h=5  K=1  R2_ridge=0.18731  R2_mlp=0.24482
+  [ 29/76]  vae/vae_latent state         h=5  K=1  R2_ridge=0.18707  R2_mlp=0.24793
+  [ 30/76]  vae/vae_latent state         h=5  K=4  R2_ridge=0.22099  R2_mlp=0.15647
+  [ 31/76]  vae/vae_latent state         h=5  K=16  R2_ridge=0.23987  R2_mlp=-0.02442
+  [ 32/76]  vae/vae_latent state         h=5  K=all  R2_ridge=0.31882  R2_mlp=0.35142
+  [ 33/76] rssm/imag5      state         h=5  K=1  R2_ridge=0.60538  R2_mlp=0.52968
+  [ 34/76]  vae/vae_imag5  state         h=5  K=1  R2_ridge=0.46357  R2_mlp=0.4567
+  [ 35/76] rssm/enc        state         h=20 K=1  R2_ridge=0.12602  R2_mlp=0.14598
+  [ 36/76] rssm/posterior  state         h=20 K=1  R2_ridge=0.15716  R2_mlp=0.01229
+  [ 37/76] rssm/post_deter state         h=20 K=1  R2_ridge=0.15783  R2_mlp=0.04243
+  [ 38/76] rssm/post_stoch state         h=20 K=1  R2_ridge=0.05917  R2_mlp=0.03475
+  [ 39/76] rssm/prior      state         h=20 K=1  R2_ridge=0.15736  R2_mlp=0.02121
+  [ 40/76]  vae/vae_enc    state         h=20 K=1  R2_ridge=0.09007  R2_mlp=0.10729
+  [ 41/76]  vae/vae_latent state         h=20 K=1  R2_ridge=0.09008  R2_mlp=0.10717
+  [ 42/76]  vae/vae_latent state         h=20 K=4  R2_ridge=0.10501  R2_mlp=-0.01871
+  [ 43/76]  vae/vae_latent state         h=20 K=16  R2_ridge=0.10825  R2_mlp=-0.23875
+  [ 44/76]  vae/vae_latent state         h=20 K=all  R2_ridge=0.21883  R2_mlp=0.22137
+  [ 45/76] rssm/imag20     state         h=20 K=1  R2_ridge=0.45998  R2_mlp=0.38223
+  [ 46/76]  vae/vae_imag20 state         h=20 K=1  R2_ridge=0.43499  R2_mlp=0.41718
+  [ 47/76] rssm/enc        gait_phase    h=0  K=1  R2_ridge=0.90645  R2_mlp=0.96131
+  [ 48/76] rssm/posterior  gait_phase    h=0  K=1  R2_ridge=0.96232  R2_mlp=0.96428
+  [ 49/76] rssm/post_deter gait_phase    h=0  K=1  R2_ridge=0.96129  R2_mlp=0.96555
+  [ 50/76] rssm/post_stoch gait_phase    h=0  K=1  R2_ridge=0.60819  R2_mlp=0.84808
+  [ 51/76] rssm/prior      gait_phase    h=0  K=1  R2_ridge=0.96169  R2_mlp=0.96329
+  [ 52/76]  vae/vae_enc    gait_phase    h=0  K=1  R2_ridge=0.76897  R2_mlp=0.91014
+  [ 53/76]  vae/vae_latent gait_phase    h=0  K=1  R2_ridge=0.76884  R2_mlp=0.92433
+  [ 54/76]  vae/vae_latent gait_phase    h=0  K=4  R2_ridge=0.87245  R2_mlp=0.92382
+  [ 55/76]  vae/vae_latent gait_phase    h=0  K=16  R2_ridge=0.91177  R2_mlp=0.92357
+  [ 56/76]  vae/vae_latent gait_phase    h=0  K=all  R2_ridge=0.77147  R2_mlp=0.89102
+  [ 57/76] rssm/enc        return_to_go  h=0  K=1  R2_ridge=0.00677  R2_mlp=-0.19352
+  [ 58/76] rssm/posterior  return_to_go  h=0  K=1  R2_ridge=-0.01563  R2_mlp=-0.43196
+  [ 59/76] rssm/post_deter return_to_go  h=0  K=1  R2_ridge=-0.01497  R2_mlp=-0.44
+  [ 60/76] rssm/post_stoch return_to_go  h=0  K=1  R2_ridge=0.00254  R2_mlp=-0.24389
+  [ 61/76] rssm/prior      return_to_go  h=0  K=1  R2_ridge=-0.01679  R2_mlp=-0.46265
+  [ 62/76]  vae/vae_enc    return_to_go  h=0  K=1  R2_ridge=0.00762  R2_mlp=-0.03503
+  [ 63/76]  vae/vae_latent return_to_go  h=0  K=1  R2_ridge=0.00704  R2_mlp=-0.06197
+  [ 64/76]  vae/vae_latent return_to_go  h=0  K=4  R2_ridge=0.00079  R2_mlp=-0.542
+  [ 65/76]  vae/vae_latent return_to_go  h=0  K=16  R2_ridge=-0.02465  R2_mlp=-0.4345
+  [ 66/76]  vae/vae_latent return_to_go  h=0  K=all  R2_ridge=0.05995  R2_mlp=-3.26211
+  [ 67/76] rssm/enc        time_to_fall  h=0  K=1  R2_ridge=0.88602  R2_mlp=0.90129
+  [ 68/76] rssm/posterior  time_to_fall  h=0  K=1  R2_ridge=0.97796  R2_mlp=0.95755
+  [ 69/76] rssm/post_deter time_to_fall  h=0  K=1  R2_ridge=0.97493  R2_mlp=0.96282
+  [ 70/76] rssm/post_stoch time_to_fall  h=0  K=1  R2_ridge=0.39375  R2_mlp=0.49855
+  [ 71/76] rssm/prior      time_to_fall  h=0  K=1  R2_ridge=0.96109  R2_mlp=0.95979
+  [ 72/76]  vae/vae_enc    time_to_fall  h=0  K=1  R2_ridge=0.1258  R2_mlp=0.58
+  [ 73/76]  vae/vae_latent time_to_fall  h=0  K=1  R2_ridge=0.20813  R2_mlp=0.61038
+  [ 74/76]  vae/vae_latent time_to_fall  h=0  K=4  R2_ridge=0.52416  R2_mlp=0.76331
+  [ 75/76]  vae/vae_latent time_to_fall  h=0  K=16  R2_ridge=0.89603  R2_mlp=0.92683
+  [ 76/76]  vae/vae_latent time_to_fall  h=0  K=all  R2_ridge=0.77063  R2_mlp=0.8021
+
+Probing summary (held-out ridge R^2)
+======================================
+
+Per-frame content (target: state, horizon 0):
+  RSSM posterior          R^2 = 0.69383
+  static VAE latent (K=1) R^2 = 0.64947
+  static-vs-sequential gap    = +0.0444
+
+Predictive content (RSSM posterior, target: state):
+  horizon  0: R^2 = 0.69383
+  horizon  1: R^2 = 0.45789
+  horizon  5: R^2 = 0.29699
+  horizon 20: R^2 = 0.15716
+
+VAE receptive field (target: state, horizon 0):
+  K=  1: R^2 = 0.64947
+  K=  4: R^2 = 0.6581
+  K= 16: R^2 = 0.66019
+  K=all: R^2 = 0.7758
+
+Held-out likelihood (mean NLL, lower is better):
+  rssm_posterior_recon       0.6234
+  rssm_prior_predictive      1.4655
+  vae_recon                  1.7691
+
+Wrote results -> /home/rickybao/projects/dreamerv3/results/probing_walker_walk_seed2
+VAE-dynamics seed 2 done | Sun May 24 23:57:04 CDT 2026 | -> /home/rickybao/projects/dreamerv3/results/probing_walker_walk_seed2
+After all seeds finish, rebuild figures: python result_images/build_summary_figures.py
