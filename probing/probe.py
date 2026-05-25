@@ -73,6 +73,12 @@ def site_features(features, fmeta):
   if 'vae_mean' in features:
     sites['vae_enc'] = features['vae_enc']
     sites['vae_latent'] = features['vae_mean']
+    # Open-loop predictions of a learned dynamics model in the VAE latent
+    # space (probing/vae_dynamics.py): the static-representation analog of the
+    # RSSM open-loop prior.
+    for h in fmeta.get('horizons', []):
+      if f'vae_imag{h}' in features:
+        sites[f'vae_imag{h}'] = features[f'vae_imag{h}']
   return sites
 
 
@@ -243,9 +249,12 @@ def build_jobs(sites, targets, masks, horizons, recfields):
       if 'vae_latent' in sites:
         for rf in recfields:
           add('vae', 'vae_latent', 'state', h, rf)
-      # open-loop RSSM prior predicting the matching future state.
+      # open-loop predictions at the matching future state: the RSSM prior and
+      # the learned VAE-latent dynamics baseline.
       if h > 0 and f'imag{h}' in sites:
         add('rssm', f'imag{h}', 'state', h, 1)
+      if h > 0 and f'vae_imag{h}' in sites:
+        add('vae', f'vae_imag{h}', 'state', h, 1)
 
   # Derived dynamical targets, probed at horizon 0.
   for tname in ('gait_phase', 'return_to_go', 'time_to_fall'):

@@ -72,6 +72,22 @@ python -m probing.features \
   --horizons 1 5 20
 ```
 
+### 3b. VAE-latent dynamics baseline — `vae_dynamics.py`
+Trains an action-conditioned forward model in the frozen VAE's latent space
+(`g(z_t,a_t) ≈ z_{t+1}-z_t`, curriculum multi-step rollout loss) and writes
+`vae_imag{k}` open-loop features into an augmented `features_vaedyn.npz`. This
+is the static-representation analog of the RSSM prior, so the probing battery
+can score `vae_imag{k}` against future state alongside the RSSM `imag{k}`.
+
+```bash
+python -m probing.vae_dynamics \
+  --features <RUN>/probing_walker_walk_seed0/features.npz \
+  --traj     <RUN>/probing_walker_walk_seed0/traj.npz \
+  --output   <RUN>/probing_walker_walk_seed0/features_vaedyn.npz \
+  --horizons 1 5 20 --test_frac 0.3
+```
+Then point step 4 at `features_vaedyn.npz` instead of `features.npz`.
+
 ### 4. Run the probing battery — `probe.py`
 Fits ridge + MLP probes over the full (target × site × horizon ×
 receptive-field) sweep and writes `probe_results.csv`, `probe_summary.txt`,

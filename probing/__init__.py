@@ -17,6 +17,9 @@ features       : run both frozen models over the probe trajectories and
                  dump features at every probe site.
 targets        : derive probe targets (current/future state, gait phase,
                  time-to-fall) from the logged physics state.
+vae_dynamics   : action-conditioned forward model in the frozen VAE latent
+                 space (the static-representation analog of the RSSM prior);
+                 emits vae_imag{k} open-loop features for probing.
 probe          : the probing battery (ridge + MLP probes, R^2, likelihood).
 recon_over_time: RSSM vs VAE reconstruction error over time (when sequential
                  context helps); reads features.npz, no model needed.

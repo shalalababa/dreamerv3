@@ -79,10 +79,17 @@ def fig_future_horizon(tabs):
   imag_h = [1, 5, 20]
   imag = np.array([r2(tabs, 'rssm', f'imag{h}', 'state', h, 1)
                    for h in imag_h])
+  series = [(post, hs, RSSM_C, 'posterior linear readout'),
+            (imag, imag_h, '#2a9d8f',
+             'open-loop RSSM prior (action-conditioned)')]
+  # Overlay the VAE-latent learned-dynamics baseline if it was run.
+  vdyn = np.array([r2(tabs, 'vae', f'vae_imag{h}', 'state', h, 1)
+                   for h in imag_h])
+  if not np.all(np.isnan(vdyn)):
+    series.append((vdyn, imag_h, VAE_C,
+                   'open-loop VAE-latent dynamics (baseline)'))
   fig, ax = plt.subplots(figsize=(7.5, 4.8), constrained_layout=True)
-  for arr, xs, c, lab in [(post, hs, RSSM_C, 'posterior linear readout'),
-                          (imag, imag_h, '#2a9d8f',
-                           'open-loop prior (imagined, action-conditioned)')]:
+  for arr, xs, c, lab in series:
     m = np.nanmean(arr, 1)
     ax.fill_between(xs, np.nanmin(arr, 1), np.nanmax(arr, 1), color=c,
                     alpha=0.15)

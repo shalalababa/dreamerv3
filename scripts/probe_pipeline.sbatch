@@ -46,13 +46,13 @@ mkdir -p "${OUT}" "${RESULTS}"
 [ -d "${DV3_RUN}/ckpt" ] || { echo "ERROR: no DreamerV3 ckpt"; exit 1; }
 [ -f "${VAE_CKPT}" ]     || { echo "ERROR: no VAE ckpt; run vae_train first"; exit 1; }
 
-echo "--- [1/3] collecting probe trajectories ---"
+echo "--- [1/5] collecting probe trajectories ---"
 "${PYTHON}" -u -m probing.collect \
   --run_logdir "${DV3_RUN}" \
   --output     "${OUT}/traj.npz" \
   --episodes 40 --max_steps 1000 --mode eval --seed "${SEED}"
 
-echo "--- [2/3] extracting features ---"
+echo "--- [2/5] extracting features ---"
 "${PYTHON}" -u -m probing.features \
   --traj       "${OUT}/traj.npz" \
   --run_logdir "${DV3_RUN}" \
@@ -60,16 +60,25 @@ echo "--- [2/3] extracting features ---"
   --output     "${OUT}/features.npz" \
   --horizons 1 5 20 --ep_batch 8 --seed "${SEED}"
 
-echo "--- [3/4] running probing battery ---"
+echo "--- [3/5] VAE-latent dynamics baseline (open-loop forward model) ---"
+"${PYTHON}" -u -m probing.vae_dynamics \
+  --features "${OUT}/features.npz" \
+  --traj     "${OUT}/traj.npz" \
+  --output   "${OUT}/features_vaedyn.npz" \
+  --horizons 1 5 20 --test_frac 0.3 --steps 6000 --seed "${SEED}"
+
+echo "--- [4/5] running probing battery ---"
 # Heavy traj.npz/features.npz stay on scratch (${OUT}); the small probe
-# results and figures are written into the repo so they are versioned.
+# results and figures are written into the repo so they are versioned. We probe
+# the augmented features so RSSM imag{k} and VAE-dynamics vae_imag{k} are scored
+# side by side.
 "${PYTHON}" -u -m probing.probe \
   --traj     "${OUT}/traj.npz" \
-  --features "${OUT}/features.npz" \
+  --features "${OUT}/features_vaedyn.npz" \
   --output   "${RESULTS}" \
   --horizons 0 1 5 20 --mlp_steps 2000
 
-echo "--- [4/4] dynamics figures (how the world model works) ---"
+echo "--- [5/5] dynamics figures (how the world model works) ---"
 "${PYTHON}" -u -m probing.recon_over_time \
   --features "${OUT}/features.npz" \
   --traj     "${OUT}/traj.npz" \
