@@ -39,9 +39,12 @@ RSSM's deterministic state and only weakly by its categorical stochastic latent;
 (ii) the static VAE's per-frame latents, aggregated post-hoc over the past,
 match and slightly exceed the RSSM at current-state decoding, while a few recent
 frames do not. For prediction, the RSSM's action-conditioned prior reaches
-$R^2\approx0.50$ at a 20-step horizon, compared with $0.16$ for a linear readout
-of its posterior, and the recurrent posterior makes gait phase linearly
-decodable. Finally, generative likelihood and probe \rtwo{} decouple: the RSSM
+$R^2\approx0.50$ at a 20-step horizon, versus $0.16$ for a linear readout of its
+posterior and $0.46$ for a learned dynamics model in the static VAE's latent
+space; under the primary linear probe, the RSSM leads at every horizon, though
+the margin narrows as the horizon grows. The recurrent posterior also makes gait
+phase linearly decodable. Finally, generative likelihood and probe \rtwo{}
+decouple: the RSSM
 has lower reconstruction NLL than the VAE without a matching gain in linearly
 decodable state.
 \end{abstract}
@@ -181,7 +184,9 @@ discounted return-to-go; time-to-fall).
 \item \textbf{Probe site:} encoder output; RSSM posterior ($h_t$ and $\mathbb{E}[z_t]$,
 also probed separately); RSSM prior, both one-step and open-loop $k$-step
 (roll the prior forward with the recorded actions and probe the imagined state);
-VAE encoder output; VAE latent mean.
+VAE encoder output; VAE latent mean; and the VAE latent rolled open-loop by a
+learned action-conditioned dynamics model (\S\ref{sec:pred}), the static analog
+of the RSSM prior.
 \item \textbf{Receptive field:} the VAE latent with a growing causal temporal
 window. For $K\in\{1,4,16\}$ we concatenate the most recent $K$ latents; for
 $K{=}\text{all}$ we concatenate the current latent with the causal mean of all
@@ -203,9 +208,10 @@ log-likelihood, computed identically for both models (\S\ref{sec:setup}).
 are the mean). \textbf{Left:} current simulator state ($h{=}0$) is decoded
 equally well by the encoder, RSSM posterior, RSSM deterministic state, and the
 VAE ($\approx0.7$); the categorical stochastic latent alone is a weaker linear
-code ($\approx0.40$). \textbf{Right:} a linear readout of future state from the
-posterior decays quickly; rolling the action-conditioned prior forward
-(open-loop imagination) retains higher future-state \rtwo{}.}
+code ($\approx0.40$). \textbf{Right:} future-state \rtwo{} versus horizon. A linear readout of the
+posterior decays quickly; under the primary linear probe, the open-loop RSSM
+prior retains the most; a learned dynamics model rolled in the static VAE latent
+space is a strong baseline that narrows the gap.}
 \label{fig:probes}
 \end{figure}
 
@@ -235,10 +241,22 @@ $\approx0.50$ versus $0.16$ for a linear readout of the same future state from
 the posterior, roughly three times the future-state content. The pattern also
 appears under the MLP: the prior still reaches $R^2\approx0.43$
 at $20$ steps while the posterior readout falls to about zero. The RSSM's learned
-dynamics, not a readout of the current latent, carry the future. This compares
-two read-outs of the RSSM; we do not equip the VAE with a learned transition
-model, so the result locates the RSSM's predictive content rather than claiming
-it forecasts better than a static representation with its own dynamics. Appendix
+dynamics, not a readout of the current latent, carry the future. To test whether
+this reflects the sequential representation or merely the presence of a dynamics
+model, we give the static VAE its own: a forward model $g(z_t,a_t)\approx
+z_{t+1}-z_t$ trained on the probe train episodes with a curriculum multi-step
+rollout loss and rolled open-loop. This baseline recovers far more future state
+than the static latent readout ($R^2 = 0.53,\,0.49,\,0.46$ at $k=1,5,20$ versus
+$0.32,\,0.19,\,0.11$), so much predictive content is accessible from a static
+representation once it has a learned transition model. Under the primary linear
+probe, the RSSM prior still leads at every horizon and within every seed
+($0.72,\,0.66,\,0.50$ versus $0.53,\,0.49,\,0.46$), giving the RSSM a clear
+linear-probe advantage over a static representation equipped with dynamics,
+rather than only over a static readout. The margin is largest at short horizon
+($+0.18$ at $k=1$) and narrows to $+0.05$ at $k=20$, where the two approach a
+similar ceiling. Under the MLP, the RSSM and VAE-dynamics models remain
+separated at $k=1$ and $k=5$ but are essentially tied at $k=20$, so we treat the
+head-to-head advantage as strongest in the linear-probe setting. Appendix
 Figure~\ref{fig:openloop} visualizes a single open-loop rollout and the
 prediction error growing with horizon.
 
@@ -321,12 +339,16 @@ Static VAE reconstruction      & 1.58 & 1.95 & 1.77 \\
 Across a comparison that holds the encoder, decoder, observation model, and data
 fixed, the sequential generative latent does not encode more about the current
 observable state than a static VAE; a hand-specified causal summary of the static
-model's past latents matches it. Within the RSSM, the future-state information
-lives in the action-conditioned prior, which forecasts $20$ steps ahead with
-higher \rtwo{} than a linear readout of the posterior under both probe families;
-we read this as locating the RSSM's predictive content, not as a claim that it
-forecasts better than a static representation equipped with its own dynamics. The
-RSSM also makes gait phase linearly decodable, though a nonlinear probe recovers
+model's past latents matches it. The RSSM's future-state information lives in its
+action-conditioned prior, which forecasts with higher \rtwo{} than a linear
+readout of the posterior under both probe families. Equipping the static VAE with
+its own learned dynamics is a strong baseline that recovers much of this content.
+Under the primary linear probe, the RSSM prior still leads at every horizon and
+within every seed ($0.50$ versus $0.46$ at $20$ steps), giving the RSSM a
+measurable advantage over a static representation equipped with dynamics; under
+the MLP, the advantage is clear at short horizons but becomes a tie at $20$
+steps. The RSSM also makes gait phase linearly decodable, though a nonlinear
+probe recovers
 most of that from the static latent, so this is an advantage of linear
 accessibility, not evidence that the static model lacks the information.
 Separately, the RSSM has lower reconstruction NLL than the VAE without a matching gain in what a
@@ -339,10 +361,10 @@ categorical, its prior and objective differ, and the probed posterior feature is
 higher-dimensional ($640$ versus $128$). We report matched-width stochastic- and
 deterministic-state probes to control for dimensionality, but the other
 differences remain, so sequential structure is the principal factor behind any
-gap, not the sole one. The predictive result (\S\ref{sec:pred}) compares
-two read-outs of the RSSM; we do not train an action-conditioned dynamics model
-on VAE features, so it locates the RSSM's predictive content rather than showing
-superiority over a static representation with its own dynamics. We report a
+gap, not the sole one. The VAE-latent dynamics baseline (\S\ref{sec:pred}) is one
+forward-model design trained on the probe episodes; a stronger architecture or
+more pretraining data could narrow the remaining gap, which is already small at
+long horizon. We report a
 pooled, variance-weighted $R^2$ over state dimensions, which counts high-variance
 components such as velocities more; per-component probing is left to future work.
 We study one domain (Walker), one modality (proprioception, where a single frame
@@ -412,9 +434,12 @@ VAE uses the same encoder and decoder architecture, with a $128$-dimensional Gau
 latent, $\beta{=}1$, trained from scratch for $60$K steps (Adam, lr
 $3\times10^{-4}$) on each seed's replay buffer. Probes use ridge
 (regularization selected on a validation split) and a two-hidden-layer,
-width-$256$ ReLU MLP. The probe set is $40$ held-out episodes of $1000$ steps
-from the frozen evaluation policy with logged physics state. All figures are
-regenerated by
+width-$256$ ReLU MLP. The VAE-latent dynamics baseline is a two-hidden-layer
+width-$256$ residual MLP trained with a curriculum multi-step rollout loss (the
+rollout length ramped $1\to20$) for $6000$ steps (Adam, lr $10^{-3}$, gradient
+clip $1.0$) on the probe train episodes. The probe set is $40$ held-out episodes
+of $1000$ steps from the frozen evaluation policy with logged physics state. All
+figures are regenerated by
 \texttt{result\_images/build\_summary\_figures.py} from the per-seed outputs.
 
 \end{document}

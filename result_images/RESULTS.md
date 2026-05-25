@@ -27,14 +27,18 @@ generative latent is intrinsically richer per frame.
 ### `future_state_r2_by_horizon_posterior_vs_prior.png`
 ![](future_state_r2_by_horizon_posterior_vs_prior.png)
 
-**This is where the world model earns its keep.** Reading the future linearly
-off the posterior decays fast (R² 0.74 → 0.50 → 0.30 → 0.16 at k = 0/1/5/20).
-But rolling the **prior forward with the recorded actions** (imagination) stays
-far higher (0.72 → 0.66 → 0.50 at k = 1/5/20). At a 20-step horizon the
-action-conditioned prior retains ≈ 0.50 vs ≈ 0.16 for a static readout — i.e.
-the learned dynamics carry roughly **3× more future-state information** than
-linear extrapolation of the current latent. The sequential model's value is
-predictive, not in current-state encoding.
+**This is where the world model earns its keep, but the static baseline is now
+stronger.** Reading the future linearly off the RSSM posterior decays fast
+(R² 0.74 → 0.50 → 0.30 → 0.16 at k = 0/1/5/20). Rolling the **RSSM prior
+forward with the recorded actions** stays higher (0.72 → 0.66 → 0.50 at
+k = 1/5/20). A learned action-conditioned dynamics model in the static VAE's
+latent space also recovers much of the future state (0.53 → 0.49 → 0.46). Under
+the primary ridge probe, the RSSM prior still leads at every horizon and within
+every seed, but the gap narrows from +0.18 at 1 step to +0.05 at 20 steps. Under
+the MLP probe, the RSSM and VAE-dynamics baselines are essentially tied at the
+longest horizon. The sequential model's value is predictive, not in
+current-state encoding, and the head-to-head advantage is strongest in the
+linear-probe setting.
 
 ---
 
@@ -110,8 +114,10 @@ the horizon.
 Beyond a static VAE, the sequential generative latent does **not** encode more
 about the current observable state (a frame-stacking static model matches it).
 Its genuine advantages are (1) **cyclic/dynamical structure** — gait phase,
-+0.21 R² — and (2) **action-conditioned future state** via its learned dynamics
-(prior R² ≈ 0.50 at 20 steps vs 0.16 for static extrapolation). Generative
++0.21 R² — and (2) **action-conditioned future state** via learned dynamics.
+Against a learned VAE-latent dynamics baseline, the RSSM prior is better under
+the primary linear probe (R² ≈ 0.50 vs 0.46 at 20 steps), with the advantage
+narrowing at long horizon and becoming a tie under the MLP probe. Generative
 fidelity (reconstruction/prediction NLL) improves strongly with capacity and
 training while linear state-decodability saturates early, so the two evaluation
 lenses agree only partially.

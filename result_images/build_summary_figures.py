@@ -96,7 +96,7 @@ def fig_future_horizon(tabs):
     ax.plot(xs, m, 'o-', color=c, lw=2, label=lab)
   ax.set_xlabel('prediction horizon k (steps)')
   ax.set_ylabel('held-out R^2  (target: simulator state)')
-  ax.set_title('Future-state R^2 vs horizon: posterior readout vs prior')
+  ax.set_title('Future-state R^2 vs horizon')
   ax.axhline(0, color='#888888', lw=0.7)
   ax.legend(fontsize=8)
   fig.savefig(OUT / 'future_state_r2_by_horizon_posterior_vs_prior.png',
