@@ -36,20 +36,21 @@ latent space also recovers much of the future state (0.53 → 0.49 → 0.46). Un
 the primary ridge probe, the RSSM prior still leads at every horizon and within
 every seed, but the gap narrows from +0.18 at 1 step to +0.05 at 20 steps. Under
 the MLP probe, the RSSM and VAE-dynamics baselines are essentially tied at the
-longest horizon. The sequential model's value is predictive, not in
-current-state encoding, and the head-to-head advantage is strongest in the
-linear-probe setting.
+longest horizon. In this proprioceptive setting, the sequential model's value is
+predictive, not in current-state encoding, and the head-to-head advantage is
+strongest in the linear-probe setting.
 
 ---
 
 ### `vae_receptive_field_r2.png`
 ![](vae_receptive_field_r2.png)
 
-**A static VAE recovers — and exceeds — the RSSM's current-state advantage just
-by aggregating past frames.** The VAE latent rises from R² ≈ 0.69 (1 frame) to
+**A static VAE recovers — and exceeds — the RSSM's current-state advantage in
+proprioceptive Walker by aggregating past frames.** The VAE latent rises from R² ≈ 0.69 (1 frame) to
 ≈ 0.78 at K = all, overtaking the RSSM posterior reference (≈ 0.74). So for
-*current observable state*, recurrence provides essentially nothing that simple
-post-hoc temporal aggregation of static features can't reproduce. This makes the
+*current observable state in this near-fully observed regime*, recurrence
+provides essentially nothing that simple post-hoc temporal aggregation of static
+features can't reproduce. This makes the
 "static vs sequential" contrast empirical rather than assumed: the gap at the
 current state is small and closes under aggregation.
 
@@ -111,13 +112,13 @@ the horizon.
 
 ## One-paragraph takeaway
 
-Beyond a static VAE, the sequential generative latent does **not** encode more
-about the current observable state (a frame-stacking static model matches it).
-Its genuine advantages are (1) **cyclic/dynamical structure** — gait phase,
-+0.21 R² — and (2) **action-conditioned future state** via learned dynamics.
-Against a learned VAE-latent dynamics baseline, the RSSM prior is better under
-the primary linear probe (R² ≈ 0.50 vs 0.46 at 20 steps), with the advantage
-narrowing at long horizon and becoming a tie under the MLP probe. Generative
-fidelity (reconstruction/prediction NLL) improves strongly with capacity and
-training while linear state-decodability saturates early, so the two evaluation
-lenses agree only partially.
+In this near-fully observed proprioceptive setting, the sequential generative
+latent does **not** encode more about the current observable state than a static
+VAE with temporal pooling. Its genuine advantages are (1) **cyclic/dynamical
+structure** — gait phase, +0.21 R² — and (2) **action-conditioned future state**
+via learned dynamics. Against a learned VAE-latent dynamics baseline, the RSSM
+prior is better under the primary linear probe (R² ≈ 0.50 vs 0.46 at 20 steps),
+with the advantage narrowing at long horizon and becoming a tie under the MLP
+probe. Generative fidelity (reconstruction/prediction NLL) improves strongly
+with capacity and training while linear state-decodability saturates early, so
+the two evaluation lenses agree only partially.
