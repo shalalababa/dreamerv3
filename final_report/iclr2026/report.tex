@@ -15,7 +15,7 @@ Probing a DreamerV3 World Model Against a Static VAE}
 University of Chicago \\
 \texttt{rickybao@uchicago.edu}}
 
-\newcommand{\rtwo}{$R^2$}
+\newcommand{\rtwo}{\ensuremath{R^2}}
 \iclrfinalcopy
 
 \begin{document}
@@ -100,10 +100,10 @@ and are increasingly used to pretrain representations for downstream control
 without task reward \citep{sekar2020plan2explore,liu2021aps,laskin2021urlb}. That
 setting makes the content of the learned latent the object of interest, yet such
 work usually reports downstream return rather than what the latent itself
-captures. We instead probe the frozen latent directly and, to isolate the effect
-of sequential structure, compare it against a static VAE
-\citep{kingma2014vae,higgins2017betavae} that shares the encoder and decoder
-architecture and the training data.
+captures. We instead probe the frozen latent directly and, to control for
+architecture and data while focusing on sequential structure, compare it against
+a static VAE \citep{kingma2014vae,higgins2017betavae} that shares the encoder and
+decoder architecture and the training data.
 
 \section{Background and setup}
 \label{sec:setup}
@@ -119,8 +119,9 @@ dimensions. The model is trained with reconstruction and a KL term that aligns
 posterior and prior \citep{hafner2025dreamerv3}.
 
 \paragraph{Static VAE.} Our baseline removes the recurrence and dynamics while
-holding everything else fixed. It uses an encoder with the same architecture as
-DreamerV3's, trained from scratch, to map a single frame $x_t$ to a
+holding the encoder and decoder architecture, observation model, and training
+frames fixed. It uses an encoder with the same architecture as DreamerV3's,
+trained from scratch, to map a single frame $x_t$ to a
 diagonal-Gaussian latent $q(z\mid x_t)=\mathcal{N}(\mu(x_t),
 \mathrm{diag}\,\sigma^2(x_t))$, and a decoder matched to the RSSM's vector
 decoder. It is trained on the per-frame objective
@@ -148,8 +149,8 @@ DreamerV3 seeds and one VAE per seed on that seed's replay buffer; two seeds run
 to $500$K environment steps and one to $1.1$M. Probe figures show all three
 seeds as points with the bar or line at their mean. The $1.1$M seed is usually
 highest, but by no more than the gap between the two $500$K seeds, so we do not
-separate it in the probe figures; the training-length effect instead appears in
-generative likelihood, which we report per seed (\S\ref{sec:gen}). Probe
+separate it in the probe figures; a possible training-length effect instead
+appears in generative likelihood, which we report per seed (\S\ref{sec:gen}). Probe
 trajectories are $40$ held-out episodes ($1000$ steps) rolled out from the frozen
 evaluation policy, logging the full MuJoCo physics state
 ($q_{\text{pos}}\,|\,q_{\text{vel}}$), which the replay buffer does not store.
@@ -297,10 +298,10 @@ quality.
 
 \begin{table}[t]
 \caption{Held-out NLL (lower is better), mean over the held-out probe set,
-per seed (training steps in parentheses). The RSSM reconstructs and predicts far
-better than the VAE; the longer-trained seed~0 has lower NLL still, while
-current-state probe \rtwo{} (Fig.~\ref{fig:probes}) stays roughly flat across
-seeds.}
+per seed (training steps in parentheses). The RSSM reconstructs far better than
+the VAE, and its one-step prior predictive NLL is also reported; the
+longer-trained seed~0 has lower NLL still, while current-state probe \rtwo{}
+(Fig.~\ref{fig:probes}) stays roughly flat across seeds.}
 \label{tab:nll}
 \begin{center}
 \begin{tabular}{lccc}
