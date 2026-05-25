@@ -14,7 +14,7 @@
 % Poster size required by the course: 24" wide x 36" high (portrait).
 % 24 in = 60.96 cm, 36 in = 91.44 cm. Raise/lower `scale` to fill the page:
 % higher = bigger fonts (more likely to overflow), lower = smaller (more room).
-\usepackage[size=custom,width=60.96,height=91.44,scale=0.88]{beamerposter}
+\usepackage[size=custom,width=60.96,height=91.44,scale=0.86]{beamerposter}
 \usetheme{gemini}
 \usecolortheme{uchicago}
 \usepackage{graphicx}
@@ -176,7 +176,7 @@
     current state at $\rtwo\approx0.69$--$0.74$. Within the RSSM it sits mainly
     in the \textbf{deterministic state} (0.70); the stochastic latent alone is
     weaker (0.40 linear, 0.55 MLP). At equal width the continuous VAE latent
-    (0.69) is the stronger \emph{linear} code.
+    (0.69) is the stronger linear code.
 
   \end{block}
 
@@ -207,15 +207,15 @@
 
     \begin{figure}
       \centering
-      \includegraphics[width=0.66\linewidth]{figures/future_state_r2_by_horizon_posterior_vs_prior.png}
+      \includegraphics[width=0.56\linewidth]{figures/future_state_r2_by_horizon_posterior_vs_prior.png}
     \end{figure}
 
-    Rolling the \textbf{prior} forward retains far more future state than a
-    linear \emph{readout} of the posterior: at $k{=}20$, $\rtwo\approx0.50$ vs
+    Rolling the \textbf{prior} forward retains higher future-state \rtwo{} than a
+    linear readout of the posterior: at $k{=}20$, $\rtwo\approx0.50$ vs
     $0.16$ (about $3\times$). A learned VAE-latent dynamics model is a
     \textbf{strong baseline} (0.46). The prior still leads within every seed
     under the linear probe, but the margin shrinks ($+0.18$ at $k{=}1$ to
-    $+0.05$ at $k{=}20$) toward a shared predictability ceiling.
+    $+0.05$ at $k{=}20$) as the horizon grows.
 
   \end{alertblock}
 
@@ -223,13 +223,13 @@
 
     \begin{figure}
       \centering
-      \includegraphics[width=0.5\linewidth]{figures/gait_phase_r2_rssm_vs_vae.png}
+      \includegraphics[width=0.42\linewidth]{figures/gait_phase_r2_rssm_vs_vae.png}
     \end{figure}
 
     Largest linear gap: gait phase decodes at $\rtwo\approx0.95$ (posterior) vs
     $0.74$ (VAE), $+0.21$. A single frame cannot place position within a cycle.
     But an \textbf{MLP} recovers most of it from the static latent (0.89 vs
-    0.95): the RSSM makes cyclic structure \emph{more linearly accessible}, not
+    0.95): the RSSM makes cyclic structure more linearly accessible, not
     newly present.
 
   \end{block}
@@ -238,7 +238,7 @@
 
     \begin{figure}
       \centering
-      \includegraphics[width=0.85\linewidth]{figures/generative_nll_and_reconstruction_advantage.png}
+      \includegraphics[width=0.74\linewidth]{figures/generative_nll_and_reconstruction_advantage.png}
     \end{figure}
 
     The RSSM reconstructs with much lower NLL than the VAE (on 90--97\% of
@@ -251,10 +251,10 @@
 
     In near-fully-observed proprioception:
     \begin{itemize}
-      \item No \textbf{more current state} than a static VAE plus causal pooling.
-      \item Value is \textbf{predictive} (the prior) and \textbf{coordinate-shaping}
+      \item Current-state decoding: static VAE plus causal pooling is enough.
+      \item RSSM value is \textbf{predictive} (the prior) and \textbf{coordinate-shaping}
         (it linearizes gait phase).
-      \item A static representation \emph{plus dynamics} recovers most predictive
+      \item A static representation plus dynamics recovers most predictive
         content: recurrence is not required to access it.
       \item Generative likelihood is \textbf{not} a proxy for probe quality.
     \end{itemize}
@@ -276,7 +276,7 @@
   \begin{block}{References}
 
     \nocite{*}
-    \footnotesize{\bibliographystyle{plainnat}\bibliography{poster}}
+    \scriptsize{\bibliographystyle{plainnat}\bibliography{poster}}
 
   \end{block}
 
