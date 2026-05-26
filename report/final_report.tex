@@ -28,7 +28,7 @@ CMSC 35401: Active Representation Learning \\
 \begin{abstract}
 A world model trained without any task reward should, in principle, learn
 dynamics that transfer to many downstream tasks. Whether it actually does, and
-\emph{which} property of the learned representation tracks that transfer,
+which property of the learned representation tracks that transfer,
 remains poorly characterized. We study reward-free pretraining of a DreamerV3
 world model on the DeepMind Control proprioceptive Walker, comparing four
 pretraining strategies (none, random-policy data, Plan2Explore
@@ -38,17 +38,17 @@ frozen-readout protocol. Across two seeds per condition we find that
 exploratory pretraining (Plan2Explore, APT) speeds early adaptation by roughly
 $2$--$3\times$ over training from scratch, whereas random-policy pretraining
 gives no benefit and, when frozen, actively hurts. Adaptation speed correlates
-far more strongly with the \emph{coverage} of the pretraining data and with
+far more strongly with the coverage of the pretraining data and with
 linear probes of derived dynamical quantities (time-to-fall) than with
 current-state decodability, which is saturated and non-discriminative. A
 time-resolved analysis shows that Plan2Explore's coverage is built
-\emph{continuously} by the learned exploratory policy, accumulating well after
+continuously by the learned exploratory policy, accumulating well after
 its raw disagreement reward has collapsed, which argues against a sustained,
 high-magnitude raw-disagreement reward as the driver. A minimal
 protocol-calibration experiment (Plan2Explore vs.\ no-pretraining on
 \texttt{walk}) shows the early-adaptation ordering carries over from
 frozen-readout to standard full-adaptation, while a frozen-readout-specific
-final-performance deficit disappears --- the benefit is one of sample
+final-performance deficit disappears. The benefit is one of sample
 efficiency, not a higher performance ceiling. We frame our conclusions around
 what the small two-seed design can and cannot support, and are explicit that our
 coverage measure is nearly collinear with ``the policy explores at all,'' so it
@@ -61,7 +61,7 @@ Model-based reinforcement learning agents such as DreamerV3
 \citep{hafner2023dreamerv3} learn a latent world model and train a policy
 entirely inside imagined rollouts. The world model is the agent's
 representation of its environment, and a natural question is whether that
-representation can be learned \emph{before} any task is specified, then reused
+representation can be learned before any task is specified, then reused
 across tasks. This is the promise of unsupervised, or reward-free,
 reinforcement learning \citep{laskin2021urlb}: spend an exploration budget
 learning task-agnostic dynamics, and amortize it over many downstream
@@ -72,7 +72,7 @@ obvious that reward-free pretraining helps at all in the model-based setting: a
 world model trained on a poor data distribution may model the wrong part of the
 state space, and a frozen representation may simply cap downstream performance.
 Second, even when pretraining helps, the field lacks a clear account of
-\emph{which} property of the learned representation is responsible. Exploration
+which property of the learned representation is responsible. Exploration
 methods are usually compared by their downstream return, not by the
 representations they induce, so it is rarely clear whether a method helps
 because it produces an accurate forward model, a linearly decodable state, or
@@ -80,7 +80,7 @@ simply broad data coverage.
 
 We take an empirical, mechanism-focused position on a deliberately small and
 controllable domain. Transfer here means reuse across reward functions on a
-\emph{single} Walker body and proprioceptive observation space, not
+single Walker body and proprioceptive observation space, not
 cross-morphology or cross-domain transfer. Because the 500K reward-free phase is
 a sunk cost paid once, any benefit is a per-task sample-efficiency gain that only
 amortizes across several downstream tasks, a point we make precise in
@@ -92,7 +92,7 @@ coverage. Our contributions are:
 \begin{itemize}
 \item A controlled four-condition comparison (no-pretrain, random, Plan2Explore,
 APT) on a shared body, isolating the effect of the pretraining
-\emph{exploration objective} from the model and the downstream task.
+exploration objective from the model and the downstream task.
 \item Evidence that exploratory pretraining improves early-adaptation sample
 efficiency by $2$--$3\times$, that random pretraining does not, and that under a
 frozen representation random pretraining underperforms training from scratch.
@@ -138,7 +138,7 @@ random network distillation \citep{burda2019rnd}. A separate URLB family pursues
 behavioral diversity or successor features rather than novelty per se (e.g.,
 DIAYN, \citealp{eysenbach2019diayn}; APS, \citealp{liu2021aps}); we restrict
 attention to Plan2Explore and APT because they instantiate the
-uncertainty-versus-coverage contrast within a \emph{single} world-model agent
+uncertainty-versus-coverage contrast within a single world-model agent
 with the architecture held fixed, which is what our representation comparison
 requires. Plan2Explore and APT are thus the natural contrast for our central
 question: does \emph{uncertainty-driven} exploration induce a different, more
@@ -149,8 +149,8 @@ The Unsupervised Reinforcement Learning Benchmark \citep{laskin2021urlb}
 standardizes the two-stage recipe we follow: a long reward-free pretraining
 phase followed by a short reward-driven adaptation phase, on shared-body domains
 including Walker. URLB adapts by continuing to train the whole agent
-(\emph{full-adaptation}). We instead make \emph{frozen-readout} primary --- the
-encoder and RSSM are frozen and only a fresh task head is trained --- because it
+(\emph{full-adaptation}). We instead make \emph{frozen-readout} primary (the
+encoder and RSSM are frozen and only a fresh task head is trained) because it
 measures the representation as a fixed feature space rather than as an
 initialization, and then calibrate the two protocols against each other. A
 recurring URLB finding is that representation-centric methods can rank
@@ -160,7 +160,7 @@ differently under the two protocols, which our calibration revisits directly.
 Linear probes \citep{alain2016probes} are a standard tool for asking what a
 frozen representation encodes. In a proprioceptive control setting the
 observation is already close to the simulator state, so probing the
-\emph{current} state is near-trivial; we therefore emphasize future-state
+current state is near-trivial; we therefore emphasize future-state
 probes, derived dynamical quantities, and reward decodability, which are not
 linear read-outs of a single frame.
 
@@ -170,7 +170,7 @@ We address three questions:
 \textbf{(RQ1)} Does reward-free world-model pretraining improve downstream
 adaptation, and does the exploration objective matter?
 \textbf{(RQ2)} Which property of the pretrained representation is most
-associated with adaptation speed --- forward-predictive accuracy, decodability
+associated with adaptation speed: forward-predictive accuracy, decodability
 of state and derived quantities, reward decodability, or data coverage?
 \textbf{(RQ3)} Do uncertainty-driven (Plan2Explore) and coverage-driven (APT)
 exploration induce measurably different transfer?
@@ -183,8 +183,8 @@ how the world model is pretrained for 500K reward-free environment steps:
 policy, with no actor; \textbf{C3 (Plan2Explore)} adds an ensemble of one-step
 latent predictors and trains an exploration actor on their disagreement;
 \textbf{C4 (APT)} trains an exploration actor on the $k$-NN particle-entropy of
-the latent. C1 is the no-pretraining baseline (not a strict lower bound --- at
-the adaptation budget it can beat a frozen pretrained model on final return);
+the latent. C1 is the no-pretraining baseline (not a strict lower bound, since
+at the adaptation budget it can beat a frozen pretrained model on final return);
 C2 isolates ``a world model trained on passive data'' from the effect of active
 exploration.
 
@@ -216,18 +216,18 @@ early-adaptation AUC: the mean episode return over the first $125$K steps (the
 first half of $A$), equivalently a normalized area under the return curve, which
 reflects both how high adaptation starts and how fast it climbs. The
 \textbf{secondary metric} is final return near $A$. We report both because they
-answer different questions --- how fast, versus how high. With only two seeds per
+answer different questions: how fast versus how high. With only two seeds per
 condition we report per-seed values and seed spread rather than significance
 tests, and make no significance claims, in keeping with small-sample reporting
 guidance for deep RL \citep{agarwal2021rliable}.
 
 \paragraph{Representation analysis.}
 We collect one common held-out trajectory set from a fixed uniform-random policy
-with logged MuJoCo physics, and encode it through \emph{each} condition's frozen
+with logged MuJoCo physics, and encode it through each condition's frozen
 world model, so all conditions are probed on identical underlying states. On
 these features we fit ridge probes for current and future simulator state, gait
 phase, time-to-fall, and per-task reward, reporting held-out $R^2$. Separately,
-we measure \emph{coverage} of each condition's pretraining replay as a $k$-NN
+we measure coverage of each condition's pretraining replay as a $k$-NN
 particle entropy of the proprioceptive observations (an almost-complete function
 of the simulator state in this domain), on a shared standardizer so conditions
 are comparable. To probe mechanism we also bucket each replay buffer by
@@ -254,7 +254,7 @@ spread, never as single point estimates.
 
 \paragraph{Protocol calibration.}
 To test whether frozen-readout conclusions transfer to the standard URLB
-protocol, we additionally run C3 (Plan2Explore) \emph{full-adaptation} on
+protocol, we additionally run C3 (Plan2Explore) full-adaptation on
 \texttt{walk} for two seeds, in which the world model continues to train during
 adaptation. This is the minimal version of the calibration; a full four-way
 calibration is left to future work.
@@ -307,14 +307,14 @@ The secondary metric tells a complementary and important story
 (Table~\ref{tab:final}). By $240$K steps, from-scratch C1 has largely caught up:
 on \texttt{walk} it reaches $754$, ahead of frozen C3 ($535$) and C4 ($765$,
 essentially tied). The pretraining benefit is therefore primarily one of
-\emph{sample efficiency} rather than asymptotic performance at this budget. Two
+sample efficiency rather than asymptotic performance at this budget. Two
 findings stand out. First, frozen C2 (random) collapses far below C1 on every
 task ($144$ vs.\ $754$ on \texttt{walk}); its early and final values are nearly
 equal, meaning it plateaus almost immediately. A frozen world model trained on
 random-policy data, which mostly captures a flailing or fallen Walker, is a
 worse fixed representation than learning from scratch. Second, frozen C3 trails
 C1 at convergence on \texttt{walk} and \texttt{run} even though it adapts faster
-early --- a tension we resolve in Section~\ref{sec:calib}.
+early, a tension we resolve in Section~\ref{sec:calib}.
 
 \begin{table}[t]
 \centering
@@ -352,7 +352,7 @@ random $1.10 <$ APT $1.26 <$ Plan2Explore $1.39$, and the time-to-fall probe
 $R^2$ orders them similarly ($0.55 < 0.63 \le 0.65$). Across the six pretrained
 (condition, seed) points, early-adaptation AUC correlates $+0.68$ to $+0.90$
 with coverage and $+0.67$ to $+0.90$ with time-to-fall (Table~\ref{tab:repr}).
-We stress three caveats. First, with $n=6$ these correlations are descriptive,
+Three caveats apply here. First, with $n=6$ these correlations are descriptive,
 not significant; we read their sign and rough size, not their exact value.
 Second, and more fundamentally, our coverage measure is nearly collinear with
 ``the policy explores at all'': random barely moves and the two exploratory
@@ -394,16 +394,16 @@ Adaptation speed tracks the latter, not the former.}
 \label{fig:probe}
 \end{figure}
 
-\subsection{RQ3: Plan2Explore $\approx$ APT, and the benefit is not a sustained
-uncertainty signal}
+\subsection{RQ3: Plan2Explore and APT transfer comparably, and coverage
+outlasts the disagreement reward}
 
 On adaptation, C3 and C4 are broadly comparable: APT leads on \texttt{stand} and
 \texttt{run}, Plan2Explore on \texttt{walk}, and their seed ranges overlap on
 \texttt{stand} and \texttt{walk}. We therefore cannot separate the two methods'
 downstream effect at two seeds, which is itself the answer to RQ3 at this
 budget: uncertainty-driven and coverage-driven exploration produce similar
-transfer here. Notably, the uncertainty-driven method (Plan2Explore) produced
-the \emph{highest} data coverage, more than the coverage-driven method (APT),
+transfer here. The uncertainty-driven method (Plan2Explore) in fact produced
+the highest data coverage, more than the coverage-driven method (APT),
 so coverage and the nominal objective do not line up in the naive way.
 
 The timing analysis sharpens the mechanism. Plan2Explore's raw disagreement
@@ -412,9 +412,9 @@ reward collapses by roughly $100\times$ early in pretraining (from $\sim
 uncertainty. Yet its replay coverage keeps rising monotonically through the end
 of pretraining (Figure~\ref{fig:timing}, Figure~\ref{fig:covtime}), long after
 the reward has vanished, whereas random-policy coverage stays flat throughout.
-The coverage is thus generated continuously by the \emph{learned exploratory
-policy}, not by a sustained intrinsic reward and not as an early burst that is
-later merely retained. This argues against a sustained, high-magnitude
+The \emph{learned exploratory policy} thus generates this coverage continuously,
+well after the intrinsic reward has decayed, rather than in an early burst that
+is later retained. This argues against a sustained, high-magnitude
 \emph{raw}-disagreement reward as the driver, though we measured the raw signal,
 not the percentile-normalized advantage the actor actually optimizes, so a
 normalized or relative-uncertainty effect is not excluded. The coverage account
@@ -447,24 +447,24 @@ the final window.}
 \label{fig:covtime}
 \end{figure}
 
-\subsection{Protocol calibration: frozen-readout validates the headline, not the
-final-performance deficit}
+\subsection{Protocol calibration: the early-adaptation gap survives
+full-adaptation; the final-return deficit does not}
 \label{sec:calib}
 
 Table~\ref{tab:calib} compares C1 and C3 on \texttt{walk} under both protocols.
-On the primary metric the two protocols \emph{agree} for this C1-vs-C3 contrast:
+On the primary metric the two protocols agree for this C1-vs-C3 contrast:
 C3 beats C1 early under frozen-readout ($+200$ AUC) and by even more under
 full-adaptation ($+382$), so the early-adaptation gap is not a frozen-readout
-artifact \emph{for the one contrast we calibrated}. We do not claim
+artifact for the one contrast we calibrated. We do not claim
 protocol-invariance beyond C1-vs-C3 on \texttt{walk}. On final return the
-ordering \emph{flips}: under freezing C3 trails C1 by $219$, but under
-full-adaptation C3 \emph{leads} by $191$ and reaches near-ceiling ($945$). The
+ordering flips: under freezing C3 trails C1 by $219$, but under
+full-adaptation C3 leads by $191$ and reaches near-ceiling ($945$). The
 frozen-readout final deficit reflects the cost of holding the world model fixed,
 not a deficiency of the pretrained dynamics. We did not run C2
 full-adaptation, so we do not extend this explanation to C2's collapse, which
 under freezing could equally reflect genuinely poor random-policy dynamics. Plan2Explore's world model is a
 strong \emph{initialization} even where it is a mediocre \emph{fixed feature
-space} --- precisely the ``representation as initialization vs.\ fixed features''
+space}, precisely the ``representation as initialization vs.\ fixed features''
 distinction the calibration was designed to expose. Figure~\ref{fig:calib}
 visualizes the three curves.
 
@@ -516,11 +516,11 @@ standard full-adaptation, while a frozen-readout-specific final-performance
 deficit disappears.
 
 \paragraph{Implications.}
-Three points generalize beyond Walker. First, in proprioceptive control the
-representation property that tracks transfer is not how linearly decodable the
-current state is --- that saturates --- but the data distribution the
-exploration policy induces (which here we cannot cleanly separate from simply
-reaching the task-relevant regime). Either way, this argues for evaluating
+The results suggest a few lessons beyond this Walker setup. First, in proprioceptive control the
+representation property that tracks transfer is not the linear decodability of
+the current state, which saturates, but the data distribution the exploration
+policy induces (which here we cannot cleanly separate from simply reaching the
+task-relevant regime). Either way, this argues for evaluating
 exploration methods by the distribution they collect, not only by downstream
 return. Second, the choice of adaptation protocol is itself a finding, not a
 nuisance: frozen-readout is a conservative stress test that can invert
@@ -542,7 +542,7 @@ split, and because our coverage measure is nearly collinear with
 ``the policy is an active explorer,'' the analysis cannot attribute transfer to
 coverage as opposed to simply reaching the task-relevant regime.
 Coverage-mediation of transfer therefore remains a hypothesis: the clean causal
-test --- adapting from intermediate pretraining checkpoints --- requires
+test (adapting from intermediate pretraining checkpoints) requires
 checkpoint retention we did not enable and is left to future work. The protocol
 calibration is minimal (Plan2Explore on \texttt{walk} only); a full four-way,
 three-task calibration would be needed to claim protocol-invariance broadly. The
@@ -559,9 +559,9 @@ The most informative next experiment is adaptation from time-stamped pretraining
 checkpoints, which would convert the coverage-timing observation into a causal
 test. Extending the four-way calibration and adding seeds would resolve C3
 versus C4. Finally, disentangling ``broad coverage'' from ``task-relevant active
-locomotion'' --- for example by measuring coverage restricted to upright,
-moving states --- would clarify whether exploration helps by breadth or by
-reaching the right regime.
+locomotion'' (for example by measuring coverage restricted to upright, moving
+states) would clarify whether exploration helps by breadth or by reaching the
+right regime.
 
 \subsubsection*{Reproducibility}
 All world-model pretraining, adaptation, probing, coverage, and synthesis code,
