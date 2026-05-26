@@ -1,0 +1,592 @@
+\documentclass{article}
+\usepackage{iclr2026_conference,times}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{hyperref}
+\usepackage{url}
+
+\iclrfinalcopy % show author and de-anonymize for a course submission
+
+\title{Reward-Free World-Model Pretraining for \\ Transferable Control Representations}
+
+\author{Ricky Bao \\
+Department of Computer Science \\
+University of Chicago \\
+CMSC 35401: Active Representation Learning \\
+\texttt{shalalababa1@gmail.com}}
+
+\newcommand{\fig}[1]{../results/presentation_figures/#1}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+A world model trained without any task reward should, in principle, learn
+dynamics that transfer to many downstream tasks. Whether it actually does, and
+\emph{what} property of the learned representation governs that transfer,
+remains poorly characterized. We study reward-free pretraining of a DreamerV3
+world model on the DeepMind Control proprioceptive Walker, comparing four
+pretraining strategies (none, random-policy data, Plan2Explore
+latent-disagreement, and APT particle-entropy) and adapting each to three
+downstream tasks (\texttt{stand}, \texttt{walk}, \texttt{run}) under a
+frozen-readout protocol. Across two seeds per condition we find that
+exploratory pretraining (Plan2Explore, APT) speeds early adaptation by roughly
+$2$--$3\times$ over training from scratch, whereas random-policy pretraining
+gives no benefit and, when frozen, actively hurts. Adaptation speed correlates
+far more strongly with the \emph{coverage} of the pretraining data and with
+linear probes of derived dynamical quantities (time-to-fall) than with
+current-state decodability, which is saturated and non-discriminative. A
+time-resolved analysis shows that Plan2Explore's coverage is built
+\emph{continuously} by the learned exploratory policy, accumulating well after
+its disagreement reward has collapsed, which rules out a sustained-uncertainty
+mechanism. A protocol-calibration experiment shows the early-adaptation ranking
+is preserved under standard full-adaptation, while a frozen-readout-specific
+final-performance deficit disappears --- the benefit is one of sample
+efficiency, not a higher performance ceiling. We frame our conclusions around
+what the small two-seed design can and cannot support, and are explicit that our
+coverage measure is nearly collinear with ``the policy explores at all,'' so it
+cannot by itself establish coverage as the causal driver of transfer.
+\end{abstract}
+
+\section{Introduction}
+
+Model-based reinforcement learning agents such as DreamerV3
+\citep{hafner2023dreamerv3} learn a latent world model and train a policy
+entirely inside imagined rollouts. The world model is the agent's
+representation of its environment, and a natural question is whether that
+representation can be learned \emph{before} any task is specified, then reused
+across tasks. This is the promise of unsupervised, or reward-free,
+reinforcement learning \citep{laskin2021urlb}: spend an exploration budget
+learning task-agnostic dynamics, and amortize it over many downstream
+objectives that share the same body and physics.
+
+Two questions stand in the way of using this idea confidently. First, it is not
+obvious that reward-free pretraining helps at all in the model-based setting: a
+world model trained on a poor data distribution may model the wrong part of the
+state space, and a frozen representation may simply cap downstream performance.
+Second, even when pretraining helps, the field lacks a clear account of
+\emph{which} property of the learned representation is responsible. Exploration
+methods are usually compared by their downstream return, not by the
+representations they induce, so it is rarely clear whether a method helps
+because it produces an accurate forward model, a linearly decodable state, or
+simply broad data coverage.
+
+We take an empirical, mechanism-focused position on a deliberately small and
+controllable domain. We pretrain a DreamerV3 world model without task reward
+under four strategies, adapt each to three Walker tasks, and pair the
+adaptation curves with a battery of representation probes and a direct measure
+of pretraining-data coverage. Our contributions are:
+
+\begin{itemize}
+\item A controlled four-condition comparison (no-pretrain, random, Plan2Explore,
+APT) on a shared body, isolating the effect of the pretraining
+\emph{exploration objective} from the model and the downstream task.
+\item Evidence that exploratory pretraining improves early-adaptation sample
+efficiency by $2$--$3\times$, that random pretraining does not, and that under a
+frozen representation random pretraining underperforms training from scratch.
+\item A representation analysis showing that adaptation speed tracks data
+coverage and derived-quantity probes, not current-state decodability, and a
+time-resolved coverage analysis that rules out a sustained-uncertainty
+explanation for Plan2Explore's benefit.
+\item A protocol-calibration experiment separating ``representation as fixed
+features'' from ``representation as initialization,'' which reconciles an
+apparent final-performance deficit of frozen pretraining.
+\end{itemize}
+
+We are explicit throughout about statistical power: two seeds per condition and
+six points per correlation. The results are best read as well-instrumented
+observations that motivate specific follow-ups, not as significance claims.
+
+\section{Background and Related Work}
+
+\paragraph{World models and DreamerV3.}
+The Dreamer family \citep{hafner2020dreamer, hafner2021dreamerv2,
+hafner2023dreamerv3} learns a Recurrent State-Space Model (RSSM)
+\citep{hafner2019planet} that encodes observations into a latent with a
+deterministic recurrent part and a stochastic categorical part, and trains an
+actor and critic on imagined latent rollouts. The world model is optimized for
+reconstruction and latent prediction, so it is in principle reusable across
+tasks that share dynamics; only the reward predictor and behavior are
+task-specific. We use DreamerV3 because its objective cleanly separates the
+task-agnostic world model from the task head, which is exactly the cut a
+frozen-readout transfer study needs.
+
+\paragraph{Intrinsic-motivation exploration.}
+When no task reward is available, exploration must be driven by an intrinsic
+signal. Two families are relevant here. Disagreement methods reward an agent for
+visiting states where an ensemble of forward predictors disagrees, a proxy for
+epistemic (reducible) uncertainty \citep{pathak2019disagreement}; Plan2Explore
+\citep{sekar2020plan2explore} brings this idea into the Dreamer setting by
+training the disagreement ensemble on latent features and optimizing the
+exploration policy in imagination. Entropy methods instead reward state-space
+coverage directly; APT \citep{liu2021apt} maximizes a particle-based
+$k$-nearest-neighbor estimate of latent entropy \citep{singh2010nnentropy}.
+Related signals include prediction-error curiosity \citep{pathak2017icm} and
+random network distillation \citep{burda2019rnd}. Plan2Explore and APT are the
+natural contrast for our central question: does \emph{uncertainty-driven}
+exploration induce a different, better transferable representation than
+\emph{coverage-driven} exploration?
+
+\paragraph{Unsupervised RL and adaptation protocols.}
+The Unsupervised Reinforcement Learning Benchmark \citep{laskin2021urlb}
+standardizes the two-stage recipe we follow: a long reward-free pretraining
+phase followed by a short reward-driven adaptation phase, on shared-body domains
+including Walker. URLB adapts by continuing to train the whole agent
+(\emph{full-adaptation}). We instead make \emph{frozen-readout} primary --- the
+encoder and RSSM are frozen and only a fresh task head is trained --- because it
+measures the representation as a fixed feature space rather than as an
+initialization, and then calibrate the two protocols against each other. A
+recurring URLB finding is that representation-centric methods can rank
+differently under the two protocols, which our calibration revisits directly.
+
+\paragraph{Probing representations.}
+Linear probes \citep{alain2017probes} are a standard tool for asking what a
+frozen representation encodes. In a proprioceptive control setting the
+observation is already close to the simulator state, so probing the
+\emph{current} state is near-trivial; we therefore emphasize future-state
+probes, derived dynamical quantities, and reward decodability, which are not
+linear read-outs of a single frame.
+
+\section{Research Questions and Approach}
+
+We address three questions:
+\textbf{(RQ1)} Does reward-free world-model pretraining improve downstream
+adaptation, and does the exploration objective matter?
+\textbf{(RQ2)} Which property of the pretrained representation predicts
+adaptation speed --- forward-predictive accuracy, decodability of state and
+derived quantities, reward decodability, or data coverage?
+\textbf{(RQ3)} Do uncertainty-driven (Plan2Explore) and coverage-driven (APT)
+exploration induce measurably different transfer?
+
+\paragraph{Conditions.}
+All conditions share the DreamerV3 model and the Walker body, and differ only in
+how the world model is pretrained for 500K reward-free environment steps:
+\textbf{C1 (no-pretrain)} trains DreamerV3 from scratch on the downstream task;
+\textbf{C2 (random)} trains the world model on data from a uniform-random
+policy, with no actor; \textbf{C3 (Plan2Explore)} adds an ensemble of one-step
+latent predictors and trains an exploration actor on their disagreement;
+\textbf{C4 (APT)} trains an exploration actor on the $k$-NN particle-entropy of
+the latent. C1 is the lower bound; C2 isolates ``a world model trained on
+passive data'' from the effect of active exploration.
+
+\paragraph{Intrinsic rewards (implementation).}
+For C3 the ensemble predicts the next \emph{deterministic posterior feature}
+(the recurrent state concatenated with the categorical posterior probabilities)
+rather than the sampled one-hot latent. We found the sampled-latent target
+degenerate: its irreducible sampling noise floors the ensemble loss while the
+optimal predictor collapses to the posterior mean, so disagreement vanishes even
+though the loss does not. Predicting the deterministic feature removes that
+aleatoric noise, leaving epistemic disagreement. Members use independent
+initialization and bootstrap masking. For C4 the reward at each imagined latent
+is $\log(c + \tfrac{1}{k}\sum_{j \in \mathrm{kNN}} \lVert z - z_j \rVert)$
+computed over the imagination batch. Both intrinsic rewards are stop-gradient'd
+and consumed in place of the task reward head during imagination. Both are
+\emph{adapted} variants of the originals: canonical Plan2Explore predicts the
+next encoder embedding and APT estimates entropy in a separate encoder space,
+whereas we predict the RSSM posterior feature and estimate entropy in the
+world-model latent. These choices fit the proprioceptive, latent-only setting,
+but cross-paper comparisons of absolute numbers should be read with the
+adaptation in mind.
+
+\paragraph{Adaptation protocol.}
+Frozen-readout is primary: we load the pretrained encoder, RSSM, and decoder,
+freeze them, and train a fresh actor, critic, and reward predictor on the
+downstream reward, using DreamerV3's imagination through the frozen RSSM. The
+adaptation budget is $A=250$K steps. The \textbf{primary metric} is
+early-adaptation AUC: the mean episode return over the first $125$K steps (the
+first half of $A$), equivalently a normalized area under the return curve, which
+reflects both how high adaptation starts and how fast it climbs. The
+\textbf{secondary metric} is final return near $A$. We report both because they
+answer different questions --- how fast, versus how high. With only two seeds per
+condition we report per-seed values and seed spread rather than significance
+tests, and make no significance claims, in keeping with small-sample reporting
+guidance for deep RL \citep{agarwal2021rliable}.
+
+\paragraph{Representation analysis.}
+We collect one common held-out trajectory set from a fixed uniform-random policy
+with logged MuJoCo physics, and encode it through \emph{each} condition's frozen
+world model, so all conditions are probed on identical underlying states. On
+these features we fit ridge probes for current and future simulator state, gait
+phase, time-to-fall, and per-task reward, reporting held-out $R^2$. Separately,
+we measure \emph{coverage} of each condition's pretraining replay as a $k$-NN
+particle entropy of the proprioceptive observations (an almost-complete function
+of the simulator state in this domain), on a shared standardizer so conditions
+are comparable. To probe mechanism we also bucket each replay buffer by
+collection time and recompute coverage per window.
+
+\section{Experimental Setup}
+
+\paragraph{Environment and model.}
+We use the DeepMind Control Suite \citep{tassa2018dmc} Walker in
+proprioceptive mode (no pixels; observation = orientations, torso height,
+velocities), simulated in MuJoCo \citep{todorov2012mujoco}. The agent is the
+public DreamerV3 (JAX) at its smallest preset (\texttt{size1m}: RSSM
+deterministic state $512$, $32$ categorical latents of $4$ classes,
+$64$-unit MLPs), trained at \texttt{train\_ratio} $1024$. Pretraining is 500K
+reward-free steps; adaptation is 250K steps; C1 from-scratch runs to 500K, which
+also provides a full-performance reference.
+
+\paragraph{Conditions, tasks, seeds.}
+Four conditions $\times$ three tasks, two seeds each. C1/\texttt{walk} reuses two
+existing 500K from-scratch Walker-walk runs, so no new C1/\texttt{walk} job is
+needed. This gives 6 reward-free pretraining runs, 4 new C1 runs, and 18
+frozen-readout adaptation runs. All metrics are reported with the per-seed
+spread, never as single point estimates.
+
+\paragraph{Protocol calibration.}
+To test whether frozen-readout conclusions transfer to the standard URLB
+protocol, we additionally run C3 (Plan2Explore) \emph{full-adaptation} on
+\texttt{walk} for two seeds, in which the world model continues to train during
+adaptation. This is the minimal version of the calibration; a full four-way
+calibration is left to future work.
+
+\section{Results}
+
+\subsection{RQ1: Exploratory pretraining speeds adaptation; random pretraining
+does not}
+
+Table~\ref{tab:auc} reports the primary metric. Exploratory pretraining (C3,
+C4) improves early-adaptation AUC over training from scratch by roughly
+$2$--$3\times$ on every task: on \texttt{stand}, C1 reaches $321$ versus $676$
+(C3) and $740$ (C4); on \texttt{run}, $52$ versus $141$ and $167$. Random
+pretraining (C2) is essentially identical to C1 ($\approx 312$ vs.\ $321$ on
+\texttt{stand}). We state these as multiplicative ranges over two-seed means and
+report the per-seed values in Appendix Table~\ref{tab:perseed}; with two seeds we
+claim a consistent direction and rough magnitude, not statistical significance.
+Figure~\ref{fig:auc} shows the same picture per task, and
+Figure~\ref{fig:curves} shows the underlying learning curves: the exploratory
+conditions start higher and climb faster.
+
+\begin{table}[t]
+\centering
+\caption{Early-adaptation AUC (mean episode return over the first 125K steps;
+mean $\pm$ half the seed range, $n=2$). Higher is faster adaptation.}
+\label{tab:auc}
+\begin{tabular}{lccc}
+\toprule
+Condition & \texttt{stand} & \texttt{walk} & \texttt{run} \\
+\midrule
+C1 no-pretrain   & $321 \pm 58$ & $180 \pm 59$ & $52 \pm 3$ \\
+C2 random        & $312 \pm 49$ & $175 \pm 6$  & $63 \pm 13$ \\
+C3 Plan2Explore  & $676 \pm 39$ & $\mathbf{381 \pm 39}$ & $141 \pm 3$ \\
+C4 APT           & $\mathbf{740 \pm 36}$ & $323 \pm 59$ & $\mathbf{167 \pm 19}$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=0.78\textwidth]{\fig{01_early_auc_by_task.png}}
+\caption{Early-adaptation AUC by condition and task. Plan2Explore and APT
+improve over both C1 (no-pretrain) and C2 (random); random pretraining matches
+the from-scratch baseline. Bars show the two-seed mean; markers show individual
+seeds.}
+\label{fig:auc}
+\end{figure}
+
+The secondary metric tells a complementary and important story
+(Table~\ref{tab:final}). By $240$K steps, from-scratch C1 has largely caught up:
+on \texttt{walk} it reaches $754$, ahead of frozen C3 ($535$) and C4 ($765$,
+essentially tied). The pretraining benefit is therefore primarily one of
+\emph{sample efficiency} rather than asymptotic performance at this budget. Two
+findings stand out. First, frozen C2 (random) collapses far below C1 on every
+task ($144$ vs.\ $754$ on \texttt{walk}); its early and final values are nearly
+equal, meaning it plateaus almost immediately. A frozen world model trained on
+random-policy data, which mostly captures a flailing or fallen Walker, is a
+worse fixed representation than learning from scratch. Second, frozen C3 trails
+C1 at convergence on \texttt{walk} and \texttt{run} even though it adapts faster
+early --- a tension we resolve in Section~\ref{sec:calib}.
+
+\begin{table}[t]
+\centering
+\caption{Final return (mean episode return over steps 220--240K; mean $\pm$ half
+the seed range). C1 is measured at the same step budget.}
+\label{tab:final}
+\begin{tabular}{lccc}
+\toprule
+Condition & \texttt{stand} & \texttt{walk} & \texttt{run} \\
+\midrule
+C1 no-pretrain   & $877 \pm 36$ & $754 \pm 19$ & $246 \pm 54$ \\
+C2 random        & $325 \pm 48$ & $144 \pm 4$  & $90 \pm 35$ \\
+C3 Plan2Explore  & $887 \pm 69$ & $535 \pm 89$ & $176 \pm 31$ \\
+C4 APT           & $929 \pm 19$ & $765 \pm 78$ & $243 \pm 40$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{RQ2: Coverage and derived-quantity probes predict transfer; current
+state does not}
+
+Table~\ref{tab:repr} summarizes the representation analysis on the common
+held-out set, and Figure~\ref{fig:probe} visualizes it. The current-state probe
+is saturated: every condition decodes the simulator state with $R^2 \approx
+0.94$, and random pretraining is in fact marginally highest ($0.953$). Current
+linear decodability therefore carries essentially no signal about transfer in
+this proprioceptive domain. The strong negative correlation between the
+current-state probe and AUC ($r\approx -0.88$) is an artifact of this saturation
+(all values near a ceiling, the slowest condition marginally above it) and
+should not be read as a real effect.
+
+The discriminative metrics are data coverage and the derived-quantity probes.
+Coverage (particle entropy of the pretraining replay) orders the conditions
+random $1.10 <$ APT $1.26 <$ Plan2Explore $1.39$, and the time-to-fall probe
+$R^2$ orders them similarly ($0.55 < 0.63 \le 0.65$). Across the six pretrained
+(condition, seed) points, early-adaptation AUC correlates $+0.68$ to $+0.90$
+with coverage and $+0.67$ to $+0.90$ with time-to-fall (Table~\ref{tab:repr}).
+We stress three caveats. First, with $n=6$ these correlations are descriptive,
+not significant; we read their sign and rough size, not their exact value.
+Second, and more fundamentally, our coverage measure is nearly collinear with
+``the policy explores at all'': random barely moves and the two exploratory
+conditions both move, so any metric separating active from passive policies will
+correlate with AUC. With three conditions the correlation cannot isolate
+coverage as the \emph{causal} driver; it largely restates the
+exploratory-versus-passive split the conditions were built to create. Third, the
+$k{=}20$ future-state probe appears with a high positive correlation in
+Table~\ref{tab:repr}, but its absolute $R^2$ is within noise of zero for every
+condition, so that correlation rides on the sign of negligible numbers and is no
+more interpretable than the saturated current-state probe.
+
+\begin{table}[t]
+\centering
+\caption{Representation metrics on the common held-out set (condition means
+over 2 seeds), and their correlation with early-adaptation AUC across the six
+pretrained (condition, seed) points (range over the three tasks, $n=6$). C1 has
+no pretrained world model and is omitted.}
+\label{tab:repr}
+\begin{tabular}{lcccc}
+\toprule
+Metric & C2 random & C3 P2E & C4 APT & corr.\ with AUC \\
+\midrule
+Current-state probe $R^2$        & 0.953 & 0.941 & 0.944 & $-0.85$ to $-0.90$ (artifact) \\
+Future-state probe $R^2$ ($k{=}20$) & $-0.003$ & 0.002 & 0.001 & $+0.84$ to $+0.92$ \\
+Time-to-fall probe $R^2$         & 0.554 & 0.627 & 0.647 & $+0.67$ to $+0.90$ \\
+Reward probe $R^2$ (\texttt{walk}) & 0.615 & 0.651 & 0.641 & $+0.48$ to $+0.62$ \\
+Coverage (particle entropy)      & 1.100 & \textbf{1.386} & 1.262 & $+0.68$ to $+0.86$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=0.92\textwidth]{\fig{04_probe_and_coverage_summary.png}}
+\caption{Representation summary. The current-state probe is saturated across
+conditions (left), while data coverage clearly separates the methods (right).
+Adaptation speed tracks the latter, not the former.}
+\label{fig:probe}
+\end{figure}
+
+\subsection{RQ3: Plan2Explore $\approx$ APT, and the benefit is not a sustained
+uncertainty signal}
+
+On adaptation, C3 and C4 are broadly comparable: APT leads on \texttt{stand} and
+\texttt{run}, Plan2Explore on \texttt{walk}, and their seed ranges overlap on
+\texttt{stand} and \texttt{walk}. We therefore cannot separate the two methods'
+downstream effect at two seeds, which is itself the answer to RQ3 at this
+budget: uncertainty-driven and coverage-driven exploration produce similar
+transfer here. Notably, the uncertainty-driven method (Plan2Explore) produced
+the \emph{highest} data coverage, more than the coverage-driven method (APT),
+so coverage and the nominal objective do not line up in the naive way.
+
+The timing analysis sharpens the mechanism. Plan2Explore's raw disagreement
+reward collapses by roughly $100\times$ early in pretraining (from $\sim
+0.046$ to $\sim 0.0005$ by 250K steps) as the world model reduces its
+uncertainty. Yet its replay coverage keeps rising monotonically through the end
+of pretraining (Figure~\ref{fig:timing}, Figure~\ref{fig:covtime}), long after
+the reward has vanished, whereas random-policy coverage stays flat throughout.
+The coverage is thus generated continuously by the \emph{learned exploratory
+policy}, not by a sustained intrinsic reward and not as an early burst that is
+later merely retained. This rules out a sustained-uncertainty-signal account of
+the benefit. It is consistent with coverage-mediation, but does not prove it,
+and we give equal weight to a competing explanation: the exploratory policy
+becomes an active, upright mover, so its world model simply sees the
+task-relevant locomotion regime that the random policy never reaches. Under this
+view the operative variable is not breadth of coverage per se but whether
+pretraining reaches the right region of state space at all. Our data cannot
+separate ``broad coverage'' from ``reached the task-relevant regime,'' because
+the conditions that have one have the other; distinguishing them (Section~6) is
+the natural next step.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=0.82\textwidth]{\fig{05_p2e_timing_coverage_vs_disagreement.png}}
+\caption{Plan2Explore timing. The raw disagreement reward collapses early in
+pretraining, while replay coverage continues to grow, indicating the useful data
+distribution is sustained by the learned policy rather than by the reward
+signal.}
+\label{fig:timing}
+\end{figure}
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=0.72\textwidth]{\fig{03_coverage_over_time_mean.png}}
+\caption{Coverage over pretraining time, bucketed by collection step. Random
+coverage is flat; Plan2Explore and APT coverage rise monotonically and peak in
+the final window.}
+\label{fig:covtime}
+\end{figure}
+
+\subsection{Protocol calibration: frozen-readout validates the headline, not the
+final-performance deficit}
+\label{sec:calib}
+
+Table~\ref{tab:calib} compares C1 and C3 on \texttt{walk} under both protocols.
+On the primary metric the two protocols \emph{agree}: C3 beats C1 early under
+frozen-readout ($+200$ AUC) and by even more under full-adaptation ($+382$). The
+headline ``exploratory pretraining speeds adaptation'' is therefore not a
+frozen-readout artifact. On final return the ordering \emph{flips}: under
+freezing C3 trails C1 by $219$, but under full-adaptation C3 \emph{leads} by
+$191$ and reaches near-ceiling ($945$). The frozen-readout final deficit (and,
+by extension, C2's collapse) reflects the cost of holding the world model fixed,
+not a deficiency of the pretrained dynamics. Plan2Explore's world model is a
+strong \emph{initialization} even where it is a mediocre \emph{fixed feature
+space} --- precisely the ``representation as initialization vs.\ fixed features''
+distinction the calibration was designed to expose. Figure~\ref{fig:calib}
+visualizes the three curves.
+
+\begin{table}[t]
+\centering
+\caption{Protocol calibration on \texttt{walk} (2 seeds). The early-AUC ranking
+is protocol-invariant; the final-return ordering is not.}
+\label{tab:calib}
+\begin{tabular}{lcc}
+\toprule
+Setting & Early-AUC & Final return \\
+\midrule
+C1 from-scratch (inherently full) & 180 & 754 \\
+C3 frozen-readout                  & 381 & 535 \\
+C3 full-adaptation                 & \textbf{562} & \textbf{945} \\
+\midrule
+C1$\to$C3 gap (frozen)             & $+200$ & $-219$ \\
+C1$\to$C3 gap (full)               & $+382$ & $+191$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=0.62\textwidth]{\fig{06_fulladapt_walk_calibration.png}}
+\caption{Walk adaptation under both protocols. Full-adaptation C3 dominates both
+frozen C3 and from-scratch C1 on speed and final return.}
+\label{fig:calib}
+\end{figure}
+
+\section{Discussion and Conclusion}
+
+We asked whether reward-free world-model pretraining yields transferable control
+representations, what representational property governs the transfer, and
+whether the exploration objective matters. On a controlled DMC Walker study with
+four pretraining conditions, three tasks, and matched probes, we find that
+exploratory pretraining (Plan2Explore, APT) improves early-adaptation sample
+efficiency by $2$--$3\times$, that random-policy pretraining does not and is
+actively harmful as a frozen representation, and that adaptation speed tracks
+the coverage of the pretraining data and derived-quantity probes rather than the
+saturated current-state probe (RQ1, RQ2). Uncertainty-driven and coverage-driven
+exploration transfer comparably (RQ3), and a time-resolved analysis rules out a
+sustained-uncertainty mechanism for Plan2Explore: its coverage is built
+continuously by the learned policy, even after its disagreement reward
+collapses. A minimal protocol calibration shows the speed ranking holds under
+standard full-adaptation, while a frozen-readout-specific final-performance
+deficit disappears.
+
+\paragraph{Implications.}
+Three points generalize beyond Walker. First, in proprioceptive control the
+representation property that tracks transfer is not how linearly decodable the
+current state is --- that saturates --- but the data distribution the
+exploration policy induces (which here we cannot cleanly separate from simply
+reaching the task-relevant regime). Either way, this argues for evaluating
+exploration methods by the distribution they collect, not only by downstream
+return. Second, the choice of adaptation protocol is itself a finding, not a
+nuisance: frozen-readout is a conservative lower bound that can invert
+final-performance orderings relative to full-adaptation, so transfer claims
+should state which protocol they assume. Third, because the gain is sample
+efficiency rather than a higher ceiling, a 500K reward-free pretraining phase
+only ``pays for itself'' when amortized across several downstream tasks: it is a
+one-time cost that buys a faster start on each task, and at our budgets the early
+saving is on the order of $10^5$ steps per task, so the economics favor
+pretraining only when the number of downstream tasks sharing the body is large
+enough to outweigh the pretraining steps.
+
+\paragraph{Limitations.}
+The study uses two seeds per condition and six points per correlation, so all
+correlations are descriptive rather than significant and the C3-vs-C4 ordering is
+unresolved; the seed spread we report makes this visible. The
+coverage-correlation is partly confounded by the binary exploratory-vs-passive
+split, and because our coverage measure is nearly collinear with
+``the policy is an active explorer,'' the analysis cannot attribute transfer to
+coverage as opposed to simply reaching the task-relevant regime.
+Coverage-mediation of transfer therefore remains a hypothesis: the clean causal
+test --- adapting from intermediate pretraining checkpoints --- requires
+checkpoint retention we did not enable and is left to future work. The protocol
+calibration is minimal (Plan2Explore on \texttt{walk} only); a full four-way,
+three-task calibration would be needed to claim protocol-invariance broadly. The
+pretraining budget (500K) is short relative to URLB's $\sim$2M; this especially
+weakens the negative C2 result, since a random policy might collect more useful
+data given much longer, so we read ``random pretraining does not help'' as
+budget-conditional rather than absolute. Finally, the domain is a single shared
+body, and with two seeds we report direction and spread rather than
+significance, so absolute magnitudes and the unresolved C3-versus-C4 ordering
+should not be over-interpreted.
+
+\paragraph{Future work.}
+The most informative next experiment is adaptation from time-stamped pretraining
+checkpoints, which would convert the coverage-timing observation into a causal
+test. Extending the four-way calibration and adding seeds would resolve C3
+versus C4. Finally, disentangling ``broad coverage'' from ``task-relevant active
+locomotion'' --- for example by measuring coverage restricted to upright,
+moving states --- would clarify whether exploration helps by breadth or by
+reaching the right regime.
+
+\subsubsection*{Reproducibility and disclosure}
+All world-model pretraining, adaptation, probing, coverage, and synthesis code,
+together with the per-seed metric logs and the figures reproduced here, are in
+the project repository. Reported numbers are computed by the probing pipeline
+(\texttt{probing/}) from the logged run metrics; tables cite condition means
+with per-seed spread. The author used an AI coding assistant for implementation
+scaffolding, experiment orchestration, and drafting support; all experimental
+design decisions, result interpretation, and final claims are the author's, and
+every citation was checked against its source.
+
+\bibliographystyle{iclr2026_conference}
+\bibliography{final_report}
+
+\appendix
+\section{Per-seed results}
+Table~\ref{tab:perseed} gives the per-seed early-adaptation AUC behind the
+condition means in Table~\ref{tab:auc}, showing the two-seed spread directly.
+
+\begin{table}[h]
+\centering
+\caption{Per-seed early-adaptation AUC.}
+\label{tab:perseed}
+\begin{tabular}{llccc}
+\toprule
+Condition & Seed & \texttt{stand} & \texttt{walk} & \texttt{run} \\
+\midrule
+C1 & 1 & 378.8 & 120.9 & 54.4 \\
+C1 & 2 & 263.3 & 239.2 & 49.1 \\
+C2 random & 1 & 361.3 & 181.0 & 76.5 \\
+C2 random & 2 & 262.8 & 169.7 & 50.0 \\
+C3 P2E & 1 & 714.7 & 341.6 & 144.2 \\
+C3 P2E & 2 & 637.1 & 419.5 & 137.2 \\
+C4 APT & 1 & 775.8 & 264.2 & 185.9 \\
+C4 APT & 2 & 703.5 & 381.4 & 148.7 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\section{Adaptation learning curves}
+Figure~\ref{fig:curves} shows the full adaptation learning curves underlying the
+AUC summary.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.95\textwidth]{\fig{02_adaptation_learning_curves.png}}
+\caption{Adaptation learning curves (return vs.\ environment steps) by condition
+and task. Exploratory conditions start higher and rise faster; from-scratch C1
+converges high by the end of the budget; frozen random plateaus low.}
+\label{fig:curves}
+\end{figure}
+
+\end{document}
