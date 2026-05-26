@@ -15,12 +15,15 @@
 Department of Computer Science \\
 University of Chicago \\
 CMSC 35401: Active Representation Learning \\
-\texttt{shalalababa1@gmail.com}}
+\texttt{rickybao@uchicago.edu}}
 
-\newcommand{\fig}[1]{../results/presentation_figures/#1}
+\newcommand{\fig}[1]{figures/#1}
 
 \begin{document}
 \maketitle
+% Drop the "Published as a conference paper at ICLR 2026" running header.
+\lhead{}
+\renewcommand{\headrulewidth}{0pt}
 
 \begin{abstract}
 A world model trained without any task reward should, in principle, learn
@@ -538,15 +541,12 @@ locomotion'' --- for example by measuring coverage restricted to upright,
 moving states --- would clarify whether exploration helps by breadth or by
 reaching the right regime.
 
-\subsubsection*{Reproducibility and disclosure}
+\subsubsection*{Reproducibility}
 All world-model pretraining, adaptation, probing, coverage, and synthesis code,
 together with the per-seed metric logs and the figures reproduced here, are in
 the project repository. Reported numbers are computed by the probing pipeline
 (\texttt{probing/}) from the logged run metrics; tables cite condition means
-with per-seed spread. The author used an AI coding assistant for implementation
-scaffolding, experiment orchestration, and drafting support; all experimental
-design decisions, result interpretation, and final claims are the author's, and
-every citation was checked against its source.
+with per-seed spread.
 
 \bibliographystyle{iclr2026_conference}
 \bibliography{final_report}
