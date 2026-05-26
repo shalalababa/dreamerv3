@@ -7,7 +7,7 @@
 \usepackage{hyperref}
 \usepackage{url}
 
-\iclrfinalcopy % show author and de-anonymize for a course submission
+\iclrfinalcopy
 
 \title{Reward-Free World-Model Pretraining for \\ Transferable Control Representations}
 
@@ -21,7 +21,6 @@ CMSC 35401: Active Representation Learning \\
 
 \begin{document}
 \maketitle
-% Drop the "Published as a conference paper at ICLR 2026" running header.
 \lhead{}
 \renewcommand{\headrulewidth}{0pt}
 
@@ -105,9 +104,9 @@ features'' from ``representation as initialization,'' which reconciles an
 apparent final-performance deficit of frozen pretraining.
 \end{itemize}
 
-We are explicit throughout about statistical power: two seeds per condition and
-six points per correlation. The results are best read as well-instrumented
-observations that motivate specific follow-ups, not as significance claims.
+Given the two-seed design and six-point correlations, these results should be
+read as descriptive evidence that motivates follow-up experiments rather than as
+significance claims.
 
 \section{Background and Related Work}
 
@@ -119,9 +118,9 @@ deterministic recurrent part and a stochastic categorical part, and trains an
 actor and critic on imagined latent rollouts. The world model is optimized for
 reconstruction and latent prediction, so it is in principle reusable across
 tasks that share dynamics; only the reward predictor and behavior are
-task-specific. We use DreamerV3 because its objective cleanly separates the
-task-agnostic world model from the task head, which is exactly the cut a
-frozen-readout transfer study needs.
+task-specific. We use DreamerV3 because its objective separates the
+task-agnostic world model from task-specific heads, matching the separation
+required by a frozen-readout transfer study.
 
 \paragraph{Intrinsic-motivation exploration.}
 When no task reward is available, exploration must be driven by an intrinsic
