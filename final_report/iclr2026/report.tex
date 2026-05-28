@@ -21,6 +21,10 @@ University of Chicago \\
 \begin{document}
 
 \maketitle
+% Remove the "Published as a conference paper at ICLR 2026" running header
+% (keep \iclrfinalcopy so the real author name shows and there are no line numbers).
+\lhead{}
+\renewcommand{\headrulewidth}{0pt}
 
 \begin{abstract}
 World models such as DreamerV3 learn sequential generative latents from streams
