@@ -1,29 +1,4 @@
-"""Extract probe-site features from the two frozen models.
-
-For every collected probe trajectory this script runs:
-
-  * the frozen DreamerV3 world model, producing features at three sites
-      - encoder output            (per-frame tokens),
-      - RSSM posterior            (deter | E[stoch] given the observation),
-      - RSSM prior                (deter | E[stoch] *before* the observation),
-    plus open-loop k-step prior features for k in --horizons (what the
-    predictive component imagines), and held-out reconstruction /
-    predictive log-likelihoods;
-
-  * the frozen static VAE, producing the encoder output and the latent mean.
-
-All features are aligned step-for-step with the trajectory so the probing
-script can pair representation_t with any target_{t+k}.
-
-Run from the repository root:
-
-    python -m probing.features \
-        --traj      /scratch/.../probe_walker_walk_seed0.npz \
-        --run_logdir /scratch/.../dmc_proprio_walker_walk_seed0 \
-        --vae_ckpt  /scratch/.../vae_walker_walk_seed0/vae.ckpt \
-        --output    /scratch/.../features_walker_walk_seed0.npz \
-        --horizons 1 5 20
-"""
+"""Extract RSSM and optional VAE features for probe trajectories."""
 
 import argparse
 import json
@@ -51,16 +26,8 @@ from probing import vae as vae_mod
 f32 = jnp.float32
 
 
-# -- DreamerV3 world-model features --------------------------------------
-
 def imagine_k(dyn, post_deter, post_stoch, action_dict, k):
-  """Open-loop k-step RSSM prior, anchored at every timestep.
-
-  From the posterior carry at each step t, roll the dynamics forward k steps
-  using the recorded actions a_t..a_{t+k-1}; the resulting feature is the
-  prior's prediction for step t+k. Anchors with t+k >= T use zero-padded
-  actions and are masked out downstream.
-  """
+  """Open-loop k-step RSSM prior, anchored at every timestep."""
   B, T = post_deter.shape[:2]
   carry = {
       'deter': post_deter.reshape((B * T,) + post_deter.shape[2:]),
@@ -84,7 +51,6 @@ def world_model_features(model, obs, action_dict, reset, obs_keys, horizons):
   dyn_carry = model.dyn.initial(B)
   enc_carry, _, tokens = model.enc(enc_carry, obs, reset, training=False)
 
-  # prevact[t] is the action that led into obs_t (zero at episode starts).
   prevact = {k: jnp.concatenate([jnp.zeros_like(v[:, :1]), v[:, :-1]], 1)
              for k, v in action_dict.items()}
   dyn_carry, _, post = model.dyn.observe(
@@ -102,7 +68,6 @@ def world_model_features(model, obs, action_dict, reset, obs_keys, horizons):
       'wm_prior_stoch': prior_probs.reshape((B, T, -1)),
   }
 
-  # Held-out likelihoods: decode the posterior and the one-step prior.
   _, _, post_rec = model.dec(
       model.dec.initial(B), post, reset, training=False)
   prior_feat = {'deter': post['deter'], 'stoch': prior_probs}
@@ -113,15 +78,12 @@ def world_model_features(model, obs, action_dict, reset, obs_keys, horizons):
   out['wm_prior_nll'] = f32(sum(
       prior_rec[k].loss(f32(obs[k])) for k in obs_keys))
 
-  # Open-loop k-step prior features.
   for k in horizons:
     dk, sk = imagine_k(model.dyn, post['deter'], post['stoch'], action_dict, k)
     out[f'wm_imag{k}_deter'] = dk
     out[f'wm_imag{k}_stoch'] = sk
   return out
 
-
-# -- driver ---------------------------------------------------------------
 
 def parse_args():
   p = argparse.ArgumentParser(description=__doc__)
@@ -154,8 +116,6 @@ def extract_world_model(args, traj, meta):
   agent = make_agent(config)
   load_frozen_agent(agent, ckpt)
   model = agent.model
-  # DreamerV3 sets a strict transfer guard for training; relax it for this
-  # plain single-device forward pass.
   jax.config.update('jax_transfer_guard', 'allow')
 
   exclude = ('is_first', 'is_last', 'is_terminal', 'reward')
@@ -173,13 +133,9 @@ def extract_world_model(args, traj, meta):
     return world_model_features(model, obs, action_dict, reset, obs_keys,
                                 horizons)
 
-  # Match DreamerV3's own forward path (embodied.jax.transform.apply): call
-  # the pure function with default flags (create=False, modify=True).
   pure = nj.pure(fn)
   jit = jax.jit(lambda p, o, a, r, s: pure(p, o, a, r, seed=s))
 
-  # Strip the agent's training-mesh shardings; feature extraction is a plain
-  # single-device forward pass.
   params = jax.tree.map(lambda x: np.asarray(jax.device_get(x)), agent.params)
 
   N, T = traj['reward'].shape

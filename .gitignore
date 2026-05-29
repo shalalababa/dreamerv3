@@ -4,7 +4,10 @@ __pycache__/
 *.py[cod]
 *.egg-info
 MUJOCO_LOG.TXT
-;
 .claude
 academic-research-skills-3.9.2
-logs/
+/logs/
+/results/
+report/*.aux
+report/*.log
+report/*.out

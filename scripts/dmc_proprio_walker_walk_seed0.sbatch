@@ -1,17 +1,11 @@
 #!/bin/bash
 #SBATCH --job-name=dmc-proprio-walker-walk-seed0
-#SBATCH --account=pi-chenyuxin
 #SBATCH --partition=gpu
 #SBATCH --gres=gpu:1
 #SBATCH --cpus-per-task=8
 #SBATCH --mem=32G
 #SBATCH --time=24:00:00
-#SBATCH --chdir=/home/rickybao/projects/dreamerv3
-#SBATCH --output=/home/rickybao/projects/dreamerv3/logs/%x-%j.out
-#SBATCH --error=/home/rickybao/projects/dreamerv3/logs/%x-%j.err
 
-# Do NOT use `set -u` here.
-# It broke /etc/bashrc before through an unset BASHRCSOURCED variable.
 set -eo pipefail
 
 echo "=============================="
@@ -24,25 +18,19 @@ echo "User: ${USER}"
 echo "Working directory: $(pwd)"
 echo "=============================="
 
-# Project and environment paths.
-PROJECT_DIR="/home/rickybao/projects/dreamerv3"
-ENV_PATH="/scratch/midway3/${USER}/conda_envs/dreamerv3"
+PROJECT_DIR="${PROJECT_DIR:-${SLURM_SUBMIT_DIR:-$(pwd)}}"
+ENV_PATH="${ENV_PATH:-/scratch/midway3/${USER}/conda_envs/dreamerv3}"
 PYTHON="${ENV_PATH}/bin/python"
-RUN_ROOT="/scratch/midway3/${USER}/dreamerv3_runs"
+RUN_ROOT="${RUN_ROOT:-/scratch/midway3/${USER}/dreamerv3_runs}"
 LOGDIR="${RUN_ROOT}/dmc_proprio_walker_walk_seed0"
 
 # Headless MuJoCo/DMC rendering.
-# Required because DreamerV3's DMC env renders log/image even for dmc_proprio.
 export MUJOCO_GL=egl
 export PYOPENGL_PLATFORM=egl
 
-# Make Python logs appear immediately in .out.
 export PYTHONUNBUFFERED=1
-
-# Avoid JAX reserving all GPU memory immediately.
 export XLA_PYTHON_CLIENT_PREALLOCATE=false
 
-# Helpful for conda/shared libraries even without full conda activation.
 export PATH="${ENV_PATH}/bin:${PATH}"
 export LD_LIBRARY_PATH="${ENV_PATH}/lib:${LD_LIBRARY_PATH:-}"
 

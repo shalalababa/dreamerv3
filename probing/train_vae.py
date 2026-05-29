@@ -1,16 +1,4 @@
-"""Train the static frame-level VAE on a DreamerV3 replay buffer.
-
-Run from the repository root, e.g.:
-
-    python -m probing.train_vae \
-        --replay_dirs /scratch/.../dmc_proprio_walker_walk_seed0 \
-        --run_config  /scratch/.../dmc_proprio_walker_walk_seed0/config.yaml \
-        --logdir      /scratch/.../vae_walker_walk_seed0 \
-        --latent 128 --beta 1.0 --steps 60000 --seed 0
-
-The VAE sees exactly the frames the RSSM world model trained on, so the only
-difference between the two representations is sequential structure.
-"""
+"""Train a static frame-level VAE on DreamerV3 replay frames."""
 
 import argparse
 import json
@@ -35,8 +23,6 @@ import embodied.jax.nets as nn
 from probing import vae as vae_mod
 from probing import replay_dataset as rd
 
-# Encoder hyper-parameters for `dmc_proprio` + `size1m` (used if no run config
-# is supplied). Keep in sync with dreamerv3/configs.yaml.
 DEFAULT_ENC_KW = dict(
     depth=4, mults=(2, 3, 4, 4), layers=3, units=64, act='silu', norm='rms',
     winit='trunc_normal_in', symlog=True, outer=False, kernel=5,
@@ -97,9 +83,9 @@ def detect_obs_keys(replay_dir, override):
       continue
     if key.startswith(('log/', 'enc/', 'dyn/', 'dec/')):
       continue
-    if len(shape) > 1:                  # skip images / rank-2+ tensors
+    if len(shape) > 1:
       continue
-    keys.append(key)                    # scalars and vectors are proprio obs
+    keys.append(key)
   keys = sorted(keys)
   if not keys:
     raise RuntimeError(f'Could not auto-detect vector obs keys in {replay_dir}')

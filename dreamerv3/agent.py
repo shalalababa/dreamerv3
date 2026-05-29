@@ -72,15 +72,12 @@ class Agent(embodied.jax.Agent):
     self.valnorm = embodied.jax.Normalize(**config.valnorm, name='valnorm')
     self.advnorm = embodied.jax.Normalize(**config.advnorm, name='advnorm')
 
-    # Exploration / adaptation mode (see configs.yaml `agent.expl`).
     self.expl_mode = config.expl.mode
     assert self.expl_mode in ('task', 'random', 'p2e', 'apt'), self.expl_mode
     self.reward_free = (self.expl_mode != 'task')
 
-    # Plan2Explore disagreement ensemble. By default, predict deterministic
-    # posterior features (deter + categorical probabilities) rather than the
-    # sampled one-hot stochastic state, whose sampling noise makes all ensemble
-    # members converge to the same mean predictor.
+    # P2E predicts deterministic posterior features; sampled stochastic targets
+    # add noise that collapses disagreement.
     self.disag = None
     if self.expl_mode == 'p2e':
       rssm_kw = config.dyn[config.dyn.typ]
@@ -95,10 +92,6 @@ class Agent(embodied.jax.Agent):
           units=config.expl.disag_units, layers=config.expl.disag_layers,
           name='disag')
 
-    # Which modules receive gradients. The world model is always
-    # (enc, dyn, dec); (rew, con, pol, val) form the task head. Frozen-readout
-    # adaptation trains only the head; the exploration modes train the world
-    # model plus, for p2e/apt, an intrinsic-reward actor-critic.
     wm = [self.dyn, self.enc, self.dec]
     head = [self.rew, self.con, self.pol, self.val]
     if self.expl_mode == 'random':
@@ -170,9 +163,7 @@ class Agent(embodied.jax.Agent):
     if dec_carry:
       dec_carry, dec_entry, recons = self.dec(dec_carry, feat, reset, **kw)
     if self.expl_mode == 'random':
-      # C2: uniform random actions over the normalized [-1, 1] DMC action box.
-      # No policy network is instantiated or trained; the world model learns
-      # purely from this random-policy data stream. (DMC is continuous control.)
+      # Uniform random actions for random-data pretraining.
       B = reset.shape[0]
       act = {k: jax.random.uniform(nj.seed(), (B, *v.shape), f32, -1.0, 1.0)
              for k, v in self.act_space.items()}
@@ -243,10 +234,7 @@ class Agent(embodied.jax.Agent):
     shapes = {k: v.shape for k, v in losses.items()}
     assert all(x == (B, T) for x in shapes.values()), ((B, T), shapes)
 
-    # Plan2Explore: train the one-step latent-disagreement ensemble on replay.
-    # Predict the next deterministic posterior feature target from the current
-    # model state + action. The previous sampled-stoch target made disagreement
-    # collapse while preserving an irreducible MSE floor.
+    # Train the one-step latent-disagreement ensemble on replay.
     if self.expl_mode == 'p2e':
       dfeat = self.feat2tensor(repfeat)[:, :-1]
       dact = self._act2tensor(prevact)[:, 1:]
@@ -279,8 +267,6 @@ class Agent(embodied.jax.Agent):
       assert all(
           x.shape[:2] == (B * K, H + 1) for x in jax.tree.leaves(imgact))
       inp = self.feat2tensor(imgfeat)
-      # Reward-free conditions replace the task reward head with an intrinsic
-      # reward; it is stop-gradient'd so it acts as a fixed return signal.
       if self.expl_mode == 'p2e':
         raw_imgrew = self.disag.reward(inp, self._act2tensor(imgact))
         imgrew = sg(raw_imgrew * self.config.expl.disag_scale)
@@ -435,8 +421,6 @@ class Agent(embodied.jax.Agent):
     return carry, obs, prevact, stepid
 
   def _act2tensor(self, act):
-    # Flatten an action dict into a single tensor, keeping the leading two
-    # (batch, time) dims. Mirrors feat2tensor for the disagreement ensemble.
     return jnp.concatenate([
         nn.cast(act[k]).reshape((*act[k].shape[:2], -1))
         for k in sorted(self.act_space)], -1)

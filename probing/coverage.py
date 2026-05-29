@@ -1,41 +1,4 @@
-"""Latent / state-space coverage of the pretraining replay buffers.
-
-research_procedure.md section G, probe 3: each reward-free condition collects
-its own data, and *how much of the state space that data covers* is one of the
-representational properties the study correlates against adaptation speed.
-
-This script reads the per-condition pretraining replay buffers (the data each
-condition actually collected) and, for every buffer, estimates how spread out
-its observations are. DreamerV3's replay stores only observations, but for the
-Walker proprio task the observation is an almost-complete function of the
-simulator state, so the proprio observation *is* the low-dimensional state
-projection the procedure asks for.
-
-Two coverage estimators, both made comparable across conditions by fitting a
-single shared standardiser and PCA on the pooled frames:
-
-  * particle_entropy -- the APT estimator itself (mean log(c + mean k-NN
-    distance)) over standardised observations; higher = more spread.
-  * hist_entropy_2d  -- Shannon entropy of a 2-D histogram over the top two
-    shared principal components; higher = more uniform occupancy.
-
-With `--time_buckets N` the script additionally splits each buffer's
-time-ordered replay chunks into N windows and re-estimates coverage per
-window, yielding a coverage-over-time curve. DreamerV3 writes replay chunks
-in collection order, so this shows *when* a condition accumulated its
-coverage -- e.g. whether P2E built its spread early, while its disagreement
-reward was still large, and then merely retained it. That distinguishes a
-"coverage was created by early exploration" account from one relying on a
-sustained intrinsic signal (research_procedure.md section H).
-
-Run from the repository root:
-
-    python -m probing.coverage \
-        --replay random_seed1=/scratch/.../pretrain_random_seed1/replay \
-                 p2e_seed1=/scratch/.../pretrain_p2e_seed1/replay \
-                 apt_seed1=/scratch/.../pretrain_apt_seed1/replay \
-        --output /scratch/.../coverage
-"""
+"""Estimate replay-buffer coverage from vector observations."""
 
 import argparse
 import json
@@ -53,7 +16,6 @@ import numpy as np
 
 from probing import replay_dataset
 
-# Replay keys that are not part of the proprio observation vector.
 NON_OBS = {'reward', 'is_first', 'is_last', 'is_terminal', 'action', 'reset',
            'stepid', 'consec'}
 
@@ -133,7 +95,6 @@ def main():
     label, directory = item.split('=', 1)
     entries.append((label, directory))
 
-  # Use the first buffer's keys; assume all conditions share the obs space.
   keys = obs_keys(entries[0][1])
   print(f'Observation keys: {keys}')
 
@@ -142,8 +103,6 @@ def main():
     print(f'[{label}] loading {directory}')
     obs[label] = load_obs(directory, keys, args.max_frames, args.seed)
 
-  # Shared standardiser + shared PCA fit on the pooled frames, so the
-  # per-condition numbers live on one common scale.
   pooled = np.concatenate(list(obs.values()), 0)
   mean = pooled.mean(0, keepdims=True)
   std = pooled.std(0, keepdims=True)
@@ -170,8 +129,6 @@ def main():
     print(f'  {label:<18} particle_entropy={r["particle_entropy"]:.4f}  '
           f'hist_entropy_2d={r["hist_entropy_2d"]:.4f}')
 
-  # Coverage-over-time: bucket each buffer's time-ordered chunks into windows
-  # and re-estimate coverage per window, on the same shared standardiser/PCA.
   over_time = {}
   if args.time_buckets > 1:
     print(f'Coverage over {args.time_buckets} time buckets (0 = earliest):')
@@ -201,7 +158,6 @@ def main():
   with open(os.path.join(args.output, 'coverage.json'), 'w') as f:
     json.dump(meta, f, indent=2)
 
-  # Comparison scatter: pretraining occupancy in the shared PCA plane.
   n = len(entries)
   fig, axes = plt.subplots(1, n, figsize=(3.2 * n, 3.4), squeeze=False,
                            sharex=True, sharey=True, constrained_layout=True)
@@ -216,7 +172,6 @@ def main():
   fig.savefig(os.path.join(args.output, 'coverage.png'), dpi=150)
   plt.close(fig)
 
-  # Coverage-over-time curve: one line per condition.
   if over_time:
     fig, ax = plt.subplots(figsize=(6.5, 4.2), constrained_layout=True)
     for label, curve in over_time.items():

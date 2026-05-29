@@ -1,5 +1,5 @@
 #!/bin/bash
-# Stage 2 -- frozen-readout adaptation (research_procedure.md Phase 2 / 3).
+# Run frozen-readout adaptation from a pretrained checkpoint.
 #
 # Loads a pretrained world model (encoder + RSSM + decoder), freezes it, and
 # trains only a fresh task head (actor + critic + reward predictor) on the
@@ -13,15 +13,11 @@
 #
 # Requires scripts/pretrain.sbatch <cond> <seed> to have completed first.
 
-#SBATCH --account=pi-chenyuxin
 #SBATCH --partition=gpu
 #SBATCH --gres=gpu:1
 #SBATCH --cpus-per-task=8
 #SBATCH --mem=32G
 #SBATCH --time=12:00:00
-#SBATCH --chdir=/home/rickybao/projects/dreamerv3
-#SBATCH --output=/home/rickybao/projects/dreamerv3/logs/%x-%j.out
-#SBATCH --error=/home/rickybao/projects/dreamerv3/logs/%x-%j.err
 
 set -eo pipefail
 
@@ -39,13 +35,12 @@ echo "Start time: $(date)"
 echo "Frozen-readout adaptation | Cond: ${COND} | Task: ${TASK} | Seed: ${SEED}"
 echo "=============================="
 
-PROJECT_DIR="/home/rickybao/projects/dreamerv3"
-ENV_PATH="/scratch/midway3/${USER}/conda_envs/dreamerv3"
+PROJECT_DIR="${PROJECT_DIR:-${SLURM_SUBMIT_DIR:-$(pwd)}}"
+ENV_PATH="${ENV_PATH:-/scratch/midway3/${USER}/conda_envs/dreamerv3}"
 PYTHON="${ENV_PATH}/bin/python"
-RUN_ROOT="/scratch/midway3/${USER}/dreamerv3_runs"
+RUN_ROOT="${RUN_ROOT:-/scratch/midway3/${USER}/dreamerv3_runs}"
 LOGDIR="${RUN_ROOT}/adapt_${COND}_${TASK}_seed${SEED}"
 
-# Resolve the pretrained world-model checkpoint (the latest snapshot folder).
 PRETRAIN_DIR="${RUN_ROOT}/pretrain_${COND}_seed${SEED}"
 CKPT_DIR="${PRETRAIN_DIR}/ckpt"
 if [ ! -f "${CKPT_DIR}/latest" ]; then
@@ -81,9 +76,6 @@ fi
 echo "GPU check:"
 nvidia-smi
 
-# Adaptation budget A = 250K steps (half the 500K pretraining budget).
-# The `frozen_readout` config freezes enc+RSSM+decoder and restricts the
-# checkpoint load to `^(enc|dyn|dec)/`, so the task head trains from scratch.
 echo "Starting frozen-readout adaptation"
 "${PYTHON}" -u dreamerv3/main.py \
   --logdir "${LOGDIR}" \

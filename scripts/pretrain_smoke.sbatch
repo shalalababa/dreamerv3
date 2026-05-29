@@ -1,21 +1,14 @@
 #!/bin/bash
-# Fast pre-flight check for the exploration pipeline -- a short reward-free run
-# that confirms the condition launches, checkpoints, and produces sane metrics
-# (non-zero ensemble disagreement / intrinsic reward) before committing a GPU
-# to the full 16h / 500K job. Inspect logs/ and the run's metrics.jsonl after.
+# Short smoke run for reward-free pretraining configs.
 #
 # Usage:  sbatch --job-name=smoke-<cond> scripts/pretrain_smoke.sbatch <cond>
 #   <cond>  one of: random (C2) | p2e (C3) | apt (C4)
 
-#SBATCH --account=pi-chenyuxin
 #SBATCH --partition=gpu
 #SBATCH --gres=gpu:1
 #SBATCH --cpus-per-task=4
 #SBATCH --mem=24G
 #SBATCH --time=00:45:00
-#SBATCH --chdir=/home/rickybao/projects/dreamerv3
-#SBATCH --output=/home/rickybao/projects/dreamerv3/logs/%x-%j.out
-#SBATCH --error=/home/rickybao/projects/dreamerv3/logs/%x-%j.err
 
 set -eo pipefail
 
@@ -25,10 +18,10 @@ case "${COND}" in random|p2e|apt) ;; *)
 
 echo "Smoke pretraining | Cond: ${COND} | Job ID: ${SLURM_JOB_ID} | $(date)"
 
-PROJECT_DIR="/home/rickybao/projects/dreamerv3"
-ENV_PATH="/scratch/midway3/${USER}/conda_envs/dreamerv3"
+PROJECT_DIR="${PROJECT_DIR:-${SLURM_SUBMIT_DIR:-$(pwd)}}"
+ENV_PATH="${ENV_PATH:-/scratch/midway3/${USER}/conda_envs/dreamerv3}"
 PYTHON="${ENV_PATH}/bin/python"
-RUN_ROOT="/scratch/midway3/${USER}/dreamerv3_runs"
+RUN_ROOT="${RUN_ROOT:-/scratch/midway3/${USER}/dreamerv3_runs}"
 LOGDIR="${RUN_ROOT}/smoke_pretrain_${COND}_${SLURM_JOB_ID}"
 
 export MUJOCO_GL=egl

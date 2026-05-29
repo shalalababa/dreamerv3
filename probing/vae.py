@@ -1,25 +1,4 @@
-"""Static frame-level VAE over DMC proprio observations.
-
-The VAE is deliberately built from the *same* building blocks as DreamerV3's
-world model so that the only thing that differs from the RSSM is the absence
-of sequential structure:
-
-  * encoder  : `dreamerv3.rssm.Encoder` (identical architecture/preprocessing),
-  * bottleneck: a diagonal-Gaussian latent  q(z|x) = N(mu(x), diag sigma(x)^2),
-  * decoder  : an MLP + per-key heads, identical to the RSSM decoder's vector
-               path (symlog-MSE outputs).
-
-Training objective (per frame x), see probing/README.md for the derivation:
-
-    L(x) = E_{q(z|x)}[ -log p(x|z) ]  +  beta * KL( q(z|x) || N(0, I) )
-
-         = recon(x)                  +  beta * kl(x)
-
-with the reparameterised sample  z = mu + sigma (*) eps,  eps ~ N(0, I).
-The observation model p(x|z) is a unit-variance Gaussian in symlog space,
-exactly matching DreamerV3's `symlog_mse` decoder, so held-out log-likelihoods
-are computed identically for both models downstream.
-"""
+"""Static frame-level VAE over DMC proprio observations."""
 
 import pickle
 
@@ -37,18 +16,17 @@ f32 = jnp.float32
 
 class StaticVAE(nj.Module):
 
-  latent: int = 128          # latent dim; default = RSSM stoch*classes (32*4)
-  beta: float = 1.0          # beta-VAE weight on the KL term
-  free_nats: float = 0.0     # optional KL floor (nats per frame), 0 disables
-  dec_layers: int = 3        # decoder MLP depth  (matches dmc_proprio decoder)
-  dec_units: int = 64        # decoder MLP width  (matches dmc_proprio decoder)
+  latent: int = 128
+  beta: float = 1.0
+  free_nats: float = 0.0
+  dec_layers: int = 3
+  dec_units: int = 64
   act: str = 'silu'
   norm: str = 'rms'
   logstd_min: float = -8.0
   logstd_max: float = 8.0
 
   def __init__(self, obs_space, enc_kw, winit='trunc_normal_in'):
-    # obs_space: dict of *vector* observation spaces (no images, no is_*/reward).
     assert obs_space, obs_space
     assert all(len(s.shape) == 1 for s in obs_space.values()), obs_space
     self.obs_space = dict(obs_space)
@@ -62,8 +40,6 @@ class StaticVAE(nj.Module):
     outputs = {k: 'symlog_mse' for k in self.veckeys}
     self.dechead = DictHead(
         self.obs_space, outputs, winit=winit, name='dechead')
-
-  # -- pieces -------------------------------------------------------------
 
   def encode(self, obs):
     """obs: dict of (B, d_k) arrays -> (tokens, mean, logstd)."""
@@ -86,17 +62,13 @@ class StaticVAE(nj.Module):
     eps = jax.random.normal(nj.seed(), mean.shape, f32)
     return mean + std * eps, std
 
-  # -- objective ----------------------------------------------------------
-
   def loss(self, obs, training=True):
     tokens, mean, logstd = self.encode(obs)
     z, std = self.reparam(mean, logstd)
     recons = self.decode(z)
-    # Reconstruction NLL (summed over observation dims, per frame).
     recon = jnp.zeros(mean.shape[0], f32)
     for key in self.veckeys:
       recon += recons[key].loss(f32(obs[key]))
-    # Analytic KL( N(mean, std^2) || N(0, I) ), summed over latent dims.
     kl = 0.5 * (jnp.square(std) + jnp.square(mean) - 1.0 - 2.0 * logstd)
     kl = kl.sum(-1)
     kl_used = jnp.maximum(kl, self.free_nats) if self.free_nats else kl
@@ -105,35 +77,27 @@ class StaticVAE(nj.Module):
         'loss': loss,
         'recon': recon.mean(),
         'kl': kl.mean(),
-        'elbo': -(recon + kl).mean(),         # true ELBO (beta-free)
+        'elbo': -(recon + kl).mean(),
         'latent_std': std.mean(),
         'latent_absmean': jnp.abs(mean).mean(),
         'active_units': (std.mean(0) < 0.5).sum().astype(f32),
     }
     return loss, metrics
 
-  # -- inference ----------------------------------------------------------
-
   def featurize(self, obs):
     """Return probe-site features for a batch of frames."""
     tokens, mean, logstd = self.encode(obs)
-    recons = self.decode(mean)                # decode the posterior mean
+    recons = self.decode(mean)
     recon = jnp.zeros(mean.shape[0], f32)
     for key in self.veckeys:
       recon += recons[key].loss(f32(obs[key]))
     return {
-        'enc': f32(tokens),                   # probe site: encoder output
-        'mean': mean,                         # probe site: VAE latent mean
+        'enc': f32(tokens),
+        'mean': mean,
         'logstd': logstd,
-        'recon_nll': recon,                   # per-frame symlog-Gaussian NLL
+        'recon_nll': recon,
     }
 
-
-# -- (de)serialization ----------------------------------------------------
-#
-# A VAE checkpoint is the ninjax state dict plus the metadata needed to
-# rebuild the module. We pickle it (numpy arrays + plain python) which is
-# simple and dependency-free; the cluster conda env is pinned anyway.
 
 def build(obs_space, enc_kw, *, latent=128, beta=1.0, free_nats=0.0,
           dec_layers=3, dec_units=64, act='silu', norm='rms', name='vae'):

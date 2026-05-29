@@ -1,28 +1,4 @@
-"""Derive probe targets from collected probe trajectories.
-
-Three families of targets, mirroring the project's "probe target" axis:
-
-  * current simulator state   -- the full MuJoCo state (qpos | qvel);
-  * future simulator state    -- the same array, shifted by the probing code;
-  * derived dynamical quantities that are *not* a linear read-out of a single
-    observation frame:
-      - gait_phase  : instantaneous phase of the walking cycle, obtained as
-                      the angle of the analytic (Hilbert) signal of the
-                      antiphase hip oscillation, encoded as (cos, sin) so the
-                      regression target is smooth across the 2*pi wrap;
-      - return_to_go: discounted sum of future rewards (what DreamerV3's value
-                      head estimates) -- a genuinely future-dependent target;
-      - time_to_fall: steps until the torso first drops below a fall height
-                      (heavily right-censored for a competent walker -- see
-                      the `*_censored` mask).
-  * downstream task reward    -- the dm_control Walker stand/walk/run reward
-    recomputed analytically from the logged physics quantities, so the same
-    common held-out set yields a reward-probe target for every task without
-    re-collecting (research_procedure.md section G, probe 2).
-
-`derive_targets` returns {name: (N, T, d) float32} plus a {name: (N, T) bool}
-validity mask dict. The probing code handles horizon shifting and masking.
-"""
+"""Derive probe targets from collected trajectories."""
 
 import numpy as np
 from scipy.signal import hilbert
@@ -107,12 +83,7 @@ def _tolerance(x, lo, hi, margin, value_at_margin=0.1, sigmoid='gaussian'):
 
 
 def walker_task_rewards(traj):
-  """Recompute the dm_control Walker stand/walk/run rewards from logged physics.
-
-  Needs the named scalars `collect.py` logs (torso height/upright, horizontal
-  velocity). Returns {} if any are missing. The reward is task-specific while
-  the physics is not, so one common held-out set yields all three targets.
-  """
+  """Recompute dm_control Walker stand/walk/run rewards."""
   need = ('phys_torso_height', 'phys_torso_upright', 'phys_horizontal_velocity')
   if not all(k in traj for k in need):
     return {}
@@ -141,14 +112,12 @@ def derive_targets(traj, meta):
   targets, masks = {}, {}
   ones = np.ones((N, T), bool)
 
-  # Current full simulator state and its components.
   targets['state'] = phys
   targets['qpos'] = qpos
   targets['qvel'] = qvel
   for k in ('state', 'qpos', 'qvel'):
     masks[k] = ones
 
-  # Derived dynamical quantities.
   phase = gait_phase(qpos, qpos_names)
   targets['gait_phase'] = np.stack(
       [np.cos(phase), np.sin(phase)], -1).astype(np.float32)
@@ -160,15 +129,12 @@ def derive_targets(traj, meta):
   if 'phys_torso_height' in traj:
     ttf, censored = time_to_fall(np.asarray(traj['phys_torso_height']))
     targets['time_to_fall'] = ttf[..., None]
-    masks['time_to_fall'] = ~censored          # probe only uncensored steps
+    masks['time_to_fall'] = ~censored
 
-  # Downstream task reward (research_procedure.md section G, probe 2): one
-  # reward-probe target per Walker task, recomputed from the logged physics.
   for name, value in walker_task_rewards(traj).items():
     targets[name] = value[..., None]
     masks[name] = ones
 
-  # Simple single-frame physics references (sanity-check targets).
   for name in ('torso_height', 'torso_upright', 'horizontal_velocity'):
     key = f'phys_{name}'
     if key in traj:

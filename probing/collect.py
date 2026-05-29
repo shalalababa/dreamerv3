@@ -1,26 +1,4 @@
-"""Collect held-out probe trajectories from a frozen DreamerV3 policy.
-
-DreamerV3's replay buffer stores only observations, so it cannot supply the
-ground-truth simulator state that the derived probe targets (gait phase,
-time-to-fall, ...) need. This script rolls out the *frozen* DreamerV3 policy
-in the DMC Walker environment and logs, per step:
-
-  * the proprioceptive observation (what both models receive),
-  * the agent action (needed to drive the RSSM prior),
-  * reward / is_first / is_last,
-  * the full MuJoCo physics state  (qpos | qvel)  -- ground truth,
-  * a few named physics quantities (torso height/upright, horizontal vel).
-
-The result is a held-out trajectory set, disjoint from VAE training data,
-on which both frozen models are probed identically.
-
-Run from the repository root:
-
-    python -m probing.collect \
-        --run_logdir /scratch/.../dmc_proprio_walker_walk_seed0 \
-        --output     /scratch/.../probe_walker_walk_seed0.npz \
-        --episodes 40 --seed 0
-"""
+"""Collect DMC Walker trajectories with observations, actions, and physics."""
 
 import argparse
 import json
@@ -41,7 +19,6 @@ import ruamel.yaml as yaml
 import embodied
 from dreamerv3.main import make_agent, make_env
 
-# Named scalar physics quantities to log if the task's Physics exposes them.
 PHYS_QUANTITIES = ('torso_height', 'torso_upright', 'horizontal_velocity')
 
 
@@ -73,34 +50,30 @@ def load_run_config(run_logdir, platform, output_dir, random_agent, task=''):
   config = elements.Config(saved)
   updates = {'logdir': output_dir, 'random_agent': random_agent}
   if platform:
-    updates['jax'] = {'platform': platform}    # 'jax.platform' already exists
+    updates['jax'] = {'platform': platform}
   if task:
-    updates['task'] = task                     # cross-task probing extension
+    updates['task'] = task
   config = config.update(updates)
   return config
 
 
 def load_frozen_agent(agent, ckpt):
-  """Load a frozen DreamerV3 checkpoint into `agent`.
-
-  `ckpt` may be a checkpoint directory (with a `latest` pointer) or an
-  explicit `<timestamp>` snapshot folder.
-  """
+  """Load a DreamerV3 checkpoint into `agent`."""
   cp = elements.Checkpoint()
   cp.agent = agent
   if os.path.exists(os.path.join(ckpt, 'done')):
-    cp.load(ckpt, keys=['agent'])             # explicit snapshot folder
+    cp.load(ckpt, keys=['agent'])
   else:
-    cp = elements.Checkpoint(ckpt)            # directory with 'latest'
+    cp = elements.Checkpoint(ckpt)
     cp.agent = agent
     cp.load(keys=['agent'])
   return agent
 
 
 def get_physics(env):
-  """Reach the underlying MuJoCo physics through the embodied wrappers."""
+  """Return the underlying MuJoCo physics object."""
   try:
-    return env._dmenv.physics                       # Wrapper.__getattr__ chain
+    return env._dmenv.physics
   except Exception as e:
     raise RuntimeError(f'Could not access MuJoCo physics: {e}')
 

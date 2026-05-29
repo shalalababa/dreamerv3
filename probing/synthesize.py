@@ -1,25 +1,4 @@
-"""Synthesis: early-adaptation AUC vs. representation metrics (procedure H).
-
-Builds the single table the study is designed to produce -- one row per
-(condition, seed) carrying the early-adaptation AUC for each downstream task
-alongside every representation metric from section G -- and then correlates
-adaptation speed against each metric across the pretrained conditions. That
-correlation, not the side-by-side table, is what turns RQ2 from "restated"
-into "answered" (procedure H).
-
-It reads three sources, tolerating any that are missing (e.g. adaptation runs
-still in flight) and filling absent cells with NaN:
-
-  * adaptation / from-scratch runs -> scores.jsonl  -> early-adaptation AUC;
-  * probes_<cond>_seed<s>/probe_results.csv         -> probe R^2 metrics;
-  * coverage/coverage.json                          -> replay coverage.
-
-Run from the repository root:
-
-    python -m probing.synthesize \
-        --run_root  /scratch/midway3/$USER/dreamerv3_runs \
-        --output    /scratch/midway3/$USER/dreamerv3_runs/g_synthesis
-"""
+"""Combine adaptation scores, probe metrics, and coverage estimates."""
 
 import argparse
 import csv
@@ -33,8 +12,6 @@ sys.path.insert(0, str(REPO))
 
 import numpy as np
 
-# C1 has no pretrained world model, so it carries no representation metrics;
-# it still contributes adaptation AUC as the no-pretraining lower bound.
 CONDITIONS = ('c1', 'random', 'p2e', 'apt')
 PRETRAINED = ('random', 'p2e', 'apt')
 TASKS = ('stand', 'walk', 'run')
@@ -60,9 +37,9 @@ def parse_args():
 
 
 def run_dir(run_root, cond, task, seed):
-  """Locate the run directory for one (condition, task, seed)."""
+  """Locate one run directory."""
   if cond == 'c1':
-    if task == 'walk':                       # reused existing from-scratch run
+    if task == 'walk':
       return os.path.join(run_root, f'dmc_proprio_walker_walk_seed{seed}')
     return os.path.join(run_root, f'c1_{task}_seed{seed}')
   return os.path.join(run_root, f'adapt_{cond}_{task}_seed{seed}')
@@ -96,7 +73,7 @@ def early_auc(scores_path, window):
 
 
 def read_probe_csv(path):
-  """Extract the section-G probe R^2 metrics from one probe_results.csv."""
+  """Extract selected posterior probe scores."""
   if not os.path.exists(path):
     return {}
   want = {
@@ -143,7 +120,6 @@ def main():
   else:
     print(f'No coverage file at {coverage_path} (coverage cells -> NaN)')
 
-  # One record per (condition, seed): per-task AUC + representation metrics.
   records = []
   for cond in CONDITIONS:
     for seed in args.seeds:
@@ -171,10 +147,8 @@ def main():
     for rec in records:
       w.writerow({c: rec.get(c, '') for c in cols})
 
-  # Correlation: per task, early-AUC vs each representation metric, across the
-  # pretrained conditions x seeds (C1 excluded -- it has no representation).
   pre = [r for r in records if r['condition'] in PRETRAINED]
-  lines = ['Section-H synthesis: early-adaptation AUC vs representation',
+  lines = ['Early-adaptation AUC vs representation metrics',
            '=' * 60, '',
            f'Early-AUC window: first {args.early_window} steps.',
            f'Correlations over pretrained conditions {PRETRAINED} x '

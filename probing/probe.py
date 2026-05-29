@@ -1,34 +1,4 @@
-"""Probing battery: what does each frozen representation encode?
-
-Given the probe trajectories and the extracted features, this script sweeps
-the three axes of the experimental design:
-
-  * probe target   : current state / future state at horizon k / a derived
-                      dynamical quantity (gait phase, return-to-go, ...);
-  * probe site     : RSSM encoder / RSSM posterior / RSSM prior (one-step and
-                      open-loop k-step) / VAE encoder / VAE latent mean;
-  * receptive field: the VAE latent probed with 1, 4, 16 or all past frames
-                      (post-hoc temporal aggregation of a static model).
-
-For every (target, site, horizon, receptive-field) configuration it fits a
-linear ridge probe (closed form) and a small MLP probe, and reports the
-held-out coefficient of determination R^2. It also reports held-out
-reconstruction / predictive log-likelihoods so probe quality and generative
-quality can be correlated.
-
-R^2 is computed on held-out episodes against the *train-set* mean baseline:
-
-    R^2 = 1 - sum (y - y_hat)^2 / sum (y - mean_train(y))^2
-
-so a representation that carries no information about the target scores ~0.
-
-Run from the repository root:
-
-    python -m probing.probe \
-        --traj     /scratch/.../probe_walker_walk_seed0.npz \
-        --features /scratch/.../features_walker_walk_seed0.npz \
-        --output   /scratch/.../probes_walker_walk_seed0
-"""
+"""Fit probes from frozen features to physics-derived targets."""
 
 import argparse
 import csv
@@ -47,10 +17,7 @@ import numpy as np
 
 from probing import targets as targets_mod
 
-LAMBDAS = (1e-3, 1e-1, 1e0, 1e1, 1e3)        # ridge regularization grid
-
-
-# -- feature assembly -----------------------------------------------------
+LAMBDAS = (1e-3, 1e-1, 1e0, 1e1, 1e3)
 
 def site_features(features, fmeta):
   """Assemble {site: (N, T, d)} probe-site feature arrays."""
@@ -61,9 +28,6 @@ def site_features(features, fmeta):
         [features['wm_post_deter'], features['wm_post_stoch']], -1)
     sites['prior'] = np.concatenate(
         [features['wm_prior_deter'], features['wm_prior_stoch']], -1)
-    # Posterior components: deter (recurrent state) and stoch (the categorical
-    # latent) probed alone -- stoch is the fair same-dimension analog of the
-    # VAE's Gaussian latent.
     sites['post_deter'] = features['wm_post_deter']
     sites['post_stoch'] = features['wm_post_stoch']
     for h in fmeta.get('horizons', []):
@@ -93,8 +57,6 @@ def receptive_window(feat, k):
   return np.concatenate(out[::-1], -1)
 
 
-# -- probes ---------------------------------------------------------------
-
 def r2_score(y, yhat, baseline):
   ss_res = float(np.sum((y - yhat) ** 2))
   ss_tot = float(np.sum((y - baseline) ** 2))
@@ -113,7 +75,7 @@ def fit_ridge(Xtr, Ytr, lam):
   X = np.concatenate([Xtr, np.ones((len(Xtr), 1), Xtr.dtype)], 1)
   D = X.shape[1]
   reg = lam * np.eye(D, dtype=X.dtype)
-  reg[-1, -1] = 0.0                                # do not penalize bias
+  reg[-1, -1] = 0.0
   W = np.linalg.solve(X.T @ X + reg, X.T @ Ytr)
   return W
 
@@ -184,8 +146,6 @@ def mlp_probe(Xtr, Ytr, Xte, Yte, steps=2000, width=256, lr=1e-3, seed=0):
   return r2_score(Yte, pred, Ytr.mean(0, keepdims=True))
 
 
-# -- sweep ----------------------------------------------------------------
-
 def flatten(X, Y, mask):
   m = mask.reshape(-1)
   return X.reshape(-1, X.shape[-1])[m], Y.reshape(-1, Y.shape[-1])[m]
@@ -233,7 +193,6 @@ def build_jobs(sites, targets, masks, horizons, recfields):
     jobs.append(dict(model=model, site=site, target=target,
                      horizon=horizon, receptive_field=rf))
 
-  # Axis 1+2: current/future simulator state vs probe site.
   if 'state' in targets:
     for h in horizons:
       for s in rssm_sites:
@@ -243,11 +202,9 @@ def build_jobs(sites, targets, masks, horizons, recfields):
       if 'vae_latent' in sites:
         for rf in recfields:
           add('vae', 'vae_latent', 'state', h, rf)
-      # open-loop RSSM prior predicting the matching future state.
       if h > 0 and f'imag{h}' in sites:
         add('rssm', f'imag{h}', 'state', h, 1)
 
-  # Derived dynamical targets and downstream task-reward probes, horizon 0.
   for tname in ('gait_phase', 'return_to_go', 'time_to_fall',
                 'reward_stand', 'reward_walk', 'reward_run'):
     if tname not in targets:
@@ -262,8 +219,6 @@ def build_jobs(sites, targets, masks, horizons, recfields):
   return jobs
 
 
-# -- likelihoods ----------------------------------------------------------
-
 def held_out_likelihood(features, n_test):
   """Mean held-out NLL (lower is better) for each generative quantity."""
   out = {}
@@ -276,8 +231,6 @@ def held_out_likelihood(features, n_test):
       out[label] = dict(mean=float(arr.mean()), std=float(arr.std()))
   return out
 
-
-# -- plots ----------------------------------------------------------------
 
 def plot_horizon(rows, outpath):
   fig, ax = plt.subplots(figsize=(7, 4.5), constrained_layout=True)
@@ -301,8 +254,7 @@ def plot_horizon(rows, outpath):
 
 
 def plot_latent_pca(sites, targets, outpath, max_points=4000, seed=0):
-  """PCA scatter of the RSSM posterior latent, coloured by a task variable
-  (research_procedure.md section G, probe 5 -- qualitative separability)."""
+  """PCA scatter of the RSSM posterior latent."""
   if 'posterior' not in sites:
     return
   feat = sites['posterior'].reshape(-1, sites['posterior'].shape[-1])
@@ -354,8 +306,6 @@ def plot_receptive_field(rows, outpath):
   plt.close(fig)
 
 
-# -- driver ---------------------------------------------------------------
-
 def parse_args():
   p = argparse.ArgumentParser(description=__doc__)
   p.add_argument('--traj', required=True)
@@ -403,7 +353,6 @@ def main():
     print(f"  [{i + 1:>3}/{len(jobs)}] {tag}  "
           f"R2_ridge={row.get('r2_ridge')}  R2_mlp={row.get('r2_mlp')}")
 
-  # Write the long-form results table.
   cols = ['model', 'site', 'target', 'horizon', 'receptive_field',
           'r2_ridge', 'r2_mlp', 'ridge_lambda', 'feat_dim', 'n_train',
           'n_test']
@@ -419,7 +368,7 @@ def main():
     json.dump(likelihood, f, indent=2)
 
   plot_horizon(rows, os.path.join(args.output, 'r2_vs_horizon.png'))
-  if 'vae_latent' in sites:                  # VAE-comparison plot, course only
+  if 'vae_latent' in sites:
     plot_receptive_field(
         rows, os.path.join(args.output, 'r2_vs_receptive_field.png'))
   plot_latent_pca(sites, targets, os.path.join(args.output, 'latent_pca.png'))

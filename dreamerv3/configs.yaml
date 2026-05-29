@@ -117,11 +117,6 @@ defaults:
     repval_grad: True
     report: True
     report_gradnorms: False
-    # Reward-free exploration pretraining and frozen-readout adaptation.
-    # mode: task   -> standard DreamerV3 (env reward); used by C1 and adaptation.
-    #       random -> C2: uniform random env actions, world model only.
-    #       p2e    -> C3: Plan2Explore, latent-disagreement intrinsic reward.
-    #       apt    -> C4: APT, particle-entropy intrinsic reward.
     frozen_wm: False
     expl: {
       mode: task,
@@ -200,8 +195,6 @@ dmc_proprio:
   env.dmc.image: False
   run: {steps: 1.1e6, train_ratio: 1024}
 
-# Reward-free exploration pretraining (Stage 1). Compose on top of dmc_proprio,
-# e.g. `--configs dmc_proprio expl_p2e --run.steps 500000`.
 expl_random:
   agent.expl.mode: random
 
@@ -211,9 +204,6 @@ expl_p2e:
 expl_apt:
   agent.expl.mode: apt
 
-# Frozen-readout adaptation (Stage 2). Freezes encoder + RSSM + decoder loaded
-# from a pretraining checkpoint and trains only the fresh task head. Compose as
-# `--configs dmc_proprio frozen_readout --run.from_checkpoint <ckpt-dir>`.
 frozen_readout:
   agent.frozen_wm: True
   run.from_checkpoint_regex: '^(enc|dyn|dec)/'

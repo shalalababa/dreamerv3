@@ -1,21 +1,4 @@
-"""Reward-free exploration objectives for world-model pretraining.
-
-Two intrinsic-reward mechanisms, selected by `agent.expl.mode`:
-
-  * Disag       -- Plan2Explore (C3). An ensemble of one-step latent
-                   predictors; the intrinsic reward is the disagreement
-                   (variance) of their predictions of the next deterministic
-                   posterior feature target. Disagreement is high in states the
-                   world model is still uncertain about, so the exploration
-                   actor is pulled toward novel dynamics.
-  * apt_reward  -- APT (C4). A particle-based entropy estimate over
-                   world-model latents: per-state reward proportional to
-                   log(c + mean k-NN distance) within the batch of imagined
-                   latents. Maximising it spreads the policy's state coverage.
-
-Both are consumed by `dreamerv3/agent.py` inside the imagination rollout, in
-place of the task reward head.
-"""
+"""Intrinsic rewards for reward-free DreamerV3 runs."""
 
 import embodied.jax.nets as nn
 import jax
@@ -27,13 +10,7 @@ sg = jax.lax.stop_gradient
 
 
 class Disag(nj.Module):
-  """Plan2Explore one-step latent-disagreement ensemble.
-
-  Each ensemble member is a small MLP that predicts the next feature target
-  from the current model state and action. Members are initialised
-  independently (distinct ninjax paths), and optional bootstrap masks keep their
-  training data slightly different so predictions diverge where data is sparse.
-  """
+  """One-step latent prediction ensemble."""
 
   ensemble: int = 8
   units: int = 256
@@ -56,11 +33,7 @@ class Disag(nj.Module):
     return jnp.stack([self._member(i, x) for i in range(self.ensemble)], 0)
 
   def loss(self, feat, action, target, bootstrap=False, bootstrap_prob=0.8):
-    """Mean squared one-step prediction error, averaged over the ensemble.
-
-    Inputs are stop-gradient'd: the ensemble adapts to the world model's
-    representation, it must not perturb the world model in return.
-    """
+    """Mean squared prediction error, averaged over ensemble members."""
     pred = f32(self.predict(sg(feat), sg(action)))
     target = sg(f32(target))[None]
     err = ((pred - target) ** 2).mean(-1)
@@ -76,16 +49,8 @@ class Disag(nj.Module):
 
 
 def apt_reward(feat, knn=12, logc=1.0):
-  """APT particle-entropy reward over a batch of latents.
-
-  `feat` is (N, T, D). At each horizon step the N parallel imagined latents
-  form the particle set; a particle's reward is log(c + mean distance to its
-  k nearest neighbours), a non-parametric estimate of latent-space entropy.
-  Returns (N, T).
-  """
+  """APT k-NN entropy reward for latents shaped (N, T, D)."""
   feat = f32(feat)
-  # Clamp k to the particle count (matters only for tiny debug batches; real
-  # imagination batches have B*K ~ 1000 particles).
   k = min(knn, max(feat.shape[0] - 1, 1))
 
   def per_step(z):                                   # z: (N, D)
