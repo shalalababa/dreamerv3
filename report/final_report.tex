@@ -520,8 +520,8 @@ representation property that tracks transfer is not the linear decodability of
 the current state, which saturates, but the data distribution the exploration
 policy induces (which here we cannot cleanly separate from simply reaching the
 task-relevant regime). Either way, this argues for evaluating
-exploration methods by the distribution they collect, not only by downstream
-return. Second, the choice of adaptation protocol is itself a finding, not a
+exploration methods by the distribution they collect, rather than by downstream
+return alone. Second, the choice of adaptation protocol is itself a finding, not a
 nuisance: frozen-readout is a conservative stress test that can invert
 final-performance orderings relative to full-adaptation, so transfer claims
 should state which protocol they assume. Third, because the gain is sample
@@ -566,8 +566,8 @@ right regime.
 Code for world-model pretraining, adaptation, probing, coverage, and synthesis
 is available at
 \url{https://github.com/shalalababa/dreamerv3/tree/arl-exploration}. The branch
-contains the scripts and report figures used here; raw run outputs are omitted
-from the repository. Reported numbers are computed by the probing pipeline
+contains the implementation and report figures used here; raw run outputs are
+omitted from the repository. Reported numbers are computed by the probing pipeline
 (\texttt{probing/}) from logged run metrics; tables cite condition means with
 per-seed spread.
 
