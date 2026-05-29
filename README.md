@@ -1,3 +1,16 @@
+> **Fork note.** This is a course-project fork of [danijar/dreamerv3](https://github.com/danijar/dreamerv3)
+> hosting two CMSC 35401 (Active Representation Learning, UChicago) projects on
+> separate branches:
+>
+> - [`arl-exploration`](https://github.com/shalalababa/dreamerv3/tree/arl-exploration) —
+>   *Reward-free world-model pretraining for transferable control representations on DMC Walker* (final report under `report/`).
+> - [`intrinsic-pretraining`](https://github.com/shalalababa/dreamerv3/tree/intrinsic-pretraining) —
+>   separate intrinsic-reward study.
+>
+> The upstream DreamerV3 documentation below is preserved.
+>
+> ---
+
 # Mastering Diverse Domains through World Models
 
 A reimplementation of [DreamerV3][paper], a scalable and general reinforcement
