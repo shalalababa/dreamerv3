@@ -1,25 +1,4 @@
-"""Static frame-level VAE over DMC proprio observations.
-
-The VAE is deliberately built from the *same* building blocks as DreamerV3's
-world model so that the only thing that differs from the RSSM is the absence
-of sequential structure:
-
-  * encoder  : `dreamerv3.rssm.Encoder` (identical architecture/preprocessing),
-  * bottleneck: a diagonal-Gaussian latent  q(z|x) = N(mu(x), diag sigma(x)^2),
-  * decoder  : an MLP + per-key heads, identical to the RSSM decoder's vector
-               path (symlog-MSE outputs).
-
-Training objective (per frame x), see probing/README.md for the derivation:
-
-    L(x) = E_{q(z|x)}[ -log p(x|z) ]  +  beta * KL( q(z|x) || N(0, I) )
-
-         = recon(x)                  +  beta * kl(x)
-
-with the reparameterised sample  z = mu + sigma (*) eps,  eps ~ N(0, I).
-The observation model p(x|z) is a unit-variance Gaussian in symlog space,
-exactly matching DreamerV3's `symlog_mse` decoder, so held-out log-likelihoods
-are computed identically for both models downstream.
-"""
+"""Static frame-level VAE over DMC proprio observations."""
 
 import pickle
 
@@ -37,11 +16,11 @@ f32 = jnp.float32
 
 class StaticVAE(nj.Module):
 
-  latent: int = 128          # latent dim; default = RSSM stoch*classes (32*4)
-  beta: float = 1.0          # beta-VAE weight on the KL term
-  free_nats: float = 0.0     # optional KL floor (nats per frame), 0 disables
-  dec_layers: int = 3        # decoder MLP depth  (matches dmc_proprio decoder)
-  dec_units: int = 64        # decoder MLP width  (matches dmc_proprio decoder)
+  latent: int = 128
+  beta: float = 1.0
+  free_nats: float = 0.0
+  dec_layers: int = 3
+  dec_units: int = 64
   act: str = 'silu'
   norm: str = 'rms'
   logstd_min: float = -8.0

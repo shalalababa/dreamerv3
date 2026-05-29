@@ -1,24 +1,4 @@
-"""Open-loop prediction: what the RSSM world model actually predicts.
-
-This is the "how the system works" figure. For a held-out episode we feed the
-first `--context` steps to the RSSM to establish a posterior, then roll the
-*prior* forward with the recorded actions for `--horizon` steps -- the model
-no longer sees observations -- and decode both back to observation units.
-Plotting predicted-vs-true torso height / velocities / orientations
-(posterior solid, prior dashed, truth black) directly visualises the
-predictive component that the RSSM-prior probes and held-out likelihood
-quantify, and shows the prior drifting from truth as the horizon grows.
-
-It also reports the open-loop prediction RMSE as a function of horizon.
-
-Run from the repository root:
-
-    python -m probing.openloop \
-        --traj       <RUN>/probing_walker_walk_seed0/traj.npz \
-        --run_logdir <RUN>/dmc_proprio_walker_walk_seed0 \
-        --output     results/probing_walker_walk_seed0 \
-        --context 25 --horizon 75 --episode 0
-"""
+"""Plot RSSM posterior reconstruction and open-loop prior prediction."""
 
 import argparse
 import json
@@ -67,7 +47,7 @@ def openloop_forward(model, obs, action_dict, reset, obs_keys, context,
   _, _, post_rec = model.dec(
       model.dec.initial(B), post, reset[:, :context], training=False)
 
-  # Imagine forward using the actions actually taken from step context-1 on.
+  # Imagine forward using recorded actions from step context-1 onward.
   imag_act = {k: v[:, context - 1:context - 1 + horizon]
               for k, v in action_dict.items()}
   _, prior_feat, _ = model.dyn.imagine(

@@ -1,15 +1,4 @@
-"""Read DreamerV3 replay-buffer chunks as a flat per-frame dataset.
-
-DreamerV3 stores its replay buffer as a directory of compressed `.npz`
-chunks (see `embodied/core/chunk.py`); every chunk holds `length` consecutive
-transitions with one array per observation/action/flag key.
-
-The static VAE is a per-frame model, so for VAE training we only need the
-*set* of observation frames -- their temporal order is irrelevant. This
-module flattens the chunks into `{key: (N, d)}` arrays. Training the VAE on
-exactly these frames is what makes "the same observation stream" literal:
-both the RSSM and the VAE see the identical input distribution.
-"""
+"""Read DreamerV3 replay chunks as a flat per-frame dataset."""
 
 import glob
 import os

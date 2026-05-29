@@ -1,34 +1,4 @@
-"""Probing battery: what does each frozen representation encode?
-
-Given the probe trajectories and the extracted features, this script sweeps
-the three axes of the experimental design:
-
-  * probe target   : current state / future state at horizon k / a derived
-                      dynamical quantity (gait phase, return-to-go, ...);
-  * probe site     : RSSM encoder / RSSM posterior / RSSM prior (one-step and
-                      open-loop k-step) / VAE encoder / VAE latent mean;
-  * receptive field: the VAE latent probed with 1, 4, 16 or all past frames
-                      (post-hoc temporal aggregation of a static model).
-
-For every (target, site, horizon, receptive-field) configuration it fits a
-linear ridge probe (closed form) and a small MLP probe, and reports the
-held-out coefficient of determination R^2. It also reports held-out
-reconstruction / predictive log-likelihoods so probe quality and generative
-quality can be correlated.
-
-R^2 is computed on held-out episodes against the *train-set* mean baseline:
-
-    R^2 = 1 - sum (y - y_hat)^2 / sum (y - mean_train(y))^2
-
-so a representation that carries no information about the target scores ~0.
-
-Run from the repository root:
-
-    python -m probing.probe \
-        --traj     /scratch/.../probe_walker_walk_seed0.npz \
-        --features /scratch/.../features_walker_walk_seed0.npz \
-        --output   /scratch/.../probes_walker_walk_seed0
-"""
+"""Fit probes from frozen features to physics-derived targets."""
 
 import argparse
 import csv

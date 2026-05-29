@@ -1,24 +1,4 @@
-"""Where does sequential context help? RSSM vs VAE reconstruction over time.
-
-This is the *temporal* view of the static-vs-sequential gap. Both models
-reconstruct the same current observation at every step, in the same units
-(summed symlog reconstruction error over the proprio dims): the RSSM from its
-recurrent posterior, the static VAE from a single frame. Plotting the two
-error curves within an episode shows *when* recurrence helps -- the
-hypothesis being that it helps most during fast transients, where a single
-frame is ambiguous but temporal context disambiguates.
-
-It uses only arrays already produced by `features.py` (`wm_post_nll`,
-`vae_recon_nll`) plus the logged physics state for a motion-intensity signal
-(the joint+body speed ||qvel||), so it needs no model or checkpoint.
-
-Run from the repository root:
-
-    python -m probing.recon_over_time \
-        --features <RUN>/probing_walker_walk_seed0/features.npz \
-        --traj     <RUN>/probing_walker_walk_seed0/traj.npz \
-        --output   results/probing_walker_walk_seed0
-"""
+"""Plot RSSM and VAE reconstruction error over an episode."""
 
 import argparse
 import json

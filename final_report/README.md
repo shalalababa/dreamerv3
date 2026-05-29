@@ -7,8 +7,7 @@ vs. static VAE). Source lives in `iclr2026/` alongside the style files so the
 - `iclr2026/report.tex` — the paper (main body ≤ 5 pages; appendices after the
   references).
 - `iclr2026/references.bib` — bibliography.
-- `iclr2026/figures/` — figures, copied from `result_images/` (regenerate those
-  with `python result_images/build_summary_figures.py`).
+- `iclr2026/figures/` — figures used by the report.
 
 ## Build
 

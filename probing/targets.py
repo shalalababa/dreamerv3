@@ -1,24 +1,4 @@
-"""Derive probe targets from collected probe trajectories.
-
-Three families of targets, mirroring the project's "probe target" axis:
-
-  * current simulator state   -- the full MuJoCo state (qpos | qvel);
-  * future simulator state    -- the same array, shifted by the probing code;
-  * derived dynamical quantities that are *not* a linear read-out of a single
-    observation frame:
-      - gait_phase  : instantaneous phase of the walking cycle, obtained as
-                      the angle of the analytic (Hilbert) signal of the
-                      antiphase hip oscillation, encoded as (cos, sin) so the
-                      regression target is smooth across the 2*pi wrap;
-      - return_to_go: discounted sum of future rewards (what DreamerV3's value
-                      head estimates) -- a genuinely future-dependent target;
-      - time_to_fall: steps until the torso first drops below a fall height
-                      (heavily right-censored for a competent walker -- see
-                      the `*_censored` mask).
-
-`derive_targets` returns {name: (N, T, d) float32} plus a {name: (N, T) bool}
-validity mask dict. The probing code handles horizon shifting and masking.
-"""
+"""Derive probe targets from collected Walker trajectories."""
 
 import numpy as np
 from scipy.signal import hilbert

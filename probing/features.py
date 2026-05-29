@@ -1,29 +1,4 @@
-"""Extract probe-site features from the two frozen models.
-
-For every collected probe trajectory this script runs:
-
-  * the frozen DreamerV3 world model, producing features at three sites
-      - encoder output            (per-frame tokens),
-      - RSSM posterior            (deter | E[stoch] given the observation),
-      - RSSM prior                (deter | E[stoch] *before* the observation),
-    plus open-loop k-step prior features for k in --horizons (what the
-    predictive component imagines), and held-out reconstruction /
-    predictive log-likelihoods;
-
-  * the frozen static VAE, producing the encoder output and the latent mean.
-
-All features are aligned step-for-step with the trajectory so the probing
-script can pair representation_t with any target_{t+k}.
-
-Run from the repository root:
-
-    python -m probing.features \
-        --traj      /scratch/.../probe_walker_walk_seed0.npz \
-        --run_logdir /scratch/.../dmc_proprio_walker_walk_seed0 \
-        --vae_ckpt  /scratch/.../vae_walker_walk_seed0/vae.ckpt \
-        --output    /scratch/.../features_walker_walk_seed0.npz \
-        --horizons 1 5 20
-"""
+"""Extract RSSM and optional VAE features for probe trajectories."""
 
 import argparse
 import json

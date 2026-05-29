@@ -1,11 +1,7 @@
-> **Fork note.** This is a course-project fork of [danijar/dreamerv3](https://github.com/danijar/dreamerv3)
-> hosting two CMSC 35401 (Active Representation Learning, UChicago) projects on
-> separate branches:
->
-> - [`arl-exploration`](https://github.com/shalalababa/dreamerv3/tree/arl-exploration) —
->   *Reward-free world-model pretraining for transferable control representations on DMC Walker* (final report under `report/`).
-> - [`intrinsic-pretraining`](https://github.com/shalalababa/dreamerv3/tree/intrinsic-pretraining) —
->   separate intrinsic-reward study.
+> **Fork note.** This is the TTIC 31220 project branch of a course-project fork
+> of [danijar/dreamerv3](https://github.com/danijar/dreamerv3):
+> *What Do Sequential Generative Latents Encode? Probing a DreamerV3 World Model
+> Against a Static VAE* (final report under `final_report/`).
 >
 > The upstream DreamerV3 documentation below is preserved.
 >

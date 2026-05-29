@@ -1,26 +1,4 @@
-"""Collect held-out probe trajectories from a frozen DreamerV3 policy.
-
-DreamerV3's replay buffer stores only observations, so it cannot supply the
-ground-truth simulator state that the derived probe targets (gait phase,
-time-to-fall, ...) need. This script rolls out the *frozen* DreamerV3 policy
-in the DMC Walker environment and logs, per step:
-
-  * the proprioceptive observation (what both models receive),
-  * the agent action (needed to drive the RSSM prior),
-  * reward / is_first / is_last,
-  * the full MuJoCo physics state  (qpos | qvel)  -- ground truth,
-  * a few named physics quantities (torso height/upright, horizontal vel).
-
-The result is a held-out trajectory set, disjoint from VAE training data,
-on which both frozen models are probed identically.
-
-Run from the repository root:
-
-    python -m probing.collect \
-        --run_logdir /scratch/.../dmc_proprio_walker_walk_seed0 \
-        --output     /scratch/.../probe_walker_walk_seed0.npz \
-        --episodes 40 --seed 0
-"""
+"""Collect DMC Walker trajectories with observations, actions, and physics."""
 
 import argparse
 import json
@@ -41,7 +19,6 @@ import ruamel.yaml as yaml
 import embodied
 from dreamerv3.main import make_agent, make_env
 
-# Named scalar physics quantities to log if the task's Physics exposes them.
 PHYS_QUANTITIES = ('torso_height', 'torso_upright', 'horizontal_velocity')
 
 

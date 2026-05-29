@@ -1,29 +1,4 @@
-"""Action-conditioned dynamics in the frozen VAE's latent space.
-
-The RSSM's open-loop prior is a learned latent dynamics model; to compare the
-static VAE representation against it on equal footing for prediction, we give
-the VAE its own dynamics. We fit a small forward model
-
-    g(z_t, a_t) ~= z_{t+1} - z_t
-
-on the VAE latents of the *training* episodes (the same split the probes train
-on, so the held-out episodes are never seen), roll it open-loop with the
-recorded actions, and write `vae_imag{k}` features. The probing script
-(`probing.probe`) then treats these as a VAE probe site and scores them against
-the future simulator state, directly alongside the RSSM `imag{k}` sites.
-
-Inputs are the artifacts the pipeline already produces: `vae_mean` from
-`features.npz` and `action`/`is_first` from `traj.npz`. No DreamerV3 model or
-checkpoint is needed.
-
-Run from the repository root:
-
-    python -m probing.vae_dynamics \
-        --features <RUN>/probing_walker_walk_seed0/features.npz \
-        --traj     <RUN>/probing_walker_walk_seed0/traj.npz \
-        --output   <RUN>/probing_walker_walk_seed0/features_vaedyn.npz \
-        --horizons 1 5 20 --test_frac 0.3
-"""
+"""Train open-loop dynamics in the frozen VAE latent space."""
 
 import argparse
 import functools
