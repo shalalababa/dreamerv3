@@ -1,12 +1,4 @@
-> **Fork note.** This is the CMSC 35401 (Active Representation Learning,
-> UChicago) project branch of a course-project fork of
-> [danijar/dreamerv3](https://github.com/danijar/dreamerv3):
-> *Reward-free world-model pretraining for transferable control representations
-> on DMC Walker* (final report under `report/`).
->
-> The upstream DreamerV3 documentation below is preserved.
->
-> ---
+Research branch: causal mediators of reward-free Dreamer-style world-model pretraining transfer.
 
 # Mastering Diverse Domains through World Models
 
