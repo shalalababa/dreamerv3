@@ -8,15 +8,66 @@
 #   ./submit_all.sh adapt <pretrain_run_id> <task> [STEPS]       # Phase 5 dose-response
 #
 # Dry run: set DRYRUN=1 to print sbatch commands without submitting.
-# Tunables (env): STEPS, SEEDS, DECOUPLERS, CONTROL.
+# Duplicate guard: by default, skip a RUN_ID that is already in Slurm or whose
+# logdir already exists under RUNROOT. Set FORCE=1 to submit anyway.
+# RCC job cap guard: submit only until current Slurm jobs + this invocation
+# reaches MAX_JOBS (default 12). Re-run the command after jobs finish.
+# Tunables (env): STEPS, SEEDS, DECOUPLERS, CONTROL, MAX_JOBS.
 # ---------------------------------------------------------------------------
 set -euo pipefail
 REPO="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 export REPO
 source "$REPO/scripts/env.sh"
 
+slurm_user() {
+  local user="${USER:-${LOGNAME:-}}"
+  [ -n "$user" ] || return 1
+  printf '%s\n' "$user"
+}
+
+active_job_count() {
+  command -v squeue >/dev/null 2>&1 || { echo 0; return 0; }
+  local user
+  user="$(slurm_user)" || { echo 0; return 0; }
+  squeue -h -u "$user" | wc -l | tr -d ' '
+}
+
+queued_job() {  # queued_job <RUN_ID>
+  command -v squeue >/dev/null 2>&1 || return 1
+  local user
+  user="$(slurm_user)" || return 1
+  squeue -h -u "$user" -o "%j" |
+    awk -v name="$1" '$0 == name {found=1} END {exit found ? 0 : 1}'
+}
+
+existing_logdir() {  # existing_logdir <RUN_ID>
+  local dir="$RUNROOT/$1"
+  [ -e "$dir" ] && [ -n "$(find "$dir" -mindepth 1 -maxdepth 1 -print -quit 2>/dev/null)" ]
+}
+
+MAX_JOBS="${MAX_JOBS:-12}"
+JOBS_AT_START="$(active_job_count)"
+SUBMITTED_THIS_RUN=0
+
 submit() {  # submit <script> <RUN_ID> KEY=VAL ...
   local script="$1"; local run_id="$2"; shift 2
+  if [ "${FORCE:-0}" != "1" ]; then
+    if queued_job "$run_id"; then
+      echo "SKIP queued/running: $run_id"
+      return 0
+    fi
+    if existing_logdir "$run_id"; then
+      echo "SKIP existing logdir: $RUNROOT/$run_id  (set FORCE=1 to resubmit)"
+      return 0
+    fi
+  fi
+  local jobs_used=$((JOBS_AT_START + SUBMITTED_THIS_RUN))
+  if [ "${IGNORE_JOB_CAP:-0}" != "1" ] && [ "$MAX_JOBS" -gt 0 ] &&
+     [ "$jobs_used" -ge "$MAX_JOBS" ]; then
+    echo "STOP job cap reached: $jobs_used/$MAX_JOBS Slurm jobs active/submitted."
+    echo "Re-run this command after some jobs finish; existing/queued RUN_IDs will be skipped."
+    exit 0
+  fi
   local exports="ALL,REPO=$REPO,RUN_ID=$run_id"
   for kv in "$@"; do exports="$exports,$kv"; done
   local cmd=(sbatch --account="$SLURM_ACCOUNT" --partition="$SLURM_PARTITION"
@@ -24,6 +75,7 @@ submit() {  # submit <script> <RUN_ID> KEY=VAL ...
              --job-name="$run_id" --export="$exports"
              "$REPO/scripts/$script")
   if [ "${DRYRUN:-0}" = "1" ]; then printf '%q ' "${cmd[@]}"; echo; else "${cmd[@]}"; fi
+  SUBMITTED_THIS_RUN=$((SUBMITTED_THIS_RUN + 1))
 }
 
 short_of() { echo "$1" | sed -E 's/^dmc_//; s/_.*//'; }

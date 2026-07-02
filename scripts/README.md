@@ -1,7 +1,7 @@
-# Cluster launch scripts (gitignored)
+# Cluster launch scripts
 
 Machine-specific Slurm launchers for the world-model transfer study
-(`research_notes/Research_Execution_Runbook_20260701.tex`). Not committed.
+(`research_notes/Research_Execution_Runbook_v2_20260701.tex`). Not committed.
 
 ## First: confirm the environment (project memory is ~6 weeks old)
 
@@ -18,6 +18,12 @@ mujoco, elements, embodied; import dreamerv3.main; print('ok')"`.
 ## Workflow (phase -> command)
 
 All commands run from the repo root. Add `DRYRUN=1` to print without submitting.
+`submit_all.sh` is idempotent by default: it skips any `RUN_ID` that is already
+queued/running in Slurm or has a non-empty `$RUNROOT/<RUN_ID>` directory. Use
+`FORCE=1` only when you intentionally want to resubmit into an existing run ID.
+It also respects RCC's submitted-job cap: by default `MAX_JOBS=12`, so it fills
+available slots and stops. Re-run the same command after jobs finish; already
+submitted/completed run IDs are skipped.
 
 ```bash
 # Phase 3 -- Gate 0 pilots (p2e/apt/random/goal x cup/finger), ~1e5 steps each
@@ -32,7 +38,8 @@ python -m probing.gate0 --task dmc_cup_catch --window 50 \
 #   -> gate0.json / gate0.png with a GO / NO-GO verdict (plan Sec. 3.3).
 
 # Phase 4 -- reward-free pretraining WITH checkpoint retention (walker+cup+finger)
-./scripts/submit_all.sh pretrain           # SEEDS="1 2 3 4" for the headline domain
+./scripts/submit_all.sh pretrain           # defaults to SEEDS="1 2 3 4 5"
+# If 12 jobs are already active/submitted, it stops without submitting more.
 
 # Phase 5 -- frozen-readout dose-response from the retained snapshots
 python -m probing.checkpoint_watcher --select \
