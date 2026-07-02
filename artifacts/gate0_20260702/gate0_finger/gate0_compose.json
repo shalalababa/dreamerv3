@@ -1,0 +1,130 @@
+{
+  "task": "dmc_finger_turn_hard",
+  "regime": "dist_to_target",
+  "threshold": 0.0,
+  "window": 50,
+  "n_windows": 200,
+  "n_candidates": 400,
+  "criteria": {
+    "cov_match_frac": 0.05,
+    "occ_sep_mult": 3.0,
+    "max_overlap": 0.2,
+    "dirichlet": 0.3,
+    "max_frames": 2000,
+    "knn": 12,
+    "logc": 1.0
+  },
+  "strata": {
+    "apt/high": 36,
+    "apt/mid": 199,
+    "apt/zero": 1759,
+    "goal/high": 322,
+    "goal/mid": 201,
+    "goal/zero": 1458,
+    "p2e/high": 96,
+    "p2e/mid": 335,
+    "p2e/zero": 1562,
+    "random/high": 101,
+    "random/mid": 46,
+    "random/zero": 1822
+  },
+  "pilots": {
+    "p2e": {
+      "coverage": 0.8137,
+      "occupancy": 0.0684
+    },
+    "apt": {
+      "coverage": 0.6724,
+      "occupancy": 0.0309
+    },
+    "random": {
+      "coverage": 0.6965,
+      "occupancy": 0.0529
+    },
+    "goal": {
+      "coverage": 0.6834,
+      "occupancy": 0.1697
+    }
+  },
+  "coverage_range": 0.141369606592322,
+  "cov_tol": 0.0070684803296161,
+  "occ_noise_typical": 0.023649511858820915,
+  "occ_sep_min": 0.07094853557646275,
+  "n_q1_pairs": 6213,
+  "n_q2_pairs": 14175,
+  "best_coverage_matched_occupancy_different": {
+    "docc": 0.668,
+    "dcov": 0.0018,
+    "overlap_frac": 0.01,
+    "sides": [
+      {
+        "coverage": 0.7021,
+        "occupancy": 0.0145,
+        "occ_noise": 0.0073,
+        "mixture": {
+          "apt/mid": 1,
+          "apt/zero": 21,
+          "goal/zero": 3,
+          "p2e/zero": 2,
+          "random/high": 1,
+          "random/mid": 5,
+          "random/zero": 167
+        }
+      },
+      {
+        "coverage": 0.7039,
+        "occupancy": 0.6825,
+        "occ_noise": 0.0267,
+        "mixture": {
+          "apt/mid": 7,
+          "apt/zero": 21,
+          "goal/high": 22,
+          "p2e/high": 30,
+          "p2e/zero": 19,
+          "random/high": 98,
+          "random/mid": 3
+        }
+      }
+    ]
+  },
+  "best_coverage_different_occupancy_matched": {
+    "dcov": 0.1843,
+    "docc": 0.0145,
+    "overlap_frac": 0.065,
+    "sides": [
+      {
+        "coverage": 0.7416,
+        "occupancy": 0.6526,
+        "occ_noise": 0.0242,
+        "mixture": {
+          "apt/high": 28,
+          "apt/mid": 1,
+          "goal/high": 12,
+          "goal/zero": 10,
+          "p2e/high": 96,
+          "p2e/mid": 1,
+          "p2e/zero": 15,
+          "random/high": 28,
+          "random/mid": 8,
+          "random/zero": 1
+        }
+      },
+      {
+        "coverage": 0.5574,
+        "occupancy": 0.6381,
+        "occ_noise": 0.0279,
+        "mixture": {
+          "apt/high": 10,
+          "apt/mid": 15,
+          "goal/high": 129,
+          "goal/mid": 15,
+          "goal/zero": 28,
+          "p2e/zero": 2,
+          "random/zero": 1
+        }
+      }
+    ]
+  },
+  "decision": "GO-compose",
+  "reasons": []
+}

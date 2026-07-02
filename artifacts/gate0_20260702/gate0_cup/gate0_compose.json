@@ -1,0 +1,126 @@
+{
+  "task": "dmc_cup_catch",
+  "regime": "ball_cup_dist",
+  "threshold": 0.05,
+  "window": 50,
+  "n_windows": 200,
+  "n_candidates": 400,
+  "criteria": {
+    "cov_match_frac": 0.05,
+    "occ_sep_mult": 3.0,
+    "max_overlap": 0.2,
+    "dirichlet": 0.3,
+    "max_frames": 2000,
+    "knn": 12,
+    "logc": 1.0
+  },
+  "strata": {
+    "apt/high": 83,
+    "apt/mid": 1649,
+    "apt/zero": 262,
+    "goal/high": 195,
+    "goal/mid": 912,
+    "goal/zero": 870,
+    "p2e/high": 10,
+    "p2e/mid": 1250,
+    "p2e/zero": 740,
+    "random/high": 362,
+    "random/mid": 1499,
+    "random/zero": 128
+  },
+  "pilots": {
+    "p2e": {
+      "coverage": 0.9158,
+      "occupancy": 0.0359
+    },
+    "apt": {
+      "coverage": 0.7923,
+      "occupancy": 0.1249
+    },
+    "random": {
+      "coverage": 0.5348,
+      "occupancy": 0.2954
+    },
+    "goal": {
+      "coverage": 0.6094,
+      "occupancy": 0.1481
+    }
+  },
+  "coverage_range": 0.3810205865446241,
+  "cov_tol": 0.019051029327231208,
+  "occ_noise_typical": 0.017864923924207687,
+  "occ_sep_min": 0.05359477177262306,
+  "n_q1_pairs": 7151,
+  "n_q2_pairs": 15573,
+  "best_coverage_matched_occupancy_different": {
+    "docc": 0.5748,
+    "dcov": 0.0051,
+    "overlap_frac": 0.02,
+    "sides": [
+      {
+        "coverage": 0.4966,
+        "occupancy": 0.6383,
+        "occ_noise": 0.009,
+        "mixture": {
+          "apt/high": 25,
+          "goal/high": 60,
+          "p2e/high": 3,
+          "random/high": 112
+        }
+      },
+      {
+        "coverage": 0.5017,
+        "occupancy": 0.0635,
+        "occ_noise": 0.0122,
+        "mixture": {
+          "apt/high": 2,
+          "apt/zero": 1,
+          "goal/high": 1,
+          "goal/mid": 3,
+          "goal/zero": 78,
+          "p2e/high": 10,
+          "p2e/zero": 1,
+          "random/high": 3,
+          "random/mid": 11,
+          "random/zero": 90
+        }
+      }
+    ]
+  },
+  "best_coverage_different_occupancy_matched": {
+    "dcov": 0.3892,
+    "docc": 0.0211,
+    "overlap_frac": 0.005,
+    "sides": [
+      {
+        "coverage": 0.8909,
+        "occupancy": 0.0424,
+        "occ_noise": 0.0053,
+        "mixture": {
+          "p2e/high": 1,
+          "p2e/mid": 125,
+          "p2e/zero": 74
+        }
+      },
+      {
+        "coverage": 0.5017,
+        "occupancy": 0.0635,
+        "occ_noise": 0.0122,
+        "mixture": {
+          "apt/high": 2,
+          "apt/zero": 1,
+          "goal/high": 1,
+          "goal/mid": 3,
+          "goal/zero": 78,
+          "p2e/high": 10,
+          "p2e/zero": 1,
+          "random/high": 3,
+          "random/mid": 11,
+          "random/zero": 90
+        }
+      }
+    ]
+  },
+  "decision": "GO-compose",
+  "reasons": []
+}
