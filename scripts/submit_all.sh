@@ -46,7 +46,8 @@ case "$cmd" in
     done ;;
 
   pretrain)
-    read -ra SEEDS <<< "${SEEDS:-1 2}"
+    # v3 power policy (plan Sec. power): >=5 seeds/cell on the dose-response.
+    read -ra SEEDS <<< "${SEEDS:-1 2 3 4 5}"
     for task in "$CONTROL" "${DECOUPLERS[@]}"; do
       short=$(short_of "$task")
       for mode in expl_p2e expl_apt expl_random; do
