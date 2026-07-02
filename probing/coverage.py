@@ -14,6 +14,7 @@ matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 import numpy as np
 
+from probing import regimes
 from probing import replay_dataset
 
 NON_OBS = {'reward', 'is_first', 'is_last', 'is_terminal', 'action', 'reset',
@@ -33,6 +34,13 @@ def parse_args():
   p.add_argument('--time_buckets', type=int, default=1,
                  help='If > 1, also report coverage per time window of the '
                       'time-ordered replay (coverage-over-time curve).')
+  p.add_argument('--task', default='',
+                 help='dmc task (e.g. dmc_cup_catch); restricts the coverage '
+                      'vector to body-state keys and enables occupancy under '
+                      'the mechanism-derived regime (see probing/regimes.py).')
+  p.add_argument('--occ_threshold', type=float, default=None,
+                 help='Override the regime threshold (default: calibrated in '
+                      'probing/regimes.py).')
   p.add_argument('--seed', type=int, default=0)
   return p.parse_args()
 
@@ -95,13 +103,33 @@ def main():
     label, directory = item.split('=', 1)
     entries.append((label, directory))
 
-  keys = obs_keys(entries[0][1])
-  print(f'Observation keys: {keys}')
+  all_keys = obs_keys(entries[0][1])
+  keys = regimes.coverage_keys(args.task, all_keys) if args.task else all_keys
+  regime_needs = ()
+  regime_name = None
+  if args.task and regimes.has_regime(args.task):
+    spec = regimes.spec(args.task)
+    regime_name = spec['name']
+    regime_needs = tuple(k for k in spec['needs'] if k in all_keys)
+    missing = [k for k in spec['needs'] if k not in all_keys]
+    if missing:
+      raise SystemExit(f'Regime for {args.task} needs {missing}, not in buffer '
+                       f'(has {all_keys}).')
+  load_keys = sorted(set(keys) | set(regime_needs))
+  print(f'Coverage keys (body-state): {keys}')
+  if regime_name:
+    print(f'Regime "{regime_name}" occupancy from: {list(regime_needs)}')
 
-  obs = {}
+  obs = {}       # label -> coverage matrix (N, D)
+  occupancy = {}
   for label, directory in entries:
     print(f'[{label}] loading {directory}')
-    obs[label] = load_obs(directory, keys, args.max_frames, args.seed)
+    fr = replay_dataset.load_frames(
+        directory, load_keys, max_frames=args.max_frames, rng=args.seed)
+    obs[label] = np.concatenate(
+        [fr[k].reshape(len(fr[k]), -1) for k in keys], -1).astype(np.float32)
+    if regime_needs:
+      occupancy[label] = regimes.occupancy(args.task, fr, args.occ_threshold)
 
   pooled = np.concatenate(list(obs.values()), 0)
   mean = pooled.mean(0, keepdims=True)
@@ -125,9 +153,12 @@ def main():
         n_frames=int(len(x)),
         particle_entropy=particle_entropy(x, args.knn, args.logc),
         hist_entropy_2d=hist_entropy_2d(proj, edges_x, edges_y))
+    if label in occupancy:
+      results[label]['occupancy'] = occupancy[label]
     r = results[label]
+    occ_str = f'  occupancy={r["occupancy"]:.4f}' if 'occupancy' in r else ''
     print(f'  {label:<18} particle_entropy={r["particle_entropy"]:.4f}  '
-          f'hist_entropy_2d={r["hist_entropy_2d"]:.4f}')
+          f'hist_entropy_2d={r["hist_entropy_2d"]:.4f}{occ_str}')
 
   over_time = {}
   if args.time_buckets > 1:
@@ -154,6 +185,8 @@ def main():
   meta = dict(obs_keys=keys, obs_dim=int(pooled.shape[1]),
               knn=args.knn, logc=args.logc, bins=args.bins,
               max_frames=args.max_frames, time_buckets=args.time_buckets,
+              task=args.task, regime=regime_name,
+              occ_threshold=args.occ_threshold,
               results=results, coverage_over_time=over_time)
   with open(os.path.join(args.output, 'coverage.json'), 'w') as f:
     json.dump(meta, f, indent=2)

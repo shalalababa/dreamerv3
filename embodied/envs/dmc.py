@@ -19,7 +19,8 @@ class DMC(embodied.Env):
   )
 
   def __init__(
-      self, env, repeat=1, size=(64, 64), proprio=True, image=True, camera=-1):
+      self, env, repeat=1, size=(64, 64), proprio=True, image=True, camera=-1,
+      render=True):
     if 'MUJOCO_GL' not in os.environ:
       os.environ['MUJOCO_GL'] = 'egl'
     if isinstance(env, str):
@@ -45,6 +46,11 @@ class DMC(embodied.Env):
     self._proprio = proprio
     self._image = image
     self._camera = camera
+    # `render=False` skips MuJoCo rendering entirely: valid only for proprio
+    # runs (the agent drops `log/image`), it removes per-step render overhead and
+    # avoids the EGL GL-context that conflicts with CUDA under WSL2.
+    self._render = render
+    assert render or not image, 'render=False requires image=False (proprio).'
 
   @functools.cached_property
   def obs_space(self):
@@ -52,8 +58,9 @@ class DMC(embodied.Env):
     spaces = self._env.obs_space.copy()
     if not self._proprio:
       spaces = {k: spaces[k] for k in basic}
-    key = 'image' if self._image else 'log/image'
-    spaces[key] = elements.Space(np.uint8, self._size + (3,))
+    if self._render:
+      key = 'image' if self._image else 'log/image'
+      spaces[key] = elements.Space(np.uint8, self._size + (3,))
     return spaces
 
   @functools.cached_property
@@ -68,8 +75,9 @@ class DMC(embodied.Env):
     basic = ('is_first', 'is_last', 'is_terminal', 'reward')
     if not self._proprio:
       obs = {k: obs[k] for k in basic}
-    key = 'image' if self._image else 'log/image'
-    obs[key] = self._dmenv.physics.render(*self._size, camera_id=self._camera)
+    if self._render:
+      key = 'image' if self._image else 'log/image'
+      obs[key] = self._dmenv.physics.render(*self._size, camera_id=self._camera)
     for key, space in self.obs_space.items():
       if np.issubdtype(space.dtype, np.floating):
         assert np.isfinite(obs[key]).all(), (key, obs[key])

@@ -18,7 +18,11 @@ import ruamel.yaml as yaml
 
 import embodied
 from dreamerv3.main import make_agent, make_env
+from probing import regimes
 
+# Named physics accessors that exist as physics.<name>() methods. These are
+# Walker-only; other domains simply log none (regime quantities for the
+# decoupled domains are obs-derived instead -- see probing/regimes.py).
 PHYS_QUANTITIES = ('torso_height', 'torso_upright', 'horizontal_velocity')
 
 
@@ -162,6 +166,20 @@ def main():
   data = {k: np.stack([e[k][:T] for e in episodes], 0)
           for k in episodes[0].keys()}
 
+  # Mechanism-derived regime quantity R^phys (obs-derived; see regimes.py),
+  # stored per (episode, step) so downstream probes/occupancy can use it.
+  rspec = None
+  if regimes.has_regime(config.task):
+    rspec = regimes.spec(config.task)
+    have = [f'obs_{k}' for k in rspec['needs']]
+    if all(h in data for h in have):
+      N, Tt = data['reward'].shape
+      frames = {k: data[f'obs_{k}'].reshape(N * Tt, -1) for k in rspec['needs']}
+      data['regime'] = regimes.regime_values(
+          config.task, frames).reshape(N, Tt).astype(np.float32)
+    else:
+      rspec = None  # regime obs not present; skip
+
   meta = dict(
       run_logdir=args.run_logdir, checkpoint=ckpt, task=config.task,
       mode=args.mode, random=args.random, seed=args.seed,
@@ -175,6 +193,10 @@ def main():
     meta['qvel_names'] = list(physics.named.data.qvel.axes.row.names)
   except Exception:
     pass
+  if rspec is not None:
+    meta['regime'] = rspec['name']
+    meta['regime_threshold'] = rspec['threshold']
+    meta['regime_direction'] = rspec['direction']
 
   np.savez_compressed(args.output, **data)
   with open(args.output + '.meta.json', 'w') as f:

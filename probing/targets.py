@@ -28,7 +28,7 @@ def gait_phase(qpos, qpos_names):
     l = qpos_names.index('left_hip')
     sig = qpos[..., r] - qpos[..., l]
   except (ValueError, AttributeError):
-    sig = qpos[..., 3]                       # fallback: first non-root joint
+    sig = qpos[..., min(3, qpos.shape[-1] - 1)]   # fallback: a non-root joint
   phase = np.stack([_episode_phase(sig[n]) for n in range(sig.shape[0])], 0)
   return phase.astype(np.float32)
 
@@ -118,10 +118,15 @@ def derive_targets(traj, meta):
   for k in ('state', 'qpos', 'qvel'):
     masks[k] = ones
 
-  phase = gait_phase(qpos, qpos_names)
-  targets['gait_phase'] = np.stack(
-      [np.cos(phase), np.sin(phase)], -1).astype(np.float32)
-  masks['gait_phase'] = ones
+  # Gait phase is a Walker-specific mediator; only compute it where the hip
+  # joints actually exist (other domains would yield a meaningless oscillation).
+  has_hips = bool(qpos_names) and 'right_hip' in qpos_names and \
+      'left_hip' in qpos_names
+  if has_hips:
+    phase = gait_phase(qpos, qpos_names)
+    targets['gait_phase'] = np.stack(
+        [np.cos(phase), np.sin(phase)], -1).astype(np.float32)
+    masks['gait_phase'] = ones
 
   targets['return_to_go'] = return_to_go(traj['reward'])[..., None]
   masks['return_to_go'] = ones
@@ -140,5 +145,18 @@ def derive_targets(traj, meta):
     if key in traj:
       targets[name] = np.asarray(traj[key], np.float32)[..., None]
       masks[name] = ones
+
+  # Mechanism-derived regime R^phys (logged by collect.py for decoupled domains):
+  # both the continuous quantity and a thresholded in-regime indicator.
+  if 'regime' in traj:
+    regime = np.asarray(traj['regime'], np.float32)              # (N, T)
+    targets['regime'] = regime[..., None]
+    masks['regime'] = ones
+    thr = meta.get('regime_threshold', None)
+    if thr is not None:
+      direction = meta.get('regime_direction', 'below')
+      inreg = (regime < thr) if direction == 'below' else (regime > thr)
+      targets['in_regime'] = inreg[..., None].astype(np.float32)
+      masks['in_regime'] = ones
 
   return targets, masks
