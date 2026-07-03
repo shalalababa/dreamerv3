@@ -125,8 +125,9 @@ def chain_streams(replay_dir):
 def load_stream(chunk_paths):
   """Concatenate a chunk chain into {key: (N, ...)} arrays.
 
-  Skips agent-internal annotation keys (e.g. ``dyn/deter``): they are latents
-  of the collecting run and must not be baked into a held-out probe set.
+  Skips every key containing '/' (agent-internal annotations such as
+  ``dyn/deter``): they are artifacts of the collecting run and must not be
+  baked into a held-out probe set.
   """
   buffers = {}
   for path in chunk_paths:

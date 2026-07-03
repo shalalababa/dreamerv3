@@ -69,7 +69,7 @@ import numpy as np
 
 from dreamerv3.main import make_agent
 from probing import probeset as probeset_mod
-from probing.checkpoint_watcher import nearest_snapshots
+from probing.checkpoint_watcher import _read_latest, nearest_snapshots
 from probing.collect import load_run_config, load_frozen_agent
 
 f32 = jnp.float32
@@ -110,6 +110,11 @@ def resolve_checkpoints(args):
   out = []
   if args.checkpoints:
     for ckpt in args.checkpoints:
+      live = _read_latest(ckpt)
+      if live is not None:
+        # A live ckpt/ dir: step.pkl lives in the save folder the `latest`
+        # pointer names, so resolve it to keep the step<exact> output layout.
+        ckpt = live[0]
       step = None
       step_pkl = os.path.join(ckpt, 'step.pkl')
       if os.path.exists(step_pkl):
@@ -122,11 +127,18 @@ def resolve_checkpoints(args):
   snapshots_dir = args.snapshots_dir or os.path.join(
       args.run_logdir, 'ckpt_snapshots')
   rows = nearest_snapshots(snapshots_dir, args.milestones)
+  gaps = [b - a for a, b in zip(sorted(args.milestones),
+                                sorted(args.milestones)[1:])]
+  spacing = min(gaps) if gaps else max(args.milestones)
   seen = set()
   for r in rows:
     if r['snapshot'] is None:
       print(f'WARNING: no snapshot near milestone {r["milestone"]}; skipped.')
       continue
+    if r['abs_error'] > spacing / 2:
+      print(f'WARNING: milestone {r["milestone"]} maps to step {r["step"]} '
+            f'(gap {r["abs_error"]} > half the milestone spacing); use the '
+            f'recorded exact_step, not the milestone, on any x-axis.')
     if r['snapshot'] in seen:
       print(f'WARNING: milestone {r["milestone"]} maps to an already-selected '
             f'snapshot (step {r["step"]}); skipped duplicate.')
@@ -183,7 +195,8 @@ def main():
   # Held-out sanity: the probe set must not come from the probed run itself.
   run_replay = os.path.realpath(os.path.join(args.run_logdir, 'replay'))
   for label, src in manifest['sources'].items():
-    if os.path.realpath(src['replay_dir']).startswith(run_replay):
+    src_dir = os.path.realpath(src['replay_dir'])
+    if src_dir == run_replay or src_dir.startswith(run_replay + os.sep):
       print(f'WARNING: probe-set source {label!r} is the replay of the run '
             f'being probed; latents are NOT held-out for this run.')
 
