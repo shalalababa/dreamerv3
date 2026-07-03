@@ -36,6 +36,9 @@ defaults:
     dmc: {size: [64, 64], repeat: 1, proprio: True, image: True, camera: -1, render: True}
     loconav: {size: [64, 64], repeat: 1, camera: -1}
 
+  # Gate D0 E2 arm: OU distractor observations (dim 0 disables the wrapper).
+  distractor: {dim: 0, scale: 1.0, theta: 0.1, basesd: 0.0, calib: 1000}
+
   replay:
     size: 5e6
     online: True
@@ -84,7 +87,7 @@ defaults:
     coordinator_address: ''
 
   agent:
-    loss_scales: {rec: 1.0, rew: 1.0, con: 1.0, dyn: 1.0, rep: 0.1, policy: 1.0, value: 1.0, repval: 0.3, disag: 1.0}
+    loss_scales: {rec: 1.0, rew: 1.0, con: 1.0, dyn: 1.0, rep: 0.1, policy: 1.0, value: 1.0, repval: 0.3, disag: 1.0, valens: 1.0, valensrep: 0.3}
     opt: {lr: 4e-5, agc: 0.3, eps: 1e-20, beta1: 0.9, beta2: 0.999, momentum: True, wd: 0.0, schedule: const, warmup: 1000, anneal: 0}
     ac_grads: False
     dyn:
@@ -127,9 +130,14 @@ defaults:
       disag_bootstrap: True,
       disag_bootstrap_prob: 0.8,
       disag_scale: 1000.0,
+      disag_task: False,
       apt_knn: 12,
       apt_logc: 1.0,
     }
+    # Gate D0 critic-head ensemble (k=0 disables; note App. A.4).
+    valens: {k: 0, bootstrap: True, bootstrap_prob: 0.8}
+    # Gate D0 per-state signal outputs from the policy path (sweep-time only).
+    d0: {signals: False, actions: 8, rollouts: 16}
 
 size1m: &size1m
   .*\.rssm: {deter: 512, hidden: 64, classes: 4}
@@ -194,6 +202,23 @@ dmc_proprio:
   task: dmc_walker_walk
   env.dmc.image: False
   run: {steps: 1.1e6, train_ratio: 1024}
+
+# Gate D0 (EVPI note App. A): task-mode run with the K=5 critic-head
+# ensemble and the dynamics-disagreement ensemble trained for measurement.
+d0_probe:
+  agent.valens.k: 5
+  agent.expl.disag_task: True
+
+# Gate D0 dose cells (E1 = dose zero = none of these; note App. A.2).
+d0_dose1:
+  distractor.dim: 8
+  distractor.scale: 1.0
+d0_dose2:
+  distractor.dim: 32
+  distractor.scale: 1.0
+d0_dose3:
+  distractor.dim: 32
+  distractor.scale: 3.0
 
 expl_random:
   agent.expl.mode: random

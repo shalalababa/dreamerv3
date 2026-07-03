@@ -68,6 +68,23 @@ class Agent(embodied.jax.Agent):
         embodied.jax.MLPHead(scalar, **config.value, name='slowval'),
         source=self.val, **config.slowvalue)
 
+    # Gate D0 measurement ensemble: K auxiliary critic heads with independent
+    # initializations, per-head bootstrap targets, and per-head minibatch
+    # masks. Measurement-only: they never feed the policy loss and their
+    # loss inputs are stop-gradiented, so they cannot shape the shared
+    # representation either (EVPI note App. A.4).
+    self.valens = []
+    self.slowvalens = []
+    if config.valens.k:
+      assert config.expl.mode == 'task', (
+          'critic-head ensemble requires task reward', config.expl.mode)
+      for i in range(config.valens.k):
+        headi = embodied.jax.MLPHead(scalar, **config.value, name=f'valens{i}')
+        self.valens.append(headi)
+        self.slowvalens.append(embodied.jax.SlowModel(
+            embodied.jax.MLPHead(scalar, **config.value, name=f'slowvalens{i}'),
+            source=headi, **config.slowvalue))
+
     self.retnorm = embodied.jax.Normalize(**config.retnorm, name='retnorm')
     self.valnorm = embodied.jax.Normalize(**config.valnorm, name='valnorm')
     self.advnorm = embodied.jax.Normalize(**config.advnorm, name='advnorm')
@@ -77,9 +94,12 @@ class Agent(embodied.jax.Agent):
     self.reward_free = (self.expl_mode != 'task')
 
     # P2E predicts deterministic posterior features; sampled stochastic targets
-    # add noise that collapses disagreement.
+    # add noise that collapses disagreement. disag_task trains the same
+    # ensemble in task mode as a passive U_dyn probe (Gate D0).
+    assert not config.expl.disag_task or self.expl_mode == 'task', (
+        'disag_task is the task-mode measurement flag', self.expl_mode)
     self.disag = None
-    if self.expl_mode == 'p2e':
+    if self.expl_mode == 'p2e' or config.expl.disag_task:
       rssm_kw = config.dyn[config.dyn.typ]
       if config.expl.disag_target == 'postfeat':
         target_dim = rssm_kw['deter'] + rssm_kw['stoch'] * rssm_kw['classes']
@@ -94,6 +114,7 @@ class Agent(embodied.jax.Agent):
 
     wm = [self.dyn, self.enc, self.dec]
     head = [self.rew, self.con, self.pol, self.val]
+    probes = self.valens + ([self.disag] if config.expl.disag_task else [])
     if self.expl_mode == 'random':
       self.modules = wm
     elif self.expl_mode == 'p2e':
@@ -101,9 +122,9 @@ class Agent(embodied.jax.Agent):
     elif self.expl_mode == 'apt':
       self.modules = wm + [self.con, self.pol, self.val]
     elif config.frozen_wm:
-      self.modules = head
+      self.modules = head + probes
     else:
-      self.modules = wm + head
+      self.modules = wm + head + probes
     self.opt = embodied.jax.Optimizer(
         self.modules, self._make_opt(**config.opt), summary_depth=1,
         name='opt')
@@ -120,10 +141,20 @@ class Agent(embodied.jax.Agent):
     else:
       keep = {'dyn', 'rep', 'rew', 'con', 'policy', 'value', 'repval',
               *dec_space}
+      if config.expl.disag_task:
+        keep.add('disag')
+      if self.valens:
+        keep.add('valens')
+        if config.repval_loss:
+          keep.add('valensrep')
     self.scales = {k: v for k, v in scales.items() if k in keep}
 
   @property
   def policy_keys(self):
+    if self.config.d0.signals:
+      # Sweep-time signal extraction runs through the policy path and needs
+      # the reward/continuation heads, critic ensemble, and disag ensemble.
+      return r'^(enc|dyn|dec|pol|rew|con|val|valens\d+|disag)/'
     return '^(enc|dyn|dec|pol)/'
 
   @property
@@ -171,6 +202,8 @@ class Agent(embodied.jax.Agent):
       policy = self.pol(self.feat2tensor(feat), bdims=1)
       act = sample(policy)
     out = {}
+    if self.config.d0.signals:
+      out.update(self._d0_signals(dyn_carry, feat, act))
     out['finite'] = elements.tree.flatdict(jax.tree.map(
         lambda x: jnp.isfinite(x).all(range(1, x.ndim)),
         dict(obs=obs, carry=carry, tokens=tokens, feat=feat, act=act)))
@@ -187,6 +220,9 @@ class Agent(embodied.jax.Agent):
     metrics.update(mets)
     if 'value' in self.scales:
       self.slowval.update()
+    if 'valens' in self.scales:
+      for slow in self.slowvalens:
+        slow.update()
     outs = {}
     if self.config.replay_context:
       updates = elements.tree.flatdict(dict(
@@ -235,7 +271,7 @@ class Agent(embodied.jax.Agent):
     assert all(x == (B, T) for x in shapes.values()), ((B, T), shapes)
 
     # Train the one-step latent-disagreement ensemble on replay.
-    if self.expl_mode == 'p2e':
+    if self.disag is not None:
       dfeat = self.feat2tensor(repfeat)[:, :-1]
       dact = self._act2tensor(prevact)[:, 1:]
       dtarget = self._disag_target(repfeat)[:, 1:]
@@ -281,10 +317,11 @@ class Agent(embodied.jax.Agent):
       if self.reward_free:
         metrics['expl/intr_rew'] = imgrew.mean()
         metrics['expl/intr_rew_std'] = imgrew.std()
+      imgcon = self.con(inp, 2).prob(1)
       los, imgloss_out, mets = imag_loss(
           imgact,
           imgrew,
-          self.con(inp, 2).prob(1),
+          imgcon,
           self.pol(inp, 2),
           self.val(inp, 2),
           self.slowval(inp, 2),
@@ -295,6 +332,39 @@ class Agent(embodied.jax.Agent):
           **self.config.imag_loss)
       losses.update({k: v.mean(1).reshape((B, K)) for k, v in los.items()})
       metrics.update(mets)
+
+      # Gate D0 critic-head ensemble: per-head lambda-return targets from the
+      # head's own bootstrap, per-head minibatch masks over replay sequences.
+      if self.valens:
+        prob = self.config.valens.bootstrap_prob
+        masks = None
+        if self.config.valens.bootstrap:
+          masks = jax.random.bernoulli(
+              nj.seed(), prob, (len(self.valens), B)).astype(f32) / prob
+        # Unconditional stop-gradient: the heads are instruments, so their
+        # losses must not shape the shared representation even when
+        # ac_grads/repval_grad let the main critic's losses do so.
+        ens_inp = sg(inp)
+        ens_losses, ens_boots, ens_vals = [], [], []
+        for i, (headi, slow) in enumerate(zip(self.valens, self.slowvalens)):
+          hlos, hret, hval = head_value_loss(
+              imgrew, imgcon, headi(ens_inp, 2), slow(ens_inp, 2),
+              self.valnorm,
+              contdisc=self.config.contdisc,
+              horizon=self.config.horizon,
+              lam=self.config.imag_loss.lam,
+              slowreg=self.config.imag_loss.slowreg,
+              slowtar=self.config.imag_loss.slowtar)
+          hlos = hlos.mean(1).reshape((B, K))
+          if masks is not None:
+            hlos = hlos * masks[i][:, None]
+          ens_losses.append(hlos)
+          ens_boots.append(hret[:, 0].reshape(B, K))
+          ens_vals.append(hval)
+        losses['valens'] = sum(ens_losses) / len(ens_losses)
+        vstack = jnp.stack(ens_vals, 0)
+        metrics['valens/mean'] = vstack.mean()
+        metrics['valens/std'] = vstack.std(0).mean()
 
     # Replay
     if self.config.repval_loss and not self.reward_free:
@@ -314,6 +384,27 @@ class Agent(embodied.jax.Agent):
           **self.config.repl_loss)
       losses.update(los)
       metrics.update(prefix(mets, 'reploss'))
+
+      # Replay grounding for the critic-head ensemble, mirroring repval with
+      # per-head imagination bootstraps and the same per-head masks. The
+      # stop-gradient is load-bearing: with repval_grad True the main
+      # critic's inp carries world-model gradients, and the measurement
+      # heads must not add K auxiliary representation-shaping losses.
+      if self.valens:
+        ens_inp = sg(inp)
+        ens_rep = []
+        for i, (headi, slow) in enumerate(zip(self.valens, self.slowvalens)):
+          hlos, _, _ = repl_loss(
+              last, term, rew, ens_boots[i],
+              headi(ens_inp, 2), slow(ens_inp, 2), self.valnorm,
+              update=False,
+              horizon=self.config.horizon,
+              **self.config.repl_loss)
+          hl = hlos['repval']
+          if masks is not None:
+            hl = hl * masks[i][:, None]
+          ens_rep.append(hl)
+        losses['valensrep'] = sum(ens_rep) / len(ens_rep)
 
     assert set(losses.keys()) == set(self.scales.keys()), (
         sorted(losses.keys()), sorted(self.scales.keys()))
@@ -419,6 +510,63 @@ class Agent(embodied.jax.Agent):
         (carry, rhs(obs), rhs(prevact), rhs(stepid)),
         (rep_carry, rep_obs, rep_prevact, rep_stepid))
     return carry, obs, prevact, stepid
+
+  def _d0_signals(self, dyn_carry, feat, act):
+    """Per-state Gate D0 raw signals, emitted as policy outputs (App. A.4).
+
+    Returns the per-head, per-candidate-action one-step Q matrices at two
+    rollout counts (R and R/2, exposing the noisy-evaluation term of note
+    Sec. 5.2) plus dynamics-ensemble disagreement at the executed action.
+    Derived signals (U_Q, A, EVPI-hat) are computed offline in d0/signals.py
+    so that real and synthetic data share one implementation.
+    """
+    assert self.valens, 'd0.signals requires valens.k > 0'
+    assert self.disag is not None, 'd0.signals requires the disag ensemble'
+    assert all(not s.discrete for s in self.act_space.values()), (
+        'd0 sweep assumes continuous action spaces (DMC)')
+    M, R = self.config.d0.actions, self.config.d0.rollouts
+    assert R >= 2 and R % 2 == 0, R
+    B = feat['deter'].shape[0]
+    nheads = len(self.valens)
+    inp = self.feat2tensor(feat)
+
+    # Candidate actions: policy mode plus M - 1 samples.
+    policy = self.pol(inp, bdims=1)
+    cands = [{k: v.pred() for k, v in policy.items()}]
+    cands += [sample(policy) for _ in range(M - 1)]
+
+    # One imagination step per (state, candidate, rollout); flat index is
+    # (b, m, r) row-major to match jnp.repeat on the batch axis.
+    start = jax.tree.map(lambda x: jnp.repeat(x, M * R, 0), dyn_carry)
+    acts = {}
+    for k in self.act_space:
+      x = jnp.stack([nn.cast(c[k]) for c in cands], 1)      # (B, M, ...)
+      x = jnp.repeat(x[:, :, None], R, 2)                   # (B, M, R, ...)
+      acts[k] = x.reshape((B * M * R, *x.shape[3:]))
+    _, (nfeat, _) = self.dyn.imagine(
+        start, acts, length=1, training=False, single=True)
+    ninp = self.feat2tensor(nfeat)
+
+    rew = f32(self.rew(ninp, bdims=1).pred())
+    con = f32(self.con(ninp, bdims=1).prob(1))
+    disc = 1.0 if self.config.contdisc else 1 - 1 / self.config.horizon
+    voffset, vscale = self.valnorm.stats()
+    qs = []
+    for headi in self.valens:
+      vali = f32(headi(ninp, bdims=1).pred()) * vscale + voffset
+      qs.append(rew + disc * con * vali)
+    q = jnp.stack(qs, 1).reshape((B, M, R, nheads))
+    q = q.transpose((0, 3, 1, 2))                           # (B, K, M, R)
+
+    actvec = jnp.concatenate([
+        nn.cast(act[k]).reshape((B, -1))
+        for k in sorted(self.act_space)], -1)
+    out = {
+        'd0/qfull': q.mean(-1),
+        'd0/qhalf': q[..., :R // 2].mean(-1),
+        'd0/udyn': f32(self.disag.reward(inp, actvec)),
+    }
+    return out
 
   def _act2tensor(self, act):
     return jnp.concatenate([
@@ -541,6 +689,36 @@ def imag_loss(
   outs = {}
   outs['ret'] = ret
   return losses, outs, metrics
+
+
+def head_value_loss(
+    rew, con, value, slowvalue, valnorm,
+    contdisc=True,
+    slowtar=False,
+    horizon=333,
+    lam=0.95,
+    slowreg=1.0,
+):
+  """Value-only imagination loss for one auxiliary critic head.
+
+  Mirrors the value branch of imag_loss with the head's own lambda-return
+  bootstrap; never updates the shared normalizers."""
+  voffset, vscale = valnorm.stats()
+  val = value.pred() * vscale + voffset
+  slowval = slowvalue.pred() * vscale + voffset
+  tarval = slowval if slowtar else val
+  disc = 1 if contdisc else 1 - 1 / horizon
+  weight = jnp.cumprod(disc * con, 1) / disc
+  last = jnp.zeros_like(con)
+  term = 1 - con
+  ret = lambda_return(last, term, rew, tarval, tarval, disc, lam)
+  voffset, vscale = valnorm(ret, False)
+  tar_normed = (ret - voffset) / vscale
+  tar_padded = jnp.concatenate([tar_normed, 0 * tar_normed[:, -1:]], 1)
+  loss = sg(weight[:, :-1]) * (
+      value.loss(sg(tar_padded)) +
+      slowreg * value.loss(sg(slowvalue.pred())))[:, :-1]
+  return loss, ret, val
 
 
 def repl_loss(
