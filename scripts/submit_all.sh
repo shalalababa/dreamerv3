@@ -5,6 +5,7 @@
 #
 #   ./submit_all.sh pilots [dmc_cup_catch dmc_finger_turn_hard]  # Phase 3 Gate 0
 #   ./submit_all.sh pretrain                                     # Phase 4 grid
+#   ./submit_all.sh pretrain-bundles                             # Phase 4, 3 runs/job
 #   ./submit_all.sh adapt <pretrain_run_id> <task> [STEPS]       # Phase 5 dose-response
 #
 # Dry run: set DRYRUN=1 to print sbatch commands without submitting.
@@ -12,7 +13,8 @@
 # logdir already exists under RUNROOT. Set FORCE=1 to submit anyway.
 # RCC job cap guard: submit only until current Slurm jobs + this invocation
 # reaches MAX_JOBS (default 12). Re-run the command after jobs finish.
-# Tunables (env): STEPS, SEEDS, DECOUPLERS, CONTROL, MAX_JOBS.
+# Tunables (env): STEPS, SEEDS, DECOUPLERS, CONTROL, MAX_JOBS,
+# BUNDLE_SIZE, BUNDLE_TIME.
 # ---------------------------------------------------------------------------
 set -euo pipefail
 REPO="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
@@ -43,6 +45,20 @@ queued_job() {  # queued_job <RUN_ID>
 existing_logdir() {  # existing_logdir <RUN_ID>
   local dir="$RUNROOT/$1"
   [ -e "$dir" ] && [ -n "$(find "$dir" -mindepth 1 -maxdepth 1 -print -quit 2>/dev/null)" ]
+}
+
+manifest_status() {  # manifest_status <RUN_ID>
+  [ -f "$MANIFEST" ] || return 0
+  awk -F, -v run_id="$1" '$1 == run_id {status=$9} END {print status}' "$MANIFEST"
+}
+
+pretrain_done() {  # pretrain_done <RUN_ID>
+  local status
+  status="$(manifest_status "$1")"
+  [ "$status" = "DONE" ] && return 0
+  [ -n "$status" ] && return 1
+  [ -f "$RUNROOT/$1/TRAINING_DONE" ] &&
+    [ -f "$RUNROOT/$1/ckpt_snapshots/nearest.json" ]
 }
 
 MAX_JOBS="${MAX_JOBS:-12}"
@@ -111,6 +127,56 @@ case "$cmd" in
       done
     done ;;
 
+  pretrain-bundles|pretrain_bundles)
+    # Sequentially pack pretrain runs into fewer Slurm submissions. With RCC's
+    # 36h max walltime, 3x 8h runs leaves a useful safety margin.
+    read -ra SEEDS <<< "${SEEDS:-1 2 3 4 5}"
+    BUNDLE_SIZE="${BUNDLE_SIZE:-3}"
+    BUNDLE_TIME="${BUNDLE_TIME:-32:00:00}"
+    [ "$BUNDLE_SIZE" -gt 0 ] || { echo "BUNDLE_SIZE must be > 0"; exit 1; }
+
+    pending=()
+    for task in "$CONTROL" "${DECOUPLERS[@]}"; do
+      short=$(short_of "$task")
+      for mode in expl_p2e expl_apt expl_random; do
+        m=${mode#expl_}
+        for s in "${SEEDS[@]}"; do
+          run_id="pretrain_${m}_${short}_seed${s}"
+          if [ "${FORCE:-0}" != "1" ]; then
+            if queued_job "$run_id"; then
+              echo "SKIP queued/running: $run_id"
+              continue
+            fi
+            if pretrain_done "$run_id"; then
+              echo "SKIP done: $run_id"
+              continue
+            fi
+          fi
+          pending+=("$run_id"$'\t'"$task"$'\t'"$mode"$'\t'"$s"$'\t'"${STEPS:-5e5}")
+        done
+      done
+    done
+
+    if [ "${#pending[@]}" -eq 0 ]; then
+      echo "No pretrain runs need submission."
+      exit 0
+    fi
+
+    runlist_dir="$RUNROOT/_submit_runlists/pretrain_$(date +%Y%m%d_%H%M%S)"
+    mkdir -p "$runlist_dir"
+    bundle=1
+    for ((i=0; i<${#pending[@]}; i+=BUNDLE_SIZE)); do
+      runlist="$runlist_dir/bundle_$(printf '%03d' "$bundle").tsv"
+      : > "$runlist"
+      for ((j=i; j<i+BUNDLE_SIZE && j<${#pending[@]}; j++)); do
+        printf '%s\n' "${pending[$j]}" >> "$runlist"
+      done
+      bundle_id="pretrain_bundle_$(printf '%03d' "$bundle")"
+      SLURM_TIME="$BUNDLE_TIME" submit pretrain_bundle.sbatch "$bundle_id" \
+        "RUNLIST=$runlist" "STEPS=${STEPS:-5e5}"
+      bundle=$((bundle + 1))
+    done ;;
+
   adapt)
     pre_run="${1:?usage: adapt <pretrain_run_id> <task> [STEPS]}"
     task="${2:?task}"; steps="${3:-1.25e5}"
@@ -133,5 +199,5 @@ for r in rows:
     done ;;
 
   *)
-    echo "usage: $0 {pilots|pretrain|adapt} ..."; exit 1 ;;
+    echo "usage: $0 {pilots|pretrain|pretrain-bundles|adapt} ..."; exit 1 ;;
 esac

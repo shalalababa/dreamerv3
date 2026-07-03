@@ -32,6 +32,7 @@ cd "$REPO"
 STEPS="${STEPS:-5e5}"; SAVE_EVERY="${SAVE_EVERY:-300}"
 LOGDIR="$RUNROOT/$RUN_ID"
 mkdir -p "$LOGDIR"
+rm -f "$LOGDIR/TRAINING_DONE"
 echo "[$(date)] pretrain RUN_ID=$RUN_ID TASK=$TASK MODE=$MODE SEED=$SEED STEPS=$STEPS -> $LOGDIR"
 manifest_append "$RUN_ID" pretrain "$TASK" "$MODE" "$SEED" "$STEPS" retained "$LOGDIR" RUNNING
 

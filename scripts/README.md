@@ -41,6 +41,9 @@ python -m probing.gate0 --task dmc_cup_catch --window 50 \
 ./scripts/submit_all.sh pretrain           # defaults to SEEDS="1 2 3 4 5"
 # If 12 jobs are already active/submitted, it stops without submitting more.
 
+# Phase 4, RCC submitted-job-cap friendly: pack 3 pretrain runs per Slurm job
+./scripts/submit_all.sh pretrain-bundles   # BUNDLE_SIZE=3, BUNDLE_TIME=32:00:00
+
 # Phase 5 -- frozen-readout dose-response from the retained snapshots
 python -m probing.checkpoint_watcher --select \
   --run_logdir $RUNROOT/pretrain_p2e_cup_seed1     # writes nearest.json
@@ -54,8 +57,9 @@ python -m probing.checkpoint_watcher --select \
 | `env.sh` | central config (Slurm, paths, conda) + `manifest_append` helper |
 | `pilot.sbatch` | Phase 3 short collection; `MODE=goal` = reward-on goal-reacher |
 | `pretrain.sbatch` | Phase 4 pretraining + `probing.checkpoint_watcher` sidecar |
+| `pretrain_bundle.sbatch` | Phase 4 sequential bundles for RCC's submitted-job cap |
 | `adapt.sbatch` | Phase 5 frozen-readout adapt from a snapshot dir |
-| `submit_all.sh` | expands the sweep grids; `pilots` / `pretrain` / `adapt` |
+| `submit_all.sh` | expands the sweep grids; `pilots` / `pretrain` / `pretrain-bundles` / `adapt` |
 | `runs.csv` | run manifest (auto-appended by the sbatch scripts) |
 
 ## Notes
@@ -65,6 +69,11 @@ python -m probing.checkpoint_watcher --select \
   every completed save keyed by exact env step. Milestones map to the nearest
   snapshot via `--select` (`nearest.json`); the dose-response x-axis uses the
   *actual* step, not the nominal milestone.
+- **Bundled pretraining.** `pretrain-bundles` writes TSV runlists under
+  `$RUNROOT/_submit_runlists/` and submits one bundle per chunk. With the RCC
+  36h walltime cap, the default `BUNDLE_SIZE=3` and `BUNDLE_TIME=32:00:00`
+  keeps one GPU busy while staying below the cap. It skips individual pretrain
+  `RUN_ID`s that are already queued/running or marked `DONE`.
 - **Goal-reacher (Gate 0).** Without the reward-on `goal` pilot the
   high-occupancy corner is empty (exploration alone rarely enters the regime --
   reward is sparse on cup/finger/reacher). For a faster substitute on
