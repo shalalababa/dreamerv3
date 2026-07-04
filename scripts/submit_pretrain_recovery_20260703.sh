@@ -152,8 +152,8 @@ submit_later_after_inspect() {
   write_runlist "$runlist_dir/later_003_aptc2.tsv" \
     $'pretrain_apt_cup_seed2\tdmc_cup_catch\texpl_apt\t2\t5e5'
 
-  write_runlist "$runlist_dir/later_004_aptc4.tsv" \
-    $'pretrain_apt_cup_seed4\tdmc_cup_catch\texpl_apt\t4\t5e5'
+  write_runlist "$runlist_dir/later_004_aptc5.tsv" \
+    $'pretrain_apt_cup_seed5\tdmc_cup_catch\texpl_apt\t5\t5e5'
 
   write_runlist "$runlist_dir/later_005_random_cup1.tsv" \
     $'pretrain_random_cup_seed1\tdmc_cup_catch\texpl_random\t1\t5e5'
@@ -164,8 +164,8 @@ submit_later_after_inspect() {
     "$runlist_dir/later_002_aptc3.tsv"
   submit_runlist pretrain_recover_later_003_aptc2 16:00:00 \
     "$runlist_dir/later_003_aptc2.tsv"
-  submit_runlist pretrain_recover_later_004_aptc4 16:00:00 \
-    "$runlist_dir/later_004_aptc4.tsv"
+  submit_runlist pretrain_recover_later_004_aptc5 16:00:00 \
+    "$runlist_dir/later_004_aptc5.tsv"
   submit_runlist pretrain_recover_later_005_random_cup1 08:00:00 \
     "$runlist_dir/later_005_random_cup1.tsv"
 }
