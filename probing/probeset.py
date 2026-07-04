@@ -155,8 +155,13 @@ def valid_starts(is_first, length):
   return starts
 
 
-def collect_windows(replay_dir, length, quota, rng):
-  """Sample `quota` non-overlapping valid windows from one pilot buffer."""
+def collect_windows(replay_dir, length, quota, rng, allow_fewer=False):
+  """Sample `quota` non-overlapping valid windows from one pilot buffer.
+
+  With ``allow_fewer`` (used by density-reference sampling in
+  ``probing/latent_uq.py``), a short buffer yields all its valid windows
+  instead of aborting; probe-set builds keep the strict behavior.
+  """
   streams = chain_streams(replay_dir)
   candidates = []  # (stream_idx, start)
   loaded = []
@@ -166,10 +171,15 @@ def collect_windows(replay_dir, length, quota, rng):
     is_first = np.asarray(data['is_first'], bool).reshape(-1)
     candidates.extend((si, t) for t in valid_starts(is_first, length))
   if len(candidates) < quota:
-    raise SystemExit(
-        f'{replay_dir}: only {len(candidates)} valid windows of length '
-        f'{length} (need {quota}); lower --windows_per_source or collect '
-        f'longer pilots.')
+    if allow_fewer and candidates:
+      print(f'WARNING: {replay_dir}: only {len(candidates)} valid windows of '
+            f'length {length} (asked for {quota}); using all of them.')
+      quota = len(candidates)
+    else:
+      raise SystemExit(
+          f'{replay_dir}: only {len(candidates)} valid windows of length '
+          f'{length} (need {quota}); lower --windows_per_source or collect '
+          f'longer pilots.')
   pick = rng.choice(len(candidates), quota, replace=False)
   pick.sort()
   windows, meta = {}, []
