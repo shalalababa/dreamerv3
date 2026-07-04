@@ -12,8 +12,12 @@ Consumes dumps written by ``probing/latent_uq.py`` and reports, per run
 * a replication verdict per checkpoint: TRACKS_DENSITY (the Biased-Dreams
   attractor bias replicates), TRACKS_ERROR, or AMBIGUOUS (|Delta| within
   ``VERDICT_SIGMA`` clustered SEs);
-* the Gate D0 calibration-addendum line (App. A.7): PASS iff
-  pcorr(D, E | rho) >= pcorr(D, rho | E) at the final checkpoint.
+* the Stage-0 calibration-addendum line: PASS iff pcorr(D, E | rho) >=
+  pcorr(D, rho | E) at the final checkpoint, evaluated on the
+  pre-registered *one-step* read (anchor, h=1; App. A.4 item 5) regardless
+  of ``--primary_horizon``.  This is the addendum-style proxy the memo
+  reports; the full App. A.7 gate criterion additionally applies the dose
+  adjustment, which lives in the D0 pipeline (``d0/``), not here.
 
 Disagreement functionals: ``anchor`` = one-step disagreement at the segment
 anchor (primary, the brief's functional); ``path`` = mean disagreement along
@@ -222,23 +226,29 @@ def verdict_of(delta, delta_se):
 
 
 def analyze_cell(label, ckpt_rows, primary_horizon):
-  """Cell summary from per-checkpoint row lists (within or cross)."""
+  """Cell summary from per-checkpoint row lists (within or cross).
+
+  The headline verdict reads the anchor row at ``primary_horizon``; the
+  calibration addendum always reads the anchor h=1 row -- the
+  pre-registered one-step quantity (App. A.4 item 5), not steerable from
+  the command line.
+  """
   checkpoints = []
   for entry, rows in ckpt_rows:
     checkpoints.append(dict(
         name=entry['name'], exact_step=entry['exact_step'],
         milestone=entry['milestone'], rows=rows))
   final = checkpoints[-1]['rows'] if checkpoints else []
-  primary = [r for r in final
-             if r['kind'] == 'anchor' and r['horizon'] == primary_horizon]
-  if primary:
-    p = primary[0]
-    addendum = bool(p['pcorr_de'] >= p['pcorr_dp'])
-    final_verdict = p['verdict']
-  else:
-    addendum, final_verdict = None, 'NO_DATA'
+  pick = lambda h: [r for r in final
+                    if r['kind'] == 'anchor' and r['horizon'] == h]
+  primary = pick(primary_horizon)
+  final_verdict = primary[0]['verdict'] if primary else 'NO_DATA'
+  onestep = pick(1)
+  addendum = bool(onestep[0]['pcorr_de'] >= onestep[0]['pcorr_dp']) \
+      if onestep else None
   return dict(label=label, checkpoints=checkpoints,
-              final_verdict=final_verdict, addendum_pass=addendum)
+              final_verdict=final_verdict, addendum_pass=addendum,
+              addendum_horizon=1)
 
 
 # --------------------------------------------------------------------------
@@ -274,8 +284,10 @@ def render_memo(result):
          ' — **NOT HELD-OUT for at least one probed run; error reads are '
          'in-distribution there and must not gate**'),
       f'- Horizons: {r["horizons"]} (open-loop, decoder target space); '
-      f'primary read: anchor one-step disagreement vs horizon '
-      f'{r["primary_horizon"]} error',
+      f'headline read: anchor one-step disagreement vs horizon '
+      f'{r["primary_horizon"]} error; addendum read: anchor one-step '
+      f'disagreement vs one-step (h=1) error (pre-registered, App. A.4 '
+      f'item 5)',
       f'- Density proxy: mean kNN distance of anchor posterior means '
       f'against training-buffer encodings (larger = sparser); '
       f'bias signature = positive partials with disagreement',
@@ -303,8 +315,11 @@ def render_memo(result):
         '',
         f'Final-checkpoint verdict (anchor, h={r["primary_horizon"]}): '
         f'**{cell["final_verdict"]}**',
-        f'Gate D0 calibration addendum (EVPI note App. A.7 — pass iff '
-        f'pcorr(D,E|rho) >= pcorr(D,rho|E) at the final checkpoint): '
+        f'Stage-0 calibration addendum (one-step read per EVPI note App. '
+        f'A.4 item 5 — pass iff pcorr(D,E|rho) >= pcorr(D,rho|E) at the '
+        f'final checkpoint, anchor h=1; the App. A.7 gate criterion '
+        f'additionally applies the dose adjustment, evaluated in the D0 '
+        f'pipeline, not here): '
         f'**{"PASS" if cell["addendum_pass"] else "FAIL" if cell["addendum_pass"] is not None else "NO DATA"}**',
         '',
     ]
@@ -351,7 +366,9 @@ def parse_args(argv=None):
                  help='label=dump_dir entries (probing/latent_uq.py outputs).')
   p.add_argument('--horizons', type=int, nargs='+', default=[1, 5, 15])
   p.add_argument('--primary_horizon', type=int, default=5,
-                 help='Horizon for the headline/addendum read (clamped).')
+                 help='Horizon for the headline verdict (clamped). The '
+                      'calibration addendum always reads the pre-registered '
+                      'one-step (h=1) anchor row, independent of this flag.')
   p.add_argument('--cross', action='store_true',
                  help='Treat all dumps as members of one cross-seed/refit '
                       'ensemble on the same probe set.')
@@ -386,6 +403,10 @@ def main(argv=None):
 
   eval_steps = min(d['index']['eval_steps'] for d in dumps.values())
   horizons = clamp_horizons(args.horizons, eval_steps)
+  if 1 not in horizons:
+    print('NOTE: adding horizon 1 (required for the pre-registered one-step '
+          'addendum read).')
+    horizons = [1] + horizons
   primary = args.primary_horizon if args.primary_horizon in horizons else \
       horizons[-1]
   if primary != args.primary_horizon:

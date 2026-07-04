@@ -156,22 +156,6 @@ def main():
           f'read will be unavailable (build Stage-0 sets with '
           f'--eval_steps 16).')
 
-  # Held-out sanity: the probe set must not come from the probed run itself.
-  held_out = True
-  run_replay = os.path.realpath(os.path.join(args.run_logdir, 'replay'))
-  for label, src in manifest['sources'].items():
-    src_dir = os.path.realpath(src['replay_dir'])
-    if src_dir == run_replay or src_dir.startswith(run_replay + os.sep):
-      held_out = False
-      print(f'WARNING: probe-set source {label!r} is the replay of the run '
-            f'being probed; rollout errors are NOT held-out for this run.')
-
-  todo = resolve_checkpoints(args.run_logdir, args.milestones,
-                             args.snapshots_dir, args.checkpoints)
-  if not todo:
-    raise SystemExit('No checkpoints to process.')
-  print(f'Checkpoints: {[name for name, *_ in todo]}')
-
   ref_replay = args.ref_replay or os.path.join(args.run_logdir, 'replay')
   n_chunks = len(probeset_mod.replay_dataset.list_chunks(ref_replay)) if (
       os.path.isdir(ref_replay)) else 0
@@ -181,6 +165,32 @@ def main():
         f'--ref_replay pointing at the run\'s training buffer.')
   print(f'Density reference: {ref_replay} ({n_chunks} chunks, '
         f'target {args.ref_windows} windows, k={args.knn})')
+
+  # Held-out sanity: the probe set must not come from the probed run's own
+  # training data -- neither <run_logdir>/replay nor the density reference,
+  # which stands in for the training buffer when checkpoints were copied
+  # without their replay/.
+  held_out = True
+  guards = {
+      os.path.realpath(os.path.join(args.run_logdir, 'replay')):
+          'the replay of the run being probed',
+      os.path.realpath(ref_replay):
+          'the density-reference (training) replay',
+  }
+  for label, src in manifest['sources'].items():
+    src_dir = os.path.realpath(src['replay_dir'])
+    for guard_dir, what in guards.items():
+      if src_dir == guard_dir or src_dir.startswith(guard_dir + os.sep):
+        held_out = False
+        print(f'WARNING: probe-set source {label!r} is {what}; rollout '
+              f'errors are NOT held-out for this run.')
+        break
+
+  todo = resolve_checkpoints(args.run_logdir, args.milestones,
+                             args.snapshots_dir, args.checkpoints)
+  if not todo:
+    raise SystemExit('No checkpoints to process.')
+  print(f'Checkpoints: {[name for name, *_ in todo]}')
 
   if args.dry_run:
     print('DRY RUN: plan resolved; skipping agent load and inference.')

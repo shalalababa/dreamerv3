@@ -17,8 +17,10 @@ DOES NOT REPLICATE / MIXED-AMBIGUOUS + one-line statement}**
 - Probe set(s): {probeset_id(s)} (frozen, hash-verified at dump time;
   a NOT-HELD-OUT flag appears here when any probed run's own replay fed the
   probe set — such error reads are in-distribution and must not gate)
-- Horizons: {[1, 5, 15]} (open-loop, decoder target space); primary read:
-  anchor one-step disagreement vs horizon {5} error
+- Horizons: {[1, 5, 15]} (open-loop, decoder target space); headline read:
+  anchor one-step disagreement vs horizon {5} error; addendum read: anchor
+  one-step disagreement vs one-step (h=1) error (pre-registered, App. A.4
+  item 5; always computed regardless of --primary_horizon)
 - Density proxy: mean kNN distance of anchor posterior means against
   training-buffer encodings (larger = sparser); bias signature = positive
   partials with disagreement
@@ -32,8 +34,10 @@ DOES NOT REPLICATE / MIXED-AMBIGUOUS + one-line statement}**
 | {step} | {anchor/path} | {h} | {+.3f (se)} | {+.3f (se)} | {+.3f} | {+.3f} | {+.3f (.3f)} | {TRACKS_ERROR / TRACKS_DENSITY / AMBIGUOUS} |
 
 Final-checkpoint verdict (anchor, h={5}): **{verdict}**
-Gate D0 calibration addendum (EVPI note App. A.7 — pass iff
-pcorr(D,E|rho) >= pcorr(D,rho|E) at the final checkpoint): **{PASS/FAIL}**
+Stage-0 calibration addendum (one-step read per EVPI note App. A.4 item 5
+— pass iff pcorr(D,E|rho) >= pcorr(D,rho|E) at the final checkpoint,
+anchor h=1; the App. A.7 gate criterion additionally applies the dose
+adjustment, evaluated in the D0 pipeline, not here): **{PASS/FAIL}**
 
 <!-- one section per cell: within-checkpoint disag-head cells (p2e /
 disag_task runs) and cross-seed or refit ensembles (--cross). -->
