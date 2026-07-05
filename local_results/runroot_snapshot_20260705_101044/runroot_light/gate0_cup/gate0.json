@@ -1,0 +1,63 @@
+{
+  "task": "dmc_cup_catch",
+  "regime": "ball_cup_dist",
+  "threshold": 0.05,
+  "window": 50,
+  "coverage_range": 0.30032604932785034,
+  "cov_tol": 0.015016302466392517,
+  "occ_noise_typical": 0.003921697032637894,
+  "occ_sep_min": 0.011765091097913682,
+  "criteria": {
+    "min_windows": 200,
+    "cov_match_frac": 0.05,
+    "occ_sep_mult": 3.0
+  },
+  "total_high_occ_windows": 650,
+  "total_low_occ_windows": 2000,
+  "windows_ok": true,
+  "coverage_matched_regime_different": [],
+  "coverage_different_regime_matched": [],
+  "buffers": {
+    "p2e": {
+      "coverage": 0.753866970539093,
+      "occupancy": 0.03591,
+      "occ_noise": 0.001610524719581008,
+      "n_windows": 2000,
+      "n_high_occ_windows": 10,
+      "n_low_occ_windows": 740,
+      "n_frames": 100000
+    },
+    "apt": {
+      "coverage": 0.6574932336807251,
+      "occupancy": 0.12490974005134788,
+      "occ_noise": 0.0033012039493769407,
+      "n_windows": 1994,
+      "n_high_occ_windows": 83,
+      "n_low_occ_windows": 262,
+      "n_frames": 99712
+    },
+    "random": {
+      "coverage": 0.4535409212112427,
+      "occupancy": 0.295369551230497,
+      "occ_noise": 0.004542190115898848,
+      "n_windows": 1989,
+      "n_high_occ_windows": 362,
+      "n_low_occ_windows": 128,
+      "n_frames": 99472
+    },
+    "goal": {
+      "coverage": 0.5075461864471436,
+      "occupancy": 0.14806463355444102,
+      "occ_noise": 0.004765070974826813,
+      "n_windows": 1977,
+      "n_high_occ_windows": 195,
+      "n_low_occ_windows": 870,
+      "n_frames": 98896
+    }
+  },
+  "decision": "NO-GO",
+  "reasons": [
+    "no coverage-matched/regime-different pair (cov_tol=0.0150, occ_sep_min=0.0118)",
+    "no coverage-different/regime-matched pair"
+  ]
+}
