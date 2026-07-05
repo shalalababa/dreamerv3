@@ -175,6 +175,55 @@ def nearest_snapshots(snapshots_dir, milestones):
   return out
 
 
+def resolve_checkpoints(run_logdir, milestones, snapshots_dir='',
+                        checkpoints=()):
+  """Return [(name, ckpt_dir, exact_step, milestone)] for offline dumps.
+
+  Shared by the per-checkpoint inference scripts (probing/latents.py,
+  probing/latent_uq.py): explicit checkpoint dirs win; otherwise milestones
+  map to the nearest retained snapshots in <run_logdir>/ckpt_snapshots.
+  Stdlib-only, so plan/dry-run paths need no JAX import.
+  """
+  out = []
+  if checkpoints:
+    for ckpt in checkpoints:
+      live = _read_latest(ckpt)
+      if live is not None:
+        # A live ckpt/ dir: step.pkl lives in the save folder the `latest`
+        # pointer names, so resolve it to keep the step<exact> output layout.
+        ckpt = live[0]
+      step = None
+      step_pkl = os.path.join(ckpt, 'step.pkl')
+      if os.path.exists(step_pkl):
+        with open(step_pkl, 'rb') as f:
+          step = int(pickle.load(f))
+      name = f'step{step:012d}' if step is not None else \
+          os.path.basename(os.path.normpath(ckpt))
+      out.append((name, ckpt, step, None))
+    return out
+  snapshots_dir = snapshots_dir or os.path.join(run_logdir, 'ckpt_snapshots')
+  rows = nearest_snapshots(snapshots_dir, milestones)
+  gaps = [b - a for a, b in zip(sorted(milestones), sorted(milestones)[1:])]
+  spacing = min(gaps) if gaps else max(milestones)
+  seen = set()
+  for r in rows:
+    if r['snapshot'] is None:
+      print(f'WARNING: no snapshot near milestone {r["milestone"]}; skipped.')
+      continue
+    if r['abs_error'] > spacing / 2:
+      print(f'WARNING: milestone {r["milestone"]} maps to step {r["step"]} '
+            f'(gap {r["abs_error"]} > half the milestone spacing); use the '
+            f'recorded exact_step, not the milestone, on any x-axis.')
+    if r['snapshot'] in seen:
+      print(f'WARNING: milestone {r["milestone"]} maps to an already-selected '
+            f'snapshot (step {r["step"]}); skipped duplicate.')
+      continue
+    seen.add(r['snapshot'])
+    out.append((f'step{r["step"]:012d}', r['snapshot'], r['step'],
+                r['milestone']))
+  return out
+
+
 def do_select(snapshots_dir, milestones):
   rows = nearest_snapshots(snapshots_dir, milestones)
   with open(os.path.join(snapshots_dir, 'nearest.json'), 'w') as f:

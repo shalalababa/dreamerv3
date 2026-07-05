@@ -53,7 +53,6 @@ import argparse
 import json
 import os
 import pathlib
-import pickle
 import sys
 
 REPO = pathlib.Path(__file__).resolve().parent.parent
@@ -69,7 +68,7 @@ import numpy as np
 
 from dreamerv3.main import make_agent
 from probing import probeset as probeset_mod
-from probing.checkpoint_watcher import _read_latest, nearest_snapshots
+from probing.checkpoint_watcher import resolve_checkpoints as _resolve
 from probing.collect import load_run_config, load_frozen_agent
 
 f32 = jnp.float32
@@ -107,46 +106,8 @@ def parse_args():
 
 def resolve_checkpoints(args):
   """Return [(name, ckpt_dir, exact_step, milestone)] to process."""
-  out = []
-  if args.checkpoints:
-    for ckpt in args.checkpoints:
-      live = _read_latest(ckpt)
-      if live is not None:
-        # A live ckpt/ dir: step.pkl lives in the save folder the `latest`
-        # pointer names, so resolve it to keep the step<exact> output layout.
-        ckpt = live[0]
-      step = None
-      step_pkl = os.path.join(ckpt, 'step.pkl')
-      if os.path.exists(step_pkl):
-        with open(step_pkl, 'rb') as f:
-          step = int(pickle.load(f))
-      name = f'step{step:012d}' if step is not None else \
-          os.path.basename(os.path.normpath(ckpt))
-      out.append((name, ckpt, step, None))
-    return out
-  snapshots_dir = args.snapshots_dir or os.path.join(
-      args.run_logdir, 'ckpt_snapshots')
-  rows = nearest_snapshots(snapshots_dir, args.milestones)
-  gaps = [b - a for a, b in zip(sorted(args.milestones),
-                                sorted(args.milestones)[1:])]
-  spacing = min(gaps) if gaps else max(args.milestones)
-  seen = set()
-  for r in rows:
-    if r['snapshot'] is None:
-      print(f'WARNING: no snapshot near milestone {r["milestone"]}; skipped.')
-      continue
-    if r['abs_error'] > spacing / 2:
-      print(f'WARNING: milestone {r["milestone"]} maps to step {r["step"]} '
-            f'(gap {r["abs_error"]} > half the milestone spacing); use the '
-            f'recorded exact_step, not the milestone, on any x-axis.')
-    if r['snapshot'] in seen:
-      print(f'WARNING: milestone {r["milestone"]} maps to an already-selected '
-            f'snapshot (step {r["step"]}); skipped duplicate.')
-      continue
-    seen.add(r['snapshot'])
-    out.append((f'step{r["step"]:012d}', r['snapshot'], r['step'],
-                r['milestone']))
-  return out
+  return _resolve(args.run_logdir, args.milestones, args.snapshots_dir,
+                  args.checkpoints)
 
 
 def rssm_encode(model, obs, action_dict, reset, prior_horizon, burn_in):
