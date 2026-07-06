@@ -16,8 +16,8 @@
 # RCC job cap guard: submit only until current Slurm jobs + this invocation
 # reaches MAX_JOBS (default 12). Re-run the command after jobs finish.
 # Tunables (env): STEPS, SEEDS, DECOUPLERS, CONTROL, MAX_JOBS,
-# BUNDLE_SIZE, BUNDLE_TIME, ADAPT_PRETRAINS, ADAPT_BUNDLE_TIME,
-# ADAPT_BUNDLE_MINUTES, ADAPT_EST_*_MINUTES.
+# BUNDLE_SIZE, BUNDLE_TIME, ADAPT_PRETRAINS, ADAPT_MILESTONES,
+# ADAPT_BUNDLE_TIME, ADAPT_BUNDLE_MINUTES, ADAPT_EST_*_MINUTES.
 # ---------------------------------------------------------------------------
 set -euo pipefail
 REPO="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
@@ -136,16 +136,19 @@ task_of_pretrain() {  # task_of_pretrain <pretrain_run_id>
 }
 
 adapt_pairs_from_nearest() {  # adapt_pairs_from_nearest <nearest.json>
-  python - "$1" <<'PY'
+  python - "$1" "${ADAPT_MILESTONES:-100000 200000 300000 400000 500000}" <<'PY'
 import json
 import sys
 
 rows = json.load(open(sys.argv[1]))
+wanted = {int(x) for x in sys.argv[2].split()}
 seen = set()
 for row in rows:
     snap = row.get("snapshot")
     milestone = row.get("milestone")
     if not snap or milestone is None or snap in seen:
+        continue
+    if int(milestone) not in wanted:
         continue
     seen.add(snap)
     print(f"{int(milestone)}\t{snap}")

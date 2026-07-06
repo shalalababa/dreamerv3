@@ -91,10 +91,12 @@ DRYRUN=1 ./scripts/submit_all.sh adapt-bundles 1.25e5
 - **Bundled adaptation.** `adapt-bundles` writes TSV runlists under
   `$RUNROOT/_submit_runlists/` and submits sequential bundles. The default
   estimate is conservative: 360 minutes per 125K adapt, 1800 estimated minutes
-  per bundle, and 34h Slurm walltime. Override with
+  per bundle, and 34h Slurm walltime. By default it submits only the v3
+  milestones `100000 200000 300000 400000 500000`, even if an older
+  `nearest.json` contains the 50K grid. Override with `ADAPT_MILESTONES`,
   `ADAPT_EST_WALKER_MINUTES`, `ADAPT_EST_CUP_MINUTES`,
-  `ADAPT_EST_FINGER_MINUTES`, `ADAPT_BUNDLE_MINUTES`, and
-  `ADAPT_BUNDLE_TIME` after you have real `sacct` timings.
+  `ADAPT_EST_FINGER_MINUTES`, `ADAPT_BUNDLE_MINUTES`, and `ADAPT_BUNDLE_TIME`
+  after you have real `sacct` timings.
 - **Goal-reacher (Gate 0).** Without the reward-on `goal` pilot the
   high-occupancy corner is empty (exploration alone rarely enters the regime --
   reward is sparse on cup/finger/reacher). For a faster substitute on

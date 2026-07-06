@@ -48,8 +48,7 @@ catch the final save).  Post-hoc milestone selection::
 
     python -m probing.checkpoint_watcher --select \
         --run_logdir $RUN/pretrain_p2e_cup_seed1 \
-        --milestones 50000 100000 150000 200000 250000 \
-                     300000 350000 400000 450000 500000
+        --milestones 100000 200000 300000 400000 500000
 """
 
 import argparse
@@ -74,8 +73,7 @@ def parse_args():
   p.add_argument('--stop_file', default='',
                  help='Optional path; if it appears, do a final sweep and exit.')
   p.add_argument('--milestones', type=int, nargs='+',
-                 default=[50000, 100000, 150000, 200000, 250000,
-                          300000, 350000, 400000, 450000, 500000])
+                 default=[100000, 200000, 300000, 400000, 500000])
   p.add_argument('--select', action='store_true',
                  help='One-shot: print the snapshot nearest each milestone and '
                       'write nearest.json, then exit (no watching).')
