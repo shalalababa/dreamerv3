@@ -7,6 +7,8 @@
 #   ./submit_all.sh pretrain                                     # Phase 4 grid
 #   ./submit_all.sh pretrain-bundles                             # Phase 4, 3 runs/job
 #   ./submit_all.sh adapt <pretrain_run_id> <task> [STEPS]       # Phase 5 dose-response
+#   ./submit_all.sh adapt-completed [STEPS]                      # Phase 5 rolling 125K sweep
+#   ./submit_all.sh adapt-bundles [STEPS]                        # Phase 5 bundled sweep
 #
 # Dry run: set DRYRUN=1 to print sbatch commands without submitting.
 # Duplicate guard: by default, skip a RUN_ID that is already in Slurm or whose
@@ -14,7 +16,8 @@
 # RCC job cap guard: submit only until current Slurm jobs + this invocation
 # reaches MAX_JOBS (default 12). Re-run the command after jobs finish.
 # Tunables (env): STEPS, SEEDS, DECOUPLERS, CONTROL, MAX_JOBS,
-# BUNDLE_SIZE, BUNDLE_TIME.
+# BUNDLE_SIZE, BUNDLE_TIME, ADAPT_PRETRAINS, ADAPT_BUNDLE_TIME,
+# ADAPT_BUNDLE_MINUTES, ADAPT_EST_*_MINUTES.
 # ---------------------------------------------------------------------------
 set -euo pipefail
 REPO="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
@@ -61,6 +64,13 @@ pretrain_done() {  # pretrain_done <RUN_ID>
     [ -f "$RUNROOT/$1/ckpt_snapshots/nearest.json" ]
 }
 
+adapt_done() {  # adapt_done <RUN_ID>
+  local status
+  status="$(manifest_status "$1")"
+  [ "$status" = "DONE" ] && return 0
+  [ -f "$RUNROOT/$1/ADAPT_DONE" ]
+}
+
 MAX_JOBS="${MAX_JOBS:-12}"
 JOBS_AT_START="$(active_job_count)"
 SUBMITTED_THIS_RUN=0
@@ -95,6 +105,132 @@ submit() {  # submit <script> <RUN_ID> KEY=VAL ...
 }
 
 short_of() { echo "$1" | sed -E 's/^dmc_//; s/_.*//'; }
+
+source_of_pretrain() {  # source_of_pretrain <pretrain_run_id>
+  echo "$1" | sed -E 's/^pretrain_//'
+}
+
+seed_of_pretrain() {  # seed_of_pretrain <pretrain_run_id>
+  local seed
+  seed="$(echo "$1" | sed -nE 's/.*_seed([0-9]+)$/\1/p')"
+  [ -n "$seed" ] || { echo "could not parse seed from $1" >&2; return 1; }
+  printf '%s\n' "$seed"
+}
+
+task_of_pretrain() {  # task_of_pretrain <pretrain_run_id>
+  local run_id="$1"
+  local task=""
+  if [ -f "$MANIFEST" ]; then
+    task="$(awk -F, -v run_id="$run_id" '$1 == run_id {task=$3} END {print task}' "$MANIFEST")"
+  fi
+  if [ -n "$task" ]; then
+    printf '%s\n' "$task"
+    return 0
+  fi
+  case "$run_id" in
+    *_walker_seed*) echo "$CONTROL" ;;
+    *_cup_seed*) echo "dmc_cup_catch" ;;
+    *_finger_seed*) echo "dmc_finger_turn_hard" ;;
+    *) echo "could not infer task for $run_id" >&2; return 1 ;;
+  esac
+}
+
+adapt_pairs_from_nearest() {  # adapt_pairs_from_nearest <nearest.json>
+  python - "$1" <<'PY'
+import json
+import sys
+
+rows = json.load(open(sys.argv[1]))
+seen = set()
+for row in rows:
+    snap = row.get("snapshot")
+    milestone = row.get("milestone")
+    if not snap or milestone is None or snap in seen:
+        continue
+    seen.add(snap)
+    print(f"{int(milestone)}\t{snap}")
+PY
+}
+
+adapt_est_minutes() {  # adapt_est_minutes <task> <steps>
+  local task="$1"; local steps="$2"; local base
+  case "$task" in
+    *walker*) base="${ADAPT_EST_WALKER_MINUTES:-360}" ;;
+    *cup*) base="${ADAPT_EST_CUP_MINUTES:-360}" ;;
+    *finger*) base="${ADAPT_EST_FINGER_MINUTES:-360}" ;;
+    *) base="${ADAPT_EST_MINUTES:-360}" ;;
+  esac
+  python - "$base" "$steps" <<'PY'
+import math
+import sys
+
+base = float(sys.argv[1])
+steps = float(sys.argv[2])
+print(int(math.ceil(base * steps / 125000.0)))
+PY
+}
+
+record_adapt_bundle_reservations() {  # record_adapt_bundle_reservations <runlist> <bundle_id>
+  local runlist="$1"; local bundle_id="$2"; local stamp
+  stamp="$(date -Is)"
+  while IFS=$'\t' read -r child_run_id task seed ckpt steps est_minutes; do
+    [ -n "${child_run_id:-}" ] || continue
+    mkdir -p "$RUNROOT/$child_run_id"
+    printf 'bundle=%s\nreserved_at=%s\nrunlist=%s\n' \
+      "$bundle_id" "$stamp" "$runlist" > "$RUNROOT/$child_run_id/SUBMITTED_BY_BUNDLE"
+  done < "$runlist"
+}
+
+submit_adapt_bundle() {  # submit_adapt_bundle <bundle_id> <runlist>
+  local bundle_id="$1"; local runlist="$2"
+  local jobs_used=$((JOBS_AT_START + SUBMITTED_THIS_RUN))
+  if [ "${IGNORE_JOB_CAP:-0}" != "1" ] && [ "$MAX_JOBS" -gt 0 ] &&
+     [ "$jobs_used" -ge "$MAX_JOBS" ]; then
+    echo "STOP job cap reached: $jobs_used/$MAX_JOBS Slurm jobs active/submitted."
+    echo "Re-run this command after some jobs finish; existing/queued RUN_IDs will be skipped."
+    exit 0
+  fi
+
+  local exports="ALL,REPO=$REPO,RUN_ID=$bundle_id,RUNLIST=$runlist,STEPS=${STEPS:-1.25e5}"
+  local cmd=(sbatch --account="$SLURM_ACCOUNT" --partition="$SLURM_PARTITION"
+             --gres="$SLURM_GRES" --time="${ADAPT_BUNDLE_TIME:-34:00:00}"
+             --job-name="$bundle_id" --export="$exports"
+             "$REPO/scripts/adapt_bundle.sbatch")
+  if [ "${DRYRUN:-0}" = "1" ]; then
+    printf '%q ' "${cmd[@]}"
+    echo
+  else
+    "${cmd[@]}"
+    record_adapt_bundle_reservations "$runlist" "$bundle_id"
+  fi
+  SUBMITTED_THIS_RUN=$((SUBMITTED_THIS_RUN + 1))
+}
+
+submit_adapts_for_pretrain() {  # submit_adapts_for_pretrain <pretrain_run_id> <task> <steps>
+  local pre_run="$1"; local task="$2"; local steps="$3"
+  local nearest="$RUNROOT/$pre_run/ckpt_snapshots/nearest.json"
+  [ -f "$nearest" ] || {
+    echo "SKIP no nearest.json: $pre_run"
+    echo "  run: python -m probing.checkpoint_watcher --select --run_logdir $RUNROOT/$pre_run"
+    return 0
+  }
+
+  local source seed
+  source="$(source_of_pretrain "$pre_run")"
+  seed="$(seed_of_pretrain "$pre_run")"
+
+  mapfile -t pairs < <(adapt_pairs_from_nearest "$nearest")
+  if [ "${#pairs[@]}" -eq 0 ]; then
+    echo "SKIP no selected snapshots: $pre_run"
+    return 0
+  fi
+
+  for line in "${pairs[@]}"; do
+    IFS=$'\t' read -r ms snap <<< "$line"
+    submit adapt.sbatch "adapt_${source}_ckpt${ms}" \
+      "TASK=$task" "SEED=$seed" "CKPT=$snap" "STEPS=$steps" "AXIS=dose"
+  done
+}
 
 read -ra DECOUPLERS <<< "${DECOUPLERS:-dmc_cup_catch dmc_finger_turn_hard}"
 CONTROL="${CONTROL:-dmc_walker_walk}"
@@ -180,24 +316,119 @@ case "$cmd" in
   adapt)
     pre_run="${1:?usage: adapt <pretrain_run_id> <task> [STEPS]}"
     task="${2:?task}"; steps="${3:-1.25e5}"
-    nearest="$RUNROOT/$pre_run/ckpt_snapshots/nearest.json"
-    [ -f "$nearest" ] || { echo "no $nearest (run: python -m probing.checkpoint_watcher --select --run_logdir $RUNROOT/$pre_run)"; exit 1; }
-    short=$(short_of "$task")
-    # De-duplicated (milestone, snapshot) pairs, one adapt job each.
-    mapfile -t pairs < <(python -c "
-import json,sys
-rows=json.load(open('$nearest')); seen=set()
-for r in rows:
-    s=r.get('snapshot')
-    if s and s not in seen:
-        seen.add(s); print(r['milestone'], s)
-")
-    for line in "${pairs[@]}"; do
-      ms=${line%% *}; snap=${line#* }
-      submit adapt.sbatch "adapt_${short}_seed1_ckpt${ms}" \
-        "TASK=$task" "SEED=1" "CKPT=$snap" "STEPS=$steps" "AXIS=dose"
+    submit_adapts_for_pretrain "$pre_run" "$task" "$steps" ;;
+
+  adapt-completed|adapt_completed|adapt-125k|adapt_125k)
+    steps="${1:-1.25e5}"
+    if [ -n "${ADAPT_PRETRAINS:-}" ]; then
+      read -ra pretrains <<< "$ADAPT_PRETRAINS"
+    else
+      mapfile -t pretrains < <(
+        find "$RUNROOT" -maxdepth 1 -type d -name 'pretrain_*' -printf '%f\n' 2>/dev/null |
+          sort
+      )
+    fi
+
+    if [ "${#pretrains[@]}" -eq 0 ]; then
+      echo "No pretrain runs found."
+      exit 0
+    fi
+
+    for pre_run in "${pretrains[@]}"; do
+      if pretrain_done "$pre_run"; then
+        task="$(task_of_pretrain "$pre_run")"
+        submit_adapts_for_pretrain "$pre_run" "$task" "$steps"
+      else
+        echo "SKIP not done: $pre_run"
+      fi
     done ;;
 
+  adapt-bundles|adapt_bundles|adapt-completed-bundles|adapt_completed_bundles)
+    steps="${1:-1.25e5}"
+    max_minutes="${ADAPT_BUNDLE_MINUTES:-1800}"
+    [ "$max_minutes" -gt 0 ] || { echo "ADAPT_BUNDLE_MINUTES must be > 0"; exit 1; }
+
+    if [ -n "${ADAPT_PRETRAINS:-}" ]; then
+      read -ra pretrains <<< "$ADAPT_PRETRAINS"
+    else
+      mapfile -t pretrains < <(
+        find "$RUNROOT" -maxdepth 1 -type d -name 'pretrain_*' -printf '%f\n' 2>/dev/null |
+          sort
+      )
+    fi
+
+    pending=()
+    for pre_run in "${pretrains[@]}"; do
+      if ! pretrain_done "$pre_run"; then
+        echo "SKIP not done: $pre_run"
+        continue
+      fi
+      task="$(task_of_pretrain "$pre_run")"
+      source="$(source_of_pretrain "$pre_run")"
+      seed="$(seed_of_pretrain "$pre_run")"
+      nearest="$RUNROOT/$pre_run/ckpt_snapshots/nearest.json"
+      mapfile -t pairs < <(adapt_pairs_from_nearest "$nearest")
+      for line in "${pairs[@]}"; do
+        IFS=$'\t' read -r ms snap <<< "$line"
+        child_run_id="adapt_${source}_ckpt${ms}"
+        if [ "${FORCE:-0}" != "1" ]; then
+          if queued_job "$child_run_id"; then
+            echo "SKIP queued/running: $child_run_id"
+            continue
+          fi
+          if adapt_done "$child_run_id"; then
+            echo "SKIP done: $child_run_id"
+            continue
+          fi
+          if existing_logdir "$child_run_id"; then
+            echo "SKIP existing/reserved logdir: $RUNROOT/$child_run_id  (set FORCE=1 to resubmit)"
+            continue
+          fi
+        fi
+        est="$(adapt_est_minutes "$task" "$steps")"
+        pending+=("$child_run_id"$'\t'"$task"$'\t'"$seed"$'\t'"$snap"$'\t'"$steps"$'\t'"$est")
+      done
+    done
+
+    if [ "${#pending[@]}" -eq 0 ]; then
+      echo "No adapt runs need submission."
+      exit 0
+    fi
+
+    stamp="$(date +%Y%m%d_%H%M%S)"
+    runlist_dir="$RUNROOT/_submit_runlists/adapt_$stamp"
+    bundle_prefix="adapt_bundle_$stamp"
+    mkdir -p "$runlist_dir"
+    bundle=1
+    runlist=""
+    bundle_minutes=0
+    bundle_rows=0
+    flush_bundle() {
+      [ "$bundle_rows" -gt 0 ] || return 0
+      bundle_id="${bundle_prefix}_$(printf '%03d' "$bundle")"
+      echo "Bundle $bundle_id estimated minutes: $bundle_minutes"
+      submit_adapt_bundle "$bundle_id" "$runlist"
+      bundle=$((bundle + 1))
+      runlist=""
+      bundle_minutes=0
+      bundle_rows=0
+    }
+
+    for row in "${pending[@]}"; do
+      IFS=$'\t' read -r _ _ _ _ _ est <<< "$row"
+      if [ "$bundle_rows" -gt 0 ] && [ $((bundle_minutes + est)) -gt "$max_minutes" ]; then
+        flush_bundle
+      fi
+      if [ "$bundle_rows" -eq 0 ]; then
+        runlist="$runlist_dir/bundle_$(printf '%03d' "$bundle").tsv"
+        : > "$runlist"
+      fi
+      printf '%s\n' "$row" >> "$runlist"
+      bundle_minutes=$((bundle_minutes + est))
+      bundle_rows=$((bundle_rows + 1))
+    done
+    flush_bundle ;;
+
   *)
-    echo "usage: $0 {pilots|pretrain|pretrain-bundles|adapt} ..."; exit 1 ;;
+    echo "usage: $0 {pilots|pretrain|pretrain-bundles|adapt|adapt-completed|adapt-bundles} ..."; exit 1 ;;
 esac

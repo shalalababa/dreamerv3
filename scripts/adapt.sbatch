@@ -13,7 +13,7 @@
 # adapts fresh actor/critic/reward heads on the task reward.
 #
 # Required env:
-#   RUN_ID  e.g. adapt_p2e_cup_catch_seed1_ckpt300k
+#   RUN_ID  e.g. adapt_p2e_cup_seed1_ckpt100000
 #   TASK    dmc task
 #   SEED    integer
 #   CKPT    absolute path to a snapshot dir (ckpt_snapshots/step0000....),
@@ -41,4 +41,8 @@ python dreamerv3/main.py \
   --run.from_checkpoint "$CKPT" --run.steps "$STEPS" || RC=$?
 STATUS=$([ "$RC" -eq 0 ] && echo DONE || echo FAILED)
 echo "[$(date)] adapt $RUN_ID rc=$RC status=$STATUS"
+if [ "$RC" -eq 0 ]; then
+  touch "$LOGDIR/ADAPT_DONE"
+fi
+sed -i "s#^$RUN_ID,.*,RUNNING,#$RUN_ID,adapt,$TASK,frozen_readout,$SEED,$STEPS,$CKPT,$LOGDIR,$STATUS,#" "$MANIFEST" 2>/dev/null || true
 exit "$RC"

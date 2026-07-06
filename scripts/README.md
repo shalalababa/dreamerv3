@@ -48,6 +48,15 @@ python -m probing.gate0 --task dmc_cup_catch --window 50 \
 python -m probing.checkpoint_watcher --select \
   --run_logdir $RUNROOT/pretrain_p2e_cup_seed1     # writes nearest.json
 ./scripts/submit_all.sh adapt pretrain_p2e_cup_seed1 dmc_cup_catch 1.25e5
+
+# Phase 5 rolling 125K dose-response sweep over completed pretrains.
+# Re-run as Slurm slots open; existing/queued adapt RUN_IDs are skipped.
+SLURM_TIME=06:00:00 ./scripts/submit_all.sh adapt-completed 1.25e5
+
+# Phase 5 bundled sweep for RCC caps: default estimate is 6h per 125K adapt,
+# 30 estimated hours per bundle, 34h Slurm walltime.
+DRYRUN=1 ./scripts/submit_all.sh adapt-bundles 1.25e5
+./scripts/submit_all.sh adapt-bundles 1.25e5
 ```
 
 ## Pieces
@@ -59,6 +68,7 @@ python -m probing.checkpoint_watcher --select \
 | `pretrain.sbatch` | Phase 4 pretraining + `probing.checkpoint_watcher` sidecar |
 | `pretrain_bundle.sbatch` | Phase 4 sequential bundles for RCC's submitted-job cap |
 | `adapt.sbatch` | Phase 5 frozen-readout adapt from a snapshot dir |
+| `adapt_bundle.sbatch` | Phase 5 sequential adapt bundles for RCC's submitted-job cap |
 | `submit_all.sh` | expands the sweep grids; `pilots` / `pretrain` / `pretrain-bundles` / `adapt` |
 | `runs.csv` | run manifest (auto-appended by the sbatch scripts) |
 
@@ -74,6 +84,17 @@ python -m probing.checkpoint_watcher --select \
   36h walltime cap, the default `BUNDLE_SIZE=3` and `BUNDLE_TIME=32:00:00`
   keeps one GPU busy while staying below the cap. It skips individual pretrain
   `RUN_ID`s that are already queued/running or marked `DONE`.
+- **Adapt naming.** Phase 5 adapt run IDs are named from the source pretrain
+  and nominal milestone, for example `adapt_p2e_cup_seed1_ckpt100000`. The
+  exact retained snapshot path is recorded in `runs.csv`, so the name stays
+  stable even when the nearest snapshot is not exactly on the milestone.
+- **Bundled adaptation.** `adapt-bundles` writes TSV runlists under
+  `$RUNROOT/_submit_runlists/` and submits sequential bundles. The default
+  estimate is conservative: 360 minutes per 125K adapt, 1800 estimated minutes
+  per bundle, and 34h Slurm walltime. Override with
+  `ADAPT_EST_WALKER_MINUTES`, `ADAPT_EST_CUP_MINUTES`,
+  `ADAPT_EST_FINGER_MINUTES`, `ADAPT_BUNDLE_MINUTES`, and
+  `ADAPT_BUNDLE_TIME` after you have real `sacct` timings.
 - **Goal-reacher (Gate 0).** Without the reward-on `goal` pilot the
   high-occupancy corner is empty (exploration alone rarely enters the regime --
   reward is sparse on cup/finger/reacher). For a faster substitute on
