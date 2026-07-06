@@ -168,6 +168,14 @@ def main():
 
   os.makedirs(args.output, exist_ok=True)
   config = load_run_config(args.run_logdir, args.platform, args.output, False)
+  # Latent dumps only use enc/dyn inference. Avoid train/report precompilation
+  # and policy parameter copies, which are unnecessary here and can trip native
+  # CUDA/XLA failures on cluster inference jobs.
+  config = config.update({'jax': {
+      'precompile': False,
+      'enable_policy': False,
+      'prealloc': False,
+  }})
   agent = make_agent(config)
   jax.config.update('jax_transfer_guard', 'allow')
 
