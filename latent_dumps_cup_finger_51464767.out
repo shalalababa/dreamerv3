@@ -1,4 +1,0 @@
-59:  config = elements.Config(current['defaults']).update(saved)
-JAX devices: [CudaDevice(id=0)]
-== latents pretrain_apt_cup_seed1 ==
-/var/spool/slurm/d/job51464767/slurm_script: line 19: 391865 Segmentation fault      (core dumped) python -m probing.latents --platform cuda --probeset "$probeset" --run_logdir "$run_dir" --snapshots_dir "$run_dir/ckpt_snapshots" --output "$run_dir/latents"

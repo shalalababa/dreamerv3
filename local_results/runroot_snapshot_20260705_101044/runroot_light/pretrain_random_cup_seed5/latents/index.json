@@ -1,0 +1,42 @@
+{
+  "run_logdir": "/scratch/midway3/rickybao/dreamerv3_runs/pretrain_random_cup_seed5",
+  "probeset": "/scratch/midway3/rickybao/dreamerv3_runs/probesets/cup_v1",
+  "probeset_id": "ball_in_cup_v1_9327e960",
+  "probeset_sha256": "9327e96044a6df2659a58e07833dc4f793a2a22bf263bd794a31b022200cb632",
+  "burn_in": 32,
+  "eval_steps": 8,
+  "store": "last",
+  "prior_horizon": 0,
+  "checkpoints": [
+    {
+      "name": "step000000099472",
+      "exact_step": 99472,
+      "milestone": 100000,
+      "path": "step000000099472/latents.npz"
+    },
+    {
+      "name": "step000000197104",
+      "exact_step": 197104,
+      "milestone": 200000,
+      "path": "step000000197104/latents.npz"
+    },
+    {
+      "name": "step000000294752",
+      "exact_step": 294752,
+      "milestone": 300000,
+      "path": "step000000294752/latents.npz"
+    },
+    {
+      "name": "step000000403200",
+      "exact_step": 403200,
+      "milestone": 400000,
+      "path": "step000000403200/latents.npz"
+    },
+    {
+      "name": "step000000489968",
+      "exact_step": 489968,
+      "milestone": 500000,
+      "path": "step000000489968/latents.npz"
+    }
+  ]
+}

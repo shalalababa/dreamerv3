@@ -1,0 +1,42 @@
+{
+  "run_logdir": "/scratch/midway3/rickybao/dreamerv3_runs/pretrain_apt_finger_seed5",
+  "probeset": "/scratch/midway3/rickybao/dreamerv3_runs/probesets/finger_v1",
+  "probeset_id": "finger_v1_7a32ff08",
+  "probeset_sha256": "7a32ff087dd4d8ee639bc1badc955a99039fe438d4c1f8c040eab77ded25663c",
+  "burn_in": 32,
+  "eval_steps": 8,
+  "store": "last",
+  "prior_horizon": 0,
+  "checkpoints": [
+    {
+      "name": "step000000100320",
+      "exact_step": 100320,
+      "milestone": 100000,
+      "path": "step000000100320/latents.npz"
+    },
+    {
+      "name": "step000000200160",
+      "exact_step": 200160,
+      "milestone": 200000,
+      "path": "step000000200160/latents.npz"
+    },
+    {
+      "name": "step000000300000",
+      "exact_step": 300000,
+      "milestone": 300000,
+      "path": "step000000300000/latents.npz"
+    },
+    {
+      "name": "step000000399840",
+      "exact_step": 399840,
+      "milestone": 400000,
+      "path": "step000000399840/latents.npz"
+    },
+    {
+      "name": "step000000499680",
+      "exact_step": 499680,
+      "milestone": 500000,
+      "path": "step000000499680/latents.npz"
+    }
+  ]
+}

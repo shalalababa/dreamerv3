@@ -1,0 +1,17 @@
+{
+  "task": "dmc_cup_catch",
+  "replay": "/scratch/midway3/rickybao/dreamerv3_runs/pilot_goal_cup_seed1/replay",
+  "keys": [
+    "position",
+    "velocity"
+  ],
+  "gamma": 0.99,
+  "n_episodes": 112,
+  "n_frames": 98896,
+  "r2_holdout": 0.841,
+  "r2_gate": 0.2,
+  "usable": true,
+  "seed": 0,
+  "steps": 4000,
+  "sha256": "fa1ba035504b1403ebeb03148f269f75bb07f41e272f4deecb5ac4fe65a9c270"
+}
