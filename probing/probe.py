@@ -206,7 +206,8 @@ def build_jobs(sites, targets, masks, horizons, recfields):
         add('rssm', f'imag{h}', 'state', h, 1)
 
   for tname in ('gait_phase', 'return_to_go', 'time_to_fall',
-                'reward_stand', 'reward_walk', 'reward_run'):
+                'reward_stand', 'reward_walk', 'reward_run',
+                'regime', 'in_regime'):
     if tname not in targets:
       continue
     for s in rssm_sites:

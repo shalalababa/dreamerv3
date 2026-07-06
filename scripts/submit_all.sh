@@ -9,6 +9,7 @@
 #   ./submit_all.sh adapt <pretrain_run_id> <task> [STEPS]       # Phase 5 dose-response
 #   ./submit_all.sh adapt-completed [STEPS]                      # Phase 5 rolling 125K sweep
 #   ./submit_all.sh adapt-bundles [STEPS]                        # Phase 5 bundled sweep
+#   ./submit_all.sh measure                                      # Phase 5 driver measurement
 #
 # Dry run: set DRYRUN=1 to print sbatch commands without submitting.
 # Duplicate guard: by default, skip a RUN_ID that is already in Slurm or whose
@@ -451,6 +452,41 @@ case "$cmd" in
     done
     flush_bundle ;;
 
+  measure|measure-completed|measure_completed)
+    # Phase 5 driver measurement (PREREG_phase5a Sec. 3): one job per
+    # completed pretrain run; skips runs whose measure/MEASURE_DONE exists.
+    # Fit the per-domain critics first (cheap, login node):
+    #   python -m probing.value_sensitive fit-critic ...
+    if [ -n "${MEASURE_PRETRAINS:-}" ]; then
+      read -ra pretrains <<< "$MEASURE_PRETRAINS"
+    else
+      mapfile -t pretrains < <(
+        find "$RUNROOT" -maxdepth 1 -type d -name 'pretrain_*' -printf '%f\n' 2>/dev/null |
+          sort
+      )
+    fi
+    for pre_run in "${pretrains[@]}"; do
+      if ! pretrain_done "$pre_run"; then
+        echo "SKIP not done: $pre_run"
+        continue
+      fi
+      if [ -f "$RUNROOT/$pre_run/measure/MEASURE_DONE" ] && [ "${FORCE:-0}" != "1" ]; then
+        echo "SKIP measured: $pre_run"
+        continue
+      fi
+      task="$(task_of_pretrain "$pre_run")"
+      short="$(short_of "$task")"
+      if [ "$short" = "walker" ]; then
+        ref="$RUNROOT/pretrain_random_walker_seed1/replay"
+      else
+        ref="$RUNROOT/pilot_goal_${short}_seed1/replay"
+      fi
+      critic="$RUNROOT/critics/critic_${short}_v1.npz"
+      submit measure.sbatch "measure_$(source_of_pretrain "$pre_run")" \
+        "PRE_RUN=$pre_run" "TASK=$task" "REF_REPLAY=$ref" "CRITIC=$critic" \
+        "AXIS=dose"
+    done ;;
+
   *)
-    echo "usage: $0 {pilots|pretrain|pretrain-bundles|adapt|adapt-completed|adapt-bundles} ..."; exit 1 ;;
+    echo "usage: $0 {pilots|pretrain|pretrain-bundles|adapt|adapt-completed|adapt-bundles|measure} ..."; exit 1 ;;
 esac
