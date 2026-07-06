@@ -53,8 +53,8 @@ python -m probing.checkpoint_watcher --select \
 # Re-run as Slurm slots open; existing/queued adapt RUN_IDs are skipped.
 SLURM_TIME=06:00:00 ./scripts/submit_all.sh adapt-completed 1.25e5
 
-# Phase 5 bundled sweep for RCC caps: default estimate is 6h per 125K adapt,
-# 30 estimated hours per bundle, 34h Slurm walltime.
+# Phase 5 bundled sweep for RCC caps: default estimate is 72 min per 125K
+# adapt and 25 adapts / 30 estimated hours per full bundle.
 DRYRUN=1 ./scripts/submit_all.sh adapt-bundles 1.25e5
 ./scripts/submit_all.sh adapt-bundles 1.25e5
 ```
@@ -90,13 +90,17 @@ DRYRUN=1 ./scripts/submit_all.sh adapt-bundles 1.25e5
   stable even when the nearest snapshot is not exactly on the milestone.
 - **Bundled adaptation.** `adapt-bundles` writes TSV runlists under
   `$RUNROOT/_submit_runlists/` and submits sequential bundles. The default
-  estimate is conservative: 360 minutes per 125K adapt, 1800 estimated minutes
-  per bundle, and 34h Slurm walltime. By default it submits only the v3
-  milestones `100000 200000 300000 400000 500000`, even if an older
-  `nearest.json` contains the 50K grid. Override with `ADAPT_MILESTONES`,
+  estimate is based on the observed 0.94h adapt runtime with buffer: 72 minutes
+  per 125K adapt and 1800 estimated minutes per full bundle (25 adapts). If
+  `ADAPT_BUNDLE_TIME` is unset, Slurm walltime is chosen per bundle as estimated
+  minutes plus a 240-minute buffer, capped at 34h. By default it submits only
+  the v3 milestones
+  `100000 200000 300000 400000 500000`, even if an older `nearest.json`
+  contains the 50K grid. Override with `ADAPT_MILESTONES`,
   `ADAPT_EST_WALKER_MINUTES`, `ADAPT_EST_CUP_MINUTES`,
-  `ADAPT_EST_FINGER_MINUTES`, `ADAPT_BUNDLE_MINUTES`, and `ADAPT_BUNDLE_TIME`
-  after you have real `sacct` timings.
+  `ADAPT_EST_FINGER_MINUTES`, `ADAPT_BUNDLE_MINUTES`,
+  `ADAPT_BUNDLE_BUFFER_MINUTES`, and `ADAPT_BUNDLE_TIME` if a domain turns out
+  slower.
 - **Goal-reacher (Gate 0).** Without the reward-on `goal` pilot the
   high-occupancy corner is empty (exploration alone rarely enters the regime --
   reward is sparse on cup/finger/reacher). For a faster substitute on

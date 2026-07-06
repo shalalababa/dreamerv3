@@ -17,7 +17,8 @@
 # reaches MAX_JOBS (default 12). Re-run the command after jobs finish.
 # Tunables (env): STEPS, SEEDS, DECOUPLERS, CONTROL, MAX_JOBS,
 # BUNDLE_SIZE, BUNDLE_TIME, ADAPT_PRETRAINS, ADAPT_MILESTONES,
-# ADAPT_BUNDLE_TIME, ADAPT_BUNDLE_MINUTES, ADAPT_EST_*_MINUTES.
+# ADAPT_BUNDLE_TIME, ADAPT_BUNDLE_MINUTES, ADAPT_BUNDLE_BUFFER_MINUTES,
+# ADAPT_EST_*_MINUTES.
 # ---------------------------------------------------------------------------
 set -euo pipefail
 REPO="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
@@ -158,10 +159,10 @@ PY
 adapt_est_minutes() {  # adapt_est_minutes <task> <steps>
   local task="$1"; local steps="$2"; local base
   case "$task" in
-    *walker*) base="${ADAPT_EST_WALKER_MINUTES:-360}" ;;
-    *cup*) base="${ADAPT_EST_CUP_MINUTES:-360}" ;;
-    *finger*) base="${ADAPT_EST_FINGER_MINUTES:-360}" ;;
-    *) base="${ADAPT_EST_MINUTES:-360}" ;;
+    *walker*) base="${ADAPT_EST_WALKER_MINUTES:-72}" ;;
+    *cup*) base="${ADAPT_EST_CUP_MINUTES:-72}" ;;
+    *finger*) base="${ADAPT_EST_FINGER_MINUTES:-72}" ;;
+    *) base="${ADAPT_EST_MINUTES:-72}" ;;
   esac
   python - "$base" "$steps" <<'PY'
 import math
@@ -184,8 +185,26 @@ record_adapt_bundle_reservations() {  # record_adapt_bundle_reservations <runlis
   done < "$runlist"
 }
 
-submit_adapt_bundle() {  # submit_adapt_bundle <bundle_id> <runlist>
+adapt_bundle_walltime() {  # adapt_bundle_walltime <estimated_minutes>
+  if [ -n "${ADAPT_BUNDLE_TIME:-}" ]; then
+    printf '%s\n' "$ADAPT_BUNDLE_TIME"
+    return 0
+  fi
+  local minutes="$1"
+  local buffer="${ADAPT_BUNDLE_BUFFER_MINUTES:-240}"
+  local min_minutes="${ADAPT_BUNDLE_MIN_TIME_MINUTES:-120}"
+  local max_minutes="${ADAPT_BUNDLE_MAX_TIME_MINUTES:-2040}"
+  minutes=$((minutes + buffer))
+  [ "$minutes" -ge "$min_minutes" ] || minutes="$min_minutes"
+  [ "$minutes" -le "$max_minutes" ] || minutes="$max_minutes"
+  printf '%02d:%02d:00\n' $((minutes / 60)) $((minutes % 60))
+}
+
+submit_adapt_bundle() {  # submit_adapt_bundle <bundle_id> <runlist> <estimated_minutes>
   local bundle_id="$1"; local runlist="$2"
+  local estimated_minutes="$3"
+  local walltime
+  walltime="$(adapt_bundle_walltime "$estimated_minutes")"
   local jobs_used=$((JOBS_AT_START + SUBMITTED_THIS_RUN))
   if [ "${IGNORE_JOB_CAP:-0}" != "1" ] && [ "$MAX_JOBS" -gt 0 ] &&
      [ "$jobs_used" -ge "$MAX_JOBS" ]; then
@@ -196,7 +215,7 @@ submit_adapt_bundle() {  # submit_adapt_bundle <bundle_id> <runlist>
 
   local exports="ALL,REPO=$REPO,RUN_ID=$bundle_id,RUNLIST=$runlist,STEPS=${STEPS:-1.25e5}"
   local cmd=(sbatch --account="$SLURM_ACCOUNT" --partition="$SLURM_PARTITION"
-             --gres="$SLURM_GRES" --time="${ADAPT_BUNDLE_TIME:-34:00:00}"
+             --gres="$SLURM_GRES" --time="$walltime"
              --job-name="$bundle_id" --export="$exports"
              "$REPO/scripts/adapt_bundle.sbatch")
   if [ "${DRYRUN:-0}" = "1" ]; then
@@ -410,7 +429,7 @@ case "$cmd" in
       [ "$bundle_rows" -gt 0 ] || return 0
       bundle_id="${bundle_prefix}_$(printf '%03d' "$bundle")"
       echo "Bundle $bundle_id estimated minutes: $bundle_minutes"
-      submit_adapt_bundle "$bundle_id" "$runlist"
+      submit_adapt_bundle "$bundle_id" "$runlist" "$bundle_minutes"
       bundle=$((bundle + 1))
       runlist=""
       bundle_minutes=0
