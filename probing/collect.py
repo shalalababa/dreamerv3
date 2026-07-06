@@ -51,7 +51,12 @@ def load_run_config(run_logdir, platform, output_dir, random_agent, task=''):
   cfg_path = os.path.join(run_logdir, 'config.yaml')
   with open(cfg_path) as f:
     saved = yaml.YAML(typ='safe').load(f)
-  config = elements.Config(saved)
+  with open(REPO / 'dreamerv3' / 'configs.yaml') as f:
+    current = yaml.YAML(typ='safe').load(f)
+  # Older saved runs predate newer optional fields such as distractor, d0,
+  # and valens. Start from today's defaults and overlay the saved run config so
+  # post-hoc probing can load old checkpoints without changing their settings.
+  config = elements.Config(current['defaults']).update(saved)
   updates = {'logdir': output_dir, 'random_agent': random_agent}
   if platform:
     updates['jax'] = {'platform': platform}
