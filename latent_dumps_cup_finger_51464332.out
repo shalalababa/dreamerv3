@@ -1,3 +1,4 @@
+246:  distractor_cfg = config.get('distractor', {})
 JAX devices: [CudaDevice(id=0)]
 == latents pretrain_apt_cup_seed1 ==
 Traceback (most recent call last):
@@ -7,7 +8,7 @@ Traceback (most recent call last):
   File "/scratch/midway3/rickybao/conda_envs/dreamerv3/lib/python3.11/site-packages/elements/config.py", line 72, in __getitem__
     result = result[part]
              ~~~~~~^^^^^^
-KeyError: 'distractor'
+KeyError: 'valens'
 
 During handling of the above exception, another exception occurred:
 
@@ -19,14 +20,16 @@ Traceback (most recent call last):
   File "/home/rickybao/projects/dreamerv3/probing/latents.py", line 171, in main
     agent = make_agent(config)
             ^^^^^^^^^^^^^^^^^^
-  File "/home/rickybao/projects/dreamerv3/dreamerv3/main.py", line 129, in make_agent
-    env = make_env(config, 0)
-          ^^^^^^^^^^^^^^^^^^^
-  File "/home/rickybao/projects/dreamerv3/dreamerv3/main.py", line 246, in make_env
-    if config.distractor.dim:
-       ^^^^^^^^^^^^^^^^^
+  File "/home/rickybao/projects/dreamerv3/dreamerv3/main.py", line 138, in make_agent
+    return Agent(obs_space, act_space, elements.Config(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/rickybao/projects/dreamerv3/embodied/jax/agent.py", line 45, in __new__
+    model.__init__(obs_space, act_space, config)
+  File "/home/rickybao/projects/dreamerv3/dreamerv3/agent.py", line 78, in __init__
+    if config.valens.k:
+       ^^^^^^^^^^^^^
   File "/scratch/midway3/rickybao/conda_envs/dreamerv3/lib/python3.11/site-packages/elements/config.py", line 66, in __getattr__
     raise AttributeError(name)
-AttributeError: distractor
+AttributeError: valens. Did you mean: 'values'?
 Probe set ball_in_cup_v1_9327e960: 2560 windows x 40 steps (32 burn-in + 8 eval)
 Checkpoints: ['step000000099600', 'step000000200608', 'step000000299904', 'step000000399200', 'step000000498512']
