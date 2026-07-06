@@ -243,13 +243,14 @@ def make_env(config, index, **overrides):
   if kwargs.pop('use_logdir', False):
     kwargs['logdir'] = elements.Path(config.logdir) / f'env{index}'
   env = ctor(task, **kwargs)
-  if config.distractor.dim:
+  distractor_cfg = config.get('distractor', {})
+  if distractor_cfg.get('dim', 0):
     from embodied.envs import distractor
     # SeedSequence, not hash(): tuples containing strings hash differently
     # per process, which would make the distractor stream irreproducible.
     seed = int(np.random.SeedSequence(
         [config.seed, index, 0xD0]).generate_state(1)[0])
-    env = distractor.Distractor(env, **dict(config.distractor), seed=seed)
+    env = distractor.Distractor(env, **dict(distractor_cfg), seed=seed)
   return wrap_env(env, config)
 
 
