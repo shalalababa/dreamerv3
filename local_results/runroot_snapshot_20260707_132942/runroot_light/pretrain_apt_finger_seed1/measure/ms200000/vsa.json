@@ -1,0 +1,19 @@
+{
+  "traj": "/scratch/midway3/rickybao/dreamerv3_runs/pretrain_apt_finger_seed1/measure/ms200000/traj.npz",
+  "features": "/scratch/midway3/rickybao/dreamerv3_runs/pretrain_apt_finger_seed1/measure/ms200000/feats.npz",
+  "critic": "/scratch/midway3/rickybao/dreamerv3_runs/critics/critic_finger_v1.npz",
+  "critic_sha256": "77538f81a48db7b28f140005c42122b67ddd3fb3faf76d83347bdae5e6ebbe6f",
+  "critic_usable": true,
+  "task": "dmc_finger_turn_hard",
+  "n_episodes": 40,
+  "n_test": 12,
+  "vsa_5": -0.377936,
+  "fwd_mse_5": -0.39112,
+  "n_eval_5": 11940,
+  "vsa_1": -0.361257,
+  "fwd_mse_1": -0.373599,
+  "n_eval_1": 11988,
+  "vsa_20": -0.395875,
+  "fwd_mse_20": -0.407465,
+  "n_eval_20": 11760
+}

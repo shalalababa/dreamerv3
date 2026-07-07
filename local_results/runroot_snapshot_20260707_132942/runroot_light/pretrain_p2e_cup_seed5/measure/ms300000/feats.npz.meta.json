@@ -1,0 +1,19 @@
+{
+  "traj": "/scratch/midway3/rickybao/dreamerv3_runs/pretrain_p2e_cup_seed5/measure/ms300000/traj.npz",
+  "run_logdir": "/scratch/midway3/rickybao/dreamerv3_runs/pretrain_p2e_cup_seed5",
+  "horizons": [
+    1,
+    5,
+    20
+  ],
+  "episodes": 40,
+  "length": 1000,
+  "sites": [
+    "enc",
+    "posterior",
+    "prior",
+    "imag1",
+    "imag5",
+    "imag20"
+  ]
+}

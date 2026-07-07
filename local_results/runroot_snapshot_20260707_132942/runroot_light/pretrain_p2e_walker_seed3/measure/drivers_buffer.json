@@ -1,0 +1,55 @@
+{
+  "replay": "/scratch/midway3/rickybao/dreamerv3_runs/pretrain_p2e_walker_seed3/replay",
+  "task": "dmc_walker_walk",
+  "ref_replay": "/scratch/midway3/rickybao/dreamerv3_runs/pretrain_random_walker_seed1/replay",
+  "coverage_keys": [
+    "height",
+    "orientations",
+    "velocity"
+  ],
+  "n_streams": 16,
+  "n_frames_total": 495664,
+  "criteria": {
+    "max_frames": 3000,
+    "knn": 12,
+    "logc": 1.0,
+    "seed": 0
+  },
+  "milestones": [
+    {
+      "milestone": 100000,
+      "n_prefix": 100000,
+      "cov": 1.010766,
+      "occ_phys": null,
+      "occ_rew": 0.99888
+    },
+    {
+      "milestone": 200000,
+      "n_prefix": 200000,
+      "cov": 1.189601,
+      "occ_phys": null,
+      "occ_rew": 0.99896
+    },
+    {
+      "milestone": 300000,
+      "n_prefix": 300000,
+      "cov": 1.297406,
+      "occ_phys": null,
+      "occ_rew": 0.998987
+    },
+    {
+      "milestone": 400000,
+      "n_prefix": 400000,
+      "cov": 1.393642,
+      "occ_phys": null,
+      "occ_rew": 0.999
+    },
+    {
+      "milestone": 500000,
+      "n_prefix": 495664,
+      "cov": 1.45195,
+      "occ_phys": null,
+      "occ_rew": 0.998999
+    }
+  ]
+}

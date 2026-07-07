@@ -1,0 +1,19 @@
+{
+  "traj": "/scratch/midway3/rickybao/dreamerv3_runs/pretrain_random_walker_seed4/measure/ms500000/traj.npz",
+  "run_logdir": "/scratch/midway3/rickybao/dreamerv3_runs/pretrain_random_walker_seed4",
+  "horizons": [
+    1,
+    5,
+    20
+  ],
+  "episodes": 40,
+  "length": 1000,
+  "sites": [
+    "enc",
+    "posterior",
+    "prior",
+    "imag1",
+    "imag5",
+    "imag20"
+  ]
+}

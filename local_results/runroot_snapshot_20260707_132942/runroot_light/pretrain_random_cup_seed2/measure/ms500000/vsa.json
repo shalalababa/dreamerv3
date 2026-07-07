@@ -1,0 +1,19 @@
+{
+  "traj": "/scratch/midway3/rickybao/dreamerv3_runs/pretrain_random_cup_seed2/measure/ms500000/traj.npz",
+  "features": "/scratch/midway3/rickybao/dreamerv3_runs/pretrain_random_cup_seed2/measure/ms500000/feats.npz",
+  "critic": "/scratch/midway3/rickybao/dreamerv3_runs/critics/critic_cup_v1.npz",
+  "critic_sha256": "fa1ba035504b1403ebeb03148f269f75bb07f41e272f4deecb5ac4fe65a9c270",
+  "critic_usable": true,
+  "task": "dmc_cup_catch",
+  "n_episodes": 40,
+  "n_test": 12,
+  "vsa_5": -0.014998,
+  "fwd_mse_5": -0.00725,
+  "n_eval_5": 11940,
+  "vsa_1": -0.012573,
+  "fwd_mse_1": -0.006149,
+  "n_eval_1": 11988,
+  "vsa_20": -0.014176,
+  "fwd_mse_20": -0.006883,
+  "n_eval_20": 11760
+}

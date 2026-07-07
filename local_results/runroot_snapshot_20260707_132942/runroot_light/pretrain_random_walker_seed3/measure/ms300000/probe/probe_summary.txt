@@ -1,0 +1,27 @@
+Probing summary (held-out ridge R^2)
+======================================
+
+Per-frame content (target: state, horizon 0):
+  RSSM posterior          R^2 = 0.93833
+  static VAE latent (K=1) R^2 = None
+
+Predictive content (RSSM posterior, target: state):
+  horizon  0: R^2 = 0.93833
+  horizon  1: R^2 = 0.41859
+  horizon  5: R^2 = 0.13882
+  horizon 20: R^2 = -0.00249
+
+VAE receptive field (target: state, horizon 0):
+  K=  1: R^2 = None
+  K=  4: R^2 = None
+  K= 16: R^2 = None
+  K=all: R^2 = None
+
+Reward probe (RSSM posterior, target: task reward, h=0):
+  reward_stand  R^2 = 0.89398
+  reward_walk   R^2 = 0.52869
+  reward_run    R^2 = 0.87187
+
+Held-out likelihood (mean NLL, lower is better):
+  rssm_posterior_recon       0.9145
+  rssm_prior_predictive      2.4331

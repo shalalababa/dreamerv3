@@ -1,0 +1,55 @@
+{
+  "replay": "/scratch/midway3/rickybao/dreamerv3_runs/pretrain_apt_finger_seed3/replay",
+  "task": "dmc_finger_turn_hard",
+  "ref_replay": "/scratch/midway3/rickybao/dreamerv3_runs/pilot_goal_finger_seed1/replay",
+  "coverage_keys": [
+    "position",
+    "touch",
+    "velocity"
+  ],
+  "n_streams": 16,
+  "n_frames_total": 499248,
+  "criteria": {
+    "max_frames": 3000,
+    "knn": 12,
+    "logc": 1.0,
+    "seed": 0
+  },
+  "milestones": [
+    {
+      "milestone": 100000,
+      "n_prefix": 100000,
+      "cov": 0.66454,
+      "occ_phys": 0.13349999487400055,
+      "occ_rew": 0.13341
+    },
+    {
+      "milestone": 200000,
+      "n_prefix": 200000,
+      "cov": 0.702781,
+      "occ_phys": 0.11450999975204468,
+      "occ_rew": 0.114415
+    },
+    {
+      "milestone": 300000,
+      "n_prefix": 300000,
+      "cov": 0.714432,
+      "occ_phys": 0.10043666511774063,
+      "occ_rew": 0.100347
+    },
+    {
+      "milestone": 400000,
+      "n_prefix": 400000,
+      "cov": 0.723784,
+      "occ_phys": 0.09356500208377838,
+      "occ_rew": 0.093485
+    },
+    {
+      "milestone": 500000,
+      "n_prefix": 499248,
+      "cov": 0.730991,
+      "occ_phys": 0.08788818120956421,
+      "occ_rew": 0.087816
+    }
+  ]
+}

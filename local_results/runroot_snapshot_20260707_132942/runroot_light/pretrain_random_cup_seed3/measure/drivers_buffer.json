@@ -1,0 +1,54 @@
+{
+  "replay": "/scratch/midway3/rickybao/dreamerv3_runs/pretrain_random_cup_seed3/replay",
+  "task": "dmc_cup_catch",
+  "ref_replay": "/scratch/midway3/rickybao/dreamerv3_runs/pilot_goal_cup_seed1/replay",
+  "coverage_keys": [
+    "position",
+    "velocity"
+  ],
+  "n_streams": 16,
+  "n_frames_total": 489472,
+  "criteria": {
+    "max_frames": 3000,
+    "knn": 12,
+    "logc": 1.0,
+    "seed": 0
+  },
+  "milestones": [
+    {
+      "milestone": 100000,
+      "n_prefix": 100000,
+      "cov": 0.609855,
+      "occ_phys": 0.2975499927997589,
+      "occ_rew": 0.10993
+    },
+    {
+      "milestone": 200000,
+      "n_prefix": 200000,
+      "cov": 0.610677,
+      "occ_phys": 0.3082149922847748,
+      "occ_rew": 0.082435
+    },
+    {
+      "milestone": 300000,
+      "n_prefix": 300000,
+      "cov": 0.611206,
+      "occ_phys": 0.30577000975608826,
+      "occ_rew": 0.08981
+    },
+    {
+      "milestone": 400000,
+      "n_prefix": 400000,
+      "cov": 0.606541,
+      "occ_phys": 0.3076325058937073,
+      "occ_rew": 0.084818
+    },
+    {
+      "milestone": 500000,
+      "n_prefix": 489472,
+      "cov": 0.608028,
+      "occ_phys": 0.30636072158813477,
+      "occ_rew": 0.087554
+    }
+  ]
+}
