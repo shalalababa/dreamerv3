@@ -12,6 +12,7 @@
 #   ./submit_all.sh measure                                      # Phase 5 driver measurement
 #   ./submit_all.sh measure-bundles                              # Phase 5 bundled measurement
 #   ./submit_all.sh axis1                                        # Phase 6 offline+adapt grid
+#   ./submit_all.sh axis1-bundles                                # Phase 6, 3 runs/job
 #
 # Dry run: set DRYRUN=1 to print sbatch commands without submitting.
 # Duplicate guard: by default, skip a RUN_ID that is already in Slurm or whose
@@ -23,7 +24,8 @@
 # ADAPT_BUNDLE_TIME, ADAPT_BUNDLE_MINUTES, ADAPT_BUNDLE_BUFFER_MINUTES,
 # ADAPT_EST_*_MINUTES, MEASURE_PRETRAINS, MEASURE_BUNDLE_SIZE,
 # MEASURE_EST_MINUTES, MEASURE_BUNDLE_BUFFER_MINUTES, AXIS1_SEEDS,
-# AXIS1_QUADS, AXIS1_DOMAINS, AXIS1_UPDATES, AXIS1_TIME.
+# AXIS1_QUADS, AXIS1_DOMAINS, AXIS1_UPDATES, AXIS1_TIME,
+# AXIS1_BUNDLE_SIZE, AXIS1_BUNDLE_TIME.
 # ---------------------------------------------------------------------------
 set -euo pipefail
 REPO="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
@@ -83,6 +85,10 @@ measure_done() {  # measure_done <pretrain_run_id>
 
 measure_reserved() {  # measure_reserved <pretrain_run_id>
   [ -f "$RUNROOT/$1/measure/SUBMITTED_BY_BUNDLE" ]
+}
+
+axis1_reserved() {  # axis1_reserved <RUN_ID>
+  [ -f "$RUNROOT/$1/SUBMITTED_BY_BUNDLE" ]
 }
 
 MAX_JOBS="${MAX_JOBS:-12}"
@@ -247,8 +253,8 @@ measure_bundle_walltime() {  # measure_bundle_walltime <num_tasks>
     return 0
   fi
   local tasks="$1"
-  local est="${MEASURE_EST_MINUTES:-180}"
-  local buffer="${MEASURE_BUNDLE_BUFFER_MINUTES:-120}"
+  local est="${MEASURE_EST_MINUTES:-36}"
+  local buffer="${MEASURE_BUNDLE_BUFFER_MINUTES:-0}"
   local minutes=$((tasks * est + buffer))
   printf '%02d:%02d:00\n' $((minutes / 60)) $((minutes % 60))
 }
@@ -276,7 +282,11 @@ submit_measure_bundle() {  # submit_measure_bundle <bundle_id> <runlist> <num_ta
     exit 0
   fi
 
-  local exports="ALL,REPO=$REPO,RUN_ID=$bundle_id,RUNLIST=$runlist"
+  # Avoid inheriting locally loaded modules via --export=ALL; only pass the
+  # bundle inputs and optional measurement knobs.
+  local exports="REPO=$REPO,RUNROOT=$RUNROOT,CONDA_ENV=$CONDA_ENV,MANIFEST=$MANIFEST"
+  exports="$exports,RUN_ID=$bundle_id,RUNLIST=$runlist"
+  exports="$exports,FORCE=${FORCE:-0},MILESTONES=${MILESTONES:-},EPISODES=${EPISODES:-}"
   local cmd=(sbatch --account="$SLURM_ACCOUNT" --partition="$SLURM_PARTITION"
              --gres="$SLURM_GRES" --time="$walltime"
              --job-name="$bundle_id" --export="$exports"
@@ -287,6 +297,49 @@ submit_measure_bundle() {  # submit_measure_bundle <bundle_id> <runlist> <num_ta
   else
     "${cmd[@]}"
     record_measure_bundle_reservations "$runlist" "$bundle_id"
+  fi
+  SUBMITTED_THIS_RUN=$((SUBMITTED_THIS_RUN + 1))
+}
+
+record_axis1_bundle_reservations() {  # record_axis1_bundle_reservations <runlist> <bundle_id>
+  local runlist="$1"; local bundle_id="$2"; local stamp
+  stamp="$(date -Is)"
+  while IFS=$'\t' read -r child_run_id wm_run task seed replay updates steps axis paired_seed_set; do
+    [ -n "${child_run_id:-}" ] || continue
+    mkdir -p "$RUNROOT/$child_run_id"
+    printf 'bundle=%s\nreserved_at=%s\nrunlist=%s\nwm_run=%s\n' \
+      "$bundle_id" "$stamp" "$runlist" "$wm_run" > "$RUNROOT/$child_run_id/SUBMITTED_BY_BUNDLE"
+  done < "$runlist"
+}
+
+submit_axis1_bundle() {  # submit_axis1_bundle <bundle_id> <runlist> <num_tasks>
+  local bundle_id="$1"; local runlist="$2"; local num_tasks="$3"
+  local walltime="${AXIS1_BUNDLE_TIME:-33:00:00}"
+  local jobs_used=$((JOBS_AT_START + SUBMITTED_THIS_RUN))
+  if [ "${IGNORE_JOB_CAP:-0}" != "1" ] && [ "$MAX_JOBS" -gt 0 ] &&
+     [ "$jobs_used" -ge "$MAX_JOBS" ]; then
+    echo "STOP job cap reached: $jobs_used/$MAX_JOBS Slurm jobs active/submitted."
+    echo "Re-run this command after some jobs finish; existing/queued RUN_IDs will be skipped."
+    exit 0
+  fi
+
+  # Intentionally do not use --export=ALL here. Axis1 runs are CUDA/JAX-heavy,
+  # and inherited module state from the submit shell can change native library
+  # resolution. Export only what the scripts need.
+  local exports="REPO=$REPO,RUNROOT=$RUNROOT,CONDA_ENV=$CONDA_ENV,MANIFEST=$MANIFEST"
+  exports="$exports,RUN_ID=$bundle_id,RUNLIST=$runlist"
+  exports="$exports,FORCE=${FORCE:-0},FORCE_WM=${FORCE_WM:-0},RENDER=${RENDER:-False}"
+  exports="$exports,STEPS=${STEPS:-1.25e5},AXIS1_UPDATES=${AXIS1_UPDATES:-500000}"
+  local cmd=(sbatch --account="$SLURM_ACCOUNT" --partition="$SLURM_PARTITION"
+             --gres="$SLURM_GRES" --time="$walltime"
+             --job-name="$bundle_id" --export="$exports"
+             "$REPO/scripts/axis1_bundle.sbatch")
+  if [ "${DRYRUN:-0}" = "1" ]; then
+    printf '%q ' "${cmd[@]}"
+    echo
+  else
+    "${cmd[@]}"
+    record_axis1_bundle_reservations "$runlist" "$bundle_id"
   fi
   SUBMITTED_THIS_RUN=$((SUBMITTED_THIS_RUN + 1))
 }
@@ -551,7 +604,7 @@ case "$cmd" in
 
   measure-bundles|measure_bundles|measure-completed-bundles|measure_completed_bundles)
     # Phase 5 driver measurement bundled for RCC caps. Defaults: five
-    # pretrain runs per bundle, 3h per run, +2h buffer -> 17h full bundle.
+    # pretrain runs per bundle, 36min per run -> 3h full bundle.
     bundle_size="${MEASURE_BUNDLE_SIZE:-5}"
     [ "$bundle_size" -gt 0 ] || { echo "MEASURE_BUNDLE_SIZE must be > 0"; exit 1; }
 
@@ -660,6 +713,83 @@ case "$cmd" in
       done
     done ;;
 
+  axis1-bundles|axis1_bundles)
+    # Phase 6 Axis-1 bundled for RCC caps. offline_fit writes its checkpoint
+    # only at the end, so this stays conservative: 3 cell members per 33h
+    # bundle by default rather than relying on partial-child restart.
+    read -ra seeds <<< "${AXIS1_SEEDS:-1 2 3 4 5 6 7 8}"
+    read -ra quads <<< "${AXIS1_QUADS:-q1 q2}"
+    read -ra doms <<< "${AXIS1_DOMAINS:-cup finger}"
+    bundle_size="${AXIS1_BUNDLE_SIZE:-3}"
+    [ "$bundle_size" -gt 0 ] || { echo "AXIS1_BUNDLE_SIZE must be > 0"; exit 1; }
+    updates="${AXIS1_UPDATES:-500000}"
+    steps="${STEPS:-1.25e5}"
+
+    pending=()
+    for dom in "${doms[@]}"; do
+      case "$dom" in
+        cup) task=dmc_cup_catch ;;
+        finger) task=dmc_finger_turn_hard ;;
+        *) echo "unknown axis1 domain: $dom"; exit 1 ;;
+      esac
+      for q in "${quads[@]}"; do
+        root="$RUNROOT/axis1_${dom}/${q}"
+        if [ ! -f "$root/manifest.json" ]; then
+          echo "SKIP not built: $root (run build_controlled_replay build --which $q)"
+          continue
+        fi
+        for side in 0 1; do
+          for s in "${seeds[@]}"; do
+            run_id="adapt_ax1${q}s${side}_${dom}_seed${s}_ckpt${updates}"
+            wm_run="ax1wm_${dom}_${q}s${side}_seed${s}"
+            if [ "${FORCE:-0}" != "1" ]; then
+              if queued_job "$run_id"; then
+                echo "SKIP queued/running: $run_id"
+                continue
+              fi
+              if adapt_done "$run_id"; then
+                echo "SKIP done: $run_id"
+                continue
+              fi
+              if axis1_reserved "$run_id"; then
+                echo "SKIP reserved in bundle: $run_id"
+                continue
+              fi
+              if existing_logdir "$run_id"; then
+                echo "SKIP existing logdir: $RUNROOT/$run_id  (set FORCE=1 to resubmit)"
+                continue
+              fi
+            fi
+            pending+=("$run_id"$'\t'"$wm_run"$'\t'"$task"$'\t'"$s"$'\t'"$root/side${side}"$'\t'"$updates"$'\t'"$steps"$'\t'"axis1"$'\t'"ax1_${dom}_${q}")
+          done
+        done
+      done
+    done
+
+    if [ "${#pending[@]}" -eq 0 ]; then
+      echo "No axis1 runs need submission."
+      exit 0
+    fi
+
+    stamp="$(date +%Y%m%d_%H%M%S)"
+    runlist_dir="$RUNROOT/_submit_runlists/axis1_$stamp"
+    bundle_prefix="axis1_bundle_$stamp"
+    mkdir -p "$runlist_dir"
+    bundle=1
+    for ((i=0; i<${#pending[@]}; i+=bundle_size)); do
+      runlist="$runlist_dir/bundle_$(printf '%03d' "$bundle").tsv"
+      : > "$runlist"
+      rows=0
+      for ((j=i; j<i+bundle_size && j<${#pending[@]}; j++)); do
+        printf '%s\n' "${pending[$j]}" >> "$runlist"
+        rows=$((rows + 1))
+      done
+      bundle_id="${bundle_prefix}_$(printf '%03d' "$bundle")"
+      echo "Bundle $bundle_id tasks: $rows walltime: ${AXIS1_BUNDLE_TIME:-33:00:00}"
+      submit_axis1_bundle "$bundle_id" "$runlist" "$rows"
+      bundle=$((bundle + 1))
+    done ;;
+
   *)
-    echo "usage: $0 {pilots|pretrain|pretrain-bundles|adapt|adapt-completed|adapt-bundles|measure|measure-bundles|axis1} ..."; exit 1 ;;
+    echo "usage: $0 {pilots|pretrain|pretrain-bundles|adapt|adapt-completed|adapt-bundles|measure|measure-bundles|axis1|axis1-bundles} ..."; exit 1 ;;
 esac

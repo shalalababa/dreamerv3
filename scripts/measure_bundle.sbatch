@@ -5,7 +5,7 @@
 #SBATCH --gres=gpu:1
 #SBATCH --cpus-per-task=8
 #SBATCH --mem=32G
-#SBATCH --time=17:00:00
+#SBATCH --time=04:00:00
 #SBATCH --output=%x_%j.out
 # ---------------------------------------------------------------------------
 # Phase 5 bundled launcher: run several driver-measurement jobs sequentially

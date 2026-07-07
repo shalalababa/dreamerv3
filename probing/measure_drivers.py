@@ -39,6 +39,11 @@ def load_streams(replay_dir, keys):
   streams = []
   for chain in probeset.chain_streams(replay_dir):
     data = probeset.load_stream(chain)
+    missing = [k for k in keys if k not in data]
+    if missing:
+      raise KeyError(
+          f'{replay_dir} missing measurement keys {missing}; '
+          f'available after filtering internal keys: {sorted(data)}')
     streams.append({k: np.asarray(data[k], np.float32) for k in keys})
   return streams
 
@@ -81,8 +86,12 @@ def main():
     avail = replay_dataset.peek_keys(args.replay)
     non_obs = {'reward', 'is_first', 'is_last', 'is_terminal', 'action',
                'reset', 'stepid', 'consec'}
+    # Replay chunks may contain Dreamer-internal annotations such as dyn/deter
+    # and dyn/stoch. Those are collection artifacts, not task-agnostic state
+    # coverage, and probeset.load_stream() intentionally filters them out.
+    avail_obs = {k for k in avail if k not in non_obs and '/' not in k}
     cov_keys = sorted(regimes.coverage_keys(args.task,
-                                            set(avail) - non_obs))
+                                            avail_obs))
     load_keys = sorted(set(cov_keys) | {'reward'})
     ref_streams = load_streams(args.ref_replay, cov_keys)
     ref = np.concatenate(

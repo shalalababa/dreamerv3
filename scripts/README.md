@@ -110,10 +110,18 @@ DRYRUN=1 ./scripts/submit_all.sh measure-bundles
   slower.
 - **Bundled driver measurement.** `measure-bundles` writes TSV runlists under
   `$RUNROOT/_submit_runlists/` and submits sequential bundles. Defaults:
-  `MEASURE_BUNDLE_SIZE=5`, `MEASURE_EST_MINUTES=180`, and
-  `MEASURE_BUNDLE_BUFFER_MINUTES=120`, so a full bundle requests 17h. It skips
+  `MEASURE_BUNDLE_SIZE=5`, `MEASURE_EST_MINUTES=36`, and
+  `MEASURE_BUNDLE_BUFFER_MINUTES=0`, so a full bundle requests 3h. It skips
   completed runs with `measure/MEASURE_DONE` and reserves queued children with
   `measure/SUBMITTED_BY_BUNDLE`.
+- **Bundled Axis 1.** `axis1-bundles` writes TSV runlists under
+  `$RUNROOT/_submit_runlists/` and submits sequential offline-WM + frozen-readout
+  bundles. Defaults: `AXIS1_BUNDLE_SIZE=3` and
+  `AXIS1_BUNDLE_TIME=33:00:00`. This is intentionally more conservative than
+  pretrain bundles: `probing.offline_fit` writes its checkpoint only at the end,
+  so a walltime-killed child cannot resume from a partial offline-fit checkpoint.
+  The bundle submitter exports a clean environment instead of `--export=ALL` to
+  avoid leaking locally loaded CUDA/Python modules into Slurm jobs.
 - **Goal-reacher (Gate 0).** Without the reward-on `goal` pilot the
   high-occupancy corner is empty (exploration alone rarely enters the regime --
   reward is sparse on cup/finger/reacher). For a faster substitute on
