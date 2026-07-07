@@ -57,6 +57,11 @@ SLURM_TIME=06:00:00 ./scripts/submit_all.sh adapt-completed 1.25e5
 # adapt and 25 adapts / 30 estimated hours per full bundle.
 DRYRUN=1 ./scripts/submit_all.sh adapt-bundles 1.25e5
 ./scripts/submit_all.sh adapt-bundles 1.25e5
+
+# Phase 5a driver measurement bundled for RCC caps: 5 runs per bundle,
+# 3h per run + 2h buffer = 17h for a full bundle.
+DRYRUN=1 ./scripts/submit_all.sh measure-bundles
+./scripts/submit_all.sh measure-bundles
 ```
 
 ## Pieces
@@ -69,6 +74,8 @@ DRYRUN=1 ./scripts/submit_all.sh adapt-bundles 1.25e5
 | `pretrain_bundle.sbatch` | Phase 4 sequential bundles for RCC's submitted-job cap |
 | `adapt.sbatch` | Phase 5 frozen-readout adapt from a snapshot dir |
 | `adapt_bundle.sbatch` | Phase 5 sequential adapt bundles for RCC's submitted-job cap |
+| `measure.sbatch` | Phase 5a driver measurement for one pretrain run |
+| `measure_bundle.sbatch` | Phase 5a sequential measurement bundles for RCC's submitted-job cap |
 | `submit_all.sh` | expands the sweep grids; `pilots` / `pretrain` / `pretrain-bundles` / `adapt` |
 | `runs.csv` | run manifest (auto-appended by the sbatch scripts) |
 
@@ -101,6 +108,12 @@ DRYRUN=1 ./scripts/submit_all.sh adapt-bundles 1.25e5
   `ADAPT_EST_FINGER_MINUTES`, `ADAPT_BUNDLE_MINUTES`,
   `ADAPT_BUNDLE_BUFFER_MINUTES`, and `ADAPT_BUNDLE_TIME` if a domain turns out
   slower.
+- **Bundled driver measurement.** `measure-bundles` writes TSV runlists under
+  `$RUNROOT/_submit_runlists/` and submits sequential bundles. Defaults:
+  `MEASURE_BUNDLE_SIZE=5`, `MEASURE_EST_MINUTES=180`, and
+  `MEASURE_BUNDLE_BUFFER_MINUTES=120`, so a full bundle requests 17h. It skips
+  completed runs with `measure/MEASURE_DONE` and reserves queued children with
+  `measure/SUBMITTED_BY_BUNDLE`.
 - **Goal-reacher (Gate 0).** Without the reward-on `goal` pilot the
   high-occupancy corner is empty (exploration alone rarely enters the regime --
   reward is sparse on cup/finger/reacher). For a faster substitute on

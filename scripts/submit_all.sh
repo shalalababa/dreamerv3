@@ -10,6 +10,7 @@
 #   ./submit_all.sh adapt-completed [STEPS]                      # Phase 5 rolling 125K sweep
 #   ./submit_all.sh adapt-bundles [STEPS]                        # Phase 5 bundled sweep
 #   ./submit_all.sh measure                                      # Phase 5 driver measurement
+#   ./submit_all.sh measure-bundles                              # Phase 5 bundled measurement
 #
 # Dry run: set DRYRUN=1 to print sbatch commands without submitting.
 # Duplicate guard: by default, skip a RUN_ID that is already in Slurm or whose
@@ -19,7 +20,8 @@
 # Tunables (env): STEPS, SEEDS, DECOUPLERS, CONTROL, MAX_JOBS,
 # BUNDLE_SIZE, BUNDLE_TIME, ADAPT_PRETRAINS, ADAPT_MILESTONES,
 # ADAPT_BUNDLE_TIME, ADAPT_BUNDLE_MINUTES, ADAPT_BUNDLE_BUFFER_MINUTES,
-# ADAPT_EST_*_MINUTES.
+# ADAPT_EST_*_MINUTES, MEASURE_PRETRAINS, MEASURE_BUNDLE_SIZE,
+# MEASURE_EST_MINUTES, MEASURE_BUNDLE_BUFFER_MINUTES.
 # ---------------------------------------------------------------------------
 set -euo pipefail
 REPO="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
@@ -71,6 +73,14 @@ adapt_done() {  # adapt_done <RUN_ID>
   status="$(manifest_status "$1")"
   [ "$status" = "DONE" ] && return 0
   [ -f "$RUNROOT/$1/ADAPT_DONE" ]
+}
+
+measure_done() {  # measure_done <pretrain_run_id>
+  [ -f "$RUNROOT/$1/measure/MEASURE_DONE" ]
+}
+
+measure_reserved() {  # measure_reserved <pretrain_run_id>
+  [ -f "$RUNROOT/$1/measure/SUBMITTED_BY_BUNDLE" ]
 }
 
 MAX_JOBS="${MAX_JOBS:-12}"
@@ -225,6 +235,56 @@ submit_adapt_bundle() {  # submit_adapt_bundle <bundle_id> <runlist> <estimated_
   else
     "${cmd[@]}"
     record_adapt_bundle_reservations "$runlist" "$bundle_id"
+  fi
+  SUBMITTED_THIS_RUN=$((SUBMITTED_THIS_RUN + 1))
+}
+
+measure_bundle_walltime() {  # measure_bundle_walltime <num_tasks>
+  if [ -n "${MEASURE_BUNDLE_TIME:-}" ]; then
+    printf '%s\n' "$MEASURE_BUNDLE_TIME"
+    return 0
+  fi
+  local tasks="$1"
+  local est="${MEASURE_EST_MINUTES:-180}"
+  local buffer="${MEASURE_BUNDLE_BUFFER_MINUTES:-120}"
+  local minutes=$((tasks * est + buffer))
+  printf '%02d:%02d:00\n' $((minutes / 60)) $((minutes % 60))
+}
+
+record_measure_bundle_reservations() {  # record_measure_bundle_reservations <runlist> <bundle_id>
+  local runlist="$1"; local bundle_id="$2"; local stamp
+  stamp="$(date -Is)"
+  while IFS=$'\t' read -r pre_run task ref_replay critic; do
+    [ -n "${pre_run:-}" ] || continue
+    mkdir -p "$RUNROOT/$pre_run/measure"
+    printf 'bundle=%s\nreserved_at=%s\nrunlist=%s\n' \
+      "$bundle_id" "$stamp" "$runlist" > "$RUNROOT/$pre_run/measure/SUBMITTED_BY_BUNDLE"
+  done < "$runlist"
+}
+
+submit_measure_bundle() {  # submit_measure_bundle <bundle_id> <runlist> <num_tasks>
+  local bundle_id="$1"; local runlist="$2"; local num_tasks="$3"
+  local walltime
+  walltime="$(measure_bundle_walltime "$num_tasks")"
+  local jobs_used=$((JOBS_AT_START + SUBMITTED_THIS_RUN))
+  if [ "${IGNORE_JOB_CAP:-0}" != "1" ] && [ "$MAX_JOBS" -gt 0 ] &&
+     [ "$jobs_used" -ge "$MAX_JOBS" ]; then
+    echo "STOP job cap reached: $jobs_used/$MAX_JOBS Slurm jobs active/submitted."
+    echo "Re-run this command after some jobs finish; existing/queued RUN_IDs will be skipped."
+    exit 0
+  fi
+
+  local exports="ALL,REPO=$REPO,RUN_ID=$bundle_id,RUNLIST=$runlist"
+  local cmd=(sbatch --account="$SLURM_ACCOUNT" --partition="$SLURM_PARTITION"
+             --gres="$SLURM_GRES" --time="$walltime"
+             --job-name="$bundle_id" --export="$exports"
+             "$REPO/scripts/measure_bundle.sbatch")
+  if [ "${DRYRUN:-0}" = "1" ]; then
+    printf '%q ' "${cmd[@]}"
+    echo
+  else
+    "${cmd[@]}"
+    record_measure_bundle_reservations "$runlist" "$bundle_id"
   fi
   SUBMITTED_THIS_RUN=$((SUBMITTED_THIS_RUN + 1))
 }
@@ -487,6 +547,76 @@ case "$cmd" in
         "AXIS=dose"
     done ;;
 
+  measure-bundles|measure_bundles|measure-completed-bundles|measure_completed_bundles)
+    # Phase 5 driver measurement bundled for RCC caps. Defaults: five
+    # pretrain runs per bundle, 3h per run, +2h buffer -> 17h full bundle.
+    bundle_size="${MEASURE_BUNDLE_SIZE:-5}"
+    [ "$bundle_size" -gt 0 ] || { echo "MEASURE_BUNDLE_SIZE must be > 0"; exit 1; }
+
+    if [ -n "${MEASURE_PRETRAINS:-}" ]; then
+      read -ra pretrains <<< "$MEASURE_PRETRAINS"
+    else
+      mapfile -t pretrains < <(
+        find "$RUNROOT" -maxdepth 1 -type d -name 'pretrain_*' -printf '%f\n' 2>/dev/null |
+          sort
+      )
+    fi
+
+    pending=()
+    for pre_run in "${pretrains[@]}"; do
+      if ! pretrain_done "$pre_run"; then
+        echo "SKIP not done: $pre_run"
+        continue
+      fi
+      if [ "${FORCE:-0}" != "1" ]; then
+        if queued_job "measure_$(source_of_pretrain "$pre_run")"; then
+          echo "SKIP queued/running: measure_$(source_of_pretrain "$pre_run")"
+          continue
+        fi
+        if measure_done "$pre_run"; then
+          echo "SKIP measured: $pre_run"
+          continue
+        fi
+        if measure_reserved "$pre_run"; then
+          echo "SKIP reserved in bundle: $pre_run"
+          continue
+        fi
+      fi
+      task="$(task_of_pretrain "$pre_run")"
+      short="$(short_of "$task")"
+      if [ "$short" = "walker" ]; then
+        ref="$RUNROOT/pretrain_random_walker_seed1/replay"
+      else
+        ref="$RUNROOT/pilot_goal_${short}_seed1/replay"
+      fi
+      critic="$RUNROOT/critics/critic_${short}_v1.npz"
+      pending+=("$pre_run"$'\t'"$task"$'\t'"$ref"$'\t'"$critic")
+    done
+
+    if [ "${#pending[@]}" -eq 0 ]; then
+      echo "No measure runs need submission."
+      exit 0
+    fi
+
+    stamp="$(date +%Y%m%d_%H%M%S)"
+    runlist_dir="$RUNROOT/_submit_runlists/measure_$stamp"
+    bundle_prefix="measure_bundle_$stamp"
+    mkdir -p "$runlist_dir"
+    bundle=1
+    for ((i=0; i<${#pending[@]}; i+=bundle_size)); do
+      runlist="$runlist_dir/bundle_$(printf '%03d' "$bundle").tsv"
+      : > "$runlist"
+      rows=0
+      for ((j=i; j<i+bundle_size && j<${#pending[@]}; j++)); do
+        printf '%s\n' "${pending[$j]}" >> "$runlist"
+        rows=$((rows + 1))
+      done
+      bundle_id="${bundle_prefix}_$(printf '%03d' "$bundle")"
+      echo "Bundle $bundle_id tasks: $rows walltime: $(measure_bundle_walltime "$rows")"
+      submit_measure_bundle "$bundle_id" "$runlist" "$rows"
+      bundle=$((bundle + 1))
+    done ;;
+
   *)
-    echo "usage: $0 {pilots|pretrain|pretrain-bundles|adapt|adapt-completed|adapt-bundles|measure} ..."; exit 1 ;;
+    echo "usage: $0 {pilots|pretrain|pretrain-bundles|adapt|adapt-completed|adapt-bundles|measure|measure-bundles} ..."; exit 1 ;;
 esac
