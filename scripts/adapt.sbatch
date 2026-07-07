@@ -38,6 +38,7 @@ RC=0
 python dreamerv3/main.py \
   --logdir "$LOGDIR" --configs dmc_proprio frozen_readout \
   --task "$TASK" --seed "$SEED" \
+  --env.dmc.render "${RENDER:-False}" \
   --run.from_checkpoint "$CKPT" --run.steps "$STEPS" || RC=$?
 STATUS=$([ "$RC" -eq 0 ] && echo DONE || echo FAILED)
 echo "[$(date)] adapt $RUN_ID rc=$RC status=$STATUS"
