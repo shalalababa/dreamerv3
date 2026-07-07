@@ -11,6 +11,7 @@
 #   ./submit_all.sh adapt-bundles [STEPS]                        # Phase 5 bundled sweep
 #   ./submit_all.sh measure                                      # Phase 5 driver measurement
 #   ./submit_all.sh measure-bundles                              # Phase 5 bundled measurement
+#   ./submit_all.sh axis1                                        # Phase 6 offline+adapt grid
 #
 # Dry run: set DRYRUN=1 to print sbatch commands without submitting.
 # Duplicate guard: by default, skip a RUN_ID that is already in Slurm or whose
@@ -21,7 +22,8 @@
 # BUNDLE_SIZE, BUNDLE_TIME, ADAPT_PRETRAINS, ADAPT_MILESTONES,
 # ADAPT_BUNDLE_TIME, ADAPT_BUNDLE_MINUTES, ADAPT_BUNDLE_BUFFER_MINUTES,
 # ADAPT_EST_*_MINUTES, MEASURE_PRETRAINS, MEASURE_BUNDLE_SIZE,
-# MEASURE_EST_MINUTES, MEASURE_BUNDLE_BUFFER_MINUTES.
+# MEASURE_EST_MINUTES, MEASURE_BUNDLE_BUFFER_MINUTES, AXIS1_SEEDS,
+# AXIS1_QUADS, AXIS1_DOMAINS, AXIS1_UPDATES, AXIS1_TIME.
 # ---------------------------------------------------------------------------
 set -euo pipefail
 REPO="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
@@ -617,6 +619,47 @@ case "$cmd" in
       bundle=$((bundle + 1))
     done ;;
 
+  axis1)
+    # Phase 6 Axis-1 (runbook items 3-4): for every built controlled buffer
+    # side, retrain a fresh WM offline (gradient count equalized) and adapt
+    # frozen-readout, one job per (domain, quadrant, side, seed). Requires
+    # the buffers built first (login node, CPU-only, minutes):
+    #   python -m probing.build_controlled_replay build \
+    #     --index $RUNROOT/axis1_<dom>/episodes.json \
+    #     --pairs $RUNROOT/axis1_<dom>/pairs.json \
+    #     --which q1 --output_root $RUNROOT/axis1_<dom>/q1   (and q2)
+    # Seeds are paired across cells (same k everywhere); deepen Q1 later via
+    # AXIS1_SEEDS="9 10" AXIS1_QUADS=q1 (plan v3 surprise table).
+    read -ra seeds <<< "${AXIS1_SEEDS:-1 2 3 4 5 6 7 8}"
+    read -ra quads <<< "${AXIS1_QUADS:-q1 q2}"
+    read -ra doms <<< "${AXIS1_DOMAINS:-cup finger}"
+    updates="${AXIS1_UPDATES:-500000}"
+    steps="${STEPS:-1.25e5}"
+    for dom in "${doms[@]}"; do
+      case "$dom" in
+        cup) task=dmc_cup_catch ;;
+        finger) task=dmc_finger_turn_hard ;;
+        *) echo "unknown axis1 domain: $dom"; exit 1 ;;
+      esac
+      for q in "${quads[@]}"; do
+        root="$RUNROOT/axis1_${dom}/${q}"
+        if [ ! -f "$root/manifest.json" ]; then
+          echo "SKIP not built: $root (run build_controlled_replay build --which $q)"
+          continue
+        fi
+        for side in 0 1; do
+          for s in "${seeds[@]}"; do
+            run_id="adapt_ax1${q}s${side}_${dom}_seed${s}_ckpt${updates}"
+            SLURM_TIME="${AXIS1_TIME:-12:00:00}" submit axis1.sbatch "$run_id" \
+              "WM_RUN=ax1wm_${dom}_${q}s${side}_seed${s}" \
+              "TASK=$task" "SEED=$s" "REPLAY=$root/side${side}" \
+              "UPDATES=$updates" "STEPS=$steps" \
+              "AXIS=axis1" "PAIRED_SEED_SET=ax1_${dom}_${q}"
+          done
+        done
+      done
+    done ;;
+
   *)
-    echo "usage: $0 {pilots|pretrain|pretrain-bundles|adapt|adapt-completed|adapt-bundles|measure|measure-bundles} ..."; exit 1 ;;
+    echo "usage: $0 {pilots|pretrain|pretrain-bundles|adapt|adapt-completed|adapt-bundles|measure|measure-bundles|axis1} ..."; exit 1 ;;
 esac

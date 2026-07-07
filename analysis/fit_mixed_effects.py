@@ -18,8 +18,11 @@ Inputs:
 
 Paired contrasts (Phase 6/6b) live in `paired_contrast()`, exposed via
   python -m analysis.fit_mixed_effects paired --csv deltas.csv \
-      --value auc100k --cond_a A --cond_b B
-where deltas.csv has columns seed, cond, <value>.
+      --value auc100k --cond_a A --cond_b B [--domain cup]
+where deltas.csv has columns seed, cond, <value>. If the CSV has no `cond`
+column (e.g. auc.csv straight from adaptation_auc.py), `mode` is used as the
+condition label — Axis-1 adapt runs are named adapt_ax1<q>s<side>_<dom>_...,
+so cond_a/cond_b are e.g. ax1q1s1 vs ax1q1s0.
 
 Self-check (synthetic data with known effects):
   python -m analysis.fit_mixed_effects --selfcheck
@@ -230,9 +233,18 @@ def main():
     p.add_argument('--value', default='auc100k')
     p.add_argument('--cond_a', required=True)
     p.add_argument('--cond_b', required=True)
+    p.add_argument('--domain', default=None,
+                   help='Filter to one domain first (required when the CSV '
+                        'holds multiple domains; pairing is within-seed).')
     args = p.parse_args()
-    out = paired_contrast(pd.read_csv(args.csv), args.value,
-                          args.cond_a, args.cond_b)
+    df = pd.read_csv(args.csv)
+    if args.domain is not None:
+      df = df[df['domain'] == args.domain]
+    if 'cond' not in df.columns:
+      df = df.assign(cond=df['mode'])
+    if 'qc_pass' in df.columns:
+      df = df[df['qc_pass'] == 1]
+    out = paired_contrast(df, args.value, args.cond_a, args.cond_b)
     print(json.dumps(out, indent=2))
     return
 
@@ -243,6 +255,10 @@ def main():
   p.add_argument('--output', default='',
                  help='Output directory for results.json')
   p.add_argument('--outcome', default='auc100k')
+  p.add_argument('--modes', nargs='+', default=['p2e', 'apt', 'random'],
+                 help='Dose-response modes (PREREG §1). Keeps Axis-1/2 '
+                      'intervention adapts (mode ax1*/ax2*) out of the '
+                      'population models and the z-scoring.')
   p.add_argument('--primary_domains', nargs='+', default=['cup', 'finger'])
   p.add_argument('--control_domain', default='walker')
   p.add_argument('--n_boot', type=int, default=N_BOOT)
@@ -258,6 +274,7 @@ def main():
 
   df = pd.read_csv(args.auc)
   df = df[df['qc_pass'] == 1].copy()
+  df = df[df['mode'].isin(args.modes)].copy()
   df['pretrain_run'] = (df['mode'] + '_' + df['domain'] + '_'
                         + df['seed'].astype(str))
   drivers = ()
