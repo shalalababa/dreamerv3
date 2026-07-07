@@ -27,3 +27,16 @@ adaptation outcome was read locally.
   pretrains at train_ratio 1024 ⇒ 1 update/env step). AUC extraction
   (PREREG §2) applies to them unchanged; they enter only the paired
   contrasts, never the dose-response models.
+- **2026-07-07 — driver-side exclusions enumerated post-hoc into
+  exclusions.csv (unblinding day).** PREREG §1/§7 exclude rows whose
+  milestone has no retained checkpoint within 5,000 steps. That exclusion is
+  applied *upstream* by `scripts/measure.sbatch` (skips the milestone), so
+  the frozen local pipeline never sees those cells and `adaptation_auc.py`
+  cannot list them. The 11 affected cells (10 `random_*` at 300K/500K plus
+  `p2e_finger_seed1@500K`; enumerated in
+  `artifacts/phase5a_20260707/exclusions.csv`) were appended to
+  exclusions.csv by a one-off script after the frozen collation ran.
+  Exclusion *rule* unchanged; this only makes the pre-registered log
+  complete. Note the corresponding *adapt* runs used the nearest snapshot
+  even when >5,000 steps off, so those 11 rows appear in M0 (milestone is
+  the label) but never in M1/M2 (no driver row to merge).

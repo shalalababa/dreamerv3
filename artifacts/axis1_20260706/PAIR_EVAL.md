@@ -61,13 +61,18 @@ frozen criteria (no post-hoc pair swapping).
 
 ## Next actions
 
-1. Build the four buffer pairs (login node, CPU, minutes each):
-   `python -m probing.build_controlled_replay build --index
-   $RUNROOT/axis1_<dom>/episodes.json --pairs $RUNROOT/axis1_<dom>/pairs.json
-   --which <q> --output_root $RUNROOT/axis1_<dom>/<q>` for
-   (dom, q) ∈ {cup, finger} × {q1, q2}; then eyeball each
-   `manifest.json` `confound_deltas`.
-2. `./scripts/submit_all.sh axis1` — 64 jobs (2 domains × 2 quadrants ×
+1. ~~Build the four buffer pairs~~ **DONE** (user, committed 51d51bc):
+   `build_controlled_replay build` for (dom, q) ∈ {cup, finger} × {q1, q2},
+   200 episodes / 200,200 transitions per side.
+2. ~~Check `confound_deltas`~~ **DONE 2026-07-07** (manifests committed in
+   51d51bc, snapshot `runroot_snapshot_20260705_101044/runroot_light/axis1_*`):
+   all four builds have Δn_transitions = 0 (200,200/side), Δepisode_length = 0,
+   Δterminal_fraction = 0, and side-0 `occ_recomputed` == `occ_search` exactly.
+   Nonzero residuals: action_mean_maxabs ≤ 0.078, action_std_maxabs ≤ 0.233,
+   source_l1 0.90–1.00 — the known collection-policy composition difference
+   (see above), reported at analysis time, not disqualifying. **Builds clear
+   for submission.**
+3. `./scripts/submit_all.sh axis1` — 64 jobs (2 domains × 2 quadrants ×
    2 sides × 8 paired seeds), each = offline WM fit (500K updates,
    gradient-count equalized to the 500K-step pretrains) + frozen-readout
    adapt (1.25e5 steps). Run ids `adapt_ax1<q>s<side>_<dom>_seed<k>_ckpt500000`
