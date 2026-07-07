@@ -85,6 +85,10 @@ defaults:
     expect_devices: 0
     enable_policy: True
     precompile: True
+    gpuflags: True
+    deterministic: True
+    autotune: 1
+    compilation_cache: True
     coordinator_address: ''
 
   agent:
