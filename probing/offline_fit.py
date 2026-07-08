@@ -34,6 +34,7 @@ preset), because the replay stores latent-context keys (``dyn/deter`` etc.).
 import argparse
 import pathlib
 import sys
+import time
 
 folder = pathlib.Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(folder))
@@ -59,6 +60,15 @@ def _losses(mets):
     if k.startswith('loss/'):
       out[k[len('loss/'):]] = float(np.asarray(v).mean())
   return out
+
+
+def _write_progress(logdir, update, total_updates, wm_total):
+  path = pathlib.Path(str(logdir)) / 'OFFLINE_FIT_PROGRESS'
+  path.write_text(
+      f'updated_at={time.strftime("%Y-%m-%dT%H:%M:%S%z")}\n'
+      f'update={update}\n'
+      f'total_updates={total_updates}\n'
+      f'wm_total={wm_total:.6f}\n')
 
 
 def build_config(argv):
@@ -98,8 +108,8 @@ def main(argv=None):
   logdir = elements.Path(config.logdir)
   logdir.mkdir()
   config.save(logdir / 'config.yaml')
-  print(f'Logdir: {logdir}')
-  print(f'Static replay: {args.static_replay}')
+  print(f'Logdir: {logdir}', flush=True)
+  print(f'Static replay: {args.static_replay}', flush=True)
 
   agent = dv3_main.make_agent(config)
   replay = dv3_main.make_replay(config, 'replay')
@@ -108,7 +118,7 @@ def main(argv=None):
   replay.load(directory=args.static_replay)
   n_items = len(replay)
   print(f'Loaded static replay: {n_items} sampling items '
-        f'(seq length {replay.length}).')
+        f'(seq length {replay.length}).', flush=True)
   if n_items < config.batch_size:
     raise SystemExit(
         f'Only {n_items} items < batch_size {config.batch_size}; the static '
@@ -130,7 +140,9 @@ def main(argv=None):
       wm = sum(v for k, v in row.items() if k not in NON_WM_LOSS)
       shown = {k: row[k] for k in sorted(row) if k not in NON_WM_LOSS}
       msg = '  '.join(f'{k}={v:.3f}' for k, v in shown.items())
-      print(f'  update {i + 1:>5}/{args.updates}: wm_total={wm:.3f}  {msg}')
+      _write_progress(logdir, i + 1, args.updates, wm)
+      print(f'  update {i + 1:>5}/{args.updates}: wm_total={wm:.3f}  {msg}',
+            flush=True)
 
   if args.save:
     step = elements.Counter()
@@ -139,7 +151,7 @@ def main(argv=None):
     cp.step = step
     cp.agent = agent
     cp.save()
-    print(f'Saved offline-fit checkpoint under {logdir / "ckpt"}')
+    print(f'Saved offline-fit checkpoint under {logdir / "ckpt"}', flush=True)
 
   # Sanity read-out: did the world model losses fall from first to last log?
   # (Use the second logged point as the baseline; step 1 metrics can be noisy.)
@@ -149,13 +161,16 @@ def main(argv=None):
     keys = sorted(set(first) & set(last) - NON_WM_LOSS)
     fw = sum(first[k] for k in keys)
     lw = sum(last[k] for k in keys)
-    print(f'WM-loss change (update {history[base_i][0]} -> {history[-1][0]}):')
+    print(f'WM-loss change (update {history[base_i][0]} -> {history[-1][0]}):',
+          flush=True)
     for k in keys:
       arrow = 'down' if last[k] < first[k] - 1e-6 else (
           'up' if last[k] > first[k] + 1e-6 else 'flat')
-      print(f'  {k:12s}: {first[k]:.4f} -> {last[k]:.4f} ({arrow})')
+      print(f'  {k:12s}: {first[k]:.4f} -> {last[k]:.4f} ({arrow})',
+            flush=True)
     print(f'  {"wm_total":12s}: {fw:.4f} -> {lw:.4f} '
-          f'({"DECREASED" if lw < fw else "did not decrease"})')
+          f'({"DECREASED" if lw < fw else "did not decrease"})',
+          flush=True)
   return history
 
 

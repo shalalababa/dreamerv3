@@ -146,6 +146,10 @@ def children_from_runlist(path: Path) -> list[str]:
     cols = line.split("\t")
     # adapt/axis1 runlists use child run id in col 0; measure uses pre_run.
     children.append(cols[0])
+    # axis1 runlists also carry the offline WM run id in col 1; it runs inside
+    # the same Slurm bundle, not as a separate queued job.
+    if len(cols) > 1 and cols[1].startswith("ax1wm_"):
+      children.append(cols[1])
   return children
 
 
@@ -186,6 +190,20 @@ def parse_bundle_log(repo: Path, bundle: str, run_id: str) -> tuple[str, str]:
 def latest_done_ckpt(path: Path) -> str:
   ckpts = sorted(p.parent for p in path.glob("ckpt/*/done"))
   return str(ckpts[-1]) if ckpts else ""
+
+
+def offline_fit_progress(logdir: Path) -> str:
+  path = logdir / "OFFLINE_FIT_PROGRESS"
+  if path.exists():
+    kv = read_keyvals(path)
+    update = kv.get("update", "")
+    total = kv.get("total_updates", "")
+    wm = kv.get("wm_total", "")
+    if update and total:
+      return f"wm_update={update}/{total}" + (f" wm_total={wm}" if wm else "")
+  if (logdir / "config.yaml").exists():
+    return "offline_fit_started"
+  return ""
 
 
 def last_adapt_step(logdir: Path) -> str:
@@ -333,6 +351,10 @@ def main() -> int:
       if ckpt:
         info.progress = f"wm_done={Path(ckpt).name}"
         info.done = True
+      else:
+        info.progress = info.progress or offline_fit_progress(runroot / run_id)
+        if info.manifest_status == "RUNNING" and info.progress:
+          info.child_stage = info.child_stage or "offline_fit_running"
 
     state = classify(info, squeue)
     if args.stale_only and not state.startswith("STALE"):

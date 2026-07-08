@@ -32,6 +32,7 @@ export PATH="$CONDA_ENV/bin:/usr/local/bin:/usr/bin:/bin:${PATH:-}"
 export CONDA_PREFIX="$CONDA_ENV"
 export CONDA_DEFAULT_ENV="$(basename "$CONDA_ENV")"
 export PYTHONNOUSERSITE="${PYTHONNOUSERSITE:-1}"
+export PYTHONUNBUFFERED="${PYTHONUNBUFFERED:-1}"
 PYTHON="$CONDA_ENV/bin/python"
 [ -x "$PYTHON" ] || PYTHON="$(command -v python || true)"
 [ -n "$PYTHON" ] || { echo "ERROR: no python found for CONDA_ENV=$CONDA_ENV"; exit 2; }
@@ -67,7 +68,7 @@ cleanup() {
 trap cleanup EXIT
 
 echo "[$(date)] env prepared: python=$PYTHON"
-"$PYTHON" - <<'PY'
+"$PYTHON" -u - <<'PY'
 import sys
 print("python_executable=" + sys.executable)
 PY

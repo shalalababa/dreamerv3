@@ -33,6 +33,7 @@ export PATH="$CONDA_ENV/bin:/usr/local/bin:/usr/bin:/bin:${PATH:-}"
 export CONDA_PREFIX="$CONDA_ENV"
 export CONDA_DEFAULT_ENV="$(basename "$CONDA_ENV")"
 export PYTHONNOUSERSITE="${PYTHONNOUSERSITE:-1}"
+export PYTHONUNBUFFERED="${PYTHONUNBUFFERED:-1}"
 PYTHON="$CONDA_ENV/bin/python"
 [ -x "$PYTHON" ] || PYTHON="$(command -v python || true)"
 [ -n "$PYTHON" ] || { echo "ERROR: no python found for CONDA_ENV=$CONDA_ENV"; exit 2; }
@@ -52,7 +53,7 @@ stage() {
 stage "script_started"
 echo "[$(date)] axis1 child starting RUN_ID=$RUN_ID WM_RUN=$WM_RUN job=${SLURM_JOB_ID:-NA} host=$(hostname)"
 echo "[$(date)] env prepared: python=$PYTHON"
-"$PYTHON" - <<'PY'
+"$PYTHON" -u - <<'PY'
 import sys
 print("python_executable=" + sys.executable)
 PY
@@ -77,7 +78,7 @@ else
   echo "[$(date)] offline_fit WM_RUN=$WM_RUN REPLAY=$REPLAY UPDATES=$UPDATES SEED=$SEED"
   manifest_append "$WM_RUN" offline_fit "$TASK" static "$SEED" "$UPDATES" "$REPLAY" "$WMDIR" RUNNING
   RC=0
-  "$PYTHON" -m probing.offline_fit \
+  "$PYTHON" -u -m probing.offline_fit \
     --static_replay "$REPLAY" --updates "$UPDATES" \
     --logdir "$WMDIR" --configs dmc_proprio \
     --task "$TASK" --seed "$SEED" \
@@ -96,7 +97,7 @@ echo "[$(date)] adapt RUN_ID=$RUN_ID TASK=$TASK SEED=$SEED CKPT=$CKPT STEPS=$STE
 manifest_append "$RUN_ID" adapt "$TASK" frozen_readout "$SEED" "$STEPS" "$CKPT" "$LOGDIR" RUNNING
 
 RC=0
-"$PYTHON" dreamerv3/main.py \
+"$PYTHON" -u dreamerv3/main.py \
   --logdir "$LOGDIR" --configs dmc_proprio frozen_readout \
   --task "$TASK" --seed "$SEED" \
   --run.from_checkpoint "$CKPT" --run.steps "$STEPS" || RC=$?
