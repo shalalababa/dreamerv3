@@ -355,7 +355,9 @@ submit_axis1_bundle() {  # submit_axis1_bundle <bundle_id> <runlist> <num_tasks>
   # Intentionally do not use --export=ALL here. Axis1 runs are CUDA/JAX-heavy,
   # and inherited module state from the submit shell can change native library
   # resolution. Export only what the scripts need.
+  local clean_path="$CONDA_ENV/bin:/usr/local/bin:/usr/bin:/bin"
   local exports="REPO=$REPO,RUNROOT=$RUNROOT,CONDA_ENV=$CONDA_ENV,MANIFEST=$MANIFEST"
+  exports="$exports,HOME=${HOME:-},USER=${USER:-},LOGNAME=${LOGNAME:-},SHELL=/bin/bash,PATH=$clean_path,PYTHONNOUSERSITE=1"
   exports="$exports,RUN_ID=$bundle_id,RUNLIST=$runlist"
   exports="$exports,FORCE=${FORCE:-0},FORCE_WM=${FORCE_WM:-0},RENDER=${RENDER:-False}"
   exports="$exports,STEPS=${STEPS:-1.25e5},AXIS1_UPDATES=${AXIS1_UPDATES:-500000}"

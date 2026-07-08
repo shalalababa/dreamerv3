@@ -18,12 +18,61 @@
 # ---------------------------------------------------------------------------
 set -euo pipefail
 REPO="${REPO:-${SLURM_SUBMIT_DIR:-$PWD}}"
-source "$REPO/scripts/env.sh"
-activate_env
-cd "$REPO"
-
 : "${RUN_ID:?set RUN_ID}"; : "${RUNLIST:?set RUNLIST}"
+
+echo "[$(date)] axis1 bundle script starting"
+echo "[$(date)] job=${SLURM_JOB_ID:-NA} host=$(hostname) pwd=$PWD"
+echo "[$(date)] REPO=$REPO RUNROOT=${RUNROOT:-unset} CONDA_ENV=${CONDA_ENV:-unset}"
+echo "[$(date)] RUN_ID=$RUN_ID RUNLIST=$RUNLIST"
+
 [ -f "$RUNLIST" ] || { echo "ERROR: missing RUNLIST=$RUNLIST"; exit 2; }
+
+source "$REPO/scripts/env.sh"
+export PATH="$CONDA_ENV/bin:/usr/local/bin:/usr/bin:/bin:${PATH:-}"
+export CONDA_PREFIX="$CONDA_ENV"
+export CONDA_DEFAULT_ENV="$(basename "$CONDA_ENV")"
+export PYTHONNOUSERSITE="${PYTHONNOUSERSITE:-1}"
+PYTHON="$CONDA_ENV/bin/python"
+[ -x "$PYTHON" ] || PYTHON="$(command -v python || true)"
+[ -n "$PYTHON" ] || { echo "ERROR: no python found for CONDA_ENV=$CONDA_ENV"; exit 2; }
+
+BUNDLE_LOGDIR="$RUNROOT/_bundles/$RUN_ID"
+mkdir -p "$BUNDLE_LOGDIR"
+cp "$RUNLIST" "$BUNDLE_LOGDIR/runlist.tsv"
+{
+  echo "bundle=$RUN_ID"
+  echo "slurm_job_id=${SLURM_JOB_ID:-}"
+  echo "host=$(hostname)"
+  echo "started_at=$(date -Is)"
+  echo "runlist=$RUNLIST"
+} > "$BUNDLE_LOGDIR/BUNDLE_STARTED"
+
+heartbeat() {
+  while true; do
+    date -Is > "$BUNDLE_LOGDIR/BUNDLE_HEARTBEAT"
+    sleep 60
+  done
+}
+heartbeat &
+HEARTBEAT_PID=$!
+cleanup() {
+  rc=$?
+  {
+    echo "ended_at=$(date -Is)"
+    echo "rc=$rc"
+  } > "$BUNDLE_LOGDIR/BUNDLE_EXIT"
+  kill "$HEARTBEAT_PID" 2>/dev/null || true
+  exit "$rc"
+}
+trap cleanup EXIT
+
+echo "[$(date)] env prepared: python=$PYTHON"
+"$PYTHON" - <<'PY'
+import sys
+print("python_executable=" + sys.executable)
+PY
+date -Is > "$BUNDLE_LOGDIR/BUNDLE_ENV_OK"
+cd "$REPO"
 
 manifest_status() {  # manifest_status <RUN_ID>
   [ -f "$MANIFEST" ] || return 0
@@ -36,10 +85,6 @@ adapt_done() {  # adapt_done <RUN_ID>
   [ "$status" = "DONE" ] && return 0
   [ -f "$RUNROOT/$1/ADAPT_DONE" ]
 }
-
-BUNDLE_LOGDIR="$RUNROOT/_bundles/$RUN_ID"
-mkdir -p "$BUNDLE_LOGDIR"
-cp "$RUNLIST" "$BUNDLE_LOGDIR/runlist.tsv"
 
 echo "[$(date)] axis1 bundle RUN_ID=$RUN_ID RUNLIST=$RUNLIST"
 echo "[$(date)] bundle contents:"
@@ -90,3 +135,4 @@ while IFS=$'\t' read -r child_run_id wm_run task seed replay updates steps axis 
 done < "$RUNLIST"
 
 echo "[$(date)] axis1 bundle $RUN_ID finished"
+date -Is > "$BUNDLE_LOGDIR/BUNDLE_FINISHED"

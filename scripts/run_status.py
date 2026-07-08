@@ -70,28 +70,45 @@ def manifest_rows(manifest: Path) -> dict[str, dict[str, str]]:
 
 
 def current_slurm(user: str) -> dict[str, str]:
-  out = run_cmd(["squeue", "-h", "-u", user, "-o", "%j|%T|%M|%R|%N"])
+  out = run_cmd(["squeue", "-h", "-u", user, "-o", "%i|%.120j|%T|%M|%R|%N"])
   result = {}
   for line in out.splitlines():
-    parts = line.split("|", 4)
-    if len(parts) == 5:
-      name, state, elapsed, reason, nodes = parts
-      result[name] = f"{state}/{elapsed}/{reason}/{nodes}"
+    parts = line.split("|", 5)
+    if len(parts) == 6:
+      jobid, name, state, elapsed, reason, nodes = parts
+      name = name.strip()
+      result[name] = f"{jobid}/{state}/{elapsed}/{reason}/{nodes}"
   return result
 
 
 def recent_sacct(user: str, start: str) -> dict[str, str]:
   out = run_cmd([
       "sacct", "-u", user, "--starttime", start, "-X", "-P", "-n",
-      "--format=JobName%90,State,Elapsed,ExitCode"])
+      "--format=JobName%120,State,Elapsed,ExitCode"])
   result = {}
   for line in out.splitlines():
     parts = line.split("|")
     if len(parts) >= 4:
       name, state, elapsed, exitcode = parts[:4]
+      name = name.strip()
       if name and name not in result:
         result[name] = f"{state}/{elapsed}/exit={exitcode}"
   return result
+
+
+def bundle_marker_state(runroot: Path, bundle: str) -> str:
+  if not bundle:
+    return ""
+  root = runroot / "_bundles" / bundle
+  if (root / "BUNDLE_FINISHED").exists():
+    return "finished_marker"
+  if (root / "BUNDLE_ENV_OK").exists():
+    return "env_ok_marker"
+  if (root / "BUNDLE_STARTED").exists():
+    return "started_marker"
+  if (root / "runlist.tsv").exists():
+    return "runlist_copied"
+  return ""
 
 
 def bundle_runlists(runroot: Path) -> tuple[dict[str, list[str]], dict[str, str]]:
@@ -289,6 +306,8 @@ def main() -> int:
     bundles = child_to_bundles.get(run_id, [])
     info.bundle = info.marker_bundle or (bundles[-1] if bundles else "")
     info.bundle_state = squeue.get(info.bundle) or sacct.get(info.bundle, "")
+    if not info.bundle_state:
+      info.bundle_state = bundle_marker_state(runroot, info.bundle)
     info.logdir_state = logdir_state(logdir)
     info.done = (logdir / "ADAPT_DONE").exists() or info.manifest_status == "DONE"
     info.failed = (logdir / "BUNDLE_CHILD_FAILED").exists() or info.manifest_status == "FAILED"
