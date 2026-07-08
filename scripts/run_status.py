@@ -37,7 +37,6 @@ class RunInfo:
   done: bool = False
   failed: bool = False
   logdir_state: str = ""
-  note: str = ""
   extras: dict = field(default_factory=dict)
 
 
@@ -142,10 +141,9 @@ def bundle_out_files(repo: Path, bundle: str) -> list[Path]:
   return sorted(uniq.values(), key=lambda p: p.stat().st_mtime if p.exists() else 0)
 
 
-def parse_bundle_log(repo: Path, bundle: str, run_id: str) -> tuple[str, str, str]:
+def parse_bundle_log(repo: Path, bundle: str, run_id: str) -> tuple[str, str]:
   stage = ""
   progress = ""
-  note = ""
   for path in bundle_out_files(repo, bundle):
     text = path.read_text(errors="ignore")
     starts = re.findall(r"START child (\S+)", text)
@@ -165,9 +163,7 @@ def parse_bundle_log(repo: Path, bundle: str, run_id: str) -> tuple[str, str, st
         progress = "offline_fit_started"
     elif run_id in starts and not stage:
       stage = "bundle_child_started"
-    if path.name:
-      note = f"out={path.name}"
-  return stage, progress, note
+  return stage, progress
 
 
 def latest_done_ckpt(path: Path) -> str:
@@ -308,10 +304,9 @@ def main() -> int:
       info.child_stage = "reserved"
 
     if info.bundle:
-      log_stage, log_progress, log_note = parse_bundle_log(repo, info.bundle, run_id)
+      log_stage, log_progress = parse_bundle_log(repo, info.bundle, run_id)
       info.child_stage = info.child_stage or log_stage
       info.progress = log_progress
-      info.note = log_note
 
     info.progress = info.progress or last_adapt_step(logdir)
     if run_id.startswith("ax1wm_"):
@@ -332,12 +327,12 @@ def main() -> int:
     return 0
 
   header = ["state", "run_id", "phase", "manifest", "logdir", "bundle",
-            "bundle_state", "stage", "progress", "note"]
+            "bundle_state", "stage", "progress"]
   records = []
   for state, i in infos:
     records.append([state, i.run_id, i.phase, i.manifest_status or "EMPTY",
                     i.logdir_state, i.bundle, i.bundle_state,
-                    i.child_stage, i.progress, i.note])
+                    i.child_stage, i.progress])
   if args.tsv:
     print("\t".join(header))
     for rec in records:
