@@ -38,6 +38,11 @@ UPDATES="${UPDATES:-500000}"
 STEPS="${STEPS:-1.25e5}"
 WMDIR="$RUNROOT/$WM_RUN"
 LOGDIR="$RUNROOT/$RUN_ID"
+mkdir -p "$LOGDIR"
+
+stage() {
+  printf '%s\n' "$1" > "$LOGDIR/AXIS1_STAGE"
+}
 
 [ -f "$(dirname "$REPLAY")/manifest.json" ] || {
   echo "ERROR: no manifest.json beside $REPLAY (run build_controlled_replay build first)"
@@ -52,8 +57,10 @@ latest_ckpt() {  # newest completed elements.Checkpoint dir under $1/ckpt
 # --- Stage 1: offline WM fit -----------------------------------------------
 CKPT="$(latest_ckpt "$WMDIR" || true)"
 if [ -n "$CKPT" ] && [ "${FORCE_WM:-0}" != "1" ]; then
+  stage "offline_fit_done"
   echo "[$(date)] offline WM already fit: $CKPT (skipping stage 1)"
 else
+  stage "offline_fit_running"
   echo "[$(date)] offline_fit WM_RUN=$WM_RUN REPLAY=$REPLAY UPDATES=$UPDATES SEED=$SEED"
   manifest_append "$WM_RUN" offline_fit "$TASK" static "$SEED" "$UPDATES" "$REPLAY" "$WMDIR" RUNNING
   RC=0
@@ -64,13 +71,14 @@ else
     --env.dmc.render "${RENDER:-False}" || RC=$?
   STATUS=$([ "$RC" -eq 0 ] && echo DONE || echo FAILED)
   sed -i "s#^$WM_RUN,.*,RUNNING,#$WM_RUN,offline_fit,$TASK,static,$SEED,$UPDATES,$REPLAY,$WMDIR,$STATUS,#" "$MANIFEST" 2>/dev/null || true
-  [ "$RC" -eq 0 ] || { echo "[$(date)] offline_fit FAILED rc=$RC"; exit "$RC"; }
+  [ "$RC" -eq 0 ] || { stage "offline_fit_failed"; echo "[$(date)] offline_fit FAILED rc=$RC"; exit "$RC"; }
   CKPT="$(latest_ckpt "$WMDIR")"
   [ -n "$CKPT" ] || { echo "ERROR: offline_fit succeeded but no ckpt with done marker under $WMDIR/ckpt"; exit 2; }
+  stage "offline_fit_done"
 fi
 
 # --- Stage 2: frozen-readout adapt (mirrors adapt.sbatch) -------------------
-mkdir -p "$LOGDIR"
+stage "adapt_running"
 echo "[$(date)] adapt RUN_ID=$RUN_ID TASK=$TASK SEED=$SEED CKPT=$CKPT STEPS=$STEPS"
 manifest_append "$RUN_ID" adapt "$TASK" frozen_readout "$SEED" "$STEPS" "$CKPT" "$LOGDIR" RUNNING
 
@@ -83,6 +91,9 @@ STATUS=$([ "$RC" -eq 0 ] && echo DONE || echo FAILED)
 echo "[$(date)] adapt $RUN_ID rc=$RC status=$STATUS"
 if [ "$RC" -eq 0 ]; then
   touch "$LOGDIR/ADAPT_DONE"
+  stage "adapt_done"
+else
+  stage "adapt_failed"
 fi
 sed -i "s#^$RUN_ID,.*,RUNNING,#$RUN_ID,adapt,$TASK,frozen_readout,$SEED,$STEPS,$CKPT,$LOGDIR,$STATUS,#" "$MANIFEST" 2>/dev/null || true
 exit "$RC"

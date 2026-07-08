@@ -57,14 +57,36 @@ while IFS=$'\t' read -r child_run_id wm_run task seed replay updates steps axis 
     continue
   fi
 
+  CHILD_DIR="$RUNROOT/$child_run_id"
+  mkdir -p "$CHILD_DIR"
+  {
+    echo "bundle=$RUN_ID"
+    echo "started_at=$(date -Is)"
+    echo "wm_run=$wm_run"
+    echo "runlist=$RUNLIST"
+  } > "$CHILD_DIR/BUNDLE_CHILD_STARTED"
   echo "[$(date)] START child $child_run_id WM_RUN=$wm_run"
+  set +e
   RUN_ID="$child_run_id" WM_RUN="$wm_run" TASK="$task" SEED="$seed" \
     REPLAY="$replay" UPDATES="${updates:-${AXIS1_UPDATES:-500000}}" \
     STEPS="${steps:-${STEPS:-1.25e5}}" AXIS="${axis:-axis1}" \
     PAIRED_SEED_SET="${paired_seed_set:-}" \
     FORCE_WM="${FORCE_WM:-0}" RENDER="${RENDER:-False}" \
     bash "$REPO/scripts/axis1.sbatch"
-  echo "[$(date)] DONE child $child_run_id"
+  rc=$?
+  set -e
+  if [ "$rc" -eq 0 ]; then
+    date -Is > "$CHILD_DIR/BUNDLE_CHILD_DONE"
+    echo "[$(date)] DONE child $child_run_id"
+  else
+    {
+      echo "bundle=$RUN_ID"
+      echo "failed_at=$(date -Is)"
+      echo "rc=$rc"
+    } > "$CHILD_DIR/BUNDLE_CHILD_FAILED"
+    echo "[$(date)] FAILED child $child_run_id rc=$rc"
+    exit "$rc"
+  fi
 done < "$RUNLIST"
 
 echo "[$(date)] axis1 bundle $RUN_ID finished"

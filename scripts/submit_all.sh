@@ -91,6 +91,34 @@ axis1_reserved() {  # axis1_reserved <RUN_ID>
   [ -f "$RUNROOT/$1/SUBMITTED_BY_BUNDLE" ]
 }
 
+bundle_from_marker() {  # bundle_from_marker <marker-file>
+  awk -F= '$1 == "bundle" {print $2; exit}' "$1" 2>/dev/null
+}
+
+active_bundle() {  # active_bundle <bundle-id>
+  [ -n "${1:-}" ] && queued_job "$1"
+}
+
+axis1_reserved_active() {  # axis1_reserved_active <RUN_ID>
+  local marker="$RUNROOT/$1/SUBMITTED_BY_BUNDLE"
+  [ -f "$marker" ] || return 1
+  local bundle
+  bundle="$(bundle_from_marker "$marker")"
+  active_bundle "$bundle"
+}
+
+marker_only_logdir() {  # marker_only_logdir <RUN_ID>
+  local dir="$RUNROOT/$1"
+  [ -d "$dir" ] || return 1
+  [ -f "$dir/SUBMITTED_BY_BUNDLE" ] || return 1
+  ! find "$dir" -mindepth 1 -maxdepth 1 \
+      ! -name SUBMITTED_BY_BUNDLE \
+      ! -name BUNDLE_CHILD_STARTED \
+      ! -name BUNDLE_CHILD_DONE \
+      ! -name BUNDLE_CHILD_FAILED \
+      -print -quit 2>/dev/null | grep -q .
+}
+
 MAX_JOBS="${MAX_JOBS:-12}"
 JOBS_AT_START="$(active_job_count)"
 SUBMITTED_THIS_RUN=0
@@ -752,13 +780,17 @@ case "$cmd" in
                 echo "SKIP done: $run_id"
                 continue
               fi
-              if axis1_reserved "$run_id"; then
-                echo "SKIP reserved in bundle: $run_id"
+              if axis1_reserved_active "$run_id"; then
+                echo "SKIP reserved in active bundle: $run_id"
                 continue
               fi
               if existing_logdir "$run_id"; then
+                if marker_only_logdir "$run_id"; then
+                  echo "RESUBMIT stale marker-only reservation: $run_id"
+                else
                 echo "SKIP existing logdir: $RUNROOT/$run_id  (set FORCE=1 to resubmit)"
                 continue
+                fi
               fi
             fi
             pending+=("$run_id"$'\t'"$wm_run"$'\t'"$task"$'\t'"$s"$'\t'"$root/side${side}"$'\t'"$updates"$'\t'"$steps"$'\t'"axis1"$'\t'"ax1_${dom}_${q}")

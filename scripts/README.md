@@ -122,6 +122,12 @@ DRYRUN=1 ./scripts/submit_all.sh measure-bundles
   so a walltime-killed child cannot resume from a partial offline-fit checkpoint.
   The bundle submitter exports a clean environment instead of `--export=ALL` to
   avoid leaking locally loaded CUDA/Python modules into Slurm jobs.
+- **Bundle status sheet.** `scripts/run_status.py --kind axis1` joins
+  `runs.csv`, bundle runlists, `SUBMITTED_BY_BUNDLE` markers, Slurm state, bundle
+  stdout, `ADAPT_DONE`, and offline-WM checkpoints. Use `--stale-only` to show
+  cancelled/finished reservations that still look `RUNNING`, and
+  `--emit-cleanup` to print `rm -rf` commands for stale marker-only child dirs
+  (review before running them).
 - **Goal-reacher (Gate 0).** Without the reward-on `goal` pilot the
   high-occupancy corner is empty (exploration alone rarely enters the regime --
   reward is sparse on cup/finger/reacher). For a faster substitute on
