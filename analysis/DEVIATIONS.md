@@ -40,3 +40,19 @@ adaptation outcome was read locally.
   complete. Note the corresponding *adapt* runs used the nearest snapshot
   even when >5,000 steps off, so those 11 rows appear in M0 (milestone is
   the label) but never in M1/M2 (no driver row to merge).
+- **2026-07-07 — post-5a enhancement modules pre-registered; run-naming
+  registry extended.** `research_notes/Addendum_Post5a_Enhancements_20260707.tex`
+  (frozen before any Axis-1 outcome was read) registers modules E1–E7 and
+  the following new mode strings, all parsing under the frozen `RUN_RE` and
+  all excluded from the dose-response population models by the `--modes`
+  filter: `goalwm` (Gate-F finger oracle probe), `p2elong` (finger budget
+  probe), `ax1d0`–`ax1d3` (occupancy dose levels, coverage-matched),
+  `ax1r1s0/1`, `ax1r2s0/1` (composition-robustness pairs), `rrwa`/`rrwb`
+  (occupancy-capped replay demo). Reacher joins as a replication
+  population: its rows use the ordinary dose-response modes
+  (p2e/apt/random) and ARE in scope of the population models when the
+  pipeline is run with reacher in `--primary_domains` — reported as a
+  separate population, never silently pooled into the registered
+  cup+finger primary. Reacher `regimes.py` threshold 0.025 confirmed
+  against `artifacts/gate0_20260702/gate0_reacher/gate0.json`
+  (goal 0.433 vs reward-free 0.005–0.010).

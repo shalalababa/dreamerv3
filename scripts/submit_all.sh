@@ -151,6 +151,7 @@ task_of_pretrain() {  # task_of_pretrain <pretrain_run_id>
     *_walker_seed*) echo "$CONTROL" ;;
     *_cup_seed*) echo "dmc_cup_catch" ;;
     *_finger_seed*) echo "dmc_finger_turn_hard" ;;
+    *_reacher_seed*) echo "dmc_reacher_hard" ;;
     *) echo "could not infer task for $run_id" >&2; return 1 ;;
   esac
 }
