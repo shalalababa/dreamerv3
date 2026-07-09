@@ -8,6 +8,16 @@ set -euo pipefail
 REPO="${REPO:-$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)}"
 source "$REPO/scripts/env.sh"
 
+if [ ! -x "${CONDA_ENV:-}/bin/python" ]; then
+  CONDA_ENV="$(python - <<'PY'
+import pathlib
+import sys
+print(pathlib.Path(sys.executable).resolve().parents[1])
+PY
+)"
+  export CONDA_ENV
+fi
+
 export PATH="$CONDA_ENV/bin:/usr/local/bin:/usr/bin:/bin:${PATH:-}"
 export CONDA_PREFIX="$CONDA_ENV"
 export CONDA_DEFAULT_ENV="$(basename "$CONDA_ENV")"

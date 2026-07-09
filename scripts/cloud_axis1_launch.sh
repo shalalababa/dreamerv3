@@ -10,6 +10,15 @@ REPO="${REPO:-$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)}"
 source "$REPO/scripts/env.sh"
 
 : "${RUNROOT:?set RUNROOT}"
+if [ ! -x "${CONDA_ENV:-}/bin/python" ]; then
+  CONDA_ENV="$(python - <<'PY'
+import pathlib
+import sys
+print(pathlib.Path(sys.executable).resolve().parents[1])
+PY
+)"
+  export CONDA_ENV
+fi
 : "${CONDA_ENV:?set CONDA_ENV}"
 
 mkdir -p "$RUNROOT/_cloud_logs"
