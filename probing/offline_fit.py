@@ -94,6 +94,13 @@ def parse_args(argv):
   p.add_argument('--updates', type=int, default=200,
                  help='Number of gradient steps.')
   p.add_argument('--log_every', type=int, default=25)
+  p.add_argument('--save_every_updates', type=int, default=50000,
+                 help='Save resumable checkpoints every N updates; <=0 disables intermediate saves.')
+  p.add_argument('--keep', type=int, default=2,
+                 help='Number of offline-fit checkpoints to retain.')
+  p.add_argument('--resume', action='store_true', default=True,
+                 help='Resume from logdir/ckpt/latest when present (on by default).')
+  p.add_argument('--no_resume', dest='resume', action='store_false')
   p.add_argument('--save', action='store_true', default=True,
                  help='Write a ckpt/ at the end (on by default).')
   p.add_argument('--no_save', dest='save', action='store_false')
@@ -106,13 +113,23 @@ def main(argv=None):
 
   config = build_config(passthrough)
   logdir = elements.Path(config.logdir)
-  logdir.mkdir()
+  pathlib.Path(str(logdir)).mkdir(parents=True, exist_ok=True)
   config.save(logdir / 'config.yaml')
   print(f'Logdir: {logdir}', flush=True)
   print(f'Static replay: {args.static_replay}', flush=True)
 
   agent = dv3_main.make_agent(config)
   replay = dv3_main.make_replay(config, 'replay')
+  step = elements.Counter()
+  cp = None
+  if args.save:
+    cp = elements.Checkpoint(logdir / 'ckpt', keep=args.keep, step=step)
+    cp.step = step
+    cp.agent = agent
+    if args.resume and cp.exists():
+      cp.load()
+      print(f'Resumed offline-fit checkpoint at update {int(agent.n_updates)}',
+            flush=True)
 
   # The real Phase-6 ingestion path: pull in externally-authored chunks.
   replay.load(directory=args.static_replay)
@@ -129,7 +146,12 @@ def main(argv=None):
   carry = [agent.init_train(config.batch_size)]
 
   history = []
-  for i in range(args.updates):
+  start_update = int(agent.n_updates) if args.save else 0
+  if start_update >= args.updates:
+    print(f'Already reached requested updates: {start_update}/{args.updates}',
+          flush=True)
+  last_saved_update = start_update
+  for i in range(start_update, args.updates):
     batch = next(stream)
     carry[0], outs, mets = agent.train(carry[0], batch)
     if 'replay' in outs:
@@ -143,14 +165,19 @@ def main(argv=None):
       _write_progress(logdir, i + 1, args.updates, wm)
       print(f'  update {i + 1:>5}/{args.updates}: wm_total={wm:.3f}  {msg}',
             flush=True)
+    if (args.save and args.save_every_updates > 0 and
+        (i + 1) % args.save_every_updates == 0 and
+        (i + 1) < args.updates):
+      step.value = i + 1
+      cp.save()
+      last_saved_update = i + 1
+      print(f'Saved intermediate offline-fit checkpoint at update {i + 1}',
+            flush=True)
 
   if args.save:
-    step = elements.Counter()
-    step.increment(args.updates)
-    cp = elements.Checkpoint(logdir / 'ckpt')
-    cp.step = step
-    cp.agent = agent
-    cp.save()
+    step.value = max(args.updates, int(agent.n_updates))
+    if last_saved_update != args.updates or not cp.latest():
+      cp.save()
     print(f'Saved offline-fit checkpoint under {logdir / "ckpt"}', flush=True)
 
   # Sanity read-out: did the world model losses fall from first to last log?
