@@ -160,6 +160,12 @@ def nearest_snapshots(snapshots_dir, milestones):
   no snapshot within a full inter-milestone spacing are still reported (callers
   can flag large abs_error).
   """
+  def localize(snapshot):
+    if not snapshot or os.path.exists(snapshot):
+      return snapshot
+    candidate = os.path.join(snapshots_dir, os.path.basename(snapshot))
+    return candidate if os.path.exists(candidate) else snapshot
+
   manifest = _load_manifest(snapshots_dir)
   snaps = sorted(manifest['snapshots'], key=lambda s: s['step'])
   out = []
@@ -169,7 +175,8 @@ def nearest_snapshots(snapshots_dir, milestones):
       continue
     best = min(snaps, key=lambda s: abs(s['step'] - m))
     out.append(dict(milestone=m, step=best['step'],
-                    snapshot=best['snapshot'], abs_error=abs(best['step'] - m)))
+                    snapshot=localize(best['snapshot']),
+                    abs_error=abs(best['step'] - m)))
   return out
 
 
