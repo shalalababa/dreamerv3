@@ -44,6 +44,14 @@ PYTHON="$CONDA_ENV/bin/python"
 [ -n "$PYTHON" ] || { echo "ERROR: no python found for CONDA_ENV=$CONDA_ENV"; exit 2; }
 cd "$REPO"
 
+echo "[$(date)] python=$PYTHON"
+"$PYTHON" - <<'PY'
+import elements
+import jax
+from dm_control import suite
+print("env ok: elements, jax", jax.__version__, "devices", jax.devices(), flush=True)
+PY
+
 : "${RUN_ID:?set RUN_ID}"; : "${TASK:?set TASK}"; : "${MODE:?set MODE}"; : "${SEED:?set SEED}"
 STEPS="${STEPS:-5e5}"; SAVE_EVERY="${SAVE_EVERY:-300}"
 LOGDIR="$RUNROOT/$RUN_ID"
