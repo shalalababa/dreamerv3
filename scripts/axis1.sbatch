@@ -68,18 +68,49 @@ latest_ckpt() {  # newest completed elements.Checkpoint dir under $1/ckpt
     sort | tail -1
 }
 
+ckpt_update() {  # parse elements.Checkpoint folder suffix: <timestamp>-000000500000
+  local ckpt="${1:-}"
+  [ -n "$ckpt" ] || { echo 0; return; }
+  local base suffix
+  base="$(basename "$ckpt")"
+  suffix="${base##*-}"
+  case "$suffix" in
+    ''|*[!0-9]*) echo 0 ;;
+    *) echo "$suffix" ;;
+  esac
+}
+
+progress_update() {
+  local progress="$1/OFFLINE_FIT_PROGRESS"
+  [ -f "$progress" ] || { echo 0; return; }
+  awk -F= '$1=="update"{v=$2} END{print v+0}' "$progress" 2>/dev/null || echo 0
+}
+
+offline_fit_complete() {
+  local dir="$1" updates="$2" ckpt ckpt_step prog_step
+  ckpt="$(latest_ckpt "$dir" || true)"
+  [ -n "$ckpt" ] || return 1
+  ckpt_step="$(ckpt_update "$ckpt")"
+  prog_step="$(progress_update "$dir")"
+  [ "$ckpt_step" -ge "$updates" ] || [ "$prog_step" -ge "$updates" ]
+}
+
 # --- Stage 1: offline WM fit -----------------------------------------------
 CKPT="$(latest_ckpt "$WMDIR" || true)"
-if [ -n "$CKPT" ] && [ "${FORCE_WM:-0}" != "1" ]; then
+if [ "${FORCE_WM:-0}" != "1" ] && offline_fit_complete "$WMDIR" "$UPDATES"; then
   stage "offline_fit_done"
   echo "[$(date)] offline WM already fit: $CKPT (skipping stage 1)"
 else
   stage "offline_fit_running"
+  if [ -n "$CKPT" ] && [ "${FORCE_WM:-0}" != "1" ]; then
+    echo "[$(date)] resuming partial offline WM from $CKPT update=$(ckpt_update "$CKPT") progress=$(progress_update "$WMDIR")/$UPDATES"
+  fi
   echo "[$(date)] offline_fit WM_RUN=$WM_RUN REPLAY=$REPLAY UPDATES=$UPDATES SEED=$SEED"
   manifest_append "$WM_RUN" offline_fit "$TASK" static "$SEED" "$UPDATES" "$REPLAY" "$WMDIR" RUNNING
   RC=0
   "$PYTHON" -u -m probing.offline_fit \
     --static_replay "$REPLAY" --updates "$UPDATES" \
+    --save_every_updates "${AXIS1_SAVE_EVERY_UPDATES:-50000}" \
     --logdir "$WMDIR" --configs dmc_proprio \
     --task "$TASK" --seed "$SEED" \
     --env.dmc.render "${RENDER:-False}" || RC=$?
