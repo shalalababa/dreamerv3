@@ -160,14 +160,41 @@ def nearest_snapshots(snapshots_dir, milestones):
   no snapshot within a full inter-milestone spacing are still reported (callers
   can flag large abs_error).
   """
+  def step_from_name(path):
+    name = os.path.basename(os.path.normpath(path))
+    if name.startswith('step') and name[4:].isdigit():
+      return int(name[4:])
+    return None
+
   def localize(snapshot):
-    if not snapshot or os.path.exists(snapshot):
+    if not snapshot:
+      return snapshot
+    if os.path.exists(os.path.join(snapshot, 'done')):
       return snapshot
     candidate = os.path.join(snapshots_dir, os.path.basename(snapshot))
-    return candidate if os.path.exists(candidate) else snapshot
+    return candidate if os.path.exists(os.path.join(candidate, 'done')) else None
 
   manifest = _load_manifest(snapshots_dir)
-  snaps = sorted(manifest['snapshots'], key=lambda s: s['step'])
+  snaps = []
+  for row in manifest.get('snapshots', []):
+    snapshot = localize(row.get('snapshot'))
+    if not snapshot:
+      continue
+    step = row.get('step')
+    if step is None:
+      step = step_from_name(snapshot)
+    if step is None:
+      continue
+    row = dict(row, snapshot=snapshot, step=step)
+    snaps.append(row)
+  if not snaps:
+    for path in sorted(glob.glob(os.path.join(snapshots_dir, 'step*'))):
+      if not os.path.exists(os.path.join(path, 'done')):
+        continue
+      step = step_from_name(path)
+      if step is not None:
+        snaps.append(dict(step=step, snapshot=path, src_folder='', wall_time=0))
+  snaps = sorted(snaps, key=lambda s: s['step'])
   out = []
   for m in sorted(milestones):
     if not snaps:
