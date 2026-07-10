@@ -25,7 +25,23 @@ set -euo pipefail
 # defaults to the directory sbatch was invoked from -- run it from the repo root).
 REPO="${REPO:-${SLURM_SUBMIT_DIR:-$PWD}}"
 source "$REPO/scripts/env.sh"
-activate_env
+if [ ! -x "${CONDA_ENV:-}/bin/python" ]; then
+  CONDA_ENV="$(python - <<'PY'
+import pathlib
+import sys
+print(pathlib.Path(sys.executable).resolve().parents[1])
+PY
+)"
+  export CONDA_ENV
+fi
+export PATH="$CONDA_ENV/bin:/usr/local/bin:/usr/bin:/bin:${PATH:-}"
+export CONDA_PREFIX="$CONDA_ENV"
+export CONDA_DEFAULT_ENV="$(basename "$CONDA_ENV")"
+export PYTHONNOUSERSITE="${PYTHONNOUSERSITE:-1}"
+export PYTHONUNBUFFERED="${PYTHONUNBUFFERED:-1}"
+PYTHON="$CONDA_ENV/bin/python"
+[ -x "$PYTHON" ] || PYTHON="$(command -v python || true)"
+[ -n "$PYTHON" ] || { echo "ERROR: no python found for CONDA_ENV=$CONDA_ENV"; exit 2; }
 cd "$REPO"
 
 : "${RUN_ID:?set RUN_ID}"; : "${TASK:?set TASK}"; : "${MODE:?set MODE}"; : "${SEED:?set SEED}"
@@ -37,12 +53,12 @@ echo "[$(date)] pretrain RUN_ID=$RUN_ID TASK=$TASK MODE=$MODE SEED=$SEED STEPS=$
 manifest_append "$RUN_ID" pretrain "$TASK" "$MODE" "$SEED" "$STEPS" retained "$LOGDIR" RUNNING
 
 # Integer stop_step for the watcher (STEPS may be like 5e5).
-STOP_STEP=$(python -c "print(int(float('$STEPS')))")
+STOP_STEP=$("$PYTHON" -c "print(int(float('$STEPS')))")
 
 # Launch trainer. render=False: proprio runs never consume the image, so skip
 # the per-step MuJoCo render (pure overhead here; also sidesteps a local WSL2
 # EGL/CUDA crash). Set RENDER=True if you want eval videos.
-python dreamerv3/main.py \
+"$PYTHON" -u dreamerv3/main.py \
   --logdir "$LOGDIR" --configs dmc_proprio "$MODE" \
   --task "$TASK" --seed "$SEED" \
   --env.dmc.render "${RENDER:-False}" \
@@ -50,7 +66,7 @@ python dreamerv3/main.py \
 TRAIN_PID=$!
 
 # Launch retention watcher (stops on stop_file or when stop_step reached).
-python -m probing.checkpoint_watcher \
+"$PYTHON" -u -m probing.checkpoint_watcher \
   --run_logdir "$LOGDIR" --stop_step "$STOP_STEP" \
   --stop_file "$LOGDIR/TRAINING_DONE" --poll_seconds 60 &
 WATCH_PID=$!
@@ -60,7 +76,7 @@ touch "$LOGDIR/TRAINING_DONE"        # tell the watcher to do a final sweep
 wait "$WATCH_PID" || true
 
 # Record the milestone->nearest-snapshot mapping for Phase 5.
-python -m probing.checkpoint_watcher --select --run_logdir "$LOGDIR" || true
+"$PYTHON" -u -m probing.checkpoint_watcher --select --run_logdir "$LOGDIR" || true
 
 STATUS=$([ "$TRAIN_RC" -eq 0 ] && echo DONE || echo FAILED)
 echo "[$(date)] pretrain $RUN_ID finished rc=$TRAIN_RC status=$STATUS"

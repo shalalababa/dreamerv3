@@ -23,7 +23,23 @@
 set -euo pipefail
 REPO="${REPO:-${SLURM_SUBMIT_DIR:-$PWD}}"
 source "$REPO/scripts/env.sh"
-activate_env
+if [ ! -x "${CONDA_ENV:-}/bin/python" ]; then
+  CONDA_ENV="$(python - <<'PY'
+import pathlib
+import sys
+print(pathlib.Path(sys.executable).resolve().parents[1])
+PY
+)"
+  export CONDA_ENV
+fi
+export PATH="$CONDA_ENV/bin:/usr/local/bin:/usr/bin:/bin:${PATH:-}"
+export CONDA_PREFIX="$CONDA_ENV"
+export CONDA_DEFAULT_ENV="$(basename "$CONDA_ENV")"
+export PYTHONNOUSERSITE="${PYTHONNOUSERSITE:-1}"
+export PYTHONUNBUFFERED="${PYTHONUNBUFFERED:-1}"
+PYTHON="$CONDA_ENV/bin/python"
+[ -x "$PYTHON" ] || PYTHON="$(command -v python || true)"
+[ -n "$PYTHON" ] || { echo "ERROR: no python found for CONDA_ENV=$CONDA_ENV"; exit 2; }
 cd "$REPO"
 
 : "${RUN_ID:?set RUN_ID}"; : "${TASK:?set TASK}"; : "${SEED:?set SEED}"; : "${CKPT:?set CKPT}"
@@ -35,9 +51,10 @@ echo "[$(date)] adapt RUN_ID=$RUN_ID TASK=$TASK SEED=$SEED CKPT=$CKPT STEPS=$STE
 manifest_append "$RUN_ID" adapt "$TASK" frozen_readout "$SEED" "$STEPS" "$CKPT" "$LOGDIR" RUNNING
 
 RC=0
-python dreamerv3/main.py \
+"$PYTHON" -u dreamerv3/main.py \
   --logdir "$LOGDIR" --configs dmc_proprio frozen_readout \
   --task "$TASK" --seed "$SEED" \
+  --env.dmc.render "${RENDER:-False}" \
   --run.from_checkpoint "$CKPT" --run.steps "$STEPS" || RC=$?
 STATUS=$([ "$RC" -eq 0 ] && echo DONE || echo FAILED)
 echo "[$(date)] adapt $RUN_ID rc=$RC status=$STATUS"
