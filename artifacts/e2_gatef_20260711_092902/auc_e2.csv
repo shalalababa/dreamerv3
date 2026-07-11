@@ -1,0 +1,5 @@
+run_id,mode,domain,seed,milestone,auc50k,n_ep_50k,auc100k,n_ep_100k,auc125k,n_ep_125k,final10,qc_pass
+adapt_goalwm_finger_seed1_ckpt100000,goalwm,finger,1,100000,112.8125,48,92.4583,96,82.1429,112,7.6,1
+adapt_goalwm_finger_seed2_ckpt100000,goalwm,finger,2,100000,49.9167,48,56.0833,96,74.5536,112,296.6,1
+adapt_goalwm_finger_seed3_ckpt100000,goalwm,finger,3,100000,92.75,48,56.4688,96,57.3393,112,100.1,1
+adapt_p2elong_finger_seed1_ckpt500000,p2elong,finger,1,500000,81.3125,48,82.5104,96,84.5625,112,99.2,1
