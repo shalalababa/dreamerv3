@@ -40,6 +40,29 @@ adaptation outcome was read locally.
   complete. Note the corresponding *adapt* runs used the nearest snapshot
   even when >5,000 steps off, so those 11 rows appear in M0 (milestone is
   the label) but never in M1/M2 (no driver row to merge).
+- **2026-07-11 — Gate F applied; E1 outcome verification; E3 pre-submit
+  fixes registered; latent-UQ stage0 read.** (a) Gate F (frozen rule, 7-Jul
+  addendum): oracle mean AUC₁₀₀ₖ 68.34 < μ+2σ = 131.83 of the 5a finger rows
+  ⇒ rule fires — finger stays reported-null *in the observational
+  population*; interpretation per the 10-Jul amendment (registered before
+  any Gate-F outcome existed): buffer deficiency, not readout ceiling
+  (Axis-1 high-occ buffer adapts; p2elong 496K-step budget probe stays
+  flat). `artifacts/e2_gatef_20260711_092902/DECISION.md`. (b) E1 reacher:
+  75/75 adapts verified bit-identical; mode-level direction replicates
+  (p2e/apt ≈95–98 vs random 42 AUC₁₀₀ₖ); registered population fit awaits
+  the measure grid. (c) E3 pre-submit check
+  (`artifacts/e3_precheck_20260711/PRECHECK.md`): finger dose + both finger
+  rpairs + cup r1 GO; registered pre-outcome fixes — cup dose re-search
+  with `--n_candidates 1200 --beam 300` adopted iff total_abs_dev improves;
+  cup r2 exclusion widened (all random labels; fallback original+r1-hi
+  dominants) until the pair differs from r1; control-reuse rule where an
+  r-pair side is member-identical to an already-run buffer (cup r1 lo ≡
+  q1 s0 ⇒ contrast ax1r1s1 vs existing ax1q1s0, no duplicate runs). These
+  are all search/efficiency changes made before any E3 outcome exists; no
+  frozen criterion (cov tol, occ-sep, overlap, seed) changed. (d) Latent-UQ
+  stage0 (other study): Biased Dreams attractor bias replicates 10/10
+  held-out seed-cells ⇒ D0 stays frozen
+  (`artifacts/latent_uq_stage0_20260710_221232/DECISION.md`).
 - **2026-07-10 — Phase-6/Axis-1 unblinded.** The 64-run paired grid was
   analyzed on the cluster with the frozen scripts (copied alongside the
   data; `local_results/axis1_analysis_20260710_213221/`) and re-derived
