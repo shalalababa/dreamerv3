@@ -39,6 +39,13 @@ read -ra quads <<< "${AXIS1_QUADS:-q1 q2}"
 read -ra doms <<< "${AXIS1_DOMAINS:-cup finger}"
 updates="${AXIS1_UPDATES:-500000}"
 steps="${STEPS:-1.25e5}"
+: "${AXIS1_EXPL_MODE:?set AXIS1_EXPL_MODE=apt (reward-free) or task (reward-aware arm)}"
+case "$AXIS1_EXPL_MODE" in
+  apt|task) ;;
+  *) echo "AXIS1_EXPL_MODE must be 'apt' or 'task', got: $AXIS1_EXPL_MODE" >&2; exit 2 ;;
+esac
+id_prefix="${AXIS1_ID_PREFIX:-$([ "$AXIS1_EXPL_MODE" = task ] && echo ax1 || echo ax1f)}"
+wm_infix="${id_prefix#ax1}"
 
 idx=0
 ran=0
@@ -61,8 +68,8 @@ for dom in "${doms[@]}"; do
           continue
         fi
 
-        run_id="adapt_ax1${q}s${side}_${dom}_seed${s}_ckpt${updates}"
-        wm_run="ax1wm_${dom}_${q}s${side}_seed${s}"
+        run_id="adapt_${id_prefix}${q}s${side}_${dom}_seed${s}_ckpt${updates}"
+        wm_run="ax1wm_${dom}_${wm_infix}${q}s${side}_seed${s}"
         log="$RUNROOT/_cloud_logs/${run_id}.out"
         if [ "${FORCE:-0}" != "1" ] && [ -f "$RUNROOT/$run_id/ADAPT_DONE" ]; then
           echo "[$(date)] SKIP done: $run_id"
@@ -74,7 +81,8 @@ for dom in "${doms[@]}"; do
         set +e
         RUN_ID="$run_id" WM_RUN="$wm_run" TASK="$task" SEED="$s" \
           REPLAY="$root/side${side}" UPDATES="$updates" STEPS="$steps" \
-          AXIS=axis1 PAIRED_SEED_SET="ax1_${dom}_${q}" RENDER="${RENDER:-False}" \
+          AXIS=axis1 PAIRED_SEED_SET="${id_prefix}_${dom}_${q}" \
+          AXIS1_EXPL_MODE="$AXIS1_EXPL_MODE" RENDER="${RENDER:-False}" \
           bash "$REPO/scripts/axis1.sbatch" > "$log" 2>&1
         rc=$?
         set -e
