@@ -1,0 +1,46 @@
+{
+  "run_logdir": "/workspace/dreamerv3_runs/pretrain_apt_finger_seed2",
+  "probeset": "/workspace/dreamerv3_runs/probesets/finger_v1",
+  "probeset_id": "finger_v1_7a32ff08",
+  "probeset_sha256": "7a32ff087dd4d8ee639bc1badc955a99039fe438d4c1f8c040eab77ded25663c",
+  "burn_in": 32,
+  "eval_steps": 8,
+  "ref_replay": "/workspace/dreamerv3_runs/pretrain_apt_finger_seed2/replay",
+  "ref_windows": 2048,
+  "knn": 10,
+  "dec_symlog": true,
+  "has_disag": false,
+  "held_out": true,
+  "checkpoints": [
+    {
+      "name": "step000000100672",
+      "exact_step": 100672,
+      "milestone": 100000,
+      "path": "step000000100672/uq.npz"
+    },
+    {
+      "name": "step000000199968",
+      "exact_step": 199968,
+      "milestone": 200000,
+      "path": "step000000199968/uq.npz"
+    },
+    {
+      "name": "step000000299376",
+      "exact_step": 299376,
+      "milestone": 300000,
+      "path": "step000000299376/uq.npz"
+    },
+    {
+      "name": "step000000400608",
+      "exact_step": 400608,
+      "milestone": 400000,
+      "path": "step000000400608/uq.npz"
+    },
+    {
+      "name": "step000000497872",
+      "exact_step": 497872,
+      "milestone": 500000,
+      "path": "step000000497872/uq.npz"
+    }
+  ]
+}

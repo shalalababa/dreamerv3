@@ -1,0 +1,89 @@
+{
+  "probeset_id": "ball_in_cup_v1_9327e960",
+  "task": "dmc_cup_catch",
+  "domain": "ball_in_cup",
+  "tag": "v1",
+  "windows": 2560,
+  "length": 40,
+  "burn_in": 32,
+  "eval_steps": 8,
+  "windows_per_source": 640,
+  "seed": 0,
+  "sources": {
+    "p2e": {
+      "replay_dir": "/scratch/midway3/rickybao/dreamerv3_runs/pilot_p2e_cup_seed1/replay",
+      "streams": 16,
+      "chunks": 480,
+      "candidates": 2496,
+      "windows": 640
+    },
+    "apt": {
+      "replay_dir": "/scratch/midway3/rickybao/dreamerv3_runs/pilot_apt_cup_seed1/replay",
+      "streams": 16,
+      "chunks": 2272,
+      "candidates": 2480,
+      "windows": 640
+    },
+    "random": {
+      "replay_dir": "/scratch/midway3/rickybao/dreamerv3_runs/pilot_random_cup_seed1/replay",
+      "streams": 16,
+      "chunks": 1072,
+      "candidates": 2480,
+      "windows": 640
+    },
+    "goal": {
+      "replay_dir": "/scratch/midway3/rickybao/dreamerv3_runs/pilot_goal_cup_seed1/replay",
+      "streams": 16,
+      "chunks": 544,
+      "candidates": 2464,
+      "windows": 640
+    }
+  },
+  "regime_occupancy_eval": {
+    "p2e": 0.034765625,
+    "apt": 0.1154296875,
+    "random": 0.2759765625,
+    "goal": 0.14765625
+  },
+  "keys": {
+    "reward": [
+      40
+    ],
+    "is_first": [
+      40
+    ],
+    "is_last": [
+      40
+    ],
+    "is_terminal": [
+      40
+    ],
+    "position": [
+      40,
+      4
+    ],
+    "velocity": [
+      40,
+      4
+    ],
+    "action": [
+      40,
+      2
+    ],
+    "stepid": [
+      40,
+      20
+    ],
+    "source_label": [],
+    "stream_start": [
+      2
+    ],
+    "regime_eval": [
+      8
+    ]
+  },
+  "sha256": "9327e96044a6df2659a58e07833dc4f793a2a22bf263bd794a31b022200cb632",
+  "git_commit": "75f68e778d9c591427226aeb81b71156d39c6f0f",
+  "created": "2026-07-06T10:52:21",
+  "frozen": true
+}

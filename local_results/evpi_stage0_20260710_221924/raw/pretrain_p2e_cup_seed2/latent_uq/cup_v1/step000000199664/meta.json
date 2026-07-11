@@ -1,0 +1,64 @@
+{
+  "checkpoint": "/workspace/dreamerv3_runs/pretrain_p2e_cup_seed2/ckpt_snapshots/step000000199664",
+  "exact_step": 199664,
+  "milestone": 200000,
+  "probeset_id": "ball_in_cup_v1_9327e960",
+  "probeset_sha256": "9327e96044a6df2659a58e07833dc4f793a2a22bf263bd794a31b022200cb632",
+  "burn_in": 32,
+  "eval_steps": 8,
+  "ref_replay": "/workspace/dreamerv3_runs/pretrain_p2e_cup_seed2/replay",
+  "ref_windows": 2048,
+  "knn": 10,
+  "dec_symlog": true,
+  "has_disag": true,
+  "seed": 0,
+  "disag_ens": 8,
+  "shapes": {
+    "pred_position": [
+      2560,
+      8,
+      4
+    ],
+    "true_position": [
+      2560,
+      8,
+      4
+    ],
+    "err_position": [
+      2560,
+      8
+    ],
+    "pred_velocity": [
+      2560,
+      8,
+      4
+    ],
+    "true_velocity": [
+      2560,
+      8,
+      4
+    ],
+    "err_velocity": [
+      2560,
+      8
+    ],
+    "err_steps": [
+      2560,
+      8
+    ],
+    "disag_steps": [
+      2560,
+      8
+    ],
+    "density_knn": [
+      2560
+    ],
+    "source_label": [
+      2560
+    ],
+    "stream_start": [
+      2560,
+      2
+    ]
+  }
+}

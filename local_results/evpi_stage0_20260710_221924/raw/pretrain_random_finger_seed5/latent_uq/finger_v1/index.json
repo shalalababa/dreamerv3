@@ -1,0 +1,46 @@
+{
+  "run_logdir": "/workspace/dreamerv3_runs/pretrain_random_finger_seed5",
+  "probeset": "/workspace/dreamerv3_runs/probesets/finger_v1",
+  "probeset_id": "finger_v1_7a32ff08",
+  "probeset_sha256": "7a32ff087dd4d8ee639bc1badc955a99039fe438d4c1f8c040eab77ded25663c",
+  "burn_in": 32,
+  "eval_steps": 8,
+  "ref_replay": "/workspace/dreamerv3_runs/pretrain_random_finger_seed5/replay",
+  "ref_windows": 2048,
+  "knn": 10,
+  "dec_symlog": true,
+  "has_disag": false,
+  "held_out": true,
+  "checkpoints": [
+    {
+      "name": "step000000100240",
+      "exact_step": 100240,
+      "milestone": 100000,
+      "path": "step000000100240/uq.npz"
+    },
+    {
+      "name": "step000000198608",
+      "exact_step": 198608,
+      "milestone": 200000,
+      "path": "step000000198608/uq.npz"
+    },
+    {
+      "name": "step000000296896",
+      "exact_step": 296896,
+      "milestone": 300000,
+      "path": "step000000296896/uq.npz"
+    },
+    {
+      "name": "step000000404176",
+      "exact_step": 404176,
+      "milestone": 400000,
+      "path": "step000000404176/uq.npz"
+    },
+    {
+      "name": "step000000493552",
+      "exact_step": 493552,
+      "milestone": 500000,
+      "path": "step000000493552/uq.npz"
+    }
+  ]
+}

@@ -1,0 +1,100 @@
+{
+  "probeset_id": "finger_v1_7a32ff08",
+  "task": "dmc_finger_turn_hard",
+  "domain": "finger",
+  "tag": "v1",
+  "windows": 2560,
+  "length": 40,
+  "burn_in": 32,
+  "eval_steps": 8,
+  "windows_per_source": 640,
+  "seed": 0,
+  "sources": {
+    "p2e": {
+      "replay_dir": "/scratch/midway3/rickybao/dreamerv3_runs/pilot_p2e_finger_seed1/replay",
+      "streams": 16,
+      "chunks": 752,
+      "candidates": 2480,
+      "windows": 640
+    },
+    "apt": {
+      "replay_dir": "/scratch/midway3/rickybao/dreamerv3_runs/pilot_apt_finger_seed1/replay",
+      "streams": 16,
+      "chunks": 2272,
+      "candidates": 2480,
+      "windows": 640
+    },
+    "random": {
+      "replay_dir": "/scratch/midway3/rickybao/dreamerv3_runs/pilot_random_finger_seed1/replay",
+      "streams": 16,
+      "chunks": 336,
+      "candidates": 2448,
+      "windows": 640
+    },
+    "goal": {
+      "replay_dir": "/scratch/midway3/rickybao/dreamerv3_runs/pilot_goal_finger_seed1/replay",
+      "streams": 16,
+      "chunks": 736,
+      "candidates": 2464,
+      "windows": 640
+    }
+  },
+  "regime_occupancy_eval": {
+    "p2e": 0.073828125,
+    "apt": 0.040234375,
+    "random": 0.0501953125,
+    "goal": 0.16171875
+  },
+  "keys": {
+    "reward": [
+      40
+    ],
+    "is_first": [
+      40
+    ],
+    "is_last": [
+      40
+    ],
+    "is_terminal": [
+      40
+    ],
+    "position": [
+      40,
+      4
+    ],
+    "velocity": [
+      40,
+      3
+    ],
+    "touch": [
+      40,
+      2
+    ],
+    "target_position": [
+      40,
+      2
+    ],
+    "dist_to_target": [
+      40
+    ],
+    "action": [
+      40,
+      2
+    ],
+    "stepid": [
+      40,
+      20
+    ],
+    "source_label": [],
+    "stream_start": [
+      2
+    ],
+    "regime_eval": [
+      8
+    ]
+  },
+  "sha256": "7a32ff087dd4d8ee639bc1badc955a99039fe438d4c1f8c040eab77ded25663c",
+  "git_commit": "75f68e778d9c591427226aeb81b71156d39c6f0f",
+  "created": "2026-07-06T10:53:11",
+  "frozen": true
+}

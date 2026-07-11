@@ -1,0 +1,370 @@
+{
+  "created": "2026-07-10T22:18:10",
+  "command": "/home/rickybao/projects/dreamerv3/probing/latent_uq_analysis.py --cross --cell finger_apt_cross --dumps apt_finger_seed1=/scratch/midway3/rickybao/dreamerv3_runs/pretrain_apt_finger_seed1/latent_uq/finger_v1 apt_finger_seed2=/scratch/midway3/rickybao/dreamerv3_runs/pretrain_apt_finger_seed2/latent_uq/finger_v1 apt_finger_seed3=/scratch/midway3/rickybao/dreamerv3_runs/pretrain_apt_finger_seed3/latent_uq/finger_v1 apt_finger_seed4=/scratch/midway3/rickybao/dreamerv3_runs/pretrain_apt_finger_seed4/latent_uq/finger_v1 apt_finger_seed5=/scratch/midway3/rickybao/dreamerv3_runs/pretrain_apt_finger_seed5/latent_uq/finger_v1 --horizons 1 5 --output /home/rickybao/projects/dreamerv3/artifacts/latent_uq_stage0_20260710_221232/finger_apt_cross",
+  "git_commit": "d102ac4fd5cf27d13eae50171d4dacc56b18d79e",
+  "dumps": {
+    "apt_finger_seed1": "/scratch/midway3/rickybao/dreamerv3_runs/pretrain_apt_finger_seed1/latent_uq/finger_v1",
+    "apt_finger_seed2": "/scratch/midway3/rickybao/dreamerv3_runs/pretrain_apt_finger_seed2/latent_uq/finger_v1",
+    "apt_finger_seed3": "/scratch/midway3/rickybao/dreamerv3_runs/pretrain_apt_finger_seed3/latent_uq/finger_v1",
+    "apt_finger_seed4": "/scratch/midway3/rickybao/dreamerv3_runs/pretrain_apt_finger_seed4/latent_uq/finger_v1",
+    "apt_finger_seed5": "/scratch/midway3/rickybao/dreamerv3_runs/pretrain_apt_finger_seed5/latent_uq/finger_v1"
+  },
+  "probeset_ids": [
+    "finger_v1_7a32ff08"
+  ],
+  "held_out": true,
+  "cross": true,
+  "horizons": [
+    1,
+    5
+  ],
+  "primary_horizon": 5,
+  "n_boot": 300,
+  "verdict_sigma": 2.0,
+  "output": "/home/rickybao/projects/dreamerv3/artifacts/latent_uq_stage0_20260710_221232/finger_apt_cross",
+  "cells": [
+    {
+      "label": "finger_apt_cross",
+      "checkpoints": [
+        {
+          "name": "step000000099072",
+          "exact_step": 99072,
+          "milestone": 100000,
+          "rows": [
+            {
+              "kind": "anchor",
+              "horizon": 1,
+              "n": 2560,
+              "rho_de": 0.7063590271639292,
+              "rho_de_se": 0.02864536357732252,
+              "rho_dp": 0.5666826608245197,
+              "rho_dp_se": 0.019390449213810775,
+              "rho_ep": 0.4515355579042578,
+              "pcorr_de": 0.6127671575295625,
+              "pcorr_dp": 0.3922457856981703,
+              "delta": 0.22052137183139214,
+              "delta_se": 0.048005577428258214,
+              "verdict": "TRACKS_ERROR"
+            },
+            {
+              "kind": "path",
+              "horizon": 1,
+              "n": 2560,
+              "rho_de": 0.7063590271639292,
+              "rho_de_se": 0.02864536357732252,
+              "rho_dp": 0.5666826608245197,
+              "rho_dp_se": 0.019390449213810775,
+              "rho_ep": 0.4515355579042578,
+              "pcorr_de": 0.6127671575295625,
+              "pcorr_dp": 0.3922457856981703,
+              "delta": 0.22052137183139214,
+              "delta_se": 0.048005577428258214,
+              "verdict": "TRACKS_ERROR"
+            },
+            {
+              "kind": "anchor",
+              "horizon": 5,
+              "n": 2560,
+              "rho_de": 0.49181988281362643,
+              "rho_de_se": 0.02350719366372749,
+              "rho_dp": 0.5666826608245197,
+              "rho_dp_se": 0.0183729008494779,
+              "rho_ep": 0.4211671153733025,
+              "pcorr_de": 0.33875698758640593,
+              "pcorr_dp": 0.4552880006800857,
+              "delta": -0.11653101309367975,
+              "delta_se": 0.03467069874318054,
+              "verdict": "TRACKS_DENSITY"
+            },
+            {
+              "kind": "path",
+              "horizon": 5,
+              "n": 2560,
+              "rho_de": 0.6563514933740986,
+              "rho_de_se": 0.02220453805140044,
+              "rho_dp": 0.6189128471690634,
+              "rho_dp_se": 0.01560419189765732,
+              "rho_ep": 0.4211671153733025,
+              "pcorr_de": 0.5554274682402239,
+              "pcorr_dp": 0.5004970503078441,
+              "delta": 0.05493041793237985,
+              "delta_se": 0.03858302990420175,
+              "verdict": "AMBIGUOUS"
+            }
+          ]
+        },
+        {
+          "name": "step000000200896",
+          "exact_step": 200896,
+          "milestone": 200000,
+          "rows": [
+            {
+              "kind": "anchor",
+              "horizon": 1,
+              "n": 2560,
+              "rho_de": 0.7545758178063685,
+              "rho_de_se": 0.016821320683548555,
+              "rho_dp": 0.5321777616722347,
+              "rho_dp_se": 0.023176444122910294,
+              "rho_ep": 0.3849553583050122,
+              "pcorr_de": 0.7035068330377495,
+              "pcorr_dp": 0.3990802736803948,
+              "delta": 0.30442655935735474,
+              "delta_se": 0.029222454933613997,
+              "verdict": "TRACKS_ERROR"
+            },
+            {
+              "kind": "path",
+              "horizon": 1,
+              "n": 2560,
+              "rho_de": 0.7545758178063685,
+              "rho_de_se": 0.016821320683548555,
+              "rho_dp": 0.5321777616722347,
+              "rho_dp_se": 0.023176444122910294,
+              "rho_ep": 0.3849553583050122,
+              "pcorr_de": 0.7035068330377495,
+              "pcorr_dp": 0.3990802736803948,
+              "delta": 0.30442655935735474,
+              "delta_se": 0.029222454933613997,
+              "verdict": "TRACKS_ERROR"
+            },
+            {
+              "kind": "anchor",
+              "horizon": 5,
+              "n": 2560,
+              "rho_de": 0.5193785160546899,
+              "rho_de_se": 0.020711843327421042,
+              "rho_dp": 0.5321777616722347,
+              "rho_dp_se": 0.02149312131455096,
+              "rho_ep": 0.3718054582439297,
+              "pcorr_de": 0.409080452024464,
+              "pcorr_dp": 0.42742649173050323,
+              "delta": -0.018346039706039208,
+              "delta_se": 0.03625750432015402,
+              "verdict": "AMBIGUOUS"
+            },
+            {
+              "kind": "path",
+              "horizon": 5,
+              "n": 2560,
+              "rho_de": 0.7018407717175706,
+              "rho_de_se": 0.01702754398604003,
+              "rho_dp": 0.5940457212054242,
+              "rho_dp_se": 0.01924748932345042,
+              "rho_ep": 0.3718054582439297,
+              "pcorr_de": 0.644075676670016,
+              "pcorr_dp": 0.5037260718501151,
+              "delta": 0.14034960481990089,
+              "delta_se": 0.024193540383622723,
+              "verdict": "TRACKS_ERROR"
+            }
+          ]
+        },
+        {
+          "name": "step000000300352",
+          "exact_step": 300352,
+          "milestone": 300000,
+          "rows": [
+            {
+              "kind": "anchor",
+              "horizon": 1,
+              "n": 2560,
+              "rho_de": 0.7650024971012109,
+              "rho_de_se": 0.016562215901054174,
+              "rho_dp": 0.4992687281446423,
+              "rho_dp_se": 0.02570366352240068,
+              "rho_ep": 0.35009960223764064,
+              "pcorr_de": 0.727205596363836,
+              "pcorr_dp": 0.38364623487890925,
+              "delta": 0.3435593614849267,
+              "delta_se": 0.02961233962031617,
+              "verdict": "TRACKS_ERROR"
+            },
+            {
+              "kind": "path",
+              "horizon": 1,
+              "n": 2560,
+              "rho_de": 0.7650024971012109,
+              "rho_de_se": 0.016562215901054174,
+              "rho_dp": 0.4992687281446423,
+              "rho_dp_se": 0.02570366352240068,
+              "rho_ep": 0.35009960223764064,
+              "pcorr_de": 0.727205596363836,
+              "pcorr_dp": 0.38364623487890925,
+              "delta": 0.3435593614849267,
+              "delta_se": 0.02961233962031617,
+              "verdict": "TRACKS_ERROR"
+            },
+            {
+              "kind": "anchor",
+              "horizon": 5,
+              "n": 2560,
+              "rho_de": 0.5069295767390558,
+              "rho_de_se": 0.024856368881608765,
+              "rho_dp": 0.4992687281446423,
+              "rho_dp_se": 0.02289286049389833,
+              "rho_ep": 0.355996495446624,
+              "pcorr_de": 0.4065681234631282,
+              "pcorr_dp": 0.39577543041655117,
+              "delta": 0.01079269304657704,
+              "delta_se": 0.038089997119092556,
+              "verdict": "AMBIGUOUS"
+            },
+            {
+              "kind": "path",
+              "horizon": 5,
+              "n": 2560,
+              "rho_de": 0.6993159672170206,
+              "rho_de_se": 0.020296172190992605,
+              "rho_dp": 0.5800491419390322,
+              "rho_dp_se": 0.019695054199276772,
+              "rho_ep": 0.355996495446624,
+              "pcorr_de": 0.6474121376396381,
+              "pcorr_dp": 0.49566369872980903,
+              "delta": 0.1517484389098291,
+              "delta_se": 0.025565450555499906,
+              "verdict": "TRACKS_ERROR"
+            }
+          ]
+        },
+        {
+          "name": "step000000399808",
+          "exact_step": 399808,
+          "milestone": 400000,
+          "rows": [
+            {
+              "kind": "anchor",
+              "horizon": 1,
+              "n": 2560,
+              "rho_de": 0.7632928539532247,
+              "rho_de_se": 0.015233090346504724,
+              "rho_dp": 0.4455257596899582,
+              "rho_dp_se": 0.023380638286425646,
+              "rho_ep": 0.34473870000632334,
+              "pcorr_de": 0.725501696214435,
+              "pcorr_dp": 0.30074951499830666,
+              "delta": 0.4247521812161284,
+              "delta_se": 0.03328836823012018,
+              "verdict": "TRACKS_ERROR"
+            },
+            {
+              "kind": "path",
+              "horizon": 1,
+              "n": 2560,
+              "rho_de": 0.7632928539532247,
+              "rho_de_se": 0.015233090346504724,
+              "rho_dp": 0.4455257596899582,
+              "rho_dp_se": 0.023380638286425646,
+              "rho_ep": 0.34473870000632334,
+              "pcorr_de": 0.725501696214435,
+              "pcorr_dp": 0.30074951499830666,
+              "delta": 0.4247521812161284,
+              "delta_se": 0.03328836823012018,
+              "verdict": "TRACKS_ERROR"
+            },
+            {
+              "kind": "anchor",
+              "horizon": 5,
+              "n": 2560,
+              "rho_de": 0.5045308925866535,
+              "rho_de_se": 0.022346431006448328,
+              "rho_dp": 0.4455257596899582,
+              "rho_dp_se": 0.024384209547001403,
+              "rho_ep": 0.3509348476794967,
+              "pcorr_de": 0.4153262097346828,
+              "pcorr_dp": 0.3320647674526567,
+              "delta": 0.08326144228202614,
+              "delta_se": 0.038100701585687284,
+              "verdict": "TRACKS_ERROR"
+            },
+            {
+              "kind": "path",
+              "horizon": 5,
+              "n": 2560,
+              "rho_de": 0.7066013101946806,
+              "rho_de_se": 0.017744123899017847,
+              "rho_dp": 0.5292601641465177,
+              "rho_dp_se": 0.023030899962479753,
+              "rho_ep": 0.3509348476794967,
+              "pcorr_de": 0.6555911154280013,
+              "pcorr_dp": 0.4245183774318993,
+              "delta": 0.231072737996102,
+              "delta_se": 0.03002714825012645,
+              "verdict": "TRACKS_ERROR"
+            }
+          ]
+        },
+        {
+          "name": "step000000499264",
+          "exact_step": 499264,
+          "milestone": 500000,
+          "rows": [
+            {
+              "kind": "anchor",
+              "horizon": 1,
+              "n": 2560,
+              "rho_de": 0.8061797275435983,
+              "rho_de_se": 0.01308394935156669,
+              "rho_dp": 0.40849324618236477,
+              "rho_dp_se": 0.028960018474962084,
+              "rho_ep": 0.32800679967984,
+              "pcorr_de": 0.7795661500604868,
+              "pcorr_dp": 0.25774081263233983,
+              "delta": 0.521825337428147,
+              "delta_se": 0.032828690930723166,
+              "verdict": "TRACKS_ERROR"
+            },
+            {
+              "kind": "path",
+              "horizon": 1,
+              "n": 2560,
+              "rho_de": 0.8061797275435983,
+              "rho_de_se": 0.01308394935156669,
+              "rho_dp": 0.40849324618236477,
+              "rho_dp_se": 0.028960018474962084,
+              "rho_ep": 0.32800679967984,
+              "pcorr_de": 0.7795661500604868,
+              "pcorr_dp": 0.25774081263233983,
+              "delta": 0.521825337428147,
+              "delta_se": 0.032828690930723166,
+              "verdict": "TRACKS_ERROR"
+            },
+            {
+              "kind": "anchor",
+              "horizon": 5,
+              "n": 2560,
+              "rho_de": 0.5297334029744571,
+              "rho_de_se": 0.021570837883838834,
+              "rho_dp": 0.40849324618236477,
+              "rho_dp_se": 0.02688568094969312,
+              "rho_ep": 0.35032275347866104,
+              "pcorr_de": 0.45224052999056136,
+              "pcorr_dp": 0.28060335838102424,
+              "delta": 0.17163717160953712,
+              "delta_se": 0.04210179177791594,
+              "verdict": "TRACKS_ERROR"
+            },
+            {
+              "kind": "path",
+              "horizon": 5,
+              "n": 2560,
+              "rho_de": 0.7387390284044689,
+              "rho_de_se": 0.015662586179027552,
+              "rho_dp": 0.5149437145147269,
+              "rho_dp_se": 0.02551359881968418,
+              "rho_ep": 0.35032275347866104,
+              "pcorr_de": 0.6954065396713686,
+              "pcorr_dp": 0.40575748953813084,
+              "delta": 0.2896490501332377,
+              "delta_se": 0.033513581684370124,
+              "verdict": "TRACKS_ERROR"
+            }
+          ]
+        }
+      ],
+      "final_verdict": "TRACKS_ERROR",
+      "addendum_pass": true,
+      "addendum_horizon": 1
+    }
+  ]
+}

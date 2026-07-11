@@ -1,0 +1,181 @@
+START gpu=3 pre_run=pretrain_p2e_finger_seed5 probeset=/workspace/dreamerv3_runs/probesets/finger_v1 out=/workspace/dreamerv3_runs/pretrain_p2e_finger_seed5/latent_uq/finger_v1
++ set -euo pipefail
++ REPO=/workspace/dreamerv3
++ source /workspace/dreamerv3/scripts/env.sh
+++ export SLURM_ACCOUNT=pi-chenyuxin
+++ SLURM_ACCOUNT=pi-chenyuxin
+++ export SLURM_PARTITION=gpu
+++ SLURM_PARTITION=gpu
+++ export SLURM_GRES=gpu:1
+++ SLURM_GRES=gpu:1
+++ export SLURM_TIME=08:00:00
+++ SLURM_TIME=08:00:00
+++ export SLURM_CPUS=8
+++ SLURM_CPUS=8
+++ export SLURM_MEM=32G
+++ SLURM_MEM=32G
+++ export REPO=/workspace/dreamerv3
+++ REPO=/workspace/dreamerv3
+++ export RUNROOT=/workspace/dreamerv3_runs
+++ RUNROOT=/workspace/dreamerv3_runs
+++ export CONDA_ENV=/workspace/conda_envs/dreamerv3
+++ CONDA_ENV=/workspace/conda_envs/dreamerv3
+++ export MANIFEST=/workspace/dreamerv3_runs/runs.csv
+++ MANIFEST=/workspace/dreamerv3_runs/runs.csv
+++ export MUJOCO_GL=egl
+++ MUJOCO_GL=egl
+++ export XLA_PYTHON_CLIENT_PREALLOCATE=false
+++ XLA_PYTHON_CLIENT_PREALLOCATE=false
++ activate_env
++ command -v conda
+++ conda info --base
++ source /opt/miniforge3/etc/profile.d/conda.sh
+++ export CONDA_EXE=/opt/miniforge3/bin/conda
+++ CONDA_EXE=/opt/miniforge3/bin/conda
+++ export _CONDA_EXE=/opt/miniforge3/bin/conda
+++ _CONDA_EXE=/opt/miniforge3/bin/conda
+++ export _CE_M=
+++ _CE_M=
+++ export _CE_CONDA=
+++ _CE_CONDA=
+++ export CONDA_PYTHON_EXE=/opt/miniforge3/bin/python
+++ CONDA_PYTHON_EXE=/opt/miniforge3/bin/python
+++ export _CONDA_ROOT=/opt/miniforge3
+++ _CONDA_ROOT=/opt/miniforge3
+++ '[' -z x ']'
++ conda activate /workspace/conda_envs/dreamerv3
++ local cmd=activate
++ case "$cmd" in
++ __conda_activate activate /workspace/conda_envs/dreamerv3
++ '[' -n '' ']'
++ local ask_conda
+++ PS1=
+++ __conda_exe shell.posix activate /workspace/conda_envs/dreamerv3
+++ '[' -n '' ']'
+++ /opt/miniforge3/bin/conda shell.posix activate /workspace/conda_envs/dreamerv3
++ ask_conda='export _CE_M='\'''\''
+export _CE_CONDA='\'''\''
+PS1='\''(dreamerv3) '\''
+export PATH='\''/workspace/conda_envs/dreamerv3/bin:/workspace/conda_envs/dreamerv3/bin:/workspace/conda_envs/dreamerv3/bin:/workspace/conda_envs/dreamerv3/bin:/workspace/conda_envs/dreamerv3/bin:/workspace/conda_envs/dreamerv3/bin:/workspace/conda_envs/dreamerv3/bin:/opt/miniforge3/condabin:/opt/nvm/versions/node/v24.16.0/bin:/opt/instance-tools/bin:/usr/local/nvidia/bin:/usr/local/cuda/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'\''
+export CONDA_SHLVL='\''2'\''
+export CONDA_PROMPT_MODIFIER='\''(dreamerv3) '\''
+export CONDA_EXE='\''/opt/miniforge3/bin/conda'\''
+export _CONDA_EXE='\''/opt/miniforge3/bin/conda'\''
+export CONDA_PYTHON_EXE='\''/opt/miniforge3/bin/python'\''
+export _CONDA_ROOT='\''/opt/miniforge3'\'''
++ eval 'export _CE_M='\'''\''
+export _CE_CONDA='\'''\''
+PS1='\''(dreamerv3) '\''
+export PATH='\''/workspace/conda_envs/dreamerv3/bin:/workspace/conda_envs/dreamerv3/bin:/workspace/conda_envs/dreamerv3/bin:/workspace/conda_envs/dreamerv3/bin:/workspace/conda_envs/dreamerv3/bin:/workspace/conda_envs/dreamerv3/bin:/workspace/conda_envs/dreamerv3/bin:/opt/miniforge3/condabin:/opt/nvm/versions/node/v24.16.0/bin:/opt/instance-tools/bin:/usr/local/nvidia/bin:/usr/local/cuda/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'\''
+export CONDA_SHLVL='\''2'\''
+export CONDA_PROMPT_MODIFIER='\''(dreamerv3) '\''
+export CONDA_EXE='\''/opt/miniforge3/bin/conda'\''
+export _CONDA_EXE='\''/opt/miniforge3/bin/conda'\''
+export CONDA_PYTHON_EXE='\''/opt/miniforge3/bin/python'\''
+export _CONDA_ROOT='\''/opt/miniforge3'\'''
+++ export _CE_M=
+++ _CE_M=
+++ export _CE_CONDA=
+++ _CE_CONDA=
+++ PS1='(dreamerv3) '
+++ export PATH=/workspace/conda_envs/dreamerv3/bin:/workspace/conda_envs/dreamerv3/bin:/workspace/conda_envs/dreamerv3/bin:/workspace/conda_envs/dreamerv3/bin:/workspace/conda_envs/dreamerv3/bin:/workspace/conda_envs/dreamerv3/bin:/workspace/conda_envs/dreamerv3/bin:/opt/miniforge3/condabin:/opt/nvm/versions/node/v24.16.0/bin:/opt/instance-tools/bin:/usr/local/nvidia/bin:/usr/local/cuda/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+++ PATH=/workspace/conda_envs/dreamerv3/bin:/workspace/conda_envs/dreamerv3/bin:/workspace/conda_envs/dreamerv3/bin:/workspace/conda_envs/dreamerv3/bin:/workspace/conda_envs/dreamerv3/bin:/workspace/conda_envs/dreamerv3/bin:/workspace/conda_envs/dreamerv3/bin:/opt/miniforge3/condabin:/opt/nvm/versions/node/v24.16.0/bin:/opt/instance-tools/bin:/usr/local/nvidia/bin:/usr/local/cuda/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+++ export CONDA_SHLVL=2
+++ CONDA_SHLVL=2
+++ export 'CONDA_PROMPT_MODIFIER=(dreamerv3) '
+++ CONDA_PROMPT_MODIFIER='(dreamerv3) '
+++ export CONDA_EXE=/opt/miniforge3/bin/conda
+++ CONDA_EXE=/opt/miniforge3/bin/conda
+++ export _CONDA_EXE=/opt/miniforge3/bin/conda
+++ _CONDA_EXE=/opt/miniforge3/bin/conda
+++ export CONDA_PYTHON_EXE=/opt/miniforge3/bin/python
+++ CONDA_PYTHON_EXE=/opt/miniforge3/bin/python
+++ export _CONDA_ROOT=/opt/miniforge3
+++ _CONDA_ROOT=/opt/miniforge3
++ __conda_hashr
++ '[' -n '' ']'
++ '[' -n '' ']'
++ hash -r
++ cd /workspace/dreamerv3
++ : pretrain_p2e_finger_seed5
++ : /workspace/dreamerv3_runs/probesets/finger_v1
++ MILESTONES='100000 200000 300000 400000 500000'
++ LOGDIR=/workspace/dreamerv3_runs/pretrain_p2e_finger_seed5
++ '[' -d /workspace/dreamerv3_runs/probesets/finger_v1 ']'
+++ basename /workspace/dreamerv3_runs/probesets/finger_v1
++ OUT=/workspace/dreamerv3_runs/pretrain_p2e_finger_seed5/latent_uq/finger_v1
++ '[' -f /workspace/dreamerv3_runs/pretrain_p2e_finger_seed5/latent_uq/finger_v1/index.json ']'
+++ date
++ echo '[Sat Jul 11 00:07:29 UTC 2026] latent_uq PRE_RUN=pretrain_p2e_finger_seed5 probeset=/workspace/dreamerv3_runs/probesets/finger_v1 milestones=100000 200000 300000 400000 500000'
+[Sat Jul 11 00:07:29 UTC 2026] latent_uq PRE_RUN=pretrain_p2e_finger_seed5 probeset=/workspace/dreamerv3_runs/probesets/finger_v1 milestones=100000 200000 300000 400000 500000
++ python -m probing.latent_uq --probeset /workspace/dreamerv3_runs/probesets/finger_v1 --run_logdir /workspace/dreamerv3_runs/pretrain_p2e_finger_seed5 --milestones 100000 200000 300000 400000 500000 --output /workspace/dreamerv3_runs/pretrain_p2e_finger_seed5/latent_uq/finger_v1 --platform cuda
+Probe set finger_v1_7a32ff08: 2560 windows x 40 steps (32 burn-in + 8 eval)
+WARNING: eval_steps=8 < 15; the brief's horizon-15 read will be unavailable (build Stage-0 sets with --eval_steps 16).
+Density reference: /workspace/dreamerv3_runs/pretrain_p2e_finger_seed5/replay (1760 chunks, target 2048 windows, k=10)
+Checkpoints: ['step000000100896', 'step000000200000', 'step000000299136', 'step000000398096', 'step000000497296']
+Observations
+  reward           Space(float32, shape=(), low=-inf, high=inf)
+  is_first         Space(bool, shape=(), low=False, high=True)
+  is_last          Space(bool, shape=(), low=False, high=True)
+  is_terminal      Space(bool, shape=(), low=False, high=True)
+  position         Space(float32, shape=(4,), low=-inf, high=inf)
+  velocity         Space(float32, shape=(3,), low=-inf, high=inf)
+  touch            Space(float32, shape=(2,), low=-inf, high=inf)
+  target_position  Space(float32, shape=(2,), low=-inf, high=inf)
+  dist_to_target   Space(float32, shape=(), low=-inf, high=inf)
+Actions
+  action           Space(float32, shape=(2,), low=-1.0, high=1.0)
+Extras
+  consec           Space(int32, shape=(), low=-2147483648, high=2147483647)
+  stepid           Space(uint8, shape=(20,), low=0, high=255)
+  dyn/deter        Space(float32, shape=(512,), low=-inf, high=inf)
+  dyn/stoch        Space(float32, shape=(32, 4), low=-inf, high=inf)
+JAX devices (1): [cuda:0]
+Policy devices: cuda:0
+Train devices:  cuda:0
+Initializing parameters...
+/workspace/dreamerv3/embodied/jax/agent.py:112: DeprecationWarning: `with mesh:` context manager has been deprecated. Please use `with jax.set_mesh(mesh):` instead.
+  with self.train_mesh:
+Optimizer opt has 3,744,016 params:
+     3,163,136 disag
+       364,160 dyn
+        66,111 val
+        50,316 dec
+        49,796 pol
+        41,153 con
+         9,344 enc
+/workspace/conda_envs/dreamerv3/lib/python3.11/site-packages/optax/_src/linear_algebra.py:44: DeprecationWarning: optax.global_norm is deprecated in favor of optax.tree.norm
+  warnings.warn(
+Done initializing!
+Compiling 1 checkpoint groups...
+Largest checkpoint group: 0 GB
+Compiling train and report...
+/workspace/dreamerv3/embodied/jax/agent.py:187: DeprecationWarning: `with mesh:` context manager has been deprecated. Please use `with jax.set_mesh(mesh):` instead.
+  with self.train_mesh:
+/workspace/conda_envs/dreamerv3/lib/python3.11/site-packages/optax/_src/linear_algebra.py:44: DeprecationWarning: optax.global_norm is deprecated in favor of optax.tree.norm
+  warnings.warn(
+Train cost analysis:
+No available
+Report cost analysis:
+No available
+Done compiling!
+Reference sample: 2048 windows x 32 steps from 16 streams
+Loading checkpoint: /workspace/dreamerv3_runs/pretrain_p2e_finger_seed5/ckpt_snapshots/step000000100896
+Loaded checkpoint.
+  step000000100896 (milestone 100000): disag=yes, err_steps (2560, 8), density_knn mean 21.3690 -> /workspace/dreamerv3_runs/pretrain_p2e_finger_seed5/latent_uq/finger_v1/step000000100896
+Loading checkpoint: /workspace/dreamerv3_runs/pretrain_p2e_finger_seed5/ckpt_snapshots/step000000200000
+Loaded checkpoint.
+  step000000200000 (milestone 200000): disag=yes, err_steps (2560, 8), density_knn mean 20.9778 -> /workspace/dreamerv3_runs/pretrain_p2e_finger_seed5/latent_uq/finger_v1/step000000200000
+Loading checkpoint: /workspace/dreamerv3_runs/pretrain_p2e_finger_seed5/ckpt_snapshots/step000000299136
+Loaded checkpoint.
+  step000000299136 (milestone 300000): disag=yes, err_steps (2560, 8), density_knn mean 20.7381 -> /workspace/dreamerv3_runs/pretrain_p2e_finger_seed5/latent_uq/finger_v1/step000000299136
+Loading checkpoint: /workspace/dreamerv3_runs/pretrain_p2e_finger_seed5/ckpt_snapshots/step000000398096
+Loaded checkpoint.
+  step000000398096 (milestone 400000): disag=yes, err_steps (2560, 8), density_knn mean 20.5043 -> /workspace/dreamerv3_runs/pretrain_p2e_finger_seed5/latent_uq/finger_v1/step000000398096
+Loading checkpoint: /workspace/dreamerv3_runs/pretrain_p2e_finger_seed5/ckpt_snapshots/step000000497296
+Loaded checkpoint.
+  step000000497296 (milestone 500000): disag=yes, err_steps (2560, 8), density_knn mean 20.3066 -> /workspace/dreamerv3_runs/pretrain_p2e_finger_seed5/latent_uq/finger_v1/step000000497296
+Done: 5 checkpoints -> /workspace/dreamerv3_runs/pretrain_p2e_finger_seed5/latent_uq/finger_v1
+++ date
++ echo '[Sat Jul 11 00:09:54 UTC 2026] latent_uq pretrain_p2e_finger_seed5 DONE -> /workspace/dreamerv3_runs/pretrain_p2e_finger_seed5/latent_uq/finger_v1'
+[Sat Jul 11 00:09:54 UTC 2026] latent_uq pretrain_p2e_finger_seed5 DONE -> /workspace/dreamerv3_runs/pretrain_p2e_finger_seed5/latent_uq/finger_v1

@@ -1,0 +1,46 @@
+{
+  "run_logdir": "/workspace/dreamerv3_runs/pretrain_apt_cup_seed4",
+  "probeset": "/workspace/dreamerv3_runs/probesets/cup_v1",
+  "probeset_id": "ball_in_cup_v1_9327e960",
+  "probeset_sha256": "9327e96044a6df2659a58e07833dc4f793a2a22bf263bd794a31b022200cb632",
+  "burn_in": 32,
+  "eval_steps": 8,
+  "ref_replay": "/workspace/dreamerv3_runs/pretrain_apt_cup_seed4/replay",
+  "ref_windows": 2048,
+  "knn": 10,
+  "dec_symlog": true,
+  "has_disag": false,
+  "held_out": true,
+  "checkpoints": [
+    {
+      "name": "step000000100320",
+      "exact_step": 100320,
+      "milestone": 100000,
+      "path": "step000000100320/uq.npz"
+    },
+    {
+      "name": "step000000200160",
+      "exact_step": 200160,
+      "milestone": 200000,
+      "path": "step000000200160/uq.npz"
+    },
+    {
+      "name": "step000000300016",
+      "exact_step": 300016,
+      "milestone": 300000,
+      "path": "step000000300016/uq.npz"
+    },
+    {
+      "name": "step000000399872",
+      "exact_step": 399872,
+      "milestone": 400000,
+      "path": "step000000399872/uq.npz"
+    },
+    {
+      "name": "step000000499728",
+      "exact_step": 499728,
+      "milestone": 500000,
+      "path": "step000000499728/uq.npz"
+    }
+  ]
+}
