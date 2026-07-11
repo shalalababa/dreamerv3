@@ -59,7 +59,19 @@ adaptation outcome was read locally.
   r-pair side is member-identical to an already-run buffer (cup r1 lo ≡
   q1 s0 ⇒ contrast ax1r1s1 vs existing ax1q1s0, no duplicate runs). These
   are all search/efficiency changes made before any E3 outcome exists; no
-  frozen criterion (cov tol, occ-sep, overlap, seed) changed. (d) Latent-UQ
+  frozen criterion (cov tol, occ-sep, overlap, seed) changed.
+  **Redo check (same day, still pre-outcome):** cup dose re-search ADOPTED
+  (dev 0.2258→0.1567; levels 0.061/0.117/0.230/0.232 — top two duplicate at
+  the cup frontier, kept as a pure-error replicate). Cup r2 all-random
+  exclusion returned OK but docc 0.048 = 0.30× target (1.18× the separation
+  floor) — **new registered minimum-dose criterion: an r-pair is adopted
+  only if docc ≥ 0.5 × target_docc**; the all-random pair fails ⇒ fallback
+  exclusion (random4 apt2 random2 apt5 random3) to be searched/rebuilt; if
+  that also fails the criterion, cup keeps r1 as its only r-pair and the
+  all-random pair is descriptive-only (no adapt runs). Code note:
+  search-dose/search-rpair now record `n_candidates` in their output
+  criteria (metadata only; the frozen `search` output is untouched).
+  (d) Latent-UQ
   stage0 (other study): Biased Dreams attractor bias replicates 10/10
   held-out seed-cells ⇒ D0 stays frozen
   (`artifacts/latent_uq_stage0_20260710_221232/DECISION.md`).

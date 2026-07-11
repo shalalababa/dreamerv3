@@ -391,8 +391,9 @@ def cmd_search_dose(args):
                            max_overlap=args.max_overlap, knn=args.knn,
                            logc=args.logc, max_frames=args.max_frames,
                            dirichlet=args.dirichlet, boot=args.boot,
-                           seed=args.seed, levels=args.levels,
-                           beam=args.beam,
+                           seed=args.seed,
+                           n_candidates=args.n_candidates,
+                           levels=args.levels, beam=args.beam,
                            objective='min total |occ - target|, all pairs '
                                      'cov-matched and overlap-capped'),
              source_coverages=pool['source_coverages'], cov_tol=cov_tol,
@@ -512,6 +513,7 @@ def cmd_search_rpair(args):
                            logc=args.logc, max_frames=args.max_frames,
                            dirichlet=args.dirichlet, boot=args.boot,
                            seed=args.seed,
+                           n_candidates=args.n_candidates,
                            exclude_sources=sorted(excl),
                            target_docc=args.target_docc,
                            objective='lexicographic (|docc-target|, dcov); '

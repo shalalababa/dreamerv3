@@ -38,3 +38,40 @@ Axis-1 builds (mean ≤ 0.073, std ≤ 0.147).
 
 finger dose 20 + finger r1 10 + finger r2 10 + cup dose 20 + cup r1 5
 + cup r2 5–10 (5 if its lo again ≡ q1 s0) = **70–75 jobs**.
+
+---
+
+## Redo check — 2026-07-11 (inputs: `local_results/e3_cup_redo_search_20260711_111744/`)
+
+**Cup dose: ADOPTED (rule satisfied).** Re-search (beam 300) improved
+total_abs_dev 0.2258 → 0.1567; rebuilt buffers verify (occ_recomputed ≡
+occ_search, 200,200 transitions). Levels **0.061 / 0.117 / 0.230 / 0.232**
+at cov 0.709–0.728 (pairwise dcov 0.0198 ≤ tol). The top two levels
+duplicate at occ ≈0.23 — that is the cup frontier: a coverage-matched
+4-clique cannot reach the 0.336 target (high-occ cup episodes are all
+low-coverage). Kept as built: the replicate at the top dose serves as a
+pure-error estimate; the registered analysis regresses on *measured*
+occupancy, so unequal spacing is fine. GO — 20 jobs.
+
+**Cup r2 (all-random exclusion): built pair is too weak — do not submit;
+run the fallback search.** The primary attempt returned OK (9 valid pairs,
+lo = pure p2e4 0.020@0.994, hi = pure apt5 0.068@0.978, exclusion honored,
+sides distinct from r1) but with **docc 0.048 = 0.30× the 0.161 target and
+only 1.18× the separation floor** (occ_sep_min 0.0405). At cup's outcome
+noise (Q1 CI half-width ≈65 AUC at n=8, docc 0.161) a 5-seed contrast at
+30% dose is uninformative — it would enter the paper as a dead cell.
+**Amendment (registered here and in DEVIATIONS before any E3 outcome
+exists): minimum-dose criterion for r-pairs — adopt a searched pair only if
+docc ≥ 0.5 × target_docc.** The all-random pair fails it ⇒ run the
+registered fallback exclusion on the cluster and rebuild r2:
+
+    python -m probing.build_controlled_replay search-rpair \
+      --index $RUNROOT/axis1_cup/episodes.json --ref_replay <cup REF> \
+      --exclude_sources random4 apt2 random2 apt5 random3 \
+      --target_docc 0.161 --n_candidates 1200 \
+      --output $RUNROOT/axis1_cup/rpairs_r2.json
+
+If the fallback also lands below 0.5×target, cup keeps r1 as its single
+composition-robustness pair and the all-random pair is reported as a
+descriptive frontier note (no adapt runs). The all-random search output is
+retained at `rpairs_r2_redo.json` either way.
