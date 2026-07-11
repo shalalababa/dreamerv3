@@ -32,7 +32,28 @@ build   Materialize one pair (both sides) as chunk dirs + manifests:
       --index .../episodes.json --pairs .../pairs.json --which q1 \
       --output_root $RUNROOT/axis1_cup/q1
 
-selfcheck  End-to-end on synthetic sources, incl. Replay ingestion.
+search-dose  (addendum E3) L pairwise coverage-matched buffers whose
+  occupancies sit at the even quantiles of the Q1-feasible occupancy span:
+  python -m probing.build_controlled_replay search-dose \
+      --index .../episodes.json --ref_replay ... --levels 4 \
+      --output $RUNROOT/axis1_cup/dose.json
+
+search-rpair  (addendum E3) Q1-equivalent pair whose HIGH-occupancy side
+  excludes named sources, docc as close as feasible to --target_docc;
+  output is pairs.json-shaped (key 'q1', side0=low occ) so `build --which
+  q1` materializes it unchanged:
+  python -m probing.build_controlled_replay search-rpair \
+      --index .../episodes.json --ref_replay ... \
+      --exclude_sources random4 --target_docc 0.161 \
+      --output $RUNROOT/axis1_cup/rpairs_r1.json
+
+build-dose  Materialize all dose levels + one manifest:
+  python -m probing.build_controlled_replay build-dose \
+      --index .../episodes.json --dose .../dose.json \
+      --output_root $RUNROOT/axis1_cup/dose
+
+selfcheck     End-to-end on synthetic sources, incl. Replay ingestion.
+selfcheck-e3  Same for search-dose/search-rpair/build-dose (3 sources).
 """
 
 import argparse
@@ -177,9 +198,25 @@ def allocate(weights, caps, total):
   return alloc
 
 
-def cmd_search(args):
-  with open(args.index) as f:
-    index = json.load(f)
+def _overlap(a, b):
+  inter = len(np.intersect1d(a['members'], b['members']))
+  return inter / min(len(a['members']), len(b['members']))
+
+
+def _source_l1(a, b, n_episodes):
+  keys = set(a['mixture']) | set(b['mixture'])
+  return sum(abs(a['mixture'].get(k, 0) - b['mixture'].get(k, 0))
+             for k in keys) / (2 * n_episodes)
+
+
+def _candidate_pool(args, index):
+  """Candidate buffers + matching thresholds (shared by all search modes).
+
+  The RNG call sequence is identical to the original `search`
+  implementation, so for the same --index/--seed/knobs the pool reproduces
+  the frozen 6-Jul searches bit-for-bit; search-dose / search-rpair then
+  select from the same pool the original Q1/Q2 pairs came from.
+  """
   task = index['task']
   spec = regimes.spec(task)
   cov_keys = sorted(spec['coverage_keys'])
@@ -262,16 +299,17 @@ def cmd_search(args):
 
   occ_sep_min = args.occ_sep_mult * float(
       np.median([c['noise'] for c in candidates]))
+  return dict(task=task, candidates=candidates, cov_tol=cov_tol,
+              occ_sep_min=occ_sep_min, source_coverages=raw_cov_sources)
 
-  def overlap(a, b):
-    inter = len(np.intersect1d(a['members'], b['members']))
-    return inter / min(len(a['members']), len(b['members']))
 
-  def source_l1(a, b):
-    keys = set(a['mixture']) | set(b['mixture'])
-    tot = args.n_episodes
-    return sum(abs(a['mixture'].get(k, 0) - b['mixture'].get(k, 0))
-               for k in keys) / (2 * tot)
+def cmd_search(args):
+  with open(args.index) as f:
+    index = json.load(f)
+  pool = _candidate_pool(args, index)
+  task, candidates = pool['task'], pool['candidates']
+  cov_tol, occ_sep_min = pool['cov_tol'], pool['occ_sep_min']
+  raw_cov_sources = pool['source_coverages']
 
   best = dict(q1=None, q2=None)
   n_pairs = dict(q1=0, q2=0)
@@ -279,7 +317,7 @@ def cmd_search(args):
     for j in range(i + 1, len(candidates)):
       a, b = candidates[i], candidates[j]
       dcov, docc = abs(a['cov'] - b['cov']), abs(a['occ'] - b['occ'])
-      if overlap(a, b) > args.max_overlap:
+      if _overlap(a, b) > args.max_overlap:
         continue
       if dcov <= cov_tol and docc >= occ_sep_min:
         n_pairs['q1'] += 1
@@ -307,7 +345,8 @@ def cmd_search(args):
     a, b = candidates[best[q]['i']], candidates[best[q]['j']]
     out['pairs'][q] = dict(
         dcov=round(best[q]['dcov'], 6), docc=round(best[q]['docc'], 6),
-        overlap=round(overlap(a, b), 4), source_l1=round(source_l1(a, b), 4),
+        overlap=round(_overlap(a, b), 4),
+        source_l1=round(_source_l1(a, b, args.n_episodes), 4),
         sides=[dict(cov=round(c['cov'], 6), occ=round(c['occ'], 6),
                     occ_noise=round(c['noise'], 6), mixture=c['mixture'],
                     members=[int(m) for m in c['members']])
@@ -320,6 +359,189 @@ def cmd_search(args):
   with open(args.output, 'w') as f:
     json.dump(out, f, indent=2)
   print(f'{decision} -> {args.output}')
+
+
+# --------------------------------------------------------------------------
+# search-dose (addendum E3: occupancy dose-response levels)
+# --------------------------------------------------------------------------
+
+def cmd_search_dose(args):
+  with open(args.index) as f:
+    index = json.load(f)
+  pool = _candidate_pool(args, index)
+  candidates = pool['candidates']
+  cov_tol, occ_sep_min = pool['cov_tol'], pool['occ_sep_min']
+
+  # Q1-feasible candidates: members of at least one valid Q1 pair. The dose
+  # span is the occupancy range reachable under coverage matching.
+  feas = set()
+  for i in range(len(candidates)):
+    for j in range(i + 1, len(candidates)):
+      a, b = candidates[i], candidates[j]
+      if _overlap(a, b) > args.max_overlap:
+        continue
+      if abs(a['cov'] - b['cov']) <= cov_tol and \
+          abs(a['occ'] - b['occ']) >= occ_sep_min:
+        feas.update((i, j))
+  out = dict(kind='dose', task=pool['task'], index=args.index,
+             ref_replay=args.ref_replay, n_episodes=args.n_episodes,
+             ep_len=index['ep_len'],
+             criteria=dict(cov_match_frac=args.cov_match_frac,
+                           occ_sep_mult=args.occ_sep_mult,
+                           max_overlap=args.max_overlap, knn=args.knn,
+                           logc=args.logc, max_frames=args.max_frames,
+                           dirichlet=args.dirichlet, boot=args.boot,
+                           seed=args.seed, levels=args.levels,
+                           beam=args.beam,
+                           objective='min total |occ - target|, all pairs '
+                                     'cov-matched and overlap-capped'),
+             source_coverages=pool['source_coverages'], cov_tol=cov_tol,
+             occ_sep_min=occ_sep_min)
+  if not feas:
+    out.update(decision='SHORT', levels=None,
+               reason='no Q1-feasible candidates')
+  else:
+    lo = min(candidates[i]['occ'] for i in feas)
+    hi = max(candidates[i]['occ'] for i in feas)
+    L = args.levels
+    targets = [lo + (hi - lo) * l / (L - 1) for l in range(L)]
+    ranked = [sorted(feas, key=lambda i: abs(candidates[i]['occ'] - t))
+              [:args.beam] for t in targets]
+
+    def compatible(i, picks):
+      for j in picks:
+        if i == j:
+          return False
+        if abs(candidates[i]['cov'] - candidates[j]['cov']) > cov_tol:
+          return False
+        if _overlap(candidates[i], candidates[j]) > args.max_overlap:
+          return False
+      return True
+
+    best = dict(dev=np.inf, picks=None)
+
+    def dfs(level, picks, dev):
+      if dev >= best['dev']:
+        return
+      if level == L:
+        best.update(dev=dev, picks=list(picks))
+        return
+      for i in ranked[level]:
+        if not compatible(i, picks):
+          continue
+        dfs(level + 1, picks + [i],
+            dev + abs(candidates[i]['occ'] - targets[level]))
+
+    dfs(0, [], 0.0)
+    if best['picks'] is None:
+      out.update(decision='SHORT', levels=None, occ_span=[lo, hi],
+                 targets=targets,
+                 reason='no pairwise-compatible level assignment in beam')
+    else:
+      picks = best['picks']
+      dcovs = [abs(candidates[i]['cov'] - candidates[j]['cov'])
+               for x, i in enumerate(picks) for j in picks[x + 1:]]
+      overs = [_overlap(candidates[i], candidates[j])
+               for x, i in enumerate(picks) for j in picks[x + 1:]]
+      out.update(
+          decision='OK', occ_span=[round(lo, 6), round(hi, 6)],
+          targets=[round(t, 6) for t in targets],
+          total_abs_dev=round(float(best['dev']), 6),
+          max_pairwise_dcov=round(max(dcovs), 6),
+          max_pairwise_overlap=round(max(overs), 4),
+          levels=[dict(level=l, target=round(targets[l], 6),
+                       cov=round(candidates[i]['cov'], 6),
+                       occ=round(candidates[i]['occ'], 6),
+                       occ_noise=round(candidates[i]['noise'], 6),
+                       mixture=candidates[i]['mixture'],
+                       members=[int(m) for m in candidates[i]['members']])
+                  for l, i in enumerate(picks)])
+      print('levels: ' + ' '.join(
+          f"d{l}:occ={lv['occ']:.4f}(t={lv['target']:.4f})"
+          for l, lv in enumerate(out['levels'])))
+      print(f"max pairwise dcov={out['max_pairwise_dcov']:.4f} "
+            f"(tol {cov_tol:.4f}), overlap={out['max_pairwise_overlap']}")
+  os.makedirs(os.path.dirname(os.path.abspath(args.output)), exist_ok=True)
+  with open(args.output, 'w') as f:
+    json.dump(out, f, indent=2)
+  print(f"{out['decision']} -> {args.output}")
+
+
+# --------------------------------------------------------------------------
+# search-rpair (addendum E3: composition-robustness Q1-equivalent pairs)
+# --------------------------------------------------------------------------
+
+def cmd_search_rpair(args):
+  with open(args.index) as f:
+    index = json.load(f)
+  pool = _candidate_pool(args, index)
+  candidates = pool['candidates']
+  cov_tol, occ_sep_min = pool['cov_tol'], pool['occ_sep_min']
+  excl = set(args.exclude_sources)
+
+  def uses_excluded(c):
+    return any(k.split('/')[0] in excl for k in c['mixture'])
+
+  # Valid Q1 pairs whose HIGH-occupancy side avoids the excluded sources;
+  # selection is lexicographic (|docc - target_docc|, then dcov), i.e. as
+  # close as feasible to the original pair's occupancy dose, breaking ties
+  # toward tighter coverage match.
+  best, best_key, n_valid = None, None, 0
+  for i in range(len(candidates)):
+    for j in range(i + 1, len(candidates)):
+      a, b = candidates[i], candidates[j]
+      lo, hi = (a, b) if a['occ'] <= b['occ'] else (b, a)
+      dcov, docc = abs(a['cov'] - b['cov']), hi['occ'] - lo['occ']
+      if _overlap(a, b) > args.max_overlap:
+        continue
+      if dcov > cov_tol or docc < occ_sep_min:
+        continue
+      if uses_excluded(hi):
+        continue
+      n_valid += 1
+      key = (abs(docc - args.target_docc), dcov)
+      if best_key is None or key < best_key:
+        best, best_key = (lo, hi), key
+
+  out = dict(kind='rpair', task=pool['task'], index=args.index,
+             ref_replay=args.ref_replay, n_episodes=args.n_episodes,
+             ep_len=index['ep_len'],
+             criteria=dict(cov_match_frac=args.cov_match_frac,
+                           occ_sep_mult=args.occ_sep_mult,
+                           max_overlap=args.max_overlap, knn=args.knn,
+                           logc=args.logc, max_frames=args.max_frames,
+                           dirichlet=args.dirichlet, boot=args.boot,
+                           seed=args.seed,
+                           exclude_sources=sorted(excl),
+                           target_docc=args.target_docc,
+                           objective='lexicographic (|docc-target|, dcov); '
+                                     'exclusion applies to high-occ side'),
+             source_coverages=pool['source_coverages'], cov_tol=cov_tol,
+             occ_sep_min=occ_sep_min, n_pairs=dict(q1=n_valid), pairs={})
+  if best is None:
+    out['pairs']['q1'] = None
+    out['decision'] = 'SHORT'
+  else:
+    lo, hi = best
+    # side0 = low occupancy, side1 = high occupancy (Axis-1 Q1 convention).
+    out['pairs']['q1'] = dict(
+        dcov=round(abs(lo['cov'] - hi['cov']), 6),
+        docc=round(hi['occ'] - lo['occ'], 6),
+        overlap=round(_overlap(lo, hi), 4),
+        source_l1=round(_source_l1(lo, hi, args.n_episodes), 4),
+        sides=[dict(cov=round(c['cov'], 6), occ=round(c['occ'], 6),
+                    occ_noise=round(c['noise'], 6), mixture=c['mixture'],
+                    members=[int(m) for m in c['members']])
+               for c in (lo, hi)])
+    out['decision'] = 'OK'
+    print(f"rpair: docc={out['pairs']['q1']['docc']:.4f} "
+          f"(target {args.target_docc:.4f}) "
+          f"dcov={out['pairs']['q1']['dcov']:.4f} ({n_valid} valid pairs; "
+          f"excluded {sorted(excl)})")
+  os.makedirs(os.path.dirname(os.path.abspath(args.output)), exist_ok=True)
+  with open(args.output, 'w') as f:
+    json.dump(out, f, indent=2)
+  print(f"{out['decision']} -> {args.output}")
 
 
 # --------------------------------------------------------------------------
@@ -360,6 +582,53 @@ def action_stats(actions):
               std=[round(float(x), 5) for x in a.std(0)])
 
 
+def _write_buffer(index, table, selection, out_dir):
+  """Materialize one selected episode set as a chunk dir; return the report."""
+  os.makedirs(out_dir, exist_ok=True)
+  total, occ_frames, actions, terminals = 0, [], [], []
+  for eid in selection['members']:
+    label, e = table[eid]
+    stream = index['sources'][label]['streams'][e['stream']]
+    frames = load_span(stream, e['start'], e['end'])
+    write_episode_chunk(out_dir, frames)
+    total += e['length']
+    occ_frames.append(e['occ'] * e['length'])
+    if 'action' in frames:
+      actions.append(np.asarray(frames['action']))
+    for tkey in ('is_terminal', 'is_last'):
+      if tkey in frames:
+        terminals.append(float(np.asarray(frames[tkey], np.float32).mean()))
+        break
+  return dict(
+      directory=out_dir, n_episodes=len(selection['members']),
+      n_transitions=int(total),
+      occ_recomputed=round(float(np.sum(occ_frames)) / total, 6),
+      occ_search=selection['occ'], cov_search=selection['cov'],
+      mixture=selection['mixture'],
+      terminal_fraction=round(float(np.mean(terminals)), 6)
+      if terminals else None,
+      action_stats=action_stats(np.concatenate(actions, 0))
+      if actions else None)
+
+
+def _pairwise_deltas(a, b):
+  """Confound checklist deltas between two side/level reports."""
+  deltas = dict(n_transitions=abs(a['n_transitions'] - b['n_transitions']))
+  if a['action_stats'] and b['action_stats']:
+    m0, m1 = np.asarray(a['action_stats']['mean']), \
+        np.asarray(b['action_stats']['mean'])
+    d0, d1 = np.asarray(a['action_stats']['std']), \
+        np.asarray(b['action_stats']['std'])
+    deltas['action_mean_maxabs'] = round(float(np.abs(m0 - m1).max()), 5)
+    deltas['action_std_maxabs'] = round(float(np.abs(d0 - d1).max()), 5)
+  if a['terminal_fraction'] is not None and \
+      b['terminal_fraction'] is not None:
+    deltas['terminal_fraction'] = round(
+        abs(a['terminal_fraction'] - b['terminal_fraction']), 6)
+  deltas['episode_length'] = 0
+  return deltas
+
+
 def cmd_build(args):
   with open(args.index) as f:
     index = json.load(f)
@@ -369,7 +638,6 @@ def cmd_build(args):
   if pair is None:
     raise SystemExit(f'no {args.which} pair in {args.pairs}')
   table = episode_by_eid(index)
-  spec = regimes.spec(index['task'])
 
   manifest = dict(task=index['task'], which=args.which, index=args.index,
                   pairs=args.pairs, ep_len=index['ep_len'],
@@ -382,56 +650,67 @@ def cmd_build(args):
                   sides=[])
   for si, side in enumerate(pair['sides']):
     out_dir = os.path.join(args.output_root, f'side{si}')
-    os.makedirs(out_dir, exist_ok=True)
-    total, occ_frames, actions, terminals = 0, [], [], []
-    for eid in side['members']:
-      label, e = table[eid]
-      stream = index['sources'][label]['streams'][e['stream']]
-      frames = load_span(stream, e['start'], e['end'])
-      write_episode_chunk(out_dir, frames)
-      total += e['length']
-      occ_frames.append(e['occ'] * e['length'])
-      if 'action' in frames:
-        actions.append(np.asarray(frames['action']))
-      for tkey in ('is_terminal', 'is_last'):
-        if tkey in frames:
-          terminals.append(float(np.asarray(frames[tkey], np.float32).mean()))
-          break
-    side_report = dict(
-        directory=out_dir, n_episodes=len(side['members']),
-        n_transitions=int(total),
-        occ_recomputed=round(float(np.sum(occ_frames)) / total, 6),
-        occ_search=side['occ'], cov_search=side['cov'],
-        mixture=side['mixture'],
-        terminal_fraction=round(float(np.mean(terminals)), 6)
-        if terminals else None,
-        action_stats=action_stats(np.concatenate(actions, 0))
-        if actions else None)
+    side_report = _write_buffer(index, table, side, out_dir)
     manifest['sides'].append(side_report)
-    print(f'side{si}: {len(side["members"])} episodes, {total} frames '
-          f'-> {out_dir}')
+    print(f'side{si}: {side_report["n_episodes"]} episodes, '
+          f'{side_report["n_transitions"]} frames -> {out_dir}')
 
   # Confound checklist deltas (runbook Phase 6 item 2).
   s0, s1 = manifest['sides']
-  deltas = dict(n_transitions=abs(s0['n_transitions'] - s1['n_transitions']))
-  if s0['action_stats'] and s1['action_stats']:
-    m0, m1 = np.asarray(s0['action_stats']['mean']), \
-        np.asarray(s1['action_stats']['mean'])
-    d0, d1 = np.asarray(s0['action_stats']['std']), \
-        np.asarray(s1['action_stats']['std'])
-    deltas['action_mean_maxabs'] = round(float(np.abs(m0 - m1).max()), 5)
-    deltas['action_std_maxabs'] = round(float(np.abs(d0 - d1).max()), 5)
-  if s0['terminal_fraction'] is not None:
-    deltas['terminal_fraction'] = round(
-        abs(s0['terminal_fraction'] - s1['terminal_fraction']), 6)
+  deltas = _pairwise_deltas(s0, s1)
   deltas['source_l1'] = pair['source_l1']
-  deltas['episode_length'] = 0
   manifest['confound_deltas'] = deltas
 
   path = os.path.join(args.output_root, 'manifest.json')
   with open(path, 'w') as f:
     json.dump(manifest, f, indent=2)
   print(f'confound deltas: {deltas}')
+  print(f'-> {path}')
+
+
+def cmd_build_dose(args):
+  """Materialize all dose levels (addendum E3) under one output root."""
+  with open(args.index) as f:
+    index = json.load(f)
+  with open(args.dose) as f:
+    dose = json.load(f)
+  if dose.get('decision') != 'OK' or not dose.get('levels'):
+    raise SystemExit(f"dose search not OK in {args.dose}")
+  table = episode_by_eid(index)
+
+  manifest = dict(task=index['task'], kind='dose', index=args.index,
+                  dose=args.dose, ep_len=index['ep_len'],
+                  chunk_contract='one chunk per episode, succ=0; training '
+                                 'windows never span episode boundaries '
+                                 '(dropped identically at every level)',
+                  note='gradient-update count and model capacity are '
+                       'equalized at offline_fit time (same config/steps '
+                       'for every level)',
+                  levels=[])
+  for lv in dose['levels']:
+    out_dir = os.path.join(args.output_root, f"level{lv['level']}")
+    report = _write_buffer(index, table, lv, out_dir)
+    report.update(level=lv['level'], target_occ=lv['target'])
+    manifest['levels'].append(report)
+    print(f"level{lv['level']}: {report['n_episodes']} episodes, "
+          f"{report['n_transitions']} frames, "
+          f"occ={report['occ_recomputed']} -> {out_dir}")
+
+  # Worst-case pairwise confound deltas across levels.
+  worst = {}
+  reports = manifest['levels']
+  for x in range(len(reports)):
+    for y in range(x + 1, len(reports)):
+      for k, v in _pairwise_deltas(reports[x], reports[y]).items():
+        worst[k] = max(worst.get(k, 0), v)
+      l1 = _source_l1(reports[x], reports[y], reports[x]['n_episodes'])
+      worst['source_l1'] = max(worst.get('source_l1', 0), round(l1, 4))
+  manifest['confound_deltas_max'] = worst
+
+  path = os.path.join(args.output_root, 'manifest.json')
+  with open(path, 'w') as f:
+    json.dump(manifest, f, indent=2)
+  print(f'max pairwise confound deltas: {worst}')
   print(f'-> {path}')
 
 
@@ -533,6 +812,93 @@ def cmd_selfcheck(args):
           f'dcov={pairs["pairs"]["q1"]["dcov"]:.3f}; replay items={n_items})')
 
 
+def cmd_selfcheck_e3(args):
+  """End-to-end check of search-dose / search-rpair / build-dose on
+  synthetic sources (three collection policies so source exclusion keeps a
+  feasible high-occ pool)."""
+  import tempfile
+  with tempfile.TemporaryDirectory() as tmp:
+    goal, apt, p2e = (f'{tmp}/goal/replay', f'{tmp}/apt/replay',
+                      f'{tmp}/p2e/replay')
+    _synth_source(goal, 8000, 0.8, 0.3, seed=1)
+    _synth_source(apt, 8000, 0.4, 0.8, seed=3)
+    _synth_source(p2e, 8000, 0.05, 1.5, seed=2)
+
+    ns = argparse.Namespace(
+        task='dmc_cup_catch',
+        replay=[f'goal={goal}', f'apt={apt}', f'p2e={p2e}'],
+        output=f'{tmp}/episodes.json')
+    cmd_index(ns)
+    common = dict(
+        index=f'{tmp}/episodes.json', ref_replay=goal, n_episodes=20,
+        n_candidates=150, dirichlet=0.3, max_overlap=0.2, max_frames=2000,
+        knn=12, logc=1.0, cov_match_frac=0.15, occ_sep_mult=3.0, boot=50,
+        seed=0)
+
+    # Baseline pair search (for the rpair target + dominant source).
+    ns = argparse.Namespace(**common, output=f'{tmp}/pairs.json')
+    cmd_search(ns)
+    with open(f'{tmp}/pairs.json') as f:
+      pairs = json.load(f)
+    q1 = pairs['pairs']['q1']
+    assert q1 is not None, 'no q1 pair on synthetic data'
+    hi_side = max(q1['sides'], key=lambda s: s['occ'])
+    by_src = collections.Counter()
+    for k, v in hi_side['mixture'].items():
+      by_src[k.split('/')[0]] += v
+    dominant = by_src.most_common(1)[0][0]
+
+    # Dose levels: monotone occupancy, pairwise coverage-matched.
+    ns = argparse.Namespace(**common, levels=3, beam=40,
+                            output=f'{tmp}/dose.json')
+    cmd_search_dose(ns)
+    with open(f'{tmp}/dose.json') as f:
+      dose = json.load(f)
+    assert dose['decision'] == 'OK', dose.get('reason')
+    occs = [lv['occ'] for lv in dose['levels']]
+    assert occs == sorted(occs), f'dose levels not monotone: {occs}'
+    assert dose['max_pairwise_dcov'] <= dose['cov_tol'] + 1e-9
+    ns = argparse.Namespace(index=f'{tmp}/episodes.json',
+                            dose=f'{tmp}/dose.json',
+                            output_root=f'{tmp}/dose_buffers')
+    cmd_build_dose(ns)
+    with open(f'{tmp}/dose_buffers/manifest.json') as f:
+      dm = json.load(f)
+    assert len(dm['levels']) == 3
+    for lv, srch in zip(dm['levels'], dose['levels']):
+      assert lv['n_transitions'] > 0
+      assert abs(lv['occ_recomputed'] - srch['occ']) < 0.02
+    assert dm['confound_deltas_max']['n_transitions'] == 0
+
+    # Composition-robustness pair: high-occ side excludes the dominant
+    # source of the baseline q1 pair; sides ordered low->high occupancy.
+    ns = argparse.Namespace(**common, exclude_sources=[dominant],
+                            target_docc=q1['docc'],
+                            output=f'{tmp}/rpairs.json')
+    cmd_search_rpair(ns)
+    with open(f'{tmp}/rpairs.json') as f:
+      rp = json.load(f)
+    assert rp['decision'] == 'OK', 'rpair SHORT on synthetic data'
+    r1 = rp['pairs']['q1']
+    assert r1['sides'][0]['occ'] <= r1['sides'][1]['occ']
+    assert not any(k.split('/')[0] == dominant
+                   for k in r1['sides'][1]['mixture'])
+    assert r1['docc'] >= rp['occ_sep_min'] - 1e-9
+    assert r1['dcov'] <= rp['cov_tol'] + 1e-9
+    ns = argparse.Namespace(index=f'{tmp}/episodes.json',
+                            pairs=f'{tmp}/rpairs.json', which='q1',
+                            output_root=f'{tmp}/r1')
+    cmd_build(ns)
+    with open(f'{tmp}/r1/manifest.json') as f:
+      rm = json.load(f)
+    assert rm['confound_deltas']['n_transitions'] == 0
+    assert rm['sides'][0]['occ_recomputed'] <= rm['sides'][1]['occ_recomputed']
+
+    print(f"selfcheck-e3 PASS (dose occs={occs}, "
+          f"rpair docc={r1['docc']:.3f} target={q1['docc']:.3f} "
+          f"excluding {dominant!r})")
+
+
 def main():
   p = argparse.ArgumentParser(description=__doc__)
   sub = p.add_subparsers(dest='cmd', required=True)
@@ -544,23 +910,42 @@ def main():
   ix.add_argument('--output', required=True)
   ix.set_defaults(fn=cmd_index)
 
+  def add_search_args(sp):
+    sp.add_argument('--index', required=True)
+    sp.add_argument('--ref_replay', required=True,
+                    help='Fixed per-domain reference buffer for the scaler.')
+    sp.add_argument('--n_episodes', type=int, default=200)
+    sp.add_argument('--n_candidates', type=int, default=400)
+    sp.add_argument('--dirichlet', type=float, default=0.3)
+    sp.add_argument('--max_overlap', type=float, default=0.2)
+    sp.add_argument('--max_frames', type=int, default=3000)
+    sp.add_argument('--knn', type=int, default=12)
+    sp.add_argument('--logc', type=float, default=1.0)
+    sp.add_argument('--cov_match_frac', type=float, default=0.05)
+    sp.add_argument('--occ_sep_mult', type=float, default=3.0)
+    sp.add_argument('--boot', type=int, default=100)
+    sp.add_argument('--seed', type=int, default=0)
+    sp.add_argument('--output', required=True)
+
   se = sub.add_parser('search')
-  se.add_argument('--index', required=True)
-  se.add_argument('--ref_replay', required=True,
-                  help='Fixed per-domain reference buffer for the scaler.')
-  se.add_argument('--n_episodes', type=int, default=200)
-  se.add_argument('--n_candidates', type=int, default=400)
-  se.add_argument('--dirichlet', type=float, default=0.3)
-  se.add_argument('--max_overlap', type=float, default=0.2)
-  se.add_argument('--max_frames', type=int, default=3000)
-  se.add_argument('--knn', type=int, default=12)
-  se.add_argument('--logc', type=float, default=1.0)
-  se.add_argument('--cov_match_frac', type=float, default=0.05)
-  se.add_argument('--occ_sep_mult', type=float, default=3.0)
-  se.add_argument('--boot', type=int, default=100)
-  se.add_argument('--seed', type=int, default=0)
-  se.add_argument('--output', required=True)
+  add_search_args(se)
   se.set_defaults(fn=cmd_search)
+
+  sd = sub.add_parser('search-dose')
+  add_search_args(sd)
+  sd.add_argument('--levels', type=int, default=4)
+  sd.add_argument('--beam', type=int, default=40,
+                  help='Per-level candidate shortlist for the assignment '
+                       'search.')
+  sd.set_defaults(fn=cmd_search_dose)
+
+  sr = sub.add_parser('search-rpair')
+  add_search_args(sr)
+  sr.add_argument('--exclude_sources', nargs='+', required=True,
+                  help='Source labels barred from the high-occupancy side.')
+  sr.add_argument('--target_docc', type=float, required=True,
+                  help="The original Q1 pair's docc to reproduce.")
+  sr.set_defaults(fn=cmd_search_rpair)
 
   bu = sub.add_parser('build')
   bu.add_argument('--index', required=True)
@@ -569,8 +954,17 @@ def main():
   bu.add_argument('--output_root', required=True)
   bu.set_defaults(fn=cmd_build)
 
+  bd = sub.add_parser('build-dose')
+  bd.add_argument('--index', required=True)
+  bd.add_argument('--dose', required=True)
+  bd.add_argument('--output_root', required=True)
+  bd.set_defaults(fn=cmd_build_dose)
+
   sc = sub.add_parser('selfcheck')
   sc.set_defaults(fn=cmd_selfcheck)
+
+  s3 = sub.add_parser('selfcheck-e3')
+  s3.set_defaults(fn=cmd_selfcheck_e3)
 
   args = p.parse_args()
   args.fn(args)

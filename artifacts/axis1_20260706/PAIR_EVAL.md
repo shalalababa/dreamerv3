@@ -72,11 +72,13 @@ frozen criteria (no post-hoc pair swapping).
    source_l1 0.90–1.00 — the known collection-policy composition difference
    (see above), reported at analysis time, not disqualifying. **Builds clear
    for submission.**
-3. `./scripts/submit_all.sh axis1` — 64 jobs (2 domains × 2 quadrants ×
-   2 sides × 8 paired seeds), each = offline WM fit (500K updates,
-   gradient-count equalized to the 500K-step pretrains) + frozen-readout
-   adapt (1.25e5 steps). Run ids `adapt_ax1<q>s<side>_<dom>_seed<k>_ckpt500000`
-   feed `analysis/adaptation_auc.py` unchanged and the Phase-6 paired
-   contrasts (`fit_mixed_effects paired --domain <dom> --cond_a ax1q1s1
-   --cond_b ax1q1s0`); they are excluded from the dose-response models by
-   the `--modes` filter (see analysis/DEVIATIONS.md code notes).
+3. ~~`./scripts/submit_all.sh axis1`~~ **DONE 2026-07-10** — 64/64 runs
+   complete (Midway + 2 cloud instances), 64/64 QC pass, all WM fits at
+   exactly 500K updates. Unblinded read + verification:
+   `artifacts/phase6_axis1_20260710/RESULTS.md`. Headline: primary Q1
+   prediction FAILS — occupancy at matched coverage is null in cup
+   (final10 Δ +0.7 [−15,+17]) and significantly POSITIVE in finger
+   (AUC₁₀₀ₖ Δ +159 [+83,+236]; high-occ buffers rescue a domain where all
+   online pretrains were flat). Q2: coverage directionally helps cup
+   (−121 when cov drops, CI includes 0), null in finger. E3
+   composition-robustness + dose-response are now the critical follow-up.

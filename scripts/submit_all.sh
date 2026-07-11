@@ -825,6 +825,98 @@ case "$cmd" in
       bundle=$((bundle + 1))
     done ;;
 
+  axis1-dose-bundles|axis1_dose_bundles)
+    # Addendum E3 occupancy dose-response: one buffer per level (no sides),
+    # run ids adapt_ax1d<level>_<dom>_seed<k>_ckpt<updates> per the frozen
+    # naming registry. Requires build-dose first (login node, minutes):
+    #   python -m probing.build_controlled_replay search-dose \
+    #     --index $RUNROOT/axis1_<dom>/episodes.json \
+    #     --ref_replay <domain REF> --levels 4 \
+    #     --output $RUNROOT/axis1_<dom>/dose.json
+    #   python -m probing.build_controlled_replay build-dose \
+    #     --index $RUNROOT/axis1_<dom>/episodes.json \
+    #     --dose $RUNROOT/axis1_<dom>/dose.json \
+    #     --output_root $RUNROOT/axis1_<dom>/dose
+    read -ra seeds <<< "${AXIS1_SEEDS:-1 2 3 4 5}"
+    read -ra levels <<< "${AXIS1_LEVELS:-0 1 2 3}"
+    read -ra doms <<< "${AXIS1_DOMAINS:-cup finger}"
+    bundle_size="${AXIS1_BUNDLE_SIZE:-3}"
+    [ "$bundle_size" -gt 0 ] || { echo "AXIS1_BUNDLE_SIZE must be > 0"; exit 1; }
+    updates="${AXIS1_UPDATES:-500000}"
+    steps="${STEPS:-1.25e5}"
+
+    pending=()
+    for dom in "${doms[@]}"; do
+      case "$dom" in
+        cup) task=dmc_cup_catch ;;
+        finger) task=dmc_finger_turn_hard ;;
+        reacher) task=dmc_reacher_hard ;;
+        *) echo "unknown axis1 domain: $dom"; exit 1 ;;
+      esac
+      root="$RUNROOT/axis1_${dom}/dose"
+      if [ ! -f "$root/manifest.json" ]; then
+        echo "SKIP not built: $root (run build_controlled_replay build-dose)"
+        continue
+      fi
+      for l in "${levels[@]}"; do
+        if [ ! -d "$root/level${l}" ]; then
+          echo "SKIP missing level dir: $root/level${l}"
+          continue
+        fi
+        for s in "${seeds[@]}"; do
+          run_id="adapt_ax1d${l}_${dom}_seed${s}_ckpt${updates}"
+          wm_run="ax1wm_${dom}_d${l}_seed${s}"
+          if [ "${FORCE:-0}" != "1" ]; then
+            if queued_job "$run_id"; then
+              echo "SKIP queued/running: $run_id"
+              continue
+            fi
+            if adapt_done "$run_id"; then
+              echo "SKIP done: $run_id"
+              continue
+            fi
+            if axis1_reserved_active "$run_id"; then
+              echo "SKIP reserved in active bundle: $run_id"
+              continue
+            fi
+            if existing_logdir "$run_id"; then
+              if marker_only_logdir "$run_id"; then
+                echo "RESUBMIT stale marker-only reservation: $run_id"
+              else
+                echo "SKIP existing logdir: $RUNROOT/$run_id  (set FORCE=1 to resubmit)"
+                continue
+              fi
+            fi
+          fi
+          pending+=("$run_id"$'\t'"$wm_run"$'\t'"$task"$'\t'"$s"$'\t'"$root/level${l}"$'\t'"$updates"$'\t'"$steps"$'\t'"axis1"$'\t'"ax1dose_${dom}")
+        done
+      done
+    done
+
+    if [ "${#pending[@]}" -eq 0 ]; then
+      echo "No axis1-dose runs need submission."
+      exit 0
+    fi
+
+    stamp="$(date +%Y%m%d_%H%M%S)"
+    runlist_dir="$RUNROOT/_submit_runlists/axis1_$stamp"
+    bundle_prefix="axis1_bundle_$stamp"
+    mkdir -p "$runlist_dir"
+    bundle=1
+    for ((i=0; i<${#pending[@]}; i+=bundle_size)); do
+      runlist="$runlist_dir/bundle_$(printf '%03d' "$bundle").tsv"
+      : > "$runlist"
+      rows=0
+      for ((j=i; j<i+bundle_size && j<${#pending[@]}; j++)); do
+        printf '%s\n' "${pending[$j]}" >> "$runlist"
+        rows=$((rows + 1))
+      done
+      bundle_id="${bundle_prefix}_$(printf '%03d' "$bundle")"
+      echo "Bundle $bundle_id tasks: $rows walltime: ${AXIS1_BUNDLE_TIME:-33:00:00}"
+      submit_axis1_bundle "$bundle_id" "$runlist" "$rows"
+      bundle=$((bundle + 1))
+    done ;;
+
   *)
-    echo "usage: $0 {pilots|pretrain|pretrain-bundles|adapt|adapt-completed|adapt-bundles|measure|measure-bundles|axis1|axis1-bundles} ..."; exit 1 ;;
+    echo "usage: $0 {pilots|pretrain|pretrain-bundles|adapt|adapt-completed|adapt-bundles|measure|measure-bundles|axis1|axis1-bundles|axis1-dose-bundles} ..."; exit 1 ;;
 esac

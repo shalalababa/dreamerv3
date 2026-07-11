@@ -40,6 +40,26 @@ adaptation outcome was read locally.
   complete. Note the corresponding *adapt* runs used the nearest snapshot
   even when >5,000 steps off, so those 11 rows appear in M0 (milestone is
   the label) but never in M1/M2 (no driver row to merge).
+- **2026-07-10 — Phase-6/Axis-1 unblinded.** The 64-run paired grid was
+  analyzed on the cluster with the frozen scripts (copied alongside the
+  data; `local_results/axis1_analysis_20260710_213221/`) and re-derived
+  locally from raw `scores.jsonl` — all 64 AUC rows and all 16 paired
+  contrasts bit-identical (<1e-6). No deviation; write-up in
+  `artifacts/phase6_axis1_20260710/RESULTS.md`. Ordering note: the E1–E7
+  addendum (7 Jul) was frozen **before** this read, so its E3 directional
+  prediction ("dose-response slope negative") predates and now conflicts
+  with the Axis-1 outcome (occupancy null in cup, positive in finger).
+  Per the addendum's own freeze rule the E3 prediction is NOT revised;
+  E3 outcomes will be reported against the frozen 7-Jul prediction, with
+  the Axis-1-informed expectation noted as post-hoc. A dated post-Axis-1
+  amendment in the addendum (registered before any E3/E5/extension run
+  exists) adds: finger dose-response (+20 jobs, same `ax1d*` modes),
+  Axis-1 seed extension 9–16 (same run-id scheme; seeds-1–8 read remains
+  the registered primary, pooled estimates labeled post-unblinding
+  confirmatory extension), and the occupancy-floored finger demo — new
+  mode strings `rrwc` (natural finger draw) / `rrwd` (floored draw),
+  parsing under the frozen `RUN_RE` and excluded from dose-response
+  models by the `--modes` filter.
 - **2026-07-07 — post-5a enhancement modules pre-registered; run-naming
   registry extended.** `research_notes/Addendum_Post5a_Enhancements_20260707.tex`
   (frozen before any Axis-1 outcome was read) registers modules E1–E7 and
