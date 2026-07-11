@@ -108,11 +108,17 @@ else
   echo "[$(date)] offline_fit WM_RUN=$WM_RUN REPLAY=$REPLAY UPDATES=$UPDATES SEED=$SEED"
   manifest_append "$WM_RUN" offline_fit "$TASK" static "$SEED" "$UPDATES" "$REPLAY" "$WMDIR" RUNNING
   RC=0
+  # PREREG_axis1_corrective_20260711: expl mode must be explicit. 'apt' is
+  # the reward-free fitting objective (matches the Phase-4 online pretrains'
+  # replay losses; task reward enters no loss); 'task' reproduces the 10-Jul
+  # reward-aware arm (discovered deviation, analysis/DEVIATIONS.md).
+  : "${AXIS1_EXPL_MODE:?set AXIS1_EXPL_MODE=apt (reward-free, corrective protocol) or task (reward-aware arm)}"
   "$PYTHON" -u -m probing.offline_fit \
     --static_replay "$REPLAY" --updates "$UPDATES" \
     --save_every_updates "${AXIS1_SAVE_EVERY_UPDATES:-50000}" \
     --logdir "$WMDIR" --configs dmc_proprio \
     --task "$TASK" --seed "$SEED" \
+    --agent.expl.mode "$AXIS1_EXPL_MODE" \
     --env.dmc.render "${RENDER:-False}" || RC=$?
   STATUS=$([ "$RC" -eq 0 ] && echo DONE || echo FAILED)
   sed -i "s#^$WM_RUN,.*,RUNNING,#$WM_RUN,offline_fit,$TASK,static,$SEED,$UPDATES,$REPLAY,$WMDIR,$STATUS,#" "$MANIFEST" 2>/dev/null || true

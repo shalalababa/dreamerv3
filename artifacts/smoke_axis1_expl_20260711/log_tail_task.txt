@@ -1,0 +1,20 @@
+  Memory (outputs): 2.4e+04
+  Memory (code):    8.8e+05
+
+Report cost analysis:
+  FLOPS:            4.2e+04
+  Memory (temp):    7.5e+03
+  Memory (inputs):  7.2e+03
+  Memory (outputs): 3.4e+02
+  Memory (code):    9.3e+04
+
+Done compiling!
+Did not find any checkpoint.
+Loaded static replay: 272 sampling items (seq length 11).
+  update     1/3: wm_total=0.000  
+  update     3/3: wm_total=7.460  con=0.871  dyn=1.000  position=1.276  rep=1.000  rew=1.609  velocity=1.704
+Saving checkpoint: /tmp/claude-1000/-home-rickybao-projects-dreamerv3/1fd435d6-7962-41e3-b5ca-5ffe131ca911/scratchpad/smoke/fit_task/ckpt/20260711T164136F334239-000000000003
+Saved checkpoint.
+Saved offline-fit checkpoint under /tmp/claude-1000/-home-rickybao-projects-dreamerv3/1fd435d6-7962-41e3-b5ca-5ffe131ca911/scratchpad/smoke/fit_task/ckpt
+WM-loss change (update 1 -> 3):
+  wm_total    : 0.0000 -> 0.0000 (did not decrease)

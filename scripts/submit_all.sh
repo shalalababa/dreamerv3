@@ -361,6 +361,9 @@ submit_axis1_bundle() {  # submit_axis1_bundle <bundle_id> <runlist> <num_tasks>
   exports="$exports,RUN_ID=$bundle_id,RUNLIST=$runlist"
   exports="$exports,FORCE=${FORCE:-0},FORCE_WM=${FORCE_WM:-0},RENDER=${RENDER:-False}"
   exports="$exports,STEPS=${STEPS:-1.25e5},AXIS1_UPDATES=${AXIS1_UPDATES:-500000}"
+  # PREREG_axis1_corrective_20260711: the fitting objective must reach the
+  # bundle children (this list intentionally avoids --export=ALL).
+  exports="$exports,AXIS1_EXPL_MODE=${AXIS1_EXPL_MODE:?},AXIS1_SAVE_EVERY_UPDATES=${AXIS1_SAVE_EVERY_UPDATES:-50000}"
   local cmd=(sbatch --account="$SLURM_ACCOUNT" --partition="$SLURM_PARTITION"
              --gres="$SLURM_GRES" --time="$walltime"
              --job-name="$bundle_id" --export="$exports"
@@ -714,6 +717,14 @@ case "$cmd" in
     #     --which q1 --output_root $RUNROOT/axis1_<dom>/q1   (and q2)
     # Seeds are paired across cells (same k everywhere); deepen Q1 later via
     # AXIS1_SEEDS="9 10" AXIS1_QUADS=q1 (plan v3 surprise table).
+    # PREREG_axis1_corrective_20260711: fitting objective must be explicit,
+    # and reward-free runs carry the ax1f id prefix.
+    : "${AXIS1_EXPL_MODE:?set AXIS1_EXPL_MODE=apt (reward-free) or task (reward-aware arm)}"
+    case "$AXIS1_EXPL_MODE" in apt|task) ;; *)
+      echo "AXIS1_EXPL_MODE must be 'apt' or 'task', got: $AXIS1_EXPL_MODE"; exit 1 ;;
+    esac
+    id_prefix="${AXIS1_ID_PREFIX:-$([ "$AXIS1_EXPL_MODE" = task ] && echo ax1 || echo ax1f)}"
+    wm_infix="${id_prefix#ax1}"
     read -ra seeds <<< "${AXIS1_SEEDS:-1 2 3 4 5 6 7 8}"
     read -ra quads <<< "${AXIS1_QUADS:-q1 q2}"
     read -ra doms <<< "${AXIS1_DOMAINS:-cup finger}"
@@ -733,12 +744,12 @@ case "$cmd" in
         fi
         for side in 0 1; do
           for s in "${seeds[@]}"; do
-            run_id="adapt_ax1${q}s${side}_${dom}_seed${s}_ckpt${updates}"
+            run_id="adapt_${id_prefix}${q}s${side}_${dom}_seed${s}_ckpt${updates}"
             SLURM_TIME="${AXIS1_TIME:-12:00:00}" submit axis1.sbatch "$run_id" \
-              "WM_RUN=ax1wm_${dom}_${q}s${side}_seed${s}" \
+              "WM_RUN=ax1wm_${dom}_${wm_infix}${q}s${side}_seed${s}" \
               "TASK=$task" "SEED=$s" "REPLAY=$root/side${side}" \
               "UPDATES=$updates" "STEPS=$steps" \
-              "AXIS=axis1" "PAIRED_SEED_SET=ax1_${dom}_${q}"
+              "AXIS=axis1" "PAIRED_SEED_SET=${id_prefix}_${dom}_${q}"
           done
         done
       done
@@ -748,6 +759,12 @@ case "$cmd" in
     # Phase 6 Axis-1 bundled for RCC caps. offline_fit writes its checkpoint
     # only at the end, so this stays conservative: 3 cell members per 33h
     # bundle by default rather than relying on partial-child restart.
+    : "${AXIS1_EXPL_MODE:?set AXIS1_EXPL_MODE=apt (reward-free) or task (reward-aware arm)}"
+    case "$AXIS1_EXPL_MODE" in apt|task) ;; *)
+      echo "AXIS1_EXPL_MODE must be 'apt' or 'task', got: $AXIS1_EXPL_MODE"; exit 1 ;;
+    esac
+    id_prefix="${AXIS1_ID_PREFIX:-$([ "$AXIS1_EXPL_MODE" = task ] && echo ax1 || echo ax1f)}"
+    wm_infix="${id_prefix#ax1}"
     read -ra seeds <<< "${AXIS1_SEEDS:-1 2 3 4 5 6 7 8}"
     read -ra quads <<< "${AXIS1_QUADS:-q1 q2}"
     read -ra doms <<< "${AXIS1_DOMAINS:-cup finger}"
@@ -771,8 +788,8 @@ case "$cmd" in
         fi
         for side in 0 1; do
           for s in "${seeds[@]}"; do
-            run_id="adapt_ax1${q}s${side}_${dom}_seed${s}_ckpt${updates}"
-            wm_run="ax1wm_${dom}_${q}s${side}_seed${s}"
+            run_id="adapt_${id_prefix}${q}s${side}_${dom}_seed${s}_ckpt${updates}"
+            wm_run="ax1wm_${dom}_${wm_infix}${q}s${side}_seed${s}"
             if [ "${FORCE:-0}" != "1" ]; then
               if queued_job "$run_id"; then
                 echo "SKIP queued/running: $run_id"
@@ -795,7 +812,7 @@ case "$cmd" in
                 fi
               fi
             fi
-            pending+=("$run_id"$'\t'"$wm_run"$'\t'"$task"$'\t'"$s"$'\t'"$root/side${side}"$'\t'"$updates"$'\t'"$steps"$'\t'"axis1"$'\t'"ax1_${dom}_${q}")
+            pending+=("$run_id"$'\t'"$wm_run"$'\t'"$task"$'\t'"$s"$'\t'"$root/side${side}"$'\t'"$updates"$'\t'"$steps"$'\t'"axis1"$'\t'"${id_prefix}_${dom}_${q}")
           done
         done
       done
@@ -837,6 +854,12 @@ case "$cmd" in
     #     --index $RUNROOT/axis1_<dom>/episodes.json \
     #     --dose $RUNROOT/axis1_<dom>/dose.json \
     #     --output_root $RUNROOT/axis1_<dom>/dose
+    # Dose/r-pair runs are reward-free by registration (no runs existed
+    # under ax1d*/ax1r* names before the corrective protocol); require the
+    # explicit mode anyway so nothing reward-aware slips through.
+    : "${AXIS1_EXPL_MODE:?set AXIS1_EXPL_MODE=apt (reward-free; ax1d* names are registered as reward-free fits)}"
+    [ "$AXIS1_EXPL_MODE" = apt ] || {
+      echo "axis1-dose-bundles requires AXIS1_EXPL_MODE=apt (ax1d*/ax1r* are registered reward-free; got: $AXIS1_EXPL_MODE)"; exit 1; }
     read -ra seeds <<< "${AXIS1_SEEDS:-1 2 3 4 5}"
     read -ra levels <<< "${AXIS1_LEVELS:-0 1 2 3}"
     read -ra doms <<< "${AXIS1_DOMAINS:-cup finger}"

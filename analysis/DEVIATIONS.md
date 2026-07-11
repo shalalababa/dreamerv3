@@ -1,9 +1,57 @@
 # Deviations from PREREG_phase5a.md
 
-None so far. Any change to the frozen spec gets an entry here with date,
-what changed, and why.
+Any change to the frozen spec gets an entry here with date, what changed,
+and why. (Registration record for new stages: tracked `prereg/` directory,
+immutable dated files; see plan v4.)
 
-## Code notes (non-deviations)
+## Deviations
+
+- **2026-07-11 — DISCOVERED IMPLEMENTATION DEVIATION: Axis-1 offline WM
+  fits were reward-aware.** Found by the 11-Jul editorial code audit,
+  verified same day. All 64 Axis-1 fits ran `offline_fit --configs
+  dmc_proprio` with default `expl.mode: task` (scripts/axis1.sbatch; every
+  saved `wm_audit/*/config.yaml`), which trains a reward head on logged
+  task rewards with representation gradients (`reward_grad: true`) plus
+  the replay-value loss (`repval_loss/repval_grad: true`) — whereas the
+  Phase-4 online pretrains (`expl.mode` p2e/apt/random) skip both losses
+  (`agent.py`: `reward_free`). In finger the regime is definitionally the
+  reward condition (regimes.py), so reward supervision was differential by
+  intervention side. **Consequence:** the 10-Jul Axis-1 read
+  (`artifacts/phase6_axis1_20260710/`) is reclassified as the
+  *reward-aware arm*; no reward-free causal claim rests on it. Corrective
+  protocol frozen the same day in
+  `prereg/PREREG_axis1_corrective_20260711.md` (reward-free `expl.mode
+  apt` refit of the same buffers, seeds 1–8, run ids `adapt_ax1f*`;
+  2×2 occupancy × reward-supervision read). E3 submissions and the
+  seed-9–16 extension are paused behind the corrective read; queued
+  reward-aware jobs cancelled. `axis1.sbatch` and `submit_all.sh` now
+  require an explicit `AXIS1_EXPL_MODE` and derive distinct run-id
+  prefixes, so the arm is always visible in run names and saved configs.
+  Buffers, searches, and all Phase-5a observational results are unaffected
+  (the deviation is in the fitting objective only). Plan v4
+  (`research_notes/Research_Plan_v4_20260711.tex`) reorganizes the
+  program around this; disclosure category: *corrective replication*.
+  **Same-day operational follow-ups (v4 re-review, pre-outcome):**
+  (1) bundle-path defect confirmed and fixed — `submit_axis1_bundle`'s
+  explicit `--export` list lacked `AXIS1_EXPL_MODE` (bundle children would
+  have died at the guard); added + value-validated (`apt|task`) + threaded
+  through the bundle child; (2) flag-path defect caught by the required
+  smoke test — `--expl.mode` is not a config key; corrected to
+  `--agent.expl.mode`; (3) smoke test PASS on a real 400-step debug replay
+  (apt: losses {con,dyn,position,rep,velocity}, no `rew` head; task: same
+  + `rew`; saved configs record the mode; evidence in
+  `artifacts/smoke_axis1_expl_20260711/`); per-run audit rule added.
+  (4) `prereg/PREREG_axis1_corrective_amendment1_20260711.md` freezes the
+  inferential hierarchy (finger Q1 sole confirmatory, cup Q2 secondary,
+  bootstrap CI is the only decision criterion) and redefines the E3v2
+  replication unit as the collector run (within-run cov-matched high/low
+  pairs; feasibility measured from the frozen indices: finger 15/15 runs
+  Δocc 0.20–0.36, cup 10/15 at 0.11–0.37; exact sign-flip permutation
+  across collector runs is the primary small-cluster inference; `ax1d*`/
+  `ax1r*` demoted to buffer resamples; mode strings `ax1w<collector>s<side>`
+  reserved).
+
+## Code notes and registrations (non-deviations)
 
 Changes to the analysis *code* that enforce the frozen spec rather than
 alter it, logged for transparency. All entries below were made before any
