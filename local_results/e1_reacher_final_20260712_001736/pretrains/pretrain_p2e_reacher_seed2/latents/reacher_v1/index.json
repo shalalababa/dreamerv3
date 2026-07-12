@@ -1,0 +1,42 @@
+{
+  "run_logdir": "/workspace/dreamerv3_runs/pretrain_p2e_reacher_seed2",
+  "probeset": "/workspace/dreamerv3_runs/probesets/reacher_v1",
+  "probeset_id": "reacher_v1_026f8124",
+  "probeset_sha256": "026f8124be957cad4eb994cc5be7c891d5f705308078f73b6ba4ac18d86c4c41",
+  "burn_in": 32,
+  "eval_steps": 8,
+  "store": "last",
+  "prior_horizon": 0,
+  "checkpoints": [
+    {
+      "name": "step000000096720",
+      "exact_step": 96720,
+      "milestone": 100000,
+      "path": "step000000096720/latents.npz"
+    },
+    {
+      "name": "step000000198352",
+      "exact_step": 198352,
+      "milestone": 200000,
+      "path": "step000000198352/latents.npz"
+    },
+    {
+      "name": "step000000299808",
+      "exact_step": 299808,
+      "milestone": 300000,
+      "path": "step000000299808/latents.npz"
+    },
+    {
+      "name": "step000000401360",
+      "exact_step": 401360,
+      "milestone": 400000,
+      "path": "step000000401360/latents.npz"
+    },
+    {
+      "name": "step000000496192",
+      "exact_step": 496192,
+      "milestone": 500000,
+      "path": "step000000496192/latents.npz"
+    }
+  ]
+}

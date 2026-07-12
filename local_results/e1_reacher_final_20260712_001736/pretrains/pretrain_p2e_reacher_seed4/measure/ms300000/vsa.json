@@ -1,0 +1,19 @@
+{
+  "traj": "/workspace/dreamerv3_runs/pretrain_p2e_reacher_seed4/measure/ms300000/traj.npz",
+  "features": "/workspace/dreamerv3_runs/pretrain_p2e_reacher_seed4/measure/ms300000/feats.npz",
+  "critic": "/workspace/dreamerv3_runs/critics/critic_reacher_v1.npz",
+  "critic_sha256": "dc6ebe56b384e87c50a77296cc59d1febe02cbeceb5f45a0663ee65bdd772b03",
+  "critic_usable": true,
+  "task": "dmc_reacher_hard",
+  "n_episodes": 40,
+  "n_test": 12,
+  "vsa_5": -0.057899,
+  "fwd_mse_5": -0.06257,
+  "n_eval_5": 11940,
+  "vsa_1": -0.054077,
+  "fwd_mse_1": -0.06174,
+  "n_eval_1": 11988,
+  "vsa_20": -0.060871,
+  "fwd_mse_20": -0.064249,
+  "n_eval_20": 11760
+}

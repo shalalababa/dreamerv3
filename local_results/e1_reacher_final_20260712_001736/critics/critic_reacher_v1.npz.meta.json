@@ -1,0 +1,17 @@
+{
+  "task": "dmc_reacher_hard",
+  "replay": "/scratch/midway3/rickybao/dreamerv3_runs/pilot_goal_reacher_seed1/replay",
+  "keys": [
+    "position",
+    "velocity"
+  ],
+  "gamma": 0.99,
+  "n_episodes": 112,
+  "n_frames": 98032,
+  "r2_holdout": 0.3696,
+  "r2_gate": 0.2,
+  "usable": true,
+  "seed": 0,
+  "steps": 4000,
+  "sha256": "dc6ebe56b384e87c50a77296cc59d1febe02cbeceb5f45a0663ee65bdd772b03"
+}

@@ -1,0 +1,42 @@
+{
+  "run_logdir": "/workspace/dreamerv3_runs/pretrain_apt_reacher_seed4",
+  "probeset": "/workspace/dreamerv3_runs/probesets/reacher_v1",
+  "probeset_id": "reacher_v1_026f8124",
+  "probeset_sha256": "026f8124be957cad4eb994cc5be7c891d5f705308078f73b6ba4ac18d86c4c41",
+  "burn_in": 32,
+  "eval_steps": 8,
+  "store": "last",
+  "prior_horizon": 0,
+  "checkpoints": [
+    {
+      "name": "step000000096896",
+      "exact_step": 96896,
+      "milestone": 100000,
+      "path": "step000000096896/latents.npz"
+    },
+    {
+      "name": "step000000200480",
+      "exact_step": 200480,
+      "milestone": 200000,
+      "path": "step000000200480/latents.npz"
+    },
+    {
+      "name": "step000000303904",
+      "exact_step": 303904,
+      "milestone": 300000,
+      "path": "step000000303904/latents.npz"
+    },
+    {
+      "name": "step000000398704",
+      "exact_step": 398704,
+      "milestone": 400000,
+      "path": "step000000398704/latents.npz"
+    },
+    {
+      "name": "step000000493552",
+      "exact_step": 493552,
+      "milestone": 500000,
+      "path": "step000000493552/latents.npz"
+    }
+  ]
+}

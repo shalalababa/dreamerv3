@@ -1,0 +1,933 @@
+[Sat Jul 11 22:17:53 UTC 2026] measure PRE_RUN=pretrain_apt_reacher_seed3 TASK=dmc_reacher_hard milestones=100000 200000 300000 400000 500000
+[Sat Jul 11 22:17:54 UTC 2026] milestone 100000  snapshot=/workspace/dreamerv3_runs/pretrain_apt_reacher_seed3/ckpt_snapshots/step000000096688
+Task: dmc_reacher_hard  |  checkpoint: /workspace/dreamerv3_runs/pretrain_apt_reacher_seed3/ckpt_snapshots/step000000096688  |  mode: eval
+Observations
+  reward           Space(float32, shape=(), low=-inf, high=inf)
+  is_first         Space(bool, shape=(), low=False, high=True)
+  is_last          Space(bool, shape=(), low=False, high=True)
+  is_terminal      Space(bool, shape=(), low=False, high=True)
+  position         Space(float32, shape=(2,), low=-inf, high=inf)
+  to_target        Space(float32, shape=(2,), low=-inf, high=inf)
+  velocity         Space(float32, shape=(2,), low=-inf, high=inf)
+Actions
+  action           Space(float32, shape=(2,), low=-1.0, high=1.0)
+Extras
+  consec           Space(int32, shape=(), low=-2147483648, high=2147483647)
+  stepid           Space(uint8, shape=(20,), low=0, high=255)
+  dyn/deter        Space(float32, shape=(512,), low=-inf, high=inf)
+  dyn/stoch        Space(float32, shape=(32, 4), low=-inf, high=inf)
+JAX devices (1): [cuda:0]
+Policy devices: cuda:0
+Train devices:  cuda:0
+Initializing parameters...
+/workspace/dreamerv3/embodied/jax/agent.py:112: DeprecationWarning: `with mesh:` context manager has been deprecated. Please use `with jax.set_mesh(mesh):` instead.
+  with self.train_mesh:
+Optimizer opt has 580,106 params:
+       364,160 dyn
+        66,111 val
+        49,926 dec
+        49,796 pol
+        41,153 con
+         8,960 enc
+/workspace/conda_envs/dreamerv3/lib/python3.11/site-packages/optax/_src/linear_algebra.py:44: DeprecationWarning: optax.global_norm is deprecated in favor of optax.tree.norm
+  warnings.warn(
+Done initializing!
+Compiling 1 checkpoint groups...
+Largest checkpoint group: 0 GB
+Compiling train and report...
+/workspace/dreamerv3/embodied/jax/agent.py:187: DeprecationWarning: `with mesh:` context manager has been deprecated. Please use `with jax.set_mesh(mesh):` instead.
+  with self.train_mesh:
+/workspace/conda_envs/dreamerv3/lib/python3.11/site-packages/optax/_src/linear_algebra.py:44: DeprecationWarning: optax.global_norm is deprecated in favor of optax.tree.norm
+  warnings.warn(
+Train cost analysis:
+No available
+Report cost analysis:
+No available
+Done compiling!
+Loading checkpoint: /workspace/dreamerv3_runs/pretrain_apt_reacher_seed3/ckpt_snapshots/step000000096688
+Loaded checkpoint.
+Loaded frozen DreamerV3 checkpoint.
+Observation keys: ['position', 'to_target', 'velocity']  |  action keys: ['action']
+  episode   0: len=1000  return=   10.0
+  episode   1: len=1000  return=    0.0
+  episode   2: len=1000  return=    0.0
+  episode   3: len=1000  return=   12.0
+  episode   4: len=1000  return=   19.0
+  episode   5: len=1000  return=    0.0
+  episode   6: len=1000  return=   15.0
+  episode   7: len=1000  return=    8.0
+  episode   8: len=1000  return=   25.0
+  episode   9: len=1000  return=    8.0
+  episode  10: len=1000  return=    3.0
+  episode  11: len=1000  return=   12.0
+  episode  12: len=1000  return=    6.0
+  episode  13: len=1000  return=    0.0
+  episode  14: len=1000  return=   16.0
+  episode  15: len=1000  return=    3.0
+  episode  16: len=1000  return=   15.0
+  episode  17: len=1000  return=   18.0
+  episode  18: len=1000  return=    3.0
+  episode  19: len=1000  return=    7.0
+  episode  20: len=1000  return=   14.0
+  episode  21: len=1000  return=    0.0
+  episode  22: len=1000  return=    1.0
+  episode  23: len=1000  return=    7.0
+  episode  24: len=1000  return=    9.0
+  episode  25: len=1000  return=    6.0
+  episode  26: len=1000  return=    6.0
+  episode  27: len=1000  return=    1.0
+  episode  28: len=1000  return=   14.0
+  episode  29: len=1000  return=    9.0
+  episode  30: len=1000  return=    9.0
+  episode  31: len=1000  return=    5.0
+  episode  32: len=1000  return=   14.0
+  episode  33: len=1000  return=   10.0
+  episode  34: len=1000  return=    7.0
+  episode  35: len=1000  return=    0.0
+  episode  36: len=1000  return=    8.0
+  episode  37: len=1000  return=    7.0
+  episode  38: len=1000  return=    4.0
+  episode  39: len=1000  return=    2.0
+Saved 40 x 1000 steps -> /workspace/dreamerv3_runs/pretrain_apt_reacher_seed3/measure/ms100000/traj.npz
+Return over episodes: 7.8 +/- 6.0
+Probe trajectories: 40 episodes x 1000 steps
+Observations
+  reward           Space(float32, shape=(), low=-inf, high=inf)
+  is_first         Space(bool, shape=(), low=False, high=True)
+  is_last          Space(bool, shape=(), low=False, high=True)
+  is_terminal      Space(bool, shape=(), low=False, high=True)
+  position         Space(float32, shape=(2,), low=-inf, high=inf)
+  to_target        Space(float32, shape=(2,), low=-inf, high=inf)
+  velocity         Space(float32, shape=(2,), low=-inf, high=inf)
+Actions
+  action           Space(float32, shape=(2,), low=-1.0, high=1.0)
+Extras
+  consec           Space(int32, shape=(), low=-2147483648, high=2147483647)
+  stepid           Space(uint8, shape=(20,), low=0, high=255)
+  dyn/deter        Space(float32, shape=(512,), low=-inf, high=inf)
+  dyn/stoch        Space(float32, shape=(32, 4), low=-inf, high=inf)
+JAX devices (1): [cuda:0]
+Policy devices: cuda:0
+Train devices:  cuda:0
+Initializing parameters...
+/workspace/dreamerv3/embodied/jax/agent.py:112: DeprecationWarning: `with mesh:` context manager has been deprecated. Please use `with jax.set_mesh(mesh):` instead.
+  with self.train_mesh:
+Optimizer opt has 580,106 params:
+       364,160 dyn
+        66,111 val
+        49,926 dec
+        49,796 pol
+        41,153 con
+         8,960 enc
+/workspace/conda_envs/dreamerv3/lib/python3.11/site-packages/optax/_src/linear_algebra.py:44: DeprecationWarning: optax.global_norm is deprecated in favor of optax.tree.norm
+  warnings.warn(
+Done initializing!
+Compiling 1 checkpoint groups...
+Largest checkpoint group: 0 GB
+Compiling train and report...
+/workspace/dreamerv3/embodied/jax/agent.py:187: DeprecationWarning: `with mesh:` context manager has been deprecated. Please use `with jax.set_mesh(mesh):` instead.
+  with self.train_mesh:
+/workspace/conda_envs/dreamerv3/lib/python3.11/site-packages/optax/_src/linear_algebra.py:44: DeprecationWarning: optax.global_norm is deprecated in favor of optax.tree.norm
+  warnings.warn(
+Train cost analysis:
+No available
+Report cost analysis:
+No available
+Done compiling!
+Loading checkpoint: /workspace/dreamerv3_runs/pretrain_apt_reacher_seed3/ckpt_snapshots/step000000096688
+Loaded checkpoint.
+World model: obs=['position', 'to_target', 'velocity']  act=['action']  horizons=[1, 5, 20]
+  world-model features: episodes 0-7
+  world-model features: episodes 8-15
+  world-model features: episodes 16-23
+  world-model features: episodes 24-31
+  world-model features: episodes 32-39
+No --vae_ckpt given; extracting world-model features only.
+Feature arrays:
+  wm_enc                 (40, 1000, 64)
+  wm_imag1_deter         (40, 1000, 512)
+  wm_imag1_stoch         (40, 1000, 128)
+  wm_imag20_deter        (40, 1000, 512)
+  wm_imag20_stoch        (40, 1000, 128)
+  wm_imag5_deter         (40, 1000, 512)
+  wm_imag5_stoch         (40, 1000, 128)
+  wm_post_deter          (40, 1000, 512)
+  wm_post_nll            (40, 1000)
+  wm_post_stoch          (40, 1000, 128)
+  wm_prior_deter         (40, 1000, 512)
+  wm_prior_nll           (40, 1000)
+  wm_prior_stoch         (40, 1000, 128)
+Saved -> /workspace/dreamerv3_runs/pretrain_apt_reacher_seed3/measure/ms100000/feats.npz
+Episodes: 40 (test 12)  |  sites: ['enc', 'imag1', 'imag20', 'imag5', 'post_deter', 'post_stoch', 'posterior', 'prior']
+Targets: ['in_regime', 'qpos', 'qvel', 'regime', 'return_to_go', 'state']
+  [  1/38] rssm/enc        state         h=0  K=1  R2_ridge=0.95232  R2_mlp=None
+  [  2/38] rssm/posterior  state         h=0  K=1  R2_ridge=0.99497  R2_mlp=None
+  [  3/38] rssm/post_deter state         h=0  K=1  R2_ridge=0.9937  R2_mlp=None
+  [  4/38] rssm/post_stoch state         h=0  K=1  R2_ridge=0.8655  R2_mlp=None
+  [  5/38] rssm/prior      state         h=0  K=1  R2_ridge=0.99398  R2_mlp=None
+  [  6/38] rssm/enc        state         h=1  K=1  R2_ridge=0.85228  R2_mlp=None
+  [  7/38] rssm/posterior  state         h=1  K=1  R2_ridge=0.8854  R2_mlp=None
+  [  8/38] rssm/post_deter state         h=1  K=1  R2_ridge=0.88456  R2_mlp=None
+  [  9/38] rssm/post_stoch state         h=1  K=1  R2_ridge=0.77364  R2_mlp=None
+  [ 10/38] rssm/prior      state         h=1  K=1  R2_ridge=0.8837  R2_mlp=None
+  [ 11/38] rssm/imag1      state         h=1  K=1  R2_ridge=0.99416  R2_mlp=None
+  [ 12/38] rssm/enc        state         h=5  K=1  R2_ridge=0.60155  R2_mlp=None
+  [ 13/38] rssm/posterior  state         h=5  K=1  R2_ridge=0.65527  R2_mlp=None
+  [ 14/38] rssm/post_deter state         h=5  K=1  R2_ridge=0.6551  R2_mlp=None
+  [ 15/38] rssm/post_stoch state         h=5  K=1  R2_ridge=0.56184  R2_mlp=None
+  [ 16/38] rssm/prior      state         h=5  K=1  R2_ridge=0.65471  R2_mlp=None
+  [ 17/38] rssm/imag5      state         h=5  K=1  R2_ridge=0.99383  R2_mlp=None
+  [ 18/38] rssm/enc        state         h=20 K=1  R2_ridge=0.39748  R2_mlp=None
+  [ 19/38] rssm/posterior  state         h=20 K=1  R2_ridge=0.44265  R2_mlp=None
+  [ 20/38] rssm/post_deter state         h=20 K=1  R2_ridge=0.44322  R2_mlp=None
+  [ 21/38] rssm/post_stoch state         h=20 K=1  R2_ridge=0.37829  R2_mlp=None
+  [ 22/38] rssm/prior      state         h=20 K=1  R2_ridge=0.4416  R2_mlp=None
+  [ 23/38] rssm/imag20     state         h=20 K=1  R2_ridge=0.99261  R2_mlp=None
+  [ 24/38] rssm/enc        return_to_go  h=0  K=1  R2_ridge=-0.02957  R2_mlp=None
+  [ 25/38] rssm/posterior  return_to_go  h=0  K=1  R2_ridge=-0.11761  R2_mlp=None
+  [ 26/38] rssm/post_deter return_to_go  h=0  K=1  R2_ridge=-0.10897  R2_mlp=None
+  [ 27/38] rssm/post_stoch return_to_go  h=0  K=1  R2_ridge=-0.04393  R2_mlp=None
+  [ 28/38] rssm/prior      return_to_go  h=0  K=1  R2_ridge=-0.11371  R2_mlp=None
+  [ 29/38] rssm/enc        regime        h=0  K=1  R2_ridge=0.61085  R2_mlp=None
+  [ 30/38] rssm/posterior  regime        h=0  K=1  R2_ridge=0.85084  R2_mlp=None
+  [ 31/38] rssm/post_deter regime        h=0  K=1  R2_ridge=0.83376  R2_mlp=None
+  [ 32/38] rssm/post_stoch regime        h=0  K=1  R2_ridge=0.35594  R2_mlp=None
+  [ 33/38] rssm/prior      regime        h=0  K=1  R2_ridge=0.84273  R2_mlp=None
+  [ 34/38] rssm/enc        in_regime     h=0  K=1  R2_ridge=0.00548  R2_mlp=None
+  [ 35/38] rssm/posterior  in_regime     h=0  K=1  R2_ridge=-0.01303  R2_mlp=None
+  [ 36/38] rssm/post_deter in_regime     h=0  K=1  R2_ridge=-0.00815  R2_mlp=None
+  [ 37/38] rssm/post_stoch in_regime     h=0  K=1  R2_ridge=-0.00036  R2_mlp=None
+  [ 38/38] rssm/prior      in_regime     h=0  K=1  R2_ridge=-0.00902  R2_mlp=None
+
+Probing summary (held-out ridge R^2)
+======================================
+
+Per-frame content (target: state, horizon 0):
+  RSSM posterior          R^2 = 0.99497
+  static VAE latent (K=1) R^2 = None
+
+Predictive content (RSSM posterior, target: state):
+  horizon  0: R^2 = 0.99497
+  horizon  1: R^2 = 0.8854
+  horizon  5: R^2 = 0.65527
+  horizon 20: R^2 = 0.44265
+
+VAE receptive field (target: state, horizon 0):
+  K=  1: R^2 = None
+  K=  4: R^2 = None
+  K= 16: R^2 = None
+  K=all: R^2 = None
+
+Reward probe (RSSM posterior, target: task reward, h=0):
+  reward_stand  R^2 = None
+  reward_walk   R^2 = None
+  reward_run    R^2 = None
+
+Held-out likelihood (mean NLL, lower is better):
+  rssm_posterior_recon       0.0120
+  rssm_prior_predictive      0.0152
+
+Wrote results -> /workspace/dreamerv3_runs/pretrain_apt_reacher_seed3/measure/ms100000/probe
+{"vsa_5": -0.013897, "fwd_mse_5": -0.011108, "vsa_1": -0.013004, "fwd_mse_1": -0.010615, "vsa_20": -0.015643, "fwd_mse_20": -0.013179}
+-> /workspace/dreamerv3_runs/pretrain_apt_reacher_seed3/measure/ms100000/vsa.json
+[Sat Jul 11 22:54:34 UTC 2026] milestone 200000  snapshot=/workspace/dreamerv3_runs/pretrain_apt_reacher_seed3/ckpt_snapshots/step000000200384
+Task: dmc_reacher_hard  |  checkpoint: /workspace/dreamerv3_runs/pretrain_apt_reacher_seed3/ckpt_snapshots/step000000200384  |  mode: eval
+Observations
+  reward           Space(float32, shape=(), low=-inf, high=inf)
+  is_first         Space(bool, shape=(), low=False, high=True)
+  is_last          Space(bool, shape=(), low=False, high=True)
+  is_terminal      Space(bool, shape=(), low=False, high=True)
+  position         Space(float32, shape=(2,), low=-inf, high=inf)
+  to_target        Space(float32, shape=(2,), low=-inf, high=inf)
+  velocity         Space(float32, shape=(2,), low=-inf, high=inf)
+Actions
+  action           Space(float32, shape=(2,), low=-1.0, high=1.0)
+Extras
+  consec           Space(int32, shape=(), low=-2147483648, high=2147483647)
+  stepid           Space(uint8, shape=(20,), low=0, high=255)
+  dyn/deter        Space(float32, shape=(512,), low=-inf, high=inf)
+  dyn/stoch        Space(float32, shape=(32, 4), low=-inf, high=inf)
+JAX devices (1): [cuda:0]
+Policy devices: cuda:0
+Train devices:  cuda:0
+Initializing parameters...
+/workspace/dreamerv3/embodied/jax/agent.py:112: DeprecationWarning: `with mesh:` context manager has been deprecated. Please use `with jax.set_mesh(mesh):` instead.
+  with self.train_mesh:
+Optimizer opt has 580,106 params:
+       364,160 dyn
+        66,111 val
+        49,926 dec
+        49,796 pol
+        41,153 con
+         8,960 enc
+/workspace/conda_envs/dreamerv3/lib/python3.11/site-packages/optax/_src/linear_algebra.py:44: DeprecationWarning: optax.global_norm is deprecated in favor of optax.tree.norm
+  warnings.warn(
+Done initializing!
+Compiling 1 checkpoint groups...
+Largest checkpoint group: 0 GB
+Compiling train and report...
+/workspace/dreamerv3/embodied/jax/agent.py:187: DeprecationWarning: `with mesh:` context manager has been deprecated. Please use `with jax.set_mesh(mesh):` instead.
+  with self.train_mesh:
+/workspace/conda_envs/dreamerv3/lib/python3.11/site-packages/optax/_src/linear_algebra.py:44: DeprecationWarning: optax.global_norm is deprecated in favor of optax.tree.norm
+  warnings.warn(
+Train cost analysis:
+No available
+Report cost analysis:
+No available
+Done compiling!
+Loading checkpoint: /workspace/dreamerv3_runs/pretrain_apt_reacher_seed3/ckpt_snapshots/step000000200384
+Loaded checkpoint.
+Loaded frozen DreamerV3 checkpoint.
+Observation keys: ['position', 'to_target', 'velocity']  |  action keys: ['action']
+  episode   0: len=1000  return=    3.0
+  episode   1: len=1000  return=    3.0
+  episode   2: len=1000  return=    0.0
+  episode   3: len=1000  return=    5.0
+  episode   4: len=1000  return=    3.0
+  episode   5: len=1000  return=    1.0
+  episode   6: len=1000  return=    0.0
+  episode   7: len=1000  return=    0.0
+  episode   8: len=1000  return=    0.0
+  episode   9: len=1000  return=    7.0
+  episode  10: len=1000  return=    0.0
+  episode  11: len=1000  return=    5.0
+  episode  12: len=1000  return=    1.0
+  episode  13: len=1000  return=    0.0
+  episode  14: len=1000  return=    2.0
+  episode  15: len=1000  return=   13.0
+  episode  16: len=1000  return=    1.0
+  episode  17: len=1000  return=   15.0
+  episode  18: len=1000  return=    5.0
+  episode  19: len=1000  return=    5.0
+  episode  20: len=1000  return=   12.0
+  episode  21: len=1000  return=    0.0
+  episode  22: len=1000  return=    0.0
+  episode  23: len=1000  return=    0.0
+  episode  24: len=1000  return=    2.0
+  episode  25: len=1000  return=    0.0
+  episode  26: len=1000  return=    0.0
+  episode  27: len=1000  return=    0.0
+  episode  28: len=1000  return=    0.0
+  episode  29: len=1000  return=    0.0
+  episode  30: len=1000  return=    7.0
+  episode  31: len=1000  return=    8.0
+  episode  32: len=1000  return=   10.0
+  episode  33: len=1000  return=    6.0
+  episode  34: len=1000  return=    3.0
+  episode  35: len=1000  return=   10.0
+  episode  36: len=1000  return=    6.0
+  episode  37: len=1000  return=    2.0
+  episode  38: len=1000  return=    0.0
+  episode  39: len=1000  return=   15.0
+Saved 40 x 1000 steps -> /workspace/dreamerv3_runs/pretrain_apt_reacher_seed3/measure/ms200000/traj.npz
+Return over episodes: 3.8 +/- 4.4
+Probe trajectories: 40 episodes x 1000 steps
+Observations
+  reward           Space(float32, shape=(), low=-inf, high=inf)
+  is_first         Space(bool, shape=(), low=False, high=True)
+  is_last          Space(bool, shape=(), low=False, high=True)
+  is_terminal      Space(bool, shape=(), low=False, high=True)
+  position         Space(float32, shape=(2,), low=-inf, high=inf)
+  to_target        Space(float32, shape=(2,), low=-inf, high=inf)
+  velocity         Space(float32, shape=(2,), low=-inf, high=inf)
+Actions
+  action           Space(float32, shape=(2,), low=-1.0, high=1.0)
+Extras
+  consec           Space(int32, shape=(), low=-2147483648, high=2147483647)
+  stepid           Space(uint8, shape=(20,), low=0, high=255)
+  dyn/deter        Space(float32, shape=(512,), low=-inf, high=inf)
+  dyn/stoch        Space(float32, shape=(32, 4), low=-inf, high=inf)
+JAX devices (1): [cuda:0]
+Policy devices: cuda:0
+Train devices:  cuda:0
+Initializing parameters...
+/workspace/dreamerv3/embodied/jax/agent.py:112: DeprecationWarning: `with mesh:` context manager has been deprecated. Please use `with jax.set_mesh(mesh):` instead.
+  with self.train_mesh:
+Optimizer opt has 580,106 params:
+       364,160 dyn
+        66,111 val
+        49,926 dec
+        49,796 pol
+        41,153 con
+         8,960 enc
+/workspace/conda_envs/dreamerv3/lib/python3.11/site-packages/optax/_src/linear_algebra.py:44: DeprecationWarning: optax.global_norm is deprecated in favor of optax.tree.norm
+  warnings.warn(
+Done initializing!
+Compiling 1 checkpoint groups...
+Largest checkpoint group: 0 GB
+Compiling train and report...
+/workspace/dreamerv3/embodied/jax/agent.py:187: DeprecationWarning: `with mesh:` context manager has been deprecated. Please use `with jax.set_mesh(mesh):` instead.
+  with self.train_mesh:
+/workspace/conda_envs/dreamerv3/lib/python3.11/site-packages/optax/_src/linear_algebra.py:44: DeprecationWarning: optax.global_norm is deprecated in favor of optax.tree.norm
+  warnings.warn(
+Train cost analysis:
+No available
+Report cost analysis:
+No available
+Done compiling!
+Loading checkpoint: /workspace/dreamerv3_runs/pretrain_apt_reacher_seed3/ckpt_snapshots/step000000200384
+Loaded checkpoint.
+World model: obs=['position', 'to_target', 'velocity']  act=['action']  horizons=[1, 5, 20]
+  world-model features: episodes 0-7
+  world-model features: episodes 8-15
+  world-model features: episodes 16-23
+  world-model features: episodes 24-31
+  world-model features: episodes 32-39
+No --vae_ckpt given; extracting world-model features only.
+Feature arrays:
+  wm_enc                 (40, 1000, 64)
+  wm_imag1_deter         (40, 1000, 512)
+  wm_imag1_stoch         (40, 1000, 128)
+  wm_imag20_deter        (40, 1000, 512)
+  wm_imag20_stoch        (40, 1000, 128)
+  wm_imag5_deter         (40, 1000, 512)
+  wm_imag5_stoch         (40, 1000, 128)
+  wm_post_deter          (40, 1000, 512)
+  wm_post_nll            (40, 1000)
+  wm_post_stoch          (40, 1000, 128)
+  wm_prior_deter         (40, 1000, 512)
+  wm_prior_nll           (40, 1000)
+  wm_prior_stoch         (40, 1000, 128)
+Saved -> /workspace/dreamerv3_runs/pretrain_apt_reacher_seed3/measure/ms200000/feats.npz
+Episodes: 40 (test 12)  |  sites: ['enc', 'imag1', 'imag20', 'imag5', 'post_deter', 'post_stoch', 'posterior', 'prior']
+Targets: ['in_regime', 'qpos', 'qvel', 'regime', 'return_to_go', 'state']
+  [  1/38] rssm/enc        state         h=0  K=1  R2_ridge=0.95887  R2_mlp=None
+  [  2/38] rssm/posterior  state         h=0  K=1  R2_ridge=0.99759  R2_mlp=None
+  [  3/38] rssm/post_deter state         h=0  K=1  R2_ridge=0.99729  R2_mlp=None
+  [  4/38] rssm/post_stoch state         h=0  K=1  R2_ridge=0.85668  R2_mlp=None
+  [  5/38] rssm/prior      state         h=0  K=1  R2_ridge=0.99738  R2_mlp=None
+  [  6/38] rssm/enc        state         h=1  K=1  R2_ridge=0.8821  R2_mlp=None
+  [  7/38] rssm/posterior  state         h=1  K=1  R2_ridge=0.91609  R2_mlp=None
+  [  8/38] rssm/post_deter state         h=1  K=1  R2_ridge=0.91489  R2_mlp=None
+  [  9/38] rssm/post_stoch state         h=1  K=1  R2_ridge=0.78397  R2_mlp=None
+  [ 10/38] rssm/prior      state         h=1  K=1  R2_ridge=0.91593  R2_mlp=None
+  [ 11/38] rssm/imag1      state         h=1  K=1  R2_ridge=0.9975  R2_mlp=None
+  [ 12/38] rssm/enc        state         h=5  K=1  R2_ridge=0.69788  R2_mlp=None
+  [ 13/38] rssm/posterior  state         h=5  K=1  R2_ridge=0.73597  R2_mlp=None
+  [ 14/38] rssm/post_deter state         h=5  K=1  R2_ridge=0.73546  R2_mlp=None
+  [ 15/38] rssm/post_stoch state         h=5  K=1  R2_ridge=0.61339  R2_mlp=None
+  [ 16/38] rssm/prior      state         h=5  K=1  R2_ridge=0.73646  R2_mlp=None
+  [ 17/38] rssm/imag5      state         h=5  K=1  R2_ridge=0.99743  R2_mlp=None
+  [ 18/38] rssm/enc        state         h=20 K=1  R2_ridge=0.53658  R2_mlp=None
+  [ 19/38] rssm/posterior  state         h=20 K=1  R2_ridge=0.57543  R2_mlp=None
+  [ 20/38] rssm/post_deter state         h=20 K=1  R2_ridge=0.57473  R2_mlp=None
+  [ 21/38] rssm/post_stoch state         h=20 K=1  R2_ridge=0.46585  R2_mlp=None
+  [ 22/38] rssm/prior      state         h=20 K=1  R2_ridge=0.57533  R2_mlp=None
+  [ 23/38] rssm/imag20     state         h=20 K=1  R2_ridge=0.99745  R2_mlp=None
+  [ 24/38] rssm/enc        return_to_go  h=0  K=1  R2_ridge=0.01343  R2_mlp=None
+  [ 25/38] rssm/posterior  return_to_go  h=0  K=1  R2_ridge=0.01948  R2_mlp=None
+  [ 26/38] rssm/post_deter return_to_go  h=0  K=1  R2_ridge=0.0165  R2_mlp=None
+  [ 27/38] rssm/post_stoch return_to_go  h=0  K=1  R2_ridge=0.00501  R2_mlp=None
+  [ 28/38] rssm/prior      return_to_go  h=0  K=1  R2_ridge=0.01615  R2_mlp=None
+  [ 29/38] rssm/enc        regime        h=0  K=1  R2_ridge=0.64224  R2_mlp=None
+  [ 30/38] rssm/posterior  regime        h=0  K=1  R2_ridge=0.88635  R2_mlp=None
+  [ 31/38] rssm/post_deter regime        h=0  K=1  R2_ridge=0.86179  R2_mlp=None
+  [ 32/38] rssm/post_stoch regime        h=0  K=1  R2_ridge=0.41602  R2_mlp=None
+  [ 33/38] rssm/prior      regime        h=0  K=1  R2_ridge=0.88008  R2_mlp=None
+  [ 34/38] rssm/enc        in_regime     h=0  K=1  R2_ridge=0.0097  R2_mlp=None
+  [ 35/38] rssm/posterior  in_regime     h=0  K=1  R2_ridge=0.01606  R2_mlp=None
+  [ 36/38] rssm/post_deter in_regime     h=0  K=1  R2_ridge=0.01461  R2_mlp=None
+  [ 37/38] rssm/post_stoch in_regime     h=0  K=1  R2_ridge=0.00623  R2_mlp=None
+  [ 38/38] rssm/prior      in_regime     h=0  K=1  R2_ridge=0.01802  R2_mlp=None
+
+Probing summary (held-out ridge R^2)
+======================================
+
+Per-frame content (target: state, horizon 0):
+  RSSM posterior          R^2 = 0.99759
+  static VAE latent (K=1) R^2 = None
+
+Predictive content (RSSM posterior, target: state):
+  horizon  0: R^2 = 0.99759
+  horizon  1: R^2 = 0.91609
+  horizon  5: R^2 = 0.73597
+  horizon 20: R^2 = 0.57543
+
+VAE receptive field (target: state, horizon 0):
+  K=  1: R^2 = None
+  K=  4: R^2 = None
+  K= 16: R^2 = None
+  K=all: R^2 = None
+
+Reward probe (RSSM posterior, target: task reward, h=0):
+  reward_stand  R^2 = None
+  reward_walk   R^2 = None
+  reward_run    R^2 = None
+
+Held-out likelihood (mean NLL, lower is better):
+  rssm_posterior_recon       0.0038
+  rssm_prior_predictive      0.0058
+
+Wrote results -> /workspace/dreamerv3_runs/pretrain_apt_reacher_seed3/measure/ms200000/probe
+{"vsa_5": -0.008082, "fwd_mse_5": -0.005631, "vsa_1": -0.00766, "fwd_mse_1": -0.005593, "vsa_20": -0.007093, "fwd_mse_20": -0.005493}
+-> /workspace/dreamerv3_runs/pretrain_apt_reacher_seed3/measure/ms200000/vsa.json
+[Sat Jul 11 23:28:33 UTC 2026] milestone 300000  snapshot=/workspace/dreamerv3_runs/pretrain_apt_reacher_seed3/ckpt_snapshots/step000000304080
+Task: dmc_reacher_hard  |  checkpoint: /workspace/dreamerv3_runs/pretrain_apt_reacher_seed3/ckpt_snapshots/step000000304080  |  mode: eval
+Observations
+  reward           Space(float32, shape=(), low=-inf, high=inf)
+  is_first         Space(bool, shape=(), low=False, high=True)
+  is_last          Space(bool, shape=(), low=False, high=True)
+  is_terminal      Space(bool, shape=(), low=False, high=True)
+  position         Space(float32, shape=(2,), low=-inf, high=inf)
+  to_target        Space(float32, shape=(2,), low=-inf, high=inf)
+  velocity         Space(float32, shape=(2,), low=-inf, high=inf)
+Actions
+  action           Space(float32, shape=(2,), low=-1.0, high=1.0)
+Extras
+  consec           Space(int32, shape=(), low=-2147483648, high=2147483647)
+  stepid           Space(uint8, shape=(20,), low=0, high=255)
+  dyn/deter        Space(float32, shape=(512,), low=-inf, high=inf)
+  dyn/stoch        Space(float32, shape=(32, 4), low=-inf, high=inf)
+JAX devices (1): [cuda:0]
+Policy devices: cuda:0
+Train devices:  cuda:0
+Initializing parameters...
+/workspace/dreamerv3/embodied/jax/agent.py:112: DeprecationWarning: `with mesh:` context manager has been deprecated. Please use `with jax.set_mesh(mesh):` instead.
+  with self.train_mesh:
+Optimizer opt has 580,106 params:
+       364,160 dyn
+        66,111 val
+        49,926 dec
+        49,796 pol
+        41,153 con
+         8,960 enc
+/workspace/conda_envs/dreamerv3/lib/python3.11/site-packages/optax/_src/linear_algebra.py:44: DeprecationWarning: optax.global_norm is deprecated in favor of optax.tree.norm
+  warnings.warn(
+Done initializing!
+Compiling 1 checkpoint groups...
+Largest checkpoint group: 0 GB
+Compiling train and report...
+/workspace/dreamerv3/embodied/jax/agent.py:187: DeprecationWarning: `with mesh:` context manager has been deprecated. Please use `with jax.set_mesh(mesh):` instead.
+  with self.train_mesh:
+/workspace/conda_envs/dreamerv3/lib/python3.11/site-packages/optax/_src/linear_algebra.py:44: DeprecationWarning: optax.global_norm is deprecated in favor of optax.tree.norm
+  warnings.warn(
+Train cost analysis:
+No available
+Report cost analysis:
+No available
+Done compiling!
+Loading checkpoint: /workspace/dreamerv3_runs/pretrain_apt_reacher_seed3/ckpt_snapshots/step000000304080
+Loaded checkpoint.
+Loaded frozen DreamerV3 checkpoint.
+Observation keys: ['position', 'to_target', 'velocity']  |  action keys: ['action']
+  episode   0: len=1000  return=    9.0
+  episode   1: len=1000  return=    6.0
+  episode   2: len=1000  return=    2.0
+  episode   3: len=1000  return=   12.0
+  episode   4: len=1000  return=    0.0
+  episode   5: len=1000  return=    0.0
+  episode   6: len=1000  return=    0.0
+  episode   7: len=1000  return=    6.0
+  episode   8: len=1000  return=    0.0
+  episode   9: len=1000  return=    9.0
+  episode  10: len=1000  return=    3.0
+  episode  11: len=1000  return=    0.0
+  episode  12: len=1000  return=    3.0
+  episode  13: len=1000  return=    0.0
+  episode  14: len=1000  return=    0.0
+  episode  15: len=1000  return=    1.0
+  episode  16: len=1000  return=    2.0
+  episode  17: len=1000  return=    3.0
+  episode  18: len=1000  return=    4.0
+  episode  19: len=1000  return=    2.0
+  episode  20: len=1000  return=    2.0
+  episode  21: len=1000  return=    6.0
+  episode  22: len=1000  return=    4.0
+  episode  23: len=1000  return=   13.0
+  episode  24: len=1000  return=    7.0
+  episode  25: len=1000  return=    4.0
+  episode  26: len=1000  return=    0.0
+  episode  27: len=1000  return=    1.0
+  episode  28: len=1000  return=    7.0
+  episode  29: len=1000  return=    0.0
+  episode  30: len=1000  return=    0.0
+  episode  31: len=1000  return=    4.0
+  episode  32: len=1000  return=    5.0
+  episode  33: len=1000  return=    0.0
+  episode  34: len=1000  return=    2.0
+  episode  35: len=1000  return=    4.0
+  episode  36: len=1000  return=    8.0
+  episode  37: len=1000  return=    5.0
+  episode  38: len=1000  return=   13.0
+  episode  39: len=1000  return=    9.0
+Saved 40 x 1000 steps -> /workspace/dreamerv3_runs/pretrain_apt_reacher_seed3/measure/ms300000/traj.npz
+Return over episodes: 3.9 +/- 3.8
+Probe trajectories: 40 episodes x 1000 steps
+Observations
+  reward           Space(float32, shape=(), low=-inf, high=inf)
+  is_first         Space(bool, shape=(), low=False, high=True)
+  is_last          Space(bool, shape=(), low=False, high=True)
+  is_terminal      Space(bool, shape=(), low=False, high=True)
+  position         Space(float32, shape=(2,), low=-inf, high=inf)
+  to_target        Space(float32, shape=(2,), low=-inf, high=inf)
+  velocity         Space(float32, shape=(2,), low=-inf, high=inf)
+Actions
+  action           Space(float32, shape=(2,), low=-1.0, high=1.0)
+Extras
+  consec           Space(int32, shape=(), low=-2147483648, high=2147483647)
+  stepid           Space(uint8, shape=(20,), low=0, high=255)
+  dyn/deter        Space(float32, shape=(512,), low=-inf, high=inf)
+  dyn/stoch        Space(float32, shape=(32, 4), low=-inf, high=inf)
+JAX devices (1): [cuda:0]
+Policy devices: cuda:0
+Train devices:  cuda:0
+Initializing parameters...
+/workspace/dreamerv3/embodied/jax/agent.py:112: DeprecationWarning: `with mesh:` context manager has been deprecated. Please use `with jax.set_mesh(mesh):` instead.
+  with self.train_mesh:
+Optimizer opt has 580,106 params:
+       364,160 dyn
+        66,111 val
+        49,926 dec
+        49,796 pol
+        41,153 con
+         8,960 enc
+/workspace/conda_envs/dreamerv3/lib/python3.11/site-packages/optax/_src/linear_algebra.py:44: DeprecationWarning: optax.global_norm is deprecated in favor of optax.tree.norm
+  warnings.warn(
+Done initializing!
+Compiling 1 checkpoint groups...
+Largest checkpoint group: 0 GB
+Compiling train and report...
+/workspace/dreamerv3/embodied/jax/agent.py:187: DeprecationWarning: `with mesh:` context manager has been deprecated. Please use `with jax.set_mesh(mesh):` instead.
+  with self.train_mesh:
+/workspace/conda_envs/dreamerv3/lib/python3.11/site-packages/optax/_src/linear_algebra.py:44: DeprecationWarning: optax.global_norm is deprecated in favor of optax.tree.norm
+  warnings.warn(
+Train cost analysis:
+No available
+Report cost analysis:
+No available
+Done compiling!
+Loading checkpoint: /workspace/dreamerv3_runs/pretrain_apt_reacher_seed3/ckpt_snapshots/step000000304080
+Loaded checkpoint.
+World model: obs=['position', 'to_target', 'velocity']  act=['action']  horizons=[1, 5, 20]
+  world-model features: episodes 0-7
+  world-model features: episodes 8-15
+  world-model features: episodes 16-23
+  world-model features: episodes 24-31
+  world-model features: episodes 32-39
+No --vae_ckpt given; extracting world-model features only.
+Feature arrays:
+  wm_enc                 (40, 1000, 64)
+  wm_imag1_deter         (40, 1000, 512)
+  wm_imag1_stoch         (40, 1000, 128)
+  wm_imag20_deter        (40, 1000, 512)
+  wm_imag20_stoch        (40, 1000, 128)
+  wm_imag5_deter         (40, 1000, 512)
+  wm_imag5_stoch         (40, 1000, 128)
+  wm_post_deter          (40, 1000, 512)
+  wm_post_nll            (40, 1000)
+  wm_post_stoch          (40, 1000, 128)
+  wm_prior_deter         (40, 1000, 512)
+  wm_prior_nll           (40, 1000)
+  wm_prior_stoch         (40, 1000, 128)
+Saved -> /workspace/dreamerv3_runs/pretrain_apt_reacher_seed3/measure/ms300000/feats.npz
+Episodes: 40 (test 12)  |  sites: ['enc', 'imag1', 'imag20', 'imag5', 'post_deter', 'post_stoch', 'posterior', 'prior']
+Targets: ['in_regime', 'qpos', 'qvel', 'regime', 'return_to_go', 'state']
+  [  1/38] rssm/enc        state         h=0  K=1  R2_ridge=0.75652  R2_mlp=None
+  [  2/38] rssm/posterior  state         h=0  K=1  R2_ridge=0.98349  R2_mlp=None
+  [  3/38] rssm/post_deter state         h=0  K=1  R2_ridge=0.98201  R2_mlp=None
+  [  4/38] rssm/post_stoch state         h=0  K=1  R2_ridge=0.77529  R2_mlp=None
+  [  5/38] rssm/prior      state         h=0  K=1  R2_ridge=0.98205  R2_mlp=None
+  [  6/38] rssm/enc        state         h=1  K=1  R2_ridge=0.74343  R2_mlp=None
+  [  7/38] rssm/posterior  state         h=1  K=1  R2_ridge=0.96943  R2_mlp=None
+  [  8/38] rssm/post_deter state         h=1  K=1  R2_ridge=0.96796  R2_mlp=None
+  [  9/38] rssm/post_stoch state         h=1  K=1  R2_ridge=0.76347  R2_mlp=None
+  [ 10/38] rssm/prior      state         h=1  K=1  R2_ridge=0.968  R2_mlp=None
+  [ 11/38] rssm/imag1      state         h=1  K=1  R2_ridge=0.98206  R2_mlp=None
+  [ 12/38] rssm/enc        state         h=5  K=1  R2_ridge=0.7085  R2_mlp=None
+  [ 13/38] rssm/posterior  state         h=5  K=1  R2_ridge=0.9325  R2_mlp=None
+  [ 14/38] rssm/post_deter state         h=5  K=1  R2_ridge=0.93462  R2_mlp=None
+  [ 15/38] rssm/post_stoch state         h=5  K=1  R2_ridge=0.73364  R2_mlp=None
+  [ 16/38] rssm/prior      state         h=5  K=1  R2_ridge=0.93488  R2_mlp=None
+  [ 17/38] rssm/imag5      state         h=5  K=1  R2_ridge=0.98265  R2_mlp=None
+  [ 18/38] rssm/enc        state         h=20 K=1  R2_ridge=0.67684  R2_mlp=None
+  [ 19/38] rssm/posterior  state         h=20 K=1  R2_ridge=0.90639  R2_mlp=None
+  [ 20/38] rssm/post_deter state         h=20 K=1  R2_ridge=0.90548  R2_mlp=None
+  [ 21/38] rssm/post_stoch state         h=20 K=1  R2_ridge=0.71532  R2_mlp=None
+  [ 22/38] rssm/prior      state         h=20 K=1  R2_ridge=0.90572  R2_mlp=None
+  [ 23/38] rssm/imag20     state         h=20 K=1  R2_ridge=0.98311  R2_mlp=None
+  [ 24/38] rssm/enc        return_to_go  h=0  K=1  R2_ridge=0.03398  R2_mlp=None
+  [ 25/38] rssm/posterior  return_to_go  h=0  K=1  R2_ridge=0.00773  R2_mlp=None
+  [ 26/38] rssm/post_deter return_to_go  h=0  K=1  R2_ridge=0.00365  R2_mlp=None
+  [ 27/38] rssm/post_stoch return_to_go  h=0  K=1  R2_ridge=0.04429  R2_mlp=None
+  [ 28/38] rssm/prior      return_to_go  h=0  K=1  R2_ridge=0.00365  R2_mlp=None
+  [ 29/38] rssm/enc        regime        h=0  K=1  R2_ridge=0.71758  R2_mlp=None
+  [ 30/38] rssm/posterior  regime        h=0  K=1  R2_ridge=0.86026  R2_mlp=None
+  [ 31/38] rssm/post_deter regime        h=0  K=1  R2_ridge=0.8435  R2_mlp=None
+  [ 32/38] rssm/post_stoch regime        h=0  K=1  R2_ridge=0.24554  R2_mlp=None
+  [ 33/38] rssm/prior      regime        h=0  K=1  R2_ridge=0.85053  R2_mlp=None
+  [ 34/38] rssm/enc        in_regime     h=0  K=1  R2_ridge=0.00701  R2_mlp=None
+  [ 35/38] rssm/posterior  in_regime     h=0  K=1  R2_ridge=0.00278  R2_mlp=None
+  [ 36/38] rssm/post_deter in_regime     h=0  K=1  R2_ridge=0.004  R2_mlp=None
+  [ 37/38] rssm/post_stoch in_regime     h=0  K=1  R2_ridge=0.00548  R2_mlp=None
+  [ 38/38] rssm/prior      in_regime     h=0  K=1  R2_ridge=0.00165  R2_mlp=None
+
+Probing summary (held-out ridge R^2)
+======================================
+
+Per-frame content (target: state, horizon 0):
+  RSSM posterior          R^2 = 0.98349
+  static VAE latent (K=1) R^2 = None
+
+Predictive content (RSSM posterior, target: state):
+  horizon  0: R^2 = 0.98349
+  horizon  1: R^2 = 0.96943
+  horizon  5: R^2 = 0.9325
+  horizon 20: R^2 = 0.90639
+
+VAE receptive field (target: state, horizon 0):
+  K=  1: R^2 = None
+  K=  4: R^2 = None
+  K= 16: R^2 = None
+  K=all: R^2 = None
+
+Reward probe (RSSM posterior, target: task reward, h=0):
+  reward_stand  R^2 = None
+  reward_walk   R^2 = None
+  reward_run    R^2 = None
+
+Held-out likelihood (mean NLL, lower is better):
+  rssm_posterior_recon       0.0335
+  rssm_prior_predictive      0.0364
+
+Wrote results -> /workspace/dreamerv3_runs/pretrain_apt_reacher_seed3/measure/ms300000/probe
+{"vsa_5": -0.125669, "fwd_mse_5": -0.159825, "vsa_1": -0.123344, "fwd_mse_1": -0.163893, "vsa_20": -0.1253, "fwd_mse_20": -0.157791}
+-> /workspace/dreamerv3_runs/pretrain_apt_reacher_seed3/measure/ms300000/vsa.json
+[Sat Jul 11 23:45:02 UTC 2026] milestone 400000  snapshot=/workspace/dreamerv3_runs/pretrain_apt_reacher_seed3/ckpt_snapshots/step000000399168
+Task: dmc_reacher_hard  |  checkpoint: /workspace/dreamerv3_runs/pretrain_apt_reacher_seed3/ckpt_snapshots/step000000399168  |  mode: eval
+Observations
+  reward           Space(float32, shape=(), low=-inf, high=inf)
+  is_first         Space(bool, shape=(), low=False, high=True)
+  is_last          Space(bool, shape=(), low=False, high=True)
+  is_terminal      Space(bool, shape=(), low=False, high=True)
+  position         Space(float32, shape=(2,), low=-inf, high=inf)
+  to_target        Space(float32, shape=(2,), low=-inf, high=inf)
+  velocity         Space(float32, shape=(2,), low=-inf, high=inf)
+Actions
+  action           Space(float32, shape=(2,), low=-1.0, high=1.0)
+Extras
+  consec           Space(int32, shape=(), low=-2147483648, high=2147483647)
+  stepid           Space(uint8, shape=(20,), low=0, high=255)
+  dyn/deter        Space(float32, shape=(512,), low=-inf, high=inf)
+  dyn/stoch        Space(float32, shape=(32, 4), low=-inf, high=inf)
+JAX devices (1): [cuda:0]
+Policy devices: cuda:0
+Train devices:  cuda:0
+Initializing parameters...
+/workspace/dreamerv3/embodied/jax/agent.py:112: DeprecationWarning: `with mesh:` context manager has been deprecated. Please use `with jax.set_mesh(mesh):` instead.
+  with self.train_mesh:
+Optimizer opt has 580,106 params:
+       364,160 dyn
+        66,111 val
+        49,926 dec
+        49,796 pol
+        41,153 con
+         8,960 enc
+/workspace/conda_envs/dreamerv3/lib/python3.11/site-packages/optax/_src/linear_algebra.py:44: DeprecationWarning: optax.global_norm is deprecated in favor of optax.tree.norm
+  warnings.warn(
+Done initializing!
+Compiling 1 checkpoint groups...
+Largest checkpoint group: 0 GB
+Compiling train and report...
+/workspace/dreamerv3/embodied/jax/agent.py:187: DeprecationWarning: `with mesh:` context manager has been deprecated. Please use `with jax.set_mesh(mesh):` instead.
+  with self.train_mesh:
+/workspace/conda_envs/dreamerv3/lib/python3.11/site-packages/optax/_src/linear_algebra.py:44: DeprecationWarning: optax.global_norm is deprecated in favor of optax.tree.norm
+  warnings.warn(
+Train cost analysis:
+No available
+Report cost analysis:
+No available
+Done compiling!
+Loading checkpoint: /workspace/dreamerv3_runs/pretrain_apt_reacher_seed3/ckpt_snapshots/step000000399168
+Loaded checkpoint.
+Loaded frozen DreamerV3 checkpoint.
+Observation keys: ['position', 'to_target', 'velocity']  |  action keys: ['action']
+  episode   0: len=1000  return=    0.0
+  episode   1: len=1000  return=    1.0
+  episode   2: len=1000  return=    0.0
+  episode   3: len=1000  return=    8.0
+  episode   4: len=1000  return=    0.0
+  episode   5: len=1000  return=   11.0
+  episode   6: len=1000  return=    2.0
+  episode   7: len=1000  return=    4.0
+  episode   8: len=1000  return=    4.0
+  episode   9: len=1000  return=    0.0
+  episode  10: len=1000  return=    0.0
+  episode  11: len=1000  return=    0.0
+  episode  12: len=1000  return=    3.0
+  episode  13: len=1000  return=    0.0
+  episode  14: len=1000  return=    5.0
+  episode  15: len=1000  return=    7.0
+  episode  16: len=1000  return=    0.0
+  episode  17: len=1000  return=    0.0
+  episode  18: len=1000  return=    0.0
+  episode  19: len=1000  return=    0.0
+  episode  20: len=1000  return=    4.0
+  episode  21: len=1000  return=    0.0
+  episode  22: len=1000  return=    8.0
+  episode  23: len=1000  return=    2.0
+  episode  24: len=1000  return=    0.0
+  episode  25: len=1000  return=    7.0
+  episode  26: len=1000  return=    0.0
+  episode  27: len=1000  return=   14.0
+  episode  28: len=1000  return=    0.0
+  episode  29: len=1000  return=    8.0
+  episode  30: len=1000  return=    9.0
+  episode  31: len=1000  return=    0.0
+  episode  32: len=1000  return=    3.0
+  episode  33: len=1000  return=    0.0
+  episode  34: len=1000  return=    0.0
+  episode  35: len=1000  return=    1.0
+  episode  36: len=1000  return=    3.0
+  episode  37: len=1000  return=    0.0
+  episode  38: len=1000  return=    0.0
+  episode  39: len=1000  return=    6.0
+Saved 40 x 1000 steps -> /workspace/dreamerv3_runs/pretrain_apt_reacher_seed3/measure/ms400000/traj.npz
+Return over episodes: 2.8 +/- 3.6
+Probe trajectories: 40 episodes x 1000 steps
+Observations
+  reward           Space(float32, shape=(), low=-inf, high=inf)
+  is_first         Space(bool, shape=(), low=False, high=True)
+  is_last          Space(bool, shape=(), low=False, high=True)
+  is_terminal      Space(bool, shape=(), low=False, high=True)
+  position         Space(float32, shape=(2,), low=-inf, high=inf)
+  to_target        Space(float32, shape=(2,), low=-inf, high=inf)
+  velocity         Space(float32, shape=(2,), low=-inf, high=inf)
+Actions
+  action           Space(float32, shape=(2,), low=-1.0, high=1.0)
+Extras
+  consec           Space(int32, shape=(), low=-2147483648, high=2147483647)
+  stepid           Space(uint8, shape=(20,), low=0, high=255)
+  dyn/deter        Space(float32, shape=(512,), low=-inf, high=inf)
+  dyn/stoch        Space(float32, shape=(32, 4), low=-inf, high=inf)
+JAX devices (1): [cuda:0]
+Policy devices: cuda:0
+Train devices:  cuda:0
+Initializing parameters...
+/workspace/dreamerv3/embodied/jax/agent.py:112: DeprecationWarning: `with mesh:` context manager has been deprecated. Please use `with jax.set_mesh(mesh):` instead.
+  with self.train_mesh:
+Optimizer opt has 580,106 params:
+       364,160 dyn
+        66,111 val
+        49,926 dec
+        49,796 pol
+        41,153 con
+         8,960 enc
+/workspace/conda_envs/dreamerv3/lib/python3.11/site-packages/optax/_src/linear_algebra.py:44: DeprecationWarning: optax.global_norm is deprecated in favor of optax.tree.norm
+  warnings.warn(
+Done initializing!
+Compiling 1 checkpoint groups...
+Largest checkpoint group: 0 GB
+Compiling train and report...
+/workspace/dreamerv3/embodied/jax/agent.py:187: DeprecationWarning: `with mesh:` context manager has been deprecated. Please use `with jax.set_mesh(mesh):` instead.
+  with self.train_mesh:
+/workspace/conda_envs/dreamerv3/lib/python3.11/site-packages/optax/_src/linear_algebra.py:44: DeprecationWarning: optax.global_norm is deprecated in favor of optax.tree.norm
+  warnings.warn(
+Train cost analysis:
+No available
+Report cost analysis:
+No available
+Done compiling!
+Loading checkpoint: /workspace/dreamerv3_runs/pretrain_apt_reacher_seed3/ckpt_snapshots/step000000399168
+Loaded checkpoint.
+World model: obs=['position', 'to_target', 'velocity']  act=['action']  horizons=[1, 5, 20]
+  world-model features: episodes 0-7
+  world-model features: episodes 8-15
+  world-model features: episodes 16-23
+  world-model features: episodes 24-31
+  world-model features: episodes 32-39
+No --vae_ckpt given; extracting world-model features only.
+Feature arrays:
+  wm_enc                 (40, 1000, 64)
+  wm_imag1_deter         (40, 1000, 512)
+  wm_imag1_stoch         (40, 1000, 128)
+  wm_imag20_deter        (40, 1000, 512)
+  wm_imag20_stoch        (40, 1000, 128)
+  wm_imag5_deter         (40, 1000, 512)
+  wm_imag5_stoch         (40, 1000, 128)
+  wm_post_deter          (40, 1000, 512)
+  wm_post_nll            (40, 1000)
+  wm_post_stoch          (40, 1000, 128)
+  wm_prior_deter         (40, 1000, 512)
+  wm_prior_nll           (40, 1000)
+  wm_prior_stoch         (40, 1000, 128)
+Saved -> /workspace/dreamerv3_runs/pretrain_apt_reacher_seed3/measure/ms400000/feats.npz
+Episodes: 40 (test 12)  |  sites: ['enc', 'imag1', 'imag20', 'imag5', 'post_deter', 'post_stoch', 'posterior', 'prior']
+Targets: ['in_regime', 'qpos', 'qvel', 'regime', 'return_to_go', 'state']
+  [  1/38] rssm/enc        state         h=0  K=1  R2_ridge=0.96155  R2_mlp=None
+  [  2/38] rssm/posterior  state         h=0  K=1  R2_ridge=0.99619  R2_mlp=None
+  [  3/38] rssm/post_deter state         h=0  K=1  R2_ridge=0.99591  R2_mlp=None
+  [  4/38] rssm/post_stoch state         h=0  K=1  R2_ridge=0.84444  R2_mlp=None
+  [  5/38] rssm/prior      state         h=0  K=1  R2_ridge=0.99608  R2_mlp=None
+  [  6/38] rssm/enc        state         h=1  K=1  R2_ridge=0.8713  R2_mlp=None
+  [  7/38] rssm/posterior  state         h=1  K=1  R2_ridge=0.90577  R2_mlp=None
+  [  8/38] rssm/post_deter state         h=1  K=1  R2_ridge=0.90589  R2_mlp=None
+  [  9/38] rssm/post_stoch state         h=1  K=1  R2_ridge=0.7599  R2_mlp=None
+  [ 10/38] rssm/prior      state         h=1  K=1  R2_ridge=0.90614  R2_mlp=None
+  [ 11/38] rssm/imag1      state         h=1  K=1  R2_ridge=0.99622  R2_mlp=None
+  [ 12/38] rssm/enc        state         h=5  K=1  R2_ridge=0.66083  R2_mlp=None
+  [ 13/38] rssm/posterior  state         h=5  K=1  R2_ridge=0.69936  R2_mlp=None
+  [ 14/38] rssm/post_deter state         h=5  K=1  R2_ridge=0.70003  R2_mlp=None
+  [ 15/38] rssm/post_stoch state         h=5  K=1  R2_ridge=0.56055  R2_mlp=None
+  [ 16/38] rssm/prior      state         h=5  K=1  R2_ridge=0.70012  R2_mlp=None
+  [ 17/38] rssm/imag5      state         h=5  K=1  R2_ridge=0.99651  R2_mlp=None
+  [ 18/38] rssm/enc        state         h=20 K=1  R2_ridge=0.49524  R2_mlp=None
+  [ 19/38] rssm/posterior  state         h=20 K=1  R2_ridge=0.526  R2_mlp=None
+  [ 20/38] rssm/post_deter state         h=20 K=1  R2_ridge=0.52693  R2_mlp=None
+  [ 21/38] rssm/post_stoch state         h=20 K=1  R2_ridge=0.41426  R2_mlp=None
+  [ 22/38] rssm/prior      state         h=20 K=1  R2_ridge=0.52725  R2_mlp=None
+  [ 23/38] rssm/imag20     state         h=20 K=1  R2_ridge=0.99639  R2_mlp=None
+  [ 24/38] rssm/enc        return_to_go  h=0  K=1  R2_ridge=0.01645  R2_mlp=None
+  [ 25/38] rssm/posterior  return_to_go  h=0  K=1  R2_ridge=-0.19229  R2_mlp=None
+  [ 26/38] rssm/post_deter return_to_go  h=0  K=1  R2_ridge=-0.18834  R2_mlp=None
+  [ 27/38] rssm/post_stoch return_to_go  h=0  K=1  R2_ridge=-0.03409  R2_mlp=None
+  [ 28/38] rssm/prior      return_to_go  h=0  K=1  R2_ridge=-0.19688  R2_mlp=None
+  [ 29/38] rssm/enc        regime        h=0  K=1  R2_ridge=0.77079  R2_mlp=None
+  [ 30/38] rssm/posterior  regime        h=0  K=1  R2_ridge=0.903  R2_mlp=None
+  [ 31/38] rssm/post_deter regime        h=0  K=1  R2_ridge=0.89144  R2_mlp=None
+  [ 32/38] rssm/post_stoch regime        h=0  K=1  R2_ridge=0.48106  R2_mlp=None
+  [ 33/38] rssm/prior      regime        h=0  K=1  R2_ridge=0.89313  R2_mlp=None
+  [ 34/38] rssm/enc        in_regime     h=0  K=1  R2_ridge=0.00681  R2_mlp=None
+  [ 35/38] rssm/posterior  in_regime     h=0  K=1  R2_ridge=0.00305  R2_mlp=None
+  [ 36/38] rssm/post_deter in_regime     h=0  K=1  R2_ridge=-0.01332  R2_mlp=None
+  [ 37/38] rssm/post_stoch in_regime     h=0  K=1  R2_ridge=0.02221  R2_mlp=None
+  [ 38/38] rssm/prior      in_regime     h=0  K=1  R2_ridge=-0.00953  R2_mlp=None
+
+Probing summary (held-out ridge R^2)
+======================================
+
+Per-frame content (target: state, horizon 0):
+  RSSM posterior          R^2 = 0.99619
+  static VAE latent (K=1) R^2 = None
+
+Predictive content (RSSM posterior, target: state):
+  horizon  0: R^2 = 0.99619
+  horizon  1: R^2 = 0.90577
+  horizon  5: R^2 = 0.69936
+  horizon 20: R^2 = 0.526
+
+VAE receptive field (target: state, horizon 0):
+  K=  1: R^2 = None
+  K=  4: R^2 = None
+  K= 16: R^2 = None
+  K=all: R^2 = None
+
+Reward probe (RSSM posterior, target: task reward, h=0):
+  reward_stand  R^2 = None
+  reward_walk   R^2 = None
+  reward_run    R^2 = None
+
+Held-out likelihood (mean NLL, lower is better):
+  rssm_posterior_recon       0.0038
+  rssm_prior_predictive      0.0060
+
+Wrote results -> /workspace/dreamerv3_runs/pretrain_apt_reacher_seed3/measure/ms400000/probe
+{"vsa_5": -0.006758, "fwd_mse_5": -0.00755, "vsa_1": -0.007269, "fwd_mse_1": -0.008007, "vsa_20": -0.007278, "fwd_mse_20": -0.007859}
+-> /workspace/dreamerv3_runs/pretrain_apt_reacher_seed3/measure/ms400000/vsa.json
+SKIP milestone 500000: no snapshot within 5000 steps (excluded per PREREG Sec.1)
+  K=100000: cov=0.5611 occ_phys=0.008999999612569809 occ_rew=0.0090
+  K=200000: cov=0.5926 occ_phys=0.007300000172108412 occ_rew=0.0073
+  K=300000: cov=0.6137 occ_phys=0.005946666467934847 occ_rew=0.0059
+  K=400000: cov=0.6284 occ_phys=0.005255000200122595 occ_rew=0.0052
+  K=500000: cov=0.6213 occ_phys=0.005376909859478474 occ_rew=0.0054
+-> /workspace/dreamerv3_runs/pretrain_apt_reacher_seed3/measure/drivers_buffer.json
+[Sun Jul 12 00:15:47 UTC 2026] measure pretrain_apt_reacher_seed3 DONE

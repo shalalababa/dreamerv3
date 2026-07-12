@@ -1,0 +1,51 @@
+Probe set reacher_v1_026f8124: 2560 windows x 40 steps (32 burn-in + 8 eval)
+Checkpoints: ['step000000103792', 'step000000197280', 'step000000299328', 'step000000401456', 'step000000495024']
+Observations
+  reward           Space(float32, shape=(), low=-inf, high=inf)
+  is_first         Space(bool, shape=(), low=False, high=True)
+  is_last          Space(bool, shape=(), low=False, high=True)
+  is_terminal      Space(bool, shape=(), low=False, high=True)
+  position         Space(float32, shape=(2,), low=-inf, high=inf)
+  to_target        Space(float32, shape=(2,), low=-inf, high=inf)
+  velocity         Space(float32, shape=(2,), low=-inf, high=inf)
+Actions
+  action           Space(float32, shape=(2,), low=-1.0, high=1.0)
+Extras
+  consec           Space(int32, shape=(), low=-2147483648, high=2147483647)
+  stepid           Space(uint8, shape=(20,), low=0, high=255)
+  dyn/deter        Space(float32, shape=(512,), low=-inf, high=inf)
+  dyn/stoch        Space(float32, shape=(32, 4), low=-inf, high=inf)
+JAX devices (1): [cuda:0]
+Policy devices: cuda:0
+Train devices:  cuda:0
+Initializing parameters...
+/workspace/dreamerv3/embodied/jax/agent.py:112: DeprecationWarning: `with mesh:` context manager has been deprecated. Please use `with jax.set_mesh(mesh):` instead.
+  with self.train_mesh:
+Optimizer opt has 580,106 params:
+       364,160 dyn
+        66,111 val
+        49,926 dec
+        49,796 pol
+        41,153 con
+         8,960 enc
+/workspace/conda_envs/dreamerv3/lib/python3.11/site-packages/optax/_src/linear_algebra.py:44: DeprecationWarning: optax.global_norm is deprecated in favor of optax.tree.norm
+  warnings.warn(
+Done initializing!
+Compiling 1 checkpoint groups...
+Largest checkpoint group: 0 GB
+Loading checkpoint: /workspace/dreamerv3_runs/pretrain_apt_reacher_seed2/ckpt_snapshots/step000000103792
+Loaded checkpoint.
+  step000000103792 (milestone 100000): {'post_deter': (2560, 512), 'post_stoch': (2560, 128)} -> /workspace/dreamerv3_runs/pretrain_apt_reacher_seed2/latents/reacher_v1/step000000103792
+Loading checkpoint: /workspace/dreamerv3_runs/pretrain_apt_reacher_seed2/ckpt_snapshots/step000000197280
+Loaded checkpoint.
+  step000000197280 (milestone 200000): {'post_deter': (2560, 512), 'post_stoch': (2560, 128)} -> /workspace/dreamerv3_runs/pretrain_apt_reacher_seed2/latents/reacher_v1/step000000197280
+Loading checkpoint: /workspace/dreamerv3_runs/pretrain_apt_reacher_seed2/ckpt_snapshots/step000000299328
+Loaded checkpoint.
+  step000000299328 (milestone 300000): {'post_deter': (2560, 512), 'post_stoch': (2560, 128)} -> /workspace/dreamerv3_runs/pretrain_apt_reacher_seed2/latents/reacher_v1/step000000299328
+Loading checkpoint: /workspace/dreamerv3_runs/pretrain_apt_reacher_seed2/ckpt_snapshots/step000000401456
+Loaded checkpoint.
+  step000000401456 (milestone 400000): {'post_deter': (2560, 512), 'post_stoch': (2560, 128)} -> /workspace/dreamerv3_runs/pretrain_apt_reacher_seed2/latents/reacher_v1/step000000401456
+Loading checkpoint: /workspace/dreamerv3_runs/pretrain_apt_reacher_seed2/ckpt_snapshots/step000000495024
+Loaded checkpoint.
+  step000000495024 (milestone 500000): {'post_deter': (2560, 512), 'post_stoch': (2560, 128)} -> /workspace/dreamerv3_runs/pretrain_apt_reacher_seed2/latents/reacher_v1/step000000495024
+Done: 5 checkpoints -> /workspace/dreamerv3_runs/pretrain_apt_reacher_seed2/latents/reacher_v1

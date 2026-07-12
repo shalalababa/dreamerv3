@@ -1,0 +1,54 @@
+{
+  "replay": "/workspace/dreamerv3_runs/pretrain_apt_reacher_seed2/replay",
+  "task": "dmc_reacher_hard",
+  "ref_replay": "/workspace/dreamerv3_runs/pilot_goal_reacher_seed1/replay",
+  "coverage_keys": [
+    "position",
+    "velocity"
+  ],
+  "n_streams": 16,
+  "n_frames_total": 495024,
+  "criteria": {
+    "max_frames": 3000,
+    "knn": 12,
+    "logc": 1.0,
+    "seed": 0
+  },
+  "milestones": [
+    {
+      "milestone": 100000,
+      "n_prefix": 100000,
+      "cov": 0.559952,
+      "occ_phys": 0.007890000008046627,
+      "occ_rew": 0.00787
+    },
+    {
+      "milestone": 200000,
+      "n_prefix": 200000,
+      "cov": 0.623113,
+      "occ_phys": 0.007799999788403511,
+      "occ_rew": 0.00778
+    },
+    {
+      "milestone": 300000,
+      "n_prefix": 300000,
+      "cov": 0.645338,
+      "occ_phys": 0.0072466665878891945,
+      "occ_rew": 0.007233
+    },
+    {
+      "milestone": 400000,
+      "n_prefix": 400000,
+      "cov": 0.624213,
+      "occ_phys": 0.006827500183135271,
+      "occ_rew": 0.006815
+    },
+    {
+      "milestone": 500000,
+      "n_prefix": 495024,
+      "cov": 0.657196,
+      "occ_phys": 0.007567309774458408,
+      "occ_rew": 0.007553
+    }
+  ]
+}
