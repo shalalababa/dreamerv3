@@ -53,6 +53,30 @@ immutable dated files; see plan v4.)
 
 ## Code notes and registrations (non-deviations)
 
+- **2026-07-13 — P0 corrective read executed as registered; decision-tree
+  branch 2 fires.** Read of the 64 reward-free (`ax1f*`) runs per
+  `prereg/PREREG_axis1_corrective_20260711.md` + Amendment 1
+  (`artifacts/p0_axis1_corrective_20260713/RESULTS.md`). Per-run audit PASS
+  64/64 (saved `expl.mode: apt`; loss lines contain no `rew` term); QC
+  64/64. Headline confirmatory contrast (finger Q1, AUC₁₀₀ₖ, B=10K seed-0
+  bootstrap CI): **+2.04 [−22.04, +24.16] = NULL** ⇒ the registered pivot
+  branch fires (occupancy-rescue unsupported as reward-free; headline moves
+  to observational reversal + occupancy × reward-supervision interaction;
+  E3 as designed deprioritized). Registered 2×2 interaction (same seeds,
+  same buffers): finger Q1 **+157.28 [+76.51, +240.68]**, 8/8 seeds, exact
+  permutation p=0.0078, d_z 1.24; other three cells null (specific).
+  **Supplementary, NOT registered for this read (labeled in RESULTS.md):**
+  the reward-aware seed-9–16 extension (launched before the 11-Jul pause,
+  snapshot `local_results/axis1_seed_extension_20260711_201510/`) was read
+  as a fresh-seed robustness check of the reward-aware simple effect:
+  finger Q1 +30.71 [−15.51, +75.59] ns — strong attenuation vs seeds 1–8
+  (+159.32); pooled 1–16 +95.02 [+44.20, +152.91] still excludes zero.
+  Winner's-curse caveat carried on the +157 interaction magnitude; fix =
+  the protocol's registered re-pointing of the extension: reward-free apt
+  finger-Q1 fits, seeds 9–16 (16 jobs), for a fully-paired n=16
+  interaction. Disclosure category: corrective replication (confirmatory
+  part) + labeled supplementary (extension read).
+
 - **2026-07-12 — E1 registered read; canonical-variant note; search-within
   built.** (a) Reacher critic gate PASS (held-out R² 0.3696 ≥ 0.2 ⇒ VSA
   primary). (b) The registered E1 driver-level analysis was run with the
