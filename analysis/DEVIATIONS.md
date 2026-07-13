@@ -53,6 +53,22 @@ immutable dated files; see plan v4.)
 
 ## Code notes and registrations (non-deviations)
 
+- **2026-07-12 — E1 registered read; canonical-variant note; search-within
+  built.** (a) Reacher critic gate PASS (held-out R² 0.3696 ≥ 0.2 ⇒ VSA
+  primary). (b) The registered E1 driver-level analysis was run with the
+  frozen pipeline locally (`artifacts/e1_reacher_final_20260712/RESULTS.md`):
+  cov +0.318* [0.132, 0.512], occ_phys null, M0 null, M2 unstable
+  (fwd/geom VIF 147), retdec degenerate (range −181..1). The cluster-side
+  fit (`reacher_primary_measured_only/`) pre-filtered AUC rows to measured
+  cells before z-scoring — a deviation from the frozen spec input contract;
+  qualitatively identical, but the frozen local run is canonical. Driver
+  rows verified identical (56/56). (c) `search-within` mode +
+  `selfcheck-within` added to `build_controlled_replay.py` implementing
+  Amendment 1's collector-run units (per-source cov-matched high/low
+  pairs, corner + rank-weighted candidates, cov_tol semantics unchanged,
+  source_l1 ≡ 0 by construction; all three prior selfchecks re-PASS);
+  submit section to follow before E3v2 launch.
+
 Changes to the analysis *code* that enforce the frozen spec rather than
 alter it, logged for transparency. All entries below were made before any
 adaptation outcome was read locally.

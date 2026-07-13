@@ -44,3 +44,17 @@ pulls harder as the model converges.
 4. Paper-2 (EVPI) remains off the ICLR-2027 critical path; no calendar
    impact. Side benefit for Paper 1: a clean in-house replication of the
    attractor bias to cite where plan v3 motivates Gate D0.
+
+## Addendum (2026-07-12): unfreeze criterion superseded
+
+Per the 11-Jul EVPI editorial review and
+`research_notes/other research/EVPI_Plan_Revision_20260712.md`: re-passing
+this six-cell battery is **necessary but no longer sufficient** to unfreeze
+the D0 24+24 runs. The unfreeze criterion is now **Gate D1**: an
+operation-specific `ÊVSI_o` must show monotone calibration and useful
+ranking against randomized oracle value-of-computation labels `Δ_o(s)`
+(restorable-state interventions), with positive net decision value after
+gate overhead. Item 3's "must re-pass the six-cell battery" stands as the
+precondition; Gate D1 is the decision test. The Stage-0 phase change
+(error-tracking → density-tracking with training) is promoted to the lead
+asset of either Paper-2 route.

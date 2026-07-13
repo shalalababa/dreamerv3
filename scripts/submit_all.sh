@@ -940,6 +940,103 @@ case "$cmd" in
       bundle=$((bundle + 1))
     done ;;
 
+  axis1-within-bundles|axis1_within_bundles)
+    # E3 v2 collector-run replication units (prereg amendment 1): one
+    # cov-matched high/low pair per collector run, reward-free fits only.
+    # Requires search-within + per-label builds first (login node):
+    #   python -m probing.build_controlled_replay search-within \
+    #     --index $RUNROOT/axis1_<dom>/episodes.json --ref_replay <REF> \
+    #     --n_episodes 100 --output $RUNROOT/axis1_<dom>/within
+    #   python -m probing.build_controlled_replay build \
+    #     --index .../episodes.json --pairs .../within/within_<label>.json \
+    #     --which q1 --output_root $RUNROOT/axis1_<dom>/within/<label>
+    : "${AXIS1_EXPL_MODE:?set AXIS1_EXPL_MODE=apt (ax1w* runs are registered reward-free)}"
+    [ "$AXIS1_EXPL_MODE" = apt ] || {
+      echo "axis1-within-bundles requires AXIS1_EXPL_MODE=apt (got: $AXIS1_EXPL_MODE)"; exit 1; }
+    read -ra seeds <<< "${AXIS1_SEEDS:-1 2}"
+    read -ra doms <<< "${AXIS1_DOMAINS:-cup finger}"
+    bundle_size="${AXIS1_BUNDLE_SIZE:-3}"
+    [ "$bundle_size" -gt 0 ] || { echo "AXIS1_BUNDLE_SIZE must be > 0"; exit 1; }
+    updates="${AXIS1_UPDATES:-500000}"
+    steps="${STEPS:-1.25e5}"
+
+    pending=()
+    for dom in "${doms[@]}"; do
+      case "$dom" in
+        cup) task=dmc_cup_catch ;;
+        finger) task=dmc_finger_turn_hard ;;
+        reacher) task=dmc_reacher_hard ;;
+        *) echo "unknown axis1 domain: $dom"; exit 1 ;;
+      esac
+      root="$RUNROOT/axis1_${dom}/within"
+      if [ ! -f "$root/within_summary.json" ]; then
+        echo "SKIP no within summary: $root (run search-within)"
+        continue
+      fi
+      while read -r label ci; do
+        if [ ! -f "$root/$label/manifest.json" ]; then
+          echo "SKIP not built: $root/$label"
+          continue
+        fi
+        for side in 0 1; do
+          for s in "${seeds[@]}"; do
+            run_id="adapt_ax1w${ci}s${side}_${dom}_seed${s}_ckpt${updates}"
+            wm_run="ax1wm_${dom}_w${ci}s${side}_seed${s}"
+            if [ "${FORCE:-0}" != "1" ]; then
+              if queued_job "$run_id"; then
+                echo "SKIP queued/running: $run_id"; continue
+              fi
+              if adapt_done "$run_id"; then
+                echo "SKIP done: $run_id"; continue
+              fi
+              if axis1_reserved_active "$run_id"; then
+                echo "SKIP reserved in active bundle: $run_id"; continue
+              fi
+              if existing_logdir "$run_id"; then
+                if marker_only_logdir "$run_id"; then
+                  echo "RESUBMIT stale marker-only reservation: $run_id"
+                else
+                  echo "SKIP existing logdir: $RUNROOT/$run_id  (set FORCE=1 to resubmit)"
+                  continue
+                fi
+              fi
+            fi
+            pending+=("$run_id"$'\t'"$wm_run"$'\t'"$task"$'\t'"$s"$'\t'"$root/$label/side${side}"$'\t'"$updates"$'\t'"$steps"$'\t'"axis1"$'\t'"ax1w_${dom}_${label}")
+          done
+        done
+      done < <(python -c "
+import json
+d = json.load(open('$root/within_summary.json'))
+for k, v in d['sources'].items():
+    if v.get('decision') == 'OK':
+        print(k, v['collector_index'])
+")
+    done
+
+    if [ "${#pending[@]}" -eq 0 ]; then
+      echo "No axis1-within runs need submission."
+      exit 0
+    fi
+
+    stamp="$(date +%Y%m%d_%H%M%S)"
+    runlist_dir="$RUNROOT/_submit_runlists/axis1_$stamp"
+    bundle_prefix="axis1_bundle_$stamp"
+    mkdir -p "$runlist_dir"
+    bundle=1
+    for ((i=0; i<${#pending[@]}; i+=bundle_size)); do
+      runlist="$runlist_dir/bundle_$(printf '%03d' "$bundle").tsv"
+      : > "$runlist"
+      rows=0
+      for ((j=i; j<i+bundle_size && j<${#pending[@]}; j++)); do
+        printf '%s\n' "${pending[$j]}" >> "$runlist"
+        rows=$((rows + 1))
+      done
+      bundle_id="${bundle_prefix}_$(printf '%03d' "$bundle")"
+      echo "Bundle $bundle_id tasks: $rows walltime: ${AXIS1_BUNDLE_TIME:-33:00:00}"
+      submit_axis1_bundle "$bundle_id" "$runlist" "$rows"
+      bundle=$((bundle + 1))
+    done ;;
+
   *)
-    echo "usage: $0 {pilots|pretrain|pretrain-bundles|adapt|adapt-completed|adapt-bundles|measure|measure-bundles|axis1|axis1-bundles|axis1-dose-bundles} ..."; exit 1 ;;
+    echo "usage: $0 {pilots|pretrain|pretrain-bundles|adapt|adapt-completed|adapt-bundles|measure|measure-bundles|axis1|axis1-bundles|axis1-dose-bundles|axis1-within-bundles} ..."; exit 1 ;;
 esac
