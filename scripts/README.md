@@ -77,6 +77,7 @@ DRYRUN=1 ./scripts/submit_all.sh measure-bundles
 | `measure.sbatch` | Phase 5a driver measurement for one pretrain run |
 | `measure_bundle.sbatch` | Phase 5a sequential measurement bundles for RCC's submitted-job cap |
 | `submit_all.sh` | expands the sweep grids; `pilots` / `pretrain` / `pretrain-bundles` / `adapt` |
+| `cloud_p0_finger_q1_ext.sh` | cloud operator for corrective reward-free finger-Q1 seeds 9-16 |
 | `runs.csv` | run manifest (auto-appended by the sbatch scripts) |
 
 ## Notes
@@ -122,6 +123,11 @@ DRYRUN=1 ./scripts/submit_all.sh measure-bundles
   so a walltime-killed child cannot resume from a partial offline-fit checkpoint.
   The bundle submitter exports a clean environment instead of `--export=ALL` to
   avoid leaking locally loaded CUDA/Python modules into Slurm jobs.
+- **Cloud corrective finger-Q1 extension.** For the post-P0 reward-free
+  seed-9--16 extension, use `scripts/cloud_p0_finger_q1_ext.sh`. It only
+  launches `AXIS1_EXPL_MODE=apt`, `AXIS1_DOMAINS=finger`, `AXIS1_QUADS=q1`,
+  and `AXIS1_SEEDS="9 10 11 12 13 14 15 16"`, and its status/audit path only
+  enumerates `adapt_ax1fq1s{0,1}_finger_seed{9..16}_ckpt500000`.
 - **Bundle status sheet.** `scripts/run_status.py --kind axis1` joins
   `runs.csv`, bundle runlists, `SUBMITTED_BY_BUNDLE` markers, Slurm state, bundle
   stdout, `ADAPT_DONE`, and offline-WM checkpoints. Use `--stale-only` to show
