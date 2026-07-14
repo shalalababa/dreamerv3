@@ -53,6 +53,28 @@ immutable dated files; see plan v4.)
 
 ## Code notes and registrations (non-deviations)
 
+- **2026-07-14 — Four registrations frozen + Stage-1A read PASSES.** (1)
+  `prereg/PREREG_e4_stratified_error_20260714.md` — E4 estimator/probe
+  sets/signatures (descriptive only; `probing/stratified_error.py`,
+  selfcheck PASS, measure path e2e-validated on a local W0 checkpoint;
+  `submit_all.sh e4-measure`). (2)
+  `prereg/PREREG_p3_gradient_path_20260714.md` — gradient-path factorial
+  (arms sgb/rgo/vgo via `AXIS1_ARM`, flags derived in axis1.sbatch,
+  audit = saved config) + reward-label transforms sh/rl
+  (`probing/relabel_replay.py`, selfcheck PASS); primary = B_rgo − B_sgb
+  fully prospective; 80 jobs reserved. (3)
+  `prereg/PREREG_gate_d1_stage1a_20260714.md` — quantified Gate-D1
+  unfreeze criteria + Stage-1A decision rule. (4) **Stage-1A registered
+  read executed same day
+  (`artifacts/latent_uq_stage1a_20260714/RESULTS.md`): density-residual
+  instrument (out-of-fold isotonic residual on the density proxy,
+  `latent_uq_analysis --instrument density_residual`) PASSES — 10/10
+  within sub-cells flip TRACKS_DENSITY→TRACKS_ERROR at 500K, all four
+  cross cells TRACKS_ERROR (finger_random improves from AMBIGUOUS),
+  early-checkpoint regime preserved.** Route B's calibration fix is now
+  a registered, passing asset; Gate D1 (oracle-label criteria) still
+  gates the 24+24 runs.
+
 - **2026-07-13 — W0 read executed as registered (Amendment 2 §A); n=16
   interaction CONFIRMED.** Read of the 16 apt finger-Q1 seed-9–16 runs
   (`artifacts/w0_n16_interaction_20260713/RESULTS.md`). Audit PASS 16/16

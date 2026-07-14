@@ -112,13 +112,28 @@ else
   # the reward-free fitting objective (matches the Phase-4 online pretrains'
   # replay losses; task reward enters no loss); 'task' reproduces the 10-Jul
   # reward-aware arm (discovered deviation, analysis/DEVIATIONS.md).
+  # AXIS1_ARM: P3 gradient-path factorial arm code
+  # (PREREG_p3_gradient_path_20260714.md). Flags are derived HERE from the
+  # registered code so the exact objective travels as one token; the saved
+  # config.yaml records the resulting reward_grad/repval_grad for the audit.
   : "${AXIS1_EXPL_MODE:?set AXIS1_EXPL_MODE=apt (reward-free, corrective protocol) or task (reward-aware arm)}"
+  case "${AXIS1_ARM:-full}" in
+    full) AXIS1_FIT_FLAGS="" ;;
+    sgb)  AXIS1_FIT_FLAGS="--agent.reward_grad False --agent.repval_grad False" ;;
+    rgo)  AXIS1_FIT_FLAGS="--agent.repval_grad False" ;;
+    vgo)  AXIS1_FIT_FLAGS="--agent.reward_grad False" ;;
+    *) echo "ERROR: unknown AXIS1_ARM=${AXIS1_ARM} (full|sgb|rgo|vgo)"; exit 2 ;;
+  esac
+  if [ "${AXIS1_ARM:-full}" != full ] && [ "$AXIS1_EXPL_MODE" != task ]; then
+    echo "ERROR: factorial arm ${AXIS1_ARM} requires AXIS1_EXPL_MODE=task"; exit 2
+  fi
+  echo "[$(date)] fit flags: --agent.expl.mode $AXIS1_EXPL_MODE ${AXIS1_FIT_FLAGS:-} (arm=${AXIS1_ARM:-full})"
   "$PYTHON" -u -m probing.offline_fit \
     --static_replay "$REPLAY" --updates "$UPDATES" \
     --save_every_updates "${AXIS1_SAVE_EVERY_UPDATES:-50000}" \
     --logdir "$WMDIR" --configs dmc_proprio \
     --task "$TASK" --seed "$SEED" \
-    --agent.expl.mode "$AXIS1_EXPL_MODE" \
+    --agent.expl.mode "$AXIS1_EXPL_MODE" ${AXIS1_FIT_FLAGS:-} \
     --env.dmc.render "${RENDER:-False}" || RC=$?
   STATUS=$([ "$RC" -eq 0 ] && echo DONE || echo FAILED)
   sed -i "s#^$WM_RUN,.*,RUNNING,#$WM_RUN,offline_fit,$TASK,static,$SEED,$UPDATES,$REPLAY,$WMDIR,$STATUS,#" "$MANIFEST" 2>/dev/null || true

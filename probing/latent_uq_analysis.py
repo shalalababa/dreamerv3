@@ -111,6 +111,83 @@ def knn_distance(x, ref, k, chunk=512):
   return out.astype(np.float32)
 
 
+def pav_isotonic(x, y):
+  """Least-squares isotonic (non-decreasing) fit of y on x via PAV.
+
+  Returns (xs, fitted) with xs the sorted unique x and fitted the pooled
+  step values; predict with np.interp(x_new, xs, fitted) (constant
+  extension outside the range).
+  """
+  x = np.asarray(x, np.float64)
+  y = np.asarray(y, np.float64)
+  order = np.argsort(x, kind='stable')
+  xs, inv = np.unique(x[order], return_inverse=True)
+  sums = np.bincount(inv, weights=y[order])
+  cnts = np.bincount(inv).astype(np.float64)
+  means = sums / cnts
+  # Pool adjacent violators.
+  vals, wts = [], []
+  for v, w in zip(means, cnts):
+    vals.append(v)
+    wts.append(w)
+    while len(vals) > 1 and vals[-2] > vals[-1]:
+      v2, w2 = vals.pop(), wts.pop()
+      v1, w1 = vals.pop(), wts.pop()
+      vals.append((v1 * w1 + v2 * w2) / (w1 + w2))
+      wts.append(w1 + w2)
+  # Re-expand pooled blocks over their member unique-x positions.
+  fitted = np.empty(len(xs), np.float64)
+  k = 0
+  for v, w in zip(vals, wts):
+    remaining = w
+    while remaining > 1e-9 and k < len(xs):
+      fitted[k] = v
+      remaining -= cnts[k]
+      k += 1
+  return xs, fitted
+
+
+def isotonic_predict(x_train, y_train, x_test):
+  """Best-direction isotonic fit (increasing or decreasing, by SSE)."""
+  best = None
+  for sign in (1.0, -1.0):
+    xs, fitted = pav_isotonic(sign * np.asarray(x_train, np.float64), y_train)
+    pred_train = np.interp(sign * np.asarray(x_train, np.float64), xs, fitted)
+    sse = float(((np.asarray(y_train, np.float64) - pred_train) ** 2).sum())
+    if best is None or sse < best[0]:
+      best = (sse, sign, xs, fitted)
+  _, sign, xs, fitted = best
+  return np.interp(sign * np.asarray(x_test, np.float64), xs, fitted)
+
+
+def density_residualize(D, rho, clusters, folds=5, seed=0):
+  """Stage-1A primary instrument: D minus an isotonic function of density.
+
+  Out-of-fold by stream cluster (folds assigned by hashing cluster ids
+  with a seeded permutation): each window's residual comes from a fit
+  that never saw its own stream, so the residual cannot memorize
+  window-level noise. Direction of the isotonic fit is chosen by SSE
+  (the attractor-bias sign is an empirical question per cell).
+  """
+  D = np.asarray(D, np.float64)
+  rho = np.asarray(rho, np.float64)
+  uniq = np.unique(clusters)
+  rng = np.random.default_rng(seed)
+  perm = rng.permutation(len(uniq))
+  fold_of = {c: perm[i] % folds for i, c in enumerate(uniq)}
+  fold_ids = np.asarray([fold_of[c] for c in clusters])
+  out = np.empty_like(D)
+  for f in range(folds):
+    test = fold_ids == f
+    train = ~test
+    if not test.any():
+      continue
+    if not train.any():  # single-fold degenerate case
+      train = test
+    out[test] = D[test] - isotonic_predict(rho[train], D[train], rho[test])
+  return out
+
+
 # --------------------------------------------------------------------------
 # Dump loading and signal construction.
 # --------------------------------------------------------------------------
@@ -294,6 +371,12 @@ def render_memo(result):
       f'- SEs: stream-clustered bootstrap, n_boot={r["n_boot"]}; verdict '
       f'threshold {VERDICT_SIGMA} SE on '
       f'Delta = pcorr(D,E|rho) − pcorr(D,rho|E)',
+      f'- Instrument: **{r.get("instrument", "raw")}**'
+      + (f' (out-of-fold isotonic residual on the density proxy, '
+         f'{r["resid_folds"]} stream-cluster folds — Stage-1A primary, '
+         f'PREREG_gate_d1_stage1a_20260714.md)'
+         if r.get('instrument') == 'density_residual' else
+         ' (unmodified disagreement)'),
       '',
   ]
   for cell in cells:
@@ -372,6 +455,15 @@ def parse_args(argv=None):
   p.add_argument('--cross', action='store_true',
                  help='Treat all dumps as members of one cross-seed/refit '
                       'ensemble on the same probe set.')
+  p.add_argument('--instrument', default='raw',
+                 choices=['raw', 'density_residual'],
+                 help='Stage-1A instrument: density_residual replaces D by '
+                      'its out-of-fold isotonic residual on the density '
+                      'proxy before every statistic '
+                      '(PREREG_gate_d1_stage1a_20260714.md).')
+  p.add_argument('--resid_folds', type=int, default=5,
+                 help='Cross-fit folds (by stream cluster) for '
+                      'density_residual.')
   p.add_argument('--cell', default='cross',
                  help='Cell label for --cross mode.')
   p.add_argument('--n_boot', type=int, default=300)
@@ -433,6 +525,9 @@ def main(argv=None):
       clusters = clusters_of(npzs[0])
       rows = []
       for kind, h, D, E, rho in cross_signals(npzs, horizons):
+        if args.instrument == 'density_residual':
+          D = density_residualize(D, rho, clusters, args.resid_folds,
+                                  args.seed)
         rows.append(dict(kind=kind, horizon=h, **row_stats(
             D, E, rho, clusters, args.n_boot, args.seed + 13 * i + h)))
       ckpt_rows.append((entry, rows))
@@ -449,6 +544,9 @@ def main(argv=None):
         clusters = clusters_of(npz)
         rows = []
         for kind, h, D, E, rho in within_signals(npz, horizons):
+          if args.instrument == 'density_residual':
+            D = density_residualize(D, rho, clusters, args.resid_folds,
+                                    args.seed)
           rows.append(dict(kind=kind, horizon=h, **row_stats(
               D, E, rho, clusters, args.n_boot, args.seed + 13 * i + h)))
         ckpt_rows.append((entry, rows))
@@ -464,6 +562,8 @@ def main(argv=None):
       held_out=all(d['index'].get('held_out', True) for d in dumps.values()),
       cross=args.cross, horizons=horizons, primary_horizon=primary,
       n_boot=args.n_boot, verdict_sigma=VERDICT_SIGMA,
+      instrument=args.instrument,
+      resid_folds=args.resid_folds if args.instrument != 'raw' else None,
       output=os.path.abspath(out_dir), cells=cells)
   with open(os.path.join(out_dir, 'analysis.json'), 'w') as f:
     json.dump(result, f, indent=2)
@@ -590,6 +690,33 @@ def selfcheck():
   memo = open(os.path.join(out1, 'memo.md')).read()
   assert 'REPLICATES: disagreement tracks training density' in memo
   assert 'FAIL' in memo
+
+  # 3b. Isotonic helpers: exact recovery of a monotone step + residual
+  #     strips a monotone density component (Stage-1A instrument).
+  xs, fitted = pav_isotonic(np.array([1, 2, 3, 4.0]), np.array([1, 3, 2, 4.0]))
+  assert np.allclose(fitted, [1, 2.5, 2.5, 4])
+  rho_t = rng.normal(0, 1, 3000)
+  err_t = rng.normal(0, 1, 3000)
+  d_t = np.exp(rho_t) + 0.4 * err_t
+  clus_t = np.asarray([f'c{i % 60}' for i in range(3000)])
+  d_res = density_residualize(d_t, rho_t, clus_t)
+  from d0.analysis import spearman as _sp
+  assert abs(_sp(d_res, rho_t, None)[0]) < 0.1, 'residual still density-tied'
+  assert _sp(d_res, err_t, None)[0] > 0.3, 'residual lost the error signal'
+
+  # 3c. Biased scenario under the density_residual instrument: the cell
+  #     flips to TRACKS_ERROR (the residual exposes the 0.1*z_err loading).
+  out1b = os.path.join(tmp, 'out_biased_resid')
+  main(['--dumps', f'cellA={biased}', '--horizons', '1', '5', '15',
+        '--n_boot', '120', '--instrument', 'density_residual',
+        '--output', out1b])
+  with open(os.path.join(out1b, 'analysis.json')) as f:
+    res = json.load(f)
+  assert res['instrument'] == 'density_residual'
+  assert res['cells'][0]['final_verdict'] == 'TRACKS_ERROR', \
+      res['cells'][0]['final_verdict']
+  memo = open(os.path.join(out1b, 'memo.md')).read()
+  assert 'density_residual' in memo
 
   # 4. Calibrated scenario -> TRACKS_ERROR + PASS.
   calib = _write_fake_dump(

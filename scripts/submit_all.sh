@@ -363,7 +363,7 @@ submit_axis1_bundle() {  # submit_axis1_bundle <bundle_id> <runlist> <num_tasks>
   exports="$exports,STEPS=${STEPS:-1.25e5},AXIS1_UPDATES=${AXIS1_UPDATES:-500000}"
   # PREREG_axis1_corrective_20260711: the fitting objective must reach the
   # bundle children (this list intentionally avoids --export=ALL).
-  exports="$exports,AXIS1_EXPL_MODE=${AXIS1_EXPL_MODE:?},AXIS1_SAVE_EVERY_UPDATES=${AXIS1_SAVE_EVERY_UPDATES:-50000}"
+  exports="$exports,AXIS1_EXPL_MODE=${AXIS1_EXPL_MODE:?},AXIS1_ARM=${AXIS1_ARM:-full},AXIS1_SAVE_EVERY_UPDATES=${AXIS1_SAVE_EVERY_UPDATES:-50000}"
   local cmd=(sbatch --account="$SLURM_ACCOUNT" --partition="$SLURM_PARTITION"
              --gres="$SLURM_GRES" --time="$walltime"
              --job-name="$bundle_id" --export="$exports"
@@ -1043,6 +1043,129 @@ for k, v in d['sources'].items():
       bundle=$((bundle + 1))
     done ;;
 
+  axis1-factorial-bundles)
+    # P3 gradient-path factorial (PREREG_p3_gradient_path_20260714.md):
+    # reward-aware fits on the SAME buffers with the two representation-
+    # gradient switches toggled, plus reward-label-transform controls.
+    # One invocation per arm/transform (uniform AXIS1_ARM per bundle):
+    #   AXIS1_ARM=sgb|rgo|vgo   ./scripts/submit_all.sh axis1-factorial-bundles
+    #   AXIS1_TRANSFORM=sh|rl   ./scripts/submit_all.sh axis1-factorial-bundles
+    # Arms fit the original pair (axis1_<dom>/q1); transforms fit the
+    # relabeled pair (axis1_<dom>/q1_<tr>, probing/relabel_replay) under
+    # the full task objective. Defaults: finger q1 seeds 1-8 (48+32 jobs
+    # over all arms/transforms).
+    arm="${AXIS1_ARM:-}"; transform="${AXIS1_TRANSFORM:-}"
+    if [ -n "$arm" ] && [ -n "$transform" ]; then
+      echo "Set exactly one of AXIS1_ARM / AXIS1_TRANSFORM"; exit 1
+    fi
+    case "$arm" in ''|sgb|rgo|vgo) ;; *)
+      echo "AXIS1_ARM must be sgb|rgo|vgo, got: $arm"; exit 1 ;;
+    esac
+    case "$transform" in ''|sh|rl) ;; *)
+      echo "AXIS1_TRANSFORM must be sh|rl, got: $transform"; exit 1 ;;
+    esac
+    if [ -z "$arm" ] && [ -z "$transform" ]; then
+      echo "Set AXIS1_ARM=sgb|rgo|vgo or AXIS1_TRANSFORM=sh|rl"; exit 1
+    fi
+    AXIS1_EXPL_MODE=task
+    if [ -n "$arm" ]; then
+      code="$arm"; quad_suffix=""
+    else
+      code="$transform"; quad_suffix="_${transform}"; AXIS1_ARM=full
+    fi
+    id_prefix="ax1${code}"
+    read -ra seeds <<< "${AXIS1_SEEDS:-1 2 3 4 5 6 7 8}"
+    read -ra quads <<< "${AXIS1_QUADS:-q1}"
+    read -ra doms <<< "${AXIS1_DOMAINS:-finger}"
+    bundle_size="${AXIS1_BUNDLE_SIZE:-3}"
+    updates="${AXIS1_UPDATES:-500000}"
+    steps="${STEPS:-1.25e5}"
+
+    pending=()
+    for dom in "${doms[@]}"; do
+      case "$dom" in
+        cup) task=dmc_cup_catch ;;
+        finger) task=dmc_finger_turn_hard ;;
+        *) echo "unknown axis1 domain: $dom"; exit 1 ;;
+      esac
+      for q in "${quads[@]}"; do
+        root="$RUNROOT/axis1_${dom}/${q}${quad_suffix}"
+        if [ ! -f "$root/manifest.json" ]; then
+          echo "SKIP not built: $root$([ -n "$transform" ] && echo ' (run probing/relabel_replay transform first)')"
+          continue
+        fi
+        for side in 0 1; do
+          for s in "${seeds[@]}"; do
+            run_id="adapt_${id_prefix}${q}s${side}_${dom}_seed${s}_ckpt${updates}"
+            wm_run="ax1wm_${dom}_${code}${q}s${side}_seed${s}"
+            if [ "${FORCE:-0}" != "1" ]; then
+              if queued_job "$run_id"; then
+                echo "SKIP queued/running: $run_id"; continue
+              fi
+              if adapt_done "$run_id"; then
+                echo "SKIP done: $run_id"; continue
+              fi
+              if axis1_reserved_active "$run_id"; then
+                echo "SKIP reserved in active bundle: $run_id"; continue
+              fi
+              if existing_logdir "$run_id"; then
+                if marker_only_logdir "$run_id"; then
+                  echo "RESUBMIT stale marker-only reservation: $run_id"
+                else
+                  echo "SKIP existing logdir: $RUNROOT/$run_id"; continue
+                fi
+              fi
+            fi
+            pending+=("$run_id"$'\t'"$wm_run"$'\t'"$task"$'\t'"$s"$'\t'"$root/side${side}"$'\t'"$updates"$'\t'"$steps"$'\t'"axis1"$'\t'"${id_prefix}_${dom}_${q}")
+          done
+        done
+      done
+    done
+
+    if [ "${#pending[@]}" -eq 0 ]; then
+      echo "No factorial runs need submission."
+      exit 0
+    fi
+
+    stamp="$(date +%Y%m%d_%H%M%S)"
+    runlist_dir="$RUNROOT/_submit_runlists/axis1_factorial_$stamp"
+    bundle_prefix="ax1fact_${code}_$stamp"
+    mkdir -p "$runlist_dir"
+    bundle=1
+    for ((i=0; i<${#pending[@]}; i+=bundle_size)); do
+      runlist="$runlist_dir/bundle_$(printf '%03d' "$bundle").tsv"
+      : > "$runlist"
+      rows=0
+      for ((j=i; j<i+bundle_size && j<${#pending[@]}; j++)); do
+        printf '%s\n' "${pending[$j]}" >> "$runlist"
+        rows=$((rows + 1))
+      done
+      bundle_id="${bundle_prefix}_$(printf '%03d' "$bundle")"
+      echo "Bundle $bundle_id tasks: $rows walltime: ${AXIS1_BUNDLE_TIME:-33:00:00}"
+      submit_axis1_bundle "$bundle_id" "$runlist" "$rows"
+      bundle=$((bundle + 1))
+    done ;;
+
+  e4-measure)
+    # E4 stratified-error sweep (prereg/PREREG_e4_stratified_error_20260714.md):
+    # one GPU job per domain over its fitted WM runs. Probe sets must be
+    # built+FROZEN first (probing/stratified_error build-probeset from the
+    # Gate-0 pilot replays). Tunables: E4_DOMAINS, E4_GLOB_<dom>,
+    # E4_PROBESET_<dom> (default $RUNROOT/e4_probesets/<dom>_v1), HORIZONS.
+    read -ra E4_DOMS <<< "${E4_DOMAINS:-finger cup}"
+    for dom in "${E4_DOMS[@]}"; do
+      probeset_var="E4_PROBESET_${dom}"
+      glob_var="E4_GLOB_${dom}"
+      probeset="${!probeset_var:-$RUNROOT/e4_probesets/${dom}_v1}"
+      glob="${!glob_var:-ax1wm_${dom}_*}"
+      [ -f "$probeset/FROZEN" ] || {
+        echo "SKIP $dom: $probeset not built/FROZEN (run build-probeset first)"
+        continue
+      }
+      submit e4_measure.sbatch "e4meas_${dom}" \
+        "PROBESET=$probeset" "GLOB=$glob" "HORIZONS=${HORIZONS:-1 5 20}"
+    done ;;
+
   *)
-    echo "usage: $0 {pilots|pretrain|pretrain-bundles|adapt|adapt-completed|adapt-bundles|measure|measure-bundles|axis1|axis1-bundles|axis1-dose-bundles|axis1-within-bundles} ..."; exit 1 ;;
+    echo "usage: $0 {pilots|pretrain|pretrain-bundles|adapt|adapt-completed|adapt-bundles|measure|measure-bundles|axis1|axis1-bundles|axis1-dose-bundles|axis1-within-bundles|axis1-factorial-bundles|e4-measure} ..."; exit 1 ;;
 esac

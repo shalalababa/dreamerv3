@@ -1,0 +1,372 @@
+{
+  "created": "2026-07-14T13:40:20",
+  "command": "/home/rickybao/projects/dreamerv3/probing/latent_uq_analysis.py --cross --cell finger_random_cross --dumps random_finger_seed1=/home/rickybao/projects/dreamerv3/local_results/evpi_stage0_20260710_221924/raw/pretrain_random_finger_seed1/latent_uq/finger_v1 random_finger_seed2=/home/rickybao/projects/dreamerv3/local_results/evpi_stage0_20260710_221924/raw/pretrain_random_finger_seed2/latent_uq/finger_v1 random_finger_seed3=/home/rickybao/projects/dreamerv3/local_results/evpi_stage0_20260710_221924/raw/pretrain_random_finger_seed3/latent_uq/finger_v1 random_finger_seed4=/home/rickybao/projects/dreamerv3/local_results/evpi_stage0_20260710_221924/raw/pretrain_random_finger_seed4/latent_uq/finger_v1 random_finger_seed5=/home/rickybao/projects/dreamerv3/local_results/evpi_stage0_20260710_221924/raw/pretrain_random_finger_seed5/latent_uq/finger_v1 --horizons 1 5 --n_boot 300 --instrument density_residual --output /home/rickybao/projects/dreamerv3/artifacts/latent_uq_stage1a_20260714/finger_random_cross",
+  "git_commit": "c92f984794e7f1b57db82ccfc3f8faae3c65df52",
+  "dumps": {
+    "random_finger_seed1": "/home/rickybao/projects/dreamerv3/local_results/evpi_stage0_20260710_221924/raw/pretrain_random_finger_seed1/latent_uq/finger_v1",
+    "random_finger_seed2": "/home/rickybao/projects/dreamerv3/local_results/evpi_stage0_20260710_221924/raw/pretrain_random_finger_seed2/latent_uq/finger_v1",
+    "random_finger_seed3": "/home/rickybao/projects/dreamerv3/local_results/evpi_stage0_20260710_221924/raw/pretrain_random_finger_seed3/latent_uq/finger_v1",
+    "random_finger_seed4": "/home/rickybao/projects/dreamerv3/local_results/evpi_stage0_20260710_221924/raw/pretrain_random_finger_seed4/latent_uq/finger_v1",
+    "random_finger_seed5": "/home/rickybao/projects/dreamerv3/local_results/evpi_stage0_20260710_221924/raw/pretrain_random_finger_seed5/latent_uq/finger_v1"
+  },
+  "probeset_ids": [
+    "finger_v1_7a32ff08"
+  ],
+  "held_out": true,
+  "cross": true,
+  "horizons": [
+    1,
+    5
+  ],
+  "primary_horizon": 5,
+  "n_boot": 300,
+  "verdict_sigma": 2.0,
+  "instrument": "density_residual",
+  "resid_folds": 5,
+  "output": "/home/rickybao/projects/dreamerv3/artifacts/latent_uq_stage1a_20260714/finger_random_cross",
+  "cells": [
+    {
+      "label": "finger_random_cross",
+      "checkpoints": [
+        {
+          "name": "step000000096208",
+          "exact_step": 96208,
+          "milestone": 100000,
+          "rows": [
+            {
+              "kind": "anchor",
+              "horizon": 1,
+              "n": 2560,
+              "rho_de": 0.2401511680356854,
+              "rho_de_se": 0.03543278574285589,
+              "rho_dp": -0.14052567671213936,
+              "rho_dp_se": 0.04138507374484528,
+              "rho_ep": 0.7642123460998298,
+              "pcorr_de": 0.5442558818534313,
+              "pcorr_dp": -0.5175806763931271,
+              "delta": 1.0618365582465583,
+              "delta_se": 0.03474659969554844,
+              "verdict": "TRACKS_ERROR"
+            },
+            {
+              "kind": "path",
+              "horizon": 1,
+              "n": 2560,
+              "rho_de": 0.2401511680356854,
+              "rho_de_se": 0.03543278574285589,
+              "rho_dp": -0.14052567671213936,
+              "rho_dp_se": 0.04138507374484528,
+              "rho_ep": 0.7642123460998298,
+              "pcorr_de": 0.5442558818534313,
+              "pcorr_dp": -0.5175806763931271,
+              "delta": 1.0618365582465583,
+              "delta_se": 0.03474659969554844,
+              "verdict": "TRACKS_ERROR"
+            },
+            {
+              "kind": "anchor",
+              "horizon": 5,
+              "n": 2560,
+              "rho_de": 0.16804531563496636,
+              "rho_de_se": 0.032098732297155944,
+              "rho_dp": -0.14052567671213936,
+              "rho_dp_se": 0.03912449171590229,
+              "rho_ep": 0.6969718206076537,
+              "pcorr_de": 0.3746397277609341,
+              "pcorr_dp": -0.364476185641742,
+              "delta": 0.7391159134026761,
+              "delta_se": 0.038692110667430966,
+              "verdict": "TRACKS_ERROR"
+            },
+            {
+              "kind": "path",
+              "horizon": 5,
+              "n": 2560,
+              "rho_de": 0.3042550634677983,
+              "rho_de_se": 0.030863763352966724,
+              "rho_dp": -0.13079880159169027,
+              "rho_dp_se": 0.038465329739961,
+              "rho_ep": 0.6969718206076537,
+              "pcorr_de": 0.5561922587037024,
+              "pcorr_dp": -0.5019109221997224,
+              "delta": 1.0581031809034247,
+              "delta_se": 0.03242960122580908,
+              "verdict": "TRACKS_ERROR"
+            }
+          ]
+        },
+        {
+          "name": "step000000199120",
+          "exact_step": 199120,
+          "milestone": 200000,
+          "rows": [
+            {
+              "kind": "anchor",
+              "horizon": 1,
+              "n": 2560,
+              "rho_de": 0.2481789064012766,
+              "rho_de_se": 0.042033306194166245,
+              "rho_dp": -0.18715271935894606,
+              "rho_dp_se": 0.039307997785586635,
+              "rho_ep": 0.8092201161403155,
+              "pcorr_de": 0.6924440309461747,
+              "pcorr_dp": -0.6817203247796804,
+              "delta": 1.374164355725855,
+              "delta_se": 0.02488782424839754,
+              "verdict": "TRACKS_ERROR"
+            },
+            {
+              "kind": "path",
+              "horizon": 1,
+              "n": 2560,
+              "rho_de": 0.2481789064012766,
+              "rho_de_se": 0.042033306194166245,
+              "rho_dp": -0.18715271935894606,
+              "rho_dp_se": 0.039307997785586635,
+              "rho_ep": 0.8092201161403155,
+              "pcorr_de": 0.6924440309461747,
+              "pcorr_dp": -0.6817203247796804,
+              "delta": 1.374164355725855,
+              "delta_se": 0.02488782424839754,
+              "verdict": "TRACKS_ERROR"
+            },
+            {
+              "kind": "anchor",
+              "horizon": 5,
+              "n": 2560,
+              "rho_de": 0.19217728975715598,
+              "rho_de_se": 0.04282991566649655,
+              "rho_dp": -0.18715271935894606,
+              "rho_dp_se": 0.03688343603782865,
+              "rho_ep": 0.7516259327335444,
+              "pcorr_de": 0.5137027915170211,
+              "pcorr_dp": -0.5122828831265757,
+              "delta": 1.025985674643597,
+              "delta_se": 0.03656186962942591,
+              "verdict": "TRACKS_ERROR"
+            },
+            {
+              "kind": "path",
+              "horizon": 5,
+              "n": 2560,
+              "rho_de": 0.2918931379391022,
+              "rho_de_se": 0.03988150168693446,
+              "rho_dp": -0.17923415907485185,
+              "rho_dp_se": 0.03663019280483156,
+              "rho_ep": 0.7516259327335444,
+              "pcorr_de": 0.657427315400918,
+              "pcorr_dp": -0.6318761473748339,
+              "delta": 1.2893034627757518,
+              "delta_se": 0.026245272034879884,
+              "verdict": "TRACKS_ERROR"
+            }
+          ]
+        },
+        {
+          "name": "step000000302032",
+          "exact_step": 302032,
+          "milestone": 300000,
+          "rows": [
+            {
+              "kind": "anchor",
+              "horizon": 1,
+              "n": 2560,
+              "rho_de": 0.2343526711429857,
+              "rho_de_se": 0.04217280048710904,
+              "rho_dp": -0.1694952759101914,
+              "rho_dp_se": 0.03284345711572026,
+              "rho_ep": 0.8245626996653012,
+              "pcorr_de": 0.6709515546307707,
+              "pcorr_dp": -0.6594981503729184,
+              "delta": 1.330449705003689,
+              "delta_se": 0.03307013638795631,
+              "verdict": "TRACKS_ERROR"
+            },
+            {
+              "kind": "path",
+              "horizon": 1,
+              "n": 2560,
+              "rho_de": 0.2343526711429857,
+              "rho_de_se": 0.04217280048710904,
+              "rho_dp": -0.1694952759101914,
+              "rho_dp_se": 0.03284345711572026,
+              "rho_ep": 0.8245626996653012,
+              "pcorr_de": 0.6709515546307707,
+              "pcorr_dp": -0.6594981503729184,
+              "delta": 1.330449705003689,
+              "delta_se": 0.03307013638795631,
+              "verdict": "TRACKS_ERROR"
+            },
+            {
+              "kind": "anchor",
+              "horizon": 5,
+              "n": 2560,
+              "rho_de": 0.1910266805308045,
+              "rho_de_se": 0.04459625996843029,
+              "rho_dp": -0.1694952759101914,
+              "rho_dp_se": 0.0356912123724189,
+              "rho_ep": 0.7595859399496031,
+              "pcorr_de": 0.49886864145552356,
+              "pcorr_dp": -0.49276608481392076,
+              "delta": 0.9916347262694443,
+              "delta_se": 0.041282748840200736,
+              "verdict": "TRACKS_ERROR"
+            },
+            {
+              "kind": "path",
+              "horizon": 5,
+              "n": 2560,
+              "rho_de": 0.297949752017937,
+              "rho_de_se": 0.041109086084199824,
+              "rho_dp": -0.16265697618590597,
+              "rho_dp_se": 0.03479012916546811,
+              "rho_ep": 0.7595859399496031,
+              "pcorr_de": 0.6568053139349909,
+              "pcorr_dp": -0.6265041404602646,
+              "delta": 1.2833094543952555,
+              "delta_se": 0.029535360925820816,
+              "verdict": "TRACKS_ERROR"
+            }
+          ]
+        },
+        {
+          "name": "step000000396384",
+          "exact_step": 396384,
+          "milestone": 400000,
+          "rows": [
+            {
+              "kind": "anchor",
+              "horizon": 1,
+              "n": 2560,
+              "rho_de": 0.2559644884627515,
+              "rho_de_se": 0.046261850525323556,
+              "rho_dp": -0.1339350640102484,
+              "rho_dp_se": 0.03376583806479816,
+              "rho_ep": 0.8378870313758134,
+              "pcorr_de": 0.6806608552656737,
+              "pcorr_dp": -0.6602825497338646,
+              "delta": 1.3409434049995381,
+              "delta_se": 0.03321607288965185,
+              "verdict": "TRACKS_ERROR"
+            },
+            {
+              "kind": "path",
+              "horizon": 1,
+              "n": 2560,
+              "rho_de": 0.2559644884627515,
+              "rho_de_se": 0.046261850525323556,
+              "rho_dp": -0.1339350640102484,
+              "rho_dp_se": 0.03376583806479816,
+              "rho_ep": 0.8378870313758134,
+              "pcorr_de": 0.6806608552656737,
+              "pcorr_dp": -0.6602825497338646,
+              "delta": 1.3409434049995381,
+              "delta_se": 0.03321607288965185,
+              "verdict": "TRACKS_ERROR"
+            },
+            {
+              "kind": "anchor",
+              "horizon": 5,
+              "n": 2560,
+              "rho_de": 0.1923123192977629,
+              "rho_de_se": 0.03979495023637036,
+              "rho_dp": -0.1339350640102484,
+              "rho_dp_se": 0.033129996449565643,
+              "rho_ep": 0.7709210432504338,
+              "pcorr_de": 0.4682658472735683,
+              "pcorr_dp": -0.4514782137762293,
+              "delta": 0.9197440610497976,
+              "delta_se": 0.04442872219421643,
+              "verdict": "TRACKS_ERROR"
+            },
+            {
+              "kind": "path",
+              "horizon": 5,
+              "n": 2560,
+              "rho_de": 0.32517422917163524,
+              "rho_de_se": 0.038193658315181865,
+              "rho_dp": -0.10248736228750033,
+              "rho_dp_se": 0.030468129613321324,
+              "rho_ep": 0.7709210432504338,
+              "pcorr_de": 0.6379398166944138,
+              "pcorr_dp": -0.5863548739397773,
+              "delta": 1.2242946906341912,
+              "delta_se": 0.03370131837886868,
+              "verdict": "TRACKS_ERROR"
+            }
+          ]
+        },
+        {
+          "name": "step000000499312",
+          "exact_step": 499312,
+          "milestone": 500000,
+          "rows": [
+            {
+              "kind": "anchor",
+              "horizon": 1,
+              "n": 2560,
+              "rho_de": 0.20792286115326244,
+              "rho_de_se": 0.04491873269508234,
+              "rho_dp": -0.1756423269298289,
+              "rho_dp_se": 0.03234241357710308,
+              "rho_ep": 0.8453365556357856,
+              "pcorr_de": 0.6776575775452124,
+              "pcorr_dp": -0.6724741400449696,
+              "delta": 1.3501317175901821,
+              "delta_se": 0.029433811702752933,
+              "verdict": "TRACKS_ERROR"
+            },
+            {
+              "kind": "path",
+              "horizon": 1,
+              "n": 2560,
+              "rho_de": 0.20792286115326244,
+              "rho_de_se": 0.04491873269508234,
+              "rho_dp": -0.1756423269298289,
+              "rho_dp_se": 0.03234241357710308,
+              "rho_ep": 0.8453365556357856,
+              "pcorr_de": 0.6776575775452124,
+              "pcorr_dp": -0.6724741400449696,
+              "delta": 1.3501317175901821,
+              "delta_se": 0.029433811702752933,
+              "verdict": "TRACKS_ERROR"
+            },
+            {
+              "kind": "anchor",
+              "horizon": 5,
+              "n": 2560,
+              "rho_de": 0.15921878812313656,
+              "rho_de_se": 0.04166567547575732,
+              "rho_dp": -0.1756423269298289,
+              "rho_dp_se": 0.03382788825433788,
+              "rho_ep": 0.7757307904881728,
+              "pcorr_de": 0.4756028841451793,
+              "pcorr_dp": -0.4801712153494542,
+              "delta": 0.9557740994946335,
+              "delta_se": 0.03589564458681648,
+              "verdict": "TRACKS_ERROR"
+            },
+            {
+              "kind": "path",
+              "horizon": 5,
+              "n": 2560,
+              "rho_de": 0.31174261844522366,
+              "rho_de_se": 0.042640979454123665,
+              "rho_dp": -0.12152626985950772,
+              "rho_dp_se": 0.03597708206377888,
+              "rho_ep": 0.7757307904881728,
+              "pcorr_de": 0.6481847563568379,
+              "pcorr_dp": -0.6059789546461045,
+              "delta": 1.2541637110029424,
+              "delta_se": 0.027815347142360995,
+              "verdict": "TRACKS_ERROR"
+            }
+          ]
+        }
+      ],
+      "final_verdict": "TRACKS_ERROR",
+      "addendum_pass": true,
+      "addendum_horizon": 1
+    }
+  ]
+}

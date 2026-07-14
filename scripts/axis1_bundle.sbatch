@@ -118,6 +118,7 @@ while IFS=$'\t' read -r child_run_id wm_run task seed replay updates steps axis 
     STEPS="${steps:-${STEPS:-1.25e5}}" AXIS="${axis:-axis1}" \
     PAIRED_SEED_SET="${paired_seed_set:-}" \
     AXIS1_EXPL_MODE="${AXIS1_EXPL_MODE:?bundle env missing AXIS1_EXPL_MODE}" \
+    AXIS1_ARM="${AXIS1_ARM:-full}" \
     FORCE_WM="${FORCE_WM:-0}" RENDER="${RENDER:-False}" \
     bash "$REPO/scripts/axis1.sbatch"
   rc=$?
