@@ -53,6 +53,28 @@ immutable dated files; see plan v4.)
 
 ## Code notes and registrations (non-deviations)
 
+- **2026-07-13 — W0 read executed as registered (Amendment 2 §A); n=16
+  interaction CONFIRMED.** Read of the 16 apt finger-Q1 seed-9–16 runs
+  (`artifacts/w0_n16_interaction_20260713/RESULTS.md`). Audit PASS 16/16
+  (saved `expl.mode: apt`; loss-line component set byte-identical to the
+  audited P0 finger runs, no `rew`/`value` term); QC 16/16; seeds-1–8
+  deltas bit-checked against the frozen paired JSONs. Primary (decision on
+  CI alone): fully-paired n=16 interaction **+98.72 [+45.81, +158.83]
+  excludes 0**, 13/16 seeds, exact 2¹⁶ permutation p=0.00272, d_z 0.83,
+  LOO [+81.0, +110.4]. Registered subsidiary fresh-batch 9–16: +40.17
+  [−12.77, +90.68] ns — attenuation entirely in the aware arm; honest
+  effect size = pooled +98.7. Secondary: reward-free simple effect pooled
+  1–16 **−3.71 [−16.97, +9.76]** (tight null; all apt cells on the ~80
+  floor). Buffer battery (descriptive, hi sides only; lo re-run
+  requested): finger occ↔reward episode-corr = **+1.00** (occupancy ≡
+  reward density) vs cup **−0.51/−0.70** (sign flip explains domain
+  heterogeneity); lo sides are mono-source vs multi-source hi ⇒ source
+  diversity confounded with occupancy in the original Axis-1 buffers —
+  E3v2 within-collector (Amendment 2 §B) now carries de-confounded
+  identification, not just replication. Correction note added to the P0
+  RESULTS.md audit prose (finger/cup loss-key lists were swapped;
+  verification unaffected).
+
 - **2026-07-13 — P0 corrective read executed as registered; decision-tree
   branch 2 fires.** Read of the 64 reward-free (`ax1f*`) runs per
   `prereg/PREREG_axis1_corrective_20260711.md` + Amendment 1

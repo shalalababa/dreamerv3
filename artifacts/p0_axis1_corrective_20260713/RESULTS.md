@@ -16,7 +16,11 @@ design). Analysis: frozen `analysis/adaptation_auc.py` →
 - Offline-fit loss lines in all 64 job logs contain only observation-decoder
   + dynamics losses (finger: `con,dyn,position,rep,velocity`; cup:
   `con,dyn,position,velocity,dist_to_target,target_position,touch,rep`),
-  **no `rew`/`value`/`repval` term**. (Config-file `reward_grad`/
+  **no `rew`/`value`/`repval` term**.
+  [Correction 2026-07-13, W0 read: the finger/cup key lists above are
+  swapped — finger turn_hard logs carry the 8-component set including
+  `touch/target_position/dist_to_target`. The audited component *sets* and
+  the no-`rew`/`value` verification are unaffected.] (Config-file `reward_grad`/
   `loss_scales.rew` defaults are present but inert on the `reward_free=True`
   code path — established by the 11-Jul smoke test,
   `artifacts/smoke_axis1_expl_20260711/`.)
