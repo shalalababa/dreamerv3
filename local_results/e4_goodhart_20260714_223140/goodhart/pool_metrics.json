@@ -1,0 +1,396 @@
+{
+  "n_policies": 63,
+  "spearman": 0.15309995186927994,
+  "spearman_p": 0.23094169921932914,
+  "inversion_rate": 0.44192049561177077,
+  "top1_regret": 0.0,
+  "top1_regret_frac": 0.0,
+  "top3_regret": 0.0,
+  "top3_regret_frac": 0.0,
+  "top5_regret": 0.0,
+  "top5_regret_frac": 0.0,
+  "best_real": 764.6,
+  "selected_real_top1": 764.6,
+  "rows": [
+    {
+      "policy_id": "adapt_apt_finger_seed1_ckpt500000",
+      "m_return": 4.220615346921776,
+      "m_return_disc": 3.8984839137260345,
+      "real": 205.3
+    },
+    {
+      "policy_id": "adapt_apt_finger_seed2_ckpt500000",
+      "m_return": 2.3681799369184047,
+      "m_return_disc": 2.15480506679293,
+      "real": 100.0
+    },
+    {
+      "policy_id": "adapt_apt_finger_seed3_ckpt500000",
+      "m_return": 3.405494143763048,
+      "m_return_disc": 3.10948880327303,
+      "real": 103.5
+    },
+    {
+      "policy_id": "adapt_apt_finger_seed4_ckpt500000",
+      "m_return": 3.61819085857222,
+      "m_return_disc": 3.3355692480316512,
+      "real": 146.7
+    },
+    {
+      "policy_id": "adapt_apt_finger_seed5_ckpt500000",
+      "m_return": 2.2670587888211724,
+      "m_return_disc": 2.068515831662245,
+      "real": 198.0
+    },
+    {
+      "policy_id": "adapt_ax1fq1s0_finger_seed10_ckpt500000",
+      "m_return": 3.5815884057696534,
+      "m_return_disc": 3.2958815935636223,
+      "real": 0.5
+    },
+    {
+      "policy_id": "adapt_ax1fq1s0_finger_seed11_ckpt500000",
+      "m_return": 5.656519891056702,
+      "m_return_disc": 5.025578591055556,
+      "real": 154.5
+    },
+    {
+      "policy_id": "adapt_ax1fq1s0_finger_seed12_ckpt500000",
+      "m_return": 9.622383479030571,
+      "m_return_disc": 8.597551406824913,
+      "real": 19.6
+    },
+    {
+      "policy_id": "adapt_ax1fq1s0_finger_seed13_ckpt500000",
+      "m_return": 3.6106878958996,
+      "m_return_disc": 3.340575346099036,
+      "real": 1.4
+    },
+    {
+      "policy_id": "adapt_ax1fq1s0_finger_seed14_ckpt500000",
+      "m_return": 3.389117300246619,
+      "m_return_disc": 3.109803858704335,
+      "real": 16.5
+    },
+    {
+      "policy_id": "adapt_ax1fq1s0_finger_seed15_ckpt500000",
+      "m_return": 5.618359799227923,
+      "m_return_disc": 5.1342083110670975,
+      "real": 0.2
+    },
+    {
+      "policy_id": "adapt_ax1fq1s0_finger_seed16_ckpt500000",
+      "m_return": 1.1582015240154475,
+      "m_return_disc": 1.0799637059525118,
+      "real": 70.2
+    },
+    {
+      "policy_id": "adapt_ax1fq1s0_finger_seed9_ckpt500000",
+      "m_return": 5.225703959212377,
+      "m_return_disc": 4.844452187826495,
+      "real": 0.0
+    },
+    {
+      "policy_id": "adapt_ax1fq1s1_finger_seed10_ckpt500000",
+      "m_return": 1.3389936212700952,
+      "m_return_disc": 1.3049440722608248,
+      "real": 0.4
+    },
+    {
+      "policy_id": "adapt_ax1fq1s1_finger_seed11_ckpt500000",
+      "m_return": 4.783220699040004,
+      "m_return_disc": 4.278104232506282,
+      "real": 16.4
+    },
+    {
+      "policy_id": "adapt_ax1fq1s1_finger_seed12_ckpt500000",
+      "m_return": 2.882169898079019,
+      "m_return_disc": 2.7434242734395555,
+      "real": 195.2
+    },
+    {
+      "policy_id": "adapt_ax1fq1s1_finger_seed13_ckpt500000",
+      "m_return": 4.486384697546493,
+      "m_return_disc": 4.1636512508446755,
+      "real": 1.0
+    },
+    {
+      "policy_id": "adapt_ax1fq1s1_finger_seed14_ckpt500000",
+      "m_return": 4.531913062468417,
+      "m_return_disc": 4.206362180052993,
+      "real": 100.8
+    },
+    {
+      "policy_id": "adapt_ax1fq1s1_finger_seed15_ckpt500000",
+      "m_return": 4.534073495923064,
+      "m_return_disc": 4.207991168600239,
+      "real": 3.9
+    },
+    {
+      "policy_id": "adapt_ax1fq1s1_finger_seed16_ckpt500000",
+      "m_return": 4.566439828657542,
+      "m_return_disc": 4.238620657289911,
+      "real": 100.0
+    },
+    {
+      "policy_id": "adapt_ax1fq1s1_finger_seed9_ckpt500000",
+      "m_return": 8.14612256251176,
+      "m_return_disc": 7.3424924554007305,
+      "real": 69.5
+    },
+    {
+      "policy_id": "adapt_ax1q1s0_finger_seed1_ckpt500000",
+      "m_return": 7.511100271025766,
+      "m_return_disc": 6.82091187943207,
+      "real": 287.1
+    },
+    {
+      "policy_id": "adapt_ax1q1s0_finger_seed2_ckpt500000",
+      "m_return": 4.847924127568794,
+      "m_return_disc": 4.4857521112612595,
+      "real": 5.0
+    },
+    {
+      "policy_id": "adapt_ax1q1s0_finger_seed3_ckpt500000",
+      "m_return": 3.735094786256983,
+      "m_return_disc": 3.309203482327523,
+      "real": 7.5
+    },
+    {
+      "policy_id": "adapt_ax1q1s0_finger_seed4_ckpt500000",
+      "m_return": 5.586506193072595,
+      "m_return_disc": 5.105853314436464,
+      "real": 240.3
+    },
+    {
+      "policy_id": "adapt_ax1q1s0_finger_seed5_ckpt500000",
+      "m_return": 5.064334907019673,
+      "m_return_disc": 4.5935407351455435,
+      "real": 19.5
+    },
+    {
+      "policy_id": "adapt_ax1q1s0_finger_seed6_ckpt500000",
+      "m_return": 3.60808134648462,
+      "m_return_disc": 3.336635947210977,
+      "real": 0.0
+    },
+    {
+      "policy_id": "adapt_ax1q1s0_finger_seed7_ckpt500000",
+      "m_return": 4.559894148312487,
+      "m_return_disc": 4.163358849956572,
+      "real": 476.0
+    },
+    {
+      "policy_id": "adapt_ax1q1s0_finger_seed8_ckpt500000",
+      "m_return": 1.7914785189788869,
+      "m_return_disc": 1.7096377132692038,
+      "real": 196.7
+    },
+    {
+      "policy_id": "adapt_ax1q1s1_finger_seed2_ckpt500000",
+      "m_return": 6.778385494626579,
+      "m_return_disc": 6.061769188900946,
+      "real": 400.2
+    },
+    {
+      "policy_id": "adapt_ax1q1s1_finger_seed3_ckpt500000",
+      "m_return": 10.17121176297673,
+      "m_return_disc": 9.15191841833806,
+      "real": 0.0
+    },
+    {
+      "policy_id": "adapt_ax1q1s1_finger_seed4_ckpt500000",
+      "m_return": 2.2868382825238034,
+      "m_return_disc": 2.0940009726521076,
+      "real": 565.1
+    },
+    {
+      "policy_id": "adapt_ax1q1s1_finger_seed5_ckpt500000",
+      "m_return": 1.5585796153431772,
+      "m_return_disc": 1.4567549480094097,
+      "real": 96.5
+    },
+    {
+      "policy_id": "adapt_ax1q1s1_finger_seed6_ckpt500000",
+      "m_return": 9.649908010480376,
+      "m_return_disc": 8.644486971990213,
+      "real": 463.8
+    },
+    {
+      "policy_id": "adapt_ax1q1s1_finger_seed7_ckpt500000",
+      "m_return": 10.588425044696027,
+      "m_return_disc": 9.595562436531955,
+      "real": 764.6
+    },
+    {
+      "policy_id": "adapt_ax1q1s1_finger_seed8_ckpt500000",
+      "m_return": 6.4701930555061224,
+      "m_return_disc": 5.822395763462194,
+      "real": 332.6
+    },
+    {
+      "policy_id": "adapt_ax1q2s0_finger_seed1_ckpt500000",
+      "m_return": 4.089340896403852,
+      "m_return_disc": 3.6993629883292827,
+      "real": 191.9
+    },
+    {
+      "policy_id": "adapt_ax1q2s0_finger_seed2_ckpt500000",
+      "m_return": 7.19909313376685,
+      "m_return_disc": 6.528895181095663,
+      "real": 401.9
+    },
+    {
+      "policy_id": "adapt_ax1q2s0_finger_seed3_ckpt500000",
+      "m_return": 5.613162186204,
+      "m_return_disc": 5.146037930398996,
+      "real": 97.2
+    },
+    {
+      "policy_id": "adapt_ax1q2s0_finger_seed4_ckpt500000",
+      "m_return": 3.9508577102928895,
+      "m_return_disc": 3.6407163569872636,
+      "real": 6.8
+    },
+    {
+      "policy_id": "adapt_ax1q2s0_finger_seed5_ckpt500000",
+      "m_return": 1.7438365772891662,
+      "m_return_disc": 1.6144167387434873,
+      "real": 2.9
+    },
+    {
+      "policy_id": "adapt_ax1q2s0_finger_seed6_ckpt500000",
+      "m_return": 7.799921487321488,
+      "m_return_disc": 7.018111548206726,
+      "real": 137.7
+    },
+    {
+      "policy_id": "adapt_ax1q2s0_finger_seed7_ckpt500000",
+      "m_return": 7.243931900945744,
+      "m_return_disc": 6.604378218766098,
+      "real": 88.2
+    },
+    {
+      "policy_id": "adapt_ax1q2s0_finger_seed8_ckpt500000",
+      "m_return": 1.3313910664535609,
+      "m_return_disc": 1.216017453662815,
+      "real": 75.7
+    },
+    {
+      "policy_id": "adapt_ax1q2s1_finger_seed1_ckpt500000",
+      "m_return": 3.5953940283169765,
+      "m_return_disc": 3.286472614363695,
+      "real": 188.3
+    },
+    {
+      "policy_id": "adapt_ax1q2s1_finger_seed2_ckpt500000",
+      "m_return": 0.9208253630507155,
+      "m_return_disc": 0.8652202961172042,
+      "real": 109.7
+    },
+    {
+      "policy_id": "adapt_ax1q2s1_finger_seed3_ckpt500000",
+      "m_return": 6.291137005907666,
+      "m_return_disc": 5.779582600064993,
+      "real": 310.6
+    },
+    {
+      "policy_id": "adapt_ax1q2s1_finger_seed4_ckpt500000",
+      "m_return": 8.681236408033302,
+      "m_return_disc": 7.762694868177943,
+      "real": 119.7
+    },
+    {
+      "policy_id": "adapt_ax1q2s1_finger_seed5_ckpt500000",
+      "m_return": 6.143406273913831,
+      "m_return_disc": 5.546043109572933,
+      "real": 100.3
+    },
+    {
+      "policy_id": "adapt_ax1q2s1_finger_seed6_ckpt500000",
+      "m_return": 3.2698780251123347,
+      "m_return_disc": 3.0165819796712374,
+      "real": 177.6
+    },
+    {
+      "policy_id": "adapt_ax1q2s1_finger_seed7_ckpt500000",
+      "m_return": 5.389141741054907,
+      "m_return_disc": 4.9006297916911095,
+      "real": 29.0
+    },
+    {
+      "policy_id": "adapt_ax1q2s1_finger_seed8_ckpt500000",
+      "m_return": 5.142945704608673,
+      "m_return_disc": 4.720687519278867,
+      "real": 146.3
+    },
+    {
+      "policy_id": "adapt_p2e_finger_seed1_ckpt500000",
+      "m_return": 3.7766358416224106,
+      "m_return_disc": 3.48769814433601,
+      "real": 0.0
+    },
+    {
+      "policy_id": "adapt_p2e_finger_seed2_ckpt500000",
+      "m_return": 1.2010375237922837,
+      "m_return_disc": 1.1522252078807742,
+      "real": 164.9
+    },
+    {
+      "policy_id": "adapt_p2e_finger_seed3_ckpt500000",
+      "m_return": 5.7303501504458145,
+      "m_return_disc": 5.279180847336197,
+      "real": 145.4
+    },
+    {
+      "policy_id": "adapt_p2e_finger_seed4_ckpt500000",
+      "m_return": 3.0389398942188555,
+      "m_return_disc": 2.769286065434973,
+      "real": 122.3
+    },
+    {
+      "policy_id": "adapt_p2e_finger_seed5_ckpt500000",
+      "m_return": 4.805616996601126,
+      "m_return_disc": 4.451827700844809,
+      "real": 0.0
+    },
+    {
+      "policy_id": "adapt_p2elong_finger_seed1_ckpt500000",
+      "m_return": 1.9493885470626438,
+      "m_return_disc": 1.781294133383512,
+      "real": 99.2
+    },
+    {
+      "policy_id": "adapt_random_finger_seed1_ckpt500000",
+      "m_return": 2.0343993279672934,
+      "m_return_disc": 1.9049010781522184,
+      "real": 87.6
+    },
+    {
+      "policy_id": "adapt_random_finger_seed2_ckpt500000",
+      "m_return": 1.4828535448371898,
+      "m_return_disc": 1.4399836515035809,
+      "real": 0.3
+    },
+    {
+      "policy_id": "adapt_random_finger_seed3_ckpt500000",
+      "m_return": 3.538268055938363,
+      "m_return_disc": 3.2565951465240834,
+      "real": 0.0
+    },
+    {
+      "policy_id": "adapt_random_finger_seed4_ckpt500000",
+      "m_return": 2.1527697701948796,
+      "m_return_disc": 2.063001289545738,
+      "real": 125.3
+    },
+    {
+      "policy_id": "adapt_random_finger_seed5_ckpt500000",
+      "m_return": 2.8224260504528966,
+      "m_return_disc": 2.649017465558507,
+      "real": 199.7
+    }
+  ],
+  "evals_glob": "/scratch/midway3/rickybao/dreamerv3_runs/goodhart_finger/eval_*.json",
+  "real_window": 10
+}
