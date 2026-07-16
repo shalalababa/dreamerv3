@@ -561,10 +561,18 @@ class Agent(embodied.jax.Agent):
     actvec = jnp.concatenate([
         nn.cast(act[k]).reshape((B, -1))
         for k in sorted(self.act_space)], -1)
+    # Candidate action vectors (B, M, A): Stage-1B oracle labeling
+    # (d0/oracle_labels.py) must execute/imagine exactly the candidates
+    # the Q matrices above were computed for.
+    cand_vec = jnp.stack([
+        jnp.concatenate([
+            nn.cast(c[k]).reshape((B, -1)) for k in sorted(self.act_space)],
+            -1) for c in cands], 1)
     out = {
         'd0/qfull': q.mean(-1),
         'd0/qhalf': q[..., :R // 2].mean(-1),
         'd0/udyn': f32(self.disag.reward(inp, actvec)),
+        'd0/cands': f32(cand_vec),
     }
     return out
 

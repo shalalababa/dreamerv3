@@ -53,6 +53,36 @@ immutable dated files; see plan v4.)
 
 ## Code notes and registrations (non-deviations)
 
+- **2026-07-16 — build wave (all pre-outcome).** (1) **P3 read script
+  frozen before any factorial outcome exists**
+  (`analysis/p3_factorial_read.py`, selfcheck PASS: recovers planted
+  effects and the registered branch map; loads the disclosed B_full/
+  B_apt records from the frozen paired JSONs). Audit clarification
+  encoded there, pre-outcome: `offline_fit.py` computes `repval` in
+  every task-mode fit (agent.py:370) but its stdout filter
+  (NON_WM_LOSS) never prints it, so the prereg's "loss lines contain
+  rew and repval" sentence is verified as: config flags
+  (reward_grad/repval_loss/repval_grad, recorded per run) are the
+  authoritative repval audit; stdout verifies `rew` presence and
+  AC-key absence only. (2) **TD-MPC2 cross-family pipeline built +
+  registered** (`prereg/PREREG_tdmpc2_crossfamily_20260716.md`, frozen
+  before any TD-MPC2 outcome exists): official repo pinned at
+  e9f5932, `probing/tdmpc2_{compat,bridge,offline_fit,adapt}.py`,
+  `scripts/tdmpc2.sbatch` + `tdmpc2_env_setup.sh` + `submit_all.sh
+  tdmpc2-bundles` (DRYRUN-verified, 32 jobs); bridge selfcheck PASS
+  (prev-action shift + contract violations raise); cluster smoke run
+  required before the wave per the prereg ordering statement. (3)
+  **Stage-1B oracle labeler built** (`d0/oracle_labels.py`, selfcheck
+  PASS: synthetic env recovers exact hand-computed Δ_real=+0.8/
+  Δ_imag=0, restore-determinism asserted, costs metered) per
+  PREREG_gate_d1_stage1a §C; supporting agent change: `_d0_signals`
+  now also emits `d0/cands` (the candidate action vectors its Q
+  matrices refer to) — additive output, no consumer changed. (4)
+  Scaling-pilot design brief drafted
+  (`research_notes/Scaling_Pilot_Design_Brief_20260716.tex`,
+  disk-only): options + recommendation; prereg deliberately NOT
+  frozen until the scope decision.
+
 - **2026-07-16 — W1/W2/W3 reads executed as registered (Amendment 2
   §B/§C/§D; `artifacts/w123_e3v2_20260716/RESULTS.md`).** Audit PASS
   248/248 (arm loss sets, saved configs, registered replay paths, QC;

@@ -1146,6 +1146,36 @@ for k, v in d['sources'].items():
       bundle=$((bundle + 1))
     done ;;
 
+  tdmpc2-bundles)
+    # TD-MPC2 cross-family 2x2 (prereg/PREREG_tdmpc2_crossfamily_20260716.md):
+    # {side0,side1} x {aware,free} x seeds on the frozen finger Q1 pair.
+    # One job per cell = shared bridge + offline fit + frozen-rep adapt
+    # (scripts/tdmpc2.sbatch). Run scripts/tdmpc2_env_setup.sh once first.
+    # Tunables: TM2_DOMAIN (finger), TM2_QUAD (q1), TM2_ARMS, TM2_SIDES,
+    # TM2_SEEDS, TM2_UPDATES, TM2_CONDA_ENV, TDMPC2_CHECKOUT.
+    # Recommend SLURM_TIME=12:00:00 (500K torch updates + 125K-step adapt).
+    read -ra TM2_ARMS_A <<< "${TM2_ARMS:-aware free}"
+    read -ra TM2_SIDES_A <<< "${TM2_SIDES:-0 1}"
+    read -ra TM2_SEEDS_A <<< "${TM2_SEEDS:-1 2 3 4 5 6 7 8}"
+    tm2_dom="${TM2_DOMAIN:-finger}"
+    tm2_quad="${TM2_QUAD:-q1}"
+    tm2_upd="${TM2_UPDATES:-500000}"
+    for tm2_arm in "${TM2_ARMS_A[@]}"; do
+      case "$tm2_arm" in aware|free) ;; *)
+        echo "ERROR: TM2_ARMS entries must be aware|free (got $tm2_arm)"; exit 1 ;;
+      esac
+      for tm2_side in "${TM2_SIDES_A[@]}"; do
+        for tm2_seed in "${TM2_SEEDS_A[@]}"; do
+          submit tdmpc2.sbatch \
+            "adapt_tm2${tm2_arm}${tm2_quad}s${tm2_side}_${tm2_dom}_seed${tm2_seed}_ckpt${tm2_upd}" \
+            "TM2_ARM=$tm2_arm" "TM2_SIDE=$tm2_side" "TM2_SEED=$tm2_seed" \
+            "TM2_DOMAIN=$tm2_dom" "TM2_QUAD=$tm2_quad" "TM2_UPDATES=$tm2_upd" \
+            "TM2_CONDA_ENV=${TM2_CONDA_ENV:-/scratch/midway3/$USER/conda_envs/tdmpc2}" \
+            "TDMPC2_CHECKOUT=${TDMPC2_CHECKOUT:-/scratch/midway3/$USER/tdmpc2}"
+        done
+      done
+    done ;;
+
   e4-measure)
     # E4 stratified-error sweep (prereg/PREREG_e4_stratified_error_20260714.md):
     # one GPU job per domain over its fitted WM runs. Probe sets must be
@@ -1167,5 +1197,5 @@ for k, v in d['sources'].items():
     done ;;
 
   *)
-    echo "usage: $0 {pilots|pretrain|pretrain-bundles|adapt|adapt-completed|adapt-bundles|measure|measure-bundles|axis1|axis1-bundles|axis1-dose-bundles|axis1-within-bundles|axis1-factorial-bundles|e4-measure} ..."; exit 1 ;;
+    echo "usage: $0 {pilots|pretrain|pretrain-bundles|adapt|adapt-completed|adapt-bundles|measure|measure-bundles|axis1|axis1-bundles|axis1-dose-bundles|axis1-within-bundles|axis1-factorial-bundles|e4-measure|tdmpc2-bundles} ..."; exit 1 ;;
 esac
