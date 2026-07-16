@@ -1,0 +1,244 @@
+{
+  "task": "dmc_cup_catch",
+  "index": "/scratch/midway3/rickybao/dreamerv3_runs/axis1_cup/episodes.json",
+  "ref_replay": "/scratch/midway3/rickybao/dreamerv3_runs/pilot_goal_cup_seed1/replay",
+  "n_episodes": 100,
+  "ep_len": 1001,
+  "criteria": {
+    "cov_match_frac": 0.05,
+    "occ_sep_mult": 3.0,
+    "knn": 12,
+    "logc": 1.0,
+    "max_frames": 3000,
+    "boot": 100,
+    "seed": 0,
+    "n_candidates": 400,
+    "pool_frac": 0.4,
+    "objective": "max docc; sides disjoint within one collector run; |dcov| <= cov_tol"
+  },
+  "source_coverages": {
+    "p2e1": 0.9819014614383077,
+    "p2e2": 0.8871515205371179,
+    "p2e3": 0.9772187077636781,
+    "p2e4": 1.0073069249553959,
+    "p2e5": 0.9114375249232535,
+    "apt1": 1.0014081348163482,
+    "apt2": 1.0252326553334903,
+    "apt3": 1.0165074560122758,
+    "apt4": 1.0257945661567076,
+    "apt5": 0.9825830488892082,
+    "random1": 0.6071119826928393,
+    "random2": 0.6099821118414682,
+    "random3": 0.6072394358844126,
+    "random4": 0.6120393298929857,
+    "random5": 0.6101203743071559,
+    "pilot_p2e": 1.0024893812402442,
+    "pilot_apt": 0.8734102034520738,
+    "pilot_random": 0.6136307634850797,
+    "pilot_goal": 0.6768370579571398
+  },
+  "cov_tol": 0.020934129173193417,
+  "collector_order": [
+    "p2e1",
+    "p2e2",
+    "p2e3",
+    "p2e4",
+    "p2e5",
+    "apt1",
+    "apt2",
+    "apt3",
+    "apt4",
+    "apt5",
+    "random1",
+    "random2",
+    "random3",
+    "random4",
+    "random5",
+    "pilot_p2e",
+    "pilot_apt",
+    "pilot_random",
+    "pilot_goal"
+  ],
+  "sources": {
+    "p2e1": {
+      "collector_index": 0,
+      "n": 480,
+      "occ_sep_min": 0.0054622016859942266,
+      "n_valid": 0,
+      "decision": "SHORT",
+      "reason": "no cov-matched occ-separated pair in candidate sets"
+    },
+    "p2e2": {
+      "collector_index": 1,
+      "n": 480,
+      "occ_sep_min": 0.006694517271794804,
+      "n_valid": 0,
+      "decision": "SHORT",
+      "reason": "no cov-matched occ-separated pair in candidate sets"
+    },
+    "p2e3": {
+      "collector_index": 2,
+      "n": 480,
+      "occ_sep_min": 0.0048969183364897416,
+      "n_valid": 0,
+      "decision": "SHORT",
+      "reason": "no cov-matched occ-separated pair in candidate sets"
+    },
+    "p2e4": {
+      "collector_index": 3,
+      "n": 496,
+      "occ_sep_min": 0.006799430455682803,
+      "n_valid": 0,
+      "decision": "SHORT",
+      "reason": "no cov-matched occ-separated pair in candidate sets"
+    },
+    "p2e5": {
+      "collector_index": 4,
+      "n": 496,
+      "occ_sep_min": 0.0072346597269913725,
+      "n_valid": 0,
+      "decision": "SHORT",
+      "reason": "no cov-matched occ-separated pair in candidate sets"
+    },
+    "apt1": {
+      "collector_index": 5,
+      "n": 496,
+      "occ_sep_min": 0.013805216043060658,
+      "n_valid": 499,
+      "decision": "OK",
+      "docc": 0.101748,
+      "dcov": 0.017284,
+      "lo_occ": 0.025794,
+      "hi_occ": 0.127542,
+      "pairs": "/scratch/midway3/rickybao/dreamerv3_runs/axis1_cup/within/within_apt1.json"
+    },
+    "apt2": {
+      "collector_index": 6,
+      "n": 480,
+      "occ_sep_min": 0.015092987366799824,
+      "n_valid": 0,
+      "decision": "SHORT",
+      "reason": "no cov-matched occ-separated pair in candidate sets"
+    },
+    "apt3": {
+      "collector_index": 7,
+      "n": 496,
+      "occ_sep_min": 0.019111072307906672,
+      "n_valid": 16392,
+      "decision": "OK",
+      "docc": 0.134216,
+      "dcov": 0.009463,
+      "lo_occ": 0.023477,
+      "hi_occ": 0.157692,
+      "pairs": "/scratch/midway3/rickybao/dreamerv3_runs/axis1_cup/within/within_apt3.json"
+    },
+    "apt4": {
+      "collector_index": 8,
+      "n": 496,
+      "occ_sep_min": 0.014446339945087861,
+      "n_valid": 551,
+      "decision": "OK",
+      "docc": 0.114865,
+      "dcov": 0.018436,
+      "lo_occ": 0.024186,
+      "hi_occ": 0.139051,
+      "pairs": "/scratch/midway3/rickybao/dreamerv3_runs/axis1_cup/within/within_apt4.json"
+    },
+    "apt5": {
+      "collector_index": 9,
+      "n": 480,
+      "occ_sep_min": 0.016644759307380227,
+      "n_valid": 38242,
+      "decision": "OK",
+      "docc": 0.148491,
+      "dcov": 0.004285,
+      "lo_occ": 0.016024,
+      "hi_occ": 0.164515,
+      "pairs": "/scratch/midway3/rickybao/dreamerv3_runs/axis1_cup/within/within_apt5.json"
+    },
+    "random1": {
+      "collector_index": 10,
+      "n": 496,
+      "occ_sep_min": 0.02385034958945792,
+      "n_valid": 39580,
+      "decision": "OK",
+      "docc": 0.370999,
+      "dcov": 0.012233,
+      "lo_occ": 0.068981,
+      "hi_occ": 0.43998,
+      "pairs": "/scratch/midway3/rickybao/dreamerv3_runs/axis1_cup/within/within_random1.json"
+    },
+    "random2": {
+      "collector_index": 11,
+      "n": 496,
+      "occ_sep_min": 0.023362195104511242,
+      "n_valid": 4783,
+      "decision": "OK",
+      "docc": 0.30997,
+      "dcov": 0.020756,
+      "lo_occ": 0.118971,
+      "hi_occ": 0.428941,
+      "pairs": "/scratch/midway3/rickybao/dreamerv3_runs/axis1_cup/within/within_random2.json"
+    },
+    "random3": {
+      "collector_index": 12,
+      "n": 480,
+      "occ_sep_min": 0.02271821301051777,
+      "n_valid": 6870,
+      "decision": "OK",
+      "docc": 0.314006,
+      "dcov": 0.019976,
+      "lo_occ": 0.118781,
+      "hi_occ": 0.432787,
+      "pairs": "/scratch/midway3/rickybao/dreamerv3_runs/axis1_cup/within/within_random3.json"
+    },
+    "random4": {
+      "collector_index": 13,
+      "n": 480,
+      "occ_sep_min": 0.02434203930646752,
+      "n_valid": 5356,
+      "decision": "OK",
+      "docc": 0.306963,
+      "dcov": 0.018349,
+      "lo_occ": 0.126364,
+      "hi_occ": 0.433326,
+      "pairs": "/scratch/midway3/rickybao/dreamerv3_runs/axis1_cup/within/within_random4.json"
+    },
+    "random5": {
+      "collector_index": 14,
+      "n": 480,
+      "occ_sep_min": 0.022409259312499666,
+      "n_valid": 146,
+      "decision": "OK",
+      "docc": 0.297332,
+      "dcov": 0.017804,
+      "lo_occ": 0.132068,
+      "hi_occ": 0.4294,
+      "pairs": "/scratch/midway3/rickybao/dreamerv3_runs/axis1_cup/within/within_random5.json"
+    },
+    "pilot_p2e": {
+      "collector_index": 15,
+      "decision": "SHORT",
+      "reason": "pool 38 < K 100",
+      "n": 96
+    },
+    "pilot_apt": {
+      "collector_index": 16,
+      "decision": "SHORT",
+      "reason": "pool 38 < K 100",
+      "n": 96
+    },
+    "pilot_random": {
+      "collector_index": 17,
+      "decision": "SHORT",
+      "reason": "pool 38 < K 100",
+      "n": 96
+    },
+    "pilot_goal": {
+      "collector_index": 18,
+      "decision": "SHORT",
+      "reason": "pool 38 < K 100",
+      "n": 96
+    }
+  }
+}

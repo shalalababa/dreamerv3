@@ -1,0 +1,65 @@
+{
+  "task": "dmc_finger_turn_hard",
+  "which": "q1",
+  "index": "/scratch/midway3/rickybao/dreamerv3_runs/axis1_finger/episodes.json",
+  "pairs": "/scratch/midway3/rickybao/dreamerv3_runs/axis1_finger/within/within_p2e5.json",
+  "ep_len": 1001,
+  "chunk_contract": "one chunk per episode, succ=0; training windows never span episode boundaries (dropped on both sides of the pair)",
+  "note": "gradient-update count and model capacity are equalized at offline_fit time (same config/steps for both sides)",
+  "sides": [
+    {
+      "directory": "/scratch/midway3/rickybao/dreamerv3_runs/axis1_finger/within/p2e5/side0",
+      "n_episodes": 100,
+      "n_transitions": 100100,
+      "occ_recomputed": 0.003536,
+      "occ_search": 0.003536,
+      "cov_search": 0.81395,
+      "mixture": {
+        "p2e5/mid": 31,
+        "p2e5/zero": 69
+      },
+      "terminal_fraction": 0.0,
+      "action_stats": {
+        "mean": [
+          -0.03831,
+          0.00915
+        ],
+        "std": [
+          0.83181,
+          0.91767
+        ]
+      }
+    },
+    {
+      "directory": "/scratch/midway3/rickybao/dreamerv3_runs/axis1_finger/within/p2e5/side1",
+      "n_episodes": 100,
+      "n_transitions": 100100,
+      "occ_recomputed": 0.213376,
+      "occ_search": 0.213376,
+      "cov_search": 0.824472,
+      "mixture": {
+        "p2e5/high": 3,
+        "p2e5/mid": 97
+      },
+      "terminal_fraction": 0.0,
+      "action_stats": {
+        "mean": [
+          -0.02306,
+          -0.00181
+        ],
+        "std": [
+          0.82408,
+          0.92141
+        ]
+      }
+    }
+  ],
+  "confound_deltas": {
+    "n_transitions": 0,
+    "action_mean_maxabs": 0.01525,
+    "action_std_maxabs": 0.00773,
+    "terminal_fraction": 0.0,
+    "episode_length": 0,
+    "source_l1": 0.0
+  }
+}
