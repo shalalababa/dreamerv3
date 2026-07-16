@@ -53,6 +53,23 @@ immutable dated files; see plan v4.)
 
 ## Code notes and registrations (non-deviations)
 
+- **2026-07-14 — E4 + Goodhart reads executed as registered
+  (`artifacts/e4_goodhart_20260714/RESULTS.md`).** E4 (descriptive):
+  relative in-regime advantage of hi-occ buffers holds 8/8 in both arms
+  and both domains, but is **arm-invariant** (apt = task at modeling the
+  regime better, yet apt transfers nothing) ⇒ regime-modeling accuracy
+  is NOT the interaction's carrier; **reward-head NLL tracks the
+  behavioral interaction across cells** (finger Q1 improves on hi, cup
+  Q1 flat, cup Q2 follows reward density) ⇒ mechanism = reward
+  predictability of transferred features; registered "higher err_out"
+  leg fails (hi side better everywhere, differentially in-regime);
+  obs-decoder version of signature 3 fails (task's obs advantage is on
+  unrewarded frames). Cup-apt measure pass outstanding. Goodhart
+  (registered rule): pool n=63, Spearman +0.15, top-1/3/5 regret = 0 —
+  neither advance trigger fires ⇒ continue-but-weaker (stronger
+  evaluator next); descriptive fragility: M's rank-2 policy has real
+  return 0.0, LOO regret 100%.
+
 - **2026-07-14 — Four registrations frozen + Stage-1A read PASSES.** (1)
   `prereg/PREREG_e4_stratified_error_20260714.md` — E4 estimator/probe
   sets/signatures (descriptive only; `probing/stratified_error.py`,
