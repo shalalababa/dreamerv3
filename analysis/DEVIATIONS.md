@@ -53,6 +53,27 @@ immutable dated files; see plan v4.)
 
 ## Code notes and registrations (non-deviations)
 
+- **2026-07-16 — W1/W2/W3 reads executed as registered (Amendment 2
+  §B/§C/§D; `artifacts/w123_e3v2_20260716/RESULTS.md`).** Audit PASS
+  248/248 (arm loss sets, saved configs, registered replay paths, QC;
+  bit-consistency with the P0/10-Jul/aware-1–16 records on all
+  overlapping rows). **W1 PRIMARY (finger E3v2 within-collector):
+  interaction REPLICATES — Δ̂ mean +84.0, 14/14 collectors positive,
+  exact sign-flip perm p = 0.00012 (two-sided floor at n=14); hier boot
+  CI [+48.2, +124.0]** on buffers with source_l1 ≡ 0 (diversity confound
+  eliminated by design). Apt simple effect −5.1 (perm p=0.57) = third
+  independent reward-free null. Registered interpretation fires:
+  buffer-level causal support for the objective–data-alignment headline;
+  **scaling pilot authorized**. W1 SECONDARY (cup): does not replicate
+  (−140, 3/9, p=0.31); labeled descriptive mirror pattern (apt simple
+  +213, task null) consistent with the battery/E4 mechanism. W2 (cup-Q1
+  apt pooled 1–16): +93.1 [−33.0, +217.1] ⇒ CI includes 0 ⇒
+  directional-only, not claimed (fresh 9–16 +35, attenuation again). W3
+  (finger-Q2 completion, descriptive): −5.4 [−41.9, +28.3] at n=16 —
+  the Q2 null stands. Feasibility disclosures: finger p2e3 and cup apt2
+  pairs SHORT at build scale (pre-outcome, frozen criteria) ⇒ 14 + 9
+  collector units instead of 15 + 10.
+
 - **2026-07-14 — E4 + Goodhart reads executed as registered
   (`artifacts/e4_goodhart_20260714/RESULTS.md`).** E4 (descriptive):
   relative in-regime advantage of hi-occ buffers holds 8/8 in both arms
