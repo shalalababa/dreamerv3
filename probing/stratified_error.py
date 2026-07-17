@@ -266,8 +266,25 @@ def cmd_measure(args):
   arrays, manifest = load_e4(args.probeset, not args.allow_unfrozen)
   N, T = arrays['is_first'].shape
   horizons = tuple(args.horizons)
+  override_meta = None
+  if args.reward_override:
+    ov = np.asarray(np.load(args.reward_override)['reward'], np.float32)
+    assert ov.shape == arrays['reward'].shape, \
+        f'override reward {ov.shape} != probe set {arrays["reward"].shape}'
+    arrays = dict(arrays)
+    arrays['reward'] = ov  # NLL target only; strata use arrays['rewarded']
+    stem = os.path.splitext(os.path.basename(args.reward_override))[0]
+    override_meta = dict(path=os.path.abspath(args.reward_override),
+                         stem=stem,
+                         density=round(float((ov > 0).mean()), 6))
+    sidecar = args.reward_override + '.json'
+    if os.path.exists(sidecar):
+      with open(sidecar) as f:
+        override_meta['sidecar'] = json.load(f)
   out_dir = args.output or os.path.join(
-      args.run_logdir, f'e4_{manifest["probeset_id"]}')
+      args.run_logdir,
+      f'e4_{manifest["probeset_id"]}'
+      + (f'_ov-{override_meta["stem"]}' if override_meta else ''))
   os.makedirs(out_dir, exist_ok=True)
 
   config = load_run_config(args.run_logdir, args.platform, out_dir, False)
@@ -360,6 +377,7 @@ def cmd_measure(args):
       checkpoint=os.path.abspath(ckpt), expl_mode=str(expl_mode),
       reward_aware=reward_aware,
       probeset_id=manifest['probeset_id'], probeset_sha256=manifest['sha256'],
+      reward_override=override_meta,
       horizons=[0] + list(horizons), horizon_stats={})
   save = {}
   for k in [0] + list(horizons):
@@ -534,6 +552,13 @@ def main():
   m.add_argument('--platform', default='', choices=['', 'cpu', 'cuda'])
   m.add_argument('--allow_unfrozen', action='store_true')
   m.add_argument('--seed', type=int, default=0)
+  m.add_argument('--reward_override', default='',
+                 help='Optional npz with a `reward` (N,T) array replacing '
+                      'the probe-set reward as the reward-head NLL TARGET '
+                      'only (strata stay true-reward-based). Outputs go to '
+                      'e4_<probeset_id>_ov-<stem>/ so registered E4 dirs '
+                      'are never touched. Stamping mechanism panel (a); '
+                      'see probing/relabel_replay.py stamp-probeset.')
   m.add_argument('--output', default='',
                  help='Default: <run_logdir>/e4_<probeset_id>.')
   m.set_defaults(fn=cmd_measure)

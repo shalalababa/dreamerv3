@@ -344,6 +344,10 @@ record_axis1_bundle_reservations() {  # record_axis1_bundle_reservations <runlis
 submit_axis1_bundle() {  # submit_axis1_bundle <bundle_id> <runlist> <num_tasks>
   local bundle_id="$1"; local runlist="$2"; local num_tasks="$3"
   local walltime="${AXIS1_BUNDLE_TIME:-33:00:00}"
+  case "${AXIS1_SIZE:-}" in
+    ''|size1m|size12m|size25m|size50m|size100m|size200m|size400m) ;;
+    *) echo "AXIS1_SIZE must be size1m..size400m or empty, got: ${AXIS1_SIZE}"; exit 1 ;;
+  esac
   local jobs_used=$((JOBS_AT_START + SUBMITTED_THIS_RUN))
   if [ "${IGNORE_JOB_CAP:-0}" != "1" ] && [ "$MAX_JOBS" -gt 0 ] &&
      [ "$jobs_used" -ge "$MAX_JOBS" ]; then
@@ -363,7 +367,7 @@ submit_axis1_bundle() {  # submit_axis1_bundle <bundle_id> <runlist> <num_tasks>
   exports="$exports,STEPS=${STEPS:-1.25e5},AXIS1_UPDATES=${AXIS1_UPDATES:-500000}"
   # PREREG_axis1_corrective_20260711: the fitting objective must reach the
   # bundle children (this list intentionally avoids --export=ALL).
-  exports="$exports,AXIS1_EXPL_MODE=${AXIS1_EXPL_MODE:?},AXIS1_ARM=${AXIS1_ARM:-full},AXIS1_SAVE_EVERY_UPDATES=${AXIS1_SAVE_EVERY_UPDATES:-50000}"
+  exports="$exports,AXIS1_EXPL_MODE=${AXIS1_EXPL_MODE:?},AXIS1_ARM=${AXIS1_ARM:-full},AXIS1_SAVE_EVERY_UPDATES=${AXIS1_SAVE_EVERY_UPDATES:-50000},AXIS1_SIZE=${AXIS1_SIZE:-}"
   local cmd=(sbatch --account="$SLURM_ACCOUNT" --partition="$SLURM_PARTITION"
              --gres="$SLURM_GRES" --time="$walltime"
              --job-name="$bundle_id" --export="$exports"
@@ -734,6 +738,7 @@ case "$cmd" in
       case "$dom" in
         cup) task=dmc_cup_catch ;;
         finger) task=dmc_finger_turn_hard ;;
+        synth) task=synth_reach ;;
         *) echo "unknown axis1 domain: $dom"; exit 1 ;;
       esac
       for q in "${quads[@]}"; do
@@ -749,6 +754,7 @@ case "$cmd" in
               "WM_RUN=ax1wm_${dom}_${wm_infix}${q}s${side}_seed${s}" \
               "TASK=$task" "SEED=$s" "REPLAY=$root/side${side}" \
               "UPDATES=$updates" "STEPS=$steps" \
+              "AXIS1_SIZE=${AXIS1_SIZE:-}" \
               "AXIS=axis1" "PAIRED_SEED_SET=${id_prefix}_${dom}_${q}"
           done
         done
@@ -778,6 +784,7 @@ case "$cmd" in
       case "$dom" in
         cup) task=dmc_cup_catch ;;
         finger) task=dmc_finger_turn_hard ;;
+        synth) task=synth_reach ;;
         *) echo "unknown axis1 domain: $dom"; exit 1 ;;
       esac
       for q in "${quads[@]}"; do
@@ -1050,10 +1057,11 @@ for k, v in d['sources'].items():
     # One invocation per arm/transform (uniform AXIS1_ARM per bundle):
     #   AXIS1_ARM=sgb|rgo|vgo   ./scripts/submit_all.sh axis1-factorial-bundles
     #   AXIS1_TRANSFORM=sh|rl   ./scripts/submit_all.sh axis1-factorial-bundles
+    #   AXIS1_TRANSFORM=srd0|srd1|sid   (stamping wave, PREREG_stamping)
     # Arms fit the original pair (axis1_<dom>/q1); transforms fit the
     # relabeled pair (axis1_<dom>/q1_<tr>, probing/relabel_replay) under
     # the full task objective. Defaults: finger q1 seeds 1-8 (48+32 jobs
-    # over all arms/transforms).
+    # over all arms/transforms; stamping adds 48).
     arm="${AXIS1_ARM:-}"; transform="${AXIS1_TRANSFORM:-}"
     if [ -n "$arm" ] && [ -n "$transform" ]; then
       echo "Set exactly one of AXIS1_ARM / AXIS1_TRANSFORM"; exit 1
@@ -1061,11 +1069,11 @@ for k, v in d['sources'].items():
     case "$arm" in ''|sgb|rgo|vgo) ;; *)
       echo "AXIS1_ARM must be sgb|rgo|vgo, got: $arm"; exit 1 ;;
     esac
-    case "$transform" in ''|sh|rl) ;; *)
-      echo "AXIS1_TRANSFORM must be sh|rl, got: $transform"; exit 1 ;;
+    case "$transform" in ''|sh|rl|srd0|srd1|sid) ;; *)
+      echo "AXIS1_TRANSFORM must be sh|rl|srd0|srd1|sid, got: $transform"; exit 1 ;;
     esac
     if [ -z "$arm" ] && [ -z "$transform" ]; then
-      echo "Set AXIS1_ARM=sgb|rgo|vgo or AXIS1_TRANSFORM=sh|rl"; exit 1
+      echo "Set AXIS1_ARM=sgb|rgo|vgo or AXIS1_TRANSFORM=sh|rl|srd0|srd1|sid"; exit 1
     fi
     AXIS1_EXPL_MODE=task
     if [ -n "$arm" ]; then
@@ -1086,6 +1094,7 @@ for k, v in d['sources'].items():
       case "$dom" in
         cup) task=dmc_cup_catch ;;
         finger) task=dmc_finger_turn_hard ;;
+        synth) task=synth_reach ;;
         *) echo "unknown axis1 domain: $dom"; exit 1 ;;
       esac
       for q in "${quads[@]}"; do

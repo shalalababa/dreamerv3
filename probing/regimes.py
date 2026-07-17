@@ -80,6 +80,14 @@ REGIMES = {
         name='to_target_norm', fn=_reacher_to_target, needs=('to_target',),
         threshold=0.025, direction='below',
         coverage_keys=('position', 'velocity')),
+    # synth_reach (embodied/envs/synthpred.py): reward fires at
+    # ||to_target|| < radius (default 0.1); threshold == default radius,
+    # so regime membership == the sparse reward condition, exactly like
+    # finger. Change only together with env.synth.radius.
+    'synth': dict(
+        name='to_target_norm', fn=_reacher_to_target, needs=('to_target',),
+        threshold=0.1, direction='below',
+        coverage_keys=('position', 'velocity', 'distractor')),
 }
 
 

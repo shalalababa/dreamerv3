@@ -6,6 +6,52 @@ immutable dated files; see plan v4.)
 
 ## Deviations
 
+- **2026-07-17 — scaling-pilot + synth-domain code notes (pre-outcome;
+  registrations = `prereg/PREREG_scaling_pilot_20260717.md` [freeze
+  after timing smoke] and `prereg/PREREG_synth_phaseb_20260717.md`
+  [freeze after cluster smoke]).** (1) AXIS1_SIZE plumbing:
+  `scripts/axis1.sbatch` applies an optional size config to BOTH stages
+  (validated whitelist size1m..size400m; empty = historical default,
+  bit-unchanged); `scripts/submit_all.sh` passes AXIS1_SIZE through the
+  bundle export list and the non-bundled axis1 case (DRYRUN-verified;
+  submit-time guard). New mode strings reserved: `ax1s12*`/`ax1fs12*`
+  (12m task/apt; note wm_infix strips `ax1` so WM dirs are
+  `ax1wm_finger_{s12|fs12}...` and E4 globs need `ax1wm_finger_*s12*`),
+  `ax1v2*`/`ax1v4*` (volume rider) — all parse under the frozen RUN_RE,
+  excluded from population models by the frozen `--modes` filters.
+  (2) NEW `synth` suite: `embodied/envs/synthpred.py` + main.py ctor +
+  `env.synth` config block + `probing/regimes.py` 'synth' spec
+  (threshold 0.1 == default radius; regime ≡ reward condition) +
+  `probing/synth_buffers.py` (direct pair synthesis, selfcheck PASS:
+  occ within 0.01 of dials after calibration pass, exact label
+  accounting, determinism, relabel-chain reuse) + `synth) task=
+  synth_reach ;;` in all five submit_all domain cases. Synth rows carry
+  domain='synth' and never pool with DMC populations. Full pipeline
+  validated locally 17 Jul (task+apt debug fits, frozen-readout adapt,
+  scores.jsonl frozen format; debug dirs deleted). (3) Read scripts
+  frozen pre-outcome: `analysis/scaling_read.py` (bit-checks 1m strata
+  vs frozen paired JSONs at read time), `analysis/synth_phaseb_read.py`,
+  `probing/reward_direction_rank.py` (scaling-prereg prior probe) — all
+  selfcheck PASS. (4) vgo wiring audit recorded
+  (`artifacts/vgo_wiring_audit_20260717/AUDIT.md`): vgo = case (b)
+  replay-grounded; P-B2 shifts to its registered case-(b) form.
+- **2026-07-17 — stamping-wave code notes (pre-outcome; registration =
+  `prereg/PREREG_stamping_20260717.md`).** (1) `probing/relabel_replay.py`
+  gains stamp kinds `stamp_rand`/`stamp_iid` (+`--fn_seed`, `stamp-probeset`
+  subcommand, selfcheck extensions; shuffle/relocate path untouched,
+  selfcheck re-PASS). (2) `scripts/submit_all.sh` factorial transform
+  whitelist `sh|rl` → `sh|rl|srd0|srd1|sid` (DRYRUN-verified: run ids
+  `adapt_ax1srd0q1s<side>_*`, WM `ax1wm_finger_srd0q1s<side>_*`, buffer
+  roots `axis1_<dom>/q1_<code>`; new mode strings parse under the frozen
+  `RUN_RE` and are excluded from every population model by the frozen
+  `--modes` filters). (3) INSTRUMENT EXTENSION, descriptive-only:
+  `probing/stratified_error.py measure` gains optional `--reward_override`
+  (replaces the reward-head NLL TARGET with an externally supplied array;
+  strata remain true-reward-based; outputs go to `e4_<probeset>_ov-*`
+  dirs so registered E4 outputs are never touched or pooled — collate
+  only reads `e4_<probeset_id>/`). Default behavior bit-unchanged;
+  numpy selfcheck re-PASS. (4) `analysis/stamping_read.py` frozen
+  pre-outcome (selfcheck PASS, both branches recovered).
 - **2026-07-11 — DISCOVERED IMPLEMENTATION DEVIATION: Axis-1 offline WM
   fits were reward-aware.** Found by the 11-Jul editorial code audit,
   verified same day. All 64 Axis-1 fits ran `offline_fit --configs
