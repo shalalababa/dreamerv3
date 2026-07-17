@@ -1,0 +1,370 @@
+[Fri Jul 17 13:21:47 UTC 2026] START shard=14 gpu=2 adapt_tm2awareq1s1_finger_seed7_ckpt500000
+[Fri Jul 17 13:21:47 UTC 2026] adapt RUN_ID=adapt_tm2awareq1s1_finger_seed7_ckpt500000 TASK=dmc_finger_turn_hard STEPS=125000 SEED=7
+/workspace/conda_envs/tdmpc2/lib/python3.11/site-packages/tensordict/_td.py:612: FutureWarning: TensorDict.to_module() is replacing an existing nn.Parameter in the destination module with a tensor leaf that is not an nn.Parameter. This historical behavior can remove the key from module.state_dict(). In tensordict v0.14, to_module() will preserve existing module parameter and buffer registrations by default. Pass preserve_module_state=False to keep the current replacement behavior, or preserve_module_state=True to opt in to the v0.14 behavior now.
+  local_out = _set_tensor_dict(
+Episode length: 1000
+Discount factor: 0.995
+Loaded + froze 20 tensors (928,512 params) from /workspace/dreamerv3_runs/tm2wm_finger_awareq1s1_seed7/tm2_ckpt.pt
+Architecture: TD-MPC2 World Model
+Encoder: ModuleDict(
+  (state): Sequential(
+    (0): NormedLinear(in_features=12, out_features=256, bias=True, act=Mish)
+    (1): NormedLinear(in_features=256, out_features=512, bias=True, act=SimNorm)
+  )
+)
+Dynamics: Sequential(
+  (0): NormedLinear(in_features=514, out_features=512, bias=True, act=Mish)
+  (1): NormedLinear(in_features=512, out_features=512, bias=True, act=Mish)
+  (2): NormedLinear(in_features=512, out_features=512, bias=True, act=SimNorm)
+)
+Reward: Sequential(
+  (0): NormedLinear(in_features=514, out_features=512, bias=True, act=Mish)
+  (1): NormedLinear(in_features=512, out_features=512, bias=True, act=Mish)
+  (2): Linear(in_features=512, out_features=101, bias=True)
+)
+Policy prior: Sequential(
+  (0): NormedLinear(in_features=512, out_features=512, bias=True, act=Mish)
+  (1): NormedLinear(in_features=512, out_features=512, bias=True, act=Mish)
+  (2): Linear(in_features=512, out_features=4, bias=True)
+)
+Q-functions: Vectorized 5x Sequential(
+  (0): NormedLinear(in_features=514, out_features=512, bias=True, dropout=0.01, act=Mish)
+  (1): NormedLinear(in_features=512, out_features=512, bias=True, act=Mish)
+  (2): Linear(in_features=512, out_features=101, bias=True)
+)
+Learnable parameters: 4,010,594
+[eval] {'eval/episode_reward': 125.0, 'eval/episode_success': 0.0, 'eval/episode_length': 1000.0, 'eval/step': 0.0, 'eval/episode': 0.0, 'eval/elapsed_time': 439.8302400112152, 'eval/steps_per_second': 0.0}
+Buffer capacity: 125,000
+Storage required: 0.01 GB
+Using CUDA:0 memory for storage.
+[92m2026-07-17 13:29:13,780 [torchrl][INFO][0m    Initialized LazyTensorStorage with torch.Size([125000]) shape[92m [END][0m
+Pretraining agent on seed data...
+/workspace/conda_envs/tdmpc2/lib/python3.11/site-packages/torch/jit/_script.py:365: DeprecationWarning: `torch.jit.script_method` is deprecated. Please switch to `torch.compile` or `torch.export`.
+  warnings.warn(
+/workspace/conda_envs/tdmpc2/lib/python3.11/site-packages/torch/jit/_script.py:365: DeprecationWarning: `torch.jit.script_method` is deprecated. Please switch to `torch.compile` or `torch.export`.
+  warnings.warn(
+/workspace/conda_envs/tdmpc2/lib/python3.11/site-packages/torch/jit/_script.py:365: DeprecationWarning: `torch.jit.script_method` is deprecated. Please switch to `torch.compile` or `torch.export`.
+  warnings.warn(
+/workspace/conda_envs/tdmpc2/lib/python3.11/site-packages/torch/jit/_script.py:365: DeprecationWarning: `torch.jit.script_method` is deprecated. Please switch to `torch.compile` or `torch.export`.
+  warnings.warn(
+/workspace/conda_envs/tdmpc2/lib/python3.11/site-packages/torch/jit/_script.py:365: DeprecationWarning: `torch.jit.script_method` is deprecated. Please switch to `torch.compile` or `torch.export`.
+  warnings.warn(
+/workspace/conda_envs/tdmpc2/lib/python3.11/site-packages/torch/jit/_script.py:365: DeprecationWarning: `torch.jit.script_method` is deprecated. Please switch to `torch.compile` or `torch.export`.
+  warnings.warn(
+/workspace/conda_envs/tdmpc2/lib/python3.11/site-packages/torch/jit/_script.py:365: DeprecationWarning: `torch.jit.script_method` is deprecated. Please switch to `torch.compile` or `torch.export`.
+  warnings.warn(
+/workspace/conda_envs/tdmpc2/lib/python3.11/site-packages/torch/jit/_script.py:365: DeprecationWarning: `torch.jit.script_method` is deprecated. Please switch to `torch.compile` or `torch.export`.
+  warnings.warn(
+/workspace/conda_envs/tdmpc2/lib/python3.11/site-packages/torch/jit/_script.py:365: DeprecationWarning: `torch.jit.script_method` is deprecated. Please switch to `torch.compile` or `torch.export`.
+  warnings.warn(
+/workspace/conda_envs/tdmpc2/lib/python3.11/site-packages/torch/jit/_script.py:365: DeprecationWarning: `torch.jit.script_method` is deprecated. Please switch to `torch.compile` or `torch.export`.
+  warnings.warn(
+/workspace/conda_envs/tdmpc2/lib/python3.11/site-packages/torch/jit/_script.py:365: DeprecationWarning: `torch.jit.script_method` is deprecated. Please switch to `torch.compile` or `torch.export`.
+  warnings.warn(
+/workspace/conda_envs/tdmpc2/lib/python3.11/site-packages/torch/jit/_script.py:365: DeprecationWarning: `torch.jit.script_method` is deprecated. Please switch to `torch.compile` or `torch.export`.
+  warnings.warn(
+/workspace/conda_envs/tdmpc2/lib/python3.11/site-packages/torch/jit/_script.py:365: DeprecationWarning: `torch.jit.script_method` is deprecated. Please switch to `torch.compile` or `torch.export`.
+  warnings.warn(
+/workspace/conda_envs/tdmpc2/lib/python3.11/site-packages/torch/jit/_script.py:365: DeprecationWarning: `torch.jit.script_method` is deprecated. Please switch to `torch.compile` or `torch.export`.
+  warnings.warn(
+[eval] {'eval/episode_reward': 122.5, 'eval/episode_success': 0.0, 'eval/episode_length': 1000.0, 'eval/step': 16000.0, 'eval/episode': 15.0, 'eval/elapsed_time': 1663.7057735919952, 'eval/steps_per_second': 9.617085096396268}
+[eval] {'eval/episode_reward': 124.375, 'eval/episode_success': 0.0, 'eval/episode_length': 1000.0, 'eval/step': 32000.0, 'eval/episode': 31.0, 'eval/elapsed_time': 3020.022993326187, 'eval/steps_per_second': 10.595945815881322}
+[eval] {'eval/episode_reward': 248.0625, 'eval/episode_success': 0.0, 'eval/episode_length': 1000.0, 'eval/step': 48000.0, 'eval/episode': 47.0, 'eval/elapsed_time': 4390.546201944351, 'eval/steps_per_second': 10.93258054743695}
+[eval] {'eval/episode_reward': 494.4375, 'eval/episode_success': 0.0, 'eval/episode_length': 1000.0, 'eval/step': 64000.0, 'eval/episode': 63.0, 'eval/elapsed_time': 5765.721504449844, 'eval/steps_per_second': 11.100085210603105}
+[eval] {'eval/episode_reward': 275.3125, 'eval/episode_success': 0.0, 'eval/episode_length': 1000.0, 'eval/step': 80000.0, 'eval/episode': 79.0, 'eval/elapsed_time': 7138.388046979904, 'eval/steps_per_second': 11.207011929513449}
+[eval] {'eval/episode_reward': 348.9375, 'eval/episode_success': 0.0, 'eval/episode_length': 1000.0, 'eval/step': 96000.0, 'eval/episode': 95.0, 'eval/elapsed_time': 8513.418261051178, 'eval/steps_per_second': 11.276316639956391}
+[eval] {'eval/episode_reward': 183.9375, 'eval/episode_success': 0.0, 'eval/episode_length': 1000.0, 'eval/step': 112000.0, 'eval/episode': 111.0, 'eval/elapsed_time': 9900.175198554993, 'eval/steps_per_second': 11.312931110183511}
+ADAPT DONE -> /workspace/dreamerv3_runs/adapt_tm2awareq1s1_finger_seed7_ckpt500000
+[Fri Jul 17 16:19:37 UTC 2026] tdmpc2 adapt_tm2awareq1s1_finger_seed7_ckpt500000 rc=0 status=DONE
+[Fri Jul 17 16:19:37 UTC 2026] DONE adapt_tm2awareq1s1_finger_seed7_ckpt500000
+[Fri Jul 17 16:19:37 UTC 2026] START shard=14 gpu=2 adapt_tm2freeq1s1_finger_seed7_ckpt500000
+[Fri Jul 17 16:19:38 UTC 2026] offline_fit WM_RUN=tm2wm_finger_freeq1s1_seed7 ARM=free DATA=/workspace/dreamerv3_runs/tm2_data/finger_q1_side1.pt UPDATES=500000 SEED=7
+/workspace/conda_envs/tdmpc2/lib/python3.11/site-packages/tensordict/_td.py:612: FutureWarning: TensorDict.to_module() is replacing an existing nn.Parameter in the destination module with a tensor leaf that is not an nn.Parameter. This historical behavior can remove the key from module.state_dict(). In tensordict v0.14, to_module() will preserve existing module parameter and buffer registrations by default. Pass preserve_module_state=False to keep the current replacement behavior, or preserve_module_state=True to opt in to the v0.14 behavior now.
+  local_out = _set_tensor_dict(
+Episode length: 1000
+Discount factor: 0.995
+Buffer capacity: 200,200
+Storage required: 0.01 GB
+Using CUDA:0 memory for storage.
+[92m2026-07-17 16:19:42,197 [torchrl][INFO][0m    Initialized LazyTensorStorage with torch.Size([200200]) shape[92m [END][0m
+Loaded static data: 200 eps x 1001 rows = 200200 rows; arm=free (reward_coef=0.0, value_coef=0.0)
+Resumed at update 400000
+  update 400500/500000: consistency_loss=0.0001  pi_loss=-0.0006  reward_loss=2.6922  total_loss=0.0011  value_loss=2.6922
+  update 401000/500000: consistency_loss=0.0000  pi_loss=-0.0006  reward_loss=2.6922  total_loss=0.0009  value_loss=2.6922
+  update 401500/500000: consistency_loss=0.0000  pi_loss=-0.0006  reward_loss=2.6922  total_loss=0.0010  value_loss=2.6922
+  update 402000/500000: consistency_loss=0.0000  pi_loss=-0.0006  reward_loss=2.6922  total_loss=0.0009  value_loss=2.6922
+  update 402500/500000: consistency_loss=0.0000  pi_loss=-0.0006  reward_loss=2.6922  total_loss=0.0007  value_loss=2.6922
+  update 403000/500000: consistency_loss=0.0001  pi_loss=-0.0006  reward_loss=2.6922  total_loss=0.0010  value_loss=2.6922
+  update 403500/500000: consistency_loss=0.0001  pi_loss=-0.0006  reward_loss=2.6922  total_loss=0.0010  value_loss=2.6922
+  update 404000/500000: consistency_loss=0.0000  pi_loss=-0.0006  reward_loss=2.6922  total_loss=0.0010  value_loss=2.6922
+  update 404500/500000: consistency_loss=0.0000  pi_loss=-0.0006  reward_loss=2.6922  total_loss=0.0009  value_loss=2.6922
+  update 405000/500000: consistency_loss=0.0000  pi_loss=-0.0006  reward_loss=2.6922  total_loss=0.0010  value_loss=2.6922
+  update 405500/500000: consistency_loss=0.0001  pi_loss=-0.0006  reward_loss=2.6922  total_loss=0.0011  value_loss=2.6922
+  update 406000/500000: consistency_loss=0.0000  pi_loss=-0.0006  reward_loss=2.6922  total_loss=0.0008  value_loss=2.6922
+  update 406500/500000: consistency_loss=0.0000  pi_loss=-0.0006  reward_loss=2.6922  total_loss=0.0008  value_loss=2.6922
+  update 407000/500000: consistency_loss=0.0001  pi_loss=-0.0006  reward_loss=2.6922  total_loss=0.0013  value_loss=2.6922
+  update 407500/500000: consistency_loss=0.0001  pi_loss=-0.0006  reward_loss=2.6922  total_loss=0.0011  value_loss=2.6922
+  update 408000/500000: consistency_loss=0.0001  pi_loss=-0.0006  reward_loss=2.6922  total_loss=0.0012  value_loss=2.6922
+  update 408500/500000: consistency_loss=0.0000  pi_loss=-0.0006  reward_loss=2.6922  total_loss=0.0010  value_loss=2.6922
+  update 409000/500000: consistency_loss=0.0001  pi_loss=-0.0006  reward_loss=2.6922  total_loss=0.0011  value_loss=2.6922
+  update 409500/500000: consistency_loss=0.0001  pi_loss=-0.0006  reward_loss=2.6922  total_loss=0.0010  value_loss=2.6922
+  update 410000/500000: consistency_loss=0.0001  pi_loss=-0.0006  reward_loss=2.6922  total_loss=0.0013  value_loss=2.6922
+  update 410500/500000: consistency_loss=0.0001  pi_loss=-0.0006  reward_loss=2.6922  total_loss=0.0010  value_loss=2.6922
+  update 411000/500000: consistency_loss=0.0000  pi_loss=-0.0006  reward_loss=2.6922  total_loss=0.0009  value_loss=2.6922
+  update 411500/500000: consistency_loss=0.0001  pi_loss=-0.0006  reward_loss=2.6922  total_loss=0.0015  value_loss=2.6922
+  update 412000/500000: consistency_loss=0.0001  pi_loss=-0.0006  reward_loss=2.6922  total_loss=0.0010  value_loss=2.6922
+  update 412500/500000: consistency_loss=0.0001  pi_loss=-0.0006  reward_loss=2.6922  total_loss=0.0010  value_loss=2.6922
+  update 413000/500000: consistency_loss=0.0000  pi_loss=-0.0006  reward_loss=2.6922  total_loss=0.0009  value_loss=2.6922
+  update 413500/500000: consistency_loss=0.0001  pi_loss=-0.0006  reward_loss=2.6922  total_loss=0.0013  value_loss=2.6922
+  update 414000/500000: consistency_loss=0.0001  pi_loss=-0.0006  reward_loss=2.6922  total_loss=0.0010  value_loss=2.6922
+  update 414500/500000: consistency_loss=0.0001  pi_loss=-0.0006  reward_loss=2.6922  total_loss=0.0011  value_loss=2.6922
+  update 415000/500000: consistency_loss=0.0000  pi_loss=-0.0006  reward_loss=2.6922  total_loss=0.0009  value_loss=2.6922
+  update 415500/500000: consistency_loss=0.0000  pi_loss=-0.0006  reward_loss=2.6922  total_loss=0.0010  value_loss=2.6922
+  update 416000/500000: consistency_loss=0.0000  pi_loss=-0.0006  reward_loss=2.6922  total_loss=0.0009  value_loss=2.6922
+  update 416500/500000: consistency_loss=0.0000  pi_loss=-0.0006  reward_loss=2.6922  total_loss=0.0008  value_loss=2.6922
+  update 417000/500000: consistency_loss=0.0000  pi_loss=-0.0006  reward_loss=2.6922  total_loss=0.0009  value_loss=2.6922
+  update 417500/500000: consistency_loss=0.0000  pi_loss=-0.0006  reward_loss=2.6922  total_loss=0.0010  value_loss=2.6922
+  update 418000/500000: consistency_loss=0.0001  pi_loss=-0.0006  reward_loss=2.6922  total_loss=0.0012  value_loss=2.6922
+  update 418500/500000: consistency_loss=0.0001  pi_loss=-0.0006  reward_loss=2.6922  total_loss=0.0010  value_loss=2.6922
+  update 419000/500000: consistency_loss=0.0000  pi_loss=-0.0006  reward_loss=2.6922  total_loss=0.0010  value_loss=2.6922
+  update 419500/500000: consistency_loss=0.0000  pi_loss=-0.0006  reward_loss=2.6922  total_loss=0.0009  value_loss=2.6922
+  update 420000/500000: consistency_loss=0.0000  pi_loss=-0.0006  reward_loss=2.6922  total_loss=0.0009  value_loss=2.6922
+  update 420500/500000: consistency_loss=0.0000  pi_loss=-0.0006  reward_loss=2.6922  total_loss=0.0008  value_loss=2.6922
+  update 421000/500000: consistency_loss=0.0000  pi_loss=-0.0006  reward_loss=2.6922  total_loss=0.0009  value_loss=2.6922
+  update 421500/500000: consistency_loss=0.0001  pi_loss=-0.0006  reward_loss=2.6922  total_loss=0.0011  value_loss=2.6922
+  update 422000/500000: consistency_loss=0.0001  pi_loss=-0.0006  reward_loss=2.6922  total_loss=0.0011  value_loss=2.6922
+  update 422500/500000: consistency_loss=0.0001  pi_loss=-0.0006  reward_loss=2.6922  total_loss=0.0011  value_loss=2.6922
+  update 423000/500000: consistency_loss=0.0001  pi_loss=-0.0006  reward_loss=2.6922  total_loss=0.0010  value_loss=2.6922
+  update 423500/500000: consistency_loss=0.0001  pi_loss=-0.0006  reward_loss=2.6922  total_loss=0.0013  value_loss=2.6922
+  update 424000/500000: consistency_loss=0.0000  pi_loss=-0.0006  reward_loss=2.6922  total_loss=0.0009  value_loss=2.6922
+  update 424500/500000: consistency_loss=0.0001  pi_loss=-0.0006  reward_loss=2.6922  total_loss=0.0011  value_loss=2.6922
+  update 425000/500000: consistency_loss=0.0000  pi_loss=-0.0006  reward_loss=2.6922  total_loss=0.0009  value_loss=2.6922
+  update 425500/500000: consistency_loss=0.0001  pi_loss=-0.0006  reward_loss=2.6922  total_loss=0.0011  value_loss=2.6922
+  update 426000/500000: consistency_loss=0.0000  pi_loss=-0.0006  reward_loss=2.6922  total_loss=0.0008  value_loss=2.6922
+  update 426500/500000: consistency_loss=0.0000  pi_loss=-0.0006  reward_loss=2.6922  total_loss=0.0009  value_loss=2.6922
+  update 427000/500000: consistency_loss=0.0000  pi_loss=-0.0006  reward_loss=2.6922  total_loss=0.0010  value_loss=2.6922
+  update 427500/500000: consistency_loss=0.0000  pi_loss=-0.0006  reward_loss=2.6922  total_loss=0.0010  value_loss=2.6922
+  update 428000/500000: consistency_loss=0.0000  pi_loss=-0.0006  reward_loss=2.6922  total_loss=0.0007  value_loss=2.6922
+  update 428500/500000: consistency_loss=0.0000  pi_loss=-0.0006  reward_loss=2.6922  total_loss=0.0009  value_loss=2.6922
+  update 429000/500000: consistency_loss=0.0000  pi_loss=-0.0006  reward_loss=2.6922  total_loss=0.0009  value_loss=2.6922
+  update 429500/500000: consistency_loss=0.0000  pi_loss=-0.0006  reward_loss=2.6922  total_loss=0.0008  value_loss=2.6922
+  update 430000/500000: consistency_loss=0.0000  pi_loss=-0.0006  reward_loss=2.6922  total_loss=0.0010  value_loss=2.6922
+  update 430500/500000: consistency_loss=0.0001  pi_loss=-0.0006  reward_loss=2.6922  total_loss=0.0011  value_loss=2.6922
+  update 431000/500000: consistency_loss=0.0000  pi_loss=-0.0006  reward_loss=2.6922  total_loss=0.0010  value_loss=2.6922
+  update 431500/500000: consistency_loss=0.0001  pi_loss=-0.0006  reward_loss=2.6922  total_loss=0.0012  value_loss=2.6922
+  update 432000/500000: consistency_loss=0.0001  pi_loss=-0.0006  reward_loss=2.6922  total_loss=0.0013  value_loss=2.6922
+  update 432500/500000: consistency_loss=0.0000  pi_loss=-0.0006  reward_loss=2.6922  total_loss=0.0007  value_loss=2.6922
+  update 433000/500000: consistency_loss=0.0000  pi_loss=-0.0006  reward_loss=2.6922  total_loss=0.0008  value_loss=2.6922
+  update 433500/500000: consistency_loss=0.0000  pi_loss=-0.0006  reward_loss=2.6922  total_loss=0.0010  value_loss=2.6922
+  update 434000/500000: consistency_loss=0.0000  pi_loss=-0.0006  reward_loss=2.6922  total_loss=0.0008  value_loss=2.6922
+  update 434500/500000: consistency_loss=0.0000  pi_loss=-0.0006  reward_loss=2.6922  total_loss=0.0009  value_loss=2.6922
+  update 435000/500000: consistency_loss=0.0001  pi_loss=-0.0006  reward_loss=2.6922  total_loss=0.0010  value_loss=2.6922
+  update 435500/500000: consistency_loss=0.0001  pi_loss=-0.0006  reward_loss=2.6922  total_loss=0.0010  value_loss=2.6922
+  update 436000/500000: consistency_loss=0.0001  pi_loss=-0.0006  reward_loss=2.6922  total_loss=0.0011  value_loss=2.6922
+  update 436500/500000: consistency_loss=0.0001  pi_loss=-0.0006  reward_loss=2.6922  total_loss=0.0011  value_loss=2.6922
+  update 437000/500000: consistency_loss=0.0000  pi_loss=-0.0006  reward_loss=2.6922  total_loss=0.0010  value_loss=2.6922
+  update 437500/500000: consistency_loss=0.0001  pi_loss=-0.0006  reward_loss=2.6922  total_loss=0.0010  value_loss=2.6922
+  update 438000/500000: consistency_loss=0.0001  pi_loss=-0.0006  reward_loss=2.6922  total_loss=0.0010  value_loss=2.6922
+  update 438500/500000: consistency_loss=0.0000  pi_loss=-0.0006  reward_loss=2.6922  total_loss=0.0008  value_loss=2.6922
+  update 439000/500000: consistency_loss=0.0000  pi_loss=-0.0006  reward_loss=2.6922  total_loss=0.0009  value_loss=2.6922
+  update 439500/500000: consistency_loss=0.0000  pi_loss=-0.0007  reward_loss=2.6922  total_loss=0.0009  value_loss=2.6922
+  update 440000/500000: consistency_loss=0.0000  pi_loss=-0.0006  reward_loss=2.6922  total_loss=0.0010  value_loss=2.6922
+  update 440500/500000: consistency_loss=0.0000  pi_loss=-0.0006  reward_loss=2.6922  total_loss=0.0009  value_loss=2.6922
+  update 441000/500000: consistency_loss=0.0001  pi_loss=-0.0006  reward_loss=2.6922  total_loss=0.0010  value_loss=2.6922
+  update 441500/500000: consistency_loss=0.0000  pi_loss=-0.0006  reward_loss=2.6922  total_loss=0.0010  value_loss=2.6922
+  update 442000/500000: consistency_loss=0.0000  pi_loss=-0.0006  reward_loss=2.6922  total_loss=0.0008  value_loss=2.6922
+  update 442500/500000: consistency_loss=0.0001  pi_loss=-0.0006  reward_loss=2.6922  total_loss=0.0011  value_loss=2.6922
+  update 443000/500000: consistency_loss=0.0000  pi_loss=-0.0006  reward_loss=2.6922  total_loss=0.0008  value_loss=2.6922
+  update 443500/500000: consistency_loss=0.0000  pi_loss=-0.0006  reward_loss=2.6922  total_loss=0.0010  value_loss=2.6922
+  update 444000/500000: consistency_loss=0.0001  pi_loss=-0.0006  reward_loss=2.6922  total_loss=0.0013  value_loss=2.6922
+  update 444500/500000: consistency_loss=0.0001  pi_loss=-0.0006  reward_loss=2.6922  total_loss=0.0014  value_loss=2.6922
+  update 445000/500000: consistency_loss=0.0001  pi_loss=-0.0006  reward_loss=2.6922  total_loss=0.0011  value_loss=2.6922
+  update 445500/500000: consistency_loss=0.0000  pi_loss=-0.0006  reward_loss=2.6922  total_loss=0.0008  value_loss=2.6922
+  update 446000/500000: consistency_loss=0.0000  pi_loss=-0.0006  reward_loss=2.6922  total_loss=0.0010  value_loss=2.6922
+  update 446500/500000: consistency_loss=0.0000  pi_loss=-0.0006  reward_loss=2.6922  total_loss=0.0008  value_loss=2.6922
+  update 447000/500000: consistency_loss=0.0001  pi_loss=-0.0006  reward_loss=2.6922  total_loss=0.0011  value_loss=2.6922
+  update 447500/500000: consistency_loss=0.0000  pi_loss=-0.0006  reward_loss=2.6922  total_loss=0.0009  value_loss=2.6922
+  update 448000/500000: consistency_loss=0.0000  pi_loss=-0.0006  reward_loss=2.6922  total_loss=0.0009  value_loss=2.6922
+  update 448500/500000: consistency_loss=0.0000  pi_loss=-0.0006  reward_loss=2.6922  total_loss=0.0009  value_loss=2.6922
+  update 449000/500000: consistency_loss=0.0001  pi_loss=-0.0006  reward_loss=2.6922  total_loss=0.0010  value_loss=2.6922
+  update 449500/500000: consistency_loss=0.0000  pi_loss=-0.0007  reward_loss=2.6922  total_loss=0.0008  value_loss=2.6922
+  update 450000/500000: consistency_loss=0.0001  pi_loss=-0.0006  reward_loss=2.6922  total_loss=0.0010  value_loss=2.6922
+  update 450500/500000: consistency_loss=0.0000  pi_loss=-0.0006  reward_loss=2.6922  total_loss=0.0008  value_loss=2.6922
+  update 451000/500000: consistency_loss=0.0000  pi_loss=-0.0006  reward_loss=2.6922  total_loss=0.0009  value_loss=2.6922
+  update 451500/500000: consistency_loss=0.0001  pi_loss=-0.0006  reward_loss=2.6922  total_loss=0.0010  value_loss=2.6922
+  update 452000/500000: consistency_loss=0.0001  pi_loss=-0.0006  reward_loss=2.6922  total_loss=0.0011  value_loss=2.6922
+  update 452500/500000: consistency_loss=0.0000  pi_loss=-0.0006  reward_loss=2.6922  total_loss=0.0008  value_loss=2.6922
+  update 453000/500000: consistency_loss=0.0000  pi_loss=-0.0006  reward_loss=2.6922  total_loss=0.0009  value_loss=2.6922
+  update 453500/500000: consistency_loss=0.0000  pi_loss=-0.0006  reward_loss=2.6922  total_loss=0.0009  value_loss=2.6922
+  update 454000/500000: consistency_loss=0.0000  pi_loss=-0.0006  reward_loss=2.6922  total_loss=0.0008  value_loss=2.6922
+  update 454500/500000: consistency_loss=0.0000  pi_loss=-0.0006  reward_loss=2.6922  total_loss=0.0009  value_loss=2.6922
+  update 455000/500000: consistency_loss=0.0000  pi_loss=-0.0006  reward_loss=2.6922  total_loss=0.0009  value_loss=2.6922
+  update 455500/500000: consistency_loss=0.0000  pi_loss=-0.0006  reward_loss=2.6922  total_loss=0.0010  value_loss=2.6922
+  update 456000/500000: consistency_loss=0.0001  pi_loss=-0.0006  reward_loss=2.6922  total_loss=0.0010  value_loss=2.6922
+  update 456500/500000: consistency_loss=0.0001  pi_loss=-0.0006  reward_loss=2.6922  total_loss=0.0010  value_loss=2.6922
+  update 457000/500000: consistency_loss=0.0001  pi_loss=-0.0006  reward_loss=2.6922  total_loss=0.0010  value_loss=2.6922
+  update 457500/500000: consistency_loss=0.0001  pi_loss=-0.0006  reward_loss=2.6922  total_loss=0.0010  value_loss=2.6922
+  update 458000/500000: consistency_loss=0.0001  pi_loss=-0.0006  reward_loss=2.6922  total_loss=0.0010  value_loss=2.6922
+  update 458500/500000: consistency_loss=0.0000  pi_loss=-0.0006  reward_loss=2.6922  total_loss=0.0009  value_loss=2.6922
+  update 459000/500000: consistency_loss=0.0000  pi_loss=-0.0006  reward_loss=2.6922  total_loss=0.0009  value_loss=2.6922
+  update 459500/500000: consistency_loss=0.0000  pi_loss=-0.0006  reward_loss=2.6922  total_loss=0.0009  value_loss=2.6922
+  update 460000/500000: consistency_loss=0.0001  pi_loss=-0.0006  reward_loss=2.6922  total_loss=0.0013  value_loss=2.6922
+  update 460500/500000: consistency_loss=0.0000  pi_loss=-0.0006  reward_loss=2.6922  total_loss=0.0009  value_loss=2.6922
+  update 461000/500000: consistency_loss=0.0001  pi_loss=-0.0006  reward_loss=2.6922  total_loss=0.0011  value_loss=2.6922
+  update 461500/500000: consistency_loss=0.0000  pi_loss=-0.0006  reward_loss=2.6922  total_loss=0.0010  value_loss=2.6922
+  update 462000/500000: consistency_loss=0.0001  pi_loss=-0.0006  reward_loss=2.6922  total_loss=0.0010  value_loss=2.6922
+  update 462500/500000: consistency_loss=0.0000  pi_loss=-0.0006  reward_loss=2.6922  total_loss=0.0009  value_loss=2.6922
+  update 463000/500000: consistency_loss=0.0000  pi_loss=-0.0006  reward_loss=2.6922  total_loss=0.0009  value_loss=2.6922
+  update 463500/500000: consistency_loss=0.0000  pi_loss=-0.0006  reward_loss=2.6922  total_loss=0.0009  value_loss=2.6922
+  update 464000/500000: consistency_loss=0.0000  pi_loss=-0.0006  reward_loss=2.6922  total_loss=0.0009  value_loss=2.6922
+  update 464500/500000: consistency_loss=0.0000  pi_loss=-0.0006  reward_loss=2.6922  total_loss=0.0010  value_loss=2.6922
+  update 465000/500000: consistency_loss=0.0000  pi_loss=-0.0006  reward_loss=2.6922  total_loss=0.0009  value_loss=2.6922
+  update 465500/500000: consistency_loss=0.0001  pi_loss=-0.0006  reward_loss=2.6922  total_loss=0.0010  value_loss=2.6922
+  update 466000/500000: consistency_loss=0.0001  pi_loss=-0.0006  reward_loss=2.6922  total_loss=0.0011  value_loss=2.6922
+  update 466500/500000: consistency_loss=0.0000  pi_loss=-0.0006  reward_loss=2.6922  total_loss=0.0010  value_loss=2.6922
+  update 467000/500000: consistency_loss=0.0000  pi_loss=-0.0006  reward_loss=2.6922  total_loss=0.0009  value_loss=2.6922
+  update 467500/500000: consistency_loss=0.0000  pi_loss=-0.0006  reward_loss=2.6922  total_loss=0.0008  value_loss=2.6922
+  update 468000/500000: consistency_loss=0.0000  pi_loss=-0.0006  reward_loss=2.6922  total_loss=0.0009  value_loss=2.6922
+  update 468500/500000: consistency_loss=0.0000  pi_loss=-0.0006  reward_loss=2.6922  total_loss=0.0008  value_loss=2.6922
+  update 469000/500000: consistency_loss=0.0000  pi_loss=-0.0006  reward_loss=2.6922  total_loss=0.0009  value_loss=2.6922
+  update 469500/500000: consistency_loss=0.0000  pi_loss=-0.0006  reward_loss=2.6922  total_loss=0.0010  value_loss=2.6922
+  update 470000/500000: consistency_loss=0.0000  pi_loss=-0.0006  reward_loss=2.6922  total_loss=0.0008  value_loss=2.6922
+  update 470500/500000: consistency_loss=0.0000  pi_loss=-0.0006  reward_loss=2.6922  total_loss=0.0008  value_loss=2.6922
+  update 471000/500000: consistency_loss=0.0000  pi_loss=-0.0006  reward_loss=2.6922  total_loss=0.0009  value_loss=2.6922
+  update 471500/500000: consistency_loss=0.0000  pi_loss=-0.0006  reward_loss=2.6922  total_loss=0.0007  value_loss=2.6922
+  update 472000/500000: consistency_loss=0.0001  pi_loss=-0.0006  reward_loss=2.6922  total_loss=0.0014  value_loss=2.6922
+  update 472500/500000: consistency_loss=0.0001  pi_loss=-0.0006  reward_loss=2.6922  total_loss=0.0010  value_loss=2.6922
+  update 473000/500000: consistency_loss=0.0001  pi_loss=-0.0006  reward_loss=2.6922  total_loss=0.0011  value_loss=2.6922
+  update 473500/500000: consistency_loss=0.0001  pi_loss=-0.0006  reward_loss=2.6922  total_loss=0.0011  value_loss=2.6922
+  update 474000/500000: consistency_loss=0.0000  pi_loss=-0.0006  reward_loss=2.6922  total_loss=0.0008  value_loss=2.6922
+  update 474500/500000: consistency_loss=0.0001  pi_loss=-0.0006  reward_loss=2.6922  total_loss=0.0010  value_loss=2.6922
+  update 475000/500000: consistency_loss=0.0000  pi_loss=-0.0006  reward_loss=2.6922  total_loss=0.0009  value_loss=2.6922
+  update 475500/500000: consistency_loss=0.0000  pi_loss=-0.0006  reward_loss=2.6922  total_loss=0.0009  value_loss=2.6922
+  update 476000/500000: consistency_loss=0.0000  pi_loss=-0.0006  reward_loss=2.6922  total_loss=0.0010  value_loss=2.6922
+  update 476500/500000: consistency_loss=0.0001  pi_loss=-0.0006  reward_loss=2.6922  total_loss=0.0010  value_loss=2.6922
+  update 477000/500000: consistency_loss=0.0000  pi_loss=-0.0006  reward_loss=2.6922  total_loss=0.0008  value_loss=2.6922
+  update 477500/500000: consistency_loss=0.0000  pi_loss=-0.0007  reward_loss=2.6922  total_loss=0.0009  value_loss=2.6922
+  update 478000/500000: consistency_loss=0.0001  pi_loss=-0.0006  reward_loss=2.6922  total_loss=0.0010  value_loss=2.6922
+  update 478500/500000: consistency_loss=0.0001  pi_loss=-0.0006  reward_loss=2.6922  total_loss=0.0011  value_loss=2.6922
+  update 479000/500000: consistency_loss=0.0000  pi_loss=-0.0006  reward_loss=2.6922  total_loss=0.0008  value_loss=2.6922
+  update 479500/500000: consistency_loss=0.0000  pi_loss=-0.0006  reward_loss=2.6922  total_loss=0.0009  value_loss=2.6922
+  update 480000/500000: consistency_loss=0.0000  pi_loss=-0.0006  reward_loss=2.6922  total_loss=0.0009  value_loss=2.6922
+  update 480500/500000: consistency_loss=0.0000  pi_loss=-0.0006  reward_loss=2.6922  total_loss=0.0009  value_loss=2.6922
+  update 481000/500000: consistency_loss=0.0000  pi_loss=-0.0006  reward_loss=2.6922  total_loss=0.0009  value_loss=2.6922
+  update 481500/500000: consistency_loss=0.0000  pi_loss=-0.0006  reward_loss=2.6922  total_loss=0.0007  value_loss=2.6922
+  update 482000/500000: consistency_loss=0.0000  pi_loss=-0.0006  reward_loss=2.6922  total_loss=0.0010  value_loss=2.6922
+  update 482500/500000: consistency_loss=0.0000  pi_loss=-0.0006  reward_loss=2.6922  total_loss=0.0010  value_loss=2.6922
+  update 483000/500000: consistency_loss=0.0001  pi_loss=-0.0007  reward_loss=2.6922  total_loss=0.0012  value_loss=2.6922
+  update 483500/500000: consistency_loss=0.0000  pi_loss=-0.0006  reward_loss=2.6922  total_loss=0.0007  value_loss=2.6922
+  update 484000/500000: consistency_loss=0.0001  pi_loss=-0.0006  reward_loss=2.6922  total_loss=0.0011  value_loss=2.6922
+  update 484500/500000: consistency_loss=0.0000  pi_loss=-0.0006  reward_loss=2.6922  total_loss=0.0009  value_loss=2.6922
+  update 485000/500000: consistency_loss=0.0001  pi_loss=-0.0006  reward_loss=2.6922  total_loss=0.0011  value_loss=2.6922
+  update 485500/500000: consistency_loss=0.0000  pi_loss=-0.0006  reward_loss=2.6922  total_loss=0.0010  value_loss=2.6922
+  update 486000/500000: consistency_loss=0.0000  pi_loss=-0.0006  reward_loss=2.6922  total_loss=0.0008  value_loss=2.6922
+  update 486500/500000: consistency_loss=0.0001  pi_loss=-0.0006  reward_loss=2.6922  total_loss=0.0010  value_loss=2.6922
+  update 487000/500000: consistency_loss=0.0000  pi_loss=-0.0006  reward_loss=2.6922  total_loss=0.0009  value_loss=2.6922
+  update 487500/500000: consistency_loss=0.0000  pi_loss=-0.0006  reward_loss=2.6922  total_loss=0.0008  value_loss=2.6922
+  update 488000/500000: consistency_loss=0.0000  pi_loss=-0.0006  reward_loss=2.6922  total_loss=0.0010  value_loss=2.6922
+  update 488500/500000: consistency_loss=0.0000  pi_loss=-0.0006  reward_loss=2.6922  total_loss=0.0009  value_loss=2.6922
+  update 489000/500000: consistency_loss=0.0000  pi_loss=-0.0006  reward_loss=2.6922  total_loss=0.0009  value_loss=2.6922
+  update 489500/500000: consistency_loss=0.0000  pi_loss=-0.0006  reward_loss=2.6922  total_loss=0.0008  value_loss=2.6922
+  update 490000/500000: consistency_loss=0.0001  pi_loss=-0.0006  reward_loss=2.6922  total_loss=0.0011  value_loss=2.6922
+  update 490500/500000: consistency_loss=0.0000  pi_loss=-0.0006  reward_loss=2.6922  total_loss=0.0010  value_loss=2.6922
+  update 491000/500000: consistency_loss=0.0001  pi_loss=-0.0006  reward_loss=2.6922  total_loss=0.0011  value_loss=2.6922
+  update 491500/500000: consistency_loss=0.0000  pi_loss=-0.0006  reward_loss=2.6922  total_loss=0.0007  value_loss=2.6922
+  update 492000/500000: consistency_loss=0.0000  pi_loss=-0.0006  reward_loss=2.6922  total_loss=0.0009  value_loss=2.6922
+  update 492500/500000: consistency_loss=0.0001  pi_loss=-0.0006  reward_loss=2.6922  total_loss=0.0012  value_loss=2.6922
+  update 493000/500000: consistency_loss=0.0000  pi_loss=-0.0006  reward_loss=2.6922  total_loss=0.0008  value_loss=2.6922
+  update 493500/500000: consistency_loss=0.0001  pi_loss=-0.0006  reward_loss=2.6922  total_loss=0.0012  value_loss=2.6922
+  update 494000/500000: consistency_loss=0.0001  pi_loss=-0.0006  reward_loss=2.6922  total_loss=0.0010  value_loss=2.6922
+  update 494500/500000: consistency_loss=0.0000  pi_loss=-0.0006  reward_loss=2.6922  total_loss=0.0009  value_loss=2.6922
+  update 495000/500000: consistency_loss=0.0000  pi_loss=-0.0006  reward_loss=2.6922  total_loss=0.0009  value_loss=2.6922
+  update 495500/500000: consistency_loss=0.0001  pi_loss=-0.0006  reward_loss=2.6922  total_loss=0.0010  value_loss=2.6922
+  update 496000/500000: consistency_loss=0.0000  pi_loss=-0.0006  reward_loss=2.6922  total_loss=0.0009  value_loss=2.6922
+  update 496500/500000: consistency_loss=0.0001  pi_loss=-0.0006  reward_loss=2.6922  total_loss=0.0011  value_loss=2.6922
+  update 497000/500000: consistency_loss=0.0001  pi_loss=-0.0006  reward_loss=2.6922  total_loss=0.0010  value_loss=2.6922
+  update 497500/500000: consistency_loss=0.0000  pi_loss=-0.0006  reward_loss=2.6922  total_loss=0.0009  value_loss=2.6922
+  update 498000/500000: consistency_loss=0.0001  pi_loss=-0.0006  reward_loss=2.6922  total_loss=0.0010  value_loss=2.6922
+  update 498500/500000: consistency_loss=0.0000  pi_loss=-0.0006  reward_loss=2.6922  total_loss=0.0009  value_loss=2.6922
+  update 499000/500000: consistency_loss=0.0000  pi_loss=-0.0006  reward_loss=2.6922  total_loss=0.0008  value_loss=2.6922
+  update 499500/500000: consistency_loss=0.0000  pi_loss=-0.0006  reward_loss=2.6922  total_loss=0.0008  value_loss=2.6922
+  update 500000/500000: consistency_loss=0.0000  pi_loss=-0.0006  reward_loss=2.6922  total_loss=0.0008  value_loss=2.6922
+DONE: 500000 updates -> /workspace/dreamerv3_runs/tm2wm_finger_freeq1s1_seed7/tm2_ckpt.pt
+[Fri Jul 17 17:38:21 UTC 2026] adapt RUN_ID=adapt_tm2freeq1s1_finger_seed7_ckpt500000 TASK=dmc_finger_turn_hard STEPS=125000 SEED=7
+/workspace/conda_envs/tdmpc2/lib/python3.11/site-packages/tensordict/_td.py:612: FutureWarning: TensorDict.to_module() is replacing an existing nn.Parameter in the destination module with a tensor leaf that is not an nn.Parameter. This historical behavior can remove the key from module.state_dict(). In tensordict v0.14, to_module() will preserve existing module parameter and buffer registrations by default. Pass preserve_module_state=False to keep the current replacement behavior, or preserve_module_state=True to opt in to the v0.14 behavior now.
+  local_out = _set_tensor_dict(
+Episode length: 1000
+Discount factor: 0.995
+Loaded + froze 20 tensors (928,512 params) from /workspace/dreamerv3_runs/tm2wm_finger_freeq1s1_seed7/tm2_ckpt.pt
+Architecture: TD-MPC2 World Model
+Encoder: ModuleDict(
+  (state): Sequential(
+    (0): NormedLinear(in_features=12, out_features=256, bias=True, act=Mish)
+    (1): NormedLinear(in_features=256, out_features=512, bias=True, act=SimNorm)
+  )
+)
+Dynamics: Sequential(
+  (0): NormedLinear(in_features=514, out_features=512, bias=True, act=Mish)
+  (1): NormedLinear(in_features=512, out_features=512, bias=True, act=Mish)
+  (2): NormedLinear(in_features=512, out_features=512, bias=True, act=SimNorm)
+)
+Reward: Sequential(
+  (0): NormedLinear(in_features=514, out_features=512, bias=True, act=Mish)
+  (1): NormedLinear(in_features=512, out_features=512, bias=True, act=Mish)
+  (2): Linear(in_features=512, out_features=101, bias=True)
+)
+Policy prior: Sequential(
+  (0): NormedLinear(in_features=512, out_features=512, bias=True, act=Mish)
+  (1): NormedLinear(in_features=512, out_features=512, bias=True, act=Mish)
+  (2): Linear(in_features=512, out_features=4, bias=True)
+)
+Q-functions: Vectorized 5x Sequential(
+  (0): NormedLinear(in_features=514, out_features=512, bias=True, dropout=0.01, act=Mish)
+  (1): NormedLinear(in_features=512, out_features=512, bias=True, act=Mish)
+  (2): Linear(in_features=512, out_features=101, bias=True)
+)
+Learnable parameters: 4,010,594
+[eval] {'eval/episode_reward': 62.5, 'eval/episode_success': 0.0, 'eval/episode_length': 1000.0, 'eval/step': 0.0, 'eval/episode': 0.0, 'eval/elapsed_time': 433.42546796798706, 'eval/steps_per_second': 0.0}
+Buffer capacity: 125,000
+Storage required: 0.01 GB
+Using CUDA:0 memory for storage.
+[92m2026-07-17 17:45:40,394 [torchrl][INFO][0m    Initialized LazyTensorStorage with torch.Size([125000]) shape[92m [END][0m
+Pretraining agent on seed data...
+/workspace/conda_envs/tdmpc2/lib/python3.11/site-packages/torch/jit/_script.py:365: DeprecationWarning: `torch.jit.script_method` is deprecated. Please switch to `torch.compile` or `torch.export`.
+  warnings.warn(
+/workspace/conda_envs/tdmpc2/lib/python3.11/site-packages/torch/jit/_script.py:365: DeprecationWarning: `torch.jit.script_method` is deprecated. Please switch to `torch.compile` or `torch.export`.
+  warnings.warn(
+/workspace/conda_envs/tdmpc2/lib/python3.11/site-packages/torch/jit/_script.py:365: DeprecationWarning: `torch.jit.script_method` is deprecated. Please switch to `torch.compile` or `torch.export`.
+  warnings.warn(
+/workspace/conda_envs/tdmpc2/lib/python3.11/site-packages/torch/jit/_script.py:365: DeprecationWarning: `torch.jit.script_method` is deprecated. Please switch to `torch.compile` or `torch.export`.
+  warnings.warn(
+/workspace/conda_envs/tdmpc2/lib/python3.11/site-packages/torch/jit/_script.py:365: DeprecationWarning: `torch.jit.script_method` is deprecated. Please switch to `torch.compile` or `torch.export`.
+  warnings.warn(
+/workspace/conda_envs/tdmpc2/lib/python3.11/site-packages/torch/jit/_script.py:365: DeprecationWarning: `torch.jit.script_method` is deprecated. Please switch to `torch.compile` or `torch.export`.
+  warnings.warn(
+/workspace/conda_envs/tdmpc2/lib/python3.11/site-packages/torch/jit/_script.py:365: DeprecationWarning: `torch.jit.script_method` is deprecated. Please switch to `torch.compile` or `torch.export`.
+  warnings.warn(
+/workspace/conda_envs/tdmpc2/lib/python3.11/site-packages/torch/jit/_script.py:365: DeprecationWarning: `torch.jit.script_method` is deprecated. Please switch to `torch.compile` or `torch.export`.
+  warnings.warn(
+/workspace/conda_envs/tdmpc2/lib/python3.11/site-packages/torch/jit/_script.py:365: DeprecationWarning: `torch.jit.script_method` is deprecated. Please switch to `torch.compile` or `torch.export`.
+  warnings.warn(
+/workspace/conda_envs/tdmpc2/lib/python3.11/site-packages/torch/jit/_script.py:365: DeprecationWarning: `torch.jit.script_method` is deprecated. Please switch to `torch.compile` or `torch.export`.
+  warnings.warn(
+/workspace/conda_envs/tdmpc2/lib/python3.11/site-packages/torch/jit/_script.py:365: DeprecationWarning: `torch.jit.script_method` is deprecated. Please switch to `torch.compile` or `torch.export`.
+  warnings.warn(
+/workspace/conda_envs/tdmpc2/lib/python3.11/site-packages/torch/jit/_script.py:365: DeprecationWarning: `torch.jit.script_method` is deprecated. Please switch to `torch.compile` or `torch.export`.
+  warnings.warn(
+/workspace/conda_envs/tdmpc2/lib/python3.11/site-packages/torch/jit/_script.py:365: DeprecationWarning: `torch.jit.script_method` is deprecated. Please switch to `torch.compile` or `torch.export`.
+  warnings.warn(
+/workspace/conda_envs/tdmpc2/lib/python3.11/site-packages/torch/jit/_script.py:365: DeprecationWarning: `torch.jit.script_method` is deprecated. Please switch to `torch.compile` or `torch.export`.
+  warnings.warn(
+[eval] {'eval/episode_reward': 2.6875, 'eval/episode_success': 0.0, 'eval/episode_length': 1000.0, 'eval/step': 16000.0, 'eval/episode': 15.0, 'eval/elapsed_time': 1664.0422384738922, 'eval/steps_per_second': 9.615140547558301}
+[eval] {'eval/episode_reward': 249.0625, 'eval/episode_success': 0.0, 'eval/episode_length': 1000.0, 'eval/step': 32000.0, 'eval/episode': 31.0, 'eval/elapsed_time': 3009.557100057602, 'eval/steps_per_second': 10.632793775332434}
+[eval] {'eval/episode_reward': 116.625, 'eval/episode_success': 0.0, 'eval/episode_length': 1000.0, 'eval/step': 48000.0, 'eval/episode': 47.0, 'eval/elapsed_time': 4290.426303386688, 'eval/steps_per_second': 11.187699451243516}
+[eval] {'eval/episode_reward': 123.5625, 'eval/episode_success': 0.0, 'eval/episode_length': 1000.0, 'eval/step': 64000.0, 'eval/episode': 63.0, 'eval/elapsed_time': 5621.318392753601, 'eval/steps_per_second': 11.385229501054756}
+[eval] {'eval/episode_reward': 182.8125, 'eval/episode_success': 0.0, 'eval/episode_length': 1000.0, 'eval/step': 80000.0, 'eval/episode': 79.0, 'eval/elapsed_time': 6930.085915803909, 'eval/steps_per_second': 11.543868427022204}
+[eval] {'eval/episode_reward': 240.0, 'eval/episode_success': 0.0, 'eval/episode_length': 1000.0, 'eval/step': 96000.0, 'eval/episode': 95.0, 'eval/elapsed_time': 8241.875754594803, 'eval/steps_per_second': 11.647833922572843}
+[eval] {'eval/episode_reward': 228.9375, 'eval/episode_success': 0.0, 'eval/episode_length': 1000.0, 'eval/step': 112000.0, 'eval/episode': 111.0, 'eval/elapsed_time': 9593.564648151398, 'eval/steps_per_second': 11.674492652903684}
+ADAPT DONE -> /workspace/dreamerv3_runs/adapt_tm2freeq1s1_finger_seed7_ckpt500000
+[Fri Jul 17 20:30:45 UTC 2026] tdmpc2 adapt_tm2freeq1s1_finger_seed7_ckpt500000 rc=0 status=DONE
+[Fri Jul 17 20:30:45 UTC 2026] DONE adapt_tm2freeq1s1_finger_seed7_ckpt500000
