@@ -61,7 +61,18 @@ def load_frozen_wm(agent, fit_dir):
           if k.split('.')[0] in FROZEN_PREFIXES}
   if not keep:
     raise SystemExit(f'{ckpt}: found no {FROZEN_PREFIXES} params')
-  missing, unexpected = agent.model.load_state_dict(keep, strict=False)
+  # Newer tensordict versions can fail inside TensorDictParams when loading a
+  # partial state dict with strict=False. Merge into the model's full current
+  # state first so every submodule receives its expected state object.
+  merged = agent.model.state_dict()
+  bad = [k for k, v in keep.items()
+         if k not in merged or tuple(merged[k].shape) != tuple(v.shape)]
+  if bad:
+    raise SystemExit(f'{ckpt}: incompatible frozen keys: {bad[:10]}')
+  merged.update(keep)
+  missing, unexpected = agent.model.load_state_dict(merged, strict=True)
+  if missing:
+    raise SystemExit(f'missing keys after merged load: {missing[:10]}')
   if unexpected:
     raise SystemExit(f'unexpected keys in checkpoint slice: {unexpected}')
   frozen = 0
@@ -132,6 +143,32 @@ def main():
   scores_path = logdir / 'scores.jsonl'
 
   class AdaptTrainer(OnlineTrainer):
+
+    def to_td(self, obs, action=None, reward=None, terminated=None):
+      """TensorDict construction compatible with newer tensordict releases."""
+      import torch
+      from tensordict.tensordict import TensorDict
+
+      if isinstance(obs, dict):
+        obs = TensorDict(obs, batch_size=(), device='cpu')
+      else:
+        obs = obs.unsqueeze(0).cpu()
+      if action is None:
+        action = torch.full_like(self.env.rand_act(), float('nan'))
+      if reward is None:
+        reward = torch.tensor(float('nan'), dtype=torch.float32)
+      elif not torch.is_tensor(reward):
+        reward = torch.tensor(float(reward), dtype=torch.float32)
+      if terminated is None:
+        terminated = torch.tensor(float('nan'), dtype=torch.float32)
+      elif not torch.is_tensor(terminated):
+        terminated = torch.tensor(float(terminated), dtype=torch.float32)
+      return TensorDict(dict(
+          obs=obs,
+          action=action.unsqueeze(0).cpu(),
+          reward=reward.unsqueeze(0).cpu(),
+          terminated=terminated.unsqueeze(0).cpu(),
+      ), batch_size=(1,))
 
     def eval(self):
       rewards = []

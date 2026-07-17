@@ -53,6 +53,30 @@ immutable dated files; see plan v4.)
 
 ## Code notes and registrations (non-deviations)
 
+- **2026-07-17 — P3 + mechanism-wave reads executed as registered
+  (`artifacts/p3_wave_20260717/RESULTS.md`); P3 Amendment 1 frozen.**
+  P3 (pre-frozen script, unmodified; audit 80/80 on the registered
+  config-flag rule; transform replay paths verified 32/32): **PRIMARY
+  B_rgo−B_sgb +50.2 [−12.8,+111.2] NOT confirmed; S2 shuffle collapse
+  FIRES −127.9 [−201.0,−51.5]; S3 relocate fires; S4 placebo ≈0;
+  registered branch = interaction needs both gradient paths/interplay,
+  with frame-level label binding necessary.** Descriptive: rgo simple
+  +65.0 [+4.2,+120.9] (own CI>0), vgo −1.0 dead; ordering
+  full>rgo>rl>sh>sgb>apt monotone in supervision quality. E4 factorial
+  pass: reward-NLL LEVEL separates gradient arms (full 1.02/rgo 1.21 vs
+  sgb 2.30/vgo 2.31; rl 3.43 worst-vs-truth yet keeps +52.8 behavioral
+  ⇒ true-label predictability not the whole carrier); d_errin
+  arm-invariant across all 5 arms. Cup-apt E4 (32/48 targets;
+  fq2s1_seed{7,8} no ckpt): arm-invariance holds in cup (12/12) — all
+  four domain×arm cells now. Lo-side battery: all lo sides mono-source;
+  finger occ↔rew +1.0 both sides; cup q1 lo reward-rich (0.222 at occ
+  0.013). Goodhart p2elong (registered rule): Spearman 0.209, top-1
+  regret 78.4% ≈ random-pick 81.3%, top-quintile inversions 1.54×<2×
+  ⇒ neither trigger fires; selection≈lottery at r≈0.2; path = one
+  ensemble attempt or demote. **Amendment 1 frozen pre-outcome
+  (PREREG_p3_amendment1_20260717.md): rgo+sgb seeds 9–16 (32 jobs),
+  pooled n=16 primary re-test, W0 playbook.**
+
 - **2026-07-16 — build wave (all pre-outcome).** (1) **P3 read script
   frozen before any factorial outcome exists**
   (`analysis/p3_factorial_read.py`, selfcheck PASS: recovers planted
