@@ -32,11 +32,15 @@ fi
 
 conda activate "$TM2_CONDA_ENV"
 python -m pip install -U pip setuptools wheel
-python -m pip install torch --index-url "${TM2_TORCH_INDEX_URL:-https://download.pytorch.org/whl/cu121}"
+if [ -n "${TM2_TORCH_INDEX_URL:-}" ]; then
+  python -m pip install torch --index-url "$TM2_TORCH_INDEX_URL"
+else
+  python -m pip install -U torch
+fi
 python -m pip install tensordict torchrl gymnasium omegaconf hydra-core \
     dm_control mujoco numpy
 # dv3-repo import chain for the env adapter (embodied -> elements/portal).
-python -m pip install elements portal ninjax jaxtyping "jax[cpu]"
+python -m pip install elements portal ninjax jaxtyping chex optax "jax[cpu]"
 
 echo "Smoke checks (GPU-independent):"
 conda activate "$TM2_CONDA_ENV"

@@ -137,6 +137,25 @@ immutable dated files; see plan v4.)
 
 ## Code notes and registrations (non-deviations)
 
+- **2026-07-18 — synth diagnosis package BUILT + registered
+  (`prereg/PREREG_synth_diagnosis_20260718.md`, descriptive-only,
+  gates Phase-B′ scoping).** New `analysis/synth_diagnosis_read.py`
+  (selfcheck PASS both branches) summarizes P-D1/P-D2/P-D3.
+  **Instrument revision (validation-discovered, pre-cluster-outcome):
+  `reward_direction_rank` now ranks the cross-correlation direction
+  ν = E[r·x]** — the min-norm regression direction of the 17-Jul draft
+  falls into the correlation null space under exact obs collinearity
+  (synth `to_target = GOAL − position`: lstsq keeps near-zero singular
+  values; observed var≈0/rank 13-of-14 in validation); regression
+  direction kept as labeled secondary; selfcheck gained an
+  exact-collinearity case. The tool had never touched real cluster
+  data (both prereg slots that cite it — scaling prior, this
+  diagnosis — remain unfilled), so no reproduction concern. Local e2e
+  validated the whole chain (tiny generator pair → 30-update task/apt
+  fits → build-probeset (FROZEN) → measure → summarizer); the
+  validation previewed the synth half of P-D1 at debug scale
+  (rank 2/14) — disclosed in the prereg.
+
 - **2026-07-18 — synth Phase B read executed as registered
   (`artifacts/synth_phaseb_20260718/`).** Pre-frozen
   `analysis/synth_phaseb_read.py`, unmodified; audit 48/48; local

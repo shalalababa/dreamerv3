@@ -54,13 +54,26 @@ def analyze(matrix, reward):
   evals = np.sort(np.linalg.eigvalsh(cov))[::-1]
   r = np.asarray(reward, np.float64)
   rc = r - r.mean()
-  theta, *_ = np.linalg.lstsq(x, rc, rcond=None)
-  norm = float(np.linalg.norm(theta))
-  if norm < 1e-12:
+  # PRIMARY direction: the cross-correlation vector nu = E[rc x] -- the
+  # theory's nu = a lambda_j e_j object. No matrix inversion, so exact
+  # obs collinearities (e.g. synth's to_target = GOAL - position) cannot
+  # push the direction into the correlation null space -- which is how
+  # the min-norm regression direction failed local validation (18 Jul:
+  # lstsq rcond=None keeps near-zero singular values, var along the
+  # direction ~ 0, rank spuriously bottom-of-spectrum).
+  nu = (x.T @ rc) / n
+  nu_norm = float(np.linalg.norm(nu))
+  if nu_norm < 1e-12:
     raise SystemExit('reward direction degenerate (no reward variance?)')
-  u = theta / norm
-  var_theta = float(u @ cov @ u)
-  rank = int((evals > var_theta).sum()) + 1
+  u = nu / nu_norm
+  var_nu = float(u @ cov @ u)
+  rank = int((evals > var_nu).sum()) + 1
+  # SECONDARY (continuity with the 17-Jul draft): min-norm regression
+  # direction + linear R^2; reported, never the ranked quantity.
+  theta, *_ = np.linalg.lstsq(x, rc, rcond=None)
+  tnorm = float(np.linalg.norm(theta))
+  var_theta = float((theta / tnorm) @ cov @ (theta / tnorm)) if \
+      tnorm > 1e-12 else float('nan')
   pred = x @ theta
   ss_res = float(((rc - pred) ** 2).sum())
   ss_tot = float((rc ** 2).sum())
@@ -68,14 +81,17 @@ def analyze(matrix, reward):
       n_frames=int(n), dim=int(d),
       reward_frame_fraction=round(float((r > 0).mean()), 6),
       linear_r2=round(1.0 - ss_res / ss_tot, 6),
-      var_along_reward_direction=round(var_theta, 6),
+      var_along_reward_direction=round(var_nu, 6),
       rank_of_reward_direction=rank,
+      var_along_regression_direction=round(var_theta, 6),
       eigenvalues_top=[round(float(v), 6) for v in evals[:min(16, d)]],
       eigenvalue_at_rank=round(float(evals[rank - 1]), 6),
-      note='rank 1 = dominant variance direction; higher rank = deeper '
-           'in the spectrum = more capacity needed before unsupervised '
-           'inclusion; linear_r2 caveats the direction estimate for '
-           'threshold-sparse rewards')
+      note='rank of the CROSS-CORRELATION direction nu in the '
+           'correlation spectrum; rank 1 = dominant variance direction; '
+           'higher rank = deeper in the spectrum = more capacity needed '
+           'before unsupervised inclusion; linear_r2 (regression, '
+           'secondary) caveats direction estimates for threshold-sparse '
+           'rewards')
 
 
 def cmd_side(args):
@@ -110,6 +126,15 @@ def cmd_selfcheck(args):
   rep2 = analyze(x, 0.5 * (dominant > np.quantile(dominant, 0.9)))
   assert rep2['rank_of_reward_direction'] <= 2, rep2
   assert rep2['rank_of_reward_direction'] < rep['rank_of_reward_direction']
+  # Exact collinearity (the synth to_target = GOAL - position case):
+  # append a column that is exactly the negation of a reward-bearing
+  # one. The nu direction must stay HIGH-variance (top of spectrum);
+  # the old regression direction fell into the null space here.
+  x3 = np.concatenate([x, -x[:, :1]], 1)
+  rew3 = 0.5 * (x[:, 0] > np.quantile(x[:, 0], 0.9))
+  rep3 = analyze(x3, rew3)
+  assert rep3['rank_of_reward_direction'] <= 3, rep3
+  assert rep3['var_along_reward_direction'] > 0.5, rep3
   print('reward_direction_rank selfcheck PASS')
 
 
