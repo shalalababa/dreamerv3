@@ -291,7 +291,7 @@ def main_real(args):
   from d0.sweep import load_config, load_frozen_agent
 
   out_dir = pathlib.Path(args.output).parent
-  config = load_config(args, out_dir)
+  config, train_seed = load_config(args, out_dir)
   env = make_env(config, 0)
   agent = make_agent(config)
   ckpt = args.checkpoint or os.path.join(args.run_logdir, 'ckpt')
@@ -308,6 +308,7 @@ def main_real(args):
       run_logdir=args.run_logdir, checkpoint=str(ckpt),
       states=args.states, horizon=args.horizon,
       label_every=args.label_every, seed=args.seed,
+      train_seed=train_seed, actions=args.actions, rollouts=args.rollouts,
       operation_pair='real_vs_imag_matched_candidate_budget'))
 
 
@@ -405,6 +406,12 @@ def main():
   p.add_argument('--label_every', type=int, default=25)
   p.add_argument('--max_steps', type=int, default=1000)
   p.add_argument('--seed', type=int, default=0)
+  # d0-signal knobs consumed by sweep.load_config (agent.d0.actions/
+  # rollouts); same defaults as d0/sweep.py [prov.; confirm at freeze].
+  p.add_argument('--actions', type=int, default=8,
+                 help='Candidate actions M: policy mode + M-1 samples.')
+  p.add_argument('--rollouts', type=int, default=16,
+                 help='One-step rollouts R per (head, action).')
   p.add_argument('--oracle_all', action='store_true',
                  help='ground-truth every candidate, not just the chosen')
   p.add_argument('--platform', default='', choices=['', 'cpu', 'cuda'])
