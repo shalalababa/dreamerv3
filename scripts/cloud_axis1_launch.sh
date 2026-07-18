@@ -32,14 +32,22 @@ fi
 cloud_shards="${CLOUD_SHARDS:-$local_gpus}"
 offset="${CLOUD_SHARD_OFFSET:-0}"
 
-echo "Launching $local_gpus local workers with CLOUD_SHARDS=$cloud_shards offset=$offset"
+echo "[$(date)] Launching $local_gpus local workers with CLOUD_SHARDS=$cloud_shards offset=$offset"
 for ((gpu=0; gpu<local_gpus; gpu++)); do
   shard=$((offset + gpu))
   log="$RUNROOT/_cloud_logs/worker_shard${shard}.out"
-  echo "  GPU $gpu -> shard $shard/$cloud_shards log=$log"
-  CUDA_VISIBLE_DEVICES="$gpu" CLOUD_SHARD="$shard" CLOUD_SHARDS="$cloud_shards" \
-    bash "$REPO/scripts/cloud_axis1_worker.sh" > "$log" 2>&1 &
+  echo "[$(date)] GPU $gpu -> shard $shard/$cloud_shards log=$log"
+  (
+    echo "[$(date)] launcher worker start gpu=$gpu shard=$shard/$cloud_shards arm=${AXIS1_ARM:-} transform=${AXIS1_TRANSFORM:-} seeds=${AXIS1_SEEDS:-}"
+    set +e
+    CUDA_VISIBLE_DEVICES="$gpu" CLOUD_SHARD="$shard" CLOUD_SHARDS="$cloud_shards" \
+      bash "$REPO/scripts/cloud_axis1_worker.sh"
+    rc=$?
+    set -e
+    echo "[$(date)] launcher worker end gpu=$gpu shard=$shard/$cloud_shards rc=$rc"
+    exit "$rc"
+  ) >> "$log" 2>&1 &
 done
 
 wait
-echo "All local cloud workers finished."
+echo "[$(date)] All local cloud workers finished."
