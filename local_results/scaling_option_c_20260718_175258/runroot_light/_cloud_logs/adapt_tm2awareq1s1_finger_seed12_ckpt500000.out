@@ -1,0 +1,23 @@
+[Sat Jul 18 21:26:43 UTC 2026] offline_fit WM_RUN=tm2wm_finger_awareq1s1_seed12 ARM=aware DATA=/workspace/dreamerv3_runs/tm2_data/finger_q1_side1.pt UPDATES=500000 SEED=12
+/workspace/conda_envs/dreamerv3/lib/python3.11/site-packages/tensordict/_td.py:612: FutureWarning: TensorDict.to_module() is replacing an existing nn.Parameter in the destination module with a tensor leaf that is not an nn.Parameter. This historical behavior can remove the key from module.state_dict(). In tensordict v0.14, to_module() will preserve existing module parameter and buffer registrations by default. Pass preserve_module_state=False to keep the current replacement behavior, or preserve_module_state=True to opt in to the v0.14 behavior now.
+  local_out = _set_tensor_dict(
+Episode length: 1000
+Discount factor: 0.995
+Buffer capacity: 200,200
+Storage required: 0.01 GB
+Using CUDA:0 memory for storage.
+[92m2026-07-18 21:26:47,267 [torchrl][INFO][0m    Initialized LazyTensorStorage with torch.Size([200200]) shape[92m [END][0m
+Loaded static data: 200 eps x 1001 rows = 200200 rows; arm=aware (reward_coef=0.1, value_coef=0.1)
+  update      1/500000: consistency_loss=0.0161  pi_loss=-0.0003  reward_loss=2.6922  total_loss=0.8613  value_loss=2.6922
+  update    500/500000: consistency_loss=0.0015  pi_loss=-0.6330  reward_loss=0.1856  total_loss=0.0822  value_loss=0.3366
+  update   1000/500000: consistency_loss=0.0013  pi_loss=-0.2932  reward_loss=0.1714  total_loss=0.0808  value_loss=0.3704
+  update   1500/500000: consistency_loss=0.0011  pi_loss=-0.2420  reward_loss=0.1786  total_loss=0.0834  value_loss=0.4365
+  update   2000/500000: consistency_loss=0.0010  pi_loss=-0.2089  reward_loss=0.1577  total_loss=0.0768  value_loss=0.4098
+  update   2500/500000: consistency_loss=0.0008  pi_loss=-0.1691  reward_loss=0.1438  total_loss=0.0734  value_loss=0.4268
+  update   3000/500000: consistency_loss=0.0008  pi_loss=-0.1999  reward_loss=0.1547  total_loss=0.0713  value_loss=0.3955
+  update   3500/500000: consistency_loss=0.0007  pi_loss=-0.2016  reward_loss=0.1649  total_loss=0.0681  value_loss=0.3816
+  update   4000/500000: consistency_loss=0.0007  pi_loss=-0.2050  reward_loss=0.1529  total_loss=0.0766  value_loss=0.4665
+  update   4500/500000: consistency_loss=0.0007  pi_loss=-0.2037  reward_loss=0.1518  total_loss=0.0714  value_loss=0.4314
+  update   5000/500000: consistency_loss=0.0006  pi_loss=-0.2134  reward_loss=0.1543  total_loss=0.0731  value_loss=0.4642
+  update   5500/500000: consistency_loss=0.0005  pi_loss=-0.2442  reward_loss=0.1782  total_loss=0.0700  value_loss=0.4252
+  update   6000/500000: consistency_loss=0.0007  pi_loss=-0.2289  reward_loss=0.1656  total_loss=0.0747  value_loss=0.4505

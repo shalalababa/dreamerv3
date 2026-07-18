@@ -1,0 +1,903 @@
+{
+  "run_logdir": "/scratch/midway3/rickybao/dreamerv3_runs/ax1wm_finger_srd0q1s1_seed6",
+  "run_id": "ax1wm_finger_srd0q1s1_seed6",
+  "checkpoint": "/scratch/midway3/rickybao/dreamerv3_runs/ax1wm_finger_srd0q1s1_seed6/ckpt",
+  "expl_mode": "task",
+  "reward_aware": true,
+  "probeset_id": "finger_v1",
+  "probeset_sha256": "a78fe58ca526b51c9fd567b9627e6524eef9df55d918d49ac3f24994c452c786",
+  "reward_override": {
+    "path": "/scratch/midway3/rickybao/dreamerv3_runs/e4_overrides/stamping/finger_v1_srd0_side1.npz",
+    "stem": "finger_v1_srd0_side1",
+    "density": 0.354446,
+    "sidecar": {
+      "kind": "stamp_rand",
+      "side": "side1",
+      "fn_seed": 0,
+      "manifest": "/scratch/midway3/rickybao/dreamerv3_runs/axis1_finger/q1_srd0/manifest.json",
+      "probeset_id": "finger_v1",
+      "probeset_sha256": "a78fe58ca526b51c9fd567b9627e6524eef9df55d918d49ac3f24994c452c786",
+      "density": 0.354446,
+      "amplitude": 1.0,
+      "latent_recovery": {
+        "keys": [
+          "dyn/deter",
+          "dyn/stoch"
+        ],
+        "replay_dirs": [
+          "/scratch/midway3/rickybao/dreamerv3_runs/pilot_goal_finger_seed1/replay",
+          "/scratch/midway3/rickybao/dreamerv3_runs/pilot_random_finger_seed1/replay",
+          "/scratch/midway3/rickybao/dreamerv3_runs/pilot_p2e_finger_seed1/replay"
+        ]
+      }
+    }
+  },
+  "horizons": [
+    0,
+    1,
+    5,
+    20
+  ],
+  "horizon_stats": {
+    "0": {
+      "strata": {
+        "all": {
+          "mean": 0.13670727568456797,
+          "n": 60060
+        },
+        "in_regime": {
+          "mean": 0.1334254679569647,
+          "n": 5446
+        },
+        "out_regime": {
+          "mean": 0.13703453105653352,
+          "n": 54614
+        },
+        "rewarded": {
+          "mean": 0.1321933992075603,
+          "n": 5440
+        },
+        "unrewarded": {
+          "mean": 0.13715684522017618,
+          "n": 54620
+        },
+        "in_rew": {
+          "mean": 0.1321933992075603,
+          "n": 5440
+        },
+        "in_norew": {
+          "mean": 1.2505011340836063,
+          "n": 6
+        },
+        "out_rew": {
+          "mean": null,
+          "n": 0
+        },
+        "out_norew": {
+          "mean": 0.13703453105653352,
+          "n": 54614
+        }
+      },
+      "err_diff_out_minus_in": 0.003609,
+      "per_key": {
+        "dist_to_target": {
+          "in_regime": {
+            "mean": 0.0070214350630671725,
+            "n": 5446
+          },
+          "out_regime": {
+            "mean": 0.0018829253804040884,
+            "n": 54614
+          },
+          "rewarded": {
+            "mean": 0.006994907561025625,
+            "n": 5440
+          },
+          "unrewarded": {
+            "mean": 0.00188613191041511,
+            "n": 54620
+          }
+        },
+        "position": {
+          "in_regime": {
+            "mean": 0.00542250923555008,
+            "n": 5446
+          },
+          "out_regime": {
+            "mean": 0.008541637405548412,
+            "n": 54614
+          },
+          "rewarded": {
+            "mean": 0.004685891978632593,
+            "n": 5440
+          },
+          "unrewarded": {
+            "mean": 0.008614659798602443,
+            "n": 54620
+          }
+        },
+        "target_position": {
+          "in_regime": {
+            "mean": 0.0020363099335515456,
+            "n": 5446
+          },
+          "out_regime": {
+            "mean": 0.007815100623598688,
+            "n": 54614
+          },
+          "rewarded": {
+            "mean": 0.0020244827071783573,
+            "n": 5440
+          },
+          "unrewarded": {
+            "mean": 0.0078156437830152,
+            "n": 54620
+          }
+        },
+        "touch": {
+          "in_regime": {
+            "mean": 0.02210321756625971,
+            "n": 5446
+          },
+          "out_regime": {
+            "mean": 0.03192749262726479,
+            "n": 54614
+          },
+          "rewarded": {
+            "mean": 0.02212723243490743,
+            "n": 5440
+          },
+          "unrewarded": {
+            "mean": 0.03192402161782119,
+            "n": 54620
+          }
+        },
+        "velocity": {
+          "in_regime": {
+            "mean": 0.09684199615853617,
+            "n": 5446
+          },
+          "out_regime": {
+            "mean": 0.08686737501971756,
+            "n": 54614
+          },
+          "rewarded": {
+            "mean": 0.09636088452581629,
+            "n": 5440
+          },
+          "unrewarded": {
+            "mean": 0.08691638811032226,
+            "n": 54620
+          }
+        }
+      },
+      "per_source": {
+        "goal": {
+          "all": {
+            "mean": 0.1718507849044085,
+            "n": 20020
+          },
+          "in_regime": {
+            "mean": 0.14189812815788316,
+            "n": 2219
+          },
+          "out_regime": {
+            "mean": 0.17558456083388096,
+            "n": 17801
+          }
+        },
+        "p2e": {
+          "all": {
+            "mean": 0.1689726857284367,
+            "n": 20020
+          },
+          "in_regime": {
+            "mean": 0.19856670088228465,
+            "n": 1573
+          },
+          "out_regime": {
+            "mean": 0.16644916505640314,
+            "n": 18447
+          }
+        },
+        "random": {
+          "all": {
+            "mean": 0.0692983564208587,
+            "n": 20020
+          },
+          "in_regime": {
+            "mean": 0.06010745563691244,
+            "n": 1654
+          },
+          "out_regime": {
+            "mean": 0.07012606794741033,
+            "n": 18366
+          }
+        }
+      },
+      "reward_head": {
+        "all": {
+          "mean": 1.5387524336559715,
+          "n": 60060
+        },
+        "in_regime": {
+          "mean": 2.5322972376294928,
+          "n": 5446
+        },
+        "out_regime": {
+          "mean": 1.4396781120087785,
+          "n": 54614
+        },
+        "rewarded": {
+          "mean": 2.528202537666349,
+          "n": 5440
+        },
+        "unrewarded": {
+          "mean": 1.4402059568010381,
+          "n": 54620
+        },
+        "in_rew": {
+          "mean": 2.528202537666349,
+          "n": 5440
+        },
+        "in_norew": {
+          "mean": 6.24482520421346,
+          "n": 6
+        },
+        "out_rew": {
+          "mean": null,
+          "n": 0
+        },
+        "out_norew": {
+          "mean": 1.4396781120087785,
+          "n": 54614
+        }
+      }
+    },
+    "1": {
+      "strata": {
+        "all": {
+          "mean": 0.37944428665534863,
+          "n": 60000
+        },
+        "in_regime": {
+          "mean": 0.32060976058003815,
+          "n": 5440
+        },
+        "out_regime": {
+          "mean": 0.3853104857361715,
+          "n": 54560
+        },
+        "rewarded": {
+          "mean": 0.32060976058003815,
+          "n": 5440
+        },
+        "unrewarded": {
+          "mean": 0.3853104857361715,
+          "n": 54560
+        },
+        "in_rew": {
+          "mean": 0.32060976058003815,
+          "n": 5440
+        },
+        "in_norew": {
+          "mean": null,
+          "n": 0
+        },
+        "out_rew": {
+          "mean": null,
+          "n": 0
+        },
+        "out_norew": {
+          "mean": 0.3853104857361715,
+          "n": 54560
+        }
+      },
+      "err_diff_out_minus_in": 0.064701,
+      "per_key": {
+        "dist_to_target": {
+          "in_regime": {
+            "mean": 0.00717792231182231,
+            "n": 5440
+          },
+          "out_regime": {
+            "mean": 0.0019127868362434196,
+            "n": 54560
+          },
+          "rewarded": {
+            "mean": 0.00717792231182231,
+            "n": 5440
+          },
+          "unrewarded": {
+            "mean": 0.0019127868362434196,
+            "n": 54560
+          }
+        },
+        "position": {
+          "in_regime": {
+            "mean": 0.005160061489602065,
+            "n": 5440
+          },
+          "out_regime": {
+            "mean": 0.008266512957066057,
+            "n": 54560
+          },
+          "rewarded": {
+            "mean": 0.005160061489602065,
+            "n": 5440
+          },
+          "unrewarded": {
+            "mean": 0.008266512957066057,
+            "n": 54560
+          }
+        },
+        "target_position": {
+          "in_regime": {
+            "mean": 0.0021348697493998245,
+            "n": 5440
+          },
+          "out_regime": {
+            "mean": 0.007986335907891816,
+            "n": 54560
+          },
+          "rewarded": {
+            "mean": 0.0021348697493998245,
+            "n": 5440
+          },
+          "unrewarded": {
+            "mean": 0.007986335907891816,
+            "n": 54560
+          }
+        },
+        "touch": {
+          "in_regime": {
+            "mean": 0.09966943916386706,
+            "n": 5440
+          },
+          "out_regime": {
+            "mean": 0.14758721136463604,
+            "n": 54560
+          },
+          "rewarded": {
+            "mean": 0.09966943916386706,
+            "n": 5440
+          },
+          "unrewarded": {
+            "mean": 0.14758721136463604,
+            "n": 54560
+          }
+        },
+        "velocity": {
+          "in_regime": {
+            "mean": 0.2064674678653469,
+            "n": 5440
+          },
+          "out_regime": {
+            "mean": 0.21955763867033404,
+            "n": 54560
+          },
+          "rewarded": {
+            "mean": 0.2064674678653469,
+            "n": 5440
+          },
+          "unrewarded": {
+            "mean": 0.21955763867033404,
+            "n": 54560
+          }
+        }
+      },
+      "per_source": {
+        "goal": {
+          "all": {
+            "mean": 0.48834056020412775,
+            "n": 20000
+          },
+          "in_regime": {
+            "mean": 0.2624281197669418,
+            "n": 2218
+          },
+          "out_regime": {
+            "mean": 0.5165192686109257,
+            "n": 17782
+          }
+        },
+        "p2e": {
+          "all": {
+            "mean": 0.5143327708261257,
+            "n": 20000
+          },
+          "in_regime": {
+            "mean": 0.5684681252425146,
+            "n": 1569
+          },
+          "out_regime": {
+            "mean": 0.5097243192456734,
+            "n": 18431
+          }
+        },
+        "random": {
+          "all": {
+            "mean": 0.13565952893579256,
+            "n": 20000
+          },
+          "in_regime": {
+            "mean": 0.1634150268643831,
+            "n": 1653
+          },
+          "out_regime": {
+            "mean": 0.13315885645113784,
+            "n": 18347
+          }
+        }
+      },
+      "reward_head": {
+        "all": {
+          "mean": 1.5339578247298176,
+          "n": 60000
+        },
+        "in_regime": {
+          "mean": 2.5280559010338037,
+          "n": 5440
+        },
+        "out_regime": {
+          "mean": 1.4348395414619715,
+          "n": 54560
+        },
+        "rewarded": {
+          "mean": 2.5280559010338037,
+          "n": 5440
+        },
+        "unrewarded": {
+          "mean": 1.4348395414619715,
+          "n": 54560
+        },
+        "in_rew": {
+          "mean": 2.5280559010338037,
+          "n": 5440
+        },
+        "in_norew": {
+          "mean": null,
+          "n": 0
+        },
+        "out_rew": {
+          "mean": null,
+          "n": 0
+        },
+        "out_norew": {
+          "mean": 1.4348395414619715,
+          "n": 54560
+        }
+      }
+    },
+    "5": {
+      "strata": {
+        "all": {
+          "mean": 0.716677482065264,
+          "n": 59760
+        },
+        "in_regime": {
+          "mean": 0.5626760778496848,
+          "n": 5416
+        },
+        "out_regime": {
+          "mean": 0.732025480100587,
+          "n": 54344
+        },
+        "rewarded": {
+          "mean": 0.5626760778496848,
+          "n": 5416
+        },
+        "unrewarded": {
+          "mean": 0.732025480100587,
+          "n": 54344
+        },
+        "in_rew": {
+          "mean": 0.5626760778496848,
+          "n": 5416
+        },
+        "in_norew": {
+          "mean": null,
+          "n": 0
+        },
+        "out_rew": {
+          "mean": null,
+          "n": 0
+        },
+        "out_norew": {
+          "mean": 0.732025480100587,
+          "n": 54344
+        }
+      },
+      "err_diff_out_minus_in": 0.169349,
+      "per_key": {
+        "dist_to_target": {
+          "in_regime": {
+            "mean": 0.007692119666088673,
+            "n": 5416
+          },
+          "out_regime": {
+            "mean": 0.002056585856201843,
+            "n": 54344
+          },
+          "rewarded": {
+            "mean": 0.007692119666088673,
+            "n": 5416
+          },
+          "unrewarded": {
+            "mean": 0.002056585856201843,
+            "n": 54344
+          }
+        },
+        "position": {
+          "in_regime": {
+            "mean": 0.007122595730711369,
+            "n": 5416
+          },
+          "out_regime": {
+            "mean": 0.011078504031928798,
+            "n": 54344
+          },
+          "rewarded": {
+            "mean": 0.007122595730711369,
+            "n": 5416
+          },
+          "unrewarded": {
+            "mean": 0.011078504031928798,
+            "n": 54344
+          }
+        },
+        "target_position": {
+          "in_regime": {
+            "mean": 0.0025029958805096357,
+            "n": 5416
+          },
+          "out_regime": {
+            "mean": 0.008435865883242345,
+            "n": 54344
+          },
+          "rewarded": {
+            "mean": 0.0025029958805096357,
+            "n": 5416
+          },
+          "unrewarded": {
+            "mean": 0.008435865883242345,
+            "n": 54344
+          }
+        },
+        "touch": {
+          "in_regime": {
+            "mean": 0.1633303408984292,
+            "n": 5416
+          },
+          "out_regime": {
+            "mean": 0.25184755927902586,
+            "n": 54344
+          },
+          "rewarded": {
+            "mean": 0.1633303408984292,
+            "n": 5416
+          },
+          "unrewarded": {
+            "mean": 0.25184755927902586,
+            "n": 54344
+          }
+        },
+        "velocity": {
+          "in_regime": {
+            "mean": 0.3820280256739458,
+            "n": 5416
+          },
+          "out_regime": {
+            "mean": 0.45860696505018794,
+            "n": 54344
+          },
+          "rewarded": {
+            "mean": 0.3820280256739458,
+            "n": 5416
+          },
+          "unrewarded": {
+            "mean": 0.45860696505018794,
+            "n": 54344
+          }
+        }
+      },
+      "per_source": {
+        "goal": {
+          "all": {
+            "mean": 0.9549886843136536,
+            "n": 19920
+          },
+          "in_regime": {
+            "mean": 0.4079434421105733,
+            "n": 2214
+          },
+          "out_regime": {
+            "mean": 1.023392511617258,
+            "n": 17706
+          }
+        },
+        "p2e": {
+          "all": {
+            "mean": 1.020301887403559,
+            "n": 19920
+          },
+          "in_regime": {
+            "mean": 1.0976948930593302,
+            "n": 1553
+          },
+          "out_regime": {
+            "mean": 1.0137580131843935,
+            "n": 18367
+          }
+        },
+        "random": {
+          "all": {
+            "mean": 0.1747418744785798,
+            "n": 19920
+          },
+          "in_regime": {
+            "mean": 0.2665534796118516,
+            "n": 1649
+          },
+          "out_regime": {
+            "mean": 0.16645566480944485,
+            "n": 18271
+          }
+        }
+      },
+      "reward_head": {
+        "all": {
+          "mean": 1.5397829436410002,
+          "n": 59760
+        },
+        "in_regime": {
+          "mean": 2.533891832500014,
+          "n": 5416
+        },
+        "out_regime": {
+          "mean": 1.4407086439563908,
+          "n": 54344
+        },
+        "rewarded": {
+          "mean": 2.533891832500014,
+          "n": 5416
+        },
+        "unrewarded": {
+          "mean": 1.4407086439563908,
+          "n": 54344
+        },
+        "in_rew": {
+          "mean": 2.533891832500014,
+          "n": 5416
+        },
+        "in_norew": {
+          "mean": null,
+          "n": 0
+        },
+        "out_rew": {
+          "mean": null,
+          "n": 0
+        },
+        "out_norew": {
+          "mean": 1.4407086439563908,
+          "n": 54344
+        }
+      }
+    },
+    "20": {
+      "strata": {
+        "all": {
+          "mean": 1.5888301787345125,
+          "n": 58860
+        },
+        "in_regime": {
+          "mean": 1.024843519172891,
+          "n": 5340
+        },
+        "out_regime": {
+          "mean": 1.645102390282701,
+          "n": 53520
+        },
+        "rewarded": {
+          "mean": 1.024843519172891,
+          "n": 5340
+        },
+        "unrewarded": {
+          "mean": 1.645102390282701,
+          "n": 53520
+        },
+        "in_rew": {
+          "mean": 1.024843519172891,
+          "n": 5340
+        },
+        "in_norew": {
+          "mean": null,
+          "n": 0
+        },
+        "out_rew": {
+          "mean": null,
+          "n": 0
+        },
+        "out_norew": {
+          "mean": 1.645102390282701,
+          "n": 53520
+        }
+      },
+      "err_diff_out_minus_in": 0.620259,
+      "per_key": {
+        "dist_to_target": {
+          "in_regime": {
+            "mean": 0.008974141403554603,
+            "n": 5340
+          },
+          "out_regime": {
+            "mean": 0.0024765586135975046,
+            "n": 53520
+          },
+          "rewarded": {
+            "mean": 0.008974141403554603,
+            "n": 5340
+          },
+          "unrewarded": {
+            "mean": 0.0024765586135975046,
+            "n": 53520
+          }
+        },
+        "position": {
+          "in_regime": {
+            "mean": 0.04176527773539787,
+            "n": 5340
+          },
+          "out_regime": {
+            "mean": 0.06811247464979661,
+            "n": 53520
+          },
+          "rewarded": {
+            "mean": 0.04176527773539787,
+            "n": 5340
+          },
+          "unrewarded": {
+            "mean": 0.06811247464979661,
+            "n": 53520
+          }
+        },
+        "target_position": {
+          "in_regime": {
+            "mean": 0.003209559165567044,
+            "n": 5340
+          },
+          "out_regime": {
+            "mean": 0.009743115169601285,
+            "n": 53520
+          },
+          "rewarded": {
+            "mean": 0.003209559165567044,
+            "n": 5340
+          },
+          "unrewarded": {
+            "mean": 0.009743115169601285,
+            "n": 53520
+          }
+        },
+        "touch": {
+          "in_regime": {
+            "mean": 0.2867876237055451,
+            "n": 5340
+          },
+          "out_regime": {
+            "mean": 0.5271802277001778,
+            "n": 53520
+          },
+          "rewarded": {
+            "mean": 0.2867876237055451,
+            "n": 5340
+          },
+          "unrewarded": {
+            "mean": 0.5271802277001778,
+            "n": 53520
+          }
+        },
+        "velocity": {
+          "in_regime": {
+            "mean": 0.6841069171628263,
+            "n": 5340
+          },
+          "out_regime": {
+            "mean": 1.0375900141495278,
+            "n": 53520
+          },
+          "rewarded": {
+            "mean": 0.6841069171628263,
+            "n": 5340
+          },
+          "unrewarded": {
+            "mean": 1.0375900141495278,
+            "n": 53520
+          }
+        }
+      },
+      "per_source": {
+        "goal": {
+          "all": {
+            "mean": 2.0869303235526058,
+            "n": 19620
+          },
+          "in_regime": {
+            "mean": 0.6799673931961434,
+            "n": 2192
+          },
+          "out_regime": {
+            "mean": 2.2638905452270017,
+            "n": 17428
+          }
+        },
+        "p2e": {
+          "all": {
+            "mean": 2.471560738973727,
+            "n": 19620
+          },
+          "in_regime": {
+            "mean": 2.2537858121271004,
+            "n": 1503
+          },
+          "out_regime": {
+            "mean": 2.489627511345007,
+            "n": 18117
+          }
+        },
+        "random": {
+          "all": {
+            "mean": 0.20799947367720445,
+            "n": 19620
+          },
+          "in_regime": {
+            "mean": 0.36154151420684505,
+            "n": 1645
+          },
+          "out_regime": {
+            "mean": 0.19394792115029158,
+            "n": 17975
+          }
+        }
+      },
+      "reward_head": {
+        "all": {
+          "mean": 1.5925195833973806,
+          "n": 58860
+        },
+        "in_regime": {
+          "mean": 2.546597897395324,
+          "n": 5340
+        },
+        "out_regime": {
+          "mean": 1.4973256709020701,
+          "n": 53520
+        },
+        "rewarded": {
+          "mean": 2.546597897395324,
+          "n": 5340
+        },
+        "unrewarded": {
+          "mean": 1.4973256709020701,
+          "n": 53520
+        },
+        "in_rew": {
+          "mean": 2.546597897395324,
+          "n": 5340
+        },
+        "in_norew": {
+          "mean": null,
+          "n": 0
+        },
+        "out_rew": {
+          "mean": null,
+          "n": 0
+        },
+        "out_norew": {
+          "mean": 1.4973256709020701,
+          "n": 53520
+        }
+      }
+    }
+  }
+}

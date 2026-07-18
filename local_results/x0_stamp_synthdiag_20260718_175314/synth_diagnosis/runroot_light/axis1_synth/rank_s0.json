@@ -1,0 +1,34 @@
+{
+  "side": "/scratch/midway3/rickybao/dreamerv3_runs/axis1_synth/q1/side0",
+  "obs_keys": [
+    "distractor",
+    "position",
+    "to_target",
+    "velocity"
+  ],
+  "n_frames": 100100,
+  "dim": 14,
+  "reward_frame_fraction": 0.03034,
+  "linear_r2": 0.1747,
+  "var_along_reward_direction": 1.727764,
+  "rank_of_reward_direction": 3,
+  "var_along_regression_direction": 0.0,
+  "eigenvalues_top": [
+    2.276409,
+    1.731226,
+    1.218058,
+    1.038571,
+    1.032344,
+    1.008821,
+    0.994961,
+    0.991552,
+    0.98635,
+    0.982927,
+    0.95889,
+    0.77989,
+    0.0,
+    0.0
+  ],
+  "eigenvalue_at_rank": 1.218058,
+  "note": "rank of the CROSS-CORRELATION direction nu in the correlation spectrum; rank 1 = dominant variance direction; higher rank = deeper in the spectrum = more capacity needed before unsupervised inclusion; linear_r2 (regression, secondary) caveats direction estimates for threshold-sparse rewards"
+}

@@ -1,0 +1,95 @@
+[Sat Jul 18 20:57:58 UTC 2026] offline_fit WM_RUN=tm2wm_finger_awareq1s1_seed9 ARM=aware DATA=/workspace/dreamerv3_runs/tm2_data/finger_q1_side1.pt UPDATES=500000 SEED=9
+/workspace/conda_envs/dreamerv3/lib/python3.11/site-packages/tensordict/_td.py:612: FutureWarning: TensorDict.to_module() is replacing an existing nn.Parameter in the destination module with a tensor leaf that is not an nn.Parameter. This historical behavior can remove the key from module.state_dict(). In tensordict v0.14, to_module() will preserve existing module parameter and buffer registrations by default. Pass preserve_module_state=False to keep the current replacement behavior, or preserve_module_state=True to opt in to the v0.14 behavior now.
+  local_out = _set_tensor_dict(
+Episode length: 1000
+Discount factor: 0.995
+Buffer capacity: 200,200
+Storage required: 0.01 GB
+Using CUDA:0 memory for storage.
+[92m2026-07-18 20:58:01,742 [torchrl][INFO][0m    Initialized LazyTensorStorage with torch.Size([200200]) shape[92m [END][0m
+Loaded static data: 200 eps x 1001 rows = 200200 rows; arm=aware (reward_coef=0.1, value_coef=0.1)
+  update      1/500000: consistency_loss=0.0158  pi_loss=-0.0002  reward_loss=2.6922  total_loss=0.8542  value_loss=2.6922
+  update    500/500000: consistency_loss=0.0017  pi_loss=-0.6164  reward_loss=0.2157  total_loss=0.0910  value_loss=0.3605
+  update   1000/500000: consistency_loss=0.0011  pi_loss=-0.3238  reward_loss=0.2134  total_loss=0.0914  value_loss=0.4734
+  update   1500/500000: consistency_loss=0.0012  pi_loss=-0.2304  reward_loss=0.1544  total_loss=0.0825  value_loss=0.4304
+  update   2000/500000: consistency_loss=0.0008  pi_loss=-0.1974  reward_loss=0.1396  total_loss=0.0741  value_loss=0.4374
+  update   2500/500000: consistency_loss=0.0008  pi_loss=-0.2196  reward_loss=0.1583  total_loss=0.0740  value_loss=0.4220
+  update   3000/500000: consistency_loss=0.0008  pi_loss=-0.2205  reward_loss=0.1651  total_loss=0.0816  value_loss=0.4869
+  update   3500/500000: consistency_loss=0.0007  pi_loss=-0.2153  reward_loss=0.1552  total_loss=0.0671  value_loss=0.3765
+  update   4000/500000: consistency_loss=0.0006  pi_loss=-0.2107  reward_loss=0.1316  total_loss=0.0724  value_loss=0.4670
+  update   4500/500000: consistency_loss=0.0007  pi_loss=-0.2030  reward_loss=0.1519  total_loss=0.0714  value_loss=0.4315
+  update   5000/500000: consistency_loss=0.0007  pi_loss=-0.2023  reward_loss=0.1413  total_loss=0.0717  value_loss=0.4406
+  update   5500/500000: consistency_loss=0.0006  pi_loss=-0.1901  reward_loss=0.1567  total_loss=0.0677  value_loss=0.4050
+  update   6000/500000: consistency_loss=0.0005  pi_loss=-0.1959  reward_loss=0.1369  total_loss=0.0650  value_loss=0.4085
+  update   6500/500000: consistency_loss=0.0005  pi_loss=-0.1766  reward_loss=0.1181  total_loss=0.0544  value_loss=0.3339
+  update   7000/500000: consistency_loss=0.0005  pi_loss=-0.2213  reward_loss=0.1522  total_loss=0.0682  value_loss=0.4288
+  update   7500/500000: consistency_loss=0.0005  pi_loss=-0.2210  reward_loss=0.1421  total_loss=0.0652  value_loss=0.4093
+  update   8000/500000: consistency_loss=0.0005  pi_loss=-0.2377  reward_loss=0.1518  total_loss=0.0633  value_loss=0.3874
+  update   8500/500000: consistency_loss=0.0005  pi_loss=-0.2665  reward_loss=0.1616  total_loss=0.0664  value_loss=0.4029
+  update   9000/500000: consistency_loss=0.0004  pi_loss=-0.2713  reward_loss=0.1303  total_loss=0.0620  value_loss=0.4008
+  update   9500/500000: consistency_loss=0.0005  pi_loss=-0.2755  reward_loss=0.1527  total_loss=0.0591  value_loss=0.3474
+  update  10000/500000: consistency_loss=0.0004  pi_loss=-0.2830  reward_loss=0.1670  total_loss=0.0578  value_loss=0.3356
+  update  10500/500000: consistency_loss=0.0004  pi_loss=-0.2683  reward_loss=0.1511  total_loss=0.0606  value_loss=0.3720
+  update  11000/500000: consistency_loss=0.0005  pi_loss=-0.2528  reward_loss=0.1249  total_loss=0.0613  value_loss=0.3924
+  update  11500/500000: consistency_loss=0.0004  pi_loss=-0.2822  reward_loss=0.1633  total_loss=0.0576  value_loss=0.3257
+  update  12000/500000: consistency_loss=0.0004  pi_loss=-0.2720  reward_loss=0.1408  total_loss=0.0532  value_loss=0.3102
+  update  12500/500000: consistency_loss=0.0004  pi_loss=-0.2786  reward_loss=0.1449  total_loss=0.0621  value_loss=0.3876
+  update  13000/500000: consistency_loss=0.0004  pi_loss=-0.2984  reward_loss=0.1557  total_loss=0.0599  value_loss=0.3619
+  update  13500/500000: consistency_loss=0.0005  pi_loss=-0.2790  reward_loss=0.1404  total_loss=0.0631  value_loss=0.3928
+  update  14000/500000: consistency_loss=0.0004  pi_loss=-0.2790  reward_loss=0.1209  total_loss=0.0566  value_loss=0.3734
+  update  14500/500000: consistency_loss=0.0005  pi_loss=-0.3126  reward_loss=0.1566  total_loss=0.0660  value_loss=0.4120
+  update  15000/500000: consistency_loss=0.0004  pi_loss=-0.3228  reward_loss=0.1383  total_loss=0.0571  value_loss=0.3516
+  update  15500/500000: consistency_loss=0.0003  pi_loss=-0.3561  reward_loss=0.1551  total_loss=0.0509  value_loss=0.2891
+  update  16000/500000: consistency_loss=0.0004  pi_loss=-0.3724  reward_loss=0.1418  total_loss=0.0524  value_loss=0.3075
+  update  16500/500000: consistency_loss=0.0003  pi_loss=-0.3973  reward_loss=0.1465  total_loss=0.0541  value_loss=0.3285
+  update  17000/500000: consistency_loss=0.0003  pi_loss=-0.4104  reward_loss=0.1497  total_loss=0.0545  value_loss=0.3288
+  update  17500/500000: consistency_loss=0.0003  pi_loss=-0.4128  reward_loss=0.1455  total_loss=0.0516  value_loss=0.3079
+  update  18000/500000: consistency_loss=0.0003  pi_loss=-0.4045  reward_loss=0.1423  total_loss=0.0530  value_loss=0.3198
+  update  18500/500000: consistency_loss=0.0003  pi_loss=-0.4329  reward_loss=0.1362  total_loss=0.0474  value_loss=0.2728
+  update  19000/500000: consistency_loss=0.0003  pi_loss=-0.4547  reward_loss=0.1283  total_loss=0.0424  value_loss=0.2399
+  update  19500/500000: consistency_loss=0.0003  pi_loss=-0.4656  reward_loss=0.1553  total_loss=0.0451  value_loss=0.2427
+  update  20000/500000: consistency_loss=0.0003  pi_loss=-0.5077  reward_loss=0.1578  total_loss=0.0485  value_loss=0.2679
+  update  20500/500000: consistency_loss=0.0003  pi_loss=-0.4815  reward_loss=0.1497  total_loss=0.0499  value_loss=0.2909
+  update  21000/500000: consistency_loss=0.0002  pi_loss=-0.4912  reward_loss=0.1553  total_loss=0.0495  value_loss=0.2923
+  update  21500/500000: consistency_loss=0.0003  pi_loss=-0.4861  reward_loss=0.1797  total_loss=0.0574  value_loss=0.3318
+  update  22000/500000: consistency_loss=0.0003  pi_loss=-0.5046  reward_loss=0.1613  total_loss=0.0534  value_loss=0.3204
+  update  22500/500000: consistency_loss=0.0003  pi_loss=-0.5100  reward_loss=0.1328  total_loss=0.0509  value_loss=0.3230
+  update  23000/500000: consistency_loss=0.0003  pi_loss=-0.5286  reward_loss=0.1496  total_loss=0.0538  value_loss=0.3340
+  update  23500/500000: consistency_loss=0.0003  pi_loss=-0.5683  reward_loss=0.1335  total_loss=0.0485  value_loss=0.3005
+  update  24000/500000: consistency_loss=0.0003  pi_loss=-0.6241  reward_loss=0.1603  total_loss=0.0490  value_loss=0.2784
+  update  24500/500000: consistency_loss=0.0002  pi_loss=-0.6774  reward_loss=0.1553  total_loss=0.0460  value_loss=0.2599
+  update  25000/500000: consistency_loss=0.0003  pi_loss=-0.7255  reward_loss=0.1479  total_loss=0.0494  value_loss=0.2950
+  update  25500/500000: consistency_loss=0.0002  pi_loss=-0.7612  reward_loss=0.1450  total_loss=0.0468  value_loss=0.2742
+  update  26000/500000: consistency_loss=0.0002  pi_loss=-0.7768  reward_loss=0.1296  total_loss=0.0449  value_loss=0.2713
+  update  26500/500000: consistency_loss=0.0002  pi_loss=-0.7594  reward_loss=0.1775  total_loss=0.0482  value_loss=0.2577
+  update  27000/500000: consistency_loss=0.0003  pi_loss=-0.7280  reward_loss=0.1321  total_loss=0.0456  value_loss=0.2707
+  update  27500/500000: consistency_loss=0.0002  pi_loss=-0.7630  reward_loss=0.1655  total_loss=0.0505  value_loss=0.2959
+  update  28000/500000: consistency_loss=0.0002  pi_loss=-0.7493  reward_loss=0.1444  total_loss=0.0507  value_loss=0.3180
+  update  28500/500000: consistency_loss=0.0002  pi_loss=-0.7667  reward_loss=0.1390  total_loss=0.0492  value_loss=0.3108
+  update  29000/500000: consistency_loss=0.0002  pi_loss=-0.7471  reward_loss=0.1367  total_loss=0.0499  value_loss=0.3175
+  update  29500/500000: consistency_loss=0.0002  pi_loss=-0.7528  reward_loss=0.1574  total_loss=0.0529  value_loss=0.3223
+  update  30000/500000: consistency_loss=0.0002  pi_loss=-0.7278  reward_loss=0.1549  total_loss=0.0519  value_loss=0.3233
+  update  30500/500000: consistency_loss=0.0002  pi_loss=-0.7138  reward_loss=0.1483  total_loss=0.0521  value_loss=0.3245
+  update  31000/500000: consistency_loss=0.0002  pi_loss=-0.7093  reward_loss=0.1536  total_loss=0.0489  value_loss=0.3015
+  update  31500/500000: consistency_loss=0.0002  pi_loss=-0.6843  reward_loss=0.1413  total_loss=0.0482  value_loss=0.3074
+  update  32000/500000: consistency_loss=0.0002  pi_loss=-0.6763  reward_loss=0.1488  total_loss=0.0488  value_loss=0.2964
+  update  32500/500000: consistency_loss=0.0002  pi_loss=-0.6530  reward_loss=0.1287  total_loss=0.0448  value_loss=0.2753
+  update  33000/500000: consistency_loss=0.0002  pi_loss=-0.6558  reward_loss=0.1401  total_loss=0.0447  value_loss=0.2712
+  update  33500/500000: consistency_loss=0.0002  pi_loss=-0.6393  reward_loss=0.1284  total_loss=0.0441  value_loss=0.2682
+  update  34000/500000: consistency_loss=0.0002  pi_loss=-0.6328  reward_loss=0.1155  total_loss=0.0427  value_loss=0.2713
+  update  34500/500000: consistency_loss=0.0002  pi_loss=-0.6608  reward_loss=0.1535  total_loss=0.0438  value_loss=0.2448
+  update  35000/500000: consistency_loss=0.0002  pi_loss=-0.6463  reward_loss=0.1473  total_loss=0.0423  value_loss=0.2380
+  update  35500/500000: consistency_loss=0.0002  pi_loss=-0.6045  reward_loss=0.1200  total_loss=0.0403  value_loss=0.2459
+  update  36000/500000: consistency_loss=0.0002  pi_loss=-0.5833  reward_loss=0.1146  total_loss=0.0395  value_loss=0.2432
+  update  36500/500000: consistency_loss=0.0002  pi_loss=-0.5719  reward_loss=0.1467  total_loss=0.0434  value_loss=0.2457
+  update  37000/500000: consistency_loss=0.0002  pi_loss=-0.5690  reward_loss=0.1336  total_loss=0.0440  value_loss=0.2640
+  update  37500/500000: consistency_loss=0.0002  pi_loss=-0.5403  reward_loss=0.1428  total_loss=0.0438  value_loss=0.2584
+  update  38000/500000: consistency_loss=0.0002  pi_loss=-0.5377  reward_loss=0.1352  total_loss=0.0437  value_loss=0.2696
+  update  38500/500000: consistency_loss=0.0001  pi_loss=-0.5121  reward_loss=0.1273  total_loss=0.0429  value_loss=0.2751
+  update  39000/500000: consistency_loss=0.0002  pi_loss=-0.5121  reward_loss=0.1517  total_loss=0.0489  value_loss=0.2995
+  update  39500/500000: consistency_loss=0.0002  pi_loss=-0.4938  reward_loss=0.1343  total_loss=0.0474  value_loss=0.3013
+  update  40000/500000: consistency_loss=0.0002  pi_loss=-0.4920  reward_loss=0.1456  total_loss=0.0487  value_loss=0.3071
+  update  40500/500000: consistency_loss=0.0002  pi_loss=-0.4825  reward_loss=0.1206  total_loss=0.0477  value_loss=0.3143
+  update  41000/500000: consistency_loss=0.0002  pi_loss=-0.4752  reward_loss=0.1304  total_loss=0.0472  value_loss=0.3109
+  update  41500/500000: consistency_loss=0.0002  pi_loss=-0.4913  reward_loss=0.1394  total_loss=0.0489  value_loss=0.3170
+  update  42000/500000: consistency_loss=0.0002  pi_loss=-0.4720  reward_loss=0.1243  total_loss=0.0491  value_loss=0.3264

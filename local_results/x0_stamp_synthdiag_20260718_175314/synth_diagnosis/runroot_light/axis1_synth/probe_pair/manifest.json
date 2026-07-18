@@ -1,0 +1,64 @@
+{
+  "task": "synth_reach",
+  "generator": {
+    "tool": "probing/synth_buffers.py",
+    "seed": 7,
+    "episodes": 12,
+    "length": 1000,
+    "density": 1.0,
+    "predictability": 1.0,
+    "amplitude": 1.0,
+    "env": {
+      "distractors": 8,
+      "distractor_scale": 1.0,
+      "coupling": 0.0,
+      "radius": 0.1
+    },
+    "latent_dims": {
+      "deter": 512,
+      "stoch": [
+        32,
+        4
+      ]
+    }
+  },
+  "regime": {
+    "name": "to_target_norm",
+    "threshold": 0.1,
+    "direction": "below"
+  },
+  "sides": {
+    "side0": {
+      "n_frames": 12012,
+      "n_in_regime": 365,
+      "occ_frame": 0.030386,
+      "n_labels": 365,
+      "labels_in_regime": 365,
+      "labels_out_regime": 0,
+      "density_realized": 1.0,
+      "predictability_realized": 1.0,
+      "amplitude": 1.0,
+      "n_episodes": 12,
+      "occ_target": 0.03
+    },
+    "side1": {
+      "n_frames": 12012,
+      "n_in_regime": 3590,
+      "occ_frame": 0.298868,
+      "n_labels": 3590,
+      "labels_in_regime": 3590,
+      "labels_out_regime": 0,
+      "density_realized": 1.0,
+      "predictability_realized": 1.0,
+      "amplitude": 1.0,
+      "n_episodes": 12,
+      "occ_target": 0.3
+    }
+  },
+  "sources": {
+    "scripted": {
+      "episodes": 24
+    }
+  },
+  "note": "directly synthesized buffer (no collector training); trajectories are label-independent; labels painted post-hoc with dialed density/predictability/amplitude"
+}
