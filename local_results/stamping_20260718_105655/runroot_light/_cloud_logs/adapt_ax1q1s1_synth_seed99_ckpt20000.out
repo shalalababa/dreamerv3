@@ -1,0 +1,989 @@
+[Sat Jul 18 04:23:50 UTC 2026] axis1 child starting RUN_ID=adapt_ax1q1s1_synth_seed99_ckpt20000 WM_RUN=ax1wm_synth_q1s1_seed99 job=NA host=7882d2cf5dc9
+[Sat Jul 18 04:23:50 UTC 2026] env prepared: python=/workspace/conda_envs/dreamerv3/bin/python
+python_executable=/workspace/conda_envs/dreamerv3/bin/python
+[Sat Jul 18 04:23:50 UTC 2026] offline_fit WM_RUN=ax1wm_synth_q1s1_seed99 REPLAY=/workspace/dreamerv3_runs/axis1_synth/q1/side1 UPDATES=20000 SEED=99
+[Sat Jul 18 04:23:50 UTC 2026] fit flags: --agent.expl.mode task  (arm=full size=default)
+Logdir: /workspace/dreamerv3_runs/ax1wm_synth_q1s1_seed99
+Static replay: /workspace/dreamerv3_runs/axis1_synth/q1/side1
+Observations
+  position         Space(float32, shape=(2,), low=-inf, high=inf)
+  velocity         Space(float32, shape=(2,), low=-inf, high=inf)
+  distractor       Space(float32, shape=(8,), low=-inf, high=inf)
+  to_target        Space(float32, shape=(2,), low=-inf, high=inf)
+  reward           Space(float32, shape=(), low=-inf, high=inf)
+  is_first         Space(bool, shape=(), low=False, high=True)
+  is_last          Space(bool, shape=(), low=False, high=True)
+  is_terminal      Space(bool, shape=(), low=False, high=True)
+Actions
+  action           Space(float32, shape=(2,), low=-1.0, high=1.0)
+Extras
+  consec           Space(int32, shape=(), low=-2147483648, high=2147483647)
+  stepid           Space(uint8, shape=(20,), low=0, high=255)
+  dyn/deter        Space(float32, shape=(512,), low=-inf, high=inf)
+  dyn/stoch        Space(float32, shape=(32, 4), low=-inf, high=inf)
+JAX devices (1): [cuda:0]
+Policy devices: cuda:0
+Train devices:  cuda:0
+Initializing parameters...
+Optimizer opt has 638,801 params:
+       364,160 dyn
+        66,111 val
+        57,663 rew
+        50,446 dec
+        49,796 pol
+        41,153 con
+         9,472 enc
+Done initializing!
+Compiling 1 checkpoint groups...
+Largest checkpoint group: 0 GB
+Compiling train and report...
+Train cost analysis:
+No available
+Report cost analysis:
+No available
+Done compiling!
+Did not find any checkpoint.
+Loaded static replay: 93700 sampling items (seq length 65).
+  update     1/20000: wm_total=0.000  
+  update    25/20000: wm_total=30.002  con=0.677  distractor=5.763  dyn=7.658  position=1.029  rep=7.658  rew=5.541  to_target=0.797  velocity=0.880
+  update    50/20000: wm_total=28.635  con=0.647  distractor=5.898  dyn=6.936  position=1.126  rep=6.936  rew=5.539  to_target=0.728  velocity=0.826
+  update    75/20000: wm_total=27.464  con=0.628  distractor=5.983  dyn=6.357  position=0.914  rep=6.357  rew=5.533  to_target=0.890  velocity=0.803
+Start JAX profiler: /workspace/dreamerv3_runs/ax1wm_synth_q1s1_seed99
+  update   100/20000: wm_total=24.933  con=0.594  distractor=5.331  dyn=5.459  position=0.888  rep=5.459  rew=5.525  to_target=0.881  velocity=0.797
+Stop JAX profiler
+  update   125/20000: wm_total=22.705  con=0.569  distractor=5.026  dyn=4.616  position=0.968  rep=4.616  rew=5.511  to_target=0.715  velocity=0.684
+  update   150/20000: wm_total=21.456  con=0.476  distractor=4.962  dyn=4.152  position=0.680  rep=4.152  rew=5.493  to_target=0.847  velocity=0.694
+  update   175/20000: wm_total=19.645  con=0.389  distractor=4.642  dyn=3.650  position=0.743  rep=3.650  rew=5.470  to_target=0.630  velocity=0.472
+  update   200/20000: wm_total=17.937  con=0.311  distractor=4.072  dyn=3.270  position=0.532  rep=3.270  rew=5.439  to_target=0.646  velocity=0.396
+  update   225/20000: wm_total=16.747  con=0.239  distractor=3.850  dyn=2.943  position=0.580  rep=2.943  rew=5.404  to_target=0.523  velocity=0.266
+  update   250/20000: wm_total=15.513  con=0.181  distractor=3.564  dyn=2.625  position=0.421  rep=2.625  rew=5.357  to_target=0.500  velocity=0.239
+  update   275/20000: wm_total=14.428  con=0.139  distractor=3.439  dyn=2.258  position=0.398  rep=2.258  rew=5.305  to_target=0.416  velocity=0.215
+  update   300/20000: wm_total=13.239  con=0.109  distractor=3.260  dyn=1.863  position=0.322  rep=1.863  rew=5.243  to_target=0.411  velocity=0.168
+  update   325/20000: wm_total=12.460  con=0.085  distractor=3.147  dyn=1.652  position=0.335  rep=1.652  rew=5.185  to_target=0.256  velocity=0.147
+  update   350/20000: wm_total=12.056  con=0.072  distractor=3.288  dyn=1.406  position=0.348  rep=1.406  rew=5.117  to_target=0.303  velocity=0.114
+  update   375/20000: wm_total=11.180  con=0.061  distractor=3.075  dyn=1.186  position=0.273  rep=1.186  rew=5.038  to_target=0.234  velocity=0.126
+  update   400/20000: wm_total=11.136  con=0.053  distractor=3.274  dyn=1.101  position=0.291  rep=1.101  rew=4.965  to_target=0.235  velocity=0.116
+  update   425/20000: wm_total=10.916  con=0.047  distractor=3.209  dyn=1.096  position=0.270  rep=1.096  rew=4.879  to_target=0.217  velocity=0.102
+  update   450/20000: wm_total=10.699  con=0.043  distractor=3.148  dyn=1.069  position=0.277  rep=1.069  rew=4.795  to_target=0.215  velocity=0.084
+  update   475/20000: wm_total=10.617  con=0.039  distractor=3.151  dyn=1.093  position=0.258  rep=1.093  rew=4.716  to_target=0.201  velocity=0.066
+  update   500/20000: wm_total=10.323  con=0.036  distractor=3.055  dyn=1.065  position=0.228  rep=1.065  rew=4.629  to_target=0.195  velocity=0.049
+  update   525/20000: wm_total=10.394  con=0.035  distractor=3.184  dyn=1.092  position=0.223  rep=1.092  rew=4.519  to_target=0.188  velocity=0.061
+  update   550/20000: wm_total=10.201  con=0.035  distractor=3.071  dyn=1.090  position=0.227  rep=1.090  rew=4.424  to_target=0.195  velocity=0.068
+  update   575/20000: wm_total=10.041  con=0.033  distractor=3.085  dyn=1.081  position=0.204  rep=1.081  rew=4.315  to_target=0.183  velocity=0.059
+  update   600/20000: wm_total=9.903  con=0.034  distractor=3.079  dyn=1.074  position=0.194  rep=1.074  rew=4.210  to_target=0.176  velocity=0.063
+  update   625/20000: wm_total=10.061  con=0.032  distractor=3.298  dyn=1.095  position=0.214  rep=1.095  rew=4.093  to_target=0.174  velocity=0.060
+  update   650/20000: wm_total=9.760  con=0.031  distractor=3.076  dyn=1.126  position=0.183  rep=1.126  rew=3.996  to_target=0.161  velocity=0.061
+  update   675/20000: wm_total=9.636  con=0.029  distractor=3.148  dyn=1.086  position=0.212  rep=1.086  rew=3.865  to_target=0.155  velocity=0.055
+  update   700/20000: wm_total=9.599  con=0.029  distractor=3.214  dyn=1.133  position=0.157  rep=1.133  rew=3.757  to_target=0.125  velocity=0.052
+  update   725/20000: wm_total=9.500  con=0.028  distractor=3.185  dyn=1.165  position=0.146  rep=1.165  rew=3.646  to_target=0.106  velocity=0.059
+  update   750/20000: wm_total=9.213  con=0.027  distractor=3.040  dyn=1.190  position=0.104  rep=1.190  rew=3.533  to_target=0.080  velocity=0.048
+  update   775/20000: wm_total=9.086  con=0.027  distractor=2.905  dyn=1.247  position=0.119  rep=1.247  rew=3.402  to_target=0.091  velocity=0.049
+  update   800/20000: wm_total=9.303  con=0.026  distractor=3.158  dyn=1.305  position=0.095  rep=1.305  rew=3.296  to_target=0.071  velocity=0.045
+  update   825/20000: wm_total=8.985  con=0.025  distractor=3.018  dyn=1.286  position=0.124  rep=1.286  rew=3.111  to_target=0.082  velocity=0.054
+  update   850/20000: wm_total=9.051  con=0.025  distractor=2.924  dyn=1.451  position=0.086  rep=1.451  rew=3.006  to_target=0.056  velocity=0.052
+  update   875/20000: wm_total=9.122  con=0.025  distractor=3.011  dyn=1.507  position=0.101  rep=1.507  rew=2.858  to_target=0.065  velocity=0.047
+  update   900/20000: wm_total=9.216  con=0.024  distractor=2.821  dyn=1.707  position=0.075  rep=1.707  rew=2.779  to_target=0.056  velocity=0.047
+  update   925/20000: wm_total=9.310  con=0.024  distractor=2.830  dyn=1.802  position=0.102  rep=1.802  rew=2.633  to_target=0.064  velocity=0.054
+  update   950/20000: wm_total=9.453  con=0.024  distractor=2.742  dyn=1.979  position=0.089  rep=1.979  rew=2.525  to_target=0.066  velocity=0.051
+  update   975/20000: wm_total=9.615  con=0.024  distractor=2.798  dyn=2.098  position=0.105  rep=2.098  rew=2.366  to_target=0.072  velocity=0.054
+  update  1000/20000: wm_total=9.460  con=0.024  distractor=2.535  dyn=2.230  position=0.106  rep=2.230  rew=2.207  to_target=0.076  velocity=0.052
+  update  1025/20000: wm_total=9.583  con=0.023  distractor=2.384  dyn=2.413  position=0.078  rep=2.413  rew=2.164  to_target=0.055  velocity=0.053
+  update  1050/20000: wm_total=9.703  con=0.023  distractor=2.460  dyn=2.508  position=0.086  rep=2.508  rew=2.002  to_target=0.065  velocity=0.050
+  update  1075/20000: wm_total=9.694  con=0.023  distractor=2.381  dyn=2.599  position=0.094  rep=2.599  rew=1.883  to_target=0.063  velocity=0.053
+  update  1100/20000: wm_total=9.731  con=0.023  distractor=2.368  dyn=2.652  position=0.111  rep=2.652  rew=1.788  to_target=0.082  velocity=0.055
+  update  1125/20000: wm_total=9.962  con=0.023  distractor=2.276  dyn=2.859  position=0.090  rep=2.859  rew=1.736  to_target=0.066  velocity=0.053
+  update  1150/20000: wm_total=10.077  con=0.022  distractor=2.251  dyn=2.957  position=0.101  rep=2.957  rew=1.668  to_target=0.069  velocity=0.053
+  update  1175/20000: wm_total=9.841  con=0.022  distractor=2.095  dyn=2.988  position=0.103  rep=2.988  rew=1.516  to_target=0.070  velocity=0.058
+  update  1200/20000: wm_total=9.807  con=0.022  distractor=2.132  dyn=3.002  position=0.128  rep=3.002  rew=1.372  to_target=0.095  velocity=0.055
+  update  1225/20000: wm_total=9.502  con=0.022  distractor=1.872  dyn=3.031  position=0.097  rep=3.031  rew=1.321  to_target=0.074  velocity=0.055
+  update  1250/20000: wm_total=9.678  con=0.022  distractor=1.972  dyn=3.090  position=0.087  rep=3.090  rew=1.306  to_target=0.061  velocity=0.050
+  update  1275/20000: wm_total=9.872  con=0.022  distractor=2.025  dyn=3.221  position=0.081  rep=3.221  rew=1.194  to_target=0.052  velocity=0.056
+  update  1300/20000: wm_total=9.859  con=0.022  distractor=1.808  dyn=3.229  position=0.078  rep=3.229  rew=1.388  to_target=0.056  velocity=0.049
+  update  1325/20000: wm_total=9.886  con=0.022  distractor=1.867  dyn=3.277  position=0.083  rep=3.277  rew=1.254  to_target=0.064  velocity=0.042
+  update  1350/20000: wm_total=9.828  con=0.022  distractor=1.867  dyn=3.319  position=0.079  rep=3.319  rew=1.107  to_target=0.063  velocity=0.051
+  update  1375/20000: wm_total=9.836  con=0.022  distractor=1.725  dyn=3.408  position=0.068  rep=3.408  rew=1.122  to_target=0.041  velocity=0.042
+  update  1400/20000: wm_total=9.438  con=0.022  distractor=1.744  dyn=3.306  position=0.083  rep=3.306  rew=0.876  to_target=0.052  velocity=0.051
+  update  1425/20000: wm_total=9.824  con=0.022  distractor=1.760  dyn=3.348  position=0.075  rep=3.348  rew=1.178  to_target=0.049  velocity=0.044
+  update  1450/20000: wm_total=9.996  con=0.021  distractor=1.676  dyn=3.565  position=0.087  rep=3.565  rew=0.969  to_target=0.069  velocity=0.043
+  update  1475/20000: wm_total=9.718  con=0.021  distractor=1.649  dyn=3.424  position=0.069  rep=3.424  rew=1.032  to_target=0.053  velocity=0.044
+  update  1500/20000: wm_total=9.906  con=0.021  distractor=1.650  dyn=3.543  position=0.066  rep=3.543  rew=0.994  to_target=0.045  velocity=0.043
+  update  1525/20000: wm_total=10.111  con=0.021  distractor=1.668  dyn=3.595  position=0.072  rep=3.595  rew=1.064  to_target=0.048  velocity=0.048
+  update  1550/20000: wm_total=10.275  con=0.021  distractor=1.621  dyn=3.750  position=0.049  rep=3.750  rew=1.001  to_target=0.038  velocity=0.044
+  update  1575/20000: wm_total=9.506  con=0.021  distractor=1.452  dyn=3.565  position=0.068  rep=3.565  rew=0.741  to_target=0.048  velocity=0.046
+  update  1600/20000: wm_total=10.486  con=0.021  distractor=1.470  dyn=3.828  position=0.081  rep=3.828  rew=1.162  to_target=0.062  velocity=0.034
+  update  1625/20000: wm_total=10.118  con=0.021  distractor=1.655  dyn=3.727  position=0.070  rep=3.727  rew=0.819  to_target=0.052  velocity=0.045
+  update  1650/20000: wm_total=10.424  con=0.021  distractor=1.415  dyn=3.896  position=0.069  rep=3.896  rew=1.040  to_target=0.050  velocity=0.037
+  update  1675/20000: wm_total=10.351  con=0.021  distractor=1.358  dyn=3.908  position=0.077  rep=3.908  rew=0.985  to_target=0.051  velocity=0.042
+  update  1700/20000: wm_total=10.161  con=0.021  distractor=1.414  dyn=3.901  position=0.057  rep=3.901  rew=0.773  to_target=0.043  velocity=0.050
+  update  1725/20000: wm_total=10.796  con=0.021  distractor=1.376  dyn=4.042  position=0.037  rep=4.042  rew=1.208  to_target=0.034  velocity=0.035
+  update  1750/20000: wm_total=10.368  con=0.021  distractor=1.320  dyn=4.059  position=0.062  rep=4.059  rew=0.756  to_target=0.048  velocity=0.043
+  update  1775/20000: wm_total=10.679  con=0.021  distractor=1.264  dyn=4.154  position=0.057  rep=4.154  rew=0.948  to_target=0.044  velocity=0.036
+  update  1800/20000: wm_total=10.446  con=0.021  distractor=1.286  dyn=4.038  position=0.068  rep=4.038  rew=0.913  to_target=0.045  velocity=0.038
+  update  1825/20000: wm_total=11.056  con=0.021  distractor=1.218  dyn=4.235  position=0.051  rep=4.235  rew=1.229  to_target=0.036  velocity=0.032
+  update  1850/20000: wm_total=10.744  con=0.021  distractor=1.112  dyn=4.157  position=0.042  rep=4.157  rew=1.190  to_target=0.033  velocity=0.033
+  update  1875/20000: wm_total=10.858  con=0.021  distractor=1.104  dyn=4.223  position=0.052  rep=4.223  rew=1.160  to_target=0.043  velocity=0.032
+  update  1900/20000: wm_total=10.774  con=0.021  distractor=1.201  dyn=4.275  position=0.040  rep=4.275  rew=0.890  to_target=0.032  velocity=0.039
+  update  1925/20000: wm_total=10.637  con=0.021  distractor=1.072  dyn=4.308  position=0.056  rep=4.308  rew=0.799  to_target=0.039  velocity=0.034
+  update  1950/20000: wm_total=11.323  con=0.021  distractor=1.100  dyn=4.452  position=0.052  rep=4.452  rew=1.177  to_target=0.037  velocity=0.032
+  update  1975/20000: wm_total=10.731  con=0.021  distractor=1.035  dyn=4.335  position=0.056  rep=4.335  rew=0.880  to_target=0.037  velocity=0.033
+  update  2000/20000: wm_total=10.635  con=0.021  distractor=1.075  dyn=4.347  position=0.074  rep=4.347  rew=0.684  to_target=0.054  velocity=0.034
+  update  2025/20000: wm_total=10.614  con=0.021  distractor=1.134  dyn=4.291  position=0.065  rep=4.291  rew=0.741  to_target=0.042  velocity=0.029
+  update  2050/20000: wm_total=10.756  con=0.021  distractor=0.992  dyn=4.432  position=0.070  rep=4.432  rew=0.729  to_target=0.047  velocity=0.034
+  update  2075/20000: wm_total=10.688  con=0.021  distractor=1.019  dyn=4.373  position=0.048  rep=4.373  rew=0.790  to_target=0.035  velocity=0.029
+  update  2100/20000: wm_total=10.896  con=0.021  distractor=0.941  dyn=4.514  position=0.051  rep=4.514  rew=0.784  to_target=0.041  velocity=0.031
+  update  2125/20000: wm_total=10.905  con=0.021  distractor=0.984  dyn=4.582  position=0.069  rep=4.582  rew=0.583  to_target=0.055  velocity=0.030
+  update  2150/20000: wm_total=10.662  con=0.021  distractor=0.961  dyn=4.346  position=0.043  rep=4.346  rew=0.884  to_target=0.032  velocity=0.030
+  update  2175/20000: wm_total=10.816  con=0.021  distractor=0.933  dyn=4.496  position=0.049  rep=4.496  rew=0.755  to_target=0.040  velocity=0.027
+  update  2200/20000: wm_total=10.632  con=0.021  distractor=0.954  dyn=4.486  position=0.046  rep=4.486  rew=0.578  to_target=0.032  velocity=0.028
+  update  2225/20000: wm_total=10.646  con=0.021  distractor=0.989  dyn=4.431  position=0.045  rep=4.431  rew=0.669  to_target=0.031  velocity=0.029
+  update  2250/20000: wm_total=11.091  con=0.021  distractor=0.879  dyn=4.636  position=0.035  rep=4.636  rew=0.836  to_target=0.025  velocity=0.023
+  update  2275/20000: wm_total=10.951  con=0.021  distractor=0.905  dyn=4.571  position=0.034  rep=4.571  rew=0.800  to_target=0.026  velocity=0.022
+  update  2300/20000: wm_total=10.923  con=0.021  distractor=1.039  dyn=4.613  position=0.054  rep=4.613  rew=0.521  to_target=0.037  velocity=0.026
+  update  2325/20000: wm_total=10.899  con=0.021  distractor=0.859  dyn=4.627  position=0.031  rep=4.627  rew=0.684  to_target=0.026  velocity=0.024
+  update  2350/20000: wm_total=10.564  con=0.021  distractor=0.834  dyn=4.465  position=0.045  rep=4.465  rew=0.672  to_target=0.035  velocity=0.028
+  update  2375/20000: wm_total=11.154  con=0.021  distractor=0.957  dyn=4.684  position=0.040  rep=4.684  rew=0.716  to_target=0.027  velocity=0.025
+  update  2400/20000: wm_total=10.881  con=0.021  distractor=0.823  dyn=4.661  position=0.032  rep=4.661  rew=0.627  to_target=0.028  velocity=0.028
+  update  2425/20000: wm_total=10.606  con=0.021  distractor=0.919  dyn=4.653  position=0.046  rep=4.653  rew=0.256  to_target=0.032  velocity=0.026
+  update  2450/20000: wm_total=10.690  con=0.021  distractor=0.858  dyn=4.590  position=0.034  rep=4.590  rew=0.549  to_target=0.025  velocity=0.023
+  update  2475/20000: wm_total=10.954  con=0.021  distractor=0.813  dyn=4.715  position=0.049  rep=4.715  rew=0.584  to_target=0.032  velocity=0.024
+  update  2500/20000: wm_total=10.755  con=0.021  distractor=0.839  dyn=4.639  position=0.044  rep=4.639  rew=0.519  to_target=0.031  velocity=0.022
+  update  2525/20000: wm_total=10.626  con=0.021  distractor=0.779  dyn=4.614  position=0.044  rep=4.614  rew=0.505  to_target=0.029  velocity=0.020
+  update  2550/20000: wm_total=10.318  con=0.021  distractor=0.927  dyn=4.497  position=0.048  rep=4.497  rew=0.276  to_target=0.030  velocity=0.024
+  update  2575/20000: wm_total=10.942  con=0.021  distractor=0.892  dyn=4.697  position=0.034  rep=4.697  rew=0.551  to_target=0.030  velocity=0.021
+  update  2600/20000: wm_total=10.884  con=0.021  distractor=0.959  dyn=4.661  position=0.044  rep=4.661  rew=0.488  to_target=0.031  velocity=0.021
+  update  2625/20000: wm_total=10.528  con=0.020  distractor=0.799  dyn=4.631  position=0.054  rep=4.631  rew=0.329  to_target=0.041  velocity=0.023
+  update  2650/20000: wm_total=10.818  con=0.020  distractor=0.818  dyn=4.669  position=0.021  rep=4.669  rew=0.584  to_target=0.020  velocity=0.017
+  update  2675/20000: wm_total=11.088  con=0.020  distractor=0.795  dyn=4.875  position=0.036  rep=4.875  rew=0.440  to_target=0.027  velocity=0.020
+  update  2700/20000: wm_total=10.789  con=0.020  distractor=0.874  dyn=4.761  position=0.045  rep=4.761  rew=0.274  to_target=0.033  velocity=0.022
+  update  2725/20000: wm_total=10.563  con=0.020  distractor=0.811  dyn=4.618  position=0.054  rep=4.618  rew=0.389  to_target=0.034  velocity=0.019
+  update  2750/20000: wm_total=10.871  con=0.020  distractor=0.758  dyn=4.887  position=0.046  rep=4.887  rew=0.214  to_target=0.036  velocity=0.022
+  update  2775/20000: wm_total=10.759  con=0.020  distractor=0.864  dyn=4.747  position=0.035  rep=4.747  rew=0.296  to_target=0.029  velocity=0.021
+  update  2800/20000: wm_total=10.821  con=0.020  distractor=0.798  dyn=4.799  position=0.036  rep=4.799  rew=0.319  to_target=0.030  velocity=0.020
+  update  2825/20000: wm_total=10.944  con=0.020  distractor=0.748  dyn=4.889  position=0.042  rep=4.889  rew=0.299  to_target=0.033  velocity=0.024
+  update  2850/20000: wm_total=11.175  con=0.020  distractor=0.721  dyn=5.007  position=0.027  rep=5.007  rew=0.354  to_target=0.020  velocity=0.019
+  update  2875/20000: wm_total=10.981  con=0.020  distractor=0.694  dyn=4.928  position=0.048  rep=4.928  rew=0.308  to_target=0.034  velocity=0.021
+  update  2900/20000: wm_total=10.878  con=0.020  distractor=0.694  dyn=4.914  position=0.042  rep=4.914  rew=0.244  to_target=0.033  velocity=0.017
+  update  2925/20000: wm_total=11.195  con=0.020  distractor=0.693  dyn=5.004  position=0.029  rep=5.004  rew=0.402  to_target=0.025  velocity=0.018
+  update  2950/20000: wm_total=11.383  con=0.020  distractor=0.650  dyn=5.108  position=0.039  rep=5.108  rew=0.409  to_target=0.030  velocity=0.018
+  update  2975/20000: wm_total=10.552  con=0.020  distractor=0.653  dyn=4.725  position=0.040  rep=4.725  rew=0.339  to_target=0.030  velocity=0.019
+  update  3000/20000: wm_total=11.152  con=0.020  distractor=0.632  dyn=4.999  position=0.051  rep=4.999  rew=0.390  to_target=0.039  velocity=0.020
+  update  3025/20000: wm_total=10.721  con=0.020  distractor=0.653  dyn=4.839  position=0.038  rep=4.839  rew=0.277  to_target=0.031  velocity=0.022
+  update  3050/20000: wm_total=10.588  con=0.020  distractor=0.633  dyn=4.781  position=0.046  rep=4.781  rew=0.273  to_target=0.036  velocity=0.019
+  update  3075/20000: wm_total=10.919  con=0.020  distractor=0.622  dyn=4.952  position=0.030  rep=4.952  rew=0.303  to_target=0.023  velocity=0.017
+  update  3100/20000: wm_total=10.604  con=0.020  distractor=0.625  dyn=4.800  position=0.038  rep=4.800  rew=0.269  to_target=0.030  velocity=0.020
+  update  3125/20000: wm_total=10.877  con=0.020  distractor=0.612  dyn=4.913  position=0.047  rep=4.913  rew=0.318  to_target=0.035  velocity=0.018
+  update  3150/20000: wm_total=11.098  con=0.020  distractor=0.608  dyn=5.014  position=0.050  rep=5.014  rew=0.334  to_target=0.038  velocity=0.019
+  update  3175/20000: wm_total=10.908  con=0.020  distractor=0.575  dyn=4.943  position=0.021  rep=4.943  rew=0.374  to_target=0.018  velocity=0.014
+  update  3200/20000: wm_total=10.691  con=0.020  distractor=0.546  dyn=4.899  position=0.042  rep=4.899  rew=0.237  to_target=0.030  velocity=0.017
+  update  3225/20000: wm_total=10.475  con=0.020  distractor=0.568  dyn=4.795  position=0.041  rep=4.795  rew=0.204  to_target=0.032  velocity=0.019
+  update  3250/20000: wm_total=10.808  con=0.020  distractor=0.532  dyn=4.859  position=0.023  rep=4.859  rew=0.481  to_target=0.018  velocity=0.016
+  update  3275/20000: wm_total=10.845  con=0.020  distractor=0.575  dyn=4.966  position=0.033  rep=4.966  rew=0.233  to_target=0.028  velocity=0.022
+  update  3300/20000: wm_total=10.993  con=0.020  distractor=0.554  dyn=5.052  position=0.030  rep=5.052  rew=0.245  to_target=0.024  velocity=0.016
+  update  3325/20000: wm_total=11.126  con=0.020  distractor=0.558  dyn=5.088  position=0.028  rep=5.088  rew=0.304  to_target=0.024  velocity=0.016
+  update  3350/20000: wm_total=11.214  con=0.020  distractor=0.581  dyn=5.139  position=0.041  rep=5.139  rew=0.249  to_target=0.029  velocity=0.017
+  update  3375/20000: wm_total=11.036  con=0.020  distractor=0.576  dyn=5.069  position=0.045  rep=5.069  rew=0.208  to_target=0.032  velocity=0.016
+  update  3400/20000: wm_total=10.627  con=0.020  distractor=0.557  dyn=4.896  position=0.029  rep=4.896  rew=0.189  to_target=0.021  velocity=0.019
+  update  3425/20000: wm_total=10.931  con=0.020  distractor=0.561  dyn=4.970  position=0.034  rep=4.970  rew=0.333  to_target=0.027  velocity=0.016
+  update  3450/20000: wm_total=10.927  con=0.020  distractor=0.549  dyn=5.018  position=0.030  rep=5.018  rew=0.252  to_target=0.021  velocity=0.017
+  update  3475/20000: wm_total=11.204  con=0.020  distractor=0.561  dyn=5.197  position=0.045  rep=5.197  rew=0.133  to_target=0.030  velocity=0.021
+  update  3500/20000: wm_total=10.874  con=0.020  distractor=0.534  dyn=5.060  position=0.034  rep=5.060  rew=0.126  to_target=0.021  velocity=0.018
+  update  3525/20000: wm_total=10.665  con=0.020  distractor=0.537  dyn=4.975  position=0.030  rep=4.975  rew=0.088  to_target=0.018  velocity=0.020
+  update  3550/20000: wm_total=10.639  con=0.020  distractor=0.533  dyn=4.928  position=0.045  rep=4.928  rew=0.135  to_target=0.034  velocity=0.016
+  update  3575/20000: wm_total=10.934  con=0.020  distractor=0.529  dyn=5.031  position=0.035  rep=5.031  rew=0.248  to_target=0.025  velocity=0.015
+  update  3600/20000: wm_total=11.245  con=0.020  distractor=0.559  dyn=5.169  position=0.033  rep=5.169  rew=0.251  to_target=0.026  velocity=0.017
+  update  3625/20000: wm_total=10.909  con=0.020  distractor=0.515  dyn=5.024  position=0.025  rep=5.024  rew=0.267  to_target=0.020  velocity=0.014
+  update  3650/20000: wm_total=10.969  con=0.020  distractor=0.538  dyn=5.057  position=0.032  rep=5.057  rew=0.226  to_target=0.023  velocity=0.016
+  update  3675/20000: wm_total=10.940  con=0.020  distractor=0.490  dyn=5.041  position=0.022  rep=5.041  rew=0.296  to_target=0.016  velocity=0.013
+  update  3700/20000: wm_total=10.691  con=0.020  distractor=0.501  dyn=4.978  position=0.035  rep=4.978  rew=0.139  to_target=0.024  velocity=0.015
+  update  3725/20000: wm_total=11.162  con=0.020  distractor=0.566  dyn=5.112  position=0.029  rep=5.112  rew=0.288  to_target=0.019  velocity=0.017
+  update  3750/20000: wm_total=11.366  con=0.020  distractor=0.519  dyn=5.240  position=0.051  rep=5.240  rew=0.243  to_target=0.037  velocity=0.015
+  update  3775/20000: wm_total=10.547  con=0.020  distractor=0.526  dyn=4.879  position=0.036  rep=4.879  rew=0.168  to_target=0.025  velocity=0.014
+  update  3800/20000: wm_total=10.635  con=0.020  distractor=0.523  dyn=4.933  position=0.040  rep=4.933  rew=0.144  to_target=0.027  velocity=0.015
+  update  3825/20000: wm_total=10.846  con=0.020  distractor=0.539  dyn=4.966  position=0.026  rep=4.966  rew=0.300  to_target=0.017  velocity=0.012
+  update  3850/20000: wm_total=11.287  con=0.020  distractor=0.521  dyn=5.213  position=0.025  rep=5.213  rew=0.260  to_target=0.020  velocity=0.014
+  update  3875/20000: wm_total=11.022  con=0.020  distractor=0.512  dyn=5.133  position=0.027  rep=5.133  rew=0.164  to_target=0.018  velocity=0.014
+  update  3900/20000: wm_total=10.882  con=0.020  distractor=0.517  dyn=5.049  position=0.040  rep=5.049  rew=0.168  to_target=0.025  velocity=0.014
+  update  3925/20000: wm_total=10.920  con=0.020  distractor=0.523  dyn=4.988  position=0.022  rep=4.988  rew=0.351  to_target=0.019  velocity=0.011
+  update  3950/20000: wm_total=11.050  con=0.020  distractor=0.525  dyn=5.161  position=0.029  rep=5.161  rew=0.117  to_target=0.021  velocity=0.016
+  update  3975/20000: wm_total=10.797  con=0.020  distractor=0.531  dyn=4.949  position=0.026  rep=4.949  rew=0.289  to_target=0.020  velocity=0.013
+  update  4000/20000: wm_total=10.977  con=0.020  distractor=0.497  dyn=5.041  position=0.023  rep=5.041  rew=0.326  to_target=0.018  velocity=0.011
+  update  4025/20000: wm_total=10.825  con=0.020  distractor=0.515  dyn=4.990  position=0.028  rep=4.990  rew=0.249  to_target=0.022  velocity=0.012
+  update  4050/20000: wm_total=10.876  con=0.020  distractor=0.516  dyn=5.022  position=0.021  rep=5.022  rew=0.244  to_target=0.017  velocity=0.014
+  update  4075/20000: wm_total=10.872  con=0.020  distractor=0.492  dyn=5.049  position=0.029  rep=5.049  rew=0.202  to_target=0.021  velocity=0.010
+  update  4100/20000: wm_total=11.238  con=0.020  distractor=0.490  dyn=5.157  position=0.018  rep=5.157  rew=0.372  to_target=0.014  velocity=0.010
+  update  4125/20000: wm_total=10.771  con=0.020  distractor=0.496  dyn=4.951  position=0.029  rep=4.951  rew=0.289  to_target=0.021  velocity=0.011
+  update  4150/20000: wm_total=10.681  con=0.020  distractor=0.494  dyn=4.996  position=0.023  rep=4.996  rew=0.122  to_target=0.017  velocity=0.013
+  update  4175/20000: wm_total=10.735  con=0.020  distractor=0.492  dyn=4.977  position=0.034  rep=4.977  rew=0.206  to_target=0.019  velocity=0.011
+  update  4200/20000: wm_total=10.685  con=0.020  distractor=0.523  dyn=4.938  position=0.035  rep=4.938  rew=0.197  to_target=0.022  velocity=0.012
+  update  4225/20000: wm_total=10.815  con=0.020  distractor=0.499  dyn=4.984  position=0.030  rep=4.984  rew=0.267  to_target=0.022  velocity=0.010
+  update  4250/20000: wm_total=10.637  con=0.020  distractor=0.480  dyn=4.911  position=0.028  rep=4.911  rew=0.254  to_target=0.020  velocity=0.011
+  update  4275/20000: wm_total=10.708  con=0.020  distractor=0.482  dyn=4.930  position=0.028  rep=4.930  rew=0.283  to_target=0.019  velocity=0.014
+  update  4300/20000: wm_total=10.956  con=0.020  distractor=0.512  dyn=5.060  position=0.031  rep=5.060  rew=0.236  to_target=0.024  velocity=0.012
+  update  4325/20000: wm_total=10.878  con=0.020  distractor=0.499  dyn=5.027  position=0.038  rep=5.027  rew=0.232  to_target=0.026  velocity=0.010
+  update  4350/20000: wm_total=10.645  con=0.020  distractor=0.505  dyn=4.964  position=0.030  rep=4.964  rew=0.129  to_target=0.021  velocity=0.012
+  update  4375/20000: wm_total=10.837  con=0.020  distractor=0.526  dyn=5.020  position=0.033  rep=5.020  rew=0.180  to_target=0.024  velocity=0.013
+  update  4400/20000: wm_total=10.681  con=0.020  distractor=0.493  dyn=4.945  position=0.019  rep=4.945  rew=0.236  to_target=0.013  velocity=0.009
+  update  4425/20000: wm_total=11.144  con=0.020  distractor=0.500  dyn=5.157  position=0.033  rep=5.157  rew=0.244  to_target=0.024  velocity=0.010
+  update  4450/20000: wm_total=10.895  con=0.020  distractor=0.471  dyn=5.015  position=0.015  rep=5.015  rew=0.336  to_target=0.013  velocity=0.009
+  update  4475/20000: wm_total=10.995  con=0.020  distractor=0.492  dyn=5.056  position=0.018  rep=5.056  rew=0.331  to_target=0.011  velocity=0.010
+  update  4500/20000: wm_total=11.106  con=0.020  distractor=0.496  dyn=5.125  position=0.022  rep=5.125  rew=0.289  to_target=0.018  velocity=0.009
+  update  4525/20000: wm_total=10.863  con=0.020  distractor=0.497  dyn=5.032  position=0.023  rep=5.032  rew=0.233  to_target=0.017  velocity=0.009
+  update  4550/20000: wm_total=10.741  con=0.020  distractor=0.505  dyn=4.916  position=0.020  rep=4.916  rew=0.339  to_target=0.014  velocity=0.011
+  update  4575/20000: wm_total=10.930  con=0.020  distractor=0.471  dyn=5.055  position=0.016  rep=5.055  rew=0.290  to_target=0.013  velocity=0.009
+  update  4600/20000: wm_total=10.757  con=0.020  distractor=0.508  dyn=4.983  position=0.017  rep=4.983  rew=0.224  to_target=0.012  velocity=0.009
+  update  4625/20000: wm_total=10.644  con=0.020  distractor=0.493  dyn=4.921  position=0.018  rep=4.921  rew=0.247  to_target=0.012  velocity=0.011
+  update  4650/20000: wm_total=11.270  con=0.020  distractor=0.488  dyn=5.155  position=0.024  rep=5.155  rew=0.400  to_target=0.017  velocity=0.011
+  update  4675/20000: wm_total=10.465  con=0.020  distractor=0.504  dyn=4.814  position=0.024  rep=4.814  rew=0.262  to_target=0.016  velocity=0.011
+  update  4700/20000: wm_total=10.871  con=0.020  distractor=0.484  dyn=4.989  position=0.019  rep=4.989  rew=0.349  to_target=0.012  velocity=0.009
+  update  4725/20000: wm_total=10.970  con=0.020  distractor=0.530  dyn=5.085  position=0.022  rep=5.085  rew=0.196  to_target=0.020  velocity=0.011
+  update  4750/20000: wm_total=10.993  con=0.020  distractor=0.504  dyn=5.067  position=0.030  rep=5.067  rew=0.273  to_target=0.021  velocity=0.011
+  update  4775/20000: wm_total=10.352  con=0.020  distractor=0.485  dyn=4.802  position=0.020  rep=4.802  rew=0.197  to_target=0.015  velocity=0.011
+  update  4800/20000: wm_total=10.788  con=0.020  distractor=0.457  dyn=5.000  position=0.019  rep=5.000  rew=0.264  to_target=0.015  velocity=0.012
+  update  4825/20000: wm_total=10.892  con=0.020  distractor=0.481  dyn=5.024  position=0.025  rep=5.024  rew=0.291  to_target=0.020  velocity=0.008
+  update  4850/20000: wm_total=10.599  con=0.020  distractor=0.473  dyn=4.931  position=0.030  rep=4.931  rew=0.180  to_target=0.020  velocity=0.012
+  update  4875/20000: wm_total=10.340  con=0.020  distractor=0.461  dyn=4.731  position=0.031  rep=4.731  rew=0.334  to_target=0.021  velocity=0.010
+  update  4900/20000: wm_total=10.893  con=0.020  distractor=0.490  dyn=5.057  position=0.019  rep=5.057  rew=0.227  to_target=0.012  velocity=0.010
+  update  4925/20000: wm_total=10.705  con=0.020  distractor=0.489  dyn=4.974  position=0.019  rep=4.974  rew=0.206  to_target=0.013  velocity=0.010
+  update  4950/20000: wm_total=10.496  con=0.020  distractor=0.475  dyn=4.873  position=0.018  rep=4.873  rew=0.214  to_target=0.012  velocity=0.011
+  update  4975/20000: wm_total=10.765  con=0.020  distractor=0.493  dyn=4.985  position=0.021  rep=4.985  rew=0.233  to_target=0.016  velocity=0.010
+  update  5000/20000: wm_total=10.379  con=0.020  distractor=0.477  dyn=4.777  position=0.025  rep=4.777  rew=0.275  to_target=0.019  velocity=0.009
+  update  5025/20000: wm_total=10.930  con=0.020  distractor=0.472  dyn=5.068  position=0.016  rep=5.068  rew=0.263  to_target=0.012  velocity=0.010
+  update  5050/20000: wm_total=10.550  con=0.020  distractor=0.470  dyn=4.899  position=0.023  rep=4.899  rew=0.215  to_target=0.015  velocity=0.009
+  update  5075/20000: wm_total=10.571  con=0.020  distractor=0.479  dyn=4.864  position=0.018  rep=4.864  rew=0.306  to_target=0.013  velocity=0.007
+  update  5100/20000: wm_total=10.550  con=0.020  distractor=0.492  dyn=4.893  position=0.025  rep=4.893  rew=0.200  to_target=0.017  velocity=0.010
+  update  5125/20000: wm_total=10.657  con=0.020  distractor=0.485  dyn=4.904  position=0.016  rep=4.904  rew=0.309  to_target=0.011  velocity=0.008
+  update  5150/20000: wm_total=10.754  con=0.020  distractor=0.486  dyn=4.971  position=0.023  rep=4.971  rew=0.258  to_target=0.017  velocity=0.008
+  update  5175/20000: wm_total=10.850  con=0.020  distractor=0.483  dyn=5.046  position=0.020  rep=5.046  rew=0.215  to_target=0.012  velocity=0.008
+  update  5200/20000: wm_total=10.328  con=0.020  distractor=0.465  dyn=4.802  position=0.023  rep=4.802  rew=0.193  to_target=0.014  velocity=0.010
+  update  5225/20000: wm_total=10.919  con=0.020  distractor=0.494  dyn=4.963  position=0.021  rep=4.963  rew=0.438  to_target=0.012  velocity=0.007
+  update  5250/20000: wm_total=10.627  con=0.020  distractor=0.481  dyn=4.930  position=0.018  rep=4.930  rew=0.224  to_target=0.013  velocity=0.010
+  update  5275/20000: wm_total=10.274  con=0.020  distractor=0.475  dyn=4.780  position=0.018  rep=4.780  rew=0.177  to_target=0.015  velocity=0.010
+  update  5300/20000: wm_total=10.531  con=0.020  distractor=0.507  dyn=4.932  position=0.020  rep=4.932  rew=0.095  to_target=0.017  velocity=0.009
+  update  5325/20000: wm_total=10.511  con=0.020  distractor=0.478  dyn=4.879  position=0.020  rep=4.879  rew=0.213  to_target=0.013  velocity=0.008
+  update  5350/20000: wm_total=10.729  con=0.020  distractor=0.461  dyn=5.017  position=0.020  rep=5.017  rew=0.170  to_target=0.014  velocity=0.009
+  update  5375/20000: wm_total=10.557  con=0.020  distractor=0.476  dyn=4.881  position=0.048  rep=4.881  rew=0.208  to_target=0.034  velocity=0.009
+  update  5400/20000: wm_total=10.789  con=0.020  distractor=0.463  dyn=4.983  position=0.020  rep=4.983  rew=0.296  to_target=0.015  velocity=0.008
+  update  5425/20000: wm_total=10.663  con=0.020  distractor=0.502  dyn=4.909  position=0.025  rep=4.909  rew=0.268  to_target=0.020  velocity=0.009
+  update  5450/20000: wm_total=10.427  con=0.020  distractor=0.495  dyn=4.823  position=0.023  rep=4.823  rew=0.218  to_target=0.017  velocity=0.008
+  update  5475/20000: wm_total=10.641  con=0.020  distractor=0.476  dyn=4.842  position=0.019  rep=4.842  rew=0.420  to_target=0.013  velocity=0.008
+  update  5500/20000: wm_total=10.492  con=0.020  distractor=0.480  dyn=4.913  position=0.021  rep=4.913  rew=0.118  to_target=0.015  velocity=0.010
+  update  5525/20000: wm_total=10.647  con=0.020  distractor=0.468  dyn=4.901  position=0.016  rep=4.901  rew=0.321  to_target=0.012  velocity=0.008
+  update  5550/20000: wm_total=10.508  con=0.020  distractor=0.479  dyn=4.892  position=0.023  rep=4.892  rew=0.178  to_target=0.016  velocity=0.008
+  update  5575/20000: wm_total=10.431  con=0.020  distractor=0.478  dyn=4.748  position=0.017  rep=4.748  rew=0.400  to_target=0.011  velocity=0.008
+  update  5600/20000: wm_total=10.686  con=0.020  distractor=0.468  dyn=4.928  position=0.025  rep=4.928  rew=0.293  to_target=0.015  velocity=0.008
+  update  5625/20000: wm_total=10.631  con=0.020  distractor=0.470  dyn=4.946  position=0.022  rep=4.946  rew=0.204  to_target=0.014  velocity=0.008
+  update  5650/20000: wm_total=10.629  con=0.020  distractor=0.462  dyn=4.891  position=0.012  rep=4.891  rew=0.334  to_target=0.010  velocity=0.008
+  update  5675/20000: wm_total=10.316  con=0.020  distractor=0.492  dyn=4.782  position=0.018  rep=4.782  rew=0.201  to_target=0.012  velocity=0.008
+  update  5700/20000: wm_total=10.375  con=0.020  distractor=0.490  dyn=4.815  position=0.031  rep=4.815  rew=0.177  to_target=0.019  velocity=0.008
+  update  5725/20000: wm_total=10.636  con=0.020  distractor=0.465  dyn=4.949  position=0.016  rep=4.949  rew=0.215  to_target=0.012  velocity=0.010
+  update  5750/20000: wm_total=10.619  con=0.020  distractor=0.487  dyn=4.930  position=0.014  rep=4.930  rew=0.218  to_target=0.011  velocity=0.008
+  update  5775/20000: wm_total=10.466  con=0.020  distractor=0.492  dyn=4.859  position=0.019  rep=4.859  rew=0.197  to_target=0.012  velocity=0.008
+  update  5800/20000: wm_total=10.596  con=0.020  distractor=0.493  dyn=4.934  position=0.018  rep=4.934  rew=0.176  to_target=0.012  velocity=0.009
+  update  5825/20000: wm_total=10.231  con=0.020  distractor=0.468  dyn=4.771  position=0.017  rep=4.771  rew=0.164  to_target=0.013  velocity=0.007
+  update  5850/20000: wm_total=10.595  con=0.020  distractor=0.468  dyn=4.901  position=0.019  rep=4.901  rew=0.265  to_target=0.013  velocity=0.008
+  update  5875/20000: wm_total=10.520  con=0.020  distractor=0.474  dyn=4.879  position=0.020  rep=4.879  rew=0.227  to_target=0.014  velocity=0.007
+  update  5900/20000: wm_total=10.463  con=0.020  distractor=0.488  dyn=4.889  position=0.021  rep=4.889  rew=0.133  to_target=0.014  velocity=0.009
+  update  5925/20000: wm_total=10.815  con=0.020  distractor=0.457  dyn=5.038  position=0.018  rep=5.038  rew=0.221  to_target=0.014  velocity=0.008
+  update  5950/20000: wm_total=10.401  con=0.020  distractor=0.483  dyn=4.857  position=0.027  rep=4.857  rew=0.129  to_target=0.020  velocity=0.009
+  update  5975/20000: wm_total=10.672  con=0.021  distractor=0.482  dyn=4.935  position=0.038  rep=4.935  rew=0.225  to_target=0.028  velocity=0.009
+  update  6000/20000: wm_total=10.622  con=0.020  distractor=0.494  dyn=4.907  position=0.050  rep=4.907  rew=0.200  to_target=0.035  velocity=0.010
+  update  6025/20000: wm_total=11.059  con=0.020  distractor=0.455  dyn=5.094  position=0.048  rep=5.094  rew=0.305  to_target=0.033  velocity=0.009
+  update  6050/20000: wm_total=10.569  con=0.020  distractor=0.473  dyn=4.866  position=0.015  rep=4.866  rew=0.307  to_target=0.013  velocity=0.008
+  update  6075/20000: wm_total=10.428  con=0.020  distractor=0.485  dyn=4.838  position=0.021  rep=4.838  rew=0.200  to_target=0.016  velocity=0.010
+  update  6100/20000: wm_total=11.049  con=0.020  distractor=0.482  dyn=5.084  position=0.040  rep=5.084  rew=0.300  to_target=0.028  velocity=0.009
+  update  6125/20000: wm_total=10.664  con=0.020  distractor=0.468  dyn=4.958  position=0.020  rep=4.958  rew=0.217  to_target=0.014  velocity=0.008
+  update  6150/20000: wm_total=10.719  con=0.021  distractor=0.477  dyn=4.959  position=0.031  rep=4.959  rew=0.246  to_target=0.018  velocity=0.009
+  update  6175/20000: wm_total=10.692  con=0.020  distractor=0.481  dyn=4.881  position=0.033  rep=4.881  rew=0.361  to_target=0.022  velocity=0.013
+  update  6200/20000: wm_total=10.954  con=0.020  distractor=0.461  dyn=5.036  position=0.032  rep=5.036  rew=0.336  to_target=0.024  velocity=0.007
+  update  6225/20000: wm_total=10.705  con=0.020  distractor=0.475  dyn=4.952  position=0.023  rep=4.952  rew=0.258  to_target=0.016  velocity=0.009
+  update  6250/20000: wm_total=10.766  con=0.020  distractor=0.471  dyn=4.991  position=0.035  rep=4.991  rew=0.223  to_target=0.022  velocity=0.012
+  update  6275/20000: wm_total=10.223  con=0.020  distractor=0.474  dyn=4.732  position=0.051  rep=4.732  rew=0.164  to_target=0.038  velocity=0.011
+  update  6300/20000: wm_total=10.619  con=0.020  distractor=0.451  dyn=4.921  position=0.025  rep=4.921  rew=0.254  to_target=0.017  velocity=0.010
+  update  6325/20000: wm_total=10.836  con=0.020  distractor=0.488  dyn=5.026  position=0.032  rep=5.026  rew=0.216  to_target=0.019  velocity=0.009
+  update  6350/20000: wm_total=10.868  con=0.021  distractor=0.482  dyn=5.084  position=0.034  rep=5.084  rew=0.132  to_target=0.022  velocity=0.010
+  update  6375/20000: wm_total=10.577  con=0.020  distractor=0.488  dyn=4.902  position=0.021  rep=4.902  rew=0.216  to_target=0.018  velocity=0.009
+  update  6400/20000: wm_total=10.749  con=0.020  distractor=0.475  dyn=5.006  position=0.040  rep=5.006  rew=0.162  to_target=0.030  velocity=0.010
+  update  6425/20000: wm_total=10.624  con=0.021  distractor=0.452  dyn=4.917  position=0.020  rep=4.917  rew=0.275  to_target=0.013  velocity=0.009
+  update  6450/20000: wm_total=10.861  con=0.020  distractor=0.477  dyn=4.934  position=0.064  rep=4.934  rew=0.369  to_target=0.050  velocity=0.013
+  update  6475/20000: wm_total=10.936  con=0.020  distractor=0.488  dyn=5.001  position=0.041  rep=5.001  rew=0.342  to_target=0.033  velocity=0.010
+  update  6500/20000: wm_total=11.113  con=0.020  distractor=0.478  dyn=5.214  position=0.040  rep=5.214  rew=0.111  to_target=0.025  velocity=0.011
+  update  6525/20000: wm_total=10.398  con=0.020  distractor=0.495  dyn=4.818  position=0.037  rep=4.818  rew=0.174  to_target=0.025  velocity=0.010
+  update  6550/20000: wm_total=10.673  con=0.020  distractor=0.476  dyn=4.934  position=0.027  rep=4.934  rew=0.251  to_target=0.020  velocity=0.011
+  update  6575/20000: wm_total=10.625  con=0.020  distractor=0.479  dyn=4.994  position=0.043  rep=4.994  rew=0.058  to_target=0.025  velocity=0.012
+  update  6600/20000: wm_total=10.380  con=0.020  distractor=0.448  dyn=4.880  position=0.026  rep=4.880  rew=0.100  to_target=0.016  velocity=0.009
+  update  6625/20000: wm_total=10.718  con=0.020  distractor=0.481  dyn=4.907  position=0.016  rep=4.907  rew=0.368  to_target=0.011  velocity=0.008
+  update  6650/20000: wm_total=10.513  con=0.020  distractor=0.480  dyn=4.866  position=0.052  rep=4.866  rew=0.183  to_target=0.033  velocity=0.012
+  update  6675/20000: wm_total=10.784  con=0.020  distractor=0.469  dyn=5.006  position=0.034  rep=5.006  rew=0.215  to_target=0.023  velocity=0.011
+  update  6700/20000: wm_total=10.356  con=0.020  distractor=0.482  dyn=4.748  position=0.054  rep=4.748  rew=0.251  to_target=0.039  velocity=0.013
+  update  6725/20000: wm_total=10.996  con=0.020  distractor=0.463  dyn=5.154  position=0.039  rep=5.154  rew=0.131  to_target=0.025  velocity=0.009
+  update  6750/20000: wm_total=10.758  con=0.020  distractor=0.476  dyn=4.920  position=0.015  rep=4.920  rew=0.391  to_target=0.010  velocity=0.007
+  update  6775/20000: wm_total=10.462  con=0.020  distractor=0.485  dyn=4.868  position=0.020  rep=4.868  rew=0.180  to_target=0.013  velocity=0.008
+  update  6800/20000: wm_total=10.502  con=0.020  distractor=0.478  dyn=4.866  position=0.026  rep=4.866  rew=0.220  to_target=0.016  velocity=0.009
+  update  6825/20000: wm_total=10.470  con=0.020  distractor=0.458  dyn=4.891  position=0.018  rep=4.891  rew=0.172  to_target=0.013  velocity=0.008
+  update  6850/20000: wm_total=10.810  con=0.020  distractor=0.484  dyn=5.027  position=0.016  rep=5.027  rew=0.217  to_target=0.010  velocity=0.008
+  update  6875/20000: wm_total=10.395  con=0.020  distractor=0.453  dyn=4.854  position=0.017  rep=4.854  rew=0.177  to_target=0.012  velocity=0.009
+  update  6900/20000: wm_total=10.606  con=0.020  distractor=0.485  dyn=4.903  position=0.024  rep=4.903  rew=0.246  to_target=0.016  velocity=0.008
+  update  6925/20000: wm_total=10.264  con=0.020  distractor=0.485  dyn=4.805  position=0.021  rep=4.805  rew=0.108  to_target=0.011  velocity=0.009
+  update  6950/20000: wm_total=10.410  con=0.020  distractor=0.467  dyn=4.785  position=0.014  rep=4.785  rew=0.323  to_target=0.009  velocity=0.007
+  update  6975/20000: wm_total=10.336  con=0.020  distractor=0.478  dyn=4.811  position=0.022  rep=4.811  rew=0.172  to_target=0.014  velocity=0.008
+  update  7000/20000: wm_total=10.805  con=0.020  distractor=0.485  dyn=4.966  position=0.015  rep=4.966  rew=0.339  to_target=0.009  velocity=0.006
+  update  7025/20000: wm_total=10.509  con=0.020  distractor=0.465  dyn=4.864  position=0.016  rep=4.864  rew=0.263  to_target=0.010  velocity=0.008
+  update  7050/20000: wm_total=10.541  con=0.020  distractor=0.479  dyn=4.838  position=0.013  rep=4.838  rew=0.336  to_target=0.009  velocity=0.007
+  update  7075/20000: wm_total=10.666  con=0.020  distractor=0.466  dyn=4.946  position=0.014  rep=4.946  rew=0.256  to_target=0.009  velocity=0.009
+  update  7100/20000: wm_total=10.293  con=0.020  distractor=0.485  dyn=4.745  position=0.016  rep=4.745  rew=0.265  to_target=0.010  velocity=0.008
+  update  7125/20000: wm_total=10.884  con=0.020  distractor=0.485  dyn=5.025  position=0.013  rep=5.025  rew=0.302  to_target=0.008  velocity=0.007
+  update  7150/20000: wm_total=10.750  con=0.020  distractor=0.493  dyn=5.029  position=0.024  rep=5.029  rew=0.127  to_target=0.019  velocity=0.009
+  update  7175/20000: wm_total=10.368  con=0.020  distractor=0.469  dyn=4.857  position=0.018  rep=4.857  rew=0.125  to_target=0.014  velocity=0.009
+  update  7200/20000: wm_total=10.293  con=0.020  distractor=0.486  dyn=4.807  position=0.021  rep=4.807  rew=0.129  to_target=0.014  velocity=0.009
+  update  7225/20000: wm_total=10.778  con=0.020  distractor=0.480  dyn=4.956  position=0.020  rep=4.956  rew=0.324  to_target=0.016  velocity=0.007
+  update  7250/20000: wm_total=10.791  con=0.020  distractor=0.478  dyn=5.021  position=0.017  rep=5.021  rew=0.217  to_target=0.010  velocity=0.007
+  update  7275/20000: wm_total=10.476  con=0.020  distractor=0.491  dyn=4.841  position=0.021  rep=4.841  rew=0.240  to_target=0.012  velocity=0.009
+  update  7300/20000: wm_total=10.853  con=0.020  distractor=0.465  dyn=5.019  position=0.023  rep=5.019  rew=0.286  to_target=0.013  velocity=0.007
+  update  7325/20000: wm_total=10.449  con=0.020  distractor=0.482  dyn=4.888  position=0.020  rep=4.888  rew=0.129  to_target=0.012  velocity=0.010
+  update  7350/20000: wm_total=10.430  con=0.020  distractor=0.458  dyn=4.873  position=0.017  rep=4.873  rew=0.171  to_target=0.010  velocity=0.009
+  update  7375/20000: wm_total=10.696  con=0.020  distractor=0.470  dyn=4.996  position=0.018  rep=4.996  rew=0.174  to_target=0.012  velocity=0.010
+  update  7400/20000: wm_total=10.727  con=0.020  distractor=0.473  dyn=5.016  position=0.033  rep=5.016  rew=0.139  to_target=0.019  velocity=0.010
+  update  7425/20000: wm_total=10.420  con=0.020  distractor=0.464  dyn=4.844  position=0.022  rep=4.844  rew=0.202  to_target=0.016  velocity=0.008
+  update  7450/20000: wm_total=10.790  con=0.020  distractor=0.476  dyn=5.001  position=0.022  rep=5.001  rew=0.247  to_target=0.016  velocity=0.007
+  update  7475/20000: wm_total=10.679  con=0.020  distractor=0.462  dyn=4.909  position=0.024  rep=4.909  rew=0.328  to_target=0.018  velocity=0.008
+  update  7500/20000: wm_total=10.425  con=0.020  distractor=0.462  dyn=4.883  position=0.022  rep=4.883  rew=0.128  to_target=0.014  velocity=0.013
+  update  7525/20000: wm_total=10.704  con=0.020  distractor=0.481  dyn=4.972  position=0.019  rep=4.972  rew=0.219  to_target=0.013  velocity=0.009
+  update  7550/20000: wm_total=10.366  con=0.020  distractor=0.480  dyn=4.762  position=0.043  rep=4.762  rew=0.256  to_target=0.032  velocity=0.011
+  update  7575/20000: wm_total=11.005  con=0.020  distractor=0.452  dyn=5.192  position=0.027  rep=5.192  rew=0.086  to_target=0.025  velocity=0.010
+  update  7600/20000: wm_total=10.491  con=0.020  distractor=0.438  dyn=4.845  position=0.018  rep=4.845  rew=0.303  to_target=0.013  velocity=0.008
+  update  7625/20000: wm_total=10.461  con=0.020  distractor=0.470  dyn=4.915  position=0.018  rep=4.915  rew=0.101  to_target=0.012  velocity=0.010
+  update  7650/20000: wm_total=10.358  con=0.020  distractor=0.484  dyn=4.851  position=0.018  rep=4.851  rew=0.116  to_target=0.010  velocity=0.010
+  update  7675/20000: wm_total=10.458  con=0.020  distractor=0.453  dyn=4.823  position=0.020  rep=4.823  rew=0.296  to_target=0.016  velocity=0.008
+  update  7700/20000: wm_total=10.643  con=0.020  distractor=0.455  dyn=4.852  position=0.010  rep=4.852  rew=0.440  to_target=0.007  velocity=0.006
+  update  7725/20000: wm_total=10.593  con=0.020  distractor=0.497  dyn=4.886  position=0.019  rep=4.886  rew=0.264  to_target=0.013  velocity=0.008
+  update  7750/20000: wm_total=10.739  con=0.020  distractor=0.467  dyn=4.907  position=0.015  rep=4.907  rew=0.402  to_target=0.012  velocity=0.009
+  update  7775/20000: wm_total=10.432  con=0.020  distractor=0.463  dyn=4.865  position=0.014  rep=4.865  rew=0.186  to_target=0.011  velocity=0.008
+  update  7800/20000: wm_total=10.402  con=0.020  distractor=0.469  dyn=4.845  position=0.019  rep=4.845  rew=0.181  to_target=0.013  velocity=0.009
+  update  7825/20000: wm_total=10.561  con=0.020  distractor=0.457  dyn=4.879  position=0.014  rep=4.879  rew=0.292  to_target=0.011  velocity=0.008
+  update  7850/20000: wm_total=10.707  con=0.020  distractor=0.472  dyn=4.959  position=0.017  rep=4.959  rew=0.261  to_target=0.010  velocity=0.009
+  update  7875/20000: wm_total=10.482  con=0.020  distractor=0.460  dyn=4.893  position=0.022  rep=4.893  rew=0.169  to_target=0.014  velocity=0.009
+  update  7900/20000: wm_total=10.582  con=0.020  distractor=0.461  dyn=4.911  position=0.019  rep=4.911  rew=0.239  to_target=0.013  velocity=0.008
+  update  7925/20000: wm_total=10.504  con=0.020  distractor=0.472  dyn=4.864  position=0.017  rep=4.864  rew=0.248  to_target=0.011  velocity=0.007
+  update  7950/20000: wm_total=10.681  con=0.020  distractor=0.459  dyn=4.981  position=0.013  rep=4.981  rew=0.211  to_target=0.009  velocity=0.007
+  update  7975/20000: wm_total=10.599  con=0.020  distractor=0.473  dyn=4.933  position=0.017  rep=4.933  rew=0.204  to_target=0.011  velocity=0.008
+  update  8000/20000: wm_total=10.386  con=0.020  distractor=0.487  dyn=4.778  position=0.012  rep=4.778  rew=0.295  to_target=0.009  velocity=0.006
+  update  8025/20000: wm_total=10.564  con=0.020  distractor=0.486  dyn=4.932  position=0.019  rep=4.932  rew=0.147  to_target=0.015  velocity=0.012
+  update  8050/20000: wm_total=10.783  con=0.020  distractor=0.457  dyn=5.022  position=0.013  rep=5.022  rew=0.230  to_target=0.011  velocity=0.008
+  update  8075/20000: wm_total=10.853  con=0.020  distractor=0.460  dyn=5.103  position=0.019  rep=5.103  rew=0.123  to_target=0.014  velocity=0.010
+  update  8100/20000: wm_total=10.602  con=0.020  distractor=0.452  dyn=4.969  position=0.013  rep=4.969  rew=0.160  to_target=0.011  velocity=0.008
+  update  8125/20000: wm_total=10.539  con=0.020  distractor=0.479  dyn=4.886  position=0.016  rep=4.886  rew=0.230  to_target=0.012  velocity=0.009
+  update  8150/20000: wm_total=10.841  con=0.020  distractor=0.469  dyn=4.980  position=0.024  rep=4.980  rew=0.343  to_target=0.015  velocity=0.009
+  update  8175/20000: wm_total=10.562  con=0.020  distractor=0.471  dyn=4.886  position=0.022  rep=4.886  rew=0.250  to_target=0.017  velocity=0.008
+  update  8200/20000: wm_total=10.886  con=0.020  distractor=0.468  dyn=5.020  position=0.036  rep=5.020  rew=0.288  to_target=0.025  velocity=0.008
+  update  8225/20000: wm_total=10.478  con=0.020  distractor=0.466  dyn=4.823  position=0.026  rep=4.823  rew=0.293  to_target=0.019  velocity=0.007
+  update  8250/20000: wm_total=10.906  con=0.020  distractor=0.455  dyn=4.980  position=0.027  rep=4.980  rew=0.415  to_target=0.021  velocity=0.008
+  update  8275/20000: wm_total=10.426  con=0.020  distractor=0.442  dyn=4.860  position=0.020  rep=4.860  rew=0.201  to_target=0.013  velocity=0.007
+  update  8300/20000: wm_total=10.434  con=0.020  distractor=0.477  dyn=4.843  position=0.018  rep=4.843  rew=0.211  to_target=0.013  velocity=0.008
+  update  8325/20000: wm_total=10.523  con=0.020  distractor=0.463  dyn=4.820  position=0.011  rep=4.820  rew=0.373  to_target=0.010  velocity=0.006
+  update  8350/20000: wm_total=10.388  con=0.020  distractor=0.439  dyn=4.833  position=0.013  rep=4.833  rew=0.231  to_target=0.011  velocity=0.008
+  update  8375/20000: wm_total=10.402  con=0.020  distractor=0.476  dyn=4.859  position=0.017  rep=4.859  rew=0.149  to_target=0.013  velocity=0.009
+  update  8400/20000: wm_total=10.300  con=0.020  distractor=0.444  dyn=4.856  position=0.018  rep=4.856  rew=0.085  to_target=0.012  velocity=0.009
+  update  8425/20000: wm_total=10.506  con=0.020  distractor=0.453  dyn=4.977  position=0.016  rep=4.977  rew=0.044  to_target=0.011  velocity=0.008
+  update  8450/20000: wm_total=10.609  con=0.020  distractor=0.462  dyn=4.939  position=0.018  rep=4.939  rew=0.208  to_target=0.014  velocity=0.008
+  update  8475/20000: wm_total=10.479  con=0.020  distractor=0.466  dyn=4.870  position=0.011  rep=4.870  rew=0.226  to_target=0.008  velocity=0.008
+  update  8500/20000: wm_total=10.252  con=0.020  distractor=0.455  dyn=4.771  position=0.009  rep=4.771  rew=0.210  to_target=0.007  velocity=0.007
+  update  8525/20000: wm_total=10.383  con=0.020  distractor=0.459  dyn=4.857  position=0.013  rep=4.857  rew=0.158  to_target=0.009  velocity=0.010
+  update  8550/20000: wm_total=10.491  con=0.020  distractor=0.444  dyn=4.893  position=0.012  rep=4.893  rew=0.210  to_target=0.010  velocity=0.007
+  update  8575/20000: wm_total=10.481  con=0.020  distractor=0.449  dyn=4.921  position=0.013  rep=4.921  rew=0.141  to_target=0.009  velocity=0.008
+  update  8600/20000: wm_total=10.631  con=0.020  distractor=0.473  dyn=4.884  position=0.008  rep=4.884  rew=0.347  to_target=0.007  velocity=0.007
+  update  8625/20000: wm_total=10.438  con=0.020  distractor=0.465  dyn=4.917  position=0.015  rep=4.917  rew=0.086  to_target=0.010  velocity=0.007
+  update  8650/20000: wm_total=10.305  con=0.020  distractor=0.440  dyn=4.814  position=0.014  rep=4.814  rew=0.184  to_target=0.012  velocity=0.008
+  update  8675/20000: wm_total=10.391  con=0.020  distractor=0.459  dyn=4.806  position=0.013  rep=4.806  rew=0.271  to_target=0.009  velocity=0.008
+  update  8700/20000: wm_total=10.403  con=0.020  distractor=0.466  dyn=4.758  position=0.012  rep=4.758  rew=0.371  to_target=0.008  velocity=0.008
+  update  8725/20000: wm_total=10.475  con=0.020  distractor=0.482  dyn=4.904  position=0.018  rep=4.904  rew=0.124  to_target=0.012  velocity=0.010
+  update  8750/20000: wm_total=10.652  con=0.020  distractor=0.458  dyn=4.911  position=0.009  rep=4.911  rew=0.329  to_target=0.006  velocity=0.006
+  update  8775/20000: wm_total=10.615  con=0.020  distractor=0.463  dyn=4.985  position=0.015  rep=4.985  rew=0.127  to_target=0.012  velocity=0.008
+  update  8800/20000: wm_total=10.611  con=0.020  distractor=0.469  dyn=4.983  position=0.012  rep=4.983  rew=0.127  to_target=0.009  velocity=0.009
+  update  8825/20000: wm_total=10.507  con=0.020  distractor=0.469  dyn=4.879  position=0.017  rep=4.879  rew=0.222  to_target=0.012  velocity=0.008
+  update  8850/20000: wm_total=10.523  con=0.020  distractor=0.463  dyn=4.998  position=0.015  rep=4.998  rew=0.010  to_target=0.010  velocity=0.009
+  update  8875/20000: wm_total=10.453  con=0.020  distractor=0.443  dyn=4.859  position=0.009  rep=4.859  rew=0.247  to_target=0.008  velocity=0.008
+  update  8900/20000: wm_total=10.539  con=0.020  distractor=0.452  dyn=4.934  position=0.014  rep=4.934  rew=0.168  to_target=0.008  velocity=0.009
+  update  8925/20000: wm_total=10.514  con=0.020  distractor=0.481  dyn=4.914  position=0.018  rep=4.914  rew=0.145  to_target=0.012  velocity=0.008
+  update  8950/20000: wm_total=10.306  con=0.020  distractor=0.454  dyn=4.776  position=0.015  rep=4.776  rew=0.248  to_target=0.010  velocity=0.008
+  update  8975/20000: wm_total=10.441  con=0.020  distractor=0.461  dyn=4.881  position=0.013  rep=4.881  rew=0.168  to_target=0.009  velocity=0.007
+  update  9000/20000: wm_total=10.589  con=0.020  distractor=0.450  dyn=4.958  position=0.014  rep=4.958  rew=0.172  to_target=0.009  velocity=0.008
+  update  9025/20000: wm_total=10.842  con=0.020  distractor=0.472  dyn=5.063  position=0.015  rep=5.063  rew=0.188  to_target=0.011  velocity=0.009
+  update  9050/20000: wm_total=10.700  con=0.020  distractor=0.442  dyn=4.951  position=0.010  rep=4.951  rew=0.309  to_target=0.008  velocity=0.009
+  update  9075/20000: wm_total=10.423  con=0.020  distractor=0.458  dyn=4.866  position=0.022  rep=4.866  rew=0.168  to_target=0.013  velocity=0.010
+  update  9100/20000: wm_total=10.721  con=0.020  distractor=0.441  dyn=4.982  position=0.013  rep=4.982  rew=0.265  to_target=0.010  velocity=0.007
+  update  9125/20000: wm_total=10.691  con=0.020  distractor=0.453  dyn=4.948  position=0.012  rep=4.948  rew=0.295  to_target=0.008  velocity=0.007
+  update  9150/20000: wm_total=10.528  con=0.020  distractor=0.469  dyn=4.869  position=0.011  rep=4.869  rew=0.273  to_target=0.007  velocity=0.008
+  update  9175/20000: wm_total=10.449  con=0.020  distractor=0.473  dyn=4.857  position=0.013  rep=4.857  rew=0.213  to_target=0.009  velocity=0.008
+  update  9200/20000: wm_total=10.612  con=0.020  distractor=0.477  dyn=4.987  position=0.012  rep=4.987  rew=0.109  to_target=0.008  velocity=0.010
+  update  9225/20000: wm_total=10.562  con=0.020  distractor=0.477  dyn=4.854  position=0.009  rep=4.854  rew=0.332  to_target=0.007  velocity=0.008
+  update  9250/20000: wm_total=10.634  con=0.020  distractor=0.457  dyn=4.924  position=0.012  rep=4.924  rew=0.276  to_target=0.009  velocity=0.011
+  update  9275/20000: wm_total=10.515  con=0.020  distractor=0.468  dyn=4.863  position=0.012  rep=4.863  rew=0.270  to_target=0.008  velocity=0.009
+  update  9300/20000: wm_total=10.383  con=0.020  distractor=0.446  dyn=4.889  position=0.013  rep=4.889  rew=0.109  to_target=0.010  velocity=0.008
+  update  9325/20000: wm_total=10.433  con=0.020  distractor=0.454  dyn=4.904  position=0.016  rep=4.904  rew=0.113  to_target=0.012  velocity=0.009
+  update  9350/20000: wm_total=10.262  con=0.020  distractor=0.445  dyn=4.787  position=0.012  rep=4.787  rew=0.196  to_target=0.008  velocity=0.008
+  update  9375/20000: wm_total=10.678  con=0.020  distractor=0.468  dyn=4.934  position=0.011  rep=4.934  rew=0.293  to_target=0.008  velocity=0.009
+  update  9400/20000: wm_total=10.498  con=0.020  distractor=0.470  dyn=4.945  position=0.014  rep=4.945  rew=0.084  to_target=0.010  velocity=0.009
+  update  9425/20000: wm_total=10.476  con=0.020  distractor=0.464  dyn=4.838  position=0.010  rep=4.838  rew=0.290  to_target=0.008  velocity=0.008
+  update  9450/20000: wm_total=10.574  con=0.020  distractor=0.479  dyn=4.958  position=0.013  rep=4.958  rew=0.128  to_target=0.010  velocity=0.008
+  update  9475/20000: wm_total=10.316  con=0.020  distractor=0.472  dyn=4.838  position=0.013  rep=4.838  rew=0.116  to_target=0.011  velocity=0.008
+  update  9500/20000: wm_total=10.708  con=0.020  distractor=0.461  dyn=4.988  position=0.016  rep=4.988  rew=0.214  to_target=0.010  velocity=0.009
+  update  9525/20000: wm_total=10.585  con=0.020  distractor=0.463  dyn=4.897  position=0.012  rep=4.897  rew=0.280  to_target=0.009  velocity=0.007
+  update  9550/20000: wm_total=10.526  con=0.020  distractor=0.440  dyn=4.959  position=0.011  rep=4.959  rew=0.122  to_target=0.007  velocity=0.009
+  update  9575/20000: wm_total=10.457  con=0.020  distractor=0.453  dyn=4.931  position=0.015  rep=4.931  rew=0.086  to_target=0.012  velocity=0.008
+  update  9600/20000: wm_total=10.631  con=0.020  distractor=0.442  dyn=4.869  position=0.010  rep=4.869  rew=0.407  to_target=0.007  velocity=0.007
+  update  9625/20000: wm_total=10.949  con=0.020  distractor=0.452  dyn=5.117  position=0.013  rep=5.117  rew=0.212  to_target=0.010  velocity=0.009
+  update  9650/20000: wm_total=10.644  con=0.020  distractor=0.452  dyn=4.982  position=0.016  rep=4.982  rew=0.169  to_target=0.012  velocity=0.010
+  update  9675/20000: wm_total=10.567  con=0.020  distractor=0.453  dyn=4.955  position=0.012  rep=4.955  rew=0.152  to_target=0.008  velocity=0.010
+  update  9700/20000: wm_total=10.546  con=0.020  distractor=0.465  dyn=4.860  position=0.010  rep=4.860  rew=0.315  to_target=0.008  velocity=0.008
+  update  9725/20000: wm_total=10.593  con=0.020  distractor=0.474  dyn=4.940  position=0.015  rep=4.940  rew=0.185  to_target=0.010  velocity=0.009
+  update  9750/20000: wm_total=10.472  con=0.020  distractor=0.471  dyn=4.894  position=0.023  rep=4.894  rew=0.148  to_target=0.013  velocity=0.010
+  update  9775/20000: wm_total=10.752  con=0.020  distractor=0.448  dyn=4.775  position=0.014  rep=4.775  rew=0.698  to_target=0.011  velocity=0.011
+  update  9800/20000: wm_total=10.621  con=0.020  distractor=0.445  dyn=4.963  position=0.023  rep=4.963  rew=0.176  to_target=0.018  velocity=0.012
+  update  9825/20000: wm_total=10.371  con=0.020  distractor=0.438  dyn=4.831  position=0.015  rep=4.831  rew=0.210  to_target=0.012  velocity=0.011
+  update  9850/20000: wm_total=10.841  con=0.020  distractor=0.447  dyn=5.084  position=0.017  rep=5.084  rew=0.168  to_target=0.010  velocity=0.010
+  update  9875/20000: wm_total=10.597  con=0.020  distractor=0.452  dyn=4.948  position=0.014  rep=4.948  rew=0.197  to_target=0.010  velocity=0.008
+  update  9900/20000: wm_total=10.707  con=0.020  distractor=0.460  dyn=5.030  position=0.017  rep=5.030  rew=0.126  to_target=0.014  velocity=0.009
+  update  9925/20000: wm_total=10.657  con=0.020  distractor=0.459  dyn=4.954  position=0.011  rep=4.954  rew=0.240  to_target=0.009  velocity=0.010
+  update  9950/20000: wm_total=10.447  con=0.020  distractor=0.458  dyn=4.836  position=0.014  rep=4.836  rew=0.264  to_target=0.010  velocity=0.008
+  update  9975/20000: wm_total=10.426  con=0.020  distractor=0.454  dyn=4.809  position=0.013  rep=4.809  rew=0.303  to_target=0.009  velocity=0.008
+  update 10000/20000: wm_total=10.741  con=0.020  distractor=0.472  dyn=4.929  position=0.008  rep=4.929  rew=0.368  to_target=0.007  velocity=0.008
+  update 10025/20000: wm_total=10.639  con=0.020  distractor=0.445  dyn=4.973  position=0.014  rep=4.973  rew=0.196  to_target=0.009  velocity=0.008
+  update 10050/20000: wm_total=10.648  con=0.020  distractor=0.435  dyn=4.928  position=0.020  rep=4.928  rew=0.293  to_target=0.012  velocity=0.010
+  update 10075/20000: wm_total=10.830  con=0.020  distractor=0.447  dyn=5.052  position=0.020  rep=5.052  rew=0.213  to_target=0.016  velocity=0.009
+  update 10100/20000: wm_total=10.629  con=0.020  distractor=0.457  dyn=4.929  position=0.017  rep=4.929  rew=0.253  to_target=0.012  velocity=0.011
+  update 10125/20000: wm_total=10.895  con=0.020  distractor=0.516  dyn=4.884  position=0.068  rep=4.884  rew=0.464  to_target=0.049  velocity=0.010
+  update 10150/20000: wm_total=11.675  con=0.020  distractor=0.442  dyn=5.425  position=0.026  rep=5.425  rew=0.301  to_target=0.018  velocity=0.016
+  update 10175/20000: wm_total=10.364  con=0.020  distractor=0.453  dyn=4.834  position=0.017  rep=4.834  rew=0.183  to_target=0.014  velocity=0.009
+  update 10200/20000: wm_total=10.514  con=0.020  distractor=0.451  dyn=4.901  position=0.017  rep=4.901  rew=0.202  to_target=0.014  velocity=0.008
+  update 10225/20000: wm_total=10.487  con=0.020  distractor=0.449  dyn=4.939  position=0.015  rep=4.939  rew=0.102  to_target=0.013  velocity=0.009
+  update 10250/20000: wm_total=10.560  con=0.020  distractor=0.454  dyn=4.887  position=0.015  rep=4.887  rew=0.274  to_target=0.013  velocity=0.009
+  update 10275/20000: wm_total=10.730  con=0.020  distractor=0.444  dyn=5.021  position=0.014  rep=5.021  rew=0.187  to_target=0.013  velocity=0.010
+  update 10300/20000: wm_total=10.029  con=0.020  distractor=0.462  dyn=4.712  position=0.025  rep=4.712  rew=0.072  to_target=0.016  velocity=0.010
+  update 10325/20000: wm_total=10.636  con=0.020  distractor=0.466  dyn=4.979  position=0.019  rep=4.979  rew=0.152  to_target=0.013  velocity=0.008
+  update 10350/20000: wm_total=10.452  con=0.020  distractor=0.462  dyn=4.825  position=0.012  rep=4.825  rew=0.293  to_target=0.008  velocity=0.008
+  update 10375/20000: wm_total=9.973  con=0.020  distractor=0.458  dyn=4.630  position=0.009  rep=4.630  rew=0.210  to_target=0.009  velocity=0.008
+  update 10400/20000: wm_total=10.460  con=0.020  distractor=0.454  dyn=4.832  position=0.012  rep=4.832  rew=0.296  to_target=0.008  velocity=0.006
+  update 10425/20000: wm_total=10.304  con=0.020  distractor=0.448  dyn=4.765  position=0.013  rep=4.765  rew=0.277  to_target=0.008  velocity=0.008
+  update 10450/20000: wm_total=10.683  con=0.020  distractor=0.452  dyn=4.986  position=0.017  rep=4.986  rew=0.202  to_target=0.011  velocity=0.008
+  update 10475/20000: wm_total=10.325  con=0.020  distractor=0.455  dyn=4.877  position=0.013  rep=4.877  rew=0.067  to_target=0.009  velocity=0.007
+  update 10500/20000: wm_total=10.496  con=0.020  distractor=0.458  dyn=4.850  position=0.010  rep=4.850  rew=0.292  to_target=0.008  velocity=0.007
+  update 10525/20000: wm_total=10.515  con=0.020  distractor=0.457  dyn=4.879  position=0.013  rep=4.879  rew=0.250  to_target=0.011  velocity=0.007
+  update 10550/20000: wm_total=10.577  con=0.020  distractor=0.467  dyn=4.925  position=0.014  rep=4.925  rew=0.206  to_target=0.011  velocity=0.008
+  update 10575/20000: wm_total=10.689  con=0.020  distractor=0.450  dyn=4.992  position=0.011  rep=4.992  rew=0.209  to_target=0.007  velocity=0.007
+  update 10600/20000: wm_total=10.596  con=0.020  distractor=0.480  dyn=4.939  position=0.014  rep=4.939  rew=0.189  to_target=0.009  velocity=0.007
+  update 10625/20000: wm_total=10.391  con=0.020  distractor=0.462  dyn=4.828  position=0.019  rep=4.828  rew=0.212  to_target=0.015  velocity=0.008
+  update 10650/20000: wm_total=10.477  con=0.020  distractor=0.451  dyn=4.879  position=0.013  rep=4.879  rew=0.219  to_target=0.008  velocity=0.007
+  update 10675/20000: wm_total=10.231  con=0.020  distractor=0.468  dyn=4.750  position=0.028  rep=4.750  rew=0.188  to_target=0.018  velocity=0.008
+  update 10700/20000: wm_total=10.619  con=0.020  distractor=0.452  dyn=4.914  position=0.011  rep=4.914  rew=0.294  to_target=0.007  velocity=0.007
+  update 10725/20000: wm_total=9.905  con=0.020  distractor=0.442  dyn=4.635  position=0.009  rep=4.635  rew=0.147  to_target=0.008  velocity=0.008
+  update 10750/20000: wm_total=10.063  con=0.020  distractor=0.460  dyn=4.694  position=0.023  rep=4.694  rew=0.150  to_target=0.014  velocity=0.008
+  update 10775/20000: wm_total=10.433  con=0.020  distractor=0.467  dyn=4.855  position=0.011  rep=4.855  rew=0.209  to_target=0.009  velocity=0.007
+  update 10800/20000: wm_total=10.549  con=0.020  distractor=0.468  dyn=4.902  position=0.009  rep=4.902  rew=0.235  to_target=0.007  velocity=0.006
+  update 10825/20000: wm_total=10.337  con=0.020  distractor=0.436  dyn=4.865  position=0.009  rep=4.865  rew=0.126  to_target=0.006  velocity=0.008
+  update 10850/20000: wm_total=10.272  con=0.020  distractor=0.450  dyn=4.762  position=0.010  rep=4.762  rew=0.254  to_target=0.007  velocity=0.007
+  update 10875/20000: wm_total=10.383  con=0.020  distractor=0.457  dyn=4.804  position=0.009  rep=4.804  rew=0.275  to_target=0.007  velocity=0.006
+  update 10900/20000: wm_total=10.596  con=0.020  distractor=0.479  dyn=4.869  position=0.018  rep=4.869  rew=0.322  to_target=0.013  velocity=0.005
+  update 10925/20000: wm_total=10.211  con=0.020  distractor=0.445  dyn=4.714  position=0.015  rep=4.714  rew=0.289  to_target=0.008  velocity=0.006
+  update 10950/20000: wm_total=10.309  con=0.020  distractor=0.439  dyn=4.745  position=0.010  rep=4.745  rew=0.335  to_target=0.007  velocity=0.006
+  update 10975/20000: wm_total=10.478  con=0.020  distractor=0.454  dyn=4.904  position=0.015  rep=4.904  rew=0.165  to_target=0.010  velocity=0.007
+  update 11000/20000: wm_total=9.881  con=0.020  distractor=0.478  dyn=4.642  position=0.017  rep=4.642  rew=0.064  to_target=0.012  velocity=0.006
+  update 11025/20000: wm_total=10.445  con=0.020  distractor=0.448  dyn=4.859  position=0.013  rep=4.859  rew=0.230  to_target=0.010  velocity=0.006
+  update 11050/20000: wm_total=10.546  con=0.020  distractor=0.451  dyn=4.905  position=0.008  rep=4.905  rew=0.243  to_target=0.007  velocity=0.008
+  update 11075/20000: wm_total=10.438  con=0.020  distractor=0.458  dyn=4.833  position=0.008  rep=4.833  rew=0.271  to_target=0.007  velocity=0.007
+  update 11100/20000: wm_total=10.277  con=0.020  distractor=0.457  dyn=4.750  position=0.008  rep=4.750  rew=0.278  to_target=0.007  velocity=0.006
+  update 11125/20000: wm_total=10.461  con=0.020  distractor=0.467  dyn=4.856  position=0.009  rep=4.856  rew=0.238  to_target=0.007  velocity=0.007
+  update 11150/20000: wm_total=10.510  con=0.020  distractor=0.444  dyn=4.888  position=0.008  rep=4.888  rew=0.251  to_target=0.006  velocity=0.006
+  update 11175/20000: wm_total=10.291  con=0.020  distractor=0.449  dyn=4.783  position=0.011  rep=4.783  rew=0.230  to_target=0.009  velocity=0.006
+  update 11200/20000: wm_total=10.196  con=0.020  distractor=0.465  dyn=4.738  position=0.009  rep=4.738  rew=0.212  to_target=0.008  velocity=0.005
+  update 11225/20000: wm_total=10.273  con=0.020  distractor=0.448  dyn=4.803  position=0.009  rep=4.803  rew=0.176  to_target=0.007  velocity=0.005
+  update 11250/20000: wm_total=10.297  con=0.020  distractor=0.448  dyn=4.843  position=0.007  rep=4.843  rew=0.125  to_target=0.005  velocity=0.007
+  update 11275/20000: wm_total=10.314  con=0.020  distractor=0.470  dyn=4.818  position=0.009  rep=4.818  rew=0.167  to_target=0.006  velocity=0.006
+  update 11300/20000: wm_total=10.310  con=0.020  distractor=0.450  dyn=4.812  position=0.008  rep=4.812  rew=0.195  to_target=0.006  velocity=0.006
+  update 11325/20000: wm_total=10.120  con=0.020  distractor=0.467  dyn=4.682  position=0.009  rep=4.682  rew=0.245  to_target=0.008  velocity=0.007
+  update 11350/20000: wm_total=10.498  con=0.020  distractor=0.456  dyn=4.853  position=0.010  rep=4.853  rew=0.292  to_target=0.007  velocity=0.007
+  update 11375/20000: wm_total=10.499  con=0.020  distractor=0.455  dyn=4.900  position=0.013  rep=4.900  rew=0.195  to_target=0.010  velocity=0.007
+  update 11400/20000: wm_total=10.270  con=0.020  distractor=0.456  dyn=4.781  position=0.008  rep=4.781  rew=0.209  to_target=0.007  velocity=0.006
+  update 11425/20000: wm_total=10.325  con=0.020  distractor=0.459  dyn=4.834  position=0.012  rep=4.834  rew=0.151  to_target=0.008  velocity=0.006
+  update 11450/20000: wm_total=10.341  con=0.020  distractor=0.451  dyn=4.763  position=0.009  rep=4.763  rew=0.325  to_target=0.005  velocity=0.005
+  update 11475/20000: wm_total=10.087  con=0.020  distractor=0.448  dyn=4.710  position=0.009  rep=4.710  rew=0.178  to_target=0.006  velocity=0.006
+  update 11500/20000: wm_total=10.107  con=0.020  distractor=0.467  dyn=4.710  position=0.010  rep=4.710  rew=0.175  to_target=0.007  velocity=0.006
+  update 11525/20000: wm_total=10.653  con=0.020  distractor=0.452  dyn=4.938  position=0.009  rep=4.938  rew=0.284  to_target=0.007  velocity=0.005
+  update 11550/20000: wm_total=10.593  con=0.020  distractor=0.477  dyn=4.873  position=0.008  rep=4.873  rew=0.329  to_target=0.006  velocity=0.006
+  update 11575/20000: wm_total=10.337  con=0.020  distractor=0.450  dyn=4.824  position=0.010  rep=4.824  rew=0.194  to_target=0.007  velocity=0.007
+  update 11600/20000: wm_total=10.223  con=0.020  distractor=0.466  dyn=4.772  position=0.010  rep=4.772  rew=0.168  to_target=0.007  velocity=0.007
+  update 11625/20000: wm_total=10.358  con=0.020  distractor=0.463  dyn=4.798  position=0.011  rep=4.798  rew=0.253  to_target=0.008  velocity=0.007
+  update 11650/20000: wm_total=10.278  con=0.020  distractor=0.465  dyn=4.809  position=0.010  rep=4.809  rew=0.150  to_target=0.007  velocity=0.007
+  update 11675/20000: wm_total=10.519  con=0.020  distractor=0.465  dyn=4.896  position=0.010  rep=4.896  rew=0.217  to_target=0.008  velocity=0.007
+  update 11700/20000: wm_total=10.433  con=0.020  distractor=0.463  dyn=4.862  position=0.010  rep=4.862  rew=0.202  to_target=0.008  velocity=0.006
+  update 11725/20000: wm_total=10.231  con=0.020  distractor=0.451  dyn=4.773  position=0.012  rep=4.773  rew=0.185  to_target=0.008  velocity=0.009
+  update 11750/20000: wm_total=10.701  con=0.020  distractor=0.452  dyn=4.998  position=0.008  rep=4.998  rew=0.210  to_target=0.007  velocity=0.007
+  update 11775/20000: wm_total=10.472  con=0.020  distractor=0.476  dyn=4.861  position=0.012  rep=4.861  rew=0.226  to_target=0.007  velocity=0.008
+  update 11800/20000: wm_total=10.310  con=0.020  distractor=0.439  dyn=4.751  position=0.009  rep=4.751  rew=0.326  to_target=0.006  velocity=0.008
+  update 11825/20000: wm_total=10.294  con=0.020  distractor=0.471  dyn=4.740  position=0.010  rep=4.740  rew=0.298  to_target=0.008  velocity=0.006
+  update 11850/20000: wm_total=10.475  con=0.020  distractor=0.465  dyn=4.864  position=0.012  rep=4.864  rew=0.233  to_target=0.009  velocity=0.007
+  update 11875/20000: wm_total=10.416  con=0.020  distractor=0.467  dyn=4.852  position=0.014  rep=4.852  rew=0.196  to_target=0.008  velocity=0.008
+  update 11900/20000: wm_total=10.374  con=0.020  distractor=0.466  dyn=4.836  position=0.018  rep=4.836  rew=0.169  to_target=0.014  velocity=0.013
+  update 11925/20000: wm_total=10.579  con=0.020  distractor=0.450  dyn=4.959  position=0.014  rep=4.959  rew=0.159  to_target=0.010  velocity=0.009
+  update 11950/20000: wm_total=10.589  con=0.020  distractor=0.450  dyn=4.922  position=0.012  rep=4.922  rew=0.247  to_target=0.008  velocity=0.008
+  update 11975/20000: wm_total=10.401  con=0.020  distractor=0.466  dyn=4.843  position=0.009  rep=4.843  rew=0.205  to_target=0.008  velocity=0.006
+  update 12000/20000: wm_total=10.448  con=0.020  distractor=0.473  dyn=4.822  position=0.008  rep=4.822  rew=0.291  to_target=0.006  velocity=0.006
+  update 12025/20000: wm_total=10.522  con=0.020  distractor=0.468  dyn=4.881  position=0.023  rep=4.881  rew=0.227  to_target=0.016  velocity=0.005
+  update 12050/20000: wm_total=10.228  con=0.020  distractor=0.463  dyn=4.810  position=0.017  rep=4.810  rew=0.086  to_target=0.013  velocity=0.008
+  update 12075/20000: wm_total=9.847  con=0.020  distractor=0.466  dyn=4.598  position=0.012  rep=4.598  rew=0.133  to_target=0.010  velocity=0.010
+  update 12100/20000: wm_total=10.251  con=0.020  distractor=0.437  dyn=4.741  position=0.010  rep=4.741  rew=0.288  to_target=0.007  velocity=0.006
+  update 12125/20000: wm_total=10.452  con=0.020  distractor=0.469  dyn=4.850  position=0.021  rep=4.850  rew=0.215  to_target=0.017  velocity=0.008
+  update 12150/20000: wm_total=10.287  con=0.020  distractor=0.452  dyn=4.792  position=0.014  rep=4.792  rew=0.199  to_target=0.010  velocity=0.007
+  update 12175/20000: wm_total=10.342  con=0.020  distractor=0.466  dyn=4.779  position=0.011  rep=4.779  rew=0.272  to_target=0.007  velocity=0.007
+  update 12200/20000: wm_total=10.418  con=0.020  distractor=0.463  dyn=4.840  position=0.013  rep=4.840  rew=0.226  to_target=0.010  velocity=0.006
+  update 12225/20000: wm_total=10.244  con=0.020  distractor=0.472  dyn=4.759  position=0.013  rep=4.759  rew=0.204  to_target=0.009  velocity=0.007
+  update 12250/20000: wm_total=10.290  con=0.020  distractor=0.461  dyn=4.769  position=0.008  rep=4.769  rew=0.252  to_target=0.006  velocity=0.005
+  update 12275/20000: wm_total=9.846  con=0.020  distractor=0.477  dyn=4.633  position=0.021  rep=4.633  rew=0.040  to_target=0.015  velocity=0.007
+  update 12300/20000: wm_total=10.195  con=0.020  distractor=0.464  dyn=4.741  position=0.008  rep=4.741  rew=0.209  to_target=0.006  velocity=0.006
+  update 12325/20000: wm_total=10.268  con=0.020  distractor=0.449  dyn=4.724  position=0.008  rep=4.724  rew=0.332  to_target=0.006  velocity=0.004
+  update 12350/20000: wm_total=10.254  con=0.020  distractor=0.450  dyn=4.775  position=0.010  rep=4.775  rew=0.209  to_target=0.008  velocity=0.006
+  update 12375/20000: wm_total=9.814  con=0.020  distractor=0.461  dyn=4.637  position=0.014  rep=4.637  rew=0.028  to_target=0.011  velocity=0.006
+  update 12400/20000: wm_total=10.282  con=0.020  distractor=0.457  dyn=4.783  position=0.013  rep=4.783  rew=0.213  to_target=0.008  velocity=0.005
+  update 12425/20000: wm_total=10.183  con=0.020  distractor=0.445  dyn=4.724  position=0.008  rep=4.724  rew=0.250  to_target=0.006  velocity=0.005
+  update 12450/20000: wm_total=10.241  con=0.020  distractor=0.484  dyn=4.744  position=0.008  rep=4.744  rew=0.230  to_target=0.006  velocity=0.005
+  update 12475/20000: wm_total=10.488  con=0.020  distractor=0.479  dyn=4.877  position=0.009  rep=4.877  rew=0.213  to_target=0.007  velocity=0.005
+  update 12500/20000: wm_total=10.125  con=0.020  distractor=0.455  dyn=4.762  position=0.009  rep=4.762  rew=0.103  to_target=0.007  velocity=0.005
+  update 12525/20000: wm_total=10.225  con=0.020  distractor=0.451  dyn=4.712  position=0.008  rep=4.712  rew=0.312  to_target=0.006  velocity=0.005
+  update 12550/20000: wm_total=10.173  con=0.020  distractor=0.473  dyn=4.725  position=0.017  rep=4.725  rew=0.192  to_target=0.015  velocity=0.006
+  update 12575/20000: wm_total=9.979  con=0.020  distractor=0.470  dyn=4.645  position=0.014  rep=4.645  rew=0.170  to_target=0.009  velocity=0.004
+  update 12600/20000: wm_total=10.006  con=0.020  distractor=0.443  dyn=4.653  position=0.009  rep=4.653  rew=0.215  to_target=0.007  velocity=0.005
+  update 12625/20000: wm_total=9.986  con=0.020  distractor=0.447  dyn=4.690  position=0.011  rep=4.690  rew=0.114  to_target=0.007  velocity=0.005
+  update 12650/20000: wm_total=9.775  con=0.020  distractor=0.457  dyn=4.548  position=0.009  rep=4.548  rew=0.180  to_target=0.006  velocity=0.006
+  update 12675/20000: wm_total=10.120  con=0.020  distractor=0.426  dyn=4.604  position=0.007  rep=4.604  rew=0.451  to_target=0.005  velocity=0.004
+  update 12700/20000: wm_total=9.977  con=0.020  distractor=0.449  dyn=4.661  position=0.008  rep=4.661  rew=0.167  to_target=0.005  velocity=0.005
+  update 12725/20000: wm_total=10.153  con=0.020  distractor=0.459  dyn=4.704  position=0.008  rep=4.704  rew=0.247  to_target=0.007  velocity=0.005
+  update 12750/20000: wm_total=10.427  con=0.020  distractor=0.449  dyn=4.785  position=0.007  rep=4.785  rew=0.372  to_target=0.005  velocity=0.005
+  update 12775/20000: wm_total=9.865  con=0.020  distractor=0.454  dyn=4.629  position=0.008  rep=4.629  rew=0.113  to_target=0.006  velocity=0.005
+  update 12800/20000: wm_total=10.021  con=0.020  distractor=0.457  dyn=4.698  position=0.008  rep=4.698  rew=0.128  to_target=0.006  velocity=0.005
+  update 12825/20000: wm_total=10.155  con=0.020  distractor=0.463  dyn=4.768  position=0.009  rep=4.768  rew=0.115  to_target=0.007  velocity=0.005
+  update 12850/20000: wm_total=10.288  con=0.020  distractor=0.459  dyn=4.772  position=0.008  rep=4.772  rew=0.246  to_target=0.004  velocity=0.007
+  update 12875/20000: wm_total=10.157  con=0.020  distractor=0.473  dyn=4.736  position=0.007  rep=4.736  rew=0.175  to_target=0.005  velocity=0.005
+  update 12900/20000: wm_total=10.067  con=0.020  distractor=0.454  dyn=4.703  position=0.009  rep=4.703  rew=0.167  to_target=0.007  velocity=0.005
+  update 12925/20000: wm_total=10.388  con=0.020  distractor=0.435  dyn=4.784  position=0.007  rep=4.784  rew=0.349  to_target=0.004  velocity=0.004
+  update 12950/20000: wm_total=9.920  con=0.020  distractor=0.433  dyn=4.623  position=0.009  rep=4.623  rew=0.198  to_target=0.007  velocity=0.007
+  update 12975/20000: wm_total=9.990  con=0.020  distractor=0.448  dyn=4.617  position=0.009  rep=4.617  rew=0.267  to_target=0.006  velocity=0.005
+  update 13000/20000: wm_total=10.582  con=0.020  distractor=0.447  dyn=4.815  position=0.006  rep=4.815  rew=0.469  to_target=0.005  velocity=0.005
+  update 13025/20000: wm_total=10.239  con=0.020  distractor=0.439  dyn=4.775  position=0.009  rep=4.775  rew=0.209  to_target=0.006  velocity=0.005
+  update 13050/20000: wm_total=9.859  con=0.020  distractor=0.443  dyn=4.650  position=0.009  rep=4.650  rew=0.077  to_target=0.006  velocity=0.005
+  update 13075/20000: wm_total=10.177  con=0.020  distractor=0.451  dyn=4.726  position=0.008  rep=4.726  rew=0.236  to_target=0.007  velocity=0.004
+  update 13100/20000: wm_total=10.160  con=0.020  distractor=0.453  dyn=4.717  position=0.010  rep=4.717  rew=0.232  to_target=0.006  velocity=0.005
+  update 13125/20000: wm_total=10.232  con=0.020  distractor=0.447  dyn=4.766  position=0.010  rep=4.766  rew=0.209  to_target=0.007  velocity=0.005
+  update 13150/20000: wm_total=10.334  con=0.020  distractor=0.460  dyn=4.774  position=0.007  rep=4.774  rew=0.286  to_target=0.005  velocity=0.006
+  update 13175/20000: wm_total=10.244  con=0.020  distractor=0.465  dyn=4.767  position=0.009  rep=4.767  rew=0.204  to_target=0.006  velocity=0.005
+  update 13200/20000: wm_total=10.445  con=0.020  distractor=0.461  dyn=4.888  position=0.010  rep=4.888  rew=0.163  to_target=0.008  velocity=0.006
+  update 13225/20000: wm_total=10.453  con=0.020  distractor=0.442  dyn=4.802  position=0.011  rep=4.802  rew=0.363  to_target=0.007  velocity=0.005
+  update 13250/20000: wm_total=10.105  con=0.020  distractor=0.461  dyn=4.718  position=0.010  rep=4.718  rew=0.167  to_target=0.007  velocity=0.005
+  update 13275/20000: wm_total=10.466  con=0.020  distractor=0.455  dyn=4.879  position=0.010  rep=4.879  rew=0.212  to_target=0.006  velocity=0.005
+  update 13300/20000: wm_total=10.267  con=0.020  distractor=0.441  dyn=4.763  position=0.011  rep=4.763  rew=0.253  to_target=0.008  velocity=0.007
+  update 13325/20000: wm_total=10.366  con=0.020  distractor=0.434  dyn=4.779  position=0.009  rep=4.779  rew=0.333  to_target=0.006  velocity=0.005
+  update 13350/20000: wm_total=9.927  con=0.020  distractor=0.434  dyn=4.662  position=0.010  rep=4.662  rew=0.125  to_target=0.008  velocity=0.005
+  update 13375/20000: wm_total=10.526  con=0.020  distractor=0.436  dyn=4.903  position=0.008  rep=4.903  rew=0.243  to_target=0.006  velocity=0.006
+  update 13400/20000: wm_total=10.647  con=0.020  distractor=0.463  dyn=4.953  position=0.009  rep=4.953  rew=0.235  to_target=0.007  velocity=0.007
+  update 13425/20000: wm_total=9.731  con=0.020  distractor=0.448  dyn=4.599  position=0.009  rep=4.599  rew=0.042  to_target=0.007  velocity=0.006
+  update 13450/20000: wm_total=10.316  con=0.020  distractor=0.468  dyn=4.808  position=0.013  rep=4.808  rew=0.185  to_target=0.009  velocity=0.006
+  update 13475/20000: wm_total=10.842  con=0.020  distractor=0.456  dyn=4.998  position=0.008  rep=4.998  rew=0.350  to_target=0.007  velocity=0.005
+  update 13500/20000: wm_total=10.310  con=0.020  distractor=0.447  dyn=4.802  position=0.013  rep=4.802  rew=0.209  to_target=0.010  velocity=0.005
+  update 13525/20000: wm_total=10.159  con=0.020  distractor=0.461  dyn=4.747  position=0.007  rep=4.747  rew=0.167  to_target=0.006  velocity=0.005
+  update 13550/20000: wm_total=10.753  con=0.020  distractor=0.462  dyn=5.030  position=0.011  rep=5.030  rew=0.186  to_target=0.008  velocity=0.007
+  update 13575/20000: wm_total=10.545  con=0.020  distractor=0.443  dyn=4.880  position=0.010  rep=4.880  rew=0.299  to_target=0.007  velocity=0.006
+  update 13600/20000: wm_total=10.093  con=0.020  distractor=0.462  dyn=4.723  position=0.010  rep=4.723  rew=0.139  to_target=0.008  velocity=0.006
+  update 13625/20000: wm_total=10.797  con=0.020  distractor=0.445  dyn=5.017  position=0.013  rep=5.017  rew=0.268  to_target=0.010  velocity=0.006
+  update 13650/20000: wm_total=9.921  con=0.020  distractor=0.434  dyn=4.684  position=0.011  rep=4.684  rew=0.068  to_target=0.010  velocity=0.009
+  update 13675/20000: wm_total=10.626  con=0.020  distractor=0.463  dyn=4.933  position=0.008  rep=4.933  rew=0.256  to_target=0.006  velocity=0.006
+  update 13700/20000: wm_total=10.305  con=0.020  distractor=0.441  dyn=4.828  position=0.008  rep=4.828  rew=0.166  to_target=0.008  velocity=0.007
+  update 13725/20000: wm_total=10.405  con=0.020  distractor=0.428  dyn=4.884  position=0.008  rep=4.884  rew=0.166  to_target=0.008  velocity=0.007
+  update 13750/20000: wm_total=10.411  con=0.020  distractor=0.444  dyn=4.871  position=0.013  rep=4.871  rew=0.177  to_target=0.009  velocity=0.006
+  update 13775/20000: wm_total=10.507  con=0.020  distractor=0.460  dyn=4.883  position=0.009  rep=4.883  rew=0.240  to_target=0.006  velocity=0.006
+  update 13800/20000: wm_total=10.431  con=0.020  distractor=0.452  dyn=4.870  position=0.008  rep=4.870  rew=0.197  to_target=0.006  velocity=0.007
+  update 13825/20000: wm_total=10.566  con=0.020  distractor=0.453  dyn=4.934  position=0.013  rep=4.934  rew=0.196  to_target=0.008  velocity=0.006
+  update 13850/20000: wm_total=10.329  con=0.020  distractor=0.437  dyn=4.819  position=0.006  rep=4.819  rew=0.216  to_target=0.005  velocity=0.006
+  update 13875/20000: wm_total=10.320  con=0.020  distractor=0.456  dyn=4.828  position=0.007  rep=4.828  rew=0.168  to_target=0.007  velocity=0.007
+  update 13900/20000: wm_total=10.343  con=0.020  distractor=0.457  dyn=4.850  position=0.010  rep=4.850  rew=0.142  to_target=0.008  velocity=0.007
+  update 13925/20000: wm_total=10.188  con=0.020  distractor=0.429  dyn=4.753  position=0.010  rep=4.753  rew=0.209  to_target=0.007  velocity=0.008
+  update 13950/20000: wm_total=10.181  con=0.020  distractor=0.445  dyn=4.764  position=0.009  rep=4.764  rew=0.167  to_target=0.007  velocity=0.006
+  update 13975/20000: wm_total=10.286  con=0.020  distractor=0.440  dyn=4.817  position=0.007  rep=4.817  rew=0.173  to_target=0.006  velocity=0.006
+  update 14000/20000: wm_total=10.820  con=0.020  distractor=0.447  dyn=4.979  position=0.006  rep=4.979  rew=0.376  to_target=0.005  velocity=0.007
+  update 14025/20000: wm_total=10.424  con=0.020  distractor=0.447  dyn=4.823  position=0.009  rep=4.823  rew=0.292  to_target=0.006  velocity=0.006
+  update 14050/20000: wm_total=10.384  con=0.020  distractor=0.478  dyn=4.851  position=0.011  rep=4.851  rew=0.156  to_target=0.009  velocity=0.007
+  update 14075/20000: wm_total=10.399  con=0.020  distractor=0.474  dyn=4.843  position=0.010  rep=4.843  rew=0.194  to_target=0.007  velocity=0.007
+  update 14100/20000: wm_total=10.387  con=0.020  distractor=0.454  dyn=4.828  position=0.015  rep=4.828  rew=0.225  to_target=0.009  velocity=0.007
+  update 14125/20000: wm_total=10.834  con=0.020  distractor=0.464  dyn=5.033  position=0.008  rep=5.033  rew=0.262  to_target=0.007  velocity=0.007
+  update 14150/20000: wm_total=10.074  con=0.020  distractor=0.460  dyn=4.716  position=0.009  rep=4.716  rew=0.139  to_target=0.007  velocity=0.006
+  update 14175/20000: wm_total=10.181  con=0.020  distractor=0.472  dyn=4.833  position=0.009  rep=4.833  rew=0.000  to_target=0.007  velocity=0.006
+  update 14200/20000: wm_total=10.399  con=0.020  distractor=0.450  dyn=4.838  position=0.009  rep=4.838  rew=0.230  to_target=0.007  velocity=0.006
+  update 14225/20000: wm_total=10.859  con=0.020  distractor=0.440  dyn=4.964  position=0.007  rep=4.964  rew=0.451  to_target=0.006  velocity=0.006
+  update 14250/20000: wm_total=10.602  con=0.020  distractor=0.443  dyn=4.959  position=0.012  rep=4.959  rew=0.189  to_target=0.011  velocity=0.009
+  update 14275/20000: wm_total=10.445  con=0.020  distractor=0.448  dyn=4.845  position=0.009  rep=4.845  rew=0.266  to_target=0.006  velocity=0.007
+  update 14300/20000: wm_total=10.356  con=0.020  distractor=0.456  dyn=4.850  position=0.012  rep=4.850  rew=0.151  to_target=0.007  velocity=0.007
+  update 14325/20000: wm_total=10.392  con=0.020  distractor=0.472  dyn=4.834  position=0.008  rep=4.834  rew=0.209  to_target=0.007  velocity=0.007
+  update 14350/20000: wm_total=10.756  con=0.020  distractor=0.460  dyn=4.941  position=0.006  rep=4.941  rew=0.376  to_target=0.005  velocity=0.007
+  update 14375/20000: wm_total=10.505  con=0.020  distractor=0.432  dyn=4.896  position=0.008  rep=4.896  rew=0.241  to_target=0.006  velocity=0.007
+  update 14400/20000: wm_total=10.655  con=0.020  distractor=0.462  dyn=4.964  position=0.007  rep=4.964  rew=0.225  to_target=0.006  velocity=0.007
+  update 14425/20000: wm_total=10.285  con=0.020  distractor=0.467  dyn=4.752  position=0.011  rep=4.752  rew=0.268  to_target=0.007  velocity=0.008
+  update 14450/20000: wm_total=10.554  con=0.020  distractor=0.497  dyn=4.905  position=0.010  rep=4.905  rew=0.200  to_target=0.007  velocity=0.009
+  update 14475/20000: wm_total=10.430  con=0.020  distractor=0.454  dyn=4.905  position=0.008  rep=4.905  rew=0.125  to_target=0.007  velocity=0.006
+  update 14500/20000: wm_total=10.399  con=0.020  distractor=0.456  dyn=4.873  position=0.011  rep=4.873  rew=0.146  to_target=0.009  velocity=0.010
+  update 14525/20000: wm_total=10.513  con=0.020  distractor=0.457  dyn=4.966  position=0.008  rep=4.966  rew=0.084  to_target=0.006  velocity=0.007
+  update 14550/20000: wm_total=10.730  con=0.020  distractor=0.447  dyn=5.028  position=0.009  rep=5.028  rew=0.184  to_target=0.007  velocity=0.007
+  update 14575/20000: wm_total=10.407  con=0.020  distractor=0.466  dyn=4.852  position=0.010  rep=4.852  rew=0.193  to_target=0.006  velocity=0.007
+  update 14600/20000: wm_total=10.497  con=0.020  distractor=0.474  dyn=4.902  position=0.009  rep=4.902  rew=0.178  to_target=0.006  velocity=0.007
+  update 14625/20000: wm_total=10.446  con=0.020  distractor=0.443  dyn=4.881  position=0.008  rep=4.881  rew=0.199  to_target=0.005  velocity=0.008
+  update 14650/20000: wm_total=10.345  con=0.020  distractor=0.445  dyn=4.846  position=0.007  rep=4.846  rew=0.167  to_target=0.005  velocity=0.008
+  update 14675/20000: wm_total=10.483  con=0.020  distractor=0.462  dyn=4.880  position=0.011  rep=4.880  rew=0.216  to_target=0.007  velocity=0.008
+  update 14700/20000: wm_total=10.492  con=0.020  distractor=0.460  dyn=4.817  position=0.011  rep=4.817  rew=0.350  to_target=0.008  velocity=0.009
+  update 14725/20000: wm_total=10.673  con=0.020  distractor=0.464  dyn=4.981  position=0.009  rep=4.981  rew=0.205  to_target=0.006  velocity=0.007
+  update 14750/20000: wm_total=10.063  con=0.020  distractor=0.457  dyn=4.746  position=0.009  rep=4.746  rew=0.070  to_target=0.007  velocity=0.006
+  update 14775/20000: wm_total=10.483  con=0.020  distractor=0.446  dyn=4.913  position=0.010  rep=4.913  rew=0.167  to_target=0.007  velocity=0.006
+  update 14800/20000: wm_total=10.937  con=0.020  distractor=0.466  dyn=4.912  position=0.013  rep=4.912  rew=0.595  to_target=0.011  velocity=0.009
+  update 14825/20000: wm_total=10.721  con=0.020  distractor=0.454  dyn=5.019  position=0.010  rep=5.019  rew=0.183  to_target=0.007  velocity=0.008
+  update 14850/20000: wm_total=10.564  con=0.020  distractor=0.458  dyn=4.946  position=0.015  rep=4.946  rew=0.162  to_target=0.010  velocity=0.008
+  update 14875/20000: wm_total=11.227  con=0.020  distractor=0.457  dyn=5.182  position=0.009  rep=5.182  rew=0.361  to_target=0.006  velocity=0.008
+  update 14900/20000: wm_total=10.206  con=0.020  distractor=0.443  dyn=4.780  position=0.008  rep=4.780  rew=0.162  to_target=0.007  velocity=0.005
+  update 14925/20000: wm_total=10.561  con=0.020  distractor=0.453  dyn=4.956  position=0.014  rep=4.956  rew=0.143  to_target=0.009  velocity=0.010
+  update 14950/20000: wm_total=10.585  con=0.020  distractor=0.447  dyn=4.981  position=0.012  rep=4.981  rew=0.131  to_target=0.007  velocity=0.007
+  update 14975/20000: wm_total=10.643  con=0.020  distractor=0.449  dyn=4.912  position=0.014  rep=4.912  rew=0.317  to_target=0.010  velocity=0.010
+  update 15000/20000: wm_total=10.785  con=0.020  distractor=0.450  dyn=5.056  position=0.014  rep=5.056  rew=0.172  to_target=0.009  velocity=0.007
+  update 15025/20000: wm_total=10.332  con=0.020  distractor=0.444  dyn=4.834  position=0.008  rep=4.834  rew=0.179  to_target=0.006  velocity=0.007
+  update 15050/20000: wm_total=10.527  con=0.020  distractor=0.443  dyn=4.917  position=0.009  rep=4.917  rew=0.205  to_target=0.007  velocity=0.007
+  update 15075/20000: wm_total=10.490  con=0.020  distractor=0.439  dyn=4.880  position=0.010  rep=4.880  rew=0.249  to_target=0.007  velocity=0.006
+  update 15100/20000: wm_total=10.277  con=0.020  distractor=0.453  dyn=4.833  position=0.009  rep=4.833  rew=0.116  to_target=0.007  velocity=0.005
+  update 15125/20000: wm_total=10.776  con=0.020  distractor=0.446  dyn=5.005  position=0.009  rep=5.005  rew=0.278  to_target=0.006  velocity=0.006
+  update 15150/20000: wm_total=10.627  con=0.020  distractor=0.436  dyn=4.972  position=0.007  rep=4.972  rew=0.209  to_target=0.006  velocity=0.005
+  update 15175/20000: wm_total=10.639  con=0.020  distractor=0.444  dyn=4.947  position=0.009  rep=4.947  rew=0.256  to_target=0.007  velocity=0.008
+  update 15200/20000: wm_total=10.407  con=0.020  distractor=0.440  dyn=4.846  position=0.009  rep=4.846  rew=0.233  to_target=0.007  velocity=0.006
+  update 15225/20000: wm_total=10.194  con=0.020  distractor=0.445  dyn=4.773  position=0.010  rep=4.773  rew=0.159  to_target=0.007  velocity=0.006
+  update 15250/20000: wm_total=10.293  con=0.020  distractor=0.435  dyn=4.807  position=0.006  rep=4.807  rew=0.209  to_target=0.005  velocity=0.005
+  update 15275/20000: wm_total=10.746  con=0.020  distractor=0.461  dyn=5.044  position=0.007  rep=5.044  rew=0.158  to_target=0.005  velocity=0.006
+  update 15300/20000: wm_total=10.350  con=0.020  distractor=0.455  dyn=4.830  position=0.008  rep=4.830  rew=0.193  to_target=0.007  velocity=0.007
+  update 15325/20000: wm_total=10.331  con=0.020  distractor=0.443  dyn=4.827  position=0.011  rep=4.827  rew=0.188  to_target=0.009  velocity=0.007
+  update 15350/20000: wm_total=10.354  con=0.020  distractor=0.547  dyn=4.733  position=0.053  rep=4.733  rew=0.205  to_target=0.036  velocity=0.027
+  update 15375/20000: wm_total=10.508  con=0.020  distractor=0.469  dyn=4.929  position=0.014  rep=4.929  rew=0.126  to_target=0.009  velocity=0.010
+  update 15400/20000: wm_total=10.630  con=0.020  distractor=0.453  dyn=4.936  position=0.013  rep=4.936  rew=0.251  to_target=0.010  velocity=0.010
+  update 15425/20000: wm_total=10.793  con=0.020  distractor=0.457  dyn=5.025  position=0.018  rep=5.025  rew=0.229  to_target=0.011  velocity=0.007
+  update 15450/20000: wm_total=11.048  con=0.020  distractor=0.455  dyn=5.129  position=0.014  rep=5.129  rew=0.284  to_target=0.009  velocity=0.009
+  update 15475/20000: wm_total=10.261  con=0.020  distractor=0.432  dyn=4.817  position=0.011  rep=4.817  rew=0.150  to_target=0.008  velocity=0.007
+  update 15500/20000: wm_total=10.231  con=0.020  distractor=0.431  dyn=4.792  position=0.009  rep=4.792  rew=0.173  to_target=0.006  velocity=0.007
+  update 15525/20000: wm_total=10.166  con=0.020  distractor=0.446  dyn=4.766  position=0.020  rep=4.766  rew=0.125  to_target=0.014  velocity=0.007
+  update 15550/20000: wm_total=10.584  con=0.020  distractor=0.423  dyn=4.929  position=0.009  rep=4.929  rew=0.260  to_target=0.007  velocity=0.006
+  update 15575/20000: wm_total=10.596  con=0.020  distractor=0.443  dyn=4.907  position=0.009  rep=4.907  rew=0.296  to_target=0.006  velocity=0.006
+  update 15600/20000: wm_total=10.485  con=0.020  distractor=0.436  dyn=4.859  position=0.008  rep=4.859  rew=0.288  to_target=0.008  velocity=0.006
+  update 15625/20000: wm_total=10.496  con=0.020  distractor=0.447  dyn=4.834  position=0.010  rep=4.834  rew=0.335  to_target=0.009  velocity=0.006
+  update 15650/20000: wm_total=10.611  con=0.020  distractor=0.457  dyn=4.950  position=0.011  rep=4.950  rew=0.209  to_target=0.007  velocity=0.007
+  update 15675/20000: wm_total=11.077  con=0.020  distractor=0.467  dyn=5.100  position=0.030  rep=5.100  rew=0.329  to_target=0.019  velocity=0.012
+  update 15700/20000: wm_total=10.357  con=0.020  distractor=0.480  dyn=4.905  position=0.020  rep=4.905  rew=0.002  to_target=0.013  velocity=0.013
+  update 15725/20000: wm_total=10.426  con=0.020  distractor=0.461  dyn=4.861  position=0.015  rep=4.861  rew=0.193  to_target=0.009  velocity=0.006
+  update 15750/20000: wm_total=10.538  con=0.020  distractor=0.464  dyn=4.922  position=0.015  rep=4.922  rew=0.178  to_target=0.009  velocity=0.008
+  update 15775/20000: wm_total=10.654  con=0.020  distractor=0.452  dyn=4.975  position=0.010  rep=4.975  rew=0.208  to_target=0.007  velocity=0.006
+  update 15800/20000: wm_total=10.330  con=0.020  distractor=0.455  dyn=4.789  position=0.013  rep=4.789  rew=0.246  to_target=0.011  velocity=0.007
+  update 15825/20000: wm_total=10.258  con=0.020  distractor=0.455  dyn=4.785  position=0.011  rep=4.785  rew=0.190  to_target=0.006  velocity=0.007
+  update 15850/20000: wm_total=10.003  con=0.020  distractor=0.462  dyn=4.689  position=0.009  rep=4.689  rew=0.120  to_target=0.007  velocity=0.007
+  update 15875/20000: wm_total=10.377  con=0.020  distractor=0.455  dyn=4.808  position=0.011  rep=4.808  rew=0.261  to_target=0.007  velocity=0.007
+  update 15900/20000: wm_total=10.180  con=0.020  distractor=0.465  dyn=4.753  position=0.010  rep=4.753  rew=0.163  to_target=0.008  velocity=0.007
+  update 15925/20000: wm_total=9.816  con=0.020  distractor=0.456  dyn=4.616  position=0.009  rep=4.616  rew=0.084  to_target=0.007  velocity=0.007
+  update 15950/20000: wm_total=10.107  con=0.020  distractor=0.441  dyn=4.708  position=0.011  rep=4.708  rew=0.202  to_target=0.007  velocity=0.009
+  update 15975/20000: wm_total=10.190  con=0.020  distractor=0.458  dyn=4.780  position=0.010  rep=4.780  rew=0.129  to_target=0.006  velocity=0.006
+  update 16000/20000: wm_total=9.973  con=0.020  distractor=0.457  dyn=4.657  position=0.008  rep=4.657  rew=0.161  to_target=0.006  velocity=0.007
+  update 16025/20000: wm_total=10.292  con=0.020  distractor=0.478  dyn=4.822  position=0.010  rep=4.822  rew=0.128  to_target=0.006  velocity=0.006
+  update 16050/20000: wm_total=9.988  con=0.020  distractor=0.464  dyn=4.642  position=0.015  rep=4.642  rew=0.190  to_target=0.009  velocity=0.007
+  update 16075/20000: wm_total=10.068  con=0.020  distractor=0.454  dyn=4.683  position=0.008  rep=4.683  rew=0.208  to_target=0.005  velocity=0.006
+  update 16100/20000: wm_total=10.280  con=0.020  distractor=0.467  dyn=4.776  position=0.009  rep=4.776  rew=0.219  to_target=0.006  velocity=0.005
+  update 16125/20000: wm_total=10.067  con=0.020  distractor=0.438  dyn=4.666  position=0.011  rep=4.666  rew=0.253  to_target=0.007  velocity=0.006
+  update 16150/20000: wm_total=10.199  con=0.020  distractor=0.454  dyn=4.737  position=0.010  rep=4.737  rew=0.229  to_target=0.007  velocity=0.005
+  update 16175/20000: wm_total=10.332  con=0.020  distractor=0.486  dyn=4.856  position=0.008  rep=4.856  rew=0.094  to_target=0.006  velocity=0.005
+  update 16200/20000: wm_total=9.913  con=0.020  distractor=0.467  dyn=4.625  position=0.009  rep=4.625  rew=0.154  to_target=0.007  velocity=0.006
+  update 16225/20000: wm_total=9.780  con=0.020  distractor=0.444  dyn=4.578  position=0.009  rep=4.578  rew=0.139  to_target=0.006  velocity=0.006
+  update 16250/20000: wm_total=10.044  con=0.020  distractor=0.462  dyn=4.704  position=0.011  rep=4.704  rew=0.129  to_target=0.007  velocity=0.006
+  update 16275/20000: wm_total=10.463  con=0.020  distractor=0.444  dyn=4.792  position=0.009  rep=4.792  rew=0.392  to_target=0.008  velocity=0.006
+  update 16300/20000: wm_total=10.215  con=0.020  distractor=0.469  dyn=4.734  position=0.013  rep=4.734  rew=0.229  to_target=0.010  velocity=0.005
+  update 16325/20000: wm_total=10.342  con=0.020  distractor=0.474  dyn=4.760  position=0.008  rep=4.760  rew=0.310  to_target=0.005  velocity=0.005
+  update 16350/20000: wm_total=10.373  con=0.020  distractor=0.468  dyn=4.789  position=0.006  rep=4.789  rew=0.293  to_target=0.005  velocity=0.004
+  update 16375/20000: wm_total=10.014  con=0.020  distractor=0.460  dyn=4.654  position=0.007  rep=4.654  rew=0.208  to_target=0.005  velocity=0.004
+  update 16400/20000: wm_total=10.059  con=0.020  distractor=0.463  dyn=4.679  position=0.008  rep=4.679  rew=0.199  to_target=0.006  velocity=0.005
+  update 16425/20000: wm_total=10.174  con=0.020  distractor=0.463  dyn=4.741  position=0.008  rep=4.741  rew=0.189  to_target=0.005  velocity=0.006
+  update 16450/20000: wm_total=9.981  con=0.020  distractor=0.449  dyn=4.639  position=0.008  rep=4.639  rew=0.215  to_target=0.005  velocity=0.006
+  update 16475/20000: wm_total=10.268  con=0.020  distractor=0.482  dyn=4.774  position=0.007  rep=4.774  rew=0.199  to_target=0.005  velocity=0.006
+  update 16500/20000: wm_total=10.291  con=0.020  distractor=0.446  dyn=4.717  position=0.007  rep=4.717  rew=0.375  to_target=0.004  velocity=0.004
+  update 16525/20000: wm_total=9.903  con=0.020  distractor=0.443  dyn=4.623  position=0.008  rep=4.623  rew=0.174  to_target=0.006  velocity=0.006
+  update 16550/20000: wm_total=10.372  con=0.020  distractor=0.458  dyn=4.788  position=0.008  rep=4.788  rew=0.298  to_target=0.006  velocity=0.005
+  update 16575/20000: wm_total=9.911  con=0.020  distractor=0.463  dyn=4.592  position=0.008  rep=4.592  rew=0.223  to_target=0.007  velocity=0.005
+  update 16600/20000: wm_total=10.104  con=0.020  distractor=0.453  dyn=4.783  position=0.009  rep=4.783  rew=0.042  to_target=0.007  velocity=0.006
+  update 16625/20000: wm_total=10.159  con=0.020  distractor=0.442  dyn=4.737  position=0.007  rep=4.737  rew=0.204  to_target=0.005  velocity=0.005
+  update 16650/20000: wm_total=10.132  con=0.020  distractor=0.440  dyn=4.691  position=0.008  rep=4.691  rew=0.271  to_target=0.005  velocity=0.006
+  update 16675/20000: wm_total=10.312  con=0.020  distractor=0.451  dyn=4.789  position=0.008  rep=4.789  rew=0.242  to_target=0.005  velocity=0.006
+  update 16700/20000: wm_total=10.113  con=0.020  distractor=0.464  dyn=4.700  position=0.008  rep=4.700  rew=0.209  to_target=0.005  velocity=0.006
+  update 16725/20000: wm_total=10.352  con=0.020  distractor=0.459  dyn=4.848  position=0.008  rep=4.848  rew=0.159  to_target=0.005  velocity=0.006
+  update 16750/20000: wm_total=9.972  con=0.020  distractor=0.449  dyn=4.630  position=0.009  rep=4.630  rew=0.223  to_target=0.006  velocity=0.005
+  update 16775/20000: wm_total=10.152  con=0.020  distractor=0.442  dyn=4.740  position=0.014  rep=4.740  rew=0.179  to_target=0.011  velocity=0.006
+  update 16800/20000: wm_total=9.927  con=0.020  distractor=0.451  dyn=4.666  position=0.007  rep=4.666  rew=0.107  to_target=0.004  velocity=0.006
+  update 16825/20000: wm_total=10.234  con=0.020  distractor=0.444  dyn=4.785  position=0.008  rep=4.785  rew=0.181  to_target=0.006  velocity=0.006
+  update 16850/20000: wm_total=9.993  con=0.020  distractor=0.439  dyn=4.674  position=0.008  rep=4.674  rew=0.167  to_target=0.005  velocity=0.005
+  update 16875/20000: wm_total=10.307  con=0.020  distractor=0.436  dyn=4.767  position=0.007  rep=4.767  rew=0.299  to_target=0.005  velocity=0.006
+  update 16900/20000: wm_total=9.891  con=0.020  distractor=0.451  dyn=4.608  position=0.008  rep=4.608  rew=0.184  to_target=0.006  velocity=0.005
+  update 16925/20000: wm_total=10.438  con=0.020  distractor=0.438  dyn=4.848  position=0.006  rep=4.848  rew=0.268  to_target=0.005  velocity=0.006
+  update 16950/20000: wm_total=10.142  con=0.020  distractor=0.466  dyn=4.705  position=0.007  rep=4.705  rew=0.228  to_target=0.006  velocity=0.006
+  update 16975/20000: wm_total=10.509  con=0.020  distractor=0.454  dyn=4.870  position=0.007  rep=4.870  rew=0.278  to_target=0.005  velocity=0.005
+  update 17000/20000: wm_total=10.415  con=0.020  distractor=0.461  dyn=4.834  position=0.013  rep=4.834  rew=0.236  to_target=0.011  velocity=0.007
+  update 17025/20000: wm_total=10.194  con=0.020  distractor=0.452  dyn=4.770  position=0.012  rep=4.770  rew=0.154  to_target=0.009  velocity=0.006
+  update 17050/20000: wm_total=10.120  con=0.020  distractor=0.436  dyn=4.718  position=0.009  rep=4.718  rew=0.207  to_target=0.006  velocity=0.005
+  update 17075/20000: wm_total=10.702  con=0.020  distractor=0.475  dyn=4.946  position=0.013  rep=4.946  rew=0.289  to_target=0.009  velocity=0.004
+  update 17100/20000: wm_total=10.265  con=0.020  distractor=0.453  dyn=4.766  position=0.008  rep=4.766  rew=0.239  to_target=0.005  velocity=0.005
+  update 17125/20000: wm_total=10.475  con=0.020  distractor=0.453  dyn=4.873  position=0.009  rep=4.873  rew=0.235  to_target=0.007  velocity=0.005
+  update 17150/20000: wm_total=10.522  con=0.020  distractor=0.452  dyn=4.874  position=0.006  rep=4.874  rew=0.285  to_target=0.006  velocity=0.005
+  update 17175/20000: wm_total=10.145  con=0.020  distractor=0.464  dyn=4.726  position=0.008  rep=4.726  rew=0.188  to_target=0.006  velocity=0.006
+  update 17200/20000: wm_total=10.523  con=0.020  distractor=0.443  dyn=4.831  position=0.006  rep=4.831  rew=0.382  to_target=0.005  velocity=0.004
+  update 17225/20000: wm_total=10.317  con=0.020  distractor=0.457  dyn=4.807  position=0.006  rep=4.807  rew=0.212  to_target=0.005  velocity=0.004
+  update 17250/20000: wm_total=10.138  con=0.020  distractor=0.457  dyn=4.777  position=0.006  rep=4.777  rew=0.089  to_target=0.006  velocity=0.005
+  update 17275/20000: wm_total=9.946  con=0.020  distractor=0.455  dyn=4.637  position=0.008  rep=4.637  rew=0.178  to_target=0.006  velocity=0.004
+  update 17300/20000: wm_total=10.335  con=0.020  distractor=0.464  dyn=4.780  position=0.007  rep=4.780  rew=0.273  to_target=0.005  velocity=0.004
+  update 17325/20000: wm_total=10.076  con=0.020  distractor=0.449  dyn=4.700  position=0.009  rep=4.700  rew=0.187  to_target=0.006  velocity=0.005
+  update 17350/20000: wm_total=10.089  con=0.020  distractor=0.449  dyn=4.713  position=0.009  rep=4.713  rew=0.173  to_target=0.007  velocity=0.005
+  update 17375/20000: wm_total=10.396  con=0.020  distractor=0.444  dyn=4.796  position=0.009  rep=4.796  rew=0.319  to_target=0.007  velocity=0.005
+  update 17400/20000: wm_total=10.030  con=0.020  distractor=0.446  dyn=4.670  position=0.008  rep=4.670  rew=0.205  to_target=0.007  velocity=0.005
+  update 17425/20000: wm_total=10.590  con=0.020  distractor=0.438  dyn=4.830  position=0.005  rep=4.830  rew=0.458  to_target=0.005  velocity=0.003
+  update 17450/20000: wm_total=10.338  con=0.020  distractor=0.452  dyn=4.820  position=0.008  rep=4.820  rew=0.209  to_target=0.004  velocity=0.005
+  update 17475/20000: wm_total=10.362  con=0.020  distractor=0.436  dyn=4.790  position=0.011  rep=4.790  rew=0.301  to_target=0.008  velocity=0.004
+  update 17500/20000: wm_total=10.076  con=0.020  distractor=0.444  dyn=4.726  position=0.011  rep=4.726  rew=0.136  to_target=0.007  velocity=0.005
+  update 17525/20000: wm_total=10.430  con=0.020  distractor=0.467  dyn=4.920  position=0.009  rep=4.920  rew=0.084  to_target=0.005  velocity=0.005
+  update 17550/20000: wm_total=10.521  con=0.020  distractor=0.452  dyn=4.850  position=0.006  rep=4.850  rew=0.333  to_target=0.005  velocity=0.004
+  update 17575/20000: wm_total=9.978  con=0.020  distractor=0.434  dyn=4.665  position=0.008  rep=4.665  rew=0.176  to_target=0.006  velocity=0.005
+  update 17600/20000: wm_total=10.500  con=0.020  distractor=0.439  dyn=4.929  position=0.008  rep=4.929  rew=0.167  to_target=0.005  velocity=0.004
+  update 17625/20000: wm_total=10.098  con=0.020  distractor=0.449  dyn=4.744  position=0.009  rep=4.744  rew=0.119  to_target=0.007  velocity=0.005
+  update 17650/20000: wm_total=10.525  con=0.020  distractor=0.435  dyn=4.812  position=0.006  rep=4.812  rew=0.431  to_target=0.005  velocity=0.003
+  update 17675/20000: wm_total=10.612  con=0.020  distractor=0.457  dyn=4.907  position=0.010  rep=4.907  rew=0.300  to_target=0.007  velocity=0.004
+  update 17700/20000: wm_total=9.990  con=0.020  distractor=0.416  dyn=4.701  position=0.009  rep=4.701  rew=0.132  to_target=0.006  velocity=0.004
+  update 17725/20000: wm_total=10.425  con=0.020  distractor=0.444  dyn=4.806  position=0.006  rep=4.806  rew=0.333  to_target=0.005  velocity=0.004
+  update 17750/20000: wm_total=10.234  con=0.020  distractor=0.439  dyn=4.753  position=0.005  rep=4.753  rew=0.256  to_target=0.004  velocity=0.004
+  update 17775/20000: wm_total=10.164  con=0.020  distractor=0.446  dyn=4.799  position=0.008  rep=4.799  rew=0.081  to_target=0.006  velocity=0.004
+  update 17800/20000: wm_total=10.503  con=0.020  distractor=0.455  dyn=4.866  position=0.007  rep=4.866  rew=0.281  to_target=0.005  velocity=0.004
+  update 17825/20000: wm_total=10.190  con=0.020  distractor=0.435  dyn=4.777  position=0.006  rep=4.777  rew=0.163  to_target=0.004  velocity=0.006
+  update 17850/20000: wm_total=9.937  con=0.020  distractor=0.433  dyn=4.674  position=0.007  rep=4.674  rew=0.118  to_target=0.006  velocity=0.004
+  update 17875/20000: wm_total=10.365  con=0.020  distractor=0.459  dyn=4.829  position=0.008  rep=4.829  rew=0.209  to_target=0.005  velocity=0.005
+  update 17900/20000: wm_total=10.075  con=0.020  distractor=0.424  dyn=4.737  position=0.008  rep=4.737  rew=0.140  to_target=0.006  velocity=0.004
+  update 17925/20000: wm_total=10.251  con=0.020  distractor=0.452  dyn=4.817  position=0.008  rep=4.817  rew=0.125  to_target=0.006  velocity=0.006
+  update 17950/20000: wm_total=10.287  con=0.020  distractor=0.448  dyn=4.805  position=0.007  rep=4.805  rew=0.192  to_target=0.005  velocity=0.004
+  update 17975/20000: wm_total=10.525  con=0.020  distractor=0.449  dyn=4.920  position=0.009  rep=4.920  rew=0.196  to_target=0.006  velocity=0.005
+  update 18000/20000: wm_total=10.259  con=0.020  distractor=0.448  dyn=4.751  position=0.008  rep=4.751  rew=0.271  to_target=0.005  velocity=0.004
+  update 18025/20000: wm_total=10.217  con=0.020  distractor=0.446  dyn=4.731  position=0.007  rep=4.731  rew=0.271  to_target=0.005  velocity=0.004
+  update 18050/20000: wm_total=10.101  con=0.020  distractor=0.417  dyn=4.719  position=0.007  rep=4.719  rew=0.208  to_target=0.006  velocity=0.004
+  update 18075/20000: wm_total=10.203  con=0.020  distractor=0.446  dyn=4.791  position=0.008  rep=4.791  rew=0.137  to_target=0.005  velocity=0.004
+  update 18100/20000: wm_total=10.404  con=0.020  distractor=0.430  dyn=4.766  position=0.006  rep=4.766  rew=0.406  to_target=0.005  velocity=0.004
+  update 18125/20000: wm_total=10.467  con=0.020  distractor=0.435  dyn=4.880  position=0.016  rep=4.880  rew=0.219  to_target=0.011  velocity=0.005
+  update 18150/20000: wm_total=10.135  con=0.020  distractor=0.435  dyn=4.746  position=0.007  rep=4.746  rew=0.168  to_target=0.006  velocity=0.007
+  update 18175/20000: wm_total=10.165  con=0.020  distractor=0.442  dyn=4.759  position=0.007  rep=4.759  rew=0.166  to_target=0.006  velocity=0.005
+  update 18200/20000: wm_total=10.240  con=0.020  distractor=0.443  dyn=4.722  position=0.006  rep=4.722  rew=0.313  to_target=0.007  velocity=0.006
+  update 18225/20000: wm_total=10.496  con=0.020  distractor=0.452  dyn=4.879  position=0.010  rep=4.879  rew=0.243  to_target=0.007  velocity=0.005
+  update 18250/20000: wm_total=10.349  con=0.020  distractor=0.460  dyn=4.836  position=0.007  rep=4.836  rew=0.181  to_target=0.005  velocity=0.004
+  update 18275/20000: wm_total=10.473  con=0.020  distractor=0.456  dyn=4.858  position=0.009  rep=4.858  rew=0.260  to_target=0.006  velocity=0.004
+  update 18300/20000: wm_total=10.296  con=0.020  distractor=0.453  dyn=4.769  position=0.009  rep=4.769  rew=0.265  to_target=0.008  velocity=0.004
+  update 18325/20000: wm_total=10.204  con=0.020  distractor=0.453  dyn=4.710  position=0.008  rep=4.710  rew=0.293  to_target=0.006  velocity=0.004
+  update 18350/20000: wm_total=10.397  con=0.020  distractor=0.436  dyn=4.821  position=0.008  rep=4.821  rew=0.282  to_target=0.006  velocity=0.004
+  update 18375/20000: wm_total=10.102  con=0.020  distractor=0.431  dyn=4.658  position=0.009  rep=4.658  rew=0.314  to_target=0.007  velocity=0.004
+  update 18400/20000: wm_total=9.994  con=0.020  distractor=0.446  dyn=4.729  position=0.010  rep=4.729  rew=0.047  to_target=0.007  velocity=0.005
+  update 18425/20000: wm_total=10.387  con=0.020  distractor=0.448  dyn=4.856  position=0.008  rep=4.856  rew=0.189  to_target=0.005  velocity=0.004
+  update 18450/20000: wm_total=10.383  con=0.020  distractor=0.458  dyn=4.855  position=0.007  rep=4.855  rew=0.176  to_target=0.006  velocity=0.005
+  update 18475/20000: wm_total=10.340  con=0.020  distractor=0.447  dyn=4.819  position=0.007  rep=4.819  rew=0.217  to_target=0.005  velocity=0.004
+  update 18500/20000: wm_total=10.357  con=0.020  distractor=0.446  dyn=4.806  position=0.006  rep=4.806  rew=0.264  to_target=0.004  velocity=0.005
+  update 18525/20000: wm_total=10.184  con=0.020  distractor=0.452  dyn=4.742  position=0.008  rep=4.742  rew=0.208  to_target=0.006  velocity=0.005
+  update 18550/20000: wm_total=10.121  con=0.020  distractor=0.449  dyn=4.746  position=0.008  rep=4.746  rew=0.141  to_target=0.006  velocity=0.004
+  update 18575/20000: wm_total=10.157  con=0.020  distractor=0.443  dyn=4.735  position=0.007  rep=4.735  rew=0.208  to_target=0.005  velocity=0.004
+  update 18600/20000: wm_total=10.495  con=0.020  distractor=0.455  dyn=4.844  position=0.007  rep=4.844  rew=0.315  to_target=0.005  velocity=0.004
+  update 18625/20000: wm_total=10.021  con=0.020  distractor=0.435  dyn=4.648  position=0.010  rep=4.648  rew=0.248  to_target=0.008  velocity=0.004
+  update 18650/20000: wm_total=10.029  con=0.020  distractor=0.451  dyn=4.676  position=0.006  rep=4.676  rew=0.192  to_target=0.004  velocity=0.004
+  update 18675/20000: wm_total=10.118  con=0.020  distractor=0.457  dyn=4.746  position=0.009  rep=4.746  rew=0.126  to_target=0.007  velocity=0.006
+  update 18700/20000: wm_total=10.051  con=0.020  distractor=0.453  dyn=4.697  position=0.007  rep=4.697  rew=0.167  to_target=0.005  velocity=0.005
+  update 18725/20000: wm_total=9.882  con=0.020  distractor=0.428  dyn=4.637  position=0.007  rep=4.637  rew=0.141  to_target=0.006  velocity=0.005
+  update 18750/20000: wm_total=9.702  con=0.020  distractor=0.443  dyn=4.569  position=0.008  rep=4.569  rew=0.083  to_target=0.006  velocity=0.004
+  update 18775/20000: wm_total=10.170  con=0.020  distractor=0.459  dyn=4.746  position=0.007  rep=4.746  rew=0.181  to_target=0.006  velocity=0.005
+  update 18800/20000: wm_total=10.187  con=0.020  distractor=0.439  dyn=4.723  position=0.008  rep=4.723  rew=0.262  to_target=0.007  velocity=0.004
+  update 18825/20000: wm_total=10.528  con=0.020  distractor=0.438  dyn=4.904  position=0.010  rep=4.904  rew=0.241  to_target=0.006  velocity=0.004
+  update 18850/20000: wm_total=10.619  con=0.020  distractor=0.431  dyn=4.980  position=0.019  rep=4.980  rew=0.167  to_target=0.014  velocity=0.008
+  update 18875/20000: wm_total=10.477  con=0.020  distractor=0.447  dyn=4.911  position=0.010  rep=4.911  rew=0.165  to_target=0.007  velocity=0.005
+  update 18900/20000: wm_total=9.811  con=0.020  distractor=0.435  dyn=4.591  position=0.007  rep=4.591  rew=0.157  to_target=0.006  velocity=0.004
+  update 18925/20000: wm_total=10.317  con=0.020  distractor=0.449  dyn=4.789  position=0.010  rep=4.789  rew=0.250  to_target=0.007  velocity=0.005
+  update 18950/20000: wm_total=10.247  con=0.020  distractor=0.460  dyn=4.716  position=0.013  rep=4.716  rew=0.306  to_target=0.011  velocity=0.005
+  update 18975/20000: wm_total=10.268  con=0.020  distractor=0.441  dyn=4.828  position=0.009  rep=4.828  rew=0.131  to_target=0.006  velocity=0.005
+  update 19000/20000: wm_total=10.450  con=0.020  distractor=0.483  dyn=4.796  position=0.006  rep=4.796  rew=0.340  to_target=0.005  velocity=0.004
+  update 19025/20000: wm_total=10.029  con=0.020  distractor=0.452  dyn=4.622  position=0.009  rep=4.622  rew=0.292  to_target=0.007  velocity=0.005
+  update 19050/20000: wm_total=10.190  con=0.020  distractor=0.464  dyn=4.705  position=0.007  rep=4.705  rew=0.279  to_target=0.005  velocity=0.005
+  update 19075/20000: wm_total=9.853  con=0.020  distractor=0.449  dyn=4.600  position=0.010  rep=4.600  rew=0.163  to_target=0.006  velocity=0.005
+  update 19100/20000: wm_total=9.937  con=0.020  distractor=0.466  dyn=4.674  position=0.008  rep=4.674  rew=0.083  to_target=0.005  velocity=0.005
+  update 19125/20000: wm_total=10.197  con=0.020  distractor=0.459  dyn=4.725  position=0.007  rep=4.725  rew=0.251  to_target=0.006  velocity=0.005
+  update 19150/20000: wm_total=10.555  con=0.020  distractor=0.447  dyn=4.841  position=0.006  rep=4.841  rew=0.390  to_target=0.005  velocity=0.004
+  update 19175/20000: wm_total=9.936  con=0.020  distractor=0.443  dyn=4.650  position=0.007  rep=4.650  rew=0.156  to_target=0.005  velocity=0.005
+  update 19200/20000: wm_total=10.210  con=0.020  distractor=0.452  dyn=4.781  position=0.007  rep=4.781  rew=0.159  to_target=0.005  velocity=0.005
+  update 19225/20000: wm_total=10.167  con=0.020  distractor=0.450  dyn=4.759  position=0.007  rep=4.759  rew=0.161  to_target=0.005  velocity=0.005
+  update 19250/20000: wm_total=10.277  con=0.020  distractor=0.459  dyn=4.820  position=0.015  rep=4.820  rew=0.125  to_target=0.010  velocity=0.007
+  update 19275/20000: wm_total=10.054  con=0.020  distractor=0.428  dyn=4.643  position=0.007  rep=4.643  rew=0.302  to_target=0.005  velocity=0.005
+  update 19300/20000: wm_total=10.135  con=0.020  distractor=0.468  dyn=4.702  position=0.006  rep=4.702  rew=0.228  to_target=0.005  velocity=0.004
+  update 19325/20000: wm_total=10.398  con=0.020  distractor=0.465  dyn=4.816  position=0.007  rep=4.816  rew=0.263  to_target=0.006  velocity=0.004
+  update 19350/20000: wm_total=9.981  con=0.020  distractor=0.447  dyn=4.675  position=0.010  rep=4.675  rew=0.140  to_target=0.007  velocity=0.005
+  update 19375/20000: wm_total=9.732  con=0.020  distractor=0.447  dyn=4.557  position=0.008  rep=4.557  rew=0.132  to_target=0.006  velocity=0.005
+  update 19400/20000: wm_total=10.177  con=0.020  distractor=0.439  dyn=4.724  position=0.010  rep=4.724  rew=0.246  to_target=0.008  velocity=0.004
+  update 19425/20000: wm_total=9.686  con=0.020  distractor=0.445  dyn=4.580  position=0.008  rep=4.580  rew=0.042  to_target=0.006  velocity=0.004
+  update 19450/20000: wm_total=9.828  con=0.020  distractor=0.438  dyn=4.573  position=0.007  rep=4.573  rew=0.208  to_target=0.005  velocity=0.004
+  update 19475/20000: wm_total=9.937  con=0.020  distractor=0.448  dyn=4.655  position=0.007  rep=4.655  rew=0.143  to_target=0.005  velocity=0.004
+  update 19500/20000: wm_total=10.086  con=0.020  distractor=0.455  dyn=4.682  position=0.006  rep=4.682  rew=0.232  to_target=0.004  velocity=0.005
+  update 19525/20000: wm_total=10.165  con=0.020  distractor=0.447  dyn=4.699  position=0.009  rep=4.699  rew=0.278  to_target=0.006  velocity=0.005
+  update 19550/20000: wm_total=9.866  con=0.020  distractor=0.449  dyn=4.643  position=0.008  rep=4.643  rew=0.091  to_target=0.007  velocity=0.006
+  update 19575/20000: wm_total=10.429  con=0.020  distractor=0.471  dyn=4.876  position=0.009  rep=4.876  rew=0.167  to_target=0.005  velocity=0.004
+  update 19600/20000: wm_total=10.421  con=0.020  distractor=0.439  dyn=4.825  position=0.007  rep=4.825  rew=0.295  to_target=0.006  velocity=0.004
+  update 19625/20000: wm_total=10.492  con=0.020  distractor=0.473  dyn=4.870  position=0.009  rep=4.870  rew=0.241  to_target=0.005  velocity=0.004
+  update 19650/20000: wm_total=10.378  con=0.020  distractor=0.452  dyn=4.795  position=0.009  rep=4.795  rew=0.295  to_target=0.006  velocity=0.005
+  update 19675/20000: wm_total=10.255  con=0.020  distractor=0.443  dyn=4.807  position=0.008  rep=4.807  rew=0.159  to_target=0.006  velocity=0.005
+  update 19700/20000: wm_total=10.436  con=0.020  distractor=0.452  dyn=4.868  position=0.009  rep=4.868  rew=0.206  to_target=0.006  velocity=0.006
+  update 19725/20000: wm_total=9.935  con=0.020  distractor=0.458  dyn=4.680  position=0.009  rep=4.680  rew=0.078  to_target=0.005  velocity=0.005
+  update 19750/20000: wm_total=10.038  con=0.020  distractor=0.457  dyn=4.648  position=0.008  rep=4.648  rew=0.248  to_target=0.006  velocity=0.003
+  update 19775/20000: wm_total=10.131  con=0.020  distractor=0.432  dyn=4.706  position=0.007  rep=4.706  rew=0.250  to_target=0.006  velocity=0.004
+  update 19800/20000: wm_total=10.134  con=0.020  distractor=0.457  dyn=4.682  position=0.009  rep=4.682  rew=0.270  to_target=0.008  velocity=0.005
+  update 19825/20000: wm_total=10.110  con=0.020  distractor=0.464  dyn=4.725  position=0.008  rep=4.725  rew=0.157  to_target=0.006  velocity=0.005
+  update 19850/20000: wm_total=10.353  con=0.020  distractor=0.454  dyn=4.769  position=0.006  rep=4.769  rew=0.325  to_target=0.005  velocity=0.004
+  update 19875/20000: wm_total=10.214  con=0.020  distractor=0.470  dyn=4.708  position=0.008  rep=4.708  rew=0.289  to_target=0.006  velocity=0.005
+  update 19900/20000: wm_total=10.011  con=0.020  distractor=0.433  dyn=4.673  position=0.006  rep=4.673  rew=0.195  to_target=0.005  velocity=0.005
+  update 19925/20000: wm_total=10.127  con=0.020  distractor=0.441  dyn=4.742  position=0.006  rep=4.742  rew=0.167  to_target=0.004  velocity=0.004
+  update 19950/20000: wm_total=11.034  con=0.020  distractor=0.467  dyn=5.181  position=0.030  rep=5.181  rew=0.126  to_target=0.022  velocity=0.007
+  update 19975/20000: wm_total=10.203  con=0.020  distractor=0.445  dyn=4.769  position=0.015  rep=4.769  rew=0.167  to_target=0.012  velocity=0.005
+  update 20000/20000: wm_total=10.324  con=0.020  distractor=0.456  dyn=4.852  position=0.007  rep=4.852  rew=0.125  to_target=0.006  velocity=0.004
+Saving checkpoint: /workspace/dreamerv3_runs/ax1wm_synth_q1s1_seed99/ckpt/20260718T043128F264759-000000020000
+Saved checkpoint.
+Saved offline-fit checkpoint under /workspace/dreamerv3_runs/ax1wm_synth_q1s1_seed99/ckpt
+WM-loss change (update 25 -> 20000):
+  con         : 0.6767 -> 0.0204 (down)
+  distractor  : 5.7630 -> 0.4561 (down)
+  dyn         : 7.6575 -> 4.8521 (down)
+  position    : 1.0290 -> 0.0075 (down)
+  rep         : 7.6575 -> 4.8521 (down)
+  rew         : 5.5409 -> 0.1250 (down)
+  to_target   : 0.7972 -> 0.0065 (down)
+  velocity    : 0.8798 -> 0.0042 (down)
+  wm_total    : 30.0017 -> 10.3241 (DECREASED)
+[Sat Jul 18 04:31:29 UTC 2026] adapt RUN_ID=adapt_ax1q1s1_synth_seed99_ckpt20000 TASK=synth_reach SEED=99 CKPT=/workspace/dreamerv3_runs/ax1wm_synth_q1s1_seed99/ckpt/20260718T043128F264759-000000020000 STEPS=1.25e5
+---  ___                           __   ______ ---
+--- |   \ _ _ ___ __ _ _ __  ___ _ \ \ / /__ / ---
+--- | |) | '_/ -_) _` | '  \/ -_) '/\ V / |_ \ ---
+--- |___/|_| \___\__,_|_|_|_\___|_|  \_/ |___/ ---
+Replica: 0 / 1
+Logdir: /workspace/dreamerv3_runs/adapt_ax1q1s1_synth_seed99_ckpt20000
+Run script: train
+Observations
+  position         Space(float32, shape=(2,), low=-inf, high=inf)
+  velocity         Space(float32, shape=(2,), low=-inf, high=inf)
+  distractor       Space(float32, shape=(8,), low=-inf, high=inf)
+  to_target        Space(float32, shape=(2,), low=-inf, high=inf)
+  reward           Space(float32, shape=(), low=-inf, high=inf)
+  is_first         Space(bool, shape=(), low=False, high=True)
+  is_last          Space(bool, shape=(), low=False, high=True)
+  is_terminal      Space(bool, shape=(), low=False, high=True)
+Actions
+  action           Space(float32, shape=(2,), low=-1.0, high=1.0)
+Extras
+  consec           Space(int32, shape=(), low=-2147483648, high=2147483647)
+  stepid           Space(uint8, shape=(20,), low=0, high=255)
+  dyn/deter        Space(float32, shape=(512,), low=-inf, high=inf)
+  dyn/stoch        Space(float32, shape=(32, 4), low=-inf, high=inf)
+JAX devices (1): [cuda:0]
+Policy devices: cuda:0
+Train devices:  cuda:0
+Initializing parameters...
+Optimizer opt has 214,723 params:
+        66,111 val
+        57,663 rew
+        49,796 pol
+        41,153 con
+Done initializing!
+Compiling 1 checkpoint groups...
+Largest checkpoint group: 0 GB
+Compiling train and report...
+Train cost analysis:
+No available
+Report cost analysis:
+No available
+Done compiling!
+Loaded pretrained checkpoint with keys: ['dec/mlp/linear0/bias', 'dec/mlp/linear0/kernel', 'dec/mlp/linear1/bias', 'dec/mlp/linear1/kernel', 'dec/mlp/linear2/bias', 'dec/mlp/linear2/kernel', 'dec/mlp/norm0/scale', 'dec/mlp/norm1/scale', 'dec/mlp/norm2/scale', 'dec/vec/distractor/pred/bias', 'dec/vec/distractor/pred/kernel', 'dec/vec/position/pred/bias', 'dec/vec/position/pred/kernel', 'dec/vec/to_target/pred/bias', 'dec/vec/to_target/pred/kernel', 'dec/vec/velocity/pred/bias', 'dec/vec/velocity/pred/kernel', 'dyn/dyngru/bias', 'dyn/dyngru/kernel', 'dyn/dynhid0/bias', 'dyn/dynhid0/kernel', 'dyn/dynhid0norm/scale', 'dyn/dynin0/bias', 'dyn/dynin0/kernel', 'dyn/dynin0norm/scale', 'dyn/dynin1/bias', 'dyn/dynin1/kernel', 'dyn/dynin1norm/scale', 'dyn/dynin2/bias', 'dyn/dynin2/kernel', 'dyn/dynin2norm/scale', 'dyn/obs0/bias', 'dyn/obs0/kernel', 'dyn/obs0norm/scale', 'dyn/obslogit/bias', 'dyn/obslogit/kernel', 'dyn/prior0/bias', 'dyn/prior0/kernel', 'dyn/prior0norm/scale', 'dyn/prior1/bias', 'dyn/prior1/kernel', 'dyn/prior1norm/scale', 'dyn/priorlogit/bias', 'dyn/priorlogit/kernel', 'enc/mlp0/bias', 'enc/mlp0/kernel', 'enc/mlp0norm/scale', 'enc/mlp1/bias', 'enc/mlp1/kernel', 'enc/mlp1norm/scale', 'enc/mlp2/bias', 'enc/mlp2/kernel', 'enc/mlp2norm/scale']
+Did not find any checkpoint.
+Saving checkpoint: /workspace/dreamerv3_runs/adapt_ax1q1s1_synth_seed99_ckpt20000/ckpt/20260718T043229F713811
+Saved checkpoint.
+Start training loop
+
+--------------------[Agent Step 13_104]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+train/loss/con 0.03 / train/loss/distractor 0.46 / train/loss/dyn 4.85 / train/loss/policy 3.7e-3 / train/loss/position 0.02 / train/loss/rep 4.85 / train/loss/repval 1.87 / train/loss/rew 0.47 / train/loss/to_target 0.03 / train/loss/value 1.47 / train/loss/velocity 0.04 / replay/replay_ratio 952.01 / fps/policy 104.58 / fps/train 9e4
+
+Writing metrics: /workspace/dreamerv3_runs/adapt_ax1q1s1_synth_seed99_ckpt20000/metrics.jsonl
+Writing metrics: /workspace/dreamerv3_runs/adapt_ax1q1s1_synth_seed99_ckpt20000/scores.jsonl
+
+--------------------[Agent Step 24_224]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+episode/score 6 / episode/length 1001 / train/loss/con 0.02 / train/loss/distractor 0.48 / train/loss/dyn 4.98 / train/loss/policy -0.1 / train/loss/position 0.03 / train/loss/rep 4.98 / train/loss/repval 1.49 / train/loss/rew 0.02 / train/loss/to_target 0.07 / train/loss/value 1.33 / train/loss/velocity 0.14 / replay/replay_ratio 1040 / fps/policy 92.58 / fps/train 9.5e4
+
+Writing metrics: /workspace/dreamerv3_runs/adapt_ax1q1s1_synth_seed99_ckpt20000/scores.jsonl
+Writing metrics: /workspace/dreamerv3_runs/adapt_ax1q1s1_synth_seed99_ckpt20000/metrics.jsonl
+
+--------------------[Agent Step 35_344]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+episode/score 77 / episode/length 1001 / train/loss/con 0.02 / train/loss/distractor 0.48 / train/loss/dyn 4.96 / train/loss/policy -0.07 / train/loss/position 0.04 / train/loss/rep 4.96 / train/loss/repval 1.31 / train/loss/rew 0.06 / train/loss/to_target 0.07 / train/loss/value 1.04 / train/loss/velocity 0.1 / replay/replay_ratio 1040 / fps/policy 92.54 / fps/train 9.5e4
+
+Writing metrics: /workspace/dreamerv3_runs/adapt_ax1q1s1_synth_seed99_ckpt20000/scores.jsonl
+Writing metrics: /workspace/dreamerv3_runs/adapt_ax1q1s1_synth_seed99_ckpt20000/metrics.jsonl
+
+--------------------[Agent Step 46_464]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+train/loss/con 0.02 / train/loss/distractor 0.48 / train/loss/dyn 4.93 / train/loss/policy -0.1 / train/loss/position 0.04 / train/loss/rep 4.93 / train/loss/repval 1.37 / train/loss/rew 0.17 / train/loss/to_target 0.06 / train/loss/value 0.96 / train/loss/velocity 0.08 / replay/replay_ratio 1040 / fps/policy 92.6 / fps/train 9.5e4
+
+Writing metrics: /workspace/dreamerv3_runs/adapt_ax1q1s1_synth_seed99_ckpt20000/metrics.jsonlWriting metrics: /workspace/dreamerv3_runs/adapt_ax1q1s1_synth_seed99_ckpt20000/scores.jsonl
+
+
+--------------------[Agent Step 57_584]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+episode/score 315 / episode/length 1001 / train/loss/con 0.02 / train/loss/distractor 0.47 / train/loss/dyn 4.91 / train/loss/policy -0.06 / train/loss/position 0.03 / train/loss/rep 4.91 / train/loss/repval 1.3 / train/loss/rew 0.28 / train/loss/to_target 0.05 / train/loss/value 0.95 / train/loss/velocity 0.07 / replay/replay_ratio 1040 / fps/policy 92.61 / fps/train 9.5e4
+
+Writing metrics: /workspace/dreamerv3_runs/adapt_ax1q1s1_synth_seed99_ckpt20000/scores.jsonl
+Writing metrics: /workspace/dreamerv3_runs/adapt_ax1q1s1_synth_seed99_ckpt20000/metrics.jsonl
+
+--------------------[Agent Step 68_688]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+episode/score 427 / episode/length 1001 / train/loss/con 0.02 / train/loss/distractor 0.47 / train/loss/dyn 4.89 / train/loss/policy -0.04 / train/loss/position 0.03 / train/loss/rep 4.89 / train/loss/repval 1.21 / train/loss/rew 0.38 / train/loss/to_target 0.05 / train/loss/value 1.02 / train/loss/velocity 0.06 / replay/replay_ratio 1040 / fps/policy 92.42 / fps/train 9.5e4
+
+Writing metrics: /workspace/dreamerv3_runs/adapt_ax1q1s1_synth_seed99_ckpt20000/scores.jsonlWriting metrics: /workspace/dreamerv3_runs/adapt_ax1q1s1_synth_seed99_ckpt20000/metrics.jsonl
+
+
+--------------------[Agent Step 79_824]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+train/loss/con 0.02 / train/loss/distractor 0.47 / train/loss/dyn 4.89 / train/loss/policy -0.02 / train/loss/position 0.03 / train/loss/rep 4.89 / train/loss/repval 1.16 / train/loss/rew 0.45 / train/loss/to_target 0.04 / train/loss/value 0.85 / train/loss/velocity 0.05 / replay/replay_ratio 1040 / fps/policy 92.67 / fps/train 9.5e4
+
+Writing metrics: /workspace/dreamerv3_runs/adapt_ax1q1s1_synth_seed99_ckpt20000/metrics.jsonlWriting metrics: /workspace/dreamerv3_runs/adapt_ax1q1s1_synth_seed99_ckpt20000/scores.jsonl
+
+Saving checkpoint: /workspace/dreamerv3_runs/adapt_ax1q1s1_synth_seed99_ckpt20000/ckpt/20260718T044734F353919
+Saved checkpoint.
+
+--------------------[Agent Step 90_896]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+episode/score 502 / episode/length 1001 / train/loss/con 0.02 / train/loss/distractor 0.47 / train/loss/dyn 4.89 / train/loss/policy -8.3e-3 / train/loss/position 0.03 / train/loss/rep 4.89 / train/loss/repval 1.18 / train/loss/rew 0.5 / train/loss/to_target 0.04 / train/loss/value 0.88 / train/loss/velocity 0.05 / replay/replay_ratio 1040 / fps/policy 92.21 / fps/train 9.4e4
+
+Writing metrics: /workspace/dreamerv3_runs/adapt_ax1q1s1_synth_seed99_ckpt20000/scores.jsonlWriting metrics: /workspace/dreamerv3_runs/adapt_ax1q1s1_synth_seed99_ckpt20000/metrics.jsonl
+
+
+--------------------[Agent Step 101_984]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+episode/score 599 / episode/length 1001 / train/loss/con 0.02 / train/loss/distractor 0.46 / train/loss/dyn 4.89 / train/loss/policy -5.7e-3 / train/loss/position 0.03 / train/loss/rep 4.89 / train/loss/repval 1.2 / train/loss/rew 0.54 / train/loss/to_target 0.04 / train/loss/value 0.94 / train/loss/velocity 0.04 / replay/replay_ratio 1040 / fps/policy 92.37 / fps/train 9.5e4
+
+Writing metrics: /workspace/dreamerv3_runs/adapt_ax1q1s1_synth_seed99_ckpt20000/metrics.jsonlWriting metrics: /workspace/dreamerv3_runs/adapt_ax1q1s1_synth_seed99_ckpt20000/scores.jsonl
+
+
+--------------------[Agent Step 113_072]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+episode/score 410 / episode/length 1001 / train/loss/con 0.02 / train/loss/distractor 0.46 / train/loss/dyn 4.9 / train/loss/policy -5.1e-3 / train/loss/position 0.03 / train/loss/rep 4.9 / train/loss/repval 1.24 / train/loss/rew 0.58 / train/loss/to_target 0.04 / train/loss/value 1.11 / train/loss/velocity 0.04 / replay/replay_ratio 1040 / fps/policy 92.29 / fps/train 9.5e4
+
+Writing metrics: /workspace/dreamerv3_runs/adapt_ax1q1s1_synth_seed99_ckpt20000/scores.jsonlWriting metrics: /workspace/dreamerv3_runs/adapt_ax1q1s1_synth_seed99_ckpt20000/metrics.jsonl
+
+
+--------------------[Agent Step 124_192]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+train/loss/con 0.02 / train/loss/distractor 0.46 / train/loss/dyn 4.9 / train/loss/policy 8.9e-4 / train/loss/position 0.03 / train/loss/rep 4.9 / train/loss/repval 1.25 / train/loss/rew 0.6 / train/loss/to_target 0.04 / train/loss/value 1.11 / train/loss/velocity 0.04 / replay/replay_ratio 1040 / fps/policy 92.57 / fps/train 9.5e4
+
+Writing metrics: /workspace/dreamerv3_runs/adapt_ax1q1s1_synth_seed99_ckpt20000/scores.jsonlWriting metrics: /workspace/dreamerv3_runs/adapt_ax1q1s1_synth_seed99_ckpt20000/metrics.jsonl
+
+[Sat Jul 18 04:54:45 UTC 2026] adapt adapt_ax1q1s1_synth_seed99_ckpt20000 rc=0 status=DONE

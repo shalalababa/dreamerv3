@@ -1,0 +1,82 @@
+[Sat Jul 18 04:40:45 UTC 2026] axis1 child starting RUN_ID=adapt_ax1s12q1s1_finger_seed99_ckpt20000 WM_RUN=ax1wm_finger_s12q1s1_seed99 job=NA host=e6c1e6d884c4
+[Sat Jul 18 04:40:45 UTC 2026] env prepared: python=/workspace/conda_envs/dreamerv3/bin/python
+python_executable=/workspace/conda_envs/dreamerv3/bin/python
+[Sat Jul 18 04:40:45 UTC 2026] offline_fit WM_RUN=ax1wm_finger_s12q1s1_seed99 REPLAY=/workspace/dreamerv3_runs/axis1_finger/q1/side1 UPDATES=20000 SEED=99
+[Sat Jul 18 04:40:46 UTC 2026] fit flags: --agent.expl.mode task  (arm=full size=size12m)
+Logdir: /workspace/dreamerv3_runs/ax1wm_finger_s12q1s1_seed99
+Static replay: /workspace/dreamerv3_runs/axis1_finger/q1/side1
+Observations
+  reward           Space(float32, shape=(), low=-inf, high=inf)
+  is_first         Space(bool, shape=(), low=False, high=True)
+  is_last          Space(bool, shape=(), low=False, high=True)
+  is_terminal      Space(bool, shape=(), low=False, high=True)
+  position         Space(float32, shape=(4,), low=-inf, high=inf)
+  velocity         Space(float32, shape=(3,), low=-inf, high=inf)
+  touch            Space(float32, shape=(2,), low=-inf, high=inf)
+  target_position  Space(float32, shape=(2,), low=-inf, high=inf)
+  dist_to_target   Space(float32, shape=(), low=-inf, high=inf)
+Actions
+  action           Space(float32, shape=(2,), low=-1.0, high=1.0)
+Extras
+  consec           Space(int32, shape=(), low=-2147483648, high=2147483647)
+  stepid           Space(uint8, shape=(20,), low=0, high=255)
+  dyn/deter        Space(float32, shape=(2048,), low=-inf, high=inf)
+  dyn/stoch        Space(float32, shape=(32, 16), low=-inf, high=inf)
+JAX devices (1): [cuda:0]
+Policy devices: cuda:0
+Train devices:  cuda:0
+Initializing parameters...
+/workspace/dreamerv3/embodied/jax/agent.py:112: DeprecationWarning: `with mesh:` context manager has been deprecated. Please use `with jax.set_mesh(mesh):` instead.
+  with self.train_mesh:
+Optimizer opt has 9,728,783 params:
+     5,782,016 dyn
+       853,503 val
+       791,052 dec
+       788,996 pol
+       721,407 rew
+       656,129 con
+       135,680 enc
+Done initializing!
+Compiling 1 checkpoint groups...
+Largest checkpoint group: 0 GB
+Compiling train and report...
+/workspace/dreamerv3/embodied/jax/agent.py:187: DeprecationWarning: `with mesh:` context manager has been deprecated. Please use `with jax.set_mesh(mesh):` instead.
+  with self.train_mesh:
+Train cost analysis:
+No available
+Report cost analysis:
+No available
+Done compiling!
+Did not find any checkpoint.
+Loaded static replay: 187400 sampling items (seq length 65).
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "/workspace/dreamerv3/probing/offline_fit.py", line 205, in <module>
+    main()
+  File "/workspace/dreamerv3/probing/offline_fit.py", line 156, in main
+    carry[0], outs, mets = agent.train(carry[0], batch)
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/conda_envs/dreamerv3/lib/python3.11/contextlib.py", line 81, in inner
+    return func(*args, **kwds)
+           ^^^^^^^^^^^^^^^^^^^
+  File "/workspace/dreamerv3/embodied/jax/agent.py", line 274, in train
+    self.params, carry, outs, mets = self._train(
+                                     ^^^^^^^^^^^^
+  File "/workspace/conda_envs/dreamerv3/lib/python3.11/site-packages/jax/_src/stages.py", line 890, in __call__
+    return self._call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/conda_envs/dreamerv3/lib/python3.11/site-packages/jax/_src/interpreters/pxla.py", line 1933, in aot_cache_miss
+    outs, out_flat, args_flat = stages.Compiled.call(params, *args, **kwargs)
+                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/conda_envs/dreamerv3/lib/python3.11/site-packages/jax/_src/stages.py", line 867, in call
+    lo_outs = params.executable.call(*params.const_args, *args_flat)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/conda_envs/dreamerv3/lib/python3.11/site-packages/jax/_src/interpreters/pxla.py", line 1900, in call
+    check_arg_avals_for_call(self._all_args_info.in_avals,
+  File "/workspace/conda_envs/dreamerv3/lib/python3.11/site-packages/jax/_src/interpreters/pxla.py", line 2011, in check_arg_avals_for_call
+    raise TypeError(
+TypeError: Argument types differ from the types for which this computation was compiled. Perhaps you are calling the compiled executable with a different enable_x64 mode than when it was AOT compiled? The mismatches are:
+Argument 'args[4]['dyn/deter']' compiled with float32[16,65,2048] and called with float32[16,65,512]
+Argument 'args[4]['dyn/stoch']' compiled with float32[16,65,32,16] and called with float32[16,65,32,4]
+[Sat Jul 18 04:42:21 UTC 2026] offline_fit FAILED rc=1

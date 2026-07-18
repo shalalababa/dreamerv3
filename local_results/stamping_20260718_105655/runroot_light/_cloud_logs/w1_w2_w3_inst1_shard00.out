@@ -1,0 +1,25 @@
+START mode=apt run=adapt_ax1fw0s0_finger_seed1_ckpt500000 wm=ax1wm_finger_fw0s0_seed1 replay=/workspace/dreamerv3_runs/axis1_finger/within/p2e1/side0 gpu=0
+DONE adapt_ax1fw0s0_finger_seed1_ckpt500000
+START mode=apt run=adapt_ax1fw3s0_finger_seed1_ckpt500000 wm=ax1wm_finger_fw3s0_seed1 replay=/workspace/dreamerv3_runs/axis1_finger/within/p2e4/side0 gpu=0
+DONE adapt_ax1fw3s0_finger_seed1_ckpt500000
+START mode=apt run=adapt_ax1fw5s0_finger_seed1_ckpt500000 wm=ax1wm_finger_fw5s0_seed1 replay=/workspace/dreamerv3_runs/axis1_finger/within/apt1/side0 gpu=0
+DONE adapt_ax1fw5s0_finger_seed1_ckpt500000
+START mode=apt run=adapt_ax1fw7s0_finger_seed1_ckpt500000 wm=ax1wm_finger_fw7s0_seed1 replay=/workspace/dreamerv3_runs/axis1_finger/within/apt3/side0 gpu=0
+DONE adapt_ax1fw7s0_finger_seed1_ckpt500000
+START mode=apt run=adapt_ax1fw9s0_finger_seed1_ckpt500000 wm=ax1wm_finger_fw9s0_seed1 replay=/workspace/dreamerv3_runs/axis1_finger/within/apt5/side0 gpu=0
+DONE adapt_ax1fw9s0_finger_seed1_ckpt500000
+START mode=apt run=adapt_ax1fw11s0_finger_seed1_ckpt500000 wm=ax1wm_finger_fw11s0_seed1 replay=/workspace/dreamerv3_runs/axis1_finger/within/random2/side0 gpu=0
+DONE adapt_ax1fw11s0_finger_seed1_ckpt500000
+START mode=apt run=adapt_ax1fw13s0_finger_seed1_ckpt500000 wm=ax1wm_finger_fw13s0_seed1 replay=/workspace/dreamerv3_runs/axis1_finger/within/random4/side0 gpu=0
+DONE adapt_ax1fw13s0_finger_seed1_ckpt500000
+START mode=apt run=adapt_ax1fw5s0_cup_seed1_ckpt500000 wm=ax1wm_cup_fw5s0_seed1 replay=/workspace/dreamerv3_runs/axis1_cup/within/apt1/side0 gpu=0
+DONE adapt_ax1fw5s0_cup_seed1_ckpt500000
+START mode=apt run=adapt_ax1fw8s0_cup_seed1_ckpt500000 wm=ax1wm_cup_fw8s0_seed1 replay=/workspace/dreamerv3_runs/axis1_cup/within/apt4/side0 gpu=0
+DONE adapt_ax1fw8s0_cup_seed1_ckpt500000
+START mode=apt run=adapt_ax1fw10s0_cup_seed1_ckpt500000 wm=ax1wm_cup_fw10s0_seed1 replay=/workspace/dreamerv3_runs/axis1_cup/within/random1/side0 gpu=0
+DONE adapt_ax1fw10s0_cup_seed1_ckpt500000
+START mode=apt run=adapt_ax1fw12s0_cup_seed1_ckpt500000 wm=ax1wm_cup_fw12s0_seed1 replay=/workspace/dreamerv3_runs/axis1_cup/within/random3/side0 gpu=0
+DONE adapt_ax1fw12s0_cup_seed1_ckpt500000
+START mode=apt run=adapt_ax1fw14s0_cup_seed1_ckpt500000 wm=ax1wm_cup_fw14s0_seed1 replay=/workspace/dreamerv3_runs/axis1_cup/within/random5/side0 gpu=0
+DONE adapt_ax1fw14s0_cup_seed1_ckpt500000
+START mode=apt run=adapt_ax1fq1s1_cup_seed9_ckpt500000 wm=ax1wm_cup_fq1s1_seed9 replay=/workspace/dreamerv3_runs/axis1_cup/q1/side1 gpu=0

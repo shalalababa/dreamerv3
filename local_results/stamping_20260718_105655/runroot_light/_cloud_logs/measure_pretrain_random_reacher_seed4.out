@@ -1,0 +1,500 @@
+[Sun Jul 12 00:52:14 UTC 2026] measure PRE_RUN=pretrain_random_reacher_seed4 TASK=dmc_reacher_hard milestones=100000 200000 300000 400000 500000
+SKIP milestone 100000: no snapshot within 5000 steps (excluded per PREREG Sec.1)
+[Sun Jul 12 00:52:14 UTC 2026] milestone 200000  snapshot=/workspace/dreamerv3_runs/pretrain_random_reacher_seed4/ckpt_snapshots/step000000199264
+Task: dmc_reacher_hard  |  checkpoint: /workspace/dreamerv3_runs/pretrain_random_reacher_seed4/ckpt_snapshots/step000000199264  |  mode: eval
+Observations
+  reward           Space(float32, shape=(), low=-inf, high=inf)
+  is_first         Space(bool, shape=(), low=False, high=True)
+  is_last          Space(bool, shape=(), low=False, high=True)
+  is_terminal      Space(bool, shape=(), low=False, high=True)
+  position         Space(float32, shape=(2,), low=-inf, high=inf)
+  to_target        Space(float32, shape=(2,), low=-inf, high=inf)
+  velocity         Space(float32, shape=(2,), low=-inf, high=inf)
+Actions
+  action           Space(float32, shape=(2,), low=-1.0, high=1.0)
+Extras
+  consec           Space(int32, shape=(), low=-2147483648, high=2147483647)
+  stepid           Space(uint8, shape=(20,), low=0, high=255)
+  dyn/deter        Space(float32, shape=(512,), low=-inf, high=inf)
+  dyn/stoch        Space(float32, shape=(32, 4), low=-inf, high=inf)
+JAX devices (1): [cuda:0]
+Policy devices: cuda:0
+Train devices:  cuda:0
+Initializing parameters...
+/workspace/dreamerv3/embodied/jax/agent.py:112: DeprecationWarning: `with mesh:` context manager has been deprecated. Please use `with jax.set_mesh(mesh):` instead.
+  with self.train_mesh:
+E0712 00:52:24.951527  333608 cuda_executor.cc:1182] [0] Failed to allocate device memory of 11.61GiB (12463374336 bytes): RESOURCE_EXHAUSTED: : CUDA_ERROR_OUT_OF_MEMORY: out of memory
+E0712 00:52:24.951660  333608 cuda_executor.cc:1182] [0] Failed to allocate device memory of 10.45GiB (11217036288 bytes): RESOURCE_EXHAUSTED: : CUDA_ERROR_OUT_OF_MEMORY: out of memory
+E0712 00:52:24.951769  333608 cuda_executor.cc:1182] [0] Failed to allocate device memory of 9.40GiB (10095332352 bytes): RESOURCE_EXHAUSTED: : CUDA_ERROR_OUT_OF_MEMORY: out of memory
+E0712 00:52:24.951875  333608 cuda_executor.cc:1182] [0] Failed to allocate device memory of 8.46GiB (9085798400 bytes): RESOURCE_EXHAUSTED: : CUDA_ERROR_OUT_OF_MEMORY: out of memory
+E0712 00:52:24.951984  333608 cuda_executor.cc:1182] [0] Failed to allocate device memory of 7.62GiB (8177218560 bytes): RESOURCE_EXHAUSTED: : CUDA_ERROR_OUT_OF_MEMORY: out of memory
+E0712 00:52:24.952087  333608 cuda_executor.cc:1182] [0] Failed to allocate device memory of 6.85GiB (7359496704 bytes): RESOURCE_EXHAUSTED: : CUDA_ERROR_OUT_OF_MEMORY: out of memory
+E0712 00:52:24.952189  333608 cuda_executor.cc:1182] [0] Failed to allocate device memory of 6.17GiB (6623546880 bytes): RESOURCE_EXHAUSTED: : CUDA_ERROR_OUT_OF_MEMORY: out of memory
+E0712 00:52:24.952291  333608 cuda_executor.cc:1182] [0] Failed to allocate device memory of 5.55GiB (5961191936 bytes): RESOURCE_EXHAUSTED: : CUDA_ERROR_OUT_OF_MEMORY: out of memory
+E0712 00:52:24.952392  333608 cuda_executor.cc:1182] [0] Failed to allocate device memory of 5.00GiB (5365072384 bytes): RESOURCE_EXHAUSTED: : CUDA_ERROR_OUT_OF_MEMORY: out of memory
+E0712 00:52:24.952493  333608 cuda_executor.cc:1182] [0] Failed to allocate device memory of 4.50GiB (4828564992 bytes): RESOURCE_EXHAUSTED: : CUDA_ERROR_OUT_OF_MEMORY: out of  episode  18: len=1000  return=    0.0
+  episode  19: len=1000  return=    0.0
+  episode  20: len=1000  return=    0.0
+  episode  21: len=1000  return=    0.0
+  episode  22: len=1000  return=    2.0
+  episode  23: len=1000  return=    0.0
+  episode  24: len=1000  return=   50.0
+  episode  25: len=1000  return=    2.0
+  episode  26: len=1000  return=    0.0
+  episode  27: len=1000  return=    0.0
+  episode  28: len=1000  return=    0.0
+  episode  29: len=1000  return=    0.0
+  episode  30: len=1000  return=    0.0
+  episode  31: len=1000  return=    0.0
+  episode  32: len=1000  return=    0.0
+  episode  33: len=1000  return=    0.0
+  episode  34: len=1000  return=   71.0
+  episode  35: len=1000  return=    0.0
+  episode  36: len=1000  return=    0.0
+  episode  37: len=1000  return=    0.0
+  episode  38: len=1000  return=    0.0
+  episode  39: len=1000  return=    0.0
+Saved 40 x 1000 steps -> /workspace/dreamerv3_runs/pretrain_random_reacher_seed4/measure/ms200000/traj.npz
+Return over episodes: 8.1 +/- 20.6
+Probe trajectories: 40 episodes x 1000 steps
+Observations
+  reward           Space(float32, shape=(), low=-inf, high=inf)
+  is_first         Space(bool, shape=(), low=False, high=True)
+  is_last          Space(bool, shape=(), low=False, high=True)
+  is_terminal      Space(bool, shape=(), low=False, high=True)
+  position         Space(float32, shape=(2,), low=-inf, high=inf)
+  to_target        Space(float32, shape=(2,), low=-inf, high=inf)
+  velocity         Space(float32, shape=(2,), low=-inf, high=inf)
+Actions
+  action           Space(float32, shape=(2,), low=-1.0, high=1.0)
+Extras
+  consec           Space(int32, shape=(), low=-2147483648, high=2147483647)
+  stepid           Space(uint8, shape=(20,), low=0, high=255)
+  dyn/deter        Space(float32, shape=(512,), low=-inf, high=inf)
+  dyn/stoch        Spac  episode   9: len=1000  return=    0.0
+  episode  10: len=1000  return=    0.0
+  episode  11: len=1000  return=    0.0
+  episode  12: len=1000  return=    0.0
+  episode  13: len=1000  return=    0.0
+  episode  14: len=1000  return=    0.0
+  episode  15: len=1000  return=   56.0
+  episode  16: len=1000  return=  154.0
+  episode  17: len=1000  return=    6.0
+  episode  18: len=1000  return=    0.0
+  episode  19: len=1000  return=    0.0
+  episode  20: len=1000  return=    0.0
+  episode  21: len=1000  return=    0.0
+  episode  22: len=1000  return=    0.0
+  episode  23: len=1000  return=    0.0
+  episode  24: len=1000  return=   45.0
+  episode  25: len=1000  return=    0.0
+  episode  26: len=1000  return=    0.0
+  episode  27: len=1000  return=    4.0
+  episode  28: len=1000  return=    0.0
+  episode  29: len=1000  return=    0.0
+  episode  30: len=1000  return=   18.0
+  episode  31: len=1000  return=    0.0
+  episode  32: len=1000  return=    0.0
+  episode  33: len=1000  return=   19.0
+  episode  34: len=1000  return=    0.0
+  episode  35: len=1000  return=    0.0
+  episode  36: len=1000  return=    0.0
+  episode  37: len=1000  return=    8.0
+  episode  38: len=1000  return=    0.0
+  episode  39: len=1000  return=   56.0
+Saved 40 x 1000 steps -> /workspace/dreamerv3_runs/pretrain_random_reacher_seed4/measure/ms200000/traj.npz
+Return over episodes: 11.1 +/- 28.0
+Probe trajectories: 40 episodes x 1000 steps
+Observations
+  reward           Space(float32, shape=(), low=-inf, high=inf)
+  is_first         Space(bool, shape=(), low=False, high=True)
+  is_last          Space(bool, shape=(), low=False, high=True)
+  is_terminal      Space(bool, shFeature arrays:
+  wm_enc                 (40, 1000, 64)
+  wm_imag1_deter         (40, 1000, 512)
+  wm_imag1_stoch         (40, 1000, 128)
+  wm_imag20_deter        (40, 1000, 512)
+  wm_imag20_stoch        (40, 1000, 128)
+  wm_imag5_deter         (40, 1000, 512)
+  wm_imag5_stoch         (40, 1000, 128)
+  wm_post_deter          (40, 1000, 512)
+  wm_post_nll            (40, 1000)
+  wm_post_stoch          (40, 1000, 128)
+  wm_prior_deter         (40, 1000, 512)
+  wm_prior_nll           (40, 1000)
+  wm_prior_stoch         (40, 1000, 128)
+Saved -> /workspace/dreamerv3_runs/pretrain_random_reacher_seed4/measure/ms200000/feats.npz
+Episodes: 40 (test 12)  |  sites: ['enc', 'imag1', 'imag20', 'imag5', 'post_deter', 'post_stoch', 'posterior', 'prior']
+Targets: ['in_regime', 'qpos', 'qvel', 'regime', 'return_to_go', 'state']
+  [  1/38] rssm/enc        state         h=0  K=1  R2_ridge=0.0538  R2_mlp=-0.28619
+  [  2/38] rssm/posterior  state         h=0  K=1  R2_ridge=0.0638  R2_mlp=-0.18755
+  [  3/38] rssm/post_deter state         h=0  K=1  R2_ridge=0.09133  R2_mlp=-0.16592
+  [  4/38] rssm/post_stoch state         h=0  K=1  R2_ridge=0.09823  R2_mlp=-0.12689
+  [  5/38] rssm/prior      state         h=0  K=1  R2_ridge=0.08851  R2_mlp=-0.18426
+  [  6/38] rssm/enc        state         h=1  K=1  R2_ridge=-0.173  R2_mlp=-0.51929
+  [  7/38] rssm/posterior  state         h=1  K=1  R2_ridge=-0.18245  R2_mlp=-0.58762
+  [  8/38] rssm/post_deter state         h=1  K=1  R2_ridge=-0.15453  R2_mlp=-0.60074
+  [  9/38] rssm/post_stoch state         h=1  K=1  R2_ridge=-0.11699  R2_mlp=-0.37483
+  [ 10/38] rssm/prior      state         h=1  K=1  R2_ridge=-0.15778  R2_mlp=-0.48815
+  [ 11/38] rssm/imag1      state         h=1  K=1  R2_ridge=0.08815  R2_mlp=-0.11469
+  [ 12/38] rssm/enc        state         h=5  K=1  R2_ridge=-0.23321  R2_mlp=-0.63555
+  [ 13/38] rssm/posterior  state         h=5  K=1  R2_ridge=-0.24927  R2_mlp=-0.71416
+  [ 14/38] rssm/post_deter state         h=5  K=1  R2_ridge=-0.22176  R2_mlp=-0.663
+  [ 15/38] rssm/post_stoch state         h=5  K=1  R2_ridge=-0.16312  R2_mlp=-0.3741
+  [ 16/38] rssm/prior      state         h=5  K=1  R2_ridge=-0.22523  R2_mlp=-0.65488
+  [ 17/38] rssm/imag5      state         h=5  K=1  R2_ridge=0.08687  R2_mlp=-0.19022
+  [ 18/38] rssm/enc        state         h=20 K=1  R2_ridge=-0.24021  R2_mlp=-0.61823
+  [ 19/38] rssm/posterior  state         h=20 K=1  R2_ridge=-0.25763  R2_mlp=-0.57488
+  [ 20/38] rssm/post_deter state         h=20 K=1  R2_ridge=-0.23198  R2_mlp=-0.62618
+  [ 21/38] rssm/post_stoch state         h=20 K=1  R2_ridge=-0.16705  R2_mlp=-0.40417
+  [ 22/38] rssm/prior      state         h=20 K=1  R2_ridge=-0.23386  R2_mlp=-0.62738
+  [ 23/38] rssm/imag20     state         h=20 K=1  R2_ridge=0.08942  R2_mlp=-0.0622
+  [ 24/38] rssm/enc        return_to_go  h=0  K=1  R2_ridge=-0.3481  R2_mlp=-8.41458
+  [ 25/38] rssm/posterior  return_to_go  h=0  K=1  R2_ridge=-0.96988  R2_mlp=-0.74461
+  [ 26/38] rssm/post_deter return_to_go  h=0  K=1  R2_ridge=-1.01256  R2_mlp=-0.39523
+  [ 27/38] rssm/post_stoch return_to_go  h=0  K=1  R2_ridge=-0.34017  R2_mlp=-0.74943
+  [ 28/38] rssm/prior      return_to_go  h=0  K=1  R2_ridge=-1.02493  R2_mlp=-0.90421
+  [ 29/38] rssm/enc        regime        h=0  K=1  R2_ridge=-0.24453  R2_mlp=-1.39766
+  [ 30/38] rssm/posterior  regime        h=0  K=1  R2_ridge=-0.53714  R2_mlp=-0.91487
+  [ 31/38] rssm/post_deter regime        h=0  K=1  R2_ridge=-0.52985  R2_mlp=-0.88813
+  [ 32/38] rssm/post_stoch regime        h=0  K=1  R2_ridge=-0.25373  R2_mlp=-0.62168
+  [ 33/38] rssm/prior      regime        h=0  K=1  R2_ridge=-0.50545  R2_mlp=-0.81772
+  [ 34/38] rssm/enc        in_regime     h=0  K=1  R2_ridge=-0.0741  R2_mlp=-3.86079
+  [ 35/38] rssm/posterior  in_regime     h=0  K=1  R2_ridge=-0.34911  R2_mlp=-0.09398
+  [ 36/38] rssm/post_deter in_regime     h=0  K=1  R2_ridge=-0.33675  R2_mlp=-0.18876
+  [ 37/38] rssm/post_stoch in_regime     h=0  K=1  R2_ridge=-0.09291  R2_mlp=-0.44293
+  [ 38/38] rssm/prior      in_regime     h=0  K=1  R2_ridge=-0.35453  R2_mlp=-0.14339
+
+Probing summary (held-out ridge R^2)
+======================================
+
+Per-frame content (target: state, horizon 0):
+  RSSM posterior          R^2 = 0.0638
+  static VAE latent (K=1) R^2 = None
+
+Predictive content (RSSM posterior, target: state):
+  horizon  0: R^2 = 0.0638
+  horizon  1: R^2 = -0.18245
+  horizon  5: R^2 = -0.24927
+  horizon 20: R^2 = -0.25763
+
+VAE receptive field (target: state, horizon 0):
+  K=  1: R^2 = None
+  K=  4: R^2 = None
+  K= 16: R^2 = None
+  K=all: R^2 = None
+
+Reward probe (RSSM posterior, target: task reward, h=0):
+  reward_stand  R^2 = None
+  reward_walk   R^2 = None
+  reward_run    R^2 = None
+
+Held-out likelihood (mean NLL, lower is better):
+  rssm_posterior_recon       0.0041
+  rssm_prior_predictive      0.0068
+
+Wrote results -> /workspace/dreamerv3_runs/pretrain_random_reacher_seed4/measure/ms200000/probe
+{"vsa_5": -0.006656, "fwd_mse_5": -0.004667, "vsa_1": -0.007063, "fwd_mse_1": -0.004915, "vsa_20": -0.006787, "fwd_mse_20": -0.00476}
+-> /workspace/dreamerv3_runs/pretrain_random_reacher_seed4/measure/ms200000/vsa.json
+SKIP milestone 300000: no snapshot within 5000 steps (excluded per PREREG Sec.1)
+[Sun Jul 12 01:09:57 UTC 2026] milestone 400000  snapshot=/workspace/dreamerv3_runs/pretrain_random_reacher_seed4/ckpt_snapshots/step000000396832
+Task: dmc_reacher_hard  |  checkpoint: /workspace/dreamerv3_runs/pretrain_random_reacher_seed4/ckpt_snapshots/step000000396832  |  mode: eval
+Observations
+  reward           Space(float32, shape=(), low=-inf, high=inf)
+  is_first         Space(bool, shape=(), low=False, high=True)
+  is_last          Space(bool, shape=(), low=False, high=True)
+  is_terminal      Space(bool, shape=(), low=False, high=True)
+  position         Space(float32, shape=(2,), low=-inf, high=inf)
+  to_target        Space(float32, shape=(2,), low=-inf, high=inf)
+  velocity         Space(float32, shape=(2,), low=-inf, high=inf)
+Actions
+  action           Space(float32, shape=(2,), low=-1.0, high=1.0)
+Extras
+  consec           Space(int32, shape=(), low=-2147483648, high=2147483647)
+  stepid           Space(uint8, shape=(20,), low=0, high=255)
+  dyn/deter        Space(float32, shape=(512,), low=-inf, high=inf)
+  dyn/stoch        Space(float32, shape=(32, 4), lo  [ 14/38] rssm/post_deter state         h=5  K=1  R2_ridge=0.65615  R2_mlp=0.49529
+  [ 15/38] rssm/post_stoch state         h=5  K=1  R2_ridge=0.52949  R2_mlp=0.56628
+  [ 16/38] rssm/prior      state         h=5  K=1  R2_ridge=0.65546  R2_mlp=0.48228
+  [ 17/38] rssm/imag5      state         h=5  K=1  R2_ridge=0.99488  R2_mlp=0.99045
+  [ 18/38] rssm/enc        state         h=20 K=1  R2_ridge=0.61512  R2_mlp=0.59995
+  [ 19/38] rssm/posterior  state         h=20 K=1  R2_ridge=0.6411  R2_mlp=0.44484
+  [ 20/38] rssm/post_deter state         h=20 K=1  R2_ridge=0.6415  R2_mlp=0.45172
+  [ 21/38] rssm/post_stoch state         h=20 K=1  R2_ridge=0.5206  R2_mlp=0.53409
+  [ 22/38] rssm/prior      state         h=20 K=1  R2_ridge=0.64126  R2_mlp=0.44669
+  [ 23/38] rssm/imag20     state         h=20 K=1  R2_ridge=0.99497  R2_mlp=0.9907
+  [ 24/38] rssm/enc        return_to_go  h=0  K=1  R2_ridge=-0.45379  R2_mlp=-0.59863
+  [ 25/38] rssm/posterior  return_to_go  h=0  K=1  R2_ridge=-1.44736  R2_mlp=-1.19084
+  [ 26/38] rssm/post_deter return_to_go  h=0  K=1  R2_ridge=-1.44189  R2_mlp=-1.11785
+  [ 27/38] rssm/post_stoch return_to_go  h=0  K=1  R2_ridge=-0.30254  R2_mlp=-0.93401
+  [ 28/38] rssm/prior      return_to_go  h=0  K=1  R2_ridge=-1.43225  R2_mlp=-1.36745
+  [ 29/38] rssm/enc        regime        h=0  K=1  R2_ridge=-0.00663  R2_mlp=0.9364
+  [ 30/38] rssm/posterior  regime        h=0  K=1  R2_ridge=0.4397  R2_mlp=0.80528
+  [ 31/38] rssm/post_deter regime        h=0  K=1  R2_ridge=0.44303  R2_mlp=0.70206
+  [ 32/38] rssm/post_stoch regime        h=0  K=1  R2_ridge=-0.01908  R2_mlp=0.45925
+  [ 33/38] rssm/prior      regime        h=0  K=1  R2_ridge=0.44984  R2_mlp=0.77045
+  [ 34/38] rssm/enc        in_regime     h=0  K=1  R2_ridge=-0.13862  R2_mlp=-0.31871
+  [ 35/38] rssm/posterior  in_regime     h=0  K=1  R2_ridge=-0.54124  R2_mlp=-0.053
+  [ 36/38] rssm/post_deter in_regime     h=0  K=1  R2_ridge=-0.51907  R2_mlp=-0.32524
+  [ 37/38] rssm/post_stoch in_regime     h=0  K=1  R2_ridge=-0.10866  R2_mlp=-0.73473
+  [ 38/38] rssm/prior      in_regime     h=0  K=1  R2_ridge=-0.5326  R2_mlp=-0.07665
+
+Probing summary (held-out ridge R^2)
+======================================
+
+Per-frame content (target: state, horizon 0):
+  RSSM posterior          R^2 = 0.99507
+  static VAE latent (K=1) R^2 = None
+
+Predictive content (RSSM posterior, target: state):
+  horizon  0: R^2 = 0.99507
+  horizon  1: R^2 = 0.73146
+  horizon  5: R^2 = 0.65546
+  horizon 20: R^2 = 0.6411
+
+VAE receptive field (target: state, horizon 0):
+  K=  1: R^2 = None
+  K=  4: R^2 = None
+  K= 16: R^2 = None
+  K=all: R^2 = None
+
+Reward probe (RSSM posterior, target: task reward, h=0):
+  reward_stand  R^2 = None
+  reward_walk   R^2 = None
+  reward_run    R^2 = None
+
+Held-out likelihood (mean NLL, lower is better):
+  rssm_posterior_recon       0.0044
+  rssm_prior_predictive      0.0074
+
+Wrote results -> /workspace/dreamerv3_runs/pretrain_random_reacher_seed4/measure/ms200000/probe
+{"vsa_5": -0.006656, "fwd_mse_5": -0.004667, "vsa_1": -0.007063, "fwd_mse_1": -0.004915, "vsa_20": -0.006787, "fwd_mse_20": -0.00476}
+-> /workspace/dreamerv3_runs/pretrain_random_reacher_seed4/measure/ms200000/vsa.json
+SKIP milestone 300000: no snapshot within 5000 steps (excluded per PREREG Sec.1)
+[Sun Jul 12 01:32:23 UTC 2026] milestone 400000  snapshot=/workspace/dreamerv3_runs/pretrain_random_reacher_seed4/ckpt_snapshots/step000000396832
+Task: dmc_reacher_hard  |  checkpoint: /workspace/dreamerv3_runs/pretrain_random_reacher_seed4/ckpt_snapshots/step000000396832  |  mode: eval
+Observations
+  reward           Space(float32, shape=(), low=-inf, high=inf)
+  is_first         Space(bool, shape=(), low=False, high=True)
+  is_last          Space(bool, shape=(), low=False, high=True)
+  is_terminal      Space(bool, shape=(), low=False, high=True)
+  position         Space(float32, shape=(2,), low=-inf, high=inf)
+  to_target        Space(float32, shape=(2,), low=-inf, high=inf)
+  velocity         Space(float32, shape=(2,), low=-inf, high=inf)
+Actions
+  action           Space(float32, shape=(2,), low=-1.0, high=1.0)
+Extras
+  consec           Space(int32, shape=(), low=-2147483648, high=2147483647)
+  stepid           Space(uint8, shape=(20,), low=0, high=255)
+  dyn/deter        Space(float32, shape=(512,), low=-inf, high=inf)
+  dyn/stoch        Space(float32, shape=(32, 4), low=-inf, high=inf)
+JAX devices (1): [cuda:0]
+Policy devices: cuda:0
+Train devices:  cuda:0
+Initializing parameters...
+/workspace/dreamerv3/embodied/jax/agent.py:112: DeprecationWarning: `with mesh:` context manager has been deprecated. Please use `with jax.set_mesh(mesh):` instead.
+  with self.train_mesh:
+Optimizer opt has 423,046 params:
+       364,160 dyn
+        49,926 dec
+         8,960 enc
+/workspace/conda_envs/dreamerv3/lib/python3.11/site-packages/optax/_src/linear_algebra.py:44: DeprecationWarning: optax.global_norm is deprecated in favor of optax.tree.norm
+  warnings.warn(
+Done initializing!
+Compiling 1 checkpoint groups...
+Largest checkpoint group: 0 GB
+Compiling train and report...
+/workspace/dreamerv3/embodied/jax/agent.py:187: DeprecationWarning: `with mesh:` context manager has been deprecated. Please use `with jax.set_mesh(mesh):` instead.
+  with self.train_mesh:
+/workspace/conda_envs/dreamerv3/lib/python3.11/site-packages/optax/_src/linear_algebra.py:44: DeprecationWarning: optax.global_norm is deprecated in favor of optax.tree.norm
+  warnings.warn(
+Train cost analysis:
+No available
+Report cost analysis:
+No available
+Done compiling!
+Loading checkpoint: /workspace/dreamerv3_runs/pretrain_random_reacher_seed4/ckpt_snapshots/step000000396832
+Loaded checkpoint.
+Loaded frozen DreamerV3 checkpoint.
+Observation keys: ['position', 'to_target', 'velocity']  |  action keys: ['action']
+  episode   0: len=1000  return=    0.0
+  episode   1: len=1000  return=    0.0
+  episode   2: len=1000  return=    0.0
+  episode   3: len=1000  return=    0.0
+  episode   4: len=1000  return=    5.0
+  episode   5: len=1000  return=    0.0
+  episode   6: len=1000  return=  107.0
+  episode   7: len=1000  return=    0.0
+  episode   8: len=1000  return=    0.0
+  episode   9: len=1000  return=    0.0
+  episode  10: len=1000  return=    0.0
+  episode  11: len=1000  return=    0.0
+  episode  12: len=1000  return=    0.0
+  episode  13: len=1000  return=    4.0
+  episode  14: len=1000  return=    0.0
+  episode  15: len=1000  return=   13.0
+  episode  16: len=1000  return=    0.0
+  episode  17: len=1000  return=    0.0
+  episode  18: len=1000  return=    0.0
+  episode  19: len=1000  return=   11.0
+  episode  20: len=1000  return=   69.0
+  episode  21: len=1000  return=    0.0
+  episode  22: len=1000  return=    0.0
+  episode  23: len=1000  return=   85.0
+  episode  24: len=1000  return=    0.0
+  episode  25: len=1000  return=    0.0
+  episode  26: len=1000  return=    0.0
+  episode  27: len=1000  return=   11.0
+  episode  28: len=1000  return=    0.0
+  episode  29: len=1000  return=  227.0
+  episode  30: len=1000  return=    0.0
+  episode  31: len=1000  return=   41.0
+  episode  32: len=1000  return=  237.0
+  episode  33: len=1000  return=    0.0
+  episode  34: len=1000  return=    0.0
+  episode  35: len=1000  return=    5.0
+  episode  36: len=1000  return=    0.0
+  episode  37: len=1000  return=    0.0
+  episode  38: len=1000  return=    0.0
+  episode  39: len=1000  return=    0.0
+Saved 40 x 1000 steps -> /workspace/dreamerv3_runs/pretrain_random_reacher_seed4/measure/ms400000/traj.npz
+Return over episodes: 20.4 +/- 54.0
+Probe trajectories: 40 episodes x 1000 steps
+Observations
+  reward           Space(float32, shape=(), low=-inf, high=inf)
+  is_first         Space(bool, shape=(), low=False, high=True)
+  is_last          Space(bool, shape=(), low=False, high=True)
+  is_terminal      Space(bool, shape=(), low=False, high=True)
+  position         Space(float32, shape=(2,), low=-inf, high=inf)
+  to_target        Space(float32, shape=(2,), low=-inf, high=inf)
+  velocity         Space(float32, shape=(2,), low=-inf, high=inf)
+Actions
+  action           Space(float32, shape=(2,), low=-1.0, high=1.0)
+Extras
+  consec           Space(int32, shape=(), low=-2147483648, high=2147483647)
+  stepid           Space(uint8, shape=(20,), low=0, high=255)
+  dyn/deter        Space(float32, shape=(512,), low=-inf, high=inf)
+  dyn/stoch        Space(float32, shape=(32, 4), low=-inf, high=inf)
+JAX devices (1): [cuda:0]
+Policy devices: cuda:0
+Train devices:  cuda:0
+Initializing parameters...
+/workspace/dreamerv3/embodied/jax/agent.py:112: DeprecationWarning: `with mesh:` context manager has been deprecated. Please use `with jax.set_mesh(mesh):` instead.
+  with self.train_mesh:
+Optimizer opt has 423,046 params:
+       364,160 dyn
+        49,926 dec
+         8,960 enc
+/workspace/conda_envs/dreamerv3/lib/python3.11/site-packages/optax/_src/linear_algebra.py:44: DeprecationWarning: optax.global_norm is deprecated in favor of optax.tree.norm
+  warnings.warn(
+Done initializing!
+Compiling 1 checkpoint groups...
+Largest checkpoint group: 0 GB
+Compiling train and report...
+/workspace/dreamerv3/embodied/jax/agent.py:187: DeprecationWarning: `with mesh:` context manager has been deprecated. Please use `with jax.set_mesh(mesh):` instead.
+  with self.train_mesh:
+/workspace/conda_envs/dreamerv3/lib/python3.11/site-packages/optax/_src/linear_algebra.py:44: DeprecationWarning: optax.global_norm is deprecated in favor of optax.tree.norm
+  warnings.warn(
+Train cost analysis:
+No available
+Report cost analysis:
+No available
+Done compiling!
+Loading checkpoint: /workspace/dreamerv3_runs/pretrain_random_reacher_seed4/ckpt_snapshots/step000000396832
+Loaded checkpoint.
+World model: obs=['position', 'to_target', 'velocity']  act=['action']  horizons=[1, 5, 20]
+  world-model features: episodes 0-7
+  world-model features: episodes 8-15
+  world-model features: episodes 16-23
+  world-model features: episodes 24-31
+  world-model features: episodes 32-39
+No --vae_ckpt given; extracting world-model features only.
+Feature arrays:
+  wm_enc                 (40, 1000, 64)
+  wm_imag1_deter         (40, 1000, 512)
+  wm_imag1_stoch         (40, 1000, 128)
+  wm_imag20_deter        (40, 1000, 512)
+  wm_imag20_stoch        (40, 1000, 128)
+  wm_imag5_deter         (40, 1000, 512)
+  wm_imag5_stoch         (40, 1000, 128)
+  wm_post_deter          (40, 1000, 512)
+  wm_post_nll            (40, 1000)
+  wm_post_stoch          (40, 1000, 128)
+  wm_prior_deter         (40, 1000, 512)
+  wm_prior_nll           (40, 1000)
+  wm_prior_stoch         (40, 1000, 128)
+Saved -> /workspace/dreamerv3_runs/pretrain_random_reacher_seed4/measure/ms400000/feats.npz
+Episodes: 40 (test 12)  |  sites: ['enc', 'imag1', 'imag20', 'imag5', 'post_deter', 'post_stoch', 'posterior', 'prior']
+Targets: ['in_regime', 'qpos', 'qvel', 'regime', 'return_to_go', 'state']
+  [  1/38] rssm/enc        state         h=0  K=1  R2_ridge=0.97145  R2_mlp=0.99551
+  [  2/38] rssm/posterior  state         h=0  K=1  R2_ridge=0.99508  R2_mlp=0.99248
+  [  3/38] rssm/post_deter state         h=0  K=1  R2_ridge=0.9932  R2_mlp=0.98947
+  [  4/38] rssm/post_stoch state         h=0  K=1  R2_ridge=0.79122  R2_mlp=0.93111
+  [  5/38] rssm/prior      state         h=0  K=1  R2_ridge=0.99353  R2_mlp=0.98937
+  [  6/38] rssm/enc        state         h=1  K=1  R2_ridge=0.71772  R2_mlp=0.72387
+  [  7/38] rssm/posterior  state         h=1  K=1  R2_ridge=0.73155  R2_mlp=0.60491
+  [  8/38] rssm/post_deter state         h=1  K=1  R2_ridge=0.73095  R2_mlp=0.6051
+  [  9/38] rssm/post_stoch state         h=1  K=1  R2_ridge=0.57478  R2_mlp=0.64678
+  [ 10/38] rssm/prior      state         h=1  K=1  R2_ridge=0.73062  R2_mlp=0.61085
+  [ 11/38] rssm/imag1      state         h=1  K=1  R2_ridge=0.99404  R2_mlp=0.99017
+  [ 12/38] rssm/enc        state         h=5  K=1  R2_ridge=0.63458  R2_mlp=0.61362
+  [ 13/38] rssm/posterior  state         h=5  K=1  R2_ridge=0.63788  R2_mlp=0.41925
+  [ 14/38] rssm/post_deter state         h=5  K=1  R2_ridge=0.63848  R2_mlp=0.415
+  [ 15/38] rssm/post_stoch state         h=5  K=1  R2_ridge=0.51815  R2_mlp=0.52507
+  [ 16/38] rssm/prior      state         h=5  K=1  R2_ridge=0.6378  R2_mlp=0.44906
+  [ 17/38] rssm/imag5      state         h=5  K=1  R2_ridge=0.9943  R2_mlp=0.99016
+  [ 18/38] rssm/enc        state         h=20 K=1  R2_ridge=0.61959  R2_mlp=0.59737
+  [ 19/38] rssm/posterior  state         h=20 K=1  R2_ridge=0.62297  R2_mlp=0.37554
+  [ 20/38] rssm/post_deter state         h=20 K=1  R2_ridge=0.62338  R2_mlp=0.40258
+  [ 21/38] rssm/post_stoch state         h=20 K=1  R2_ridge=0.50913  R2_mlp=0.52409
+  [ 22/38] rssm/prior      state         h=20 K=1  R2_ridge=0.62329  R2_mlp=0.3928
+  [ 23/38] rssm/imag20     state         h=20 K=1  R2_ridge=0.99426  R2_mlp=0.98958
+  [ 24/38] rssm/enc        return_to_go  h=0  K=1  R2_ridge=0.00988  R2_mlp=0.04179
+  [ 25/38] rssm/posterior  return_to_go  h=0  K=1  R2_ridge=-0.00585  R2_mlp=0.05301
+  [ 26/38] rssm/post_deter return_to_go  h=0  K=1  R2_ridge=-0.01158  R2_mlp=0.03275
+  [ 27/38] rssm/post_stoch return_to_go  h=0  K=1  R2_ridge=0.02384  R2_mlp=0.01144
+  [ 28/38] rssm/prior      return_to_go  h=0  K=1  R2_ridge=-0.00878  R2_mlp=0.04829
+  [ 29/38] rssm/enc        regime        h=0  K=1  R2_ridge=0.58469  R2_mlp=0.92108
+  [ 30/38] rssm/posterior  regime        h=0  K=1  R2_ridge=0.57259  R2_mlp=0.84467
+  [ 31/38] rssm/post_deter regime        h=0  K=1  R2_ridge=0.56141  R2_mlp=0.78812
+  [ 32/38] rssm/post_stoch regime        h=0  K=1  R2_ridge=0.33692  R2_mlp=0.5642
+  [ 33/38] rssm/prior      regime        h=0  K=1  R2_ridge=0.55373  R2_mlp=0.81855
+  [ 34/38] rssm/enc        in_regime     h=0  K=1  R2_ridge=0.01199  R2_mlp=-0.0768
+  [ 35/38] rssm/posterior  in_regime     h=0  K=1  R2_ridge=0.02597  R2_mlp=-0.02487
+  [ 36/38] rssm/post_deter in_regime     h=0  K=1  R2_ridge=0.02158  R2_mlp=-0.04631
+  [ 37/38] rssm/post_stoch in_regime     h=0  K=1  R2_ridge=0.02369  R2_mlp=-0.0257
+  [ 38/38] rssm/prior      in_regime     h=0  K=1  R2_ridge=0.02029  R2_mlp=-0.00275
+
+Probing summary (held-out ridge R^2)
+======================================
+
+Per-frame content (target: state, horizon 0):
+  RSSM posterior          R^2 = 0.99508
+  static VAE latent (K=1) R^2 = None
+
+Predictive content (RSSM posterior, target: state):
+  horizon  0: R^2 = 0.99508
+  horizon  1: R^2 = 0.73155
+  horizon  5: R^2 = 0.63788
+  horizon 20: R^2 = 0.62297
+
+VAE receptive field (target: state, horizon 0):
+  K=  1: R^2 = None
+  K=  4: R^2 = None
+  K= 16: R^2 = None
+  K=all: R^2 = None
+
+Reward probe (RSSM posterior, target: task reward, h=0):
+  reward_stand  R^2 = None
+  reward_walk   R^2 = None
+  reward_run    R^2 = None
+
+Held-out likelihood (mean NLL, lower is better):
+  rssm_posterior_recon       0.0055
+  rssm_prior_predictive      0.0087
+
+Wrote results -> /workspace/dreamerv3_runs/pretrain_random_reacher_seed4/measure/ms400000/probe
+{"vsa_5": -0.007523, "fwd_mse_5": -0.004399, "vsa_1": -0.007601, "fwd_mse_1": -0.004621, "vsa_20": -0.007182, "fwd_mse_20": -0.004159}
+-> /workspace/dreamerv3_runs/pretrain_random_reacher_seed4/measure/ms400000/vsa.json
+SKIP milestone 500000: no snapshot within 5000 steps (excluded per PREREG Sec.1)
+[Sun Jul 12 01:46:37 UTC 2026] measure pretrain_random_reacher_seed4 DONE
