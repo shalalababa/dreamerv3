@@ -137,14 +137,59 @@ STAMP_WIDTH = 64
 
 
 def stamp_obs_keys(frames):
-  """Float-valued observation keys of a frame dict, sorted (frozen order)."""
+  """Float-valued observation keys of a frame dict, sorted (frozen order).
+
+  Namespaced replay extras (dyn/*, log/*) are NOT observations and are
+  excluded. The 17-Jul srd0/srd1 buffers predate this rule (their g
+  consumed the stored dyn/* context latents; the manifests record the
+  keys actually used, so manifest-driven reproduction is unaffected —
+  see the 18-Jul DEVIATIONS entry and stamp-probeset --latent_replay)."""
   keys = sorted(
       k for k, v in frames.items()
-      if k not in STAMP_EXCLUDE and
+      if k not in STAMP_EXCLUDE and '/' not in k and
       np.issubdtype(np.asarray(v).dtype, np.floating))
   if not keys:
     raise SystemExit('stamp: no float observation keys found')
   return keys
+
+
+def recover_probe_latents(stepids, keys, replay_dirs):
+  """Per-frame namespaced extras (dyn/*) for probe frames via stepid join.
+
+  Probe sets preserve each frame's ORIGINAL 20-byte stepid, so the frame
+  can be joined back to its source chunk row exactly. Rows are matched on
+  the full 20-byte stepid (encoding-agnostic: no assumption about the
+  uuid/index layout). Returns {key: (n_frames, ...) array}."""
+  import glob as _glob
+  flat = np.asarray(stepids, np.uint8).reshape(-1, 20)
+  chunk_paths = []
+  for d in replay_dirs:
+    chunk_paths += sorted(_glob.glob(os.path.join(d, '*.npz')))
+  if not chunk_paths:
+    raise SystemExit(f'--latent_replay: no chunks under {replay_dirs}')
+  row_of, cache = {}, {}
+  for p in chunk_paths:
+    with np.load(p) as z:
+      sids = np.asarray(z['stepid'], np.uint8)
+      arrs = {k: np.asarray(z[k]) for k in keys if k in z.files}
+    if len(arrs) != len(keys):
+      missing = sorted(set(keys) - set(arrs))
+      raise SystemExit(f'{p}: chunk lacks {missing}')
+    cache[p] = arrs
+    for j, s in enumerate(sids):
+      row_of[bytes(s)] = (p, j)
+  out = {k: [] for k in keys}
+  for s in flat:
+    hit = row_of.get(bytes(s))
+    if hit is None:
+      raise SystemExit(
+          'stepid join failed: a probe frame is not present in the given '
+          '--latent_replay dirs (pass the SAME pilot replays the probe '
+          'set was built from)')
+    p, j = hit
+    for k in keys:
+      out[k].append(cache[p][k][j])
+  return {k: np.stack(v) for k, v in out.items()}
 
 
 def stamp_matrix(episodes, obs_keys):
@@ -380,8 +425,22 @@ def cmd_stamp_probeset(args):
   N, T = arrays['reward'].shape
   obs_keys = tr['stamp']['obs_keys']
   missing = [k for k in obs_keys if k not in arrays]
+  latent_recovery = None
   if missing:
-    raise SystemExit(f'probe set lacks stamp obs keys {missing}')
+    if getattr(args, 'latent_replay', None) and all(
+        '/' in k for k in missing):
+      rec = recover_probe_latents(arrays['stepid'], missing,
+                                  args.latent_replay)
+      arrays.update(rec)  # flat (N*T, ...) — reshape below handles both
+      latent_recovery = dict(keys=missing,
+                             replay_dirs=[os.path.abspath(d)
+                                          for d in args.latent_replay])
+    else:
+      raise SystemExit(
+          f'probe set lacks stamp obs keys {missing}; for dyn/* keys '
+          '(manifests from the 17-Jul wave, whose g consumed the stored '
+          'context latents) pass --latent_replay <the pilot replay dirs '
+          'the probe set was built from> to recover them by stepid join')
   matrix = np.concatenate(
       [np.asarray(arrays[k], np.float64).reshape(N * T, -1)
        for k in obs_keys], axis=1)
@@ -396,7 +455,8 @@ def cmd_stamp_probeset(args):
       probeset_id=ps_manifest['probeset_id'],
       probeset_sha256=ps_manifest['sha256'],
       density=round(float((reward > 0).mean()), 6),
-      amplitude=tr['sides'][args.side]['amplitude'])
+      amplitude=tr['sides'][args.side]['amplitude'],
+      latent_recovery=latent_recovery)
   np.savez_compressed(args.output, reward=reward)
   with open(args.output + '.json', 'w') as f:
     json.dump(meta, f, indent=2)
@@ -519,6 +579,48 @@ def cmd_selfcheck(args):
           [t['reward'] for t in
            load_episode_chunks(os.path.join(tmp, 'q1_srd0', side))])
       assert np.array_equal(labels, written.astype(np.float32)), side
+
+    # --- namespaced-extras rule + stepid-join recovery ---------------------
+    # (a) dyn/* never enters NEW stamp functions (18-Jul rule).
+    lat_src = os.path.join(tmp, 'q1lat')
+    for side in ('side0', 'side1'):
+      out = os.path.join(lat_src, side)
+      os.makedirs(out)
+      for _ in range(2):
+        n = 40
+        frames = dict(
+            position=rng.normal(0, 1, (n, 4)).astype(np.float32),
+            velocity=rng.normal(0, 1, (n, 4)).astype(np.float32),
+            reward=(rng.random(n) < 0.2).astype(np.float32),
+            is_first=np.eye(1, n, 0, dtype=bool)[0],
+            stepid=np.zeros((n, 20), np.uint8))
+        frames['dyn/deter'] = rng.normal(0, 1, (n, 8)).astype(np.float32)
+        write_episode_chunk(out, frames)
+    with open(os.path.join(lat_src, 'manifest.json'), 'w') as f:
+      json.dump(dict(task='dmc_cup_catch', sides=[]), f)
+    probe_eps = load_episode_chunks(os.path.join(lat_src, 'side0'))
+    assert 'dyn/deter' not in stamp_obs_keys(probe_eps[0]), \
+        'namespaced extras leaked into stamp_obs_keys'
+    cmd_transform(argparse.Namespace(
+        input=lat_src, output=os.path.join(tmp, 'q1lat_srd0'), seed=0,
+        fn_seed=0, task='dmc_cup_catch', kind='stamp_rand'))
+    with open(os.path.join(tmp, 'q1lat_srd0', 'manifest.json')) as f:
+      keys_new = json.load(f)['reward_transform']['stamp']['obs_keys']
+    assert all('/' not in k for k in keys_new), keys_new
+    # (b) recover_probe_latents: full-20-byte stepid join reproduces the
+    # chunk rows exactly (the 17-Jul-manifest stamp-probeset path).
+    sel = [(0, 5), (0, 31), (1, 12)]
+    sids = np.stack([probe_eps[e]['stepid'][t] for e, t in sel])
+    rec = recover_probe_latents(sids, ['dyn/deter'],
+                                [os.path.join(lat_src, 'side0')])
+    want = np.stack([probe_eps[e]['dyn/deter'][t] for e, t in sel])
+    assert np.array_equal(rec['dyn/deter'], want)
+    try:
+      recover_probe_latents(np.full((1, 20), 255, np.uint8),
+                            ['dyn/deter'], [os.path.join(lat_src, 'side0')])
+      raise AssertionError('stepid join accepted an unknown frame')
+    except SystemExit:
+      pass
   print('relabel_replay selfcheck PASS')
 
 
@@ -548,6 +650,9 @@ def main():
   sp.add_argument('--probeset', required=True,
                   help='E4 probe set dir (probeset_e4.npz + manifest.json).')
   sp.add_argument('--output', required=True, help='Output .npz path.')
+  sp.add_argument('--latent_replay', nargs='*', default=None,
+                  help='Pilot replay chunk dirs for stepid-join recovery '
+                       'of dyn/* stamp inputs (17-Jul manifests).')
   sp.set_defaults(fn=cmd_stamp_probeset)
 
   sc = sub.add_parser('selfcheck')

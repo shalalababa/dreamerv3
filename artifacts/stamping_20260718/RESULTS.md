@@ -65,6 +65,22 @@ null primary. That panel decides nothing but determines whether the
 null is "included-but-useless" (theory's account) or "never included"
 (competing account: stamps too easy, learned in the head alone).
 
+## Post-read caveat (added 2026-07-18, before the E4 panel ran)
+
+Discovered while building the E4 override: the stamp functions g₀/g₁
+consumed the chunks' stored `dyn/deter`/`dyn/stoch` source-agent
+latents in addition to proprio (~640 of ~654 columns) — see the 18-Jul
+DEVIATIONS entry. The PRIMARY and all numbers above are unaffected
+(labels deterministic, marginal-matched, frame-bound, task-unaligned),
+but the prereg's "trivially predictable at h=0 from obs" scope
+statement is weakened: whether the stamp was *learnable by the fitted
+trunk* is now exactly what the pending stamp-NLL panel adjudicates.
+Low stamp-NLL ⇒ "learnable-but-unaligned scalars do not transfer"
+stands in full; high stamp-NLL ⇒ the claim narrows to "unaligned
+scalars of this class". The panel runs with
+`stamp-probeset --latent_replay <pilot replays>` (stepid-join recovery
+of the latent columns for probe frames).
+
 ## Provenance
 
 - `auc.csv` — canonical local recompute (bit-identical to cluster).

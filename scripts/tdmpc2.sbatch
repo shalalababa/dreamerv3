@@ -51,10 +51,19 @@ if [ ! -f "$DATA" ]; then
   mkdir -p "$(dirname "$DATA")"
   LOCK="$DATA.lock"
   if mkdir "$LOCK" 2>/dev/null; then
+    bridge_lock_owner=1
+    cleanup_bridge_lock() {
+      if [ "${bridge_lock_owner:-0}" = "1" ]; then
+        rmdir "$LOCK" 2>/dev/null || true
+      fi
+    }
+    trap cleanup_bridge_lock EXIT
     echo "[$(date)] bridge $SIDE_DIR -> $DATA"
     python -m probing.tdmpc2_bridge convert \
       --side_dir "$SIDE_DIR" --task "$TASK" --output "$DATA"
     rmdir "$LOCK"
+    bridge_lock_owner=0
+    trap - EXIT
   else
     echo "[$(date)] waiting for concurrent bridge of $DATA"
     while [ -d "$LOCK" ]; do sleep 30; done

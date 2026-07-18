@@ -23,21 +23,22 @@ git -C "$TDMPC2_CHECKOUT" fetch --depth 1 origin "$TDMPC2_COMMIT" || true
 git -C "$TDMPC2_CHECKOUT" checkout "$TDMPC2_COMMIT"
 echo "tdmpc2 pinned at $(git -C "$TDMPC2_CHECKOUT" rev-parse HEAD)"
 
+source "$(conda info --base)/etc/profile.d/conda.sh"
 if [ ! -d "$TM2_CONDA_ENV" ]; then
-  source "$(conda info --base)/etc/profile.d/conda.sh"
   conda create -y -p "$TM2_CONDA_ENV" python=3.11
-  conda activate "$TM2_CONDA_ENV"
-  pip install torch --index-url https://download.pytorch.org/whl/cu121
-  pip install tensordict torchrl gymnasium omegaconf hydra-core \
-      dm_control mujoco numpy
-  # dv3-repo import chain for the env adapter (embodied -> elements, jax cpu)
-  pip install elements "jax[cpu]"
 else
-  echo "env $TM2_CONDA_ENV already exists; skipping create"
+  echo "env $TM2_CONDA_ENV already exists; repairing deps if needed"
 fi
 
+conda activate "$TM2_CONDA_ENV"
+python -m pip install -U pip setuptools wheel
+python -m pip install torch --index-url "${TM2_TORCH_INDEX_URL:-https://download.pytorch.org/whl/cu121}"
+python -m pip install tensordict torchrl gymnasium omegaconf hydra-core \
+    dm_control mujoco numpy
+# dv3-repo import chain for the env adapter (embodied -> elements/portal).
+python -m pip install elements portal ninjax jaxtyping "jax[cpu]"
+
 echo "Smoke checks (GPU-independent):"
-source "$(conda info --base)/etc/profile.d/conda.sh"
 conda activate "$TM2_CONDA_ENV"
 cd "$REPO"
 python -m probing.tdmpc2_bridge selfcheck

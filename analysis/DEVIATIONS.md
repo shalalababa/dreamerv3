@@ -6,6 +6,35 @@ immutable dated files; see plan v4.)
 
 ## Deviations
 
+- **2026-07-18 — DISCOVERED IMPLEMENTATION DEVIATION: the stamp
+  functions consumed dyn/* context latents.** Surfaced by the E4
+  override build ("probe set lacks stamp obs keys ['dyn/deter',
+  'dyn/stoch']"): `stamp_obs_keys` selected ALL float keys of the
+  buffer chunks, so g₀/g₁ ran on ~654 columns of which ~640 are the
+  SOURCE agents' stored dyn/deter+dyn/stoch latents — the prereg said
+  "flattened obs vector". With per-dim standardization the latent block
+  dominates g, so the stamp direction largely lives in source-latent
+  space, not instantaneous proprio. Consequences: (1) the registered
+  behavioral PRIMARY is unaffected (labels deterministic, exact-count
+  marginal-matched, still frame-bound and task-unaligned; the 18-Jul
+  null and P-B1 branch stand as read); (2) the prereg scope statement
+  "trivially predictable at h=0 from the frame's obs" does NOT hold as
+  written — predictability of the stamp by the fitted trunk is now an
+  empirical question that the pending stamp-NLL panel answers: low
+  stamp-NLL ⇒ original "learnable-but-unaligned" reading stands; high
+  stamp-NLL ⇒ srd degrades toward a hard-to-learn scalar and the P-B1
+  claim narrows to "unaligned scalars of this class" (record at that
+  panel's read); (3) fixes in `probing/relabel_replay.py` (selfcheck
+  extended + PASS): `stamp_obs_keys` now excludes namespaced extras
+  (future stamp waves get obs-only inputs; existing manifests are
+  reproduced from their recorded obs_keys, bit-unchanged), and
+  `stamp-probeset --latent_replay <pilot replay dirs>` recovers dyn/*
+  for probe frames by full-20-byte stepid join (probe sets preserve
+  original stepids), with the recovery recorded in the override meta.
+  Probe-frame stamp labels use the probe pilots' own stored latents —
+  the natural extension of g, noted here because the panel is
+  descriptive-only.
+
 - **2026-07-17 — scaling-pilot + synth-domain code notes (pre-outcome;
   registrations = `prereg/PREREG_scaling_pilot_20260717.md` [freeze
   after timing smoke] and `prereg/PREREG_synth_phaseb_20260717.md`
@@ -107,6 +136,43 @@ immutable dated files; see plan v4.)
   reserved).
 
 ## Code notes and registrations (non-deviations)
+
+- **2026-07-18 — synth Phase B read executed as registered
+  (`artifacts/synth_phaseb_20260718/`).** Pre-frozen
+  `analysis/synth_phaseb_read.py`, unmodified; audit 48/48; local
+  canonical AUC (48/48 QC). **PRIMARY-1 interaction +44.2
+  [−88.0, +178.4] does NOT fire; PRIMARY-2 shuffle collapse −226.6
+  [−341.5, −96.6] FIRES ⇒ registered collapse-only branch: Phase C NOT
+  authorized pending diagnosis.** S1 apt +12.6 ns (4th reward-free
+  null). Notable descriptives: shuffle INVERTS the occupancy benefit
+  (sh-lo 216.8 = highest cell; different signature from finger's
+  attenuation); task-arm per-seed deltas span −256..+375. Leading
+  post-hoc diagnosis (labeled post-hoc): `to_target` in the synth obs
+  puts the reward direction in-subspace (theory's cup/E5 cell) ⇒ no
+  interaction expected by the theory itself; checkable via an E4-style
+  reward-NLL pass over the existing 48 synth ckpts, fixable via
+  `agent.model_obs` (Phase-B′ would need its own registration).
+
+- **2026-07-18 — pixel X0 pre-work BUILT (Plan_PixelReplication;
+  pre-outcome: no pixel study run exists).** (1) `agent.model_obs`
+  config regex (default `'.*'` = behavior-preserving) filters which obs
+  keys enter enc/dec; new `pixel_wm` named config (size1m-anchored,
+  `agent.model_obs: image`, train_ratio 256) trains the WM on pixels
+  ONLY while proprio keys stay in obs/replay for regime labeling and
+  pair search. (2) Plumbing: `AXIS1_BASE_CONFIG` (dmc_proprio|pixel_wm,
+  whitelist-guarded, auto-forces RENDER=True for pixel) threaded through
+  `axis1.sbatch` both stages + `submit_all.sh` bundle exports and
+  non-bundled case; `BASE_CONFIG` likewise through `pretrain.sbatch` +
+  the pretrain submit case. (3) Local rehearsal (WSL2): DMC emits
+  image+proprio simultaneously; `build_controlled_replay index`/`build`
+  handle pixel chunks (image byte-preserved, regime from
+  dist_to_target); pixel_wm offline fit trains with loss set
+  {con, dyn, image, rep, rew} and NO proprio heads (saved config
+  records model_obs); frozen-readout load surface verified (58
+  enc/dyn/dec tensors shape-match a fresh pixel_wm agent). Local-only
+  limitation (cluster unaffected): main.py's worker-thread env stepping
+  crashes EGL under WSL2, so online stages (source runs, adapt) must
+  smoke on the cluster — coexistence in the main thread verified.
 
 - **2026-07-18 — TD-MPC2 Amendment 1 frozen (pre-outcome).**
   `prereg/PREREG_tdmpc2_amend1_20260718.md` + frozen read
