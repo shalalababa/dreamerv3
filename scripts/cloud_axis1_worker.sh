@@ -44,7 +44,23 @@ case "$AXIS1_EXPL_MODE" in
   apt|task) ;;
   *) echo "AXIS1_EXPL_MODE must be 'apt' or 'task', got: $AXIS1_EXPL_MODE" >&2; exit 2 ;;
 esac
-id_prefix="${AXIS1_ID_PREFIX:-$([ "$AXIS1_EXPL_MODE" = task ] && echo ax1 || echo ax1f)}"
+transform="${AXIS1_TRANSFORM:-}"
+case "$transform" in
+  ''|sh|rl|srd0|srd1|sid) ;;
+  *) echo "AXIS1_TRANSFORM must be sh|rl|srd0|srd1|sid or empty, got: $transform" >&2; exit 2 ;;
+esac
+if [ -n "$transform" ]; then
+  [ "$AXIS1_EXPL_MODE" = task ] || {
+    echo "AXIS1_TRANSFORM=$transform requires AXIS1_EXPL_MODE=task" >&2
+    exit 2
+  }
+  id_prefix="${AXIS1_ID_PREFIX:-ax1${transform}}"
+  quad_suffix="_${transform}"
+  export AXIS1_ARM="${AXIS1_ARM:-full}"
+else
+  id_prefix="${AXIS1_ID_PREFIX:-$([ "$AXIS1_EXPL_MODE" = task ] && echo ax1 || echo ax1f)}"
+  quad_suffix=""
+fi
 wm_infix="${id_prefix#ax1}"
 
 idx=0
@@ -53,10 +69,11 @@ for dom in "${doms[@]}"; do
   case "$dom" in
     cup) task=dmc_cup_catch ;;
     finger) task=dmc_finger_turn_hard ;;
+    synth) task=synth_reach ;;
     *) echo "unknown axis1 domain: $dom" >&2; exit 2 ;;
   esac
   for q in "${quads[@]}"; do
-    root="$RUNROOT/axis1_${dom}/${q}"
+    root="$RUNROOT/axis1_${dom}/${q}${quad_suffix}"
     [ -f "$root/manifest.json" ] || {
       echo "missing built Axis-1 buffer manifest: $root/manifest.json" >&2
       exit 2
@@ -82,7 +99,8 @@ for dom in "${doms[@]}"; do
         RUN_ID="$run_id" WM_RUN="$wm_run" TASK="$task" SEED="$s" \
           REPLAY="$root/side${side}" UPDATES="$updates" STEPS="$steps" \
           AXIS=axis1 PAIRED_SEED_SET="${id_prefix}_${dom}_${q}" \
-          AXIS1_EXPL_MODE="$AXIS1_EXPL_MODE" RENDER="${RENDER:-False}" \
+          AXIS1_EXPL_MODE="$AXIS1_EXPL_MODE" AXIS1_SIZE="${AXIS1_SIZE:-}" \
+          AXIS1_ARM="${AXIS1_ARM:-full}" RENDER="${RENDER:-False}" \
           bash "$REPO/scripts/axis1.sbatch" > "$log" 2>&1
         rc=$?
         set -e
