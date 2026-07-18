@@ -51,8 +51,10 @@ import os
 from probing.tdmpc2_compat import add_tdmpc2_path, build_cfg
 add_tdmpc2_path()
 cfg = build_cfg(os.environ['TDMPC2_ROOT'], 'dmc_finger_turn_hard', 12, 2, 1000)
-assert cfg.obs_shape == {'state': (12,)} and cfg.action_dim == 2
-assert cfg.latent_dim == 512 and cfg.bin_size > 0
+assert tuple(cfg.obs_shape['state']) == (12,), cfg.obs_shape
+assert cfg.action_dim == 2, cfg.action_dim
+assert cfg.latent_dim == 512, cfg.latent_dim
+assert cfg.bin_size > 0, cfg.bin_size
 print('cfg build OK:', cfg.task, 'latent', cfg.latent_dim)
 from probing.tdmpc2_compat import Dv3TaskEnv
 env = Dv3TaskEnv('dmc_finger_turn_hard', seed=0)
