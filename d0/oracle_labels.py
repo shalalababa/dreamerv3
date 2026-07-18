@@ -65,6 +65,16 @@ import numpy as np
 # Restorable-state plumbing (wrapper-chain walkers; no env code changes)
 # --------------------------------------------------------------------------
 
+def _own(node, name):
+  """This node's OWN instance attribute, or None. Plain getattr is wrong
+  here twice over: embodied Wrapper.__getattr__ DELEGATES lookups down
+  the chain (an outer wrapper would report the inner env's attribute as
+  its own, and restore would then write to the wrong node) and converts
+  the terminal miss to ValueError, which getattr defaults and hasattr
+  do not suppress."""
+  return vars(node).get(name)
+
+
 def _chain(env):
   """Yield the wrapper chain outermost-first (attrs .env / ._env)."""
   seen = set()
@@ -72,7 +82,7 @@ def _chain(env):
   while node is not None and id(node) not in seen:
     seen.add(id(node))
     yield node
-    node = getattr(node, 'env', None) or getattr(node, '_env', None)
+    node = _own(node, 'env') or _own(node, '_env')
 
 
 def snapshot_env(env):
@@ -81,16 +91,18 @@ def snapshot_env(env):
   (e.g. the OU distractor). Returns an opaque dict for restore_env."""
   snap = {}
   for node in _chain(env):
-    dmenv = getattr(node, '_dmenv', None)
+    dmenv = _own(node, '_dmenv')
     if dmenv is not None and 'physics' not in snap:
       snap['physics'] = np.array(dmenv.physics.get_state(), np.float64)
       snap['step_count'] = int(getattr(dmenv, '_step_count', 0))
       snap['dm_node'] = dmenv
-    rng = getattr(node, '_rng', None)
+    rng = _own(node, '_rng')
     if rng is not None and hasattr(rng, 'bit_generator'):
       snap.setdefault('rngs', []).append(
           (node, json.dumps(rng.bit_generator.state)))
-    if hasattr(node, 'oracle_get_state'):  # synthetic/selfcheck envs
+    # method lookup on the CLASS: skips instance-dict misses AND the
+    # wrapper delegation (synthetic/selfcheck envs only)
+    if callable(getattr(type(node), 'oracle_get_state', None)):
       snap['custom'] = (node, node.oracle_get_state())
   if 'physics' not in snap and 'custom' not in snap:
     raise SystemExit('snapshot_env: no dm_control physics or '
