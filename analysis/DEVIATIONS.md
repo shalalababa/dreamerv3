@@ -108,6 +108,25 @@ immutable dated files; see plan v4.)
 
 ## Code notes and registrations (non-deviations)
 
+- **2026-07-18 — TD-MPC2 Amendment 1 frozen (pre-outcome).**
+  `prereg/PREREG_tdmpc2_amend1_20260718.md` + frozen read
+  `analysis/tdmpc2_amend_read.py` (selfcheck PASS: fires+LANDS branch,
+  REFUTED branch, bit-check trip, missing-cell trip; seeds-1–8
+  machinery reproduces the 17-Jul read bit-for-bit: +9.5 [−43.2,+51.4]
+  / +35.3 / +25.8) + theory derivation
+  `research_notes/Theory_SpectralTransfer_Addendum_DecoderFree_20260718.tex`.
+  Registers the seeds-9–16 extension (32 jobs, design unchanged),
+  pooled n=16 primary re-test on the P3-Amendment-1 pattern (seeds 1–8
+  authoritative from the frozen artifact csv, overlap bit-checked), and
+  **P-C1** (decoder-free limit: C1a share < 0.6 directional; C1b
+  free-arm positivity CI-bearing with lands/unresolved/fails
+  trichotomy; C1c aware positivity). The execution plan's provisional
+  absolute-scale anchors were REJECTED at freeze as violating the base
+  registration's never-compare-numerically rule; registered forms are
+  within-family/dimensionless. Gate G-F2 (E4-port resource gate,
+  non-inferential) recorded in the prereg. No seed-9–16 TD-MPC2 job
+  exists at freeze.
+
 - **2026-07-18 — stamping + Gate-D1 reads executed
   (`artifacts/stamping_20260718/`, `artifacts/gate_d1_20260718/`).**
   (1) Stamping read per `PREREG_stamping_20260717.md` with the

@@ -37,8 +37,13 @@ class Agent(embodied.jax.Agent):
     self.config = config
 
     exclude = ('is_first', 'is_last', 'is_terminal', 'reward')
-    enc_space = {k: v for k, v in obs_space.items() if k not in exclude}
-    dec_space = {k: v for k, v in obs_space.items() if k not in exclude}
+    # model_obs: keys outside this regex stay in obs/replay (available to
+    # wrappers, labeling, and analysis) but never enter the world model.
+    include = re.compile(config.model_obs)
+    enc_space = {k: v for k, v in obs_space.items()
+                 if k not in exclude and include.fullmatch(k)}
+    dec_space = dict(enc_space)
+    assert enc_space, (config.model_obs, sorted(obs_space))
     self.enc = {
         'simple': rssm.Encoder,
     }[config.enc.typ](enc_space, **config.enc[config.enc.typ], name='enc')

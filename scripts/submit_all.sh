@@ -348,6 +348,10 @@ submit_axis1_bundle() {  # submit_axis1_bundle <bundle_id> <runlist> <num_tasks>
     ''|size1m|size12m|size25m|size50m|size100m|size200m|size400m) ;;
     *) echo "AXIS1_SIZE must be size1m..size400m or empty, got: ${AXIS1_SIZE}"; exit 1 ;;
   esac
+  case "${AXIS1_BASE_CONFIG:-}" in
+    ''|dmc_proprio|pixel_wm) ;;
+    *) echo "AXIS1_BASE_CONFIG must be dmc_proprio|pixel_wm or empty, got: ${AXIS1_BASE_CONFIG}"; exit 1 ;;
+  esac
   local jobs_used=$((JOBS_AT_START + SUBMITTED_THIS_RUN))
   if [ "${IGNORE_JOB_CAP:-0}" != "1" ] && [ "$MAX_JOBS" -gt 0 ] &&
      [ "$jobs_used" -ge "$MAX_JOBS" ]; then
@@ -367,7 +371,7 @@ submit_axis1_bundle() {  # submit_axis1_bundle <bundle_id> <runlist> <num_tasks>
   exports="$exports,STEPS=${STEPS:-1.25e5},AXIS1_UPDATES=${AXIS1_UPDATES:-500000}"
   # PREREG_axis1_corrective_20260711: the fitting objective must reach the
   # bundle children (this list intentionally avoids --export=ALL).
-  exports="$exports,AXIS1_EXPL_MODE=${AXIS1_EXPL_MODE:?},AXIS1_ARM=${AXIS1_ARM:-full},AXIS1_SAVE_EVERY_UPDATES=${AXIS1_SAVE_EVERY_UPDATES:-50000},AXIS1_SIZE=${AXIS1_SIZE:-}"
+  exports="$exports,AXIS1_EXPL_MODE=${AXIS1_EXPL_MODE:?},AXIS1_ARM=${AXIS1_ARM:-full},AXIS1_SAVE_EVERY_UPDATES=${AXIS1_SAVE_EVERY_UPDATES:-50000},AXIS1_SIZE=${AXIS1_SIZE:-},AXIS1_BASE_CONFIG=${AXIS1_BASE_CONFIG:-}"
   local cmd=(sbatch --account="$SLURM_ACCOUNT" --partition="$SLURM_PARTITION"
              --gres="$SLURM_GRES" --time="$walltime"
              --job-name="$bundle_id" --export="$exports"
@@ -434,7 +438,8 @@ case "$cmd" in
         m=${mode#expl_}
         for s in "${SEEDS[@]}"; do
           submit pretrain.sbatch "pretrain_${m}_${short}_seed${s}" \
-            "TASK=$task" "MODE=$mode" "SEED=$s" "STEPS=${STEPS:-5e5}"
+            "TASK=$task" "MODE=$mode" "SEED=$s" "STEPS=${STEPS:-5e5}" \
+            "BASE_CONFIG=${BASE_CONFIG:-}" "RENDER=${RENDER:-False}"
         done
       done
     done ;;
@@ -758,6 +763,7 @@ case "$cmd" in
               "TASK=$task" "SEED=$s" "REPLAY=$root/side${side}" \
               "UPDATES=$updates" "STEPS=$steps" \
               "AXIS1_SIZE=${AXIS1_SIZE:-}" \
+              "AXIS1_BASE_CONFIG=${AXIS1_BASE_CONFIG:-}" \
               "AXIS=axis1" "PAIRED_SEED_SET=${id_prefix}_${dom}_${q}"
           done
         done

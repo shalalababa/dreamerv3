@@ -66,8 +66,13 @@ STOP_STEP=$("$PYTHON" -c "print(int(float('$STEPS')))")
 # Launch trainer. render=False: proprio runs never consume the image, so skip
 # the per-step MuJoCo render (pure overhead here; also sidesteps a local WSL2
 # EGL/CUDA crash). Set RENDER=True if you want eval videos.
+case "${BASE_CONFIG:-}" in
+  ''|dmc_proprio) ;;
+  pixel_wm) RENDER=True ;;  # pixel obs require rendering (dmc.py asserts)
+  *) echo "ERROR: unknown BASE_CONFIG=${BASE_CONFIG} (dmc_proprio|pixel_wm or empty)"; exit 2 ;;
+esac
 "$PYTHON" -u dreamerv3/main.py \
-  --logdir "$LOGDIR" --configs dmc_proprio "$MODE" \
+  --logdir "$LOGDIR" --configs "${BASE_CONFIG:-dmc_proprio}" "$MODE" \
   --task "$TASK" --seed "$SEED" \
   --env.dmc.render "${RENDER:-False}" \
   --run.steps "$STEPS" --run.save_every "$SAVE_EVERY" &

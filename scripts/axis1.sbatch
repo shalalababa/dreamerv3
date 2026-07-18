@@ -51,6 +51,14 @@ case "${AXIS1_SIZE:-}" in
   ''|size1m|size12m|size25m|size50m|size100m|size200m|size400m) ;;
   *) echo "ERROR: unknown AXIS1_SIZE=${AXIS1_SIZE} (size1m..size400m or empty)"; exit 2 ;;
 esac
+# Pixel study (Plan_PixelReplication): base config applied to BOTH stages
+# (like AXIS1_SIZE, the adapt stage must match the checkpoint's spaces --
+# a mismatch fails at load, which is the built-in guard).
+case "${AXIS1_BASE_CONFIG:-}" in
+  ''|dmc_proprio) ;;
+  pixel_wm) RENDER=True ;;  # pixel obs require rendering (dmc.py asserts)
+  *) echo "ERROR: unknown AXIS1_BASE_CONFIG=${AXIS1_BASE_CONFIG} (dmc_proprio|pixel_wm or empty)"; exit 2 ;;
+esac
 WMDIR="$RUNROOT/$WM_RUN"
 LOGDIR="$RUNROOT/$RUN_ID"
 mkdir -p "$LOGDIR"
@@ -135,11 +143,11 @@ else
   if [ "${AXIS1_ARM:-full}" != full ] && [ "$AXIS1_EXPL_MODE" != task ]; then
     echo "ERROR: factorial arm ${AXIS1_ARM} requires AXIS1_EXPL_MODE=task"; exit 2
   fi
-  echo "[$(date)] fit flags: --agent.expl.mode $AXIS1_EXPL_MODE ${AXIS1_FIT_FLAGS:-} (arm=${AXIS1_ARM:-full} size=${AXIS1_SIZE:-default})"
+  echo "[$(date)] fit flags: --agent.expl.mode $AXIS1_EXPL_MODE ${AXIS1_FIT_FLAGS:-} (arm=${AXIS1_ARM:-full} size=${AXIS1_SIZE:-default} base=${AXIS1_BASE_CONFIG:-dmc_proprio})"
   "$PYTHON" -u -m probing.offline_fit \
     --static_replay "$REPLAY" --updates "$UPDATES" \
     --save_every_updates "${AXIS1_SAVE_EVERY_UPDATES:-50000}" \
-    --logdir "$WMDIR" --configs dmc_proprio ${AXIS1_SIZE:+$AXIS1_SIZE} \
+    --logdir "$WMDIR" --configs "${AXIS1_BASE_CONFIG:-dmc_proprio}" ${AXIS1_SIZE:+$AXIS1_SIZE} \
     --task "$TASK" --seed "$SEED" \
     --agent.expl.mode "$AXIS1_EXPL_MODE" ${AXIS1_FIT_FLAGS:-} \
     --env.dmc.render "${RENDER:-False}" || RC=$?
@@ -158,7 +166,7 @@ manifest_append "$RUN_ID" adapt "$TASK" frozen_readout "$SEED" "$STEPS" "$CKPT" 
 
 RC=0
 "$PYTHON" -u dreamerv3/main.py \
-  --logdir "$LOGDIR" --configs dmc_proprio ${AXIS1_SIZE:+$AXIS1_SIZE} frozen_readout \
+  --logdir "$LOGDIR" --configs "${AXIS1_BASE_CONFIG:-dmc_proprio}" ${AXIS1_SIZE:+$AXIS1_SIZE} frozen_readout \
   --task "$TASK" --seed "$SEED" \
   --env.dmc.render "${RENDER:-False}" \
   --run.from_checkpoint "$CKPT" --run.steps "$STEPS" || RC=$?
