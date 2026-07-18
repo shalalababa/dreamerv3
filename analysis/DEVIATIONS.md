@@ -35,6 +35,15 @@ immutable dated files; see plan v4.)
   selfcheck PASS. (4) vgo wiring audit recorded
   (`artifacts/vgo_wiring_audit_20260717/AUDIT.md`): vgo = case (b)
   replay-grounded; P-B2 shifts to its registered case-(b) form.
+  (5) 18-Jul smoke finding: size12m fits crash on the frozen q1 pair's
+  stored size1m `dyn/*` replay-context latents (compiled-shape check;
+  zero training progress, so no outcome information). Fix, pre-freeze:
+  NEW `probing/resize_replay_context.py` (zero-init context copy at
+  target dims, selfcheck PASS) + `AXIS1_QUAD_SUFFIX` in the
+  axis1/axis1-bundles buffer-root lines (changes only the replay path,
+  never run naming; DRYRUN-verified). The 12m cells fit `q1_ctx12`;
+  disclosed in `PREREG_scaling_pilot_20260717.md` as a stratum-internal
+  protocol difference.
 - **2026-07-17 — stamping-wave code notes (pre-outcome; registration =
   `prereg/PREREG_stamping_20260717.md`).** (1) `probing/relabel_replay.py`
   gains stamp kinds `stamp_rand`/`stamp_iid` (+`--fn_seed`, `stamp-probeset`

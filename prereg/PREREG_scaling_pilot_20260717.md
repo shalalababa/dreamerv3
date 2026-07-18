@@ -24,11 +24,30 @@ validation, its run dirs are deleted and carry no evidentiary weight):
 
 ## Design
 
-Finger q1 pair (frozen buffers, byte-identical to every prior arm),
-seeds 1–8 paired across all four cells; 12m fits mirror the existing
-1m protocol exactly (offline fit then frozen-readout adapt,
-`AXIS1_SIZE=size12m` applied to BOTH stages — a size mismatch fails
-checkpoint loading, which is the built-in audit guard).
+Finger q1 pair, seeds 1–8 paired across all four cells; 12m fits
+mirror the existing 1m protocol (offline fit then frozen-readout
+adapt, `AXIS1_SIZE=size12m` applied to BOTH stages — a size mismatch
+fails checkpoint loading, which is the built-in audit guard).
+
+**Buffer for the 12m cells (registered protocol difference, found by
+the 2026-07-18 timing smoke):** the frozen q1 chunks byte-preserve the
+source runs' `dyn/*` replay-context latents at size1m dims (512/32×4),
+which cannot feed a size12m agent (`_apply_replay_context` rebuilds
+the RSSM carry from them — the smoke failed at the compiled-shape
+check, as designed). The 12m cells therefore fit
+`axis1_finger/q1_ctx12`: a copy with `dyn/*` ZERO-INITIALIZED at
+2048/32×16 (`probing/resize_replay_context.py`, selfcheck PASS;
+obs/action/reward/flags byte-preserved; stepid re-encoded so
+Replay.update refreshes the context with the 12m agent's own latents
+after the first pass — the same contract every built buffer already
+relies on). Submitted via `AXIS1_QUAD_SUFFIX=_ctx12`, which changes
+ONLY the replay path — run/WM naming stays as registered
+(DRYRUN-verified). Disclosure: the historical 1m fits started from the
+source agents' stored latents, the 12m fits start from zeros; the
+difference is stratum-internal (both 12m arms share the same resized
+pair, both 1m arms shared the original), so the three-way contrast
+differences it out; noted as a scope caveat on any cross-stratum LEVEL
+comparison (which is descriptive-only here anyway).
 
 | cell | mode string | jobs | source |
 |---|---|---|---|
@@ -78,7 +97,8 @@ time).
   variant with pooled-1–16 1m strata reported alongside, never
   decision-bearing.
 - Audit (per-run): saved WM config `dyn.rssm.deter == 2048` (size
-  audit) + `expl.mode` per arm; ADAPT_DONE; QC ≥20 eps ≤100K unchanged.
+  audit) + `expl.mode` per arm; ADAPT_DONE; QC ≥20 eps ≤100K unchanged;
+  fit stdout (where retained) shows `Static replay: .../q1_ctx12/side<s>`.
 - E4 measure pass over the 12m fits (descriptive membership readout:
   does apt@12m reward-NLL move toward task@12m?) uses the frozen
   `finger_v1` probe set, glob `ax1wm_finger_*s12*`; no probe-set
@@ -118,8 +138,11 @@ Known at freeze: every outcome through 17 Jul 2026 (P0/W0/W1/W2/W3, P3
 prospective only through the unknown 12m cells. Unknown: every 12m
 number (no 12m fit or adapt has ever run; the timing smoke uses seed
 99, its dirs are deleted, and it is excluded by rule from every
-analysis). Ordering: AXIS1_SIZE plumbing, `analysis/scaling_read.py`,
+analysis). Ordering: AXIS1_SIZE plumbing, `probing/resize_replay_context.py`, the
+AXIS1_QUAD_SUFFIX hook, `analysis/scaling_read.py`,
 `probing/reward_direction_rank.py`, and this file are committed
 together BEFORE the Option B wave is submitted; the smoke may precede
 the commit (it produces no outcome-relevant information beyond
-walltime/memory feasibility, disclosed above).
+walltime/memory/shape feasibility, disclosed above — the first smoke
+attempt failed at the context-shape check with zero training progress
+and is what motivated the resize protocol).

@@ -742,7 +742,10 @@ case "$cmd" in
         *) echo "unknown axis1 domain: $dom"; exit 1 ;;
       esac
       for q in "${quads[@]}"; do
-        root="$RUNROOT/axis1_${dom}/${q}"
+        # AXIS1_QUAD_SUFFIX: buffer-dir suffix that must NOT enter run
+        # naming (e.g. _ctx12 = context-resized pair for AXIS1_SIZE
+        # runs, probing/resize_replay_context.py).
+        root="$RUNROOT/axis1_${dom}/${q}${AXIS1_QUAD_SUFFIX:-}"
         if [ ! -f "$root/manifest.json" ]; then
           echo "SKIP not built: $root (run build_controlled_replay build --which $q)"
           continue
@@ -788,7 +791,10 @@ case "$cmd" in
         *) echo "unknown axis1 domain: $dom"; exit 1 ;;
       esac
       for q in "${quads[@]}"; do
-        root="$RUNROOT/axis1_${dom}/${q}"
+        # AXIS1_QUAD_SUFFIX: buffer-dir suffix that must NOT enter run
+        # naming (e.g. _ctx12 = context-resized pair for AXIS1_SIZE
+        # runs, probing/resize_replay_context.py).
+        root="$RUNROOT/axis1_${dom}/${q}${AXIS1_QUAD_SUFFIX:-}"
         if [ ! -f "$root/manifest.json" ]; then
           echo "SKIP not built: $root (run build_controlled_replay build --which $q)"
           continue
