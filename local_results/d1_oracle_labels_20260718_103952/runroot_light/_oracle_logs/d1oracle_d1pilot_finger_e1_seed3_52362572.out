@@ -1,0 +1,59 @@
+[Sat Jul 18 01:21:50 CDT 2026] start d1pilot_finger_e1_seed3
+Observations
+  reward           Space(float32, shape=(), low=-inf, high=inf)
+  is_first         Space(bool, shape=(), low=False, high=True)
+  is_last          Space(bool, shape=(), low=False, high=True)
+  is_terminal      Space(bool, shape=(), low=False, high=True)
+  position         Space(float32, shape=(4,), low=-inf, high=inf)
+  velocity         Space(float32, shape=(3,), low=-inf, high=inf)
+  touch            Space(float32, shape=(2,), low=-inf, high=inf)
+  target_position  Space(float32, shape=(2,), low=-inf, high=inf)
+  dist_to_target   Space(float32, shape=(), low=-inf, high=inf)
+Actions
+  action           Space(float32, shape=(2,), low=-1.0, high=1.0)
+Extras
+  consec           Space(int32, shape=(), low=-2147483648, high=2147483647)
+  stepid           Space(uint8, shape=(20,), low=0, high=255)
+  dyn/deter        Space(float32, shape=(512,), low=-inf, high=inf)
+  dyn/stoch        Space(float32, shape=(32, 4), low=-inf, high=inf)
+JAX devices (1): [cuda:0]
+Policy devices: cuda:0
+Train devices:  cuda:0
+Initializing parameters...
+Optimizer opt has 4,132,234 params:
+     3,163,136 disag
+       396,666 val
+       364,160 dyn
+        66,111 valens3
+        66,111 valens4
+        66,111 valens1
+        66,111 valens2
+        66,111 valens0
+        57,663 rew
+        50,316 dec
+        49,796 pol
+        41,153 con
+         9,344 enc
+Done initializing!
+Compiling 1 checkpoint groups...
+Largest checkpoint group: 0 GB
+Compiling train and report...
+Train cost analysis:
+  FLOPS:            2.9e+10
+  Memory (temp):    8.3e+08
+  Memory (inputs):  5.4e+07
+  Memory (outputs): 5.3e+07
+  Memory (code):    4.1e+06
+
+Report cost analysis:
+  FLOPS:            1.8e+06
+  Memory (temp):    9.2e+05
+  Memory (inputs):  2.7e+06
+  Memory (outputs): 2.1e+04
+  Memory (code):    1.0e+05
+
+Done compiling!
+Loading checkpoint: /scratch/midway3/rickybao/dreamerv3_runs/d1pilot_finger_e1_seed3/ckpt/20260717T120850F807951
+Loaded checkpoint.
+wrote /scratch/midway3/rickybao/dreamerv3_runs/d1_labels/d1pilot_finger_e1_seed3.npz: 200 labeled states; mean delta_real +0.335, mean delta_imag -0.365
+[Sat Jul 18 01:27:41 CDT 2026] done d1pilot_finger_e1_seed3
