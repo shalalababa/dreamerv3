@@ -108,6 +108,31 @@ immutable dated files; see plan v4.)
 
 ## Code notes and registrations (non-deviations)
 
+- **2026-07-18 — stamping + Gate-D1 reads executed
+  (`artifacts/stamping_20260718/`, `artifacts/gate_d1_20260718/`).**
+  (1) Stamping read per `PREREG_stamping_20260717.md` with the
+  pre-frozen `analysis/stamping_read.py`, unmodified: local canonical
+  AUC recompute bit-identical to cluster csv 48/48; audit 48/48;
+  **PRIMARY [B_srd−B_sid] +8.90 [−11.49,+31.85] CI includes 0 ⇒ P-B1
+  strong form STANDS** (srd pooled benefit +16.5 also inside the
+  registered band = the P0 apt null CI); S3 function-draw ≈0. The E4
+  stamp-NLL mechanism panel was still running at read time; it is
+  descriptive-only and will be appended when it lands. (2) Gate-D1
+  read: NEW `analysis/gate_d1_read.py` (selfcheck PASS) implements the
+  three criteria frozen in `PREREG_gate_d1_stage1a_20260714.md` §B on
+  the Stage-1B label npzs. Mechanical choices post-dating label
+  existence, disclosed in the script header: OLS-on-5-signals ÊVSI with
+  leave-one-run-out-within-domain cross-fitting; criterion-3 cost price
+  unpinned by the prereg ⇒ CI statement at price 0 + price sweep
+  sensitivity. **All 4 domain×op cells FAIL all three criteria** (best
+  raw feature +0.085 ≪ 0.3 bar ⇒ verdict robust to the mechanical
+  choices) ⇒ registered consequence: **24+24 stays frozen**. Also
+  disclosed: the labeling sweep ran at the tool's [prov.] dials
+  (actions 8 / rollouts 16) without the planned dial-pinning amendment;
+  dials are recorded in each npz meta and do not affect the verdict.
+  The Stage-1A density-residual instrument was NOT testable (labeler
+  emits no udyn/density proxy) — the one registered Route-A move left.
+
 - **2026-07-17 — P3 + mechanism-wave reads executed as registered
   (`artifacts/p3_wave_20260717/RESULTS.md`); P3 Amendment 1 frozen.**
   P3 (pre-frozen script, unmodified; audit 80/80 on the registered
