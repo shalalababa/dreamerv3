@@ -159,6 +159,25 @@ immutable dated files; see plan v4.)
 
 ## Code notes and registrations (non-deviations)
 
+- **2026-07-18 night — decisions recorded + two correctives frozen
+  (pre-outcome).** (1) **Goodhart DEMOTED** (owner decision, 18 Jul):
+  the track is reported as a negative/boundary result with the 3-seed
+  evaluator ensemble as its closing control (spearman .136→.186, top-1
+  regret unchanged 571.9); no further Goodhart runs. (2)
+  `prereg/PREREG_scaling_optc_amend1_20260718.md` + frozen
+  `analysis/optc_amend_read.py` (selfcheck PASS ×3): 12 corrective
+  jobs on the never-run `q1v400/side0`; C1 fixed-volume occupancy
+  contrast + C2 ≈fraction-matched volume contrast (the intended P-B4
+  test); v200s1/v400s1 from the archived artifact csv, bit-checked.
+  (3) `prereg/PREREG_synth_rediag_20260718.md` + frozen
+  `analysis/synth_rediag_read.py` (selfcheck PASS ×2): 24 adapt-only
+  jobs (task arm, 4 fits × 3 fresh adapt seeds × 2 sides, reusing the
+  existing 500K ckpts), one-way variance decomposition, adapt-lottery
+  prediction within-share ≥ 0.5, gate → Phase-B″. (4) Route-A revision
+  analysis at `research_notes/D1_RouteA_Revision_Options_20260718.md`
+  (assessment only; recommends one cheap R2 decision probe before the
+  fork closes).
+
 - **2026-07-18 pm — four reads executed (Option C / stamping-E4-override
   / synth diagnosis / pixel X0 status).** (1) Option C: see the
   deviation entry above. (2) Stamping override panel
