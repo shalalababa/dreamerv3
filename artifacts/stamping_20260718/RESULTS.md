@@ -81,6 +81,41 @@ scalars of this class". The panel runs with
 `stamp-probeset --latent_replay <pilot replays>` (stepid-join recovery
 of the latent columns for probe frames).
 
+## E4 override panel (landed 2026-07-18 pm; descriptive-only)
+
+Snapshot `local_results/x0_stamp_synthdiag_20260718_175314/stamping_e4_override/`:
+32 override-measure runs (srd0/srd1 × sides × 8 seeds), each srd fit
+scored against ITS OWN stamped labels on the frozen `finger_v1` probe
+set, dyn/* stamp inputs recovered by stepid join over the three pilot
+replays (recovery recorded in every override meta; probeset sha
+matches the frozen record).
+
+Stamp-NLL (h0, seed means):
+
+| cell | all | in-regime | out-regime |
+|---|---|---|---|
+| srd0 s0 | 0.244 | 1.176 | 0.151 |
+| srd0 s1 | 1.489 | 2.504 | 1.387 |
+| srd1 s0 | 1.374 | 0.501 | 1.461 |
+| srd1 s1 | 1.300 | 0.952 | 1.335 |
+
+Reference band (P3 E4, true labels, in-regime h0): included = full
+1.02 / rgo 1.21; not-included = sgb 2.30 / vgo 2.31. Three of four
+cells sit at-or-below the included band on all-frames NLL; patterns
+are heterogeneous by function draw and stratum (srd0-s1 in-regime
+2.50 ≈ sgb-level; srd0-s0 is base-rate-easy at its low stamp
+density). The true-label pass on srd fits (panel (b)) has not run.
+
+**Reading: the stamps were substantially LEARNED — on held-out probe
+frames — and transfer nulled anyway. That is the theory's
+inclusion-without-transfer signature, resolving the 18-Jul caveat in
+the favorable direction: "learnable-but-unaligned scalars do not
+transfer" stands in its full form (with the function-draw
+heterogeneity noted). P-B1's adjudication is unchanged and now
+mechanism-backed.** (The dyn/*-input deviation stands documented; the
+learned stamp is a function of obs+source-latents, which the trunk's
+history summary evidently suffices to predict.)
+
 ## Provenance
 
 - `auc.csv` — canonical local recompute (bit-identical to cluster).

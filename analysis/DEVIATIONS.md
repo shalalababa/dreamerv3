@@ -6,6 +6,28 @@ immutable dated files; see plan v4.)
 
 ## Deviations
 
+- **2026-07-18 — Option C realized design ≠ registered ladder (side
+  inversion).** The registered volume rider ("ladder on the hi side,
+  occupancy matched") was not realized: the plain `search` subcommand
+  does not enforce the side0=low convention, and the v400 pair came
+  out high-first — so the `*v400s1*` cells ran on the LOW-occ (0.094)
+  400-episode side while v200s1 is the hi-occ (0.323) 200-episode
+  side. Volume is confounded with occupancy and composition; the
+  registered directional statement ("no volume effect at fixed
+  fraction") is NOT adjudicable from these cells and P-B4 is NOT
+  adjudicated. Read + full audit in
+  `artifacts/scaling_optc_20260718/RESULTS.md` (registered direction
+  fails descriptively; the anomaly — task at occ .094/400 eps beating
+  occ .323/200 eps 433 vs 204 with fewer in-regime frames — is
+  recorded as unexplained). Cheap corrective on disk: the built
+  `q1v400/side0` (occ .290) was never run; {task, apt} × 6 seeds = 12
+  jobs would give the occ-matched volume AND fixed-volume occupancy
+  contrasts; requires a dated amendment BEFORE those outcomes exist.
+  Also noted: the synth seed-99 smoke fits (20K updates) were not
+  deleted and were swept into the diagnosis e4 glob (n=9/side in the
+  cluster-side read); the canonical diagnosis read excludes them by
+  rule (verdicts unchanged).
+
 - **2026-07-18 — DISCOVERED IMPLEMENTATION DEVIATION: the stamp
   functions consumed dyn/* context latents.** Surfaced by the E4
   override build ("probe set lacks stamp obs keys ['dyn/deter',
@@ -136,6 +158,29 @@ immutable dated files; see plan v4.)
   reserved).
 
 ## Code notes and registrations (non-deviations)
+
+- **2026-07-18 pm — four reads executed (Option C / stamping-E4-override
+  / synth diagnosis / pixel X0 status).** (1) Option C: see the
+  deviation entry above. (2) Stamping override panel
+  (descriptive; appended to `artifacts/stamping_20260718/RESULTS.md`):
+  32/32 override measures, stepid-join latent recovery recorded in
+  every meta, probeset sha matches; stamp-NLL 0.24–1.49 (all-frames,
+  3/4 cells at-or-below the included band full 1.02/rgo 1.21; sgb
+  reference 2.30) ⇒ stamps substantially LEARNED on held-out probes +
+  null transfer = **inclusion-without-transfer signature; P-B1 keeps
+  its full form**, function-draw heterogeneity noted; true-label pass
+  on srd fits not yet run. (3) Synth diagnosis
+  (`artifacts/synth_diagnosis_20260718/`): P-D1 PASS (ranks synth
+  [3,2] vs finger [6,5]) but P-D2 FAIL (rew-NLL separation 3.93 ≈ 77×
+  finger's) and P-D3 FAIL (to_target ratio 3.74/0.63) ⇒ **gate
+  CLOSED, no Phase-B′**; in-subspace refuted at model level; post-hoc
+  leading hypothesis = adapt-stage variance bottleneck. (4) Pixel X0
+  partial: source run done (model_obs: image in saved config; 100K
+  steps; fps/train ≈ 10.9K frames/s ⇒ ≈13 h per 500K-update fit ≪ 36 h
+  envelope), 80-ep index occ 0–0.79, but single-source q1 search
+  returns None (expected degeneracy) — fit/adapt smoke blocked on the
+  8 additional source runs now in flight; G-X1 provisionally green on
+  throughput/storage, final after the multi-source pair + smoke.
 
 - **2026-07-18 — synth diagnosis package BUILT + registered
   (`prereg/PREREG_synth_diagnosis_20260718.md`, descriptive-only,

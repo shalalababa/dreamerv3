@@ -1,0 +1,48 @@
+{
+ "p_d1": {
+  "rank_synth": [
+   3,
+   2
+  ],
+  "rank_finger": [
+   6,
+   5
+  ],
+  "passes": true
+ },
+ "p_d2": {
+  "task_rew_nll_s0": 4.607479338824524,
+  "task_rew_nll_s1": 0.6742172165932758,
+  "separation": 3.933262122231248,
+  "finger_separation": 0.051,
+  "n": [
+   8,
+   8
+  ],
+  "passes": false
+ },
+ "p_d3": {
+  "apt_over_task_to_target_nll": [
+   3.739903796386695,
+   0.624936536177623
+  ],
+  "band": [
+   0.8,
+   1.25
+  ],
+  "passes": false
+ },
+ "in_subspace_confirmed": false,
+ "gate": "gate CLOSED - re-diagnose (see failing instrument)",
+ "inputs": {
+  "rank_synth": [
+   "local_results/x0_stamp_synthdiag_20260718_175314/synth_diagnosis/runroot_light/axis1_synth/rank_s0.json",
+   "local_results/x0_stamp_synthdiag_20260718_175314/synth_diagnosis/runroot_light/axis1_synth/rank_s1.json"
+  ],
+  "rank_finger": [
+   "local_results/x0_stamp_synthdiag_20260718_175314/synth_diagnosis/runroot_light/axis1_finger/rank_s0.json",
+   "local_results/x0_stamp_synthdiag_20260718_175314/synth_diagnosis/runroot_light/axis1_finger/rank_s1.json"
+  ],
+  "n_e4_summaries": 48
+ }
+}
