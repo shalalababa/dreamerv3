@@ -1,0 +1,70 @@
+{
+  "task": "dmc_finger_turn_hard",
+  "which": "q1",
+  "index": "/scratch/midway3/rickybao/dreamerv3_runs/pixel_x0/episodes_multi_new.json",
+  "pairs": "/scratch/midway3/rickybao/dreamerv3_runs/pixel_x0/pairs_pxq1_multi_new.json",
+  "ep_len": 1001,
+  "chunk_contract": "one chunk per episode, succ=0; training windows never span episode boundaries (dropped on both sides of the pair)",
+  "note": "gradient-update count and model capacity are equalized at offline_fit time (same config/steps for both sides)",
+  "sides": [
+    {
+      "directory": "/scratch/midway3/rickybao/dreamerv3_runs/axis1_finger/pxq1/side0",
+      "n_episodes": 10,
+      "n_transitions": 10010,
+      "occ_recomputed": 0.0,
+      "occ_search": 0.0,
+      "cov_search": 0.56689,
+      "mixture": {
+        "random_finger_seed100/zero": 10
+      },
+      "terminal_fraction": 0.0,
+      "action_stats": {
+        "mean": [
+          0.00553,
+          0.00371
+        ],
+        "std": [
+          0.57571,
+          0.57846
+        ]
+      }
+    },
+    {
+      "directory": "/scratch/midway3/rickybao/dreamerv3_runs/axis1_finger/pxq1/side1",
+      "n_episodes": 10,
+      "n_transitions": 10010,
+      "occ_recomputed": 0.657043,
+      "occ_search": 0.657043,
+      "cov_search": 0.573823,
+      "mixture": {
+        "p2e_finger_seed101/high": 1,
+        "p2e_finger_seed102/high": 1,
+        "p2e_finger_seed99/high": 3,
+        "random_finger_seed100/mid": 1,
+        "random_finger_seed103/high": 1,
+        "random_finger_seed103/zero": 1,
+        "random_finger_seed104/high": 1,
+        "random_finger_seed106/high": 1
+      },
+      "terminal_fraction": 0.0,
+      "action_stats": {
+        "mean": [
+          0.07204,
+          -0.04045
+        ],
+        "std": [
+          0.73186,
+          0.72055
+        ]
+      }
+    }
+  ],
+  "confound_deltas": {
+    "n_transitions": 0,
+    "action_mean_maxabs": 0.06651,
+    "action_std_maxabs": 0.15615,
+    "terminal_fraction": 0.0,
+    "episode_length": 0,
+    "source_l1": 1.0
+  }
+}

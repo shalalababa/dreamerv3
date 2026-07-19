@@ -1,0 +1,173 @@
+[Sun Jul 19 00:57:59 UTC 2026] python=/workspace/conda_envs/dreamerv3/bin/python
+env ok: elements, jax 0.10.2 devices [CudaDevice(id=0)]
+[Sun Jul 19 00:58:01 UTC 2026] pretrain RUN_ID=pretrain_random_finger_seed106 TASK=dmc_finger_turn_hard MODE=expl_random SEED=106 STEPS=1e5 -> /workspace/dreamerv3_runs/pretrain_random_finger_seed106
+Watching /workspace/dreamerv3_runs/pretrain_random_finger_seed106/ckpt
+  -> /workspace/dreamerv3_runs/pretrain_random_finger_seed106/ckpt_snapshots
+  poll=60.0s  stop_step=100000
+---  ___                           __   ______ ---
+--- |   \ _ _ ___ __ _ _ __  ___ _ \ \ / /__ / ---
+--- | |) | '_/ -_) _` | '  \/ -_) '/\ V / |_ \ ---
+--- |___/|_| \___\__,_|_|_|_\___|_|  \_/ |___/ ---
+Replica: 0 / 1
+Logdir: /workspace/dreamerv3_runs/pretrain_random_finger_seed106
+Run script: train
+Observations
+  reward           Space(float32, shape=(), low=-inf, high=inf)
+  is_first         Space(bool, shape=(), low=False, high=True)
+  is_last          Space(bool, shape=(), low=False, high=True)
+  is_terminal      Space(bool, shape=(), low=False, high=True)
+  position         Space(float32, shape=(4,), low=-inf, high=inf)
+  velocity         Space(float32, shape=(3,), low=-inf, high=inf)
+  touch            Space(float32, shape=(2,), low=-inf, high=inf)
+  target_position  Space(float32, shape=(2,), low=-inf, high=inf)
+  dist_to_target   Space(float32, shape=(), low=-inf, high=inf)
+Actions
+  action           Space(float32, shape=(2,), low=-1.0, high=1.0)
+Extras
+  consec           Space(int32, shape=(), low=-2147483648, high=2147483647)
+  stepid           Space(uint8, shape=(20,), low=0, high=255)
+  dyn/deter        Space(float32, shape=(512,), low=-inf, high=inf)
+  dyn/stoch        Space(float32, shape=(32, 4), low=-inf, high=inf)
+JAX devices (1): [cuda:0]
+Policy devices: cuda:0
+Train devices:  cuda:0
+Initializing parameters...
+/workspace/dreamerv3/embodied/jax/agent.py:112: DeprecationWarning: `with mesh:` context manager has been deprecated. Please use `with jax.set_mesh(mesh):` instead.
+  with self.train_mesh:
+Optimizer opt has 423,820 params:
+       364,160 dyn
+        50,316 dec
+         9,344 enc
+/workspace/conda_envs/dreamerv3/lib/python3.11/site-packages/optax/_src/linear_algebra.py:44: DeprecationWarning: optax.global_norm is deprecated in favor of optax.tree.norm
+  warnings.warn(
+Done initializing!
+Compiling 1 checkpoint groups...
+Largest checkpoint group: 0 GB
+Compiling train and report...
+/workspace/dreamerv3/embodied/jax/agent.py:187: DeprecationWarning: `with mesh:` context manager has been deprecated. Please use `with jax.set_mesh(mesh):` instead.
+  with self.train_mesh:
+/workspace/conda_envs/dreamerv3/lib/python3.11/site-packages/optax/_src/linear_algebra.py:44: DeprecationWarning: optax.global_norm is deprecated in favor of optax.tree.norm
+  warnings.warn(
+Train cost analysis:
+No available
+Report cost analysis:
+No available
+Done compiling!
+Did not find any checkpoint.
+Saving checkpoint: /workspace/dreamerv3_runs/pretrain_random_finger_seed106/ckpt/20260719T005851F162654
+Saved checkpoint.
+Start training loop
+[00:59:01] snapshot step=0 -> /workspace/dreamerv3_runs/pretrain_random_finger_seed106/ckpt_snapshots/step000000000000
+Start JAX profiler: /workspace/dreamerv3_runs/pretrain_random_finger_seed106
+Stop JAX profiler
+
+--------------------[Agent Step 9_808]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+train/loss/dist_to_target 0.01 / train/loss/dyn 1.35 / train/loss/position 0.18 / train/loss/rep 1.35 / train/loss/target_position 0.04 / train/loss/touch 0.06 / train/loss/velocity 0.39 / replay/replay_ratio 919 / fps/policy 76.85 / fps/train 6.2e4
+
+Writing metrics: /workspace/dreamerv3_runs/pretrain_random_finger_seed106/metrics.jsonl
+Writing metrics: /workspace/dreamerv3_runs/pretrain_random_finger_seed106/scores.jsonl
+
+--------------------[Agent Step 17_984]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+episode/score 598 / episode/length 1001 / train/loss/dist_to_target 3.3e-3 / train/loss/dyn 1.06 / train/loss/position 0.02 / train/loss/rep 1.06 / train/loss/target_position 0.01 / train/loss/touch 0.01 / train/loss/velocity 0.05 / replay/replay_ratio 1040 / fps/policy 68.07 / fps/train 7e4
+
+Writing metrics: /workspace/dreamerv3_runs/pretrain_random_finger_seed106/metrics.jsonlWriting metrics: /workspace/dreamerv3_runs/pretrain_random_finger_seed106/scores.jsonl
+
+Saving checkpoint: /workspace/dreamerv3_runs/pretrain_random_finger_seed106/ckpt/20260719T010356F437412
+Saved checkpoint.
+[01:04:01] snapshot step=22016 -> /workspace/dreamerv3_runs/pretrain_random_finger_seed106/ckpt_snapshots/step000000022016
+
+--------------------[Agent Step 26_080]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+train/loss/dist_to_target 3.7e-3 / train/loss/dyn 1.06 / train/loss/position 0.01 / train/loss/rep 1.06 / train/loss/target_position 8.2e-3 / train/loss/touch 6.7e-3 / train/loss/velocity 0.03 / replay/replay_ratio 1040 / fps/policy 67.37 / fps/train 6.9e4
+
+Writing metrics: /workspace/dreamerv3_runs/pretrain_random_finger_seed106/metrics.jsonlWriting metrics: /workspace/dreamerv3_runs/pretrain_random_finger_seed106/scores.jsonl
+
+
+--------------------[Agent Step 34_144]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+episode/score 0 / episode/length 1001 / train/loss/dist_to_target 3.3e-3 / train/loss/dyn 1.05 / train/loss/position 0.01 / train/loss/rep 1.05 / train/loss/target_position 7.8e-3 / train/loss/touch 5.2e-3 / train/loss/velocity 0.03 / replay/replay_ratio 1040 / fps/policy 67.14 / fps/train 6.9e4
+
+Writing metrics: /workspace/dreamerv3_runs/pretrain_random_finger_seed106/metrics.jsonlWriting metrics: /workspace/dreamerv3_runs/pretrain_random_finger_seed106/scores.jsonl
+
+Saving checkpoint: /workspace/dreamerv3_runs/pretrain_random_finger_seed106/ckpt/20260719T010856F500459
+Saved checkpoint.
+
+--------------------[Agent Step 42_240]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+train/loss/dist_to_target 2.2e-3 / train/loss/dyn 1.06 / train/loss/position 0.01 / train/loss/rep 1.06 / train/loss/target_position 7.3e-3 / train/loss/touch 4.7e-3 / train/loss/velocity 0.03 / replay/replay_ratio 1040 / fps/policy 67.39 / fps/train 6.9e4
+
+Writing metrics: /workspace/dreamerv3_runs/pretrain_random_finger_seed106/metrics.jsonl
+Writing metrics: /workspace/dreamerv3_runs/pretrain_random_finger_seed106/scores.jsonl
+[01:09:01] snapshot step=42208 -> /workspace/dreamerv3_runs/pretrain_random_finger_seed106/ckpt_snapshots/step000000042208
+
+--------------------[Agent Step 50_224]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+episode/score 0 / episode/length 1001 / train/loss/dist_to_target 1.9e-3 / train/loss/dyn 1.06 / train/loss/position 0.01 / train/loss/rep 1.06 / train/loss/target_position 7.4e-3 / train/loss/touch 4.3e-3 / train/loss/velocity 0.02 / replay/replay_ratio 1040 / fps/policy 66.42 / fps/train 6.8e4
+
+Writing metrics: /workspace/dreamerv3_runs/pretrain_random_finger_seed106/metrics.jsonlWriting metrics: /workspace/dreamerv3_runs/pretrain_random_finger_seed106/scores.jsonl
+
+
+--------------------[Agent Step 58_272]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+train/loss/dist_to_target 1.9e-3 / train/loss/dyn 1.05 / train/loss/position 9.8e-3 / train/loss/rep 1.05 / train/loss/target_position 7.9e-3 / train/loss/touch 3.6e-3 / train/loss/velocity 0.02 / replay/replay_ratio 1040 / fps/policy 67 / fps/train 6.9e4
+
+Writing metrics: /workspace/dreamerv3_runs/pretrain_random_finger_seed106/metrics.jsonl
+Writing metrics: /workspace/dreamerv3_runs/pretrain_random_finger_seed106/scores.jsonl
+Saving checkpoint: /workspace/dreamerv3_runs/pretrain_random_finger_seed106/ckpt/20260719T011356F729372
+Saved checkpoint.
+[01:14:01] snapshot step=62256 -> /workspace/dreamerv3_runs/pretrain_random_finger_seed106/ckpt_snapshots/step000000062256
+
+--------------------[Agent Step 66_320]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+episode/score 0 / episode/length 1001 / train/loss/dist_to_target 1.9e-3 / train/loss/dyn 1.07 / train/loss/position 9.6e-3 / train/loss/rep 1.07 / train/loss/target_position 5.1e-3 / train/loss/touch 3.2e-3 / train/loss/velocity 0.02 / replay/replay_ratio 1040 / fps/policy 67.03 / fps/train 6.9e4
+
+Writing metrics: /workspace/dreamerv3_runs/pretrain_random_finger_seed106/metrics.jsonlWriting metrics: /workspace/dreamerv3_runs/pretrain_random_finger_seed106/scores.jsonl
+
+
+--------------------[Agent Step 74_352]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+train/loss/dist_to_target 1.7e-3 / train/loss/dyn 1.06 / train/loss/position 9.2e-3 / train/loss/rep 1.06 / train/loss/target_position 3.7e-3 / train/loss/touch 3.2e-3 / train/loss/velocity 0.02 / replay/replay_ratio 1040 / fps/policy 66.91 / fps/train 6.9e4
+
+Writing metrics: /workspace/dreamerv3_runs/pretrain_random_finger_seed106/metrics.jsonlWriting metrics: /workspace/dreamerv3_runs/pretrain_random_finger_seed106/scores.jsonl
+
+Saving checkpoint: /workspace/dreamerv3_runs/pretrain_random_finger_seed106/ckpt/20260719T011856F757847
+Saved checkpoint.
+
+--------------------[Agent Step 82_352]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+episode/score 0 / episode/length 1001 / train/loss/dist_to_target 1.4e-3 / train/loss/dyn 1.06 / train/loss/position 8.8e-3 / train/loss/rep 1.06 / train/loss/target_position 3.9e-3 / train/loss/touch 2.8e-3 / train/loss/velocity 0.02 / replay/replay_ratio 1040 / fps/policy 66.62 / fps/train 6.8e4
+
+Writing metrics: /workspace/dreamerv3_runs/pretrain_random_finger_seed106/metrics.jsonlWriting metrics: /workspace/dreamerv3_runs/pretrain_random_finger_seed106/scores.jsonl
+
+[01:19:01] snapshot step=82304 -> /workspace/dreamerv3_runs/pretrain_random_finger_seed106/ckpt_snapshots/step000000082304
+
+--------------------[Agent Step 90_384]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+train/loss/dist_to_target 1.1e-3 / train/loss/dyn 1.06 / train/loss/position 8.4e-3 / train/loss/rep 1.06 / train/loss/target_position 3.9e-3 / train/loss/touch 2.7e-3 / train/loss/velocity 0.02 / replay/replay_ratio 1040 / fps/policy 66.9 / fps/train 6.9e4
+
+Writing metrics: /workspace/dreamerv3_runs/pretrain_random_finger_seed106/scores.jsonl
+Writing metrics: /workspace/dreamerv3_runs/pretrain_random_finger_seed106/metrics.jsonl
+
+--------------------[Agent Step 98_416]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+episode/score 0 / episode/length 1001 / train/loss/dist_to_target 9.7e-4 / train/loss/dyn 1.06 / train/loss/position 8.1e-3 / train/loss/rep 1.06 / train/loss/target_position 3.8e-3 / train/loss/touch 2.4e-3 / train/loss/velocity 0.02 / replay/replay_ratio 1040 / fps/policy 66.95 / fps/train 6.9e4
+
+Writing metrics: /workspace/dreamerv3_runs/pretrain_random_finger_seed106/metrics.jsonl
+Writing metrics: /workspace/dreamerv3_runs/pretrain_random_finger_seed106/scores.jsonl
+Stop file seen; final sweep then exit.
+ milestone      actual     |err|  snapshot
+    100000       82304     17696  /workspace/dreamerv3_runs/pretrain_random_finger_seed106/ckpt_snapshots/step000000082304
+    200000       82304    117696  /workspace/dreamerv3_runs/pretrain_random_finger_seed106/ckpt_snapshots/step000000082304
+    300000       82304    217696  /workspace/dreamerv3_runs/pretrain_random_finger_seed106/ckpt_snapshots/step000000082304
+    400000       82304    317696  /workspace/dreamerv3_runs/pretrain_random_finger_seed106/ckpt_snapshots/step000000082304
+    500000       82304    417696  /workspace/dreamerv3_runs/pretrain_random_finger_seed106/ckpt_snapshots/step000000082304
+Done. 5 snapshots retained; worst milestone gap = 417696 steps.
+ milestone      actual     |err|  snapshot
+    100000       82304     17696  /workspace/dreamerv3_runs/pretrain_random_finger_seed106/ckpt_snapshots/step000000082304
+    200000       82304    117696  /workspace/dreamerv3_runs/pretrain_random_finger_seed106/ckpt_snapshots/step000000082304
+    300000       82304    217696  /workspace/dreamerv3_runs/pretrain_random_finger_seed106/ckpt_snapshots/step000000082304
+    400000       82304    317696  /workspace/dreamerv3_runs/pretrain_random_finger_seed106/ckpt_snapshots/step000000082304
+    500000       82304    417696  /workspace/dreamerv3_runs/pretrain_random_finger_seed106/ckpt_snapshots/step000000082304
+[Sun Jul 19 01:24:01 UTC 2026] pretrain pretrain_random_finger_seed106 finished rc=0 status=DONE
