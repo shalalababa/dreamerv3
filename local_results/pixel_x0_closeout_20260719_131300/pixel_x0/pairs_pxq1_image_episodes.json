@@ -1,0 +1,146 @@
+{
+  "task": "dmc_finger_turn_hard",
+  "index": "/scratch/midway3/rickybao/dreamerv3_runs/pixel_x0/episodes_image_episodes.json",
+  "ref_replay": "/scratch/midway3/rickybao/dreamerv3_runs/pretrain_apt_finger_seed101/replay",
+  "n_episodes": 10,
+  "ep_len": 1001,
+  "criteria": {
+    "cov_match_frac": 0.05,
+    "occ_sep_mult": 3.0,
+    "max_overlap": 0.2,
+    "knn": 12,
+    "logc": 1.0,
+    "max_frames": 3000,
+    "dirichlet": 0.3,
+    "boot": 100,
+    "seed": 0
+  },
+  "source_coverages": {
+    "random_finger_seed100": 0.6210567203609995,
+    "p2e_finger_seed99": 0.5998492747104439,
+    "random_finger_seed104": 0.6255527294589459,
+    "random_finger_seed105": 0.6193925281036156,
+    "p2e_finger_seed101": 0.5917774682382508,
+    "apt_finger_seed101": 0.5988201238239031
+  },
+  "cov_tol": 0.0016887630610347539,
+  "occ_sep_min": 0.3211628121193062,
+  "n_pairs": {
+    "q1": 301,
+    "q2": 62522
+  },
+  "pairs": {
+    "q1": {
+      "dcov": 0.001047,
+      "docc": 0.619581,
+      "overlap": 0.0,
+      "source_l1": 1.0,
+      "sides": [
+        {
+          "cov": 0.491132,
+          "occ": 0.0,
+          "occ_noise": 0.0,
+          "mixture": {
+            "p2e_finger_seed101/zero": 10
+          },
+          "members": [
+            340,
+            352,
+            357,
+            372,
+            373,
+            374,
+            382,
+            386,
+            394,
+            400
+          ]
+        },
+        {
+          "cov": 0.490085,
+          "occ": 0.619581,
+          "occ_noise": 0.103356,
+          "mixture": {
+            "apt_finger_seed101/high": 1,
+            "p2e_finger_seed101/high": 4,
+            "random_finger_seed104/mid": 1,
+            "random_finger_seed104/zero": 1,
+            "random_finger_seed105/high": 3
+          },
+          "members": [
+            190,
+            200,
+            298,
+            312,
+            324,
+            371,
+            375,
+            397,
+            401,
+            467
+          ]
+        }
+      ]
+    },
+    "q2": {
+      "dcov": 0.155418,
+      "docc": 0.12038,
+      "overlap": 0.0,
+      "source_l1": 0.8,
+      "sides": [
+        {
+          "cov": 0.445655,
+          "occ": 0.102797,
+          "occ_noise": 0.077378,
+          "mixture": {
+            "apt_finger_seed101/zero": 6,
+            "p2e_finger_seed101/zero": 1,
+            "p2e_finger_seed99/mid": 1,
+            "random_finger_seed100/high": 1,
+            "random_finger_seed105/zero": 1
+          },
+          "members": [
+            26,
+            134,
+            311,
+            337,
+            418,
+            433,
+            444,
+            452,
+            473,
+            479
+          ]
+        },
+        {
+          "cov": 0.601073,
+          "occ": 0.223177,
+          "occ_noise": 0.078931,
+          "mixture": {
+            "apt_finger_seed101/mid": 1,
+            "p2e_finger_seed99/mid": 3,
+            "p2e_finger_seed99/zero": 1,
+            "random_finger_seed100/high": 1,
+            "random_finger_seed100/mid": 1,
+            "random_finger_seed100/zero": 1,
+            "random_finger_seed104/high": 1,
+            "random_finger_seed105/mid": 1
+          },
+          "members": [
+            39,
+            66,
+            73,
+            85,
+            104,
+            140,
+            154,
+            239,
+            323,
+            480
+          ]
+        }
+      ]
+    }
+  },
+  "decision": "OK"
+}

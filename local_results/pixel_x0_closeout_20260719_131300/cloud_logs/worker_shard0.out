@@ -1,0 +1,2853 @@
+[Sat Jul 18 17:20:07 CDT 2026] MEASURE ax1wm_finger_srd0q1s0_seed1 /scratch/midway3/rickybao/dreamerv3_runs/e4_overrides/stamping/finger_v1_srd0_side0.npz
+Observations
+  reward           Space(float32, shape=(), low=-inf, high=inf)
+  is_first         Space(bool, shape=(), low=False, high=True)
+  is_last          Space(bool, shape=(), low=False, high=True)
+  is_terminal      Space(bool, shape=(), low=False, high=True)
+  position         Space(float32, shape=(4,), low=-inf, high=inf)
+  velocity         Space(float32, shape=(3,), low=-inf, high=inf)
+  touch            Space(float32, shape=(2,), low=-inf, high=inf)
+  target_position  Space(float32, shape=(2,), low=-inf, high=inf)
+  dist_to_target   Space(float32, shape=(), low=-inf, high=inf)
+Actions
+  action           Space(float32, shape=(2,), low=-1.0, high=1.0)
+Extras
+  consec           Space(int32, shape=(), low=-2147483648, high=2147483647)
+  stepid           Space(uint8, shape=(20,), low=0, high=255)
+  dyn/deter        Space(float32, shape=(512,), low=-inf, high=inf)
+  dyn/stoch        Space(float32, shape=(32, 4), low=-inf, high=inf)
+JAX devices (1): [cuda:0]
+Policy devices: cuda:0
+Train devices:  cuda:0
+Initializing parameters...
+Optimizer opt has 638,543 params:
+       364,160 dyn
+        66,111 val
+        57,663 rew
+        50,316 dec
+        49,796 pol
+        41,153 con
+         9,344 enc
+Done initializing!
+Compiling 1 checkpoint groups...
+Largest checkpoint group: 0 GB
+Loading checkpoint: /scratch/midway3/rickybao/dreamerv3_runs/ax1wm_finger_srd0q1s0_seed1/ckpt/20260718T065445F043139-000000500000
+Loaded checkpoint.
+ax1wm_finger_srd0q1s0_seed1: expl.mode=task reward_aware=True horizons=(1, 5, 20) probes 60x1001
+  episodes 0-3
+  episodes 4-7
+  episodes 8-11
+  episodes 12-15
+  episodes 16-19
+  episodes 20-23
+  episodes 24-27
+  episodes 28-31
+  episodes 32-35
+  episodes 36-39
+  episodes 40-43
+  episodes 44-47
+  episodes 48-51
+  episodes 52-55
+  episodes 56-59
+  h0: all=0.1978 in=0.2490 out=0.1927 rew=0.2481 norew=0.1928
+  h1: all=0.4472 in=0.4555 out=0.4464 rew=0.4555 norew=0.4464
+  h5: all=0.8038 in=0.7061 out=0.8136 rew=0.7061 norew=0.8136
+  h20: all=1.7904 in=1.2318 out=1.8462 rew=1.2318 norew=1.8462
+-> /scratch/midway3/rickybao/dreamerv3_runs/ax1wm_finger_srd0q1s0_seed1/e4_finger_v1_ov-srd0_side0
+[Sat Jul 18 17:20:43 CDT 2026] MEASURE ax1wm_finger_srd0q1s0_seed2 /scratch/midway3/rickybao/dreamerv3_runs/e4_overrides/stamping/finger_v1_srd0_side0.npz
+Observations
+  reward           Space(float32, shape=(), low=-inf, high=inf)
+  is_first         Space(bool, shape=(), low=False, high=True)
+  is_last          Space(bool, shape=(), low=False, high=True)
+  is_terminal      Space(bool, shape=(), low=False, high=True)
+  position         Space(float32, shape=(4,), low=-inf, high=inf)
+  velocity         Space(float32, shape=(3,), low=-inf, high=inf)
+  touch            Space(float32, shape=(2,), low=-inf, high=inf)
+  target_position  Space(float32, shape=(2,), low=-inf, high=inf)
+  dist_to_target   Space(float32, shape=(), low=-inf, high=inf)
+Actions
+  action           Space(float32, shape=(2,), low=-1.0, high=1.0)
+Extras
+  consec           Space(int32, shape=(), low=-2147483648, high=2147483647)
+  stepid           Space(uint8, shape=(20,), low=0, high=255)
+  dyn/deter        Space(float32, shape=(512,), low=-inf, high=inf)
+  dyn/stoch        Space(float32, shape=(32, 4), low=-inf, high=inf)
+JAX devices (1): [cuda:0]
+Policy devices: cuda:0
+Train devices:  cuda:0
+Initializing parameters...
+Optimizer opt has 638,543 params:
+       364,160 dyn
+        66,111 val
+        57,663 rew
+        50,316 dec
+        49,796 pol
+        41,153 con
+         9,344 enc
+Done initializing!
+Compiling 1 checkpoint groups...
+Largest checkpoint group: 0 GB
+Loading checkpoint: /scratch/midway3/rickybao/dreamerv3_runs/ax1wm_finger_srd0q1s0_seed2/ckpt/20260718T065712F472324-000000500000
+Loaded checkpoint.
+ax1wm_finger_srd0q1s0_seed2: expl.mode=task reward_aware=True horizons=(1, 5, 20) probes 60x1001
+  episodes 0-3
+  episodes 4-7
+  episodes 8-11
+  episodes 12-15
+  episodes 16-19
+  episodes 20-23
+  episodes 24-27
+  episodes 28-31
+  episodes 32-35
+  episodes 36-39
+  episodes 40-43
+  episodes 44-47
+  episodes 48-51
+  episodes 52-55
+  episodes 56-59
+  h0: all=0.2023 in=0.2585 out=0.1967 rew=0.2573 norew=0.1968
+  h1: all=0.4452 in=0.4412 out=0.4456 rew=0.4412 norew=0.4456
+  h5: all=0.7908 in=0.7083 out=0.7990 rew=0.7083 norew=0.7990
+  h20: all=1.7379 in=1.2666 out=1.7849 rew=1.2666 norew=1.7849
+-> /scratch/midway3/rickybao/dreamerv3_runs/ax1wm_finger_srd0q1s0_seed2/e4_finger_v1_ov-srd0_side0
+[Sat Jul 18 17:21:02 CDT 2026] MEASURE ax1wm_finger_srd0q1s0_seed3 /scratch/midway3/rickybao/dreamerv3_runs/e4_overrides/stamping/finger_v1_srd0_side0.npz
+Observations
+  reward           Space(float32, shape=(), low=-inf, high=inf)
+  is_first         Space(bool, shape=(), low=False, high=True)
+  is_last          Space(bool, shape=(), low=False, high=True)
+  is_terminal      Space(bool, shape=(), low=False, high=True)
+  position         Space(float32, shape=(4,), low=-inf, high=inf)
+  velocity         Space(float32, shape=(3,), low=-inf, high=inf)
+  touch            Space(float32, shape=(2,), low=-inf, high=inf)
+  target_position  Space(float32, shape=(2,), low=-inf, high=inf)
+  dist_to_target   Space(float32, shape=(), low=-inf, high=inf)
+Actions
+  action           Space(float32, shape=(2,), low=-1.0, high=1.0)
+Extras
+  consec           Space(int32, shape=(), low=-2147483648, high=2147483647)
+  stepid           Space(uint8, shape=(20,), low=0, high=255)
+  dyn/deter        Space(float32, shape=(512,), low=-inf, high=inf)
+  dyn/stoch        Space(float32, shape=(32, 4), low=-inf, high=inf)
+JAX devices (1): [cuda:0]
+Policy devices: cuda:0
+Train devices:  cuda:0
+Initializing parameters...
+Optimizer opt has 638,543 params:
+       364,160 dyn
+        66,111 val
+        57,663 rew
+        50,316 dec
+        49,796 pol
+        41,153 con
+         9,344 enc
+Done initializing!
+Compiling 1 checkpoint groups...
+Largest checkpoint group: 0 GB
+Loading checkpoint: /scratch/midway3/rickybao/dreamerv3_runs/ax1wm_finger_srd0q1s0_seed3/ckpt/20260718T065725F786727-000000500000
+Loaded checkpoint.
+ax1wm_finger_srd0q1s0_seed3: expl.mode=task reward_aware=True horizons=(1, 5, 20) probes 60x1001
+  episodes 0-3
+  episodes 4-7
+  episodes 8-11
+  episodes 12-15
+  episodes 16-19
+  episodes 20-23
+  episodes 24-27
+  episodes 28-31
+  episodes 32-35
+  episodes 36-39
+  episodes 40-43
+  episodes 44-47
+  episodes 48-51
+  episodes 52-55
+  episodes 56-59
+  h0: all=0.1935 in=0.2468 out=0.1882 rew=0.2458 norew=0.1883
+  h1: all=0.4404 in=0.4275 out=0.4417 rew=0.4275 norew=0.4417
+  h5: all=0.8270 in=0.6840 out=0.8412 rew=0.6840 norew=0.8412
+  h20: all=1.8286 in=1.2511 out=1.8862 rew=1.2511 norew=1.8862
+-> /scratch/midway3/rickybao/dreamerv3_runs/ax1wm_finger_srd0q1s0_seed3/e4_finger_v1_ov-srd0_side0
+[Sat Jul 18 17:21:20 CDT 2026] MEASURE ax1wm_finger_srd0q1s0_seed4 /scratch/midway3/rickybao/dreamerv3_runs/e4_overrides/stamping/finger_v1_srd0_side0.npz
+Observations
+  reward           Space(float32, shape=(), low=-inf, high=inf)
+  is_first         Space(bool, shape=(), low=False, high=True)
+  is_last          Space(bool, shape=(), low=False, high=True)
+  is_terminal      Space(bool, shape=(), low=False, high=True)
+  position         Space(float32, shape=(4,), low=-inf, high=inf)
+  velocity         Space(float32, shape=(3,), low=-inf, high=inf)
+  touch            Space(float32, shape=(2,), low=-inf, high=inf)
+  target_position  Space(float32, shape=(2,), low=-inf, high=inf)
+  dist_to_target   Space(float32, shape=(), low=-inf, high=inf)
+Actions
+  action           Space(float32, shape=(2,), low=-1.0, high=1.0)
+Extras
+  consec           Space(int32, shape=(), low=-2147483648, high=2147483647)
+  stepid           Space(uint8, shape=(20,), low=0, high=255)
+  dyn/deter        Space(float32, shape=(512,), low=-inf, high=inf)
+  dyn/stoch        Space(float32, shape=(32, 4), low=-inf, high=inf)
+JAX devices (1): [cuda:0]
+Policy devices: cuda:0
+Train devices:  cuda:0
+Initializing parameters...
+Optimizer opt has 638,543 params:
+       364,160 dyn
+        66,111 val
+        57,663 rew
+        50,316 dec
+        49,796 pol
+        41,153 con
+         9,344 enc
+Done initializing!
+Compiling 1 checkpoint groups...
+Largest checkpoint group: 0 GB
+Loading checkpoint: /scratch/midway3/rickybao/dreamerv3_runs/ax1wm_finger_srd0q1s0_seed4/ckpt/20260718T065818F155371-000000500000
+Loaded checkpoint.
+ax1wm_finger_srd0q1s0_seed4: expl.mode=task reward_aware=True horizons=(1, 5, 20) probes 60x1001
+  episodes 0-3
+  episodes 4-7
+  episodes 8-11
+  episodes 12-15
+  episodes 16-19
+  episodes 20-23
+  episodes 24-27
+  episodes 28-31
+  episodes 32-35
+  episodes 36-39
+  episodes 40-43
+  episodes 44-47
+  episodes 48-51
+  episodes 52-55
+  episodes 56-59
+  h0: all=0.2102 in=0.2759 out=0.2036 rew=0.2734 norew=0.2039
+  h1: all=0.4556 in=0.4594 out=0.4552 rew=0.4594 norew=0.4552
+  h5: all=0.8302 in=0.7768 out=0.8356 rew=0.7768 norew=0.8356
+  h20: all=1.8245 in=1.3577 out=1.8711 rew=1.3577 norew=1.8711
+-> /scratch/midway3/rickybao/dreamerv3_runs/ax1wm_finger_srd0q1s0_seed4/e4_finger_v1_ov-srd0_side0
+[Sat Jul 18 17:21:38 CDT 2026] MEASURE ax1wm_finger_srd0q1s0_seed5 /scratch/midway3/rickybao/dreamerv3_runs/e4_overrides/stamping/finger_v1_srd0_side0.npz
+Observations
+  reward           Space(float32, shape=(), low=-inf, high=inf)
+  is_first         Space(bool, shape=(), low=False, high=True)
+  is_last          Space(bool, shape=(), low=False, high=True)
+  is_terminal      Space(bool, shape=(), low=False, high=True)
+  position         Space(float32, shape=(4,), low=-inf, high=inf)
+  velocity         Space(float32, shape=(3,), low=-inf, high=inf)
+  touch            Space(float32, shape=(2,), low=-inf, high=inf)
+  target_position  Space(float32, shape=(2,), low=-inf, high=inf)
+  dist_to_target   Space(float32, shape=(), low=-inf, high=inf)
+Actions
+  action           Space(float32, shape=(2,), low=-1.0, high=1.0)
+Extras
+  consec           Space(int32, shape=(), low=-2147483648, high=2147483647)
+  stepid           Space(uint8, shape=(20,), low=0, high=255)
+  dyn/deter        Space(float32, shape=(512,), low=-inf, high=inf)
+  dyn/stoch        Space(float32, shape=(32, 4), low=-inf, high=inf)
+JAX devices (1): [cuda:0]
+Policy devices: cuda:0
+Train devices:  cuda:0
+Initializing parameters...
+Optimizer opt has 638,543 params:
+       364,160 dyn
+        66,111 val
+        57,663 rew
+        50,316 dec
+        49,796 pol
+        41,153 con
+         9,344 enc
+Done initializing!
+Compiling 1 checkpoint groups...
+Largest checkpoint group: 0 GB
+Loading checkpoint: /scratch/midway3/rickybao/dreamerv3_runs/ax1wm_finger_srd0q1s0_seed5/ckpt/20260718T065654F123011-000000500000
+Loaded checkpoint.
+ax1wm_finger_srd0q1s0_seed5: expl.mode=task reward_aware=True horizons=(1, 5, 20) probes 60x1001
+  episodes 0-3
+  episodes 4-7
+  episodes 8-11
+  episodes 12-15
+  episodes 16-19
+  episodes 20-23
+  episodes 24-27
+  episodes 28-31
+  episodes 32-35
+  episodes 36-39
+  episodes 40-43
+  episodes 44-47
+  episodes 48-51
+  episodes 52-55
+  episodes 56-59
+  h0: all=0.1921 in=0.2479 out=0.1865 rew=0.2459 norew=0.1867
+  h1: all=0.4228 in=0.4313 out=0.4219 rew=0.4313 norew=0.4219
+  h5: all=0.7914 in=0.6712 out=0.8034 rew=0.6712 norew=0.8034
+  h20: all=1.7360 in=1.2123 out=1.7883 rew=1.2123 norew=1.7883
+-> /scratch/midway3/rickybao/dreamerv3_runs/ax1wm_finger_srd0q1s0_seed5/e4_finger_v1_ov-srd0_side0
+[Sat Jul 18 17:21:57 CDT 2026] MEASURE ax1wm_finger_srd0q1s0_seed6 /scratch/midway3/rickybao/dreamerv3_runs/e4_overrides/stamping/finger_v1_srd0_side0.npz
+Observations
+  reward           Space(float32, shape=(), low=-inf, high=inf)
+  is_first         Space(bool, shape=(), low=False, high=True)
+  is_last          Space(bool, shape=(), low=False, high=True)
+  is_terminal      Space(bool, shape=(), low=False, high=True)
+  position         Space(float32, shape=(4,), low=-inf, high=inf)
+  velocity         Space(float32, shape=(3,), low=-inf, high=inf)
+  touch            Space(float32, shape=(2,), low=-inf, high=inf)
+  target_position  Space(float32, shape=(2,), low=-inf, high=inf)
+  dist_to_target   Space(float32, shape=(), low=-inf, high=inf)
+Actions
+  action           Space(float32, shape=(2,), low=-1.0, high=1.0)
+Extras
+  consec           Space(int32, shape=(), low=-2147483648, high=2147483647)
+  stepid           Space(uint8, shape=(20,), low=0, high=255)
+  dyn/deter        Space(float32, shape=(512,), low=-inf, high=inf)
+  dyn/stoch        Space(float32, shape=(32, 4), low=-inf, high=inf)
+JAX devices (1): [cuda:0]
+Policy devices: cuda:0
+Train devices:  cuda:0
+Initializing parameters...
+Optimizer opt has 638,543 params:
+       364,160 dyn
+        66,111 val
+        57,663 rew
+        50,316 dec
+        49,796 pol
+        41,153 con
+         9,344 enc
+Done initializing!
+Compiling 1 checkpoint groups...
+Largest checkpoint group: 0 GB
+Loading checkpoint: /scratch/midway3/rickybao/dreamerv3_runs/ax1wm_finger_srd0q1s0_seed6/ckpt/20260718T065852F472412-000000500000
+Loaded checkpoint.
+ax1wm_finger_srd0q1s0_seed6: expl.mode=task reward_aware=True horizons=(1, 5, 20) probes 60x1001
+  episodes 0-3
+  episodes 4-7
+  episodes 8-11
+  episodes 12-15
+  episodes 16-19
+  episodes 20-23
+  episodes 24-27
+  episodes 28-31
+  episodes 32-35
+  episodes 36-39
+  episodes 40-43
+  episodes 44-47
+  episodes 48-51
+  episodes 52-55
+  episodes 56-59
+  h0: all=0.2171 in=0.2993 out=0.2089 rew=0.2983 norew=0.2090
+  h1: all=0.4701 in=0.4933 out=0.4678 rew=0.4933 norew=0.4678
+  h5: all=0.8233 in=0.7856 out=0.8271 rew=0.7856 norew=0.8271
+  h20: all=1.7959 in=1.2930 out=1.8461 rew=1.2930 norew=1.8461
+-> /scratch/midway3/rickybao/dreamerv3_runs/ax1wm_finger_srd0q1s0_seed6/e4_finger_v1_ov-srd0_side0
+[Sat Jul 18 17:22:15 CDT 2026] MEASURE ax1wm_finger_srd0q1s0_seed7 /scratch/midway3/rickybao/dreamerv3_runs/e4_overrides/stamping/finger_v1_srd0_side0.npz
+Observations
+  reward           Space(float32, shape=(), low=-inf, high=inf)
+  is_first         Space(bool, shape=(), low=False, high=True)
+  is_last          Space(bool, shape=(), low=False, high=True)
+  is_terminal      Space(bool, shape=(), low=False, high=True)
+  position         Space(float32, shape=(4,), low=-inf, high=inf)
+  velocity         Space(float32, shape=(3,), low=-inf, high=inf)
+  touch            Space(float32, shape=(2,), low=-inf, high=inf)
+  target_position  Space(float32, shape=(2,), low=-inf, high=inf)
+  dist_to_target   Space(float32, shape=(), low=-inf, high=inf)
+Actions
+  action           Space(float32, shape=(2,), low=-1.0, high=1.0)
+Extras
+  consec           Space(int32, shape=(), low=-2147483648, high=2147483647)
+  stepid           Space(uint8, shape=(20,), low=0, high=255)
+  dyn/deter        Space(float32, shape=(512,), low=-inf, high=inf)
+  dyn/stoch        Space(float32, shape=(32, 4), low=-inf, high=inf)
+JAX devices (1): [cuda:0]
+Policy devices: cuda:0
+Train devices:  cuda:0
+Initializing parameters...
+Optimizer opt has 638,543 params:
+       364,160 dyn
+        66,111 val
+        57,663 rew
+        50,316 dec
+        49,796 pol
+        41,153 con
+         9,344 enc
+Done initializing!
+Compiling 1 checkpoint groups...
+Largest checkpoint group: 0 GB
+Loading checkpoint: /scratch/midway3/rickybao/dreamerv3_runs/ax1wm_finger_srd0q1s0_seed7/ckpt/20260718T065522F663430-000000500000
+Loaded checkpoint.
+ax1wm_finger_srd0q1s0_seed7: expl.mode=task reward_aware=True horizons=(1, 5, 20) probes 60x1001
+  episodes 0-3
+  episodes 4-7
+  episodes 8-11
+  episodes 12-15
+  episodes 16-19
+  episodes 20-23
+  episodes 24-27
+  episodes 28-31
+  episodes 32-35
+  episodes 36-39
+  episodes 40-43
+  episodes 44-47
+  episodes 48-51
+  episodes 52-55
+  episodes 56-59
+  h0: all=0.1982 in=0.2456 out=0.1935 rew=0.2430 norew=0.1937
+  h1: all=0.4446 in=0.4252 out=0.4465 rew=0.4252 norew=0.4465
+  h5: all=0.7984 in=0.6905 out=0.8091 rew=0.6905 norew=0.8091
+  h20: all=1.7283 in=1.2787 out=1.7732 rew=1.2787 norew=1.7732
+-> /scratch/midway3/rickybao/dreamerv3_runs/ax1wm_finger_srd0q1s0_seed7/e4_finger_v1_ov-srd0_side0
+[Sat Jul 18 17:22:33 CDT 2026] MEASURE ax1wm_finger_srd0q1s0_seed8 /scratch/midway3/rickybao/dreamerv3_runs/e4_overrides/stamping/finger_v1_srd0_side0.npz
+Observations
+  reward           Space(float32, shape=(), low=-inf, high=inf)
+  is_first         Space(bool, shape=(), low=False, high=True)
+  is_last          Space(bool, shape=(), low=False, high=True)
+  is_terminal      Space(bool, shape=(), low=False, high=True)
+  position         Space(float32, shape=(4,), low=-inf, high=inf)
+  velocity         Space(float32, shape=(3,), low=-inf, high=inf)
+  touch            Space(float32, shape=(2,), low=-inf, high=inf)
+  target_position  Space(float32, shape=(2,), low=-inf, high=inf)
+  dist_to_target   Space(float32, shape=(), low=-inf, high=inf)
+Actions
+  action           Space(float32, shape=(2,), low=-1.0, high=1.0)
+Extras
+  consec           Space(int32, shape=(), low=-2147483648, high=2147483647)
+  stepid           Space(uint8, shape=(20,), low=0, high=255)
+  dyn/deter        Space(float32, shape=(512,), low=-inf, high=inf)
+  dyn/stoch        Space(float32, shape=(32, 4), low=-inf, high=inf)
+JAX devices (1): [cuda:0]
+Policy devices: cuda:0
+Train devices:  cuda:0
+Initializing parameters...
+Optimizer opt has 638,543 params:
+       364,160 dyn
+        66,111 val
+        57,663 rew
+        50,316 dec
+        49,796 pol
+        41,153 con
+         9,344 enc
+Done initializing!
+Compiling 1 checkpoint groups...
+Largest checkpoint group: 0 GB
+Loading checkpoint: /scratch/midway3/rickybao/dreamerv3_runs/ax1wm_finger_srd0q1s0_seed8/ckpt/20260718T065444F448669-000000500000
+Loaded checkpoint.
+ax1wm_finger_srd0q1s0_seed8: expl.mode=task reward_aware=True horizons=(1, 5, 20) probes 60x1001
+  episodes 0-3
+  episodes 4-7
+  episodes 8-11
+  episodes 12-15
+  episodes 16-19
+  episodes 20-23
+  episodes 24-27
+  episodes 28-31
+  episodes 32-35
+  episodes 36-39
+  episodes 40-43
+  episodes 44-47
+  episodes 48-51
+  episodes 52-55
+  episodes 56-59
+  h0: all=0.1923 in=0.2478 out=0.1867 rew=0.2469 norew=0.1868
+  h1: all=0.4328 in=0.4317 out=0.4329 rew=0.4317 norew=0.4329
+  h5: all=0.7802 in=0.6976 out=0.7885 rew=0.6976 norew=0.7885
+  h20: all=1.7898 in=1.3351 out=1.8352 rew=1.3351 norew=1.8352
+-> /scratch/midway3/rickybao/dreamerv3_runs/ax1wm_finger_srd0q1s0_seed8/e4_finger_v1_ov-srd0_side0
+[Sat Jul 18 17:22:52 CDT 2026] MEASURE ax1wm_finger_srd0q1s1_seed1 /scratch/midway3/rickybao/dreamerv3_runs/e4_overrides/stamping/finger_v1_srd0_side1.npz
+Observations
+  reward           Space(float32, shape=(), low=-inf, high=inf)
+  is_first         Space(bool, shape=(), low=False, high=True)
+  is_last          Space(bool, shape=(), low=False, high=True)
+  is_terminal      Space(bool, shape=(), low=False, high=True)
+  position         Space(float32, shape=(4,), low=-inf, high=inf)
+  velocity         Space(float32, shape=(3,), low=-inf, high=inf)
+  touch            Space(float32, shape=(2,), low=-inf, high=inf)
+  target_position  Space(float32, shape=(2,), low=-inf, high=inf)
+  dist_to_target   Space(float32, shape=(), low=-inf, high=inf)
+Actions
+  action           Space(float32, shape=(2,), low=-1.0, high=1.0)
+Extras
+  consec           Space(int32, shape=(), low=-2147483648, high=2147483647)
+  stepid           Space(uint8, shape=(20,), low=0, high=255)
+  dyn/deter        Space(float32, shape=(512,), low=-inf, high=inf)
+  dyn/stoch        Space(float32, shape=(32, 4), low=-inf, high=inf)
+JAX devices (1): [cuda:0]
+Policy devices: cuda:0
+Train devices:  cuda:0
+Initializing parameters...
+Optimizer opt has 638,543 params:
+       364,160 dyn
+        66,111 val
+        57,663 rew
+        50,316 dec
+        49,796 pol
+        41,153 con
+         9,344 enc
+Done initializing!
+Compiling 1 checkpoint groups...
+Largest checkpoint group: 0 GB
+Loading checkpoint: /scratch/midway3/rickybao/dreamerv3_runs/ax1wm_finger_srd0q1s1_seed1/ckpt/20260718T053143F582000-000000500000
+Loaded checkpoint.
+ax1wm_finger_srd0q1s1_seed1: expl.mode=task reward_aware=True horizons=(1, 5, 20) probes 60x1001
+  episodes 0-3
+  episodes 4-7
+  episodes 8-11
+  episodes 12-15
+  episodes 16-19
+  episodes 20-23
+  episodes 24-27
+  episodes 28-31
+  episodes 32-35
+  episodes 36-39
+  episodes 40-43
+  episodes 44-47
+  episodes 48-51
+  episodes 52-55
+  episodes 56-59
+  h0: all=0.1459 in=0.1416 out=0.1463 rew=0.1409 norew=0.1464
+  h1: all=0.3888 in=0.3420 out=0.3934 rew=0.3420 norew=0.3934
+  h5: all=0.7118 in=0.6145 out=0.7215 rew=0.6145 norew=0.7215
+  h20: all=1.5880 in=1.0655 out=1.6401 rew=1.0655 norew=1.6401
+-> /scratch/midway3/rickybao/dreamerv3_runs/ax1wm_finger_srd0q1s1_seed1/e4_finger_v1_ov-srd0_side1
+[Sat Jul 18 17:23:10 CDT 2026] MEASURE ax1wm_finger_srd0q1s1_seed2 /scratch/midway3/rickybao/dreamerv3_runs/e4_overrides/stamping/finger_v1_srd0_side1.npz
+Observations
+  reward           Space(float32, shape=(), low=-inf, high=inf)
+  is_first         Space(bool, shape=(), low=False, high=True)
+  is_last          Space(bool, shape=(), low=False, high=True)
+  is_terminal      Space(bool, shape=(), low=False, high=True)
+  position         Space(float32, shape=(4,), low=-inf, high=inf)
+  velocity         Space(float32, shape=(3,), low=-inf, high=inf)
+  touch            Space(float32, shape=(2,), low=-inf, high=inf)
+  target_position  Space(float32, shape=(2,), low=-inf, high=inf)
+  dist_to_target   Space(float32, shape=(), low=-inf, high=inf)
+Actions
+  action           Space(float32, shape=(2,), low=-1.0, high=1.0)
+Extras
+  consec           Space(int32, shape=(), low=-2147483648, high=2147483647)
+  stepid           Space(uint8, shape=(20,), low=0, high=255)
+  dyn/deter        Space(float32, shape=(512,), low=-inf, high=inf)
+  dyn/stoch        Space(float32, shape=(32, 4), low=-inf, high=inf)
+JAX devices (1): [cuda:0]
+Policy devices: cuda:0
+Train devices:  cuda:0
+Initializing parameters...
+Optimizer opt has 638,543 params:
+       364,160 dyn
+        66,111 val
+        57,663 rew
+        50,316 dec
+        49,796 pol
+        41,153 con
+         9,344 enc
+Done initializing!
+Compiling 1 checkpoint groups...
+Largest checkpoint group: 0 GB
+Loading checkpoint: /scratch/midway3/rickybao/dreamerv3_runs/ax1wm_finger_srd0q1s1_seed2/ckpt/20260718T053022F530884-000000500000
+Loaded checkpoint.
+ax1wm_finger_srd0q1s1_seed2: expl.mode=task reward_aware=True horizons=(1, 5, 20) probes 60x1001
+  episodes 0-3
+  episodes 4-7
+  episodes 8-11
+  episodes 12-15
+  episodes 16-19
+  episodes 20-23
+  episodes 24-27
+  episodes 28-31
+  episodes 32-35
+  episodes 36-39
+  episodes 40-43
+  episodes 44-47
+  episodes 48-51
+  episodes 52-55
+  episodes 56-59
+  h0: all=0.1441 in=0.1378 out=0.1447 rew=0.1364 norew=0.1449
+  h1: all=0.4008 in=0.3180 out=0.4091 rew=0.3180 norew=0.4091
+  h5: all=0.7321 in=0.5515 out=0.7501 rew=0.5515 norew=0.7501
+  h20: all=1.5572 in=1.0468 out=1.6081 rew=1.0468 norew=1.6081
+-> /scratch/midway3/rickybao/dreamerv3_runs/ax1wm_finger_srd0q1s1_seed2/e4_finger_v1_ov-srd0_side1
+[Sat Jul 18 17:23:28 CDT 2026] MEASURE ax1wm_finger_srd0q1s1_seed3 /scratch/midway3/rickybao/dreamerv3_runs/e4_overrides/stamping/finger_v1_srd0_side1.npz
+Observations
+  reward           Space(float32, shape=(), low=-inf, high=inf)
+  is_first         Space(bool, shape=(), low=False, high=True)
+  is_last          Space(bool, shape=(), low=False, high=True)
+  is_terminal      Space(bool, shape=(), low=False, high=True)
+  position         Space(float32, shape=(4,), low=-inf, high=inf)
+  velocity         Space(float32, shape=(3,), low=-inf, high=inf)
+  touch            Space(float32, shape=(2,), low=-inf, high=inf)
+  target_position  Space(float32, shape=(2,), low=-inf, high=inf)
+  dist_to_target   Space(float32, shape=(), low=-inf, high=inf)
+Actions
+  action           Space(float32, shape=(2,), low=-1.0, high=1.0)
+Extras
+  consec           Space(int32, shape=(), low=-2147483648, high=2147483647)
+  stepid           Space(uint8, shape=(20,), low=0, high=255)
+  dyn/deter        Space(float32, shape=(512,), low=-inf, high=inf)
+  dyn/stoch        Space(float32, shape=(32, 4), low=-inf, high=inf)
+JAX devices (1): [cuda:0]
+Policy devices: cuda:0
+Train devices:  cuda:0
+Initializing parameters...
+Optimizer opt has 638,543 params:
+       364,160 dyn
+        66,111 val
+        57,663 rew
+        50,316 dec
+        49,796 pol
+        41,153 con
+         9,344 enc
+Done initializing!
+Compiling 1 checkpoint groups...
+Largest checkpoint group: 0 GB
+Loading checkpoint: /scratch/midway3/rickybao/dreamerv3_runs/ax1wm_finger_srd0q1s1_seed3/ckpt/20260718T053000F428292-000000500000
+Loaded checkpoint.
+ax1wm_finger_srd0q1s1_seed3: expl.mode=task reward_aware=True horizons=(1, 5, 20) probes 60x1001
+  episodes 0-3
+  episodes 4-7
+  episodes 8-11
+  episodes 12-15
+  episodes 16-19
+  episodes 20-23
+  episodes 24-27
+  episodes 28-31
+  episodes 32-35
+  episodes 36-39
+  episodes 40-43
+  episodes 44-47
+  episodes 48-51
+  episodes 52-55
+  episodes 56-59
+  h0: all=0.1379 in=0.1323 out=0.1385 rew=0.1310 norew=0.1386
+  h1: all=0.3856 in=0.2936 out=0.3948 rew=0.2936 norew=0.3948
+  h5: all=0.7349 in=0.5547 out=0.7528 rew=0.5547 norew=0.7528
+  h20: all=1.5795 in=1.0007 out=1.6373 rew=1.0007 norew=1.6373
+-> /scratch/midway3/rickybao/dreamerv3_runs/ax1wm_finger_srd0q1s1_seed3/e4_finger_v1_ov-srd0_side1
+[Sat Jul 18 17:23:46 CDT 2026] MEASURE ax1wm_finger_srd0q1s1_seed4 /scratch/midway3/rickybao/dreamerv3_runs/e4_overrides/stamping/finger_v1_srd0_side1.npz
+Observations
+  reward           Space(float32, shape=(), low=-inf, high=inf)
+  is_first         Space(bool, shape=(), low=False, high=True)
+  is_last          Space(bool, shape=(), low=False, high=True)
+  is_terminal      Space(bool, shape=(), low=False, high=True)
+  position         Space(float32, shape=(4,), low=-inf, high=inf)
+  velocity         Space(float32, shape=(3,), low=-inf, high=inf)
+  touch            Space(float32, shape=(2,), low=-inf, high=inf)
+  target_position  Space(float32, shape=(2,), low=-inf, high=inf)
+  dist_to_target   Space(float32, shape=(), low=-inf, high=inf)
+Actions
+  action           Space(float32, shape=(2,), low=-1.0, high=1.0)
+Extras
+  consec           Space(int32, shape=(), low=-2147483648, high=2147483647)
+  stepid           Space(uint8, shape=(20,), low=0, high=255)
+  dyn/deter        Space(float32, shape=(512,), low=-inf, high=inf)
+  dyn/stoch        Space(float32, shape=(32, 4), low=-inf, high=inf)
+JAX devices (1): [cuda:0]
+Policy devices: cuda:0
+Train devices:  cuda:0
+Initializing parameters...
+Optimizer opt has 638,543 params:
+       364,160 dyn
+        66,111 val
+        57,663 rew
+        50,316 dec
+        49,796 pol
+        41,153 con
+         9,344 enc
+Done initializing!
+Compiling 1 checkpoint groups...
+Largest checkpoint group: 0 GB
+Loading checkpoint: /scratch/midway3/rickybao/dreamerv3_runs/ax1wm_finger_srd0q1s1_seed4/ckpt/20260718T052834F305946-000000500000
+Loaded checkpoint.
+ax1wm_finger_srd0q1s1_seed4: expl.mode=task reward_aware=True horizons=(1, 5, 20) probes 60x1001
+  episodes 0-3
+  episodes 4-7
+  episodes 8-11
+  episodes 12-15
+  episodes 16-19
+  episodes 20-23
+  episodes 24-27
+  episodes 28-31
+  episodes 32-35
+  episodes 36-39
+  episodes 40-43
+  episodes 44-47
+  episodes 48-51
+  episodes 52-55
+  episodes 56-59
+  h0: all=0.1383 in=0.1229 out=0.1399 rew=0.1220 norew=0.1400
+  h1: all=0.3928 in=0.2974 out=0.4023 rew=0.2974 norew=0.4023
+  h5: all=0.7166 in=0.5446 out=0.7338 rew=0.5446 norew=0.7338
+  h20: all=1.5324 in=1.0418 out=1.5813 rew=1.0418 norew=1.5813
+-> /scratch/midway3/rickybao/dreamerv3_runs/ax1wm_finger_srd0q1s1_seed4/e4_finger_v1_ov-srd0_side1
+[Sat Jul 18 17:24:05 CDT 2026] MEASURE ax1wm_finger_srd0q1s1_seed5 /scratch/midway3/rickybao/dreamerv3_runs/e4_overrides/stamping/finger_v1_srd0_side1.npz
+Observations
+  reward           Space(float32, shape=(), low=-inf, high=inf)
+  is_first         Space(bool, shape=(), low=False, high=True)
+  is_last          Space(bool, shape=(), low=False, high=True)
+  is_terminal      Space(bool, shape=(), low=False, high=True)
+  position         Space(float32, shape=(4,), low=-inf, high=inf)
+  velocity         Space(float32, shape=(3,), low=-inf, high=inf)
+  touch            Space(float32, shape=(2,), low=-inf, high=inf)
+  target_position  Space(float32, shape=(2,), low=-inf, high=inf)
+  dist_to_target   Space(float32, shape=(), low=-inf, high=inf)
+Actions
+  action           Space(float32, shape=(2,), low=-1.0, high=1.0)
+Extras
+  consec           Space(int32, shape=(), low=-2147483648, high=2147483647)
+  stepid           Space(uint8, shape=(20,), low=0, high=255)
+  dyn/deter        Space(float32, shape=(512,), low=-inf, high=inf)
+  dyn/stoch        Space(float32, shape=(32, 4), low=-inf, high=inf)
+JAX devices (1): [cuda:0]
+Policy devices: cuda:0
+Train devices:  cuda:0
+Initializing parameters...
+Optimizer opt has 638,543 params:
+       364,160 dyn
+        66,111 val
+        57,663 rew
+        50,316 dec
+        49,796 pol
+        41,153 con
+         9,344 enc
+Done initializing!
+Compiling 1 checkpoint groups...
+Largest checkpoint group: 0 GB
+Loading checkpoint: /scratch/midway3/rickybao/dreamerv3_runs/ax1wm_finger_srd0q1s1_seed5/ckpt/20260718T051440F442507-000000500000
+Loaded checkpoint.
+ax1wm_finger_srd0q1s1_seed5: expl.mode=task reward_aware=True horizons=(1, 5, 20) probes 60x1001
+  episodes 0-3
+  episodes 4-7
+  episodes 8-11
+  episodes 12-15
+  episodes 16-19
+  episodes 20-23
+  episodes 24-27
+  episodes 28-31
+  episodes 32-35
+  episodes 36-39
+  episodes 40-43
+  episodes 44-47
+  episodes 48-51
+  episodes 52-55
+  episodes 56-59
+  h0: all=0.1394 in=0.1394 out=0.1394 rew=0.1380 norew=0.1395
+  h1: all=0.3834 in=0.3316 out=0.3885 rew=0.3316 norew=0.3885
+  h5: all=0.7087 in=0.5815 out=0.7214 rew=0.5815 norew=0.7214
+  h20: all=1.5570 in=1.0348 out=1.6091 rew=1.0348 norew=1.6091
+-> /scratch/midway3/rickybao/dreamerv3_runs/ax1wm_finger_srd0q1s1_seed5/e4_finger_v1_ov-srd0_side1
+[Sat Jul 18 17:24:23 CDT 2026] MEASURE ax1wm_finger_srd0q1s1_seed6 /scratch/midway3/rickybao/dreamerv3_runs/e4_overrides/stamping/finger_v1_srd0_side1.npz
+Observations
+  reward           Space(float32, shape=(), low=-inf, high=inf)
+  is_first         Space(bool, shape=(), low=False, high=True)
+  is_last          Space(bool, shape=(), low=False, high=True)
+  is_terminal      Space(bool, shape=(), low=False, high=True)
+  position         Space(float32, shape=(4,), low=-inf, high=inf)
+  velocity         Space(float32, shape=(3,), low=-inf, high=inf)
+  touch            Space(float32, shape=(2,), low=-inf, high=inf)
+  target_position  Space(float32, shape=(2,), low=-inf, high=inf)
+  dist_to_target   Space(float32, shape=(), low=-inf, high=inf)
+Actions
+  action           Space(float32, shape=(2,), low=-1.0, high=1.0)
+Extras
+  consec           Space(int32, shape=(), low=-2147483648, high=2147483647)
+  stepid           Space(uint8, shape=(20,), low=0, high=255)
+  dyn/deter        Space(float32, shape=(512,), low=-inf, high=inf)
+  dyn/stoch        Space(float32, shape=(32, 4), low=-inf, high=inf)
+JAX devices (1): [cuda:0]
+Policy devices: cuda:0
+Train devices:  cuda:0
+Initializing parameters...
+Optimizer opt has 638,543 params:
+       364,160 dyn
+        66,111 val
+        57,663 rew
+        50,316 dec
+        49,796 pol
+        41,153 con
+         9,344 enc
+Done initializing!
+Compiling 1 checkpoint groups...
+Largest checkpoint group: 0 GB
+Loading checkpoint: /scratch/midway3/rickybao/dreamerv3_runs/ax1wm_finger_srd0q1s1_seed6/ckpt/20260718T051233F934307-000000500000
+Loaded checkpoint.
+ax1wm_finger_srd0q1s1_seed6: expl.mode=task reward_aware=True horizons=(1, 5, 20) probes 60x1001
+  episodes 0-3
+  episodes 4-7
+  episodes 8-11
+  episodes 12-15
+  episodes 16-19
+  episodes 20-23
+  episodes 24-27
+  episodes 28-31
+  episodes 32-35
+  episodes 36-39
+  episodes 40-43
+  episodes 44-47
+  episodes 48-51
+  episodes 52-55
+  episodes 56-59
+  h0: all=0.1367 in=0.1334 out=0.1370 rew=0.1322 norew=0.1372
+  h1: all=0.3794 in=0.3206 out=0.3853 rew=0.3206 norew=0.3853
+  h5: all=0.7167 in=0.5627 out=0.7320 rew=0.5627 norew=0.7320
+  h20: all=1.5888 in=1.0248 out=1.6451 rew=1.0248 norew=1.6451
+-> /scratch/midway3/rickybao/dreamerv3_runs/ax1wm_finger_srd0q1s1_seed6/e4_finger_v1_ov-srd0_side1
+[Sat Jul 18 17:24:41 CDT 2026] MEASURE ax1wm_finger_srd0q1s1_seed7 /scratch/midway3/rickybao/dreamerv3_runs/e4_overrides/stamping/finger_v1_srd0_side1.npz
+Observations
+  reward           Space(float32, shape=(), low=-inf, high=inf)
+  is_first         Space(bool, shape=(), low=False, high=True)
+  is_last          Space(bool, shape=(), low=False, high=True)
+  is_terminal      Space(bool, shape=(), low=False, high=True)
+  position         Space(float32, shape=(4,), low=-inf, high=inf)
+  velocity         Space(float32, shape=(3,), low=-inf, high=inf)
+  touch            Space(float32, shape=(2,), low=-inf, high=inf)
+  target_position  Space(float32, shape=(2,), low=-inf, high=inf)
+  dist_to_target   Space(float32, shape=(), low=-inf, high=inf)
+Actions
+  action           Space(float32, shape=(2,), low=-1.0, high=1.0)
+Extras
+  consec           Space(int32, shape=(), low=-2147483648, high=2147483647)
+  stepid           Space(uint8, shape=(20,), low=0, high=255)
+  dyn/deter        Space(float32, shape=(512,), low=-inf, high=inf)
+  dyn/stoch        Space(float32, shape=(32, 4), low=-inf, high=inf)
+JAX devices (1): [cuda:0]
+Policy devices: cuda:0
+Train devices:  cuda:0
+Initializing parameters...
+Optimizer opt has 638,543 params:
+       364,160 dyn
+        66,111 val
+        57,663 rew
+        50,316 dec
+        49,796 pol
+        41,153 con
+         9,344 enc
+Done initializing!
+Compiling 1 checkpoint groups...
+Largest checkpoint group: 0 GB
+Loading checkpoint: /scratch/midway3/rickybao/dreamerv3_runs/ax1wm_finger_srd0q1s1_seed7/ckpt/20260718T052056F087621-000000500000
+Loaded checkpoint.
+ax1wm_finger_srd0q1s1_seed7: expl.mode=task reward_aware=True horizons=(1, 5, 20) probes 60x1001
+  episodes 0-3
+  episodes 4-7
+  episodes 8-11
+  episodes 12-15
+  episodes 16-19
+  episodes 20-23
+  episodes 24-27
+  episodes 28-31
+  episodes 32-35
+  episodes 36-39
+  episodes 40-43
+  episodes 44-47
+  episodes 48-51
+  episodes 52-55
+  episodes 56-59
+  h0: all=0.1435 in=0.1337 out=0.1445 rew=0.1326 norew=0.1446
+  h1: all=0.3972 in=0.3233 out=0.4045 rew=0.3233 norew=0.4045
+  h5: all=0.7231 in=0.5699 out=0.7384 rew=0.5699 norew=0.7384
+  h20: all=1.5770 in=1.0704 out=1.6275 rew=1.0704 norew=1.6275
+-> /scratch/midway3/rickybao/dreamerv3_runs/ax1wm_finger_srd0q1s1_seed7/e4_finger_v1_ov-srd0_side1
+[Sat Jul 18 17:25:00 CDT 2026] MEASURE ax1wm_finger_srd0q1s1_seed8 /scratch/midway3/rickybao/dreamerv3_runs/e4_overrides/stamping/finger_v1_srd0_side1.npz
+Observations
+  reward           Space(float32, shape=(), low=-inf, high=inf)
+  is_first         Space(bool, shape=(), low=False, high=True)
+  is_last          Space(bool, shape=(), low=False, high=True)
+  is_terminal      Space(bool, shape=(), low=False, high=True)
+  position         Space(float32, shape=(4,), low=-inf, high=inf)
+  velocity         Space(float32, shape=(3,), low=-inf, high=inf)
+  touch            Space(float32, shape=(2,), low=-inf, high=inf)
+  target_position  Space(float32, shape=(2,), low=-inf, high=inf)
+  dist_to_target   Space(float32, shape=(), low=-inf, high=inf)
+Actions
+  action           Space(float32, shape=(2,), low=-1.0, high=1.0)
+Extras
+  consec           Space(int32, shape=(), low=-2147483648, high=2147483647)
+  stepid           Space(uint8, shape=(20,), low=0, high=255)
+  dyn/deter        Space(float32, shape=(512,), low=-inf, high=inf)
+  dyn/stoch        Space(float32, shape=(32, 4), low=-inf, high=inf)
+JAX devices (1): [cuda:0]
+Policy devices: cuda:0
+Train devices:  cuda:0
+Initializing parameters...
+Optimizer opt has 638,543 params:
+       364,160 dyn
+        66,111 val
+        57,663 rew
+        50,316 dec
+        49,796 pol
+        41,153 con
+         9,344 enc
+Done initializing!
+Compiling 1 checkpoint groups...
+Largest checkpoint group: 0 GB
+Loading checkpoint: /scratch/midway3/rickybao/dreamerv3_runs/ax1wm_finger_srd0q1s1_seed8/ckpt/20260718T052105F877445-000000500000
+Loaded checkpoint.
+ax1wm_finger_srd0q1s1_seed8: expl.mode=task reward_aware=True horizons=(1, 5, 20) probes 60x1001
+  episodes 0-3
+  episodes 4-7
+  episodes 8-11
+  episodes 12-15
+  episodes 16-19
+  episodes 20-23
+  episodes 24-27
+  episodes 28-31
+  episodes 32-35
+  episodes 36-39
+  episodes 40-43
+  episodes 44-47
+  episodes 48-51
+  episodes 52-55
+  episodes 56-59
+  h0: all=0.1457 in=0.1435 out=0.1460 rew=0.1424 norew=0.1461
+  h1: all=0.4036 in=0.3313 out=0.4108 rew=0.3313 norew=0.4108
+  h5: all=0.7377 in=0.5714 out=0.7543 rew=0.5714 norew=0.7543
+  h20: all=1.6243 in=1.1067 out=1.6760 rew=1.1067 norew=1.6760
+-> /scratch/midway3/rickybao/dreamerv3_runs/ax1wm_finger_srd0q1s1_seed8/e4_finger_v1_ov-srd0_side1
+[Sat Jul 18 17:25:18 CDT 2026] MEASURE ax1wm_finger_srd1q1s0_seed1 /scratch/midway3/rickybao/dreamerv3_runs/e4_overrides/stamping/finger_v1_srd1_side0.npz
+Observations
+  reward           Space(float32, shape=(), low=-inf, high=inf)
+  is_first         Space(bool, shape=(), low=False, high=True)
+  is_last          Space(bool, shape=(), low=False, high=True)
+  is_terminal      Space(bool, shape=(), low=False, high=True)
+  position         Space(float32, shape=(4,), low=-inf, high=inf)
+  velocity         Space(float32, shape=(3,), low=-inf, high=inf)
+  touch            Space(float32, shape=(2,), low=-inf, high=inf)
+  target_position  Space(float32, shape=(2,), low=-inf, high=inf)
+  dist_to_target   Space(float32, shape=(), low=-inf, high=inf)
+Actions
+  action           Space(float32, shape=(2,), low=-1.0, high=1.0)
+Extras
+  consec           Space(int32, shape=(), low=-2147483648, high=2147483647)
+  stepid           Space(uint8, shape=(20,), low=0, high=255)
+  dyn/deter        Space(float32, shape=(512,), low=-inf, high=inf)
+  dyn/stoch        Space(float32, shape=(32, 4), low=-inf, high=inf)
+JAX devices (1): [cuda:0]
+Policy devices: cuda:0
+Train devices:  cuda:0
+Initializing parameters...
+Optimizer opt has 638,543 params:
+       364,160 dyn
+        66,111 val
+        57,663 rew
+        50,316 dec
+        49,796 pol
+        41,153 con
+         9,344 enc
+Done initializing!
+Compiling 1 checkpoint groups...
+Largest checkpoint group: 0 GB
+Loading checkpoint: /scratch/midway3/rickybao/dreamerv3_runs/ax1wm_finger_srd1q1s0_seed1/ckpt/20260718T105526F813600-000000500000
+Loaded checkpoint.
+ax1wm_finger_srd1q1s0_seed1: expl.mode=task reward_aware=True horizons=(1, 5, 20) probes 60x1001
+  episodes 0-3
+  episodes 4-7
+  episodes 8-11
+  episodes 12-15
+  episodes 16-19
+  episodes 20-23
+  episodes 24-27
+  episodes 28-31
+  episodes 32-35
+  episodes 36-39
+  episodes 40-43
+  episodes 44-47
+  episodes 48-51
+  episodes 52-55
+  episodes 56-59
+  h0: all=0.1923 in=0.2721 out=0.1844 rew=0.2704 norew=0.1845
+  h1: all=0.4395 in=0.4710 out=0.4363 rew=0.4710 norew=0.4363
+  h5: all=0.8219 in=0.7545 out=0.8286 rew=0.7545 norew=0.8286
+  h20: all=1.8034 in=1.3023 out=1.8534 rew=1.3023 norew=1.8534
+-> /scratch/midway3/rickybao/dreamerv3_runs/ax1wm_finger_srd1q1s0_seed1/e4_finger_v1_ov-srd1_side0
+[Sat Jul 18 17:25:36 CDT 2026] MEASURE ax1wm_finger_srd1q1s0_seed2 /scratch/midway3/rickybao/dreamerv3_runs/e4_overrides/stamping/finger_v1_srd1_side0.npz
+Observations
+  reward           Space(float32, shape=(), low=-inf, high=inf)
+  is_first         Space(bool, shape=(), low=False, high=True)
+  is_last          Space(bool, shape=(), low=False, high=True)
+  is_terminal      Space(bool, shape=(), low=False, high=True)
+  position         Space(float32, shape=(4,), low=-inf, high=inf)
+  velocity         Space(float32, shape=(3,), low=-inf, high=inf)
+  touch            Space(float32, shape=(2,), low=-inf, high=inf)
+  target_position  Space(float32, shape=(2,), low=-inf, high=inf)
+  dist_to_target   Space(float32, shape=(), low=-inf, high=inf)
+Actions
+  action           Space(float32, shape=(2,), low=-1.0, high=1.0)
+Extras
+  consec           Space(int32, shape=(), low=-2147483648, high=2147483647)
+  stepid           Space(uint8, shape=(20,), low=0, high=255)
+  dyn/deter        Space(float32, shape=(512,), low=-inf, high=inf)
+  dyn/stoch        Space(float32, shape=(32, 4), low=-inf, high=inf)
+JAX devices (1): [cuda:0]
+Policy devices: cuda:0
+Train devices:  cuda:0
+Initializing parameters...
+Optimizer opt has 638,543 params:
+       364,160 dyn
+        66,111 val
+        57,663 rew
+        50,316 dec
+        49,796 pol
+        41,153 con
+         9,344 enc
+Done initializing!
+Compiling 1 checkpoint groups...
+Largest checkpoint group: 0 GB
+Loading checkpoint: /scratch/midway3/rickybao/dreamerv3_runs/ax1wm_finger_srd1q1s0_seed2/ckpt/20260718T105805F078020-000000500000
+Loaded checkpoint.
+ax1wm_finger_srd1q1s0_seed2: expl.mode=task reward_aware=True horizons=(1, 5, 20) probes 60x1001
+  episodes 0-3
+  episodes 4-7
+  episodes 8-11
+  episodes 12-15
+  episodes 16-19
+  episodes 20-23
+  episodes 24-27
+  episodes 28-31
+  episodes 32-35
+  episodes 36-39
+  episodes 40-43
+  episodes 44-47
+  episodes 48-51
+  episodes 52-55
+  episodes 56-59
+  h0: all=0.1885 in=0.2521 out=0.1822 rew=0.2487 norew=0.1825
+  h1: all=0.4308 in=0.4289 out=0.4310 rew=0.4289 norew=0.4310
+  h5: all=0.8123 in=0.6962 out=0.8239 rew=0.6962 norew=0.8239
+  h20: all=1.8291 in=1.2386 out=1.8880 rew=1.2386 norew=1.8880
+-> /scratch/midway3/rickybao/dreamerv3_runs/ax1wm_finger_srd1q1s0_seed2/e4_finger_v1_ov-srd1_side0
+[Sat Jul 18 17:25:55 CDT 2026] MEASURE ax1wm_finger_srd1q1s0_seed3 /scratch/midway3/rickybao/dreamerv3_runs/e4_overrides/stamping/finger_v1_srd1_side0.npz
+Observations
+  reward           Space(float32, shape=(), low=-inf, high=inf)
+  is_first         Space(bool, shape=(), low=False, high=True)
+  is_last          Space(bool, shape=(), low=False, high=True)
+  is_terminal      Space(bool, shape=(), low=False, high=True)
+  position         Space(float32, shape=(4,), low=-inf, high=inf)
+  velocity         Space(float32, shape=(3,), low=-inf, high=inf)
+  touch            Space(float32, shape=(2,), low=-inf, high=inf)
+  target_position  Space(float32, shape=(2,), low=-inf, high=inf)
+  dist_to_target   Space(float32, shape=(), low=-inf, high=inf)
+Actions
+  action           Space(float32, shape=(2,), low=-1.0, high=1.0)
+Extras
+  consec           Space(int32, shape=(), low=-2147483648, high=2147483647)
+  stepid           Space(uint8, shape=(20,), low=0, high=255)
+  dyn/deter        Space(float32, shape=(512,), low=-inf, high=inf)
+  dyn/stoch        Space(float32, shape=(32, 4), low=-inf, high=inf)
+JAX devices (1): [cuda:0]
+Policy devices: cuda:0
+Train devices:  cuda:0
+Initializing parameters...
+Optimizer opt has 638,543 params:
+       364,160 dyn
+        66,111 val
+        57,663 rew
+        50,316 dec
+        49,796 pol
+        41,153 con
+         9,344 enc
+Done initializing!
+Compiling 1 checkpoint groups...
+Largest checkpoint group: 0 GB
+Loading checkpoint: /scratch/midway3/rickybao/dreamerv3_runs/ax1wm_finger_srd1q1s0_seed3/ckpt/20260718T105824F396431-000000500000
+Loaded checkpoint.
+ax1wm_finger_srd1q1s0_seed3: expl.mode=task reward_aware=True horizons=(1, 5, 20) probes 60x1001
+  episodes 0-3
+  episodes 4-7
+  episodes 8-11
+  episodes 12-15
+  episodes 16-19
+  episodes 20-23
+  episodes 24-27
+  episodes 28-31
+  episodes 32-35
+  episodes 36-39
+  episodes 40-43
+  episodes 44-47
+  episodes 48-51
+  episodes 52-55
+  episodes 56-59
+  h0: all=0.1785 in=0.2489 out=0.1715 rew=0.2472 norew=0.1716
+  h1: all=0.4127 in=0.4315 out=0.4109 rew=0.4315 norew=0.4109
+  h5: all=0.7919 in=0.7359 out=0.7975 rew=0.7359 norew=0.7975
+  h20: all=1.7677 in=1.1847 out=1.8258 rew=1.1847 norew=1.8258
+-> /scratch/midway3/rickybao/dreamerv3_runs/ax1wm_finger_srd1q1s0_seed3/e4_finger_v1_ov-srd1_side0
+[Sat Jul 18 17:26:13 CDT 2026] MEASURE ax1wm_finger_srd1q1s0_seed4 /scratch/midway3/rickybao/dreamerv3_runs/e4_overrides/stamping/finger_v1_srd1_side0.npz
+Observations
+  reward           Space(float32, shape=(), low=-inf, high=inf)
+  is_first         Space(bool, shape=(), low=False, high=True)
+  is_last          Space(bool, shape=(), low=False, high=True)
+  is_terminal      Space(bool, shape=(), low=False, high=True)
+  position         Space(float32, shape=(4,), low=-inf, high=inf)
+  velocity         Space(float32, shape=(3,), low=-inf, high=inf)
+  touch            Space(float32, shape=(2,), low=-inf, high=inf)
+  target_position  Space(float32, shape=(2,), low=-inf, high=inf)
+  dist_to_target   Space(float32, shape=(), low=-inf, high=inf)
+Actions
+  action           Space(float32, shape=(2,), low=-1.0, high=1.0)
+Extras
+  consec           Space(int32, shape=(), low=-2147483648, high=2147483647)
+  stepid           Space(uint8, shape=(20,), low=0, high=255)
+  dyn/deter        Space(float32, shape=(512,), low=-inf, high=inf)
+  dyn/stoch        Space(float32, shape=(32, 4), low=-inf, high=inf)
+JAX devices (1): [cuda:0]
+Policy devices: cuda:0
+Train devices:  cuda:0
+Initializing parameters...
+Optimizer opt has 638,543 params:
+       364,160 dyn
+        66,111 val
+        57,663 rew
+        50,316 dec
+        49,796 pol
+        41,153 con
+         9,344 enc
+Done initializing!
+Compiling 1 checkpoint groups...
+Largest checkpoint group: 0 GB
+Loading checkpoint: /scratch/midway3/rickybao/dreamerv3_runs/ax1wm_finger_srd1q1s0_seed4/ckpt/20260718T105929F774475-000000500000
+Loaded checkpoint.
+ax1wm_finger_srd1q1s0_seed4: expl.mode=task reward_aware=True horizons=(1, 5, 20) probes 60x1001
+  episodes 0-3
+  episodes 4-7
+  episodes 8-11
+  episodes 12-15
+  episodes 16-19
+  episodes 20-23
+  episodes 24-27
+  episodes 28-31
+  episodes 32-35
+  episodes 36-39
+  episodes 40-43
+  episodes 44-47
+  episodes 48-51
+  episodes 52-55
+  episodes 56-59
+  h0: all=0.1912 in=0.2752 out=0.1828 rew=0.2735 norew=0.1830
+  h1: all=0.4332 in=0.4738 out=0.4291 rew=0.4738 norew=0.4291
+  h5: all=0.7850 in=0.7076 out=0.7928 rew=0.7076 norew=0.7928
+  h20: all=1.7428 in=1.2583 out=1.7911 rew=1.2583 norew=1.7911
+-> /scratch/midway3/rickybao/dreamerv3_runs/ax1wm_finger_srd1q1s0_seed4/e4_finger_v1_ov-srd1_side0
+[Sat Jul 18 17:26:31 CDT 2026] MEASURE ax1wm_finger_srd1q1s0_seed5 /scratch/midway3/rickybao/dreamerv3_runs/e4_overrides/stamping/finger_v1_srd1_side0.npz
+Observations
+  reward           Space(float32, shape=(), low=-inf, high=inf)
+  is_first         Space(bool, shape=(), low=False, high=True)
+  is_last          Space(bool, shape=(), low=False, high=True)
+  is_terminal      Space(bool, shape=(), low=False, high=True)
+  position         Space(float32, shape=(4,), low=-inf, high=inf)
+  velocity         Space(float32, shape=(3,), low=-inf, high=inf)
+  touch            Space(float32, shape=(2,), low=-inf, high=inf)
+  target_position  Space(float32, shape=(2,), low=-inf, high=inf)
+  dist_to_target   Space(float32, shape=(), low=-inf, high=inf)
+Actions
+  action           Space(float32, shape=(2,), low=-1.0, high=1.0)
+Extras
+  consec           Space(int32, shape=(), low=-2147483648, high=2147483647)
+  stepid           Space(uint8, shape=(20,), low=0, high=255)
+  dyn/deter        Space(float32, shape=(512,), low=-inf, high=inf)
+  dyn/stoch        Space(float32, shape=(32, 4), low=-inf, high=inf)
+JAX devices (1): [cuda:0]
+Policy devices: cuda:0
+Train devices:  cuda:0
+Initializing parameters...
+Optimizer opt has 638,543 params:
+       364,160 dyn
+        66,111 val
+        57,663 rew
+        50,316 dec
+        49,796 pol
+        41,153 con
+         9,344 enc
+Done initializing!
+Compiling 1 checkpoint groups...
+Largest checkpoint group: 0 GB
+Loading checkpoint: /scratch/midway3/rickybao/dreamerv3_runs/ax1wm_finger_srd1q1s0_seed5/ckpt/20260718T105739F989660-000000500000
+Loaded checkpoint.
+ax1wm_finger_srd1q1s0_seed5: expl.mode=task reward_aware=True horizons=(1, 5, 20) probes 60x1001
+  episodes 0-3
+  episodes 4-7
+  episodes 8-11
+  episodes 12-15
+  episodes 16-19
+  episodes 20-23
+  episodes 24-27
+  episodes 28-31
+  episodes 32-35
+  episodes 36-39
+  episodes 40-43
+  episodes 44-47
+  episodes 48-51
+  episodes 52-55
+  episodes 56-59
+  h0: all=0.1867 in=0.2514 out=0.1802 rew=0.2497 norew=0.1804
+  h1: all=0.4167 in=0.4419 out=0.4142 rew=0.4419 norew=0.4142
+  h5: all=0.7711 in=0.6875 out=0.7794 rew=0.6875 norew=0.7794
+  h20: all=1.7512 in=1.1786 out=1.8083 rew=1.1786 norew=1.8083
+-> /scratch/midway3/rickybao/dreamerv3_runs/ax1wm_finger_srd1q1s0_seed5/e4_finger_v1_ov-srd1_side0
+[Sat Jul 18 17:26:49 CDT 2026] MEASURE ax1wm_finger_srd1q1s0_seed6 /scratch/midway3/rickybao/dreamerv3_runs/e4_overrides/stamping/finger_v1_srd1_side0.npz
+Observations
+  reward           Space(float32, shape=(), low=-inf, high=inf)
+  is_first         Space(bool, shape=(), low=False, high=True)
+  is_last          Space(bool, shape=(), low=False, high=True)
+  is_terminal      Space(bool, shape=(), low=False, high=True)
+  position         Space(float32, shape=(4,), low=-inf, high=inf)
+  velocity         Space(float32, shape=(3,), low=-inf, high=inf)
+  touch            Space(float32, shape=(2,), low=-inf, high=inf)
+  target_position  Space(float32, shape=(2,), low=-inf, high=inf)
+  dist_to_target   Space(float32, shape=(), low=-inf, high=inf)
+Actions
+  action           Space(float32, shape=(2,), low=-1.0, high=1.0)
+Extras
+  consec           Space(int32, shape=(), low=-2147483648, high=2147483647)
+  stepid           Space(uint8, shape=(20,), low=0, high=255)
+  dyn/deter        Space(float32, shape=(512,), low=-inf, high=inf)
+  dyn/stoch        Space(float32, shape=(32, 4), low=-inf, high=inf)
+JAX devices (1): [cuda:0]
+Policy devices: cuda:0
+Train devices:  cuda:0
+Initializing parameters...
+Optimizer opt has 638,543 params:
+       364,160 dyn
+        66,111 val
+        57,663 rew
+        50,316 dec
+        49,796 pol
+        41,153 con
+         9,344 enc
+Done initializing!
+Compiling 1 checkpoint groups...
+Largest checkpoint group: 0 GB
+Loading checkpoint: /scratch/midway3/rickybao/dreamerv3_runs/ax1wm_finger_srd1q1s0_seed6/ckpt/20260718T105932F997393-000000500000
+Loaded checkpoint.
+ax1wm_finger_srd1q1s0_seed6: expl.mode=task reward_aware=True horizons=(1, 5, 20) probes 60x1001
+  episodes 0-3
+  episodes 4-7
+  episodes 8-11
+  episodes 12-15
+  episodes 16-19
+  episodes 20-23
+  episodes 24-27
+  episodes 28-31
+  episodes 32-35
+  episodes 36-39
+  episodes 40-43
+  episodes 44-47
+  episodes 48-51
+  episodes 52-55
+  episodes 56-59
+  h0: all=0.2007 in=0.2732 out=0.1935 rew=0.2720 norew=0.1936
+  h1: all=0.4516 in=0.4599 out=0.4508 rew=0.4599 norew=0.4508
+  h5: all=0.8126 in=0.7198 out=0.8219 rew=0.7198 norew=0.8219
+  h20: all=1.7521 in=1.2285 out=1.8044 rew=1.2285 norew=1.8044
+-> /scratch/midway3/rickybao/dreamerv3_runs/ax1wm_finger_srd1q1s0_seed6/e4_finger_v1_ov-srd1_side0
+[Sat Jul 18 17:27:08 CDT 2026] MEASURE ax1wm_finger_srd1q1s0_seed7 /scratch/midway3/rickybao/dreamerv3_runs/e4_overrides/stamping/finger_v1_srd1_side0.npz
+Observations
+  reward           Space(float32, shape=(), low=-inf, high=inf)
+  is_first         Space(bool, shape=(), low=False, high=True)
+  is_last          Space(bool, shape=(), low=False, high=True)
+  is_terminal      Space(bool, shape=(), low=False, high=True)
+  position         Space(float32, shape=(4,), low=-inf, high=inf)
+  velocity         Space(float32, shape=(3,), low=-inf, high=inf)
+  touch            Space(float32, shape=(2,), low=-inf, high=inf)
+  target_position  Space(float32, shape=(2,), low=-inf, high=inf)
+  dist_to_target   Space(float32, shape=(), low=-inf, high=inf)
+Actions
+  action           Space(float32, shape=(2,), low=-1.0, high=1.0)
+Extras
+  consec           Space(int32, shape=(), low=-2147483648, high=2147483647)
+  stepid           Space(uint8, shape=(20,), low=0, high=255)
+  dyn/deter        Space(float32, shape=(512,), low=-inf, high=inf)
+  dyn/stoch        Space(float32, shape=(32, 4), low=-inf, high=inf)
+JAX devices (1): [cuda:0]
+Policy devices: cuda:0
+Train devices:  cuda:0
+Initializing parameters...
+Optimizer opt has 638,543 params:
+       364,160 dyn
+        66,111 val
+        57,663 rew
+        50,316 dec
+        49,796 pol
+        41,153 con
+         9,344 enc
+Done initializing!
+Compiling 1 checkpoint groups...
+Largest checkpoint group: 0 GB
+Loading checkpoint: /scratch/midway3/rickybao/dreamerv3_runs/ax1wm_finger_srd1q1s0_seed7/ckpt/20260718T105612F510396-000000500000
+Loaded checkpoint.
+ax1wm_finger_srd1q1s0_seed7: expl.mode=task reward_aware=True horizons=(1, 5, 20) probes 60x1001
+  episodes 0-3
+  episodes 4-7
+  episodes 8-11
+  episodes 12-15
+  episodes 16-19
+  episodes 20-23
+  episodes 24-27
+  episodes 28-31
+  episodes 32-35
+  episodes 36-39
+  episodes 40-43
+  episodes 44-47
+  episodes 48-51
+  episodes 52-55
+  episodes 56-59
+  h0: all=0.1907 in=0.2435 out=0.1854 rew=0.2416 norew=0.1856
+  h1: all=0.4332 in=0.4383 out=0.4327 rew=0.4383 norew=0.4327
+  h5: all=0.8019 in=0.6815 out=0.8139 rew=0.6815 norew=0.8139
+  h20: all=1.7075 in=1.1833 out=1.7598 rew=1.1833 norew=1.7598
+-> /scratch/midway3/rickybao/dreamerv3_runs/ax1wm_finger_srd1q1s0_seed7/e4_finger_v1_ov-srd1_side0
+[Sat Jul 18 17:27:26 CDT 2026] MEASURE ax1wm_finger_srd1q1s0_seed8 /scratch/midway3/rickybao/dreamerv3_runs/e4_overrides/stamping/finger_v1_srd1_side0.npz
+Observations
+  reward           Space(float32, shape=(), low=-inf, high=inf)
+  is_first         Space(bool, shape=(), low=False, high=True)
+  is_last          Space(bool, shape=(), low=False, high=True)
+  is_terminal      Space(bool, shape=(), low=False, high=True)
+  position         Space(float32, shape=(4,), low=-inf, high=inf)
+  velocity         Space(float32, shape=(3,), low=-inf, high=inf)
+  touch            Space(float32, shape=(2,), low=-inf, high=inf)
+  target_position  Space(float32, shape=(2,), low=-inf, high=inf)
+  dist_to_target   Space(float32, shape=(), low=-inf, high=inf)
+Actions
+  action           Space(float32, shape=(2,), low=-1.0, high=1.0)
+Extras
+  consec           Space(int32, shape=(), low=-2147483648, high=2147483647)
+  stepid           Space(uint8, shape=(20,), low=0, high=255)
+  dyn/deter        Space(float32, shape=(512,), low=-inf, high=inf)
+  dyn/stoch        Space(float32, shape=(32, 4), low=-inf, high=inf)
+JAX devices (1): [cuda:0]
+Policy devices: cuda:0
+Train devices:  cuda:0
+Initializing parameters...
+Optimizer opt has 638,543 params:
+       364,160 dyn
+        66,111 val
+        57,663 rew
+        50,316 dec
+        49,796 pol
+        41,153 con
+         9,344 enc
+Done initializing!
+Compiling 1 checkpoint groups...
+Largest checkpoint group: 0 GB
+Loading checkpoint: /scratch/midway3/rickybao/dreamerv3_runs/ax1wm_finger_srd1q1s0_seed8/ckpt/20260718T105531F511019-000000500000
+Loaded checkpoint.
+ax1wm_finger_srd1q1s0_seed8: expl.mode=task reward_aware=True horizons=(1, 5, 20) probes 60x1001
+  episodes 0-3
+  episodes 4-7
+  episodes 8-11
+  episodes 12-15
+  episodes 16-19
+  episodes 20-23
+  episodes 24-27
+  episodes 28-31
+  episodes 32-35
+  episodes 36-39
+  episodes 40-43
+  episodes 44-47
+  episodes 48-51
+  episodes 52-55
+  episodes 56-59
+  h0: all=0.1857 in=0.2489 out=0.1794 rew=0.2475 norew=0.1796
+  h1: all=0.4097 in=0.4226 out=0.4084 rew=0.4226 norew=0.4084
+  h5: all=0.7654 in=0.6772 out=0.7742 rew=0.6772 norew=0.7742
+  h20: all=1.7595 in=1.2278 out=1.8126 rew=1.2278 norew=1.8126
+-> /scratch/midway3/rickybao/dreamerv3_runs/ax1wm_finger_srd1q1s0_seed8/e4_finger_v1_ov-srd1_side0
+[Sat Jul 18 17:27:44 CDT 2026] MEASURE ax1wm_finger_srd1q1s1_seed1 /scratch/midway3/rickybao/dreamerv3_runs/e4_overrides/stamping/finger_v1_srd1_side1.npz
+Observations
+  reward           Space(float32, shape=(), low=-inf, high=inf)
+  is_first         Space(bool, shape=(), low=False, high=True)
+  is_last          Space(bool, shape=(), low=False, high=True)
+  is_terminal      Space(bool, shape=(), low=False, high=True)
+  position         Space(float32, shape=(4,), low=-inf, high=inf)
+  velocity         Space(float32, shape=(3,), low=-inf, high=inf)
+  touch            Space(float32, shape=(2,), low=-inf, high=inf)
+  target_position  Space(float32, shape=(2,), low=-inf, high=inf)
+  dist_to_target   Space(float32, shape=(), low=-inf, high=inf)
+Actions
+  action           Space(float32, shape=(2,), low=-1.0, high=1.0)
+Extras
+  consec           Space(int32, shape=(), low=-2147483648, high=2147483647)
+  stepid           Space(uint8, shape=(20,), low=0, high=255)
+  dyn/deter        Space(float32, shape=(512,), low=-inf, high=inf)
+  dyn/stoch        Space(float32, shape=(32, 4), low=-inf, high=inf)
+JAX devices (1): [cuda:0]
+Policy devices: cuda:0
+Train devices:  cuda:0
+Initializing parameters...
+Optimizer opt has 638,543 params:
+       364,160 dyn
+        66,111 val
+        57,663 rew
+        50,316 dec
+        49,796 pol
+        41,153 con
+         9,344 enc
+Done initializing!
+Compiling 1 checkpoint groups...
+Largest checkpoint group: 0 GB
+Loading checkpoint: /scratch/midway3/rickybao/dreamerv3_runs/ax1wm_finger_srd1q1s1_seed1/ckpt/20260718T083620F759892-000000500000
+Loaded checkpoint.
+ax1wm_finger_srd1q1s1_seed1: expl.mode=task reward_aware=True horizons=(1, 5, 20) probes 60x1001
+  episodes 0-3
+  episodes 4-7
+  episodes 8-11
+  episodes 12-15
+  episodes 16-19
+  episodes 20-23
+  episodes 24-27
+  episodes 28-31
+  episodes 32-35
+  episodes 36-39
+  episodes 40-43
+  episodes 44-47
+  episodes 48-51
+  episodes 52-55
+  episodes 56-59
+  h0: all=0.1408 in=0.1363 out=0.1412 rew=0.1350 norew=0.1413
+  h1: all=0.3858 in=0.3245 out=0.3919 rew=0.3245 norew=0.3919
+  h5: all=0.7247 in=0.5659 out=0.7405 rew=0.5659 norew=0.7405
+  h20: all=1.6132 in=1.1107 out=1.6633 rew=1.1107 norew=1.6633
+-> /scratch/midway3/rickybao/dreamerv3_runs/ax1wm_finger_srd1q1s1_seed1/e4_finger_v1_ov-srd1_side1
+[Sat Jul 18 17:28:03 CDT 2026] MEASURE ax1wm_finger_srd1q1s1_seed2 /scratch/midway3/rickybao/dreamerv3_runs/e4_overrides/stamping/finger_v1_srd1_side1.npz
+Observations
+  reward           Space(float32, shape=(), low=-inf, high=inf)
+  is_first         Space(bool, shape=(), low=False, high=True)
+  is_last          Space(bool, shape=(), low=False, high=True)
+  is_terminal      Space(bool, shape=(), low=False, high=True)
+  position         Space(float32, shape=(4,), low=-inf, high=inf)
+  velocity         Space(float32, shape=(3,), low=-inf, high=inf)
+  touch            Space(float32, shape=(2,), low=-inf, high=inf)
+  target_position  Space(float32, shape=(2,), low=-inf, high=inf)
+  dist_to_target   Space(float32, shape=(), low=-inf, high=inf)
+Actions
+  action           Space(float32, shape=(2,), low=-1.0, high=1.0)
+Extras
+  consec           Space(int32, shape=(), low=-2147483648, high=2147483647)
+  stepid           Space(uint8, shape=(20,), low=0, high=255)
+  dyn/deter        Space(float32, shape=(512,), low=-inf, high=inf)
+  dyn/stoch        Space(float32, shape=(32, 4), low=-inf, high=inf)
+JAX devices (1): [cuda:0]
+Policy devices: cuda:0
+Train devices:  cuda:0
+Initializing parameters...
+Optimizer opt has 638,543 params:
+       364,160 dyn
+        66,111 val
+        57,663 rew
+        50,316 dec
+        49,796 pol
+        41,153 con
+         9,344 enc
+Done initializing!
+Compiling 1 checkpoint groups...
+Largest checkpoint group: 0 GB
+Loading checkpoint: /scratch/midway3/rickybao/dreamerv3_runs/ax1wm_finger_srd1q1s1_seed2/ckpt/20260718T084000F961681-000000500000
+Loaded checkpoint.
+ax1wm_finger_srd1q1s1_seed2: expl.mode=task reward_aware=True horizons=(1, 5, 20) probes 60x1001
+  episodes 0-3
+  episodes 4-7
+  episodes 8-11
+  episodes 12-15
+  episodes 16-19
+  episodes 20-23
+  episodes 24-27
+  episodes 28-31
+  episodes 32-35
+  episodes 36-39
+  episodes 40-43
+  episodes 44-47
+  episodes 48-51
+  episodes 52-55
+  episodes 56-59
+  h0: all=0.1446 in=0.1302 out=0.1460 rew=0.1294 norew=0.1461
+  h1: all=0.3941 in=0.3176 out=0.4018 rew=0.3176 norew=0.4018
+  h5: all=0.7295 in=0.5373 out=0.7487 rew=0.5373 norew=0.7487
+  h20: all=1.5685 in=0.9948 out=1.6257 rew=0.9948 norew=1.6257
+-> /scratch/midway3/rickybao/dreamerv3_runs/ax1wm_finger_srd1q1s1_seed2/e4_finger_v1_ov-srd1_side1
+[Sat Jul 18 17:28:21 CDT 2026] MEASURE ax1wm_finger_srd1q1s1_seed3 /scratch/midway3/rickybao/dreamerv3_runs/e4_overrides/stamping/finger_v1_srd1_side1.npz
+Observations
+  reward           Space(float32, shape=(), low=-inf, high=inf)
+  is_first         Space(bool, shape=(), low=False, high=True)
+  is_last          Space(bool, shape=(), low=False, high=True)
+  is_terminal      Space(bool, shape=(), low=False, high=True)
+  position         Space(float32, shape=(4,), low=-inf, high=inf)
+  velocity         Space(float32, shape=(3,), low=-inf, high=inf)
+  touch            Space(float32, shape=(2,), low=-inf, high=inf)
+  target_position  Space(float32, shape=(2,), low=-inf, high=inf)
+  dist_to_target   Space(float32, shape=(), low=-inf, high=inf)
+Actions
+  action           Space(float32, shape=(2,), low=-1.0, high=1.0)
+Extras
+  consec           Space(int32, shape=(), low=-2147483648, high=2147483647)
+  stepid           Space(uint8, shape=(20,), low=0, high=255)
+  dyn/deter        Space(float32, shape=(512,), low=-inf, high=inf)
+  dyn/stoch        Space(float32, shape=(32, 4), low=-inf, high=inf)
+JAX devices (1): [cuda:0]
+Policy devices: cuda:0
+Train devices:  cuda:0
+Initializing parameters...
+Optimizer opt has 638,543 params:
+       364,160 dyn
+        66,111 val
+        57,663 rew
+        50,316 dec
+        49,796 pol
+        41,153 con
+         9,344 enc
+Done initializing!
+Compiling 1 checkpoint groups...
+Largest checkpoint group: 0 GB
+Loading checkpoint: /scratch/midway3/rickybao/dreamerv3_runs/ax1wm_finger_srd1q1s1_seed3/ckpt/20260718T083834F680428-000000500000
+Loaded checkpoint.
+ax1wm_finger_srd1q1s1_seed3: expl.mode=task reward_aware=True horizons=(1, 5, 20) probes 60x1001
+  episodes 0-3
+  episodes 4-7
+  episodes 8-11
+  episodes 12-15
+  episodes 16-19
+  episodes 20-23
+  episodes 24-27
+  episodes 28-31
+  episodes 32-35
+  episodes 36-39
+  episodes 40-43
+  episodes 44-47
+  episodes 48-51
+  episodes 52-55
+  episodes 56-59
+  h0: all=0.1392 in=0.1249 out=0.1407 rew=0.1238 norew=0.1408
+  h1: all=0.3895 in=0.3151 out=0.3969 rew=0.3151 norew=0.3969
+  h5: all=0.7264 in=0.5251 out=0.7464 rew=0.5251 norew=0.7464
+  h20: all=1.5815 in=0.9840 out=1.6411 rew=0.9840 norew=1.6411
+-> /scratch/midway3/rickybao/dreamerv3_runs/ax1wm_finger_srd1q1s1_seed3/e4_finger_v1_ov-srd1_side1
+[Sat Jul 18 17:28:39 CDT 2026] MEASURE ax1wm_finger_srd1q1s1_seed4 /scratch/midway3/rickybao/dreamerv3_runs/e4_overrides/stamping/finger_v1_srd1_side1.npz
+Observations
+  reward           Space(float32, shape=(), low=-inf, high=inf)
+  is_first         Space(bool, shape=(), low=False, high=True)
+  is_last          Space(bool, shape=(), low=False, high=True)
+  is_terminal      Space(bool, shape=(), low=False, high=True)
+  position         Space(float32, shape=(4,), low=-inf, high=inf)
+  velocity         Space(float32, shape=(3,), low=-inf, high=inf)
+  touch            Space(float32, shape=(2,), low=-inf, high=inf)
+  target_position  Space(float32, shape=(2,), low=-inf, high=inf)
+  dist_to_target   Space(float32, shape=(), low=-inf, high=inf)
+Actions
+  action           Space(float32, shape=(2,), low=-1.0, high=1.0)
+Extras
+  consec           Space(int32, shape=(), low=-2147483648, high=2147483647)
+  stepid           Space(uint8, shape=(20,), low=0, high=255)
+  dyn/deter        Space(float32, shape=(512,), low=-inf, high=inf)
+  dyn/stoch        Space(float32, shape=(32, 4), low=-inf, high=inf)
+JAX devices (1): [cuda:0]
+Policy devices: cuda:0
+Train devices:  cuda:0
+Initializing parameters...
+Optimizer opt has 638,543 params:
+       364,160 dyn
+        66,111 val
+        57,663 rew
+        50,316 dec
+        49,796 pol
+        41,153 con
+         9,344 enc
+Done initializing!
+Compiling 1 checkpoint groups...
+Largest checkpoint group: 0 GB
+Loading checkpoint: /scratch/midway3/rickybao/dreamerv3_runs/ax1wm_finger_srd1q1s1_seed4/ckpt/20260718T083936F696504-000000500000
+Loaded checkpoint.
+ax1wm_finger_srd1q1s1_seed4: expl.mode=task reward_aware=True horizons=(1, 5, 20) probes 60x1001
+  episodes 0-3
+  episodes 4-7
+  episodes 8-11
+  episodes 12-15
+  episodes 16-19
+  episodes 20-23
+  episodes 24-27
+  episodes 28-31
+  episodes 32-35
+  episodes 36-39
+  episodes 40-43
+  episodes 44-47
+  episodes 48-51
+  episodes 52-55
+  episodes 56-59
+  h0: all=0.1396 in=0.1362 out=0.1399 rew=0.1351 norew=0.1401
+  h1: all=0.3954 in=0.3248 out=0.4025 rew=0.3248 norew=0.4025
+  h5: all=0.7282 in=0.5327 out=0.7477 rew=0.5327 norew=0.7477
+  h20: all=1.5866 in=1.0268 out=1.6424 rew=1.0268 norew=1.6424
+-> /scratch/midway3/rickybao/dreamerv3_runs/ax1wm_finger_srd1q1s1_seed4/e4_finger_v1_ov-srd1_side1
+[Sat Jul 18 17:28:57 CDT 2026] MEASURE ax1wm_finger_srd1q1s1_seed5 /scratch/midway3/rickybao/dreamerv3_runs/e4_overrides/stamping/finger_v1_srd1_side1.npz
+Observations
+  reward           Space(float32, shape=(), low=-inf, high=inf)
+  is_first         Space(bool, shape=(), low=False, high=True)
+  is_last          Space(bool, shape=(), low=False, high=True)
+  is_terminal      Space(bool, shape=(), low=False, high=True)
+  position         Space(float32, shape=(4,), low=-inf, high=inf)
+  velocity         Space(float32, shape=(3,), low=-inf, high=inf)
+  touch            Space(float32, shape=(2,), low=-inf, high=inf)
+  target_position  Space(float32, shape=(2,), low=-inf, high=inf)
+  dist_to_target   Space(float32, shape=(), low=-inf, high=inf)
+Actions
+  action           Space(float32, shape=(2,), low=-1.0, high=1.0)
+Extras
+  consec           Space(int32, shape=(), low=-2147483648, high=2147483647)
+  stepid           Space(uint8, shape=(20,), low=0, high=255)
+  dyn/deter        Space(float32, shape=(512,), low=-inf, high=inf)
+  dyn/stoch        Space(float32, shape=(32, 4), low=-inf, high=inf)
+JAX devices (1): [cuda:0]
+Policy devices: cuda:0
+Train devices:  cuda:0
+Initializing parameters...
+Optimizer opt has 638,543 params:
+       364,160 dyn
+        66,111 val
+        57,663 rew
+        50,316 dec
+        49,796 pol
+        41,153 con
+         9,344 enc
+Done initializing!
+Compiling 1 checkpoint groups...
+Largest checkpoint group: 0 GB
+Loading checkpoint: /scratch/midway3/rickybao/dreamerv3_runs/ax1wm_finger_srd1q1s1_seed5/ckpt/20260718T081414F671942-000000500000
+Loaded checkpoint.
+ax1wm_finger_srd1q1s1_seed5: expl.mode=task reward_aware=True horizons=(1, 5, 20) probes 60x1001
+  episodes 0-3
+  episodes 4-7
+  episodes 8-11
+  episodes 12-15
+  episodes 16-19
+  episodes 20-23
+  episodes 24-27
+  episodes 28-31
+  episodes 32-35
+  episodes 36-39
+  episodes 40-43
+  episodes 44-47
+  episodes 48-51
+  episodes 52-55
+  episodes 56-59
+  h0: all=0.1359 in=0.1275 out=0.1367 rew=0.1259 norew=0.1368
+  h1: all=0.3782 in=0.3032 out=0.3857 rew=0.3032 norew=0.3857
+  h5: all=0.7052 in=0.5239 out=0.7232 rew=0.5239 norew=0.7232
+  h20: all=1.5563 in=1.0640 out=1.6054 rew=1.0640 norew=1.6054
+-> /scratch/midway3/rickybao/dreamerv3_runs/ax1wm_finger_srd1q1s1_seed5/e4_finger_v1_ov-srd1_side1
+[Sat Jul 18 17:29:16 CDT 2026] MEASURE ax1wm_finger_srd1q1s1_seed6 /scratch/midway3/rickybao/dreamerv3_runs/e4_overrides/stamping/finger_v1_srd1_side1.npz
+Observations
+  reward           Space(float32, shape=(), low=-inf, high=inf)
+  is_first         Space(bool, shape=(), low=False, high=True)
+  is_last          Space(bool, shape=(), low=False, high=True)
+  is_terminal      Space(bool, shape=(), low=False, high=True)
+  position         Space(float32, shape=(4,), low=-inf, high=inf)
+  velocity         Space(float32, shape=(3,), low=-inf, high=inf)
+  touch            Space(float32, shape=(2,), low=-inf, high=inf)
+  target_position  Space(float32, shape=(2,), low=-inf, high=inf)
+  dist_to_target   Space(float32, shape=(), low=-inf, high=inf)
+Actions
+  action           Space(float32, shape=(2,), low=-1.0, high=1.0)
+Extras
+  consec           Space(int32, shape=(), low=-2147483648, high=2147483647)
+  stepid           Space(uint8, shape=(20,), low=0, high=255)
+  dyn/deter        Space(float32, shape=(512,), low=-inf, high=inf)
+  dyn/stoch        Space(float32, shape=(32, 4), low=-inf, high=inf)
+JAX devices (1): [cuda:0]
+Policy devices: cuda:0
+Train devices:  cuda:0
+Initializing parameters...
+Optimizer opt has 638,543 params:
+       364,160 dyn
+        66,111 val
+        57,663 rew
+        50,316 dec
+        49,796 pol
+        41,153 con
+         9,344 enc
+Done initializing!
+Compiling 1 checkpoint groups...
+Largest checkpoint group: 0 GB
+Loading checkpoint: /scratch/midway3/rickybao/dreamerv3_runs/ax1wm_finger_srd1q1s1_seed6/ckpt/20260718T081212F149341-000000500000
+Loaded checkpoint.
+ax1wm_finger_srd1q1s1_seed6: expl.mode=task reward_aware=True horizons=(1, 5, 20) probes 60x1001
+  episodes 0-3
+  episodes 4-7
+  episodes 8-11
+  episodes 12-15
+  episodes 16-19
+  episodes 20-23
+  episodes 24-27
+  episodes 28-31
+  episodes 32-35
+  episodes 36-39
+  episodes 40-43
+  episodes 44-47
+  episodes 48-51
+  episodes 52-55
+  episodes 56-59
+  h0: all=0.1352 in=0.1241 out=0.1363 rew=0.1231 norew=0.1364
+  h1: all=0.3944 in=0.3053 out=0.4033 rew=0.3053 norew=0.4033
+  h5: all=0.7279 in=0.5401 out=0.7466 rew=0.5401 norew=0.7466
+  h20: all=1.5851 in=1.0558 out=1.6379 rew=1.0558 norew=1.6379
+-> /scratch/midway3/rickybao/dreamerv3_runs/ax1wm_finger_srd1q1s1_seed6/e4_finger_v1_ov-srd1_side1
+[Sat Jul 18 17:29:34 CDT 2026] MEASURE ax1wm_finger_srd1q1s1_seed7 /scratch/midway3/rickybao/dreamerv3_runs/e4_overrides/stamping/finger_v1_srd1_side1.npz
+Observations
+  reward           Space(float32, shape=(), low=-inf, high=inf)
+  is_first         Space(bool, shape=(), low=False, high=True)
+  is_last          Space(bool, shape=(), low=False, high=True)
+  is_terminal      Space(bool, shape=(), low=False, high=True)
+  position         Space(float32, shape=(4,), low=-inf, high=inf)
+  velocity         Space(float32, shape=(3,), low=-inf, high=inf)
+  touch            Space(float32, shape=(2,), low=-inf, high=inf)
+  target_position  Space(float32, shape=(2,), low=-inf, high=inf)
+  dist_to_target   Space(float32, shape=(), low=-inf, high=inf)
+Actions
+  action           Space(float32, shape=(2,), low=-1.0, high=1.0)
+Extras
+  consec           Space(int32, shape=(), low=-2147483648, high=2147483647)
+  stepid           Space(uint8, shape=(20,), low=0, high=255)
+  dyn/deter        Space(float32, shape=(512,), low=-inf, high=inf)
+  dyn/stoch        Space(float32, shape=(32, 4), low=-inf, high=inf)
+JAX devices (1): [cuda:0]
+Policy devices: cuda:0
+Train devices:  cuda:0
+Initializing parameters...
+Optimizer opt has 638,543 params:
+       364,160 dyn
+        66,111 val
+        57,663 rew
+        50,316 dec
+        49,796 pol
+        41,153 con
+         9,344 enc
+Done initializing!
+Compiling 1 checkpoint groups...
+Largest checkpoint group: 0 GB
+Loading checkpoint: /scratch/midway3/rickybao/dreamerv3_runs/ax1wm_finger_srd1q1s1_seed7/ckpt/20260718T082032F732701-000000500000
+Loaded checkpoint.
+ax1wm_finger_srd1q1s1_seed7: expl.mode=task reward_aware=True horizons=(1, 5, 20) probes 60x1001
+  episodes 0-3
+  episodes 4-7
+  episodes 8-11
+  episodes 12-15
+  episodes 16-19
+  episodes 20-23
+  episodes 24-27
+  episodes 28-31
+  episodes 32-35
+  episodes 36-39
+  episodes 40-43
+  episodes 44-47
+  episodes 48-51
+  episodes 52-55
+  episodes 56-59
+  h0: all=0.1411 in=0.1312 out=0.1421 rew=0.1305 norew=0.1421
+  h1: all=0.3875 in=0.3225 out=0.3940 rew=0.3225 norew=0.3940
+  h5: all=0.7271 in=0.5264 out=0.7471 rew=0.5264 norew=0.7471
+  h20: all=1.5722 in=1.0414 out=1.6252 rew=1.0414 norew=1.6252
+-> /scratch/midway3/rickybao/dreamerv3_runs/ax1wm_finger_srd1q1s1_seed7/e4_finger_v1_ov-srd1_side1
+[Sat Jul 18 17:29:52 CDT 2026] MEASURE ax1wm_finger_srd1q1s1_seed8 /scratch/midway3/rickybao/dreamerv3_runs/e4_overrides/stamping/finger_v1_srd1_side1.npz
+Observations
+  reward           Space(float32, shape=(), low=-inf, high=inf)
+  is_first         Space(bool, shape=(), low=False, high=True)
+  is_last          Space(bool, shape=(), low=False, high=True)
+  is_terminal      Space(bool, shape=(), low=False, high=True)
+  position         Space(float32, shape=(4,), low=-inf, high=inf)
+  velocity         Space(float32, shape=(3,), low=-inf, high=inf)
+  touch            Space(float32, shape=(2,), low=-inf, high=inf)
+  target_position  Space(float32, shape=(2,), low=-inf, high=inf)
+  dist_to_target   Space(float32, shape=(), low=-inf, high=inf)
+Actions
+  action           Space(float32, shape=(2,), low=-1.0, high=1.0)
+Extras
+  consec           Space(int32, shape=(), low=-2147483648, high=2147483647)
+  stepid           Space(uint8, shape=(20,), low=0, high=255)
+  dyn/deter        Space(float32, shape=(512,), low=-inf, high=inf)
+  dyn/stoch        Space(float32, shape=(32, 4), low=-inf, high=inf)
+JAX devices (1): [cuda:0]
+Policy devices: cuda:0
+Train devices:  cuda:0
+Initializing parameters...
+Optimizer opt has 638,543 params:
+       364,160 dyn
+        66,111 val
+        57,663 rew
+        50,316 dec
+        49,796 pol
+        41,153 con
+         9,344 enc
+Done initializing!
+Compiling 1 checkpoint groups...
+Largest checkpoint group: 0 GB
+Loading checkpoint: /scratch/midway3/rickybao/dreamerv3_runs/ax1wm_finger_srd1q1s1_seed8/ckpt/20260718T082038F203962-000000500000
+Loaded checkpoint.
+ax1wm_finger_srd1q1s1_seed8: expl.mode=task reward_aware=True horizons=(1, 5, 20) probes 60x1001
+  episodes 0-3
+  episodes 4-7
+  episodes 8-11
+  episodes 12-15
+  episodes 16-19
+  episodes 20-23
+  episodes 24-27
+  episodes 28-31
+  episodes 32-35
+  episodes 36-39
+  episodes 40-43
+  episodes 44-47
+  episodes 48-51
+  episodes 52-55
+  episodes 56-59
+  h0: all=0.1474 in=0.1305 out=0.1490 rew=0.1297 norew=0.1491
+  h1: all=0.4144 in=0.3275 out=0.4231 rew=0.3275 norew=0.4231
+  h5: all=0.7536 in=0.5991 out=0.7690 rew=0.5991 norew=0.7690
+  h20: all=1.5625 in=1.0158 out=1.6171 rew=1.0158 norew=1.6171
+-> /scratch/midway3/rickybao/dreamerv3_runs/ax1wm_finger_srd1q1s1_seed8/e4_finger_v1_ov-srd1_side1
+[Sun Jul 19 10:35:41 CDT 2026] START safe pixel X0 side1 retry
+Logdir: /scratch/midway3/rickybao/dreamerv3_runs/ax1wm_finger_pxpxq1s1_seed99
+Static replay: /scratch/midway3/rickybao/dreamerv3_runs/axis1_finger/pxq1/side1
+Observations
+  reward           Space(float32, shape=(), low=-inf, high=inf)
+  is_first         Space(bool, shape=(), low=False, high=True)
+  is_last          Space(bool, shape=(), low=False, high=True)
+  is_terminal      Space(bool, shape=(), low=False, high=True)
+  position         Space(float32, shape=(4,), low=-inf, high=inf)
+  velocity         Space(float32, shape=(3,), low=-inf, high=inf)
+  touch            Space(float32, shape=(2,), low=-inf, high=inf)
+  target_position  Space(float32, shape=(2,), low=-inf, high=inf)
+  dist_to_target   Space(float32, shape=(), low=-inf, high=inf)
+  image            Space(uint8, shape=(64, 64, 3), low=0, high=255)
+Actions
+  action           Space(float32, shape=(2,), low=-1.0, high=1.0)
+Extras
+  consec           Space(int32, shape=(), low=-2147483648, high=2147483647)
+  stepid           Space(uint8, shape=(20,), low=0, high=255)
+  dyn/deter        Space(float32, shape=(512,), low=-inf, high=inf)
+  dyn/stoch        Space(float32, shape=(32, 4), low=-inf, high=inf)
+JAX devices (1): [cuda:0]
+Policy devices: cuda:0
+Train devices:  cuda:0
+Initializing parameters...
+Optimizer opt has 686,070 params:
+       376,448 dyn
+        80,595 dec
+        66,111 val
+        57,663 rew
+        49,796 pol
+        41,153 con
+        14,304 enc
+Done initializing!
+Compiling 1 checkpoint groups...
+Largest checkpoint group: 0 GB
+Compiling train and report...
+Train cost analysis:
+  FLOPS:            9.6e+09
+  Memory (temp):    7.3e+08
+  Memory (inputs):  2.4e+07
+  Memory (outputs): 9.9e+06
+  Memory (code):    2.9e+06
+
+Report cost analysis:
+  FLOPS:            2.6e+08
+  Memory (temp):    9.2e+07
+  Memory (inputs):  9.8e+06
+  Memory (outputs): 1.0e+07
+  Memory (code):    8.0e+06
+
+Done compiling!
+Did not find any checkpoint.
+Loaded static replay: 9370 sampling items (seq length 65).
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "/home/rickybao/projects/dreamerv3/probing/offline_fit.py", line 205, in <module>
+    main()
+  File "/home/rickybao/projects/dreamerv3/probing/offline_fit.py", line 155, in main
+    batch = next(stream)
+            ^^^^^^^^^^^^
+  File "/home/rickybao/projects/dreamerv3/embodied/core/streams.py", line 55, in __next__
+    raise RuntimeError(result)
+RuntimeError: 'image'
+[Sun Jul 19 11:03:08 CDT 2026] axis1 child starting RUN_ID=adapt_ax1pxpxq1imgs0_finger_seed99_ckpt20000 WM_RUN=ax1wm_finger_pxpxq1imgs0_seed99 job=52386416 host=midway3-0285.rcc.local
+[Sun Jul 19 11:03:08 CDT 2026] env prepared: python=/scratch/midway3/rickybao/conda_envs/dreamerv3/bin/python
+python_executable=/scratch/midway3/rickybao/conda_envs/dreamerv3/bin/python
+ERROR: no manifest.json beside /scratch/midway3/rickybao/dreamerv3_runs/axis1_finger/pxq1_img/side0 (run build_controlled_replay build first)
+[Sun Jul 19 11:38:03 CDT 2026] axis1 child starting RUN_ID=adapt_ax1pxpxq1imgs0_finger_seed99_ckpt20000 WM_RUN=ax1wm_finger_pxpxq1imgs0_seed99 job=52386587 host=midway3-0294.rcc.local
+[Sun Jul 19 11:38:03 CDT 2026] env prepared: python=/scratch/midway3/rickybao/conda_envs/dreamerv3/bin/python
+python_executable=/scratch/midway3/rickybao/conda_envs/dreamerv3/bin/python
+[Sun Jul 19 11:38:03 CDT 2026] offline_fit WM_RUN=ax1wm_finger_pxpxq1imgs0_seed99 REPLAY=/scratch/midway3/rickybao/dreamerv3_runs/axis1_finger/pxq1_img/side0 UPDATES=20000 SEED=99
+[Sun Jul 19 11:38:03 CDT 2026] fit flags: --agent.expl.mode task  (arm=full size=default base=pixel_wm)
+Logdir: /scratch/midway3/rickybao/dreamerv3_runs/ax1wm_finger_pxpxq1imgs0_seed99
+Static replay: /scratch/midway3/rickybao/dreamerv3_runs/axis1_finger/pxq1_img/side0
+Observations
+  reward           Space(float32, shape=(), low=-inf, high=inf)
+  is_first         Space(bool, shape=(), low=False, high=True)
+  is_last          Space(bool, shape=(), low=False, high=True)
+  is_terminal      Space(bool, shape=(), low=False, high=True)
+  position         Space(float32, shape=(4,), low=-inf, high=inf)
+  velocity         Space(float32, shape=(3,), low=-inf, high=inf)
+  touch            Space(float32, shape=(2,), low=-inf, high=inf)
+  target_position  Space(float32, shape=(2,), low=-inf, high=inf)
+  dist_to_target   Space(float32, shape=(), low=-inf, high=inf)
+  image            Space(uint8, shape=(64, 64, 3), low=0, high=255)
+Actions
+  action           Space(float32, shape=(2,), low=-1.0, high=1.0)
+Extras
+  consec           Space(int32, shape=(), low=-2147483648, high=2147483647)
+  stepid           Space(uint8, shape=(20,), low=0, high=255)
+  dyn/deter        Space(float32, shape=(512,), low=-inf, high=inf)
+  dyn/stoch        Space(float32, shape=(32, 4), low=-inf, high=inf)
+JAX devices (1): [cuda:0]
+Policy devices: cuda:0
+Train devices:  cuda:0
+Initializing parameters...
+Optimizer opt has 686,070 params:
+       376,448 dyn
+        80,595 dec
+        66,111 val
+        57,663 rew
+        49,796 pol
+        41,153 con
+        14,304 enc
+Done initializing!
+Compiling 1 checkpoint groups...
+Largest checkpoint group: 0 GB
+Compiling train and report...
+Could not load symbol cuFuncGetName. Error: /lib64/libcuda.so.1: undefined symbol: cuFuncGetName
+Train cost analysis:
+  FLOPS:            1.6e+10
+  Memory (temp):    4.5e+08
+  Memory (inputs):  2.4e+07
+  Memory (outputs): 9.9e+06
+  Memory (code):    3.0e+06
+
+Report cost analysis:
+  FLOPS:            2.8e+08
+  Memory (temp):    8.0e+07
+  Memory (inputs):  9.8e+06
+  Memory (outputs): 1.0e+07
+  Memory (code):    8.0e+06
+
+Done compiling!
+Did not find any checkpoint.
+Loaded static replay: 9370 sampling items (seq length 65).
+  update     1/20000: wm_total=0.000  
+  update    25/20000: wm_total=1523.640  con=0.768  dyn=5.519  image=1506.294  rep=5.519  rew=5.541
+  update    50/20000: wm_total=1490.276  con=0.734  dyn=5.537  image=1472.929  rep=5.537  rew=5.538
+  update    75/20000: wm_total=1415.764  con=0.699  dyn=5.446  image=1398.640  rep=5.446  rew=5.532
+Start JAX profiler: /scratch/midway3/rickybao/dreamerv3_runs/ax1wm_finger_pxpxq1imgs0_seed99
+2026-07-19 11:39:08.410305: E external/xla/xla/python/profiler/internal/python_hooks.cc:400] Can't import tensorflow.python.profiler.trace
+  update   100/20000: wm_total=1313.187  con=0.648  dyn=5.529  image=1295.960  rep=5.529  rew=5.522
+Stop JAX profiler
+2026-07-19 11:39:10.155557: E external/xla/xla/python/profiler/internal/python_hooks.cc:400] Can't import tensorflow.python.profiler.trace
+  update   125/20000: wm_total=1193.520  con=0.556  dyn=5.411  image=1176.635  rep=5.411  rew=5.508
+  update   150/20000: wm_total=1072.461  con=0.483  dyn=5.349  image=1055.792  rep=5.349  rew=5.489
+  update   175/20000: wm_total=939.990  con=0.367  dyn=5.724  image=922.711  rep=5.724  rew=5.463
+  update   200/20000: wm_total=815.300  con=0.272  dyn=6.108  image=797.382  rep=6.108  rew=5.431
+  update   225/20000: wm_total=708.172  con=0.194  dyn=6.573  image=689.440  rep=6.573  rew=5.392
+  update   250/20000: wm_total=604.267  con=0.146  dyn=6.562  image=585.652  rep=6.562  rew=5.345
+  update   275/20000: wm_total=513.542  con=0.110  dyn=6.217  image=495.706  rep=6.217  rew=5.292
+  update   300/20000: wm_total=434.068  con=0.088  dyn=6.045  image=416.658  rep=6.045  rew=5.232
+  update   325/20000: wm_total=363.098  con=0.073  dyn=5.847  image=346.166  rep=5.847  rew=5.165
+  update   350/20000: wm_total=307.078  con=0.063  dyn=5.541  image=290.839  rep=5.541  rew=5.094
+  update   375/20000: wm_total=263.469  con=0.055  dyn=5.319  image=247.760  rep=5.319  rew=5.017
+  update   400/20000: wm_total=230.480  con=0.048  dyn=5.050  image=215.399  rep=5.050  rew=4.934
+  update   425/20000: wm_total=208.866  con=0.044  dyn=4.756  image=194.460  rep=4.756  rew=4.849
+  update   450/20000: wm_total=188.815  con=0.041  dyn=4.299  image=175.417  rep=4.299  rew=4.759
+  update   475/20000: wm_total=172.620  con=0.040  dyn=3.820  image=160.272  rep=3.820  rew=4.667
+  update   500/20000: wm_total=156.871  con=0.036  dyn=3.649  image=144.967  rep=3.649  rew=4.570
+  update   525/20000: wm_total=146.013  con=0.033  dyn=3.408  image=134.695  rep=3.408  rew=4.469
+  update   550/20000: wm_total=140.674  con=0.031  dyn=3.163  image=129.954  rep=3.163  rew=4.364
+  update   575/20000: wm_total=128.136  con=0.029  dyn=2.933  image=117.984  rep=2.933  rew=4.257
+  update   600/20000: wm_total=127.244  con=0.028  dyn=2.797  image=117.474  rep=2.797  rew=4.148
+  update   625/20000: wm_total=117.555  con=0.027  dyn=2.858  image=107.778  rep=2.858  rew=4.033
+  update   650/20000: wm_total=118.616  con=0.027  dyn=2.849  image=108.973  rep=2.849  rew=3.918
+  update   675/20000: wm_total=108.319  con=0.026  dyn=3.487  image=97.524  rep=3.487  rew=3.795
+  update   700/20000: wm_total=105.961  con=0.026  dyn=3.947  image=94.371  rep=3.947  rew=3.670
+  update   725/20000: wm_total=98.818  con=0.025  dyn=4.301  image=86.651  rep=4.301  rew=3.540
+  update   750/20000: wm_total=104.282  con=0.026  dyn=4.587  image=91.674  rep=4.587  rew=3.409
+  update   775/20000: wm_total=96.765  con=0.025  dyn=4.184  image=85.102  rep=4.184  rew=3.270
+  update   800/20000: wm_total=90.062  con=0.025  dyn=4.319  image=78.272  rep=4.319  rew=3.127
+  update   825/20000: wm_total=90.036  con=0.025  dyn=4.139  image=78.747  rep=4.139  rew=2.985
+  update   850/20000: wm_total=88.037  con=0.025  dyn=3.814  image=77.549  rep=3.814  rew=2.836
+  update   875/20000: wm_total=86.862  con=0.026  dyn=3.698  image=76.756  rep=3.698  rew=2.685
+  update   900/20000: wm_total=83.327  con=0.024  dyn=3.771  image=73.234  rep=3.771  rew=2.527
+  update   925/20000: wm_total=78.559  con=0.024  dyn=3.613  image=68.939  rep=3.613  rew=2.369
+  update   950/20000: wm_total=78.069  con=0.024  dyn=3.915  image=68.001  rep=3.915  rew=2.213
+  update   975/20000: wm_total=77.289  con=0.025  dyn=3.508  image=68.193  rep=3.508  rew=2.056
+  update  1000/20000: wm_total=71.978  con=0.025  dyn=3.700  image=62.660  rep=3.700  rew=1.894
+  update  1025/20000: wm_total=69.500  con=0.024  dyn=3.858  image=60.025  rep=3.858  rew=1.735
+  update  1050/20000: wm_total=70.308  con=0.024  dyn=3.727  image=61.244  rep=3.727  rew=1.586
+  update  1075/20000: wm_total=65.067  con=0.024  dyn=3.536  image=56.533  rep=3.536  rew=1.438
+  update  1100/20000: wm_total=65.365  con=0.025  dyn=3.542  image=56.959  rep=3.542  rew=1.297
+  update  1125/20000: wm_total=63.883  con=0.024  dyn=3.215  image=56.266  rep=3.215  rew=1.163
+  update  1150/20000: wm_total=59.094  con=0.024  dyn=3.255  image=51.523  rep=3.255  rew=1.037
+  update  1175/20000: wm_total=63.531  con=0.023  dyn=3.546  image=55.490  rep=3.546  rew=0.927
+  update  1200/20000: wm_total=54.489  con=0.023  dyn=3.043  image=47.561  rep=3.043  rew=0.818
+  update  1225/20000: wm_total=56.628  con=0.024  dyn=3.192  image=49.500  rep=3.192  rew=0.720
+  update  1250/20000: wm_total=56.079  con=0.024  dyn=3.209  image=49.006  rep=3.209  rew=0.631
+  update  1275/20000: wm_total=55.911  con=0.024  dyn=3.203  image=48.929  rep=3.203  rew=0.553
+  update  1300/20000: wm_total=55.089  con=0.023  dyn=3.065  image=48.459  rep=3.065  rew=0.477
+  update  1325/20000: wm_total=55.251  con=0.023  dyn=3.162  image=48.488  rep=3.162  rew=0.417
+  update  1350/20000: wm_total=51.548  con=0.022  dyn=2.916  image=45.328  rep=2.916  rew=0.366
+  update  1375/20000: wm_total=55.763  con=0.022  dyn=3.228  image=48.960  rep=3.228  rew=0.325
+  update  1400/20000: wm_total=52.580  con=0.022  dyn=2.898  image=46.471  rep=2.898  rew=0.291
+  update  1425/20000: wm_total=49.997  con=0.022  dyn=3.100  image=43.510  rep=3.100  rew=0.264
+  update  1450/20000: wm_total=49.318  con=0.022  dyn=2.889  image=43.275  rep=2.889  rew=0.242
+  update  1475/20000: wm_total=48.024  con=0.022  dyn=2.882  image=42.018  rep=2.882  rew=0.222
+  update  1500/20000: wm_total=46.131  con=0.022  dyn=2.664  image=40.577  rep=2.664  rew=0.204
+  update  1525/20000: wm_total=50.632  con=0.023  dyn=2.906  image=44.608  rep=2.906  rew=0.188
+  update  1550/20000: wm_total=48.252  con=0.022  dyn=2.781  image=42.492  rep=2.781  rew=0.177
+  update  1575/20000: wm_total=47.444  con=0.022  dyn=2.778  image=41.702  rep=2.778  rew=0.163
+  update  1600/20000: wm_total=44.679  con=0.022  dyn=2.712  image=39.079  rep=2.712  rew=0.153
+  update  1625/20000: wm_total=46.681  con=0.023  dyn=2.842  image=40.829  rep=2.842  rew=0.144
+  update  1650/20000: wm_total=45.754  con=0.021  dyn=2.700  image=40.197  rep=2.700  rew=0.135
+  update  1675/20000: wm_total=47.002  con=0.021  dyn=2.705  image=41.443  rep=2.705  rew=0.128
+  update  1700/20000: wm_total=38.054  con=0.022  dyn=2.508  image=32.894  rep=2.508  rew=0.121
+  update  1725/20000: wm_total=44.364  con=0.022  dyn=2.715  image=38.798  rep=2.715  rew=0.114
+  update  1750/20000: wm_total=44.959  con=0.021  dyn=2.854  image=39.121  rep=2.854  rew=0.108
+  update  1775/20000: wm_total=41.006  con=0.022  dyn=2.423  image=36.035  rep=2.423  rew=0.103
+  update  1800/20000: wm_total=40.192  con=0.022  dyn=2.522  image=35.029  rep=2.522  rew=0.098
+  update  1825/20000: wm_total=43.871  con=0.022  dyn=2.495  image=38.765  rep=2.495  rew=0.094
+  update  1850/20000: wm_total=40.831  con=0.021  dyn=2.446  image=35.829  rep=2.446  rew=0.089
+  update  1875/20000: wm_total=42.650  con=0.021  dyn=2.498  image=37.547  rep=2.498  rew=0.086
+  update  1900/20000: wm_total=39.622  con=0.021  dyn=2.549  image=34.421  rep=2.549  rew=0.082
+  update  1925/20000: wm_total=40.458  con=0.021  dyn=2.452  image=35.453  rep=2.452  rew=0.079
+  update  1950/20000: wm_total=39.427  con=0.021  dyn=2.524  image=34.283  rep=2.524  rew=0.076
+  update  1975/20000: wm_total=38.645  con=0.021  dyn=2.520  image=33.512  rep=2.520  rew=0.072
+  update  2000/20000: wm_total=42.643  con=0.021  dyn=2.528  image=37.497  rep=2.528  rew=0.070
+  update  2025/20000: wm_total=37.671  con=0.021  dyn=2.341  image=32.901  rep=2.341  rew=0.066
+  update  2050/20000: wm_total=38.421  con=0.021  dyn=2.582  image=33.171  rep=2.582  rew=0.065
+  update  2075/20000: wm_total=36.999  con=0.021  dyn=2.198  image=32.521  rep=2.198  rew=0.062
+  update  2100/20000: wm_total=36.846  con=0.021  dyn=2.522  image=31.720  rep=2.522  rew=0.060
+  update  2125/20000: wm_total=39.020  con=0.021  dyn=2.577  image=33.788  rep=2.577  rew=0.058
+  update  2150/20000: wm_total=38.305  con=0.021  dyn=2.512  image=33.204  rep=2.512  rew=0.056
+  update  2175/20000: wm_total=36.449  con=0.021  dyn=2.566  image=31.243  rep=2.566  rew=0.054
+  update  2200/20000: wm_total=38.867  con=0.021  dyn=2.490  image=33.814  rep=2.490  rew=0.052
+  update  2225/20000: wm_total=36.449  con=0.021  dyn=2.415  image=31.548  rep=2.415  rew=0.051
+  update  2250/20000: wm_total=36.703  con=0.021  dyn=2.319  image=31.995  rep=2.319  rew=0.048
+  update  2275/20000: wm_total=40.935  con=0.021  dyn=2.755  image=35.356  rep=2.755  rew=0.048
+  update  2300/20000: wm_total=36.446  con=0.021  dyn=2.337  image=31.705  rep=2.337  rew=0.045
+  update  2325/20000: wm_total=33.414  con=0.021  dyn=2.370  image=28.607  rep=2.370  rew=0.045
+  update  2350/20000: wm_total=34.432  con=0.021  dyn=2.428  image=29.513  rep=2.428  rew=0.043
+  update  2375/20000: wm_total=32.351  con=0.021  dyn=2.403  image=27.482  rep=2.403  rew=0.042
+  update  2400/20000: wm_total=35.801  con=0.021  dyn=2.629  image=30.482  rep=2.629  rew=0.041
+  update  2425/20000: wm_total=38.666  con=0.021  dyn=2.625  image=33.356  rep=2.625  rew=0.040
+  update  2450/20000: wm_total=36.013  con=0.021  dyn=2.563  image=30.827  rep=2.563  rew=0.038
+  update  2475/20000: wm_total=33.636  con=0.021  dyn=2.520  image=28.539  rep=2.520  rew=0.037
+  update  2500/20000: wm_total=35.707  con=0.021  dyn=2.443  image=30.764  rep=2.443  rew=0.036
+  update  2525/20000: wm_total=33.717  con=0.021  dyn=2.513  image=28.636  rep=2.513  rew=0.035
+  update  2550/20000: wm_total=39.756  con=0.021  dyn=2.822  image=34.057  rep=2.822  rew=0.035
+  update  2575/20000: wm_total=37.222  con=0.021  dyn=2.684  image=31.799  rep=2.684  rew=0.033
+  update  2600/20000: wm_total=34.506  con=0.021  dyn=2.536  image=29.381  rep=2.536  rew=0.033
+  update  2625/20000: wm_total=33.397  con=0.021  dyn=2.544  image=28.257  rep=2.544  rew=0.032
+  update  2650/20000: wm_total=28.859  con=0.021  dyn=2.226  image=24.356  rep=2.226  rew=0.031
+  update  2675/20000: wm_total=32.131  con=0.021  dyn=2.305  image=27.471  rep=2.305  rew=0.030
+  update  2700/20000: wm_total=34.385  con=0.021  dyn=2.526  image=29.283  rep=2.526  rew=0.029
+  update  2725/20000: wm_total=32.783  con=0.021  dyn=2.593  image=27.547  rep=2.593  rew=0.029
+  update  2750/20000: wm_total=32.746  con=0.021  dyn=2.416  image=27.866  rep=2.416  rew=0.028
+  update  2775/20000: wm_total=31.795  con=0.021  dyn=2.440  image=26.868  rep=2.440  rew=0.027
+  update  2800/20000: wm_total=32.182  con=0.021  dyn=2.606  image=26.922  rep=2.606  rew=0.027
+  update  2825/20000: wm_total=32.167  con=0.021  dyn=2.518  image=27.084  rep=2.518  rew=0.026
+  update  2850/20000: wm_total=34.099  con=0.021  dyn=2.696  image=28.661  rep=2.696  rew=0.026
+  update  2875/20000: wm_total=29.801  con=0.021  dyn=2.382  image=24.992  rep=2.382  rew=0.025
+  update  2900/20000: wm_total=36.789  con=0.021  dyn=2.943  image=30.857  rep=2.943  rew=0.024
+  update  2925/20000: wm_total=28.664  con=0.021  dyn=2.195  image=24.229  rep=2.195  rew=0.024
+  update  2950/20000: wm_total=29.925  con=0.021  dyn=2.303  image=25.275  rep=2.303  rew=0.023
+  update  2975/20000: wm_total=34.344  con=0.021  dyn=2.691  image=28.918  rep=2.691  rew=0.023
+  update  3000/20000: wm_total=30.315  con=0.021  dyn=2.612  image=25.047  rep=2.612  rew=0.022
+  update  3025/20000: wm_total=31.877  con=0.021  dyn=2.502  image=26.830  rep=2.502  rew=0.022
+  update  3050/20000: wm_total=28.895  con=0.021  dyn=2.404  image=24.046  rep=2.404  rew=0.021
+  update  3075/20000: wm_total=31.407  con=0.021  dyn=2.656  image=26.053  rep=2.656  rew=0.021
+  update  3100/20000: wm_total=28.761  con=0.021  dyn=2.272  image=24.175  rep=2.272  rew=0.020
+  update  3125/20000: wm_total=27.197  con=0.021  dyn=2.241  image=22.675  rep=2.241  rew=0.020
+  update  3150/20000: wm_total=29.428  con=0.021  dyn=2.425  image=24.538  rep=2.425  rew=0.020
+  update  3175/20000: wm_total=25.277  con=0.021  dyn=2.154  image=20.928  rep=2.154  rew=0.019
+  update  3200/20000: wm_total=29.513  con=0.021  dyn=2.423  image=24.627  rep=2.423  rew=0.019
+  update  3225/20000: wm_total=28.696  con=0.021  dyn=2.307  image=24.043  rep=2.307  rew=0.018
+  update  3250/20000: wm_total=30.779  con=0.021  dyn=2.732  image=25.277  rep=2.732  rew=0.018
+  update  3275/20000: wm_total=32.489  con=0.021  dyn=2.781  image=26.889  rep=2.781  rew=0.018
+  update  3300/20000: wm_total=32.000  con=0.021  dyn=2.563  image=26.836  rep=2.563  rew=0.017
+  update  3325/20000: wm_total=27.227  con=0.021  dyn=2.440  image=22.311  rep=2.440  rew=0.017
+  update  3350/20000: wm_total=29.519  con=0.021  dyn=2.609  image=24.263  rep=2.609  rew=0.016
+  update  3375/20000: wm_total=33.722  con=0.021  dyn=2.813  image=28.058  rep=2.813  rew=0.016
+  update  3400/20000: wm_total=26.824  con=0.021  dyn=2.369  image=22.049  rep=2.369  rew=0.016
+  update  3425/20000: wm_total=31.814  con=0.021  dyn=2.817  image=26.144  rep=2.817  rew=0.015
+  update  3450/20000: wm_total=26.355  con=0.021  dyn=2.202  image=21.915  rep=2.202  rew=0.015
+  update  3475/20000: wm_total=25.048  con=0.021  dyn=2.409  image=20.194  rep=2.409  rew=0.015
+  update  3500/20000: wm_total=29.343  con=0.021  dyn=2.532  image=24.243  rep=2.532  rew=0.015
+  update  3525/20000: wm_total=27.070  con=0.021  dyn=2.521  image=21.993  rep=2.521  rew=0.014
+  update  3550/20000: wm_total=26.491  con=0.021  dyn=2.446  image=21.565  rep=2.446  rew=0.014
+  update  3575/20000: wm_total=27.337  con=0.021  dyn=2.655  image=21.992  rep=2.655  rew=0.014
+  update  3600/20000: wm_total=29.546  con=0.021  dyn=2.860  image=23.792  rep=2.860  rew=0.014
+  update  3625/20000: wm_total=25.987  con=0.021  dyn=2.315  image=21.322  rep=2.315  rew=0.013
+  update  3650/20000: wm_total=24.397  con=0.021  dyn=2.242  image=19.879  rep=2.242  rew=0.013
+  update  3675/20000: wm_total=29.028  con=0.021  dyn=2.640  image=23.714  rep=2.640  rew=0.013
+  update  3700/20000: wm_total=28.188  con=0.021  dyn=2.736  image=22.683  rep=2.736  rew=0.013
+  update  3725/20000: wm_total=27.949  con=0.021  dyn=2.599  image=22.719  rep=2.599  rew=0.012
+  update  3750/20000: wm_total=29.177  con=0.021  dyn=2.792  image=23.560  rep=2.792  rew=0.012
+  update  3775/20000: wm_total=31.239  con=0.021  dyn=2.882  image=25.441  rep=2.882  rew=0.012
+  update  3800/20000: wm_total=30.553  con=0.021  dyn=2.854  image=24.814  rep=2.854  rew=0.012
+  update  3825/20000: wm_total=25.548  con=0.021  dyn=2.386  image=20.745  rep=2.386  rew=0.011
+  update  3850/20000: wm_total=26.482  con=0.021  dyn=2.662  image=21.126  rep=2.662  rew=0.011
+  update  3875/20000: wm_total=26.978  con=0.021  dyn=2.571  image=21.804  rep=2.571  rew=0.011
+  update  3900/20000: wm_total=26.108  con=0.021  dyn=2.713  image=20.652  rep=2.713  rew=0.011
+  update  3925/20000: wm_total=25.541  con=0.021  dyn=2.567  image=20.375  rep=2.567  rew=0.011
+  update  3950/20000: wm_total=29.378  con=0.021  dyn=2.829  image=23.689  rep=2.829  rew=0.011
+  update  3975/20000: wm_total=23.561  con=0.021  dyn=2.554  image=18.424  rep=2.554  rew=0.010
+  update  4000/20000: wm_total=25.284  con=0.021  dyn=2.342  image=20.570  rep=2.342  rew=0.010
+  update  4025/20000: wm_total=29.734  con=0.021  dyn=2.865  image=23.973  rep=2.865  rew=0.010
+  update  4050/20000: wm_total=25.227  con=0.021  dyn=2.452  image=20.294  rep=2.452  rew=0.010
+  update  4075/20000: wm_total=26.781  con=0.021  dyn=2.489  image=21.772  rep=2.489  rew=0.010
+  update  4100/20000: wm_total=27.014  con=0.021  dyn=2.702  image=21.579  rep=2.702  rew=0.009
+  update  4125/20000: wm_total=23.627  con=0.021  dyn=2.461  image=18.675  rep=2.461  rew=0.009
+  update  4150/20000: wm_total=25.131  con=0.021  dyn=2.417  image=20.268  rep=2.417  rew=0.009
+  update  4175/20000: wm_total=23.843  con=0.021  dyn=2.314  image=19.185  rep=2.314  rew=0.009
+  update  4200/20000: wm_total=27.001  con=0.021  dyn=2.626  image=21.719  rep=2.626  rew=0.009
+  update  4225/20000: wm_total=25.089  con=0.020  dyn=2.530  image=20.000  rep=2.530  rew=0.009
+  update  4250/20000: wm_total=24.357  con=0.021  dyn=2.651  image=19.025  rep=2.651  rew=0.009
+  update  4275/20000: wm_total=26.872  con=0.021  dyn=2.766  image=21.311  rep=2.766  rew=0.008
+  update  4300/20000: wm_total=28.967  con=0.021  dyn=3.239  image=22.459  rep=3.239  rew=0.008
+  update  4325/20000: wm_total=23.046  con=0.021  dyn=2.614  image=17.790  rep=2.614  rew=0.008
+  update  4350/20000: wm_total=28.168  con=0.021  dyn=2.830  image=22.480  rep=2.830  rew=0.008
+  update  4375/20000: wm_total=21.865  con=0.020  dyn=2.317  image=17.203  rep=2.317  rew=0.008
+  update  4400/20000: wm_total=29.763  con=0.021  dyn=3.087  image=23.561  rep=3.087  rew=0.008
+  update  4425/20000: wm_total=26.378  con=0.021  dyn=2.729  image=20.893  rep=2.729  rew=0.008
+  update  4450/20000: wm_total=24.993  con=0.021  dyn=2.550  image=19.865  rep=2.550  rew=0.007
+  update  4475/20000: wm_total=24.459  con=0.020  dyn=2.831  image=18.769  rep=2.831  rew=0.007
+  update  4500/20000: wm_total=26.003  con=0.021  dyn=2.905  image=20.165  rep=2.905  rew=0.007
+  update  4525/20000: wm_total=25.501  con=0.020  dyn=2.724  image=20.024  rep=2.724  rew=0.007
+  update  4550/20000: wm_total=24.130  con=0.020  dyn=2.510  image=19.084  rep=2.510  rew=0.007
+  update  4575/20000: wm_total=23.457  con=0.020  dyn=2.643  image=18.143  rep=2.643  rew=0.007
+  update  4600/20000: wm_total=28.365  con=0.021  dyn=3.163  image=22.012  rep=3.163  rew=0.007
+  update  4625/20000: wm_total=19.626  con=0.021  dyn=2.198  image=15.202  rep=2.198  rew=0.007
+  update  4650/20000: wm_total=24.313  con=0.021  dyn=2.998  image=18.290  rep=2.998  rew=0.006
+  update  4675/20000: wm_total=23.677  con=0.021  dyn=2.651  image=18.349  rep=2.651  rew=0.006
+  update  4700/20000: wm_total=22.775  con=0.021  dyn=2.577  image=17.594  rep=2.577  rew=0.006
+  update  4725/20000: wm_total=23.733  con=0.021  dyn=2.505  image=18.696  rep=2.505  rew=0.006
+  update  4750/20000: wm_total=23.213  con=0.020  dyn=2.549  image=18.088  rep=2.549  rew=0.006
+  update  4775/20000: wm_total=23.604  con=0.020  dyn=2.636  image=18.305  rep=2.636  rew=0.006
+  update  4800/20000: wm_total=22.819  con=0.020  dyn=2.517  image=17.758  rep=2.517  rew=0.006
+  update  4825/20000: wm_total=25.473  con=0.021  dyn=2.687  image=20.074  rep=2.687  rew=0.006
+  update  4850/20000: wm_total=23.763  con=0.021  dyn=2.615  image=18.507  rep=2.615  rew=0.006
+  update  4875/20000: wm_total=24.013  con=0.021  dyn=2.543  image=18.901  rep=2.543  rew=0.006
+  update  4900/20000: wm_total=25.574  con=0.021  dyn=2.806  image=19.936  rep=2.806  rew=0.006
+  update  4925/20000: wm_total=22.309  con=0.021  dyn=2.437  image=17.409  rep=2.437  rew=0.006
+  update  4950/20000: wm_total=21.676  con=0.021  dyn=2.399  image=16.851  rep=2.399  rew=0.005
+  update  4975/20000: wm_total=22.346  con=0.020  dyn=2.655  image=17.010  rep=2.655  rew=0.005
+  update  5000/20000: wm_total=23.135  con=0.020  dyn=2.594  image=17.921  rep=2.594  rew=0.005
+  update  5025/20000: wm_total=22.851  con=0.021  dyn=2.596  image=17.634  rep=2.596  rew=0.005
+  update  5050/20000: wm_total=25.070  con=0.021  dyn=2.792  image=19.460  rep=2.792  rew=0.005
+  update  5075/20000: wm_total=23.583  con=0.020  dyn=2.784  image=17.989  rep=2.784  rew=0.005
+  update  5100/20000: wm_total=21.581  con=0.020  dyn=2.330  image=16.896  rep=2.330  rew=0.005
+  update  5125/20000: wm_total=21.840  con=0.020  dyn=2.528  image=16.758  rep=2.528  rew=0.005
+  update  5150/20000: wm_total=24.756  con=0.020  dyn=2.843  image=19.045  rep=2.843  rew=0.005
+  update  5175/20000: wm_total=23.416  con=0.021  dyn=2.751  image=17.888  rep=2.751  rew=0.005
+  update  5200/20000: wm_total=24.632  con=0.020  dyn=2.969  image=18.669  rep=2.969  rew=0.005
+  update  5225/20000: wm_total=25.129  con=0.020  dyn=2.841  image=19.422  rep=2.841  rew=0.005
+  update  5250/20000: wm_total=21.154  con=0.020  dyn=2.691  image=15.747  rep=2.691  rew=0.005
+  update  5275/20000: wm_total=19.707  con=0.020  dyn=2.364  image=14.955  rep=2.364  rew=0.004
+  update  5300/20000: wm_total=20.208  con=0.020  dyn=2.478  image=15.227  rep=2.478  rew=0.004
+  update  5325/20000: wm_total=22.492  con=0.020  dyn=2.556  image=17.355  rep=2.556  rew=0.004
+  update  5350/20000: wm_total=20.815  con=0.020  dyn=2.335  image=16.121  rep=2.335  rew=0.004
+  update  5375/20000: wm_total=21.904  con=0.020  dyn=2.598  image=16.684  rep=2.598  rew=0.004
+  update  5400/20000: wm_total=21.072  con=0.020  dyn=2.506  image=16.035  rep=2.506  rew=0.004
+  update  5425/20000: wm_total=21.484  con=0.020  dyn=2.641  image=16.178  rep=2.641  rew=0.004
+  update  5450/20000: wm_total=23.206  con=0.020  dyn=2.593  image=17.996  rep=2.593  rew=0.004
+  update  5475/20000: wm_total=18.981  con=0.020  dyn=2.162  image=14.632  rep=2.162  rew=0.004
+  update  5500/20000: wm_total=23.875  con=0.020  dyn=2.934  image=17.983  rep=2.934  rew=0.004
+  update  5525/20000: wm_total=18.734  con=0.020  dyn=2.244  image=14.223  rep=2.244  rew=0.004
+  update  5550/20000: wm_total=20.687  con=0.020  dyn=2.611  image=15.440  rep=2.611  rew=0.004
+  update  5575/20000: wm_total=20.520  con=0.020  dyn=2.536  image=15.424  rep=2.536  rew=0.004
+  update  5600/20000: wm_total=19.117  con=0.020  dyn=2.220  image=14.653  rep=2.220  rew=0.004
+  update  5625/20000: wm_total=20.694  con=0.020  dyn=2.613  image=15.444  rep=2.613  rew=0.004
+  update  5650/20000: wm_total=19.429  con=0.020  dyn=2.395  image=14.614  rep=2.395  rew=0.004
+  update  5675/20000: wm_total=21.116  con=0.020  dyn=2.464  image=16.163  rep=2.464  rew=0.004
+  update  5700/20000: wm_total=20.293  con=0.020  dyn=2.518  image=15.233  rep=2.518  rew=0.003
+  update  5725/20000: wm_total=22.989  con=0.020  dyn=3.012  image=16.942  rep=3.012  rew=0.003
+  update  5750/20000: wm_total=24.137  con=0.020  dyn=3.133  image=17.846  rep=3.133  rew=0.003
+  update  5775/20000: wm_total=20.868  con=0.020  dyn=2.784  image=15.276  rep=2.784  rew=0.003
+  update  5800/20000: wm_total=22.520  con=0.020  dyn=2.714  image=17.067  rep=2.714  rew=0.003
+  update  5825/20000: wm_total=22.085  con=0.020  dyn=2.864  image=16.333  rep=2.864  rew=0.003
+  update  5850/20000: wm_total=21.163  con=0.020  dyn=2.752  image=15.635  rep=2.752  rew=0.003
+  update  5875/20000: wm_total=19.884  con=0.020  dyn=2.365  image=15.130  rep=2.365  rew=0.003
+  update  5900/20000: wm_total=19.114  con=0.020  dyn=2.413  image=14.265  rep=2.413  rew=0.003
+  update  5925/20000: wm_total=20.212  con=0.020  dyn=2.610  image=14.969  rep=2.610  rew=0.003
+  update  5950/20000: wm_total=20.983  con=0.020  dyn=2.723  image=15.514  rep=2.723  rew=0.003
+  update  5975/20000: wm_total=23.418  con=0.021  dyn=2.996  image=17.402  rep=2.996  rew=0.003
+  update  6000/20000: wm_total=19.776  con=0.020  dyn=2.460  image=14.832  rep=2.460  rew=0.003
+  update  6025/20000: wm_total=21.085  con=0.020  dyn=2.800  image=15.463  rep=2.800  rew=0.003
+  update  6050/20000: wm_total=21.469  con=0.020  dyn=2.560  image=16.326  rep=2.560  rew=0.003
+  update  6075/20000: wm_total=21.345  con=0.020  dyn=2.579  image=16.163  rep=2.579  rew=0.003
+  update  6100/20000: wm_total=17.016  con=0.020  dyn=2.313  image=12.366  rep=2.313  rew=0.003
+  update  6125/20000: wm_total=18.797  con=0.020  dyn=2.359  image=14.057  rep=2.359  rew=0.003
+  update  6150/20000: wm_total=21.331  con=0.020  dyn=2.606  image=16.097  rep=2.606  rew=0.003
+  update  6175/20000: wm_total=17.226  con=0.020  dyn=2.185  image=12.834  rep=2.185  rew=0.003
+  update  6200/20000: wm_total=22.976  con=0.020  dyn=2.952  image=17.050  rep=2.952  rew=0.003
+  update  6225/20000: wm_total=21.479  con=0.020  dyn=2.659  image=16.137  rep=2.659  rew=0.003
+  update  6250/20000: wm_total=21.790  con=0.020  dyn=2.849  image=16.069  rep=2.849  rew=0.002
+  update  6275/20000: wm_total=18.946  con=0.020  dyn=2.492  image=13.938  rep=2.492  rew=0.002
+  update  6300/20000: wm_total=20.808  con=0.020  dyn=2.769  image=15.246  rep=2.769  rew=0.002
+  update  6325/20000: wm_total=19.682  con=0.020  dyn=2.528  image=14.604  rep=2.528  rew=0.002
+  update  6350/20000: wm_total=18.388  con=0.020  dyn=2.615  image=13.136  rep=2.615  rew=0.002
+  update  6375/20000: wm_total=20.228  con=0.020  dyn=2.468  image=15.269  rep=2.468  rew=0.002
+  update  6400/20000: wm_total=17.992  con=0.020  dyn=2.220  image=13.529  rep=2.220  rew=0.002
+  update  6425/20000: wm_total=19.408  con=0.020  dyn=2.439  image=14.507  rep=2.439  rew=0.002
+  update  6450/20000: wm_total=18.806  con=0.020  dyn=2.505  image=13.773  rep=2.505  rew=0.002
+  update  6475/20000: wm_total=19.234  con=0.020  dyn=2.839  image=13.533  rep=2.839  rew=0.002
+  update  6500/20000: wm_total=19.018  con=0.020  dyn=2.506  image=13.983  rep=2.506  rew=0.002
+  update  6525/20000: wm_total=19.395  con=0.020  dyn=2.559  image=14.255  rep=2.559  rew=0.002
+  update  6550/20000: wm_total=20.153  con=0.020  dyn=2.688  image=14.755  rep=2.688  rew=0.002
+  update  6575/20000: wm_total=18.921  con=0.020  dyn=2.369  image=14.160  rep=2.369  rew=0.002
+  update  6600/20000: wm_total=20.363  con=0.020  dyn=2.615  image=15.112  rep=2.615  rew=0.002
+  update  6625/20000: wm_total=19.233  con=0.020  dyn=2.556  image=14.098  rep=2.556  rew=0.002
+  update  6650/20000: wm_total=21.637  con=0.020  dyn=2.826  image=15.963  rep=2.826  rew=0.002
+  update  6675/20000: wm_total=18.509  con=0.020  dyn=2.552  image=13.382  rep=2.552  rew=0.002
+  update  6700/20000: wm_total=20.150  con=0.020  dyn=2.780  image=14.567  rep=2.780  rew=0.002
+  update  6725/20000: wm_total=19.833  con=0.020  dyn=2.792  image=14.228  rep=2.792  rew=0.002
+  update  6750/20000: wm_total=20.051  con=0.020  dyn=2.915  image=14.198  rep=2.915  rew=0.002
+  update  6775/20000: wm_total=19.154  con=0.020  dyn=2.659  image=13.814  rep=2.659  rew=0.002
+  update  6800/20000: wm_total=18.584  con=0.020  dyn=2.568  image=13.425  rep=2.568  rew=0.002
+  update  6825/20000: wm_total=18.186  con=0.020  dyn=2.462  image=13.240  rep=2.462  rew=0.002
+  update  6850/20000: wm_total=19.650  con=0.020  dyn=2.629  image=14.369  rep=2.629  rew=0.002
+  update  6875/20000: wm_total=20.059  con=0.020  dyn=2.748  image=14.541  rep=2.748  rew=0.002
+  update  6900/20000: wm_total=18.794  con=0.020  dyn=2.438  image=13.896  rep=2.438  rew=0.002
+  update  6925/20000: wm_total=19.607  con=0.020  dyn=2.609  image=14.367  rep=2.609  rew=0.002
+  update  6950/20000: wm_total=20.606  con=0.020  dyn=2.791  image=15.001  rep=2.791  rew=0.002
+  update  6975/20000: wm_total=19.934  con=0.020  dyn=2.869  image=14.173  rep=2.869  rew=0.002
+  update  7000/20000: wm_total=18.075  con=0.020  dyn=2.251  image=13.552  rep=2.251  rew=0.002
+  update  7025/20000: wm_total=20.662  con=0.020  dyn=2.774  image=15.092  rep=2.774  rew=0.002
+  update  7050/20000: wm_total=17.287  con=0.020  dyn=2.402  image=12.461  rep=2.402  rew=0.002
+  update  7075/20000: wm_total=21.349  con=0.020  dyn=2.981  image=15.366  rep=2.981  rew=0.002
+  update  7100/20000: wm_total=16.929  con=0.020  dyn=2.241  image=12.424  rep=2.241  rew=0.002
+  update  7125/20000: wm_total=21.465  con=0.020  dyn=2.865  image=15.713  rep=2.865  rew=0.002
+  update  7150/20000: wm_total=17.114  con=0.020  dyn=2.280  image=12.531  rep=2.280  rew=0.002
+  update  7175/20000: wm_total=16.467  con=0.020  dyn=2.308  image=11.829  rep=2.308  rew=0.001
+  update  7200/20000: wm_total=17.809  con=0.020  dyn=2.424  image=12.939  rep=2.424  rew=0.001
+  update  7225/20000: wm_total=18.526  con=0.020  dyn=2.252  image=13.999  rep=2.252  rew=0.001
+  update  7250/20000: wm_total=19.618  con=0.020  dyn=2.695  image=14.206  rep=2.695  rew=0.001
+  update  7275/20000: wm_total=20.647  con=0.020  dyn=2.770  image=15.085  rep=2.770  rew=0.001
+  update  7300/20000: wm_total=16.505  con=0.020  dyn=2.286  image=11.911  rep=2.286  rew=0.001
+  update  7325/20000: wm_total=16.214  con=0.020  dyn=2.251  image=11.690  rep=2.251  rew=0.001
+  update  7350/20000: wm_total=20.535  con=0.020  dyn=2.726  image=15.062  rep=2.726  rew=0.001
+  update  7375/20000: wm_total=19.695  con=0.020  dyn=2.859  image=13.955  rep=2.859  rew=0.001
+  update  7400/20000: wm_total=19.508  con=0.020  dyn=2.681  image=14.124  rep=2.681  rew=0.001
+  update  7425/20000: wm_total=17.744  con=0.020  dyn=2.548  image=12.626  rep=2.548  rew=0.001
+  update  7450/20000: wm_total=15.332  con=0.020  dyn=1.972  image=11.367  rep=1.972  rew=0.001
+  update  7475/20000: wm_total=17.989  con=0.020  dyn=2.523  image=12.921  rep=2.523  rew=0.001
+  update  7500/20000: wm_total=18.407  con=0.020  dyn=2.585  image=13.216  rep=2.585  rew=0.001
+  update  7525/20000: wm_total=18.114  con=0.020  dyn=2.209  image=13.673  rep=2.209  rew=0.001
+  update  7550/20000: wm_total=18.692  con=0.020  dyn=2.577  image=13.516  rep=2.577  rew=0.001
+  update  7575/20000: wm_total=16.451  con=0.020  dyn=2.277  image=11.875  rep=2.277  rew=0.001
+  update  7600/20000: wm_total=17.486  con=0.020  dyn=2.437  image=12.591  rep=2.437  rew=0.001
+  update  7625/20000: wm_total=16.884  con=0.020  dyn=2.261  image=12.341  rep=2.261  rew=0.001
+  update  7650/20000: wm_total=18.516  con=0.020  dyn=2.667  image=13.161  rep=2.667  rew=0.001
+  update  7675/20000: wm_total=16.756  con=0.020  dyn=2.330  image=12.074  rep=2.330  rew=0.001
+  update  7700/20000: wm_total=17.728  con=0.020  dyn=2.693  image=12.321  rep=2.693  rew=0.001
+  update  7725/20000: wm_total=16.156  con=0.020  dyn=2.261  image=11.613  rep=2.261  rew=0.001
+  update  7750/20000: wm_total=16.667  con=0.020  dyn=2.404  image=11.838  rep=2.404  rew=0.001
+  update  7775/20000: wm_total=19.080  con=0.020  dyn=2.656  image=13.747  rep=2.656  rew=0.001
+  update  7800/20000: wm_total=19.016  con=0.020  dyn=2.666  image=13.662  rep=2.666  rew=0.001
+  update  7825/20000: wm_total=16.201  con=0.020  dyn=2.364  image=11.453  rep=2.364  rew=0.001
+  update  7850/20000: wm_total=16.487  con=0.020  dyn=2.340  image=11.785  rep=2.340  rew=0.001
+  update  7875/20000: wm_total=17.237  con=0.020  dyn=2.258  image=12.700  rep=2.258  rew=0.001
+  update  7900/20000: wm_total=14.798  con=0.020  dyn=2.159  image=10.459  rep=2.159  rew=0.001
+  update  7925/20000: wm_total=18.360  con=0.020  dyn=2.478  image=13.383  rep=2.478  rew=0.001
+  update  7950/20000: wm_total=18.243  con=0.020  dyn=2.601  image=13.019  rep=2.601  rew=0.001
+  update  7975/20000: wm_total=18.071  con=0.020  dyn=2.521  image=13.007  rep=2.521  rew=0.001
+  update  8000/20000: wm_total=15.886  con=0.020  dyn=2.341  image=11.182  rep=2.341  rew=0.001
+  update  8025/20000: wm_total=16.000  con=0.020  dyn=2.158  image=11.662  rep=2.158  rew=0.001
+  update  8050/20000: wm_total=18.991  con=0.020  dyn=2.707  image=13.556  rep=2.707  rew=0.001
+  update  8075/20000: wm_total=17.669  con=0.020  dyn=2.390  image=12.867  rep=2.390  rew=0.001
+  update  8100/20000: wm_total=16.954  con=0.020  dyn=2.416  image=12.101  rep=2.416  rew=0.001
+  update  8125/20000: wm_total=15.063  con=0.020  dyn=2.120  image=10.802  rep=2.120  rew=0.001
+  update  8150/20000: wm_total=17.983  con=0.020  dyn=2.607  image=12.747  rep=2.607  rew=0.001
+  update  8175/20000: wm_total=18.067  con=0.020  dyn=2.590  image=12.865  rep=2.590  rew=0.001
+  update  8200/20000: wm_total=17.535  con=0.020  dyn=2.601  image=12.312  rep=2.601  rew=0.001
+  update  8225/20000: wm_total=15.996  con=0.020  dyn=2.403  image=11.169  rep=2.403  rew=0.001
+  update  8250/20000: wm_total=16.157  con=0.020  dyn=2.254  image=11.629  rep=2.254  rew=0.001
+  update  8275/20000: wm_total=17.752  con=0.020  dyn=2.640  image=12.451  rep=2.640  rew=0.001
+  update  8300/20000: wm_total=15.392  con=0.020  dyn=2.122  image=11.126  rep=2.122  rew=0.001
+  update  8325/20000: wm_total=18.102  con=0.020  dyn=2.685  image=12.710  rep=2.685  rew=0.001
+  update  8350/20000: wm_total=16.553  con=0.020  dyn=2.501  image=11.530  rep=2.501  rew=0.001
+  update  8375/20000: wm_total=17.971  con=0.020  dyn=2.548  image=12.854  rep=2.548  rew=0.001
+  update  8400/20000: wm_total=18.192  con=0.020  dyn=2.528  image=13.114  rep=2.528  rew=0.001
+  update  8425/20000: wm_total=15.404  con=0.020  dyn=2.246  image=10.891  rep=2.246  rew=0.001
+  update  8450/20000: wm_total=18.051  con=0.020  dyn=2.478  image=13.074  rep=2.478  rew=0.001
+  update  8475/20000: wm_total=15.166  con=0.020  dyn=2.240  image=10.666  rep=2.240  rew=0.001
+  update  8500/20000: wm_total=15.757  con=0.020  dyn=2.195  image=11.346  rep=2.195  rew=0.001
+  update  8525/20000: wm_total=14.694  con=0.020  dyn=2.129  image=10.416  rep=2.129  rew=0.001
+  update  8550/20000: wm_total=15.792  con=0.020  dyn=2.331  image=11.109  rep=2.331  rew=0.001
+  update  8575/20000: wm_total=16.847  con=0.020  dyn=2.456  image=11.913  rep=2.456  rew=0.001
+  update  8600/20000: wm_total=16.548  con=0.020  dyn=2.207  image=12.113  rep=2.207  rew=0.001
+  update  8625/20000: wm_total=18.171  con=0.020  dyn=2.502  image=13.146  rep=2.502  rew=0.001
+  update  8650/20000: wm_total=19.507  con=0.020  dyn=2.987  image=13.513  rep=2.987  rew=0.001
+  update  8675/20000: wm_total=16.964  con=0.020  dyn=2.424  image=12.095  rep=2.424  rew=0.001
+  update  8700/20000: wm_total=16.169  con=0.020  dyn=2.411  image=11.326  rep=2.411  rew=0.001
+  update  8725/20000: wm_total=17.273  con=0.020  dyn=2.551  image=12.151  rep=2.551  rew=0.001
+  update  8750/20000: wm_total=18.941  con=0.020  dyn=2.582  image=13.755  rep=2.582  rew=0.001
+  update  8775/20000: wm_total=15.346  con=0.020  dyn=2.176  image=10.973  rep=2.176  rew=0.001
+  update  8800/20000: wm_total=17.457  con=0.020  dyn=2.501  image=12.434  rep=2.501  rew=0.001
+  update  8825/20000: wm_total=16.366  con=0.020  dyn=2.367  image=11.612  rep=2.367  rew=0.001
+  update  8850/20000: wm_total=16.457  con=0.020  dyn=2.483  image=11.470  rep=2.483  rew=0.001
+  update  8875/20000: wm_total=13.187  con=0.020  dyn=1.887  image=9.391  rep=1.887  rew=0.001
+  update  8900/20000: wm_total=17.154  con=0.020  dyn=2.493  image=12.147  rep=2.493  rew=0.001
+  update  8925/20000: wm_total=17.260  con=0.020  dyn=2.490  image=12.260  rep=2.490  rew=0.001
+  update  8950/20000: wm_total=18.147  con=0.020  dyn=2.618  image=12.889  rep=2.618  rew=0.001
+  update  8975/20000: wm_total=14.647  con=0.020  dyn=2.130  image=10.366  rep=2.130  rew=0.001
+  update  9000/20000: wm_total=14.829  con=0.020  dyn=2.262  image=10.283  rep=2.262  rew=0.001
+  update  9025/20000: wm_total=17.290  con=0.020  dyn=2.555  image=12.158  rep=2.555  rew=0.001
+  update  9050/20000: wm_total=18.980  con=0.020  dyn=2.705  image=13.549  rep=2.705  rew=0.001
+  update  9075/20000: wm_total=15.213  con=0.020  dyn=2.306  image=10.580  rep=2.306  rew=0.001
+  update  9100/20000: wm_total=14.683  con=0.020  dyn=2.297  image=10.067  rep=2.297  rew=0.001
+  update  9125/20000: wm_total=16.248  con=0.020  dyn=2.455  image=11.316  rep=2.455  rew=0.001
+  update  9150/20000: wm_total=16.880  con=0.020  dyn=2.300  image=12.259  rep=2.300  rew=0.001
+  update  9175/20000: wm_total=16.413  con=0.020  dyn=2.481  image=11.430  rep=2.481  rew=0.001
+  update  9200/20000: wm_total=17.705  con=0.020  dyn=2.614  image=12.456  rep=2.614  rew=0.001
+  update  9225/20000: wm_total=15.364  con=0.020  dyn=2.159  image=11.024  rep=2.159  rew=0.000
+  update  9250/20000: wm_total=16.356  con=0.020  dyn=2.465  image=11.406  rep=2.465  rew=0.000
+  update  9275/20000: wm_total=19.805  con=0.020  dyn=2.853  image=14.078  rep=2.853  rew=0.000
+  update  9300/20000: wm_total=17.145  con=0.020  dyn=2.375  image=12.374  rep=2.375  rew=0.000
+  update  9325/20000: wm_total=17.070  con=0.020  dyn=2.566  image=11.917  rep=2.566  rew=0.000
+  update  9350/20000: wm_total=16.382  con=0.020  dyn=2.573  image=11.214  rep=2.573  rew=0.000
+  update  9375/20000: wm_total=15.139  con=0.020  dyn=2.297  image=10.525  rep=2.297  rew=0.000
+  update  9400/20000: wm_total=14.909  con=0.020  dyn=2.166  image=10.557  rep=2.166  rew=0.000
+  update  9425/20000: wm_total=14.752  con=0.020  dyn=1.970  image=10.791  rep=1.970  rew=0.000
+  update  9450/20000: wm_total=15.227  con=0.020  dyn=2.309  image=10.587  rep=2.309  rew=0.000
+  update  9475/20000: wm_total=16.625  con=0.020  dyn=2.381  image=11.841  rep=2.381  rew=0.000
+  update  9500/20000: wm_total=16.987  con=0.020  dyn=2.425  image=12.117  rep=2.425  rew=0.000
+  update  9525/20000: wm_total=15.474  con=0.020  dyn=2.136  image=11.180  rep=2.136  rew=0.000
+  update  9550/20000: wm_total=15.193  con=0.020  dyn=2.281  image=10.611  rep=2.281  rew=0.000
+  update  9575/20000: wm_total=15.981  con=0.020  dyn=2.192  image=11.577  rep=2.192  rew=0.000
+  update  9600/20000: wm_total=17.399  con=0.020  dyn=2.470  image=12.438  rep=2.470  rew=0.000
+  update  9625/20000: wm_total=14.558  con=0.020  dyn=2.106  image=10.325  rep=2.106  rew=0.000
+  update  9650/20000: wm_total=16.407  con=0.020  dyn=2.286  image=11.814  rep=2.286  rew=0.000
+  update  9675/20000: wm_total=16.400  con=0.020  dyn=2.215  image=11.949  rep=2.215  rew=0.000
+  update  9700/20000: wm_total=15.519  con=0.020  dyn=2.239  image=11.020  rep=2.239  rew=0.000
+  update  9725/20000: wm_total=15.242  con=0.020  dyn=2.187  image=10.848  rep=2.187  rew=0.000
+  update  9750/20000: wm_total=15.642  con=0.020  dyn=2.387  image=10.847  rep=2.387  rew=0.000
+  update  9775/20000: wm_total=16.520  con=0.020  dyn=2.527  image=11.445  rep=2.527  rew=0.000
+  update  9800/20000: wm_total=15.237  con=0.020  dyn=2.297  image=10.621  rep=2.297  rew=0.000
+  update  9825/20000: wm_total=16.936  con=0.020  dyn=2.551  image=11.812  rep=2.551  rew=0.000
+  update  9850/20000: wm_total=16.542  con=0.020  dyn=2.534  image=11.454  rep=2.534  rew=0.000
+  update  9875/20000: wm_total=16.553  con=0.020  dyn=2.440  image=11.651  rep=2.440  rew=0.000
+  update  9900/20000: wm_total=14.482  con=0.020  dyn=2.085  image=10.291  rep=2.085  rew=0.000
+  update  9925/20000: wm_total=14.938  con=0.020  dyn=2.092  image=10.732  rep=2.092  rew=0.000
+  update  9950/20000: wm_total=14.538  con=0.020  dyn=2.159  image=10.198  rep=2.159  rew=0.000
+  update  9975/20000: wm_total=16.255  con=0.020  dyn=2.479  image=11.276  rep=2.479  rew=0.000
+  update 10000/20000: wm_total=15.262  con=0.020  dyn=2.315  image=10.610  rep=2.315  rew=0.000
+  update 10025/20000: wm_total=16.033  con=0.020  dyn=2.331  image=11.350  rep=2.331  rew=0.000
+  update 10050/20000: wm_total=14.687  con=0.020  dyn=2.215  image=10.236  rep=2.215  rew=0.000
+  update 10075/20000: wm_total=15.779  con=0.020  dyn=2.316  image=11.126  rep=2.316  rew=0.000
+  update 10100/20000: wm_total=15.463  con=0.020  dyn=2.409  image=10.624  rep=2.409  rew=0.000
+  update 10125/20000: wm_total=16.607  con=0.020  dyn=2.449  image=11.689  rep=2.449  rew=0.000
+  update 10150/20000: wm_total=13.555  con=0.020  dyn=1.989  image=9.556  rep=1.989  rew=0.000
+  update 10175/20000: wm_total=14.978  con=0.020  dyn=2.378  image=10.201  rep=2.378  rew=0.000
+  update 10200/20000: wm_total=15.298  con=0.020  dyn=2.319  image=10.638  rep=2.319  rew=0.000
+  update 10225/20000: wm_total=15.724  con=0.020  dyn=2.450  image=10.802  rep=2.450  rew=0.000
+  update 10250/20000: wm_total=14.402  con=0.020  dyn=2.108  image=10.165  rep=2.108  rew=0.000
+  update 10275/20000: wm_total=15.162  con=0.020  dyn=2.442  image=10.256  rep=2.442  rew=0.000
+  update 10300/20000: wm_total=15.274  con=0.020  dyn=2.350  image=10.554  rep=2.350  rew=0.000
+  update 10325/20000: wm_total=15.765  con=0.020  dyn=2.482  image=10.781  rep=2.482  rew=0.000
+  update 10350/20000: wm_total=17.361  con=0.020  dyn=2.322  image=12.696  rep=2.322  rew=0.000
+  update 10375/20000: wm_total=13.995  con=0.020  dyn=2.083  image=9.808  rep=2.083  rew=0.000
+  update 10400/20000: wm_total=15.216  con=0.020  dyn=2.320  image=10.555  rep=2.320  rew=0.000
+  update 10425/20000: wm_total=15.497  con=0.020  dyn=2.515  image=10.446  rep=2.515  rew=0.000
+  update 10450/20000: wm_total=17.125  con=0.020  dyn=2.671  image=11.762  rep=2.671  rew=0.000
+  update 10475/20000: wm_total=14.698  con=0.020  dyn=2.196  image=10.286  rep=2.196  rew=0.000
+  update 10500/20000: wm_total=15.664  con=0.020  dyn=2.318  image=11.007  rep=2.318  rew=0.000
+  update 10525/20000: wm_total=14.332  con=0.020  dyn=2.264  image=9.782  rep=2.264  rew=0.000
+  update 10550/20000: wm_total=14.323  con=0.020  dyn=2.331  image=9.641  rep=2.331  rew=0.000
+  update 10575/20000: wm_total=15.276  con=0.020  dyn=2.274  image=10.708  rep=2.274  rew=0.000
+  update 10600/20000: wm_total=15.131  con=0.020  dyn=2.464  image=10.183  rep=2.464  rew=0.000
+  update 10625/20000: wm_total=15.294  con=0.020  dyn=2.465  image=10.343  rep=2.465  rew=0.000
+  update 10650/20000: wm_total=14.334  con=0.020  dyn=2.180  image=9.954  rep=2.180  rew=0.000
+  update 10675/20000: wm_total=12.852  con=0.020  dyn=1.980  image=8.871  rep=1.980  rew=0.000
+  update 10700/20000: wm_total=14.722  con=0.020  dyn=2.310  image=10.082  rep=2.310  rew=0.000
+  update 10725/20000: wm_total=13.269  con=0.020  dyn=2.126  image=8.997  rep=2.126  rew=0.000
+  update 10750/20000: wm_total=13.437  con=0.020  dyn=2.223  image=8.970  rep=2.223  rew=0.000
+  update 10775/20000: wm_total=16.621  con=0.020  dyn=2.444  image=11.713  rep=2.444  rew=0.000
+  update 10800/20000: wm_total=13.561  con=0.020  dyn=2.092  image=9.357  rep=2.092  rew=0.000
+  update 10825/20000: wm_total=14.846  con=0.020  dyn=2.426  image=9.975  rep=2.426  rew=0.000
+  update 10850/20000: wm_total=13.725  con=0.020  dyn=2.158  image=9.389  rep=2.158  rew=0.000
+  update 10875/20000: wm_total=14.888  con=0.020  dyn=2.206  image=10.456  rep=2.206  rew=0.000
+  update 10900/20000: wm_total=14.809  con=0.020  dyn=2.127  image=10.535  rep=2.127  rew=0.000
+  update 10925/20000: wm_total=15.173  con=0.020  dyn=2.454  image=10.245  rep=2.454  rew=0.000
+  update 10950/20000: wm_total=16.081  con=0.020  dyn=2.557  image=10.946  rep=2.557  rew=0.000
+  update 10975/20000: wm_total=12.696  con=0.020  dyn=1.877  image=8.921  rep=1.877  rew=0.000
+  update 11000/20000: wm_total=14.139  con=0.020  dyn=2.264  image=9.589  rep=2.264  rew=0.000
+  update 11025/20000: wm_total=14.291  con=0.020  dyn=2.303  image=9.665  rep=2.303  rew=0.000
+  update 11050/20000: wm_total=14.149  con=0.020  dyn=2.285  image=9.559  rep=2.285  rew=0.000
+  update 11075/20000: wm_total=13.894  con=0.020  dyn=2.252  image=9.368  rep=2.252  rew=0.000
+  update 11100/20000: wm_total=14.602  con=0.020  dyn=2.217  image=10.147  rep=2.217  rew=0.000
+  update 11125/20000: wm_total=16.001  con=0.020  dyn=2.375  image=11.230  rep=2.375  rew=0.000
+  update 11150/20000: wm_total=13.955  con=0.020  dyn=2.123  image=9.688  rep=2.123  rew=0.000
+  update 11175/20000: wm_total=14.787  con=0.020  dyn=2.430  image=9.906  rep=2.430  rew=0.000
+  update 11200/20000: wm_total=12.948  con=0.020  dyn=2.100  image=8.727  rep=2.100  rew=0.000
+  update 11225/20000: wm_total=14.414  con=0.020  dyn=2.027  image=10.340  rep=2.027  rew=0.000
+  update 11250/20000: wm_total=12.277  con=0.020  dyn=1.959  image=8.338  rep=1.959  rew=0.000
+  update 11275/20000: wm_total=13.963  con=0.020  dyn=2.084  image=9.774  rep=2.084  rew=0.000
+  update 11300/20000: wm_total=14.166  con=0.020  dyn=2.163  image=9.819  rep=2.163  rew=0.000
+  update 11325/20000: wm_total=16.273  con=0.020  dyn=2.472  image=11.309  rep=2.472  rew=0.000
+  update 11350/20000: wm_total=15.174  con=0.020  dyn=2.472  image=10.210  rep=2.472  rew=0.000
+  update 11375/20000: wm_total=15.463  con=0.020  dyn=2.414  image=10.614  rep=2.414  rew=0.000
+  update 11400/20000: wm_total=12.756  con=0.020  dyn=1.881  image=8.972  rep=1.881  rew=0.000
+  update 11425/20000: wm_total=14.778  con=0.020  dyn=2.334  image=10.090  rep=2.334  rew=0.000
+  update 11450/20000: wm_total=13.565  con=0.020  dyn=2.078  image=9.389  rep=2.078  rew=0.000
+  update 11475/20000: wm_total=12.734  con=0.020  dyn=1.903  image=8.908  rep=1.903  rew=0.000
+  update 11500/20000: wm_total=13.856  con=0.020  dyn=2.122  image=9.593  rep=2.122  rew=0.000
+  update 11525/20000: wm_total=14.294  con=0.020  dyn=2.205  image=9.862  rep=2.205  rew=0.000
+  update 11550/20000: wm_total=12.457  con=0.020  dyn=1.891  image=8.654  rep=1.891  rew=0.000
+  update 11575/20000: wm_total=13.598  con=0.020  dyn=2.167  image=9.244  rep=2.167  rew=0.000
+  update 11600/20000: wm_total=13.088  con=0.020  dyn=2.109  image=8.849  rep=2.109  rew=0.000
+  update 11625/20000: wm_total=15.552  con=0.020  dyn=2.452  image=10.628  rep=2.452  rew=0.000
+  update 11650/20000: wm_total=12.360  con=0.020  dyn=2.072  image=8.196  rep=2.072  rew=0.000
+  update 11675/20000: wm_total=13.286  con=0.020  dyn=2.139  image=8.988  rep=2.139  rew=0.000
+  update 11700/20000: wm_total=14.756  con=0.020  dyn=2.274  image=10.187  rep=2.274  rew=0.000
+  update 11725/20000: wm_total=14.689  con=0.020  dyn=2.371  image=9.926  rep=2.371  rew=0.000
+  update 11750/20000: wm_total=12.445  con=0.020  dyn=2.029  image=8.367  rep=2.029  rew=0.000
+  update 11775/20000: wm_total=13.879  con=0.020  dyn=2.269  image=9.321  rep=2.269  rew=0.000
+  update 11800/20000: wm_total=14.321  con=0.020  dyn=2.151  image=9.998  rep=2.151  rew=0.000
+  update 11825/20000: wm_total=14.662  con=0.020  dyn=2.358  image=9.925  rep=2.358  rew=0.000
+  update 11850/20000: wm_total=14.731  con=0.020  dyn=2.167  image=10.376  rep=2.167  rew=0.000
+  update 11875/20000: wm_total=14.721  con=0.020  dyn=2.128  image=10.446  rep=2.128  rew=0.000
+  update 11900/20000: wm_total=14.395  con=0.020  dyn=2.340  image=9.694  rep=2.340  rew=0.000
+  update 11925/20000: wm_total=13.518  con=0.020  dyn=2.059  image=9.379  rep=2.059  rew=0.000
+  update 11950/20000: wm_total=14.204  con=0.020  dyn=2.365  image=9.453  rep=2.365  rew=0.000
+  update 11975/20000: wm_total=14.517  con=0.020  dyn=2.327  image=9.842  rep=2.327  rew=0.000
+  update 12000/20000: wm_total=14.328  con=0.020  dyn=2.194  image=9.920  rep=2.194  rew=0.000
+  update 12025/20000: wm_total=14.361  con=0.020  dyn=2.335  image=9.671  rep=2.335  rew=0.000
+  update 12050/20000: wm_total=14.456  con=0.020  dyn=2.198  image=10.039  rep=2.198  rew=0.000
+  update 12075/20000: wm_total=14.861  con=0.020  dyn=2.262  image=10.317  rep=2.262  rew=0.000
+  update 12100/20000: wm_total=12.538  con=0.020  dyn=1.976  image=8.566  rep=1.976  rew=0.000
+  update 12125/20000: wm_total=14.249  con=0.020  dyn=2.150  image=9.929  rep=2.150  rew=0.000
+  update 12150/20000: wm_total=14.295  con=0.020  dyn=2.306  image=9.663  rep=2.306  rew=0.000
+  update 12175/20000: wm_total=14.188  con=0.020  dyn=2.241  image=9.685  rep=2.241  rew=0.000
+  update 12200/20000: wm_total=12.093  con=0.020  dyn=1.927  image=8.219  rep=1.927  rew=0.000
+  update 12225/20000: wm_total=13.757  con=0.020  dyn=2.229  image=9.277  rep=2.229  rew=0.000
+  update 12250/20000: wm_total=14.063  con=0.020  dyn=2.243  image=9.557  rep=2.243  rew=0.000
+  update 12275/20000: wm_total=12.913  con=0.020  dyn=2.021  image=8.850  rep=2.021  rew=0.000
+  update 12300/20000: wm_total=15.552  con=0.020  dyn=2.501  image=10.529  rep=2.501  rew=0.000
+  update 12325/20000: wm_total=13.487  con=0.020  dyn=2.038  image=9.390  rep=2.038  rew=0.000
+  update 12350/20000: wm_total=13.289  con=0.020  dyn=2.183  image=8.902  rep=2.183  rew=0.000
+  update 12375/20000: wm_total=14.918  con=0.020  dyn=2.507  image=9.883  rep=2.507  rew=0.000
+  update 12400/20000: wm_total=15.318  con=0.020  dyn=2.427  image=10.443  rep=2.427  rew=0.000
+  update 12425/20000: wm_total=14.074  con=0.020  dyn=2.232  image=9.591  rep=2.232  rew=0.000
+  update 12450/20000: wm_total=14.869  con=0.020  dyn=2.293  image=10.263  rep=2.293  rew=0.000
+  update 12475/20000: wm_total=12.439  con=0.020  dyn=2.092  image=8.234  rep=2.092  rew=0.000
+  update 12500/20000: wm_total=14.219  con=0.020  dyn=2.232  image=9.733  rep=2.232  rew=0.000
+  update 12525/20000: wm_total=13.218  con=0.020  dyn=2.025  image=9.148  rep=2.025  rew=0.000
+  update 12550/20000: wm_total=14.031  con=0.020  dyn=2.249  image=9.512  rep=2.249  rew=0.000
+  update 12575/20000: wm_total=13.662  con=0.020  dyn=2.136  image=9.369  rep=2.136  rew=0.000
+  update 12600/20000: wm_total=15.007  con=0.020  dyn=2.503  image=9.981  rep=2.503  rew=0.000
+  update 12625/20000: wm_total=15.553  con=0.020  dyn=2.411  image=10.711  rep=2.411  rew=0.000
+  update 12650/20000: wm_total=13.982  con=0.020  dyn=2.350  image=9.261  rep=2.350  rew=0.000
+  update 12675/20000: wm_total=13.619  con=0.020  dyn=2.129  image=9.340  rep=2.129  rew=0.000
+  update 12700/20000: wm_total=13.842  con=0.020  dyn=2.124  image=9.573  rep=2.124  rew=0.000
+  update 12725/20000: wm_total=12.863  con=0.020  dyn=2.081  image=8.680  rep=2.081  rew=0.000
+  update 12750/20000: wm_total=14.047  con=0.020  dyn=2.202  image=9.622  rep=2.202  rew=0.000
+  update 12775/20000: wm_total=14.183  con=0.020  dyn=2.307  image=9.548  rep=2.307  rew=0.000
+  update 12800/20000: wm_total=13.766  con=0.020  dyn=2.231  image=9.284  rep=2.231  rew=0.000
+  update 12825/20000: wm_total=13.545  con=0.020  dyn=2.144  image=9.237  rep=2.144  rew=0.000
+  update 12850/20000: wm_total=17.011  con=0.020  dyn=2.548  image=11.894  rep=2.548  rew=0.000
+  update 12875/20000: wm_total=13.205  con=0.020  dyn=2.095  image=8.994  rep=2.095  rew=0.000
+  update 12900/20000: wm_total=14.058  con=0.020  dyn=2.163  image=9.712  rep=2.163  rew=0.000
+  update 12925/20000: wm_total=14.802  con=0.020  dyn=2.351  image=10.080  rep=2.351  rew=0.000
+  update 12950/20000: wm_total=13.073  con=0.020  dyn=2.120  image=8.812  rep=2.120  rew=0.000
+  update 12975/20000: wm_total=13.632  con=0.020  dyn=2.264  image=9.085  rep=2.264  rew=0.000
+  update 13000/20000: wm_total=13.284  con=0.020  dyn=2.293  image=8.678  rep=2.293  rew=0.000
+  update 13025/20000: wm_total=12.388  con=0.020  dyn=1.883  image=8.601  rep=1.883  rew=0.000
+  update 13050/20000: wm_total=13.124  con=0.020  dyn=2.074  image=8.955  rep=2.074  rew=0.000
+  update 13075/20000: wm_total=14.065  con=0.020  dyn=2.185  image=9.674  rep=2.185  rew=0.000
+  update 13100/20000: wm_total=14.189  con=0.020  dyn=2.302  image=9.565  rep=2.302  rew=0.000
+  update 13125/20000: wm_total=12.033  con=0.020  dyn=1.877  image=8.259  rep=1.877  rew=0.000
+  update 13150/20000: wm_total=14.116  con=0.020  dyn=2.127  image=9.842  rep=2.127  rew=0.000
+  update 13175/20000: wm_total=15.220  con=0.020  dyn=2.402  image=10.395  rep=2.402  rew=0.000
+  update 13200/20000: wm_total=12.000  con=0.020  dyn=1.835  image=8.310  rep=1.835  rew=0.000
+  update 13225/20000: wm_total=11.655  con=0.020  dyn=1.811  image=8.013  rep=1.811  rew=0.000
+  update 13250/20000: wm_total=12.311  con=0.020  dyn=1.932  image=8.427  rep=1.932  rew=0.000
+  update 13275/20000: wm_total=13.389  con=0.020  dyn=2.112  image=9.146  rep=2.112  rew=0.000
+  update 13300/20000: wm_total=13.941  con=0.020  dyn=2.166  image=9.588  rep=2.166  rew=0.000
+  update 13325/20000: wm_total=13.548  con=0.020  dyn=2.029  image=9.470  rep=2.029  rew=0.000
+  update 13350/20000: wm_total=14.389  con=0.020  dyn=2.301  image=9.767  rep=2.301  rew=0.000
+  update 13375/20000: wm_total=14.249  con=0.020  dyn=2.348  image=9.533  rep=2.348  rew=0.000
+  update 13400/20000: wm_total=13.063  con=0.020  dyn=2.135  image=8.772  rep=2.135  rew=0.000
+  update 13425/20000: wm_total=13.480  con=0.020  dyn=2.291  image=8.879  rep=2.291  rew=0.000
+  update 13450/20000: wm_total=13.605  con=0.020  dyn=1.995  image=9.594  rep=1.995  rew=0.000
+  update 13475/20000: wm_total=12.909  con=0.020  dyn=2.074  image=8.740  rep=2.074  rew=0.000
+  update 13500/20000: wm_total=13.494  con=0.020  dyn=2.096  image=9.281  rep=2.096  rew=0.000
+  update 13525/20000: wm_total=13.972  con=0.020  dyn=2.192  image=9.568  rep=2.192  rew=0.000
+  update 13550/20000: wm_total=13.174  con=0.020  dyn=2.075  image=9.004  rep=2.075  rew=0.000
+  update 13575/20000: wm_total=14.902  con=0.020  dyn=2.411  image=10.059  rep=2.411  rew=0.000
+  update 13600/20000: wm_total=13.060  con=0.020  dyn=2.119  image=8.802  rep=2.119  rew=0.000
+  update 13625/20000: wm_total=12.800  con=0.020  dyn=2.063  image=8.653  rep=2.063  rew=0.000
+  update 13650/20000: wm_total=13.315  con=0.020  dyn=2.194  image=8.906  rep=2.194  rew=0.000
+  update 13675/20000: wm_total=14.579  con=0.020  dyn=2.286  image=9.987  rep=2.286  rew=0.000
+  update 13700/20000: wm_total=11.834  con=0.020  dyn=1.973  image=7.868  rep=1.973  rew=0.000
+  update 13725/20000: wm_total=12.887  con=0.020  dyn=2.120  image=8.626  rep=2.120  rew=0.000
+  update 13750/20000: wm_total=13.178  con=0.020  dyn=2.026  image=9.106  rep=2.026  rew=0.000
+  update 13775/20000: wm_total=13.689  con=0.020  dyn=2.214  image=9.241  rep=2.214  rew=0.000
+  update 13800/20000: wm_total=14.011  con=0.020  dyn=2.365  image=9.261  rep=2.365  rew=0.000
+  update 13825/20000: wm_total=14.364  con=0.020  dyn=2.311  image=9.721  rep=2.311  rew=0.000
+  update 13850/20000: wm_total=13.999  con=0.020  dyn=2.245  image=9.488  rep=2.245  rew=0.000
+  update 13875/20000: wm_total=13.564  con=0.020  dyn=2.235  image=9.073  rep=2.235  rew=0.000
+  update 13900/20000: wm_total=12.615  con=0.020  dyn=2.012  image=8.571  rep=2.012  rew=0.000
+  update 13925/20000: wm_total=13.012  con=0.020  dyn=2.117  image=8.757  rep=2.117  rew=0.000
+  update 13950/20000: wm_total=13.504  con=0.020  dyn=2.258  image=8.968  rep=2.258  rew=0.000
+  update 13975/20000: wm_total=14.706  con=0.020  dyn=2.389  image=9.907  rep=2.389  rew=0.000
+  update 14000/20000: wm_total=12.460  con=0.020  dyn=2.015  image=8.409  rep=2.015  rew=0.000
+  update 14025/20000: wm_total=13.159  con=0.020  dyn=2.218  image=8.702  rep=2.218  rew=0.000
+  update 14050/20000: wm_total=13.547  con=0.020  dyn=2.277  image=8.974  rep=2.277  rew=0.000
+  update 14075/20000: wm_total=12.661  con=0.020  dyn=2.061  image=8.518  rep=2.061  rew=0.000
+  update 14100/20000: wm_total=12.056  con=0.020  dyn=1.930  image=8.176  rep=1.930  rew=0.000
+  update 14125/20000: wm_total=13.987  con=0.020  dyn=2.292  image=9.382  rep=2.292  rew=0.000
+  update 14150/20000: wm_total=13.474  con=0.020  dyn=2.017  image=9.419  rep=2.017  rew=0.000
+  update 14175/20000: wm_total=11.542  con=0.020  dyn=1.772  image=7.977  rep=1.772  rew=0.000
+  update 14200/20000: wm_total=13.763  con=0.020  dyn=2.151  image=9.441  rep=2.151  rew=0.000
+  update 14225/20000: wm_total=12.496  con=0.020  dyn=2.191  image=8.093  rep=2.191  rew=0.000
+  update 14250/20000: wm_total=12.778  con=0.020  dyn=2.083  image=8.591  rep=2.083  rew=0.000
+  update 14275/20000: wm_total=13.990  con=0.020  dyn=2.137  image=9.695  rep=2.137  rew=0.000
+  update 14300/20000: wm_total=12.168  con=0.020  dyn=1.996  image=8.155  rep=1.996  rew=0.000
+  update 14325/20000: wm_total=12.611  con=0.020  dyn=2.108  image=8.375  rep=2.108  rew=0.000
+  update 14350/20000: wm_total=11.493  con=0.020  dyn=1.799  image=7.875  rep=1.799  rew=0.000
+  update 14375/20000: wm_total=10.906  con=0.020  dyn=1.754  image=7.378  rep=1.754  rew=0.000
+  update 14400/20000: wm_total=12.060  con=0.020  dyn=1.924  image=8.192  rep=1.924  rew=0.000
+  update 14425/20000: wm_total=12.236  con=0.020  dyn=2.126  image=7.964  rep=2.126  rew=0.000
+  update 14450/20000: wm_total=14.034  con=0.020  dyn=2.336  image=9.341  rep=2.336  rew=0.000
+  update 14475/20000: wm_total=13.352  con=0.020  dyn=2.239  image=8.853  rep=2.239  rew=0.000
+  update 14500/20000: wm_total=14.675  con=0.020  dyn=2.397  image=9.860  rep=2.397  rew=0.000
+  update 14525/20000: wm_total=13.276  con=0.020  dyn=1.967  image=9.323  rep=1.967  rew=0.000
+  update 14550/20000: wm_total=13.285  con=0.020  dyn=2.088  image=9.088  rep=2.088  rew=0.000
+  update 14575/20000: wm_total=11.457  con=0.020  dyn=1.841  image=7.755  rep=1.841  rew=0.000
+  update 14600/20000: wm_total=13.754  con=0.020  dyn=2.152  image=9.430  rep=2.152  rew=0.000
+  update 14625/20000: wm_total=11.743  con=0.020  dyn=1.869  image=7.985  rep=1.869  rew=0.000
+  update 14650/20000: wm_total=11.999  con=0.020  dyn=1.934  image=8.110  rep=1.934  rew=0.000
+  update 14675/20000: wm_total=12.797  con=0.020  dyn=2.061  image=8.654  rep=2.061  rew=0.000
+  update 14700/20000: wm_total=15.352  con=0.020  dyn=2.572  image=10.188  rep=2.572  rew=0.000
+  update 14725/20000: wm_total=13.093  con=0.020  dyn=2.176  image=8.721  rep=2.176  rew=0.000
+  update 14750/20000: wm_total=13.581  con=0.020  dyn=2.182  image=9.197  rep=2.182  rew=0.000
+  update 14775/20000: wm_total=12.396  con=0.020  dyn=1.899  image=8.577  rep=1.899  rew=0.000
+  update 14800/20000: wm_total=13.124  con=0.020  dyn=2.064  image=8.976  rep=2.064  rew=0.000
+  update 14825/20000: wm_total=13.674  con=0.020  dyn=2.297  image=9.060  rep=2.297  rew=0.000
+  update 14850/20000: wm_total=13.120  con=0.020  dyn=2.089  image=8.921  rep=2.089  rew=0.000
+  update 14875/20000: wm_total=12.781  con=0.020  dyn=2.021  image=8.718  rep=2.021  rew=0.000
+  update 14900/20000: wm_total=13.830  con=0.020  dyn=2.369  image=9.072  rep=2.369  rew=0.000
+  update 14925/20000: wm_total=14.187  con=0.020  dyn=2.123  image=9.921  rep=2.123  rew=0.000
+  update 14950/20000: wm_total=14.126  con=0.020  dyn=2.281  image=9.544  rep=2.281  rew=0.000
+  update 14975/20000: wm_total=10.949  con=0.020  dyn=1.746  image=7.437  rep=1.746  rew=0.000
+  update 15000/20000: wm_total=14.346  con=0.020  dyn=2.304  image=9.717  rep=2.304  rew=0.000
+  update 15025/20000: wm_total=10.926  con=0.020  dyn=1.783  image=7.339  rep=1.783  rew=0.000
+  update 15050/20000: wm_total=12.829  con=0.020  dyn=2.062  image=8.684  rep=2.062  rew=0.000
+  update 15075/20000: wm_total=11.570  con=0.020  dyn=1.857  image=7.835  rep=1.857  rew=0.000
+  update 15100/20000: wm_total=13.024  con=0.020  dyn=2.095  image=8.813  rep=2.095  rew=0.000
+  update 15125/20000: wm_total=12.704  con=0.020  dyn=2.097  image=8.490  rep=2.097  rew=0.000
+  update 15150/20000: wm_total=12.325  con=0.020  dyn=2.022  image=8.259  rep=2.022  rew=0.000
+  update 15175/20000: wm_total=13.041  con=0.020  dyn=2.202  image=8.616  rep=2.202  rew=0.000
+  update 15200/20000: wm_total=10.601  con=0.020  dyn=1.697  image=7.186  rep=1.697  rew=0.000
+  update 15225/20000: wm_total=11.687  con=0.020  dyn=2.005  image=7.657  rep=2.005  rew=0.000
+  update 15250/20000: wm_total=13.175  con=0.020  dyn=2.188  image=8.778  rep=2.188  rew=0.000
+  update 15275/20000: wm_total=12.419  con=0.020  dyn=2.016  image=8.367  rep=2.016  rew=0.000
+  update 15300/20000: wm_total=12.802  con=0.020  dyn=2.055  image=8.670  rep=2.055  rew=0.000
+  update 15325/20000: wm_total=12.735  con=0.020  dyn=2.113  image=8.488  rep=2.113  rew=0.000
+  update 15350/20000: wm_total=13.092  con=0.020  dyn=2.039  image=8.992  rep=2.039  rew=0.000
+  update 15375/20000: wm_total=13.729  con=0.020  dyn=2.284  image=9.141  rep=2.284  rew=0.000
+  update 15400/20000: wm_total=12.707  con=0.020  dyn=2.040  image=8.607  rep=2.040  rew=0.000
+  update 15425/20000: wm_total=13.824  con=0.020  dyn=2.343  image=9.119  rep=2.343  rew=0.000
+  update 15450/20000: wm_total=12.741  con=0.020  dyn=2.143  image=8.436  rep=2.143  rew=0.000
+  update 15475/20000: wm_total=11.809  con=0.020  dyn=1.843  image=8.101  rep=1.843  rew=0.000
+  update 15500/20000: wm_total=13.271  con=0.020  dyn=2.164  image=8.922  rep=2.164  rew=0.000
+  update 15525/20000: wm_total=12.775  con=0.020  dyn=2.068  image=8.619  rep=2.068  rew=0.000
+  update 15550/20000: wm_total=12.628  con=0.020  dyn=1.915  image=8.777  rep=1.915  rew=0.000
+  update 15575/20000: wm_total=12.108  con=0.020  dyn=1.944  image=8.200  rep=1.944  rew=0.000
+  update 15600/20000: wm_total=13.345  con=0.020  dyn=2.023  image=9.278  rep=2.023  rew=0.000
+  update 15625/20000: wm_total=14.745  con=0.020  dyn=2.519  image=9.688  rep=2.519  rew=0.000
+  update 15650/20000: wm_total=12.643  con=0.020  dyn=2.041  image=8.540  rep=2.041  rew=0.000
+  update 15675/20000: wm_total=12.474  con=0.020  dyn=2.061  image=8.331  rep=2.061  rew=0.000
+  update 15700/20000: wm_total=12.340  con=0.020  dyn=1.972  image=8.376  rep=1.972  rew=0.000
+  update 15725/20000: wm_total=13.435  con=0.020  dyn=2.149  image=9.117  rep=2.149  rew=0.000
+  update 15750/20000: wm_total=11.054  con=0.020  dyn=1.850  image=7.335  rep=1.850  rew=0.000
+  update 15775/20000: wm_total=13.836  con=0.020  dyn=2.330  image=9.156  rep=2.330  rew=0.000
+  update 15800/20000: wm_total=12.730  con=0.020  dyn=2.109  image=8.492  rep=2.109  rew=0.000
+  update 15825/20000: wm_total=12.416  con=0.020  dyn=2.066  image=8.264  rep=2.066  rew=0.000
+  update 15850/20000: wm_total=11.519  con=0.020  dyn=1.778  image=7.942  rep=1.778  rew=0.000
+  update 15875/20000: wm_total=11.771  con=0.020  dyn=1.907  image=7.936  rep=1.907  rew=0.000
+  update 15900/20000: wm_total=11.678  con=0.020  dyn=1.907  image=7.844  rep=1.907  rew=0.000
+  update 15925/20000: wm_total=11.817  con=0.020  dyn=1.946  image=7.905  rep=1.946  rew=0.000
+  update 15950/20000: wm_total=10.466  con=0.020  dyn=1.735  image=6.975  rep=1.735  rew=0.000
+  update 15975/20000: wm_total=13.651  con=0.020  dyn=2.228  image=9.174  rep=2.228  rew=0.000
+  update 16000/20000: wm_total=11.812  con=0.020  dyn=1.978  image=7.835  rep=1.978  rew=0.000
+  update 16025/20000: wm_total=12.638  con=0.020  dyn=2.051  image=8.517  rep=2.051  rew=0.000
+  update 16050/20000: wm_total=11.761  con=0.020  dyn=1.937  image=7.867  rep=1.937  rew=0.000
+  update 16075/20000: wm_total=12.580  con=0.020  dyn=2.177  image=8.205  rep=2.177  rew=0.000
+  update 16100/20000: wm_total=11.804  con=0.020  dyn=1.934  image=7.916  rep=1.934  rew=0.000
+  update 16125/20000: wm_total=12.927  con=0.020  dyn=2.088  image=8.729  rep=2.088  rew=0.000
+  update 16150/20000: wm_total=12.661  con=0.020  dyn=2.164  image=8.312  rep=2.164  rew=0.000
+  update 16175/20000: wm_total=13.631  con=0.020  dyn=2.197  image=9.216  rep=2.197  rew=0.000
+  update 16200/20000: wm_total=10.114  con=0.020  dyn=1.634  image=6.825  rep=1.634  rew=0.000
+  update 16225/20000: wm_total=11.714  con=0.020  dyn=1.892  image=7.910  rep=1.892  rew=0.000
+  update 16250/20000: wm_total=11.223  con=0.020  dyn=1.903  image=7.395  rep=1.903  rew=0.000
+  update 16275/20000: wm_total=11.501  con=0.020  dyn=1.868  image=7.744  rep=1.868  rew=0.000
+  update 16300/20000: wm_total=12.691  con=0.020  dyn=2.144  image=8.383  rep=2.144  rew=0.000
+  update 16325/20000: wm_total=13.041  con=0.020  dyn=2.068  image=8.884  rep=2.068  rew=0.000
+  update 16350/20000: wm_total=14.328  con=0.020  dyn=2.502  image=9.304  rep=2.502  rew=0.000
+  update 16375/20000: wm_total=12.013  con=0.020  dyn=1.950  image=8.092  rep=1.950  rew=0.000
+  update 16400/20000: wm_total=11.985  con=0.020  dyn=2.042  image=7.881  rep=2.042  rew=0.000
+  update 16425/20000: wm_total=12.621  con=0.020  dyn=1.988  image=8.624  rep=1.988  rew=0.000
+  update 16450/20000: wm_total=11.974  con=0.020  dyn=2.039  image=7.875  rep=2.039  rew=0.000
+  update 16475/20000: wm_total=12.728  con=0.020  dyn=2.030  image=8.647  rep=2.030  rew=0.000
+  update 16500/20000: wm_total=11.978  con=0.020  dyn=2.020  image=7.919  rep=2.020  rew=0.000
+  update 16525/20000: wm_total=12.908  con=0.020  dyn=2.169  image=8.549  rep=2.169  rew=0.000
+  update 16550/20000: wm_total=11.911  con=0.020  dyn=1.966  image=7.959  rep=1.966  rew=0.000
+  update 16575/20000: wm_total=11.029  con=0.020  dyn=1.800  image=7.409  rep=1.800  rew=0.000
+  update 16600/20000: wm_total=12.298  con=0.020  dyn=2.005  image=8.268  rep=2.005  rew=0.000
+  update 16625/20000: wm_total=12.343  con=0.020  dyn=2.101  image=8.120  rep=2.101  rew=0.000
+  update 16650/20000: wm_total=11.002  con=0.020  dyn=1.747  image=7.487  rep=1.747  rew=0.000
+  update 16675/20000: wm_total=11.196  con=0.020  dyn=1.855  image=7.465  rep=1.855  rew=0.000
+  update 16700/20000: wm_total=12.740  con=0.020  dyn=2.054  image=8.612  rep=2.054  rew=0.000
+  update 16725/20000: wm_total=12.155  con=0.020  dyn=2.122  image=7.890  rep=2.122  rew=0.000
+  update 16750/20000: wm_total=11.272  con=0.020  dyn=1.938  image=7.376  rep=1.938  rew=0.000
+  update 16775/20000: wm_total=12.100  con=0.020  dyn=2.046  image=7.987  rep=2.046  rew=0.000
+  update 16800/20000: wm_total=13.287  con=0.020  dyn=2.193  image=8.881  rep=2.193  rew=0.000
+  update 16825/20000: wm_total=11.247  con=0.020  dyn=1.946  image=7.334  rep=1.946  rew=0.000
+  update 16850/20000: wm_total=11.311  con=0.020  dyn=1.810  image=7.671  rep=1.810  rew=0.000
+  update 16875/20000: wm_total=12.326  con=0.020  dyn=2.061  image=8.185  rep=2.061  rew=0.000
+  update 16900/20000: wm_total=12.775  con=0.020  dyn=2.078  image=8.599  rep=2.078  rew=0.000
+  update 16925/20000: wm_total=11.209  con=0.020  dyn=1.903  image=7.383  rep=1.903  rew=0.000
+  update 16950/20000: wm_total=11.261  con=0.020  dyn=1.888  image=7.465  rep=1.888  rew=0.000
+  update 16975/20000: wm_total=11.598  con=0.020  dyn=1.909  image=7.760  rep=1.909  rew=0.000
+  update 17000/20000: wm_total=13.154  con=0.020  dyn=2.249  image=8.635  rep=2.249  rew=0.000
+  update 17025/20000: wm_total=13.529  con=0.020  dyn=2.286  image=8.936  rep=2.286  rew=0.000
+  update 17050/20000: wm_total=12.945  con=0.020  dyn=2.176  image=8.574  rep=2.176  rew=0.000
+  update 17075/20000: wm_total=12.468  con=0.020  dyn=1.971  image=8.505  rep=1.971  rew=0.000
+  update 17100/20000: wm_total=12.671  con=0.020  dyn=2.018  image=8.615  rep=2.018  rew=0.000
+  update 17125/20000: wm_total=12.614  con=0.020  dyn=2.028  image=8.537  rep=2.028  rew=0.000
+  update 17150/20000: wm_total=11.275  con=0.020  dyn=1.891  image=7.473  rep=1.891  rew=0.000
+  update 17175/20000: wm_total=13.484  con=0.020  dyn=2.236  image=8.991  rep=2.236  rew=0.000
+  update 17200/20000: wm_total=12.717  con=0.020  dyn=2.072  image=8.552  rep=2.072  rew=0.000
+  update 17225/20000: wm_total=11.406  con=0.020  dyn=1.868  image=7.650  rep=1.868  rew=0.000
+  update 17250/20000: wm_total=11.076  con=0.020  dyn=1.834  image=7.389  rep=1.834  rew=0.000
+  update 17275/20000: wm_total=10.734  con=0.020  dyn=1.614  image=7.486  rep=1.614  rew=0.000
+  update 17300/20000: wm_total=12.478  con=0.020  dyn=2.062  image=8.334  rep=2.062  rew=0.000
+  update 17325/20000: wm_total=12.499  con=0.020  dyn=2.137  image=8.204  rep=2.137  rew=0.000
+  update 17350/20000: wm_total=10.739  con=0.020  dyn=1.805  image=7.109  rep=1.805  rew=0.000
+  update 17375/20000: wm_total=11.943  con=0.020  dyn=2.136  image=7.651  rep=2.136  rew=0.000
+  update 17400/20000: wm_total=10.969  con=0.020  dyn=1.791  image=7.367  rep=1.791  rew=0.000
+  update 17425/20000: wm_total=12.761  con=0.020  dyn=2.127  image=8.486  rep=2.127  rew=0.000
+  update 17450/20000: wm_total=12.739  con=0.020  dyn=1.961  image=8.797  rep=1.961  rew=0.000
+  update 17475/20000: wm_total=13.701  con=0.020  dyn=2.312  image=9.057  rep=2.312  rew=0.000
+  update 17500/20000: wm_total=12.024  con=0.020  dyn=2.044  image=7.916  rep=2.044  rew=0.000
+  update 17525/20000: wm_total=12.102  con=0.020  dyn=1.912  image=8.257  rep=1.912  rew=0.000
+  update 17550/20000: wm_total=11.154  con=0.020  dyn=1.739  image=7.656  rep=1.739  rew=0.000
+  update 17575/20000: wm_total=13.568  con=0.020  dyn=2.169  image=9.210  rep=2.169  rew=0.000
+  update 17600/20000: wm_total=12.092  con=0.020  dyn=1.980  image=8.111  rep=1.980  rew=0.000
+  update 17625/20000: wm_total=12.917  con=0.020  dyn=2.173  image=8.550  rep=2.173  rew=0.000
+  update 17650/20000: wm_total=11.700  con=0.020  dyn=1.898  image=7.883  rep=1.898  rew=0.000
+  update 17675/20000: wm_total=11.164  con=0.020  dyn=1.942  image=7.260  rep=1.942  rew=0.000
+  update 17700/20000: wm_total=12.287  con=0.020  dyn=2.088  image=8.090  rep=2.088  rew=0.000
+  update 17725/20000: wm_total=11.742  con=0.020  dyn=2.020  image=7.683  rep=2.020  rew=0.000
+  update 17750/20000: wm_total=11.391  con=0.020  dyn=1.942  image=7.487  rep=1.942  rew=0.000
+  update 17775/20000: wm_total=12.423  con=0.020  dyn=2.158  image=8.086  rep=2.158  rew=0.000
+  update 17800/20000: wm_total=10.795  con=0.020  dyn=1.805  image=7.164  rep=1.805  rew=0.000
+  update 17825/20000: wm_total=11.350  con=0.020  dyn=1.921  image=7.487  rep=1.921  rew=0.000
+  update 17850/20000: wm_total=10.774  con=0.020  dyn=1.873  image=7.007  rep=1.873  rew=0.000
+  update 17875/20000: wm_total=13.085  con=0.020  dyn=2.082  image=8.900  rep=2.082  rew=0.000
+  update 17900/20000: wm_total=11.742  con=0.020  dyn=1.917  image=7.887  rep=1.917  rew=0.000
+  update 17925/20000: wm_total=11.915  con=0.020  dyn=1.966  image=7.962  rep=1.966  rew=0.000
+  update 17950/20000: wm_total=11.895  con=0.020  dyn=1.946  image=7.983  rep=1.946  rew=0.000
+  update 17975/20000: wm_total=12.202  con=0.020  dyn=2.051  image=8.079  rep=2.051  rew=0.000
+  update 18000/20000: wm_total=9.385  con=0.020  dyn=1.593  image=6.179  rep=1.593  rew=0.000
+  update 18025/20000: wm_total=11.864  con=0.020  dyn=2.020  image=7.803  rep=2.020  rew=0.000
+  update 18050/20000: wm_total=11.143  con=0.020  dyn=1.899  image=7.325  rep=1.899  rew=0.000
+  update 18075/20000: wm_total=11.326  con=0.020  dyn=1.956  image=7.394  rep=1.956  rew=0.000
+  update 18100/20000: wm_total=11.329  con=0.020  dyn=1.909  image=7.491  rep=1.909  rew=0.000
+  update 18125/20000: wm_total=11.826  con=0.020  dyn=1.894  image=8.018  rep=1.894  rew=0.000
+  update 18150/20000: wm_total=11.694  con=0.020  dyn=1.873  image=7.928  rep=1.873  rew=0.000
+  update 18175/20000: wm_total=11.688  con=0.020  dyn=1.994  image=7.680  rep=1.994  rew=0.000
+  update 18200/20000: wm_total=11.813  con=0.020  dyn=2.068  image=7.657  rep=2.068  rew=0.000
+  update 18225/20000: wm_total=11.145  con=0.020  dyn=1.868  image=7.390  rep=1.868  rew=0.000
+  update 18250/20000: wm_total=10.909  con=0.020  dyn=1.958  image=6.973  rep=1.958  rew=0.000
+  update 18275/20000: wm_total=10.578  con=0.020  dyn=1.820  image=6.918  rep=1.820  rew=0.000
+  update 18300/20000: wm_total=11.836  con=0.020  dyn=2.062  image=7.692  rep=2.062  rew=0.000
+  update 18325/20000: wm_total=11.667  con=0.020  dyn=2.065  image=7.517  rep=2.065  rew=0.000
+  update 18350/20000: wm_total=11.901  con=0.020  dyn=1.990  image=7.900  rep=1.990  rew=0.000
+  update 18375/20000: wm_total=11.540  con=0.020  dyn=2.034  image=7.452  rep=2.034  rew=0.000
+  update 18400/20000: wm_total=10.461  con=0.020  dyn=1.766  image=6.910  rep=1.766  rew=0.000
+  update 18425/20000: wm_total=12.256  con=0.020  dyn=2.009  image=8.217  rep=2.009  rew=0.000
+  update 18450/20000: wm_total=11.829  con=0.020  dyn=2.007  image=7.795  rep=2.007  rew=0.000
+  update 18475/20000: wm_total=12.130  con=0.020  dyn=2.153  image=7.803  rep=2.153  rew=0.000
+  update 18500/20000: wm_total=12.115  con=0.020  dyn=2.010  image=8.075  rep=2.010  rew=0.000
+  update 18525/20000: wm_total=10.934  con=0.020  dyn=1.744  image=7.425  rep=1.744  rew=0.000
+  update 18550/20000: wm_total=12.770  con=0.020  dyn=2.214  image=8.323  rep=2.214  rew=0.000
+  update 18575/20000: wm_total=10.933  con=0.020  dyn=1.832  image=7.248  rep=1.832  rew=0.000
+  update 18600/20000: wm_total=11.991  con=0.020  dyn=1.929  image=8.113  rep=1.929  rew=0.000
+  update 18625/20000: wm_total=11.292  con=0.020  dyn=2.042  image=7.187  rep=2.042  rew=0.000
+  update 18650/20000: wm_total=12.495  con=0.020  dyn=2.013  image=8.449  rep=2.013  rew=0.000
+  update 18675/20000: wm_total=10.797  con=0.020  dyn=1.942  image=6.893  rep=1.942  rew=0.000
+  update 18700/20000: wm_total=11.854  con=0.020  dyn=2.090  image=7.654  rep=2.090  rew=0.000
+  update 18725/20000: wm_total=11.482  con=0.020  dyn=2.035  image=7.391  rep=2.035  rew=0.000
+  update 18750/20000: wm_total=9.991  con=0.020  dyn=1.684  image=6.603  rep=1.684  rew=0.000
+  update 18775/20000: wm_total=12.210  con=0.020  dyn=1.911  image=8.367  rep=1.911  rew=0.000
+  update 18800/20000: wm_total=11.342  con=0.020  dyn=1.927  image=7.467  rep=1.927  rew=0.000
+  update 18825/20000: wm_total=10.972  con=0.020  dyn=1.932  image=7.088  rep=1.932  rew=0.000
+  update 18850/20000: wm_total=11.565  con=0.020  dyn=1.928  image=7.689  rep=1.928  rew=0.000
+  update 18875/20000: wm_total=10.377  con=0.020  dyn=1.782  image=6.792  rep=1.782  rew=0.000
+  update 18900/20000: wm_total=10.430  con=0.020  dyn=1.838  image=6.733  rep=1.838  rew=0.000
+  update 18925/20000: wm_total=12.845  con=0.020  dyn=2.155  image=8.514  rep=2.155  rew=0.000
+  update 18950/20000: wm_total=10.382  con=0.020  dyn=1.748  image=6.866  rep=1.748  rew=0.000
+  update 18975/20000: wm_total=12.477  con=0.020  dyn=2.036  image=8.385  rep=2.036  rew=0.000
+  update 19000/20000: wm_total=11.445  con=0.020  dyn=1.995  image=7.434  rep=1.995  rew=0.000
+  update 19025/20000: wm_total=11.578  con=0.020  dyn=2.046  image=7.465  rep=2.046  rew=0.000
+  update 19050/20000: wm_total=11.163  con=0.020  dyn=1.877  image=7.388  rep=1.877  rew=0.000
+  update 19075/20000: wm_total=12.235  con=0.020  dyn=2.062  image=8.090  rep=2.062  rew=0.000
+  update 19100/20000: wm_total=12.184  con=0.020  dyn=1.955  image=8.253  rep=1.955  rew=0.000
+  update 19125/20000: wm_total=11.413  con=0.020  dyn=1.922  image=7.548  rep=1.922  rew=0.000
+  update 19150/20000: wm_total=12.152  con=0.020  dyn=2.056  image=8.019  rep=2.056  rew=0.000
+  update 19175/20000: wm_total=11.003  con=0.020  dyn=1.826  image=7.330  rep=1.826  rew=0.000
+  update 19200/20000: wm_total=12.226  con=0.020  dyn=2.144  image=7.918  rep=2.144  rew=0.000
+  update 19225/20000: wm_total=12.869  con=0.020  dyn=2.035  image=8.778  rep=2.035  rew=0.000
+  update 19250/20000: wm_total=10.889  con=0.020  dyn=1.906  image=7.056  rep=1.906  rew=0.000
+  update 19275/20000: wm_total=11.884  con=0.020  dyn=1.946  image=7.972  rep=1.946  rew=0.000
+  update 19300/20000: wm_total=11.210  con=0.020  dyn=1.895  image=7.400  rep=1.895  rew=0.000
+  update 19325/20000: wm_total=11.020  con=0.020  dyn=1.967  image=7.065  rep=1.967  rew=0.000
+  update 19350/20000: wm_total=10.536  con=0.020  dyn=1.828  image=6.860  rep=1.828  rew=0.000
+  update 19375/20000: wm_total=12.217  con=0.020  dyn=2.108  image=7.982  rep=2.108  rew=0.000
+  update 19400/20000: wm_total=12.233  con=0.020  dyn=2.170  image=7.872  rep=2.170  rew=0.000
+  update 19425/20000: wm_total=11.423  con=0.020  dyn=2.009  image=7.384  rep=2.009  rew=0.000
+  update 19450/20000: wm_total=11.365  con=0.020  dyn=1.924  image=7.496  rep=1.924  rew=0.000
+  update 19475/20000: wm_total=10.798  con=0.020  dyn=1.667  image=7.444  rep=1.667  rew=0.000
+  update 19500/20000: wm_total=11.972  con=0.020  dyn=2.077  image=7.799  rep=2.077  rew=0.000
+  update 19525/20000: wm_total=9.983  con=0.020  dyn=1.781  image=6.400  rep=1.781  rew=0.000
+  update 19550/20000: wm_total=10.711  con=0.020  dyn=1.709  image=7.273  rep=1.709  rew=0.000
+  update 19575/20000: wm_total=11.909  con=0.020  dyn=1.936  image=8.017  rep=1.936  rew=0.000
+  update 19600/20000: wm_total=11.672  con=0.020  dyn=2.009  image=7.633  rep=2.009  rew=0.000
+  update 19625/20000: wm_total=10.794  con=0.020  dyn=1.727  image=7.319  rep=1.727  rew=0.000
+  update 19650/20000: wm_total=13.295  con=0.020  dyn=2.228  image=8.818  rep=2.228  rew=0.000
+  update 19675/20000: wm_total=12.559  con=0.020  dyn=1.931  image=8.677  rep=1.931  rew=0.000
+  update 19700/20000: wm_total=10.293  con=0.020  dyn=1.701  image=6.871  rep=1.701  rew=0.000
+  update 19725/20000: wm_total=11.834  con=0.020  dyn=1.961  image=7.892  rep=1.961  rew=0.000
+  update 19750/20000: wm_total=10.030  con=0.020  dyn=1.655  image=6.700  rep=1.655  rew=0.000
+  update 19775/20000: wm_total=11.294  con=0.020  dyn=1.761  image=7.751  rep=1.761  rew=0.000
+  update 19800/20000: wm_total=12.267  con=0.020  dyn=2.124  image=7.999  rep=2.124  rew=0.000
+  update 19825/20000: wm_total=11.042  con=0.020  dyn=1.764  image=7.493  rep=1.764  rew=0.000
+  update 19850/20000: wm_total=11.051  con=0.020  dyn=1.789  image=7.453  rep=1.789  rew=0.000
+  update 19875/20000: wm_total=11.799  con=0.020  dyn=1.979  image=7.821  rep=1.979  rew=0.000
+  update 19900/20000: wm_total=10.902  con=0.020  dyn=1.752  image=7.377  rep=1.752  rew=0.000
+  update 19925/20000: wm_total=10.682  con=0.020  dyn=1.734  image=7.192  rep=1.734  rew=0.000
+  update 19950/20000: wm_total=11.268  con=0.020  dyn=1.833  image=7.582  rep=1.833  rew=0.000
+  update 19975/20000: wm_total=12.038  con=0.020  dyn=2.113  image=7.791  rep=2.113  rew=0.000
+  update 20000/20000: wm_total=11.457  con=0.020  dyn=1.914  image=7.608  rep=1.914  rew=0.000
+Saving checkpoint: /scratch/midway3/rickybao/dreamerv3_runs/ax1wm_finger_pxpxq1imgs0_seed99/ckpt/20260719T115423F327545-000000020000
+Saved checkpoint.
+Saved offline-fit checkpoint under /scratch/midway3/rickybao/dreamerv3_runs/ax1wm_finger_pxpxq1imgs0_seed99/ckpt
+WM-loss change (update 25 -> 20000):
+  con         : 0.7678 -> 0.0204 (down)
+  dyn         : 5.5188 -> 1.9143 (down)
+  image       : 1506.2937 -> 7.6079 (down)
+  rep         : 5.5188 -> 1.9143 (down)
+  rew         : 5.5408 -> 0.0000 (down)
+  wm_total    : 1523.6400 -> 11.4570 (DECREASED)
+[Sun Jul 19 11:54:27 CDT 2026] adapt RUN_ID=adapt_ax1pxpxq1imgs0_finger_seed99_ckpt20000 TASK=dmc_finger_turn_hard SEED=99 CKPT=/scratch/midway3/rickybao/dreamerv3_runs/ax1wm_finger_pxpxq1imgs0_seed99/ckpt/20260719T115423F327545-000000020000 STEPS=1.25e5
+---  ___                           __   ______ ---
+--- |   \ _ _ ___ __ _ _ __  ___ _ \ \ / /__ / ---
+--- | |) | '_/ -_) _` | '  \/ -_) '/\ V / |_ \ ---
+--- |___/|_| \___\__,_|_|_|_\___|_|  \_/ |___/ ---
+Replica: 0 / 1
+Logdir: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1pxpxq1imgs0_finger_seed99_ckpt20000
+Run script: train
+Observations
+  reward           Space(float32, shape=(), low=-inf, high=inf)
+  is_first         Space(bool, shape=(), low=False, high=True)
+  is_last          Space(bool, shape=(), low=False, high=True)
+  is_terminal      Space(bool, shape=(), low=False, high=True)
+  position         Space(float32, shape=(4,), low=-inf, high=inf)
+  velocity         Space(float32, shape=(3,), low=-inf, high=inf)
+  touch            Space(float32, shape=(2,), low=-inf, high=inf)
+  target_position  Space(float32, shape=(2,), low=-inf, high=inf)
+  dist_to_target   Space(float32, shape=(), low=-inf, high=inf)
+  image            Space(uint8, shape=(64, 64, 3), low=0, high=255)
+Actions
+  action           Space(float32, shape=(2,), low=-1.0, high=1.0)
+Extras
+  consec           Space(int32, shape=(), low=-2147483648, high=2147483647)
+  stepid           Space(uint8, shape=(20,), low=0, high=255)
+  dyn/deter        Space(float32, shape=(512,), low=-inf, high=inf)
+  dyn/stoch        Space(float32, shape=(32, 4), low=-inf, high=inf)
+JAX devices (1): [cuda:0]
+Policy devices: cuda:0
+Train devices:  cuda:0
+Initializing parameters...
+Optimizer opt has 214,723 params:
+        66,111 val
+        57,663 rew
+        49,796 pol
+        41,153 con
+Done initializing!
+Compiling 1 checkpoint groups...
+Largest checkpoint group: 0 GB
+Compiling train and report...
+Train cost analysis:
+  FLOPS:            1.5e+10
+  Memory (temp):    1.7e+08
+  Memory (inputs):  2.0e+07
+  Memory (outputs): 6.1e+06
+  Memory (code):    1.8e+06
+
+Report cost analysis:
+  FLOPS:            2.8e+08
+  Memory (temp):    8.0e+07
+  Memory (inputs):  9.8e+06
+  Memory (outputs): 1.0e+07
+  Memory (code):    8.0e+06
+
+Done compiling!
+Loaded pretrained checkpoint with keys: ['dec/conv0/bias', 'dec/conv0/kernel', 'dec/conv0norm/scale', 'dec/conv1/bias', 'dec/conv1/kernel', 'dec/conv1norm/scale', 'dec/conv2/bias', 'dec/conv2/kernel', 'dec/conv2norm/scale', 'dec/imgout/bias', 'dec/imgout/kernel', 'dec/sp0/bias', 'dec/sp0/kernel', 'dec/sp1/bias', 'dec/sp1/kernel', 'dec/sp1norm/scale', 'dec/sp2/bias', 'dec/sp2/kernel', 'dec/spnorm/scale', 'dyn/dyngru/bias', 'dyn/dyngru/kernel', 'dyn/dynhid0/bias', 'dyn/dynhid0/kernel', 'dyn/dynhid0norm/scale', 'dyn/dynin0/bias', 'dyn/dynin0/kernel', 'dyn/dynin0norm/scale', 'dyn/dynin1/bias', 'dyn/dynin1/kernel', 'dyn/dynin1norm/scale', 'dyn/dynin2/bias', 'dyn/dynin2/kernel', 'dyn/dynin2norm/scale', 'dyn/obs0/bias', 'dyn/obs0/kernel', 'dyn/obs0norm/scale', 'dyn/obslogit/bias', 'dyn/obslogit/kernel', 'dyn/prior0/bias', 'dyn/prior0/kernel', 'dyn/prior0norm/scale', 'dyn/prior1/bias', 'dyn/prior1/kernel', 'dyn/prior1norm/scale', 'dyn/priorlogit/bias', 'dyn/priorlogit/kernel', 'enc/cnn0/bias', 'enc/cnn0/kernel', 'enc/cnn0norm/scale', 'enc/cnn1/bias', 'enc/cnn1/kernel', 'enc/cnn1norm/scale', 'enc/cnn2/bias', 'enc/cnn2/kernel', 'enc/cnn2norm/scale', 'enc/cnn3/bias', 'enc/cnn3/kernel', 'enc/cnn3norm/scale']
+Did not find any checkpoint.
+Saving checkpoint: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1pxpxq1imgs0_finger_seed99_ckpt20000/ckpt/20260719T115504F488471
+Saved checkpoint.
+Start training loop
+
+--------------------[Agent Step 15_824]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+train/loss/con 0.07 / train/loss/dyn 14.84 / train/loss/image 32.73 / train/loss/policy 0.05 / train/loss/rep 14.84 / train/loss/repval 3.15 / train/loss/rew 1.45 / train/loss/value 1.73 / replay/replay_ratio 242.15 / fps/policy 124.57 / fps/train 2.8e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1pxpxq1imgs0_finger_seed99_ckpt20000/metrics.jsonlWriting metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1pxpxq1imgs0_finger_seed99_ckpt20000/scores.jsonl
+
+
+--------------------[Agent Step 30_368]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+episode/score 0 / episode/length 1001 / train/loss/con 0.02 / train/loss/dyn 14.31 / train/loss/image 31.78 / train/loss/policy 0.25 / train/loss/rep 14.31 / train/loss/repval 2.62 / train/loss/rew 0.15 / train/loss/value 2.26 / replay/replay_ratio 260 / fps/policy 121.12 / fps/train 3.1e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1pxpxq1imgs0_finger_seed99_ckpt20000/scores.jsonlWriting metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1pxpxq1imgs0_finger_seed99_ckpt20000/metrics.jsonl
+
+
+--------------------[Agent Step 44_832]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+episode/score 0 / episode/length 1001 / train/loss/con 0.02 / train/loss/dyn 13.09 / train/loss/image 28.33 / train/loss/policy 0.12 / train/loss/rep 13.09 / train/loss/repval 2.69 / train/loss/rew 0.22 / train/loss/value 2.28 / replay/replay_ratio 260 / fps/policy 120.51 / fps/train 3.1e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1pxpxq1imgs0_finger_seed99_ckpt20000/metrics.jsonlWriting metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1pxpxq1imgs0_finger_seed99_ckpt20000/scores.jsonl
+
+
+--------------------[Agent Step 59_424]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+episode/score 0 / episode/length 1001 / train/loss/con 0.02 / train/loss/dyn 13.02 / train/loss/image 27.71 / train/loss/policy -0.03 / train/loss/rep 13.02 / train/loss/repval 1.72 / train/loss/rew 0.2 / train/loss/value 1.33 / replay/replay_ratio 260 / fps/policy 121.55 / fps/train 3.1e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1pxpxq1imgs0_finger_seed99_ckpt20000/metrics.jsonlWriting metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1pxpxq1imgs0_finger_seed99_ckpt20000/scores.jsonl
+
+
+--------------------[Agent Step 74_000]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+episode/score 0 / episode/length 1001 / train/loss/con 0.02 / train/loss/dyn 13.02 / train/loss/image 28.06 / train/loss/policy -0.05 / train/loss/rep 13.02 / train/loss/repval 1.46 / train/loss/rew 0.18 / train/loss/value 1.1 / replay/replay_ratio 260 / fps/policy 121.36 / fps/train 3.1e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1pxpxq1imgs0_finger_seed99_ckpt20000/metrics.jsonlWriting metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1pxpxq1imgs0_finger_seed99_ckpt20000/scores.jsonl
+
+
+--------------------[Agent Step 88_528]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+episode/score 0 / episode/length 1001 / train/loss/con 0.02 / train/loss/dyn 12.82 / train/loss/image 27.78 / train/loss/policy -0.06 / train/loss/rep 12.82 / train/loss/repval 1.36 / train/loss/rew 0.17 / train/loss/value 1.02 / replay/replay_ratio 260 / fps/policy 120.98 / fps/train 3.1e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1pxpxq1imgs0_finger_seed99_ckpt20000/metrics.jsonl
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1pxpxq1imgs0_finger_seed99_ckpt20000/scores.jsonl
+
+--------------------[Agent Step 102_992]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+episode/score 0 / episode/length 1001 / train/loss/con 0.02 / train/loss/dyn 12.67 / train/loss/image 27.5 / train/loss/policy -0.06 / train/loss/rep 12.67 / train/loss/repval 1.32 / train/loss/rew 0.15 / train/loss/value 1.03 / replay/replay_ratio 260 / fps/policy 120.42 / fps/train 3.1e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1pxpxq1imgs0_finger_seed99_ckpt20000/metrics.jsonlWriting metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1pxpxq1imgs0_finger_seed99_ckpt20000/scores.jsonl
+
+Saving checkpoint: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1pxpxq1imgs0_finger_seed99_ckpt20000/ckpt/20260719T121009F491017
+Saved checkpoint.
+
+--------------------[Agent Step 116_720]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+episode/score 966 / episode/length 1001 / train/loss/con 0.02 / train/loss/dyn 12.51 / train/loss/image 27.07 / train/loss/policy -0.04 / train/loss/rep 12.51 / train/loss/repval 1.29 / train/loss/rew 0.14 / train/loss/value 1.03 / replay/replay_ratio 260 / fps/policy 114.34 / fps/train 2.9e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1pxpxq1imgs0_finger_seed99_ckpt20000/scores.jsonlWriting metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1pxpxq1imgs0_finger_seed99_ckpt20000/metrics.jsonl
+
+[Sun Jul 19 12:12:22 CDT 2026] adapt adapt_ax1pxpxq1imgs0_finger_seed99_ckpt20000 rc=0 status=DONE
