@@ -1,0 +1,16 @@
+{
+ "task": "dmc_finger_turn_hard",
+ "seed": 14,
+ "steps": 125000,
+ "eval_freq": 16000,
+ "eval_episodes": 16,
+ "seed_steps": 5000,
+ "pretrained": "/workspace/dreamerv3_runs/tm2wm_finger_awareq1s1_seed14",
+ "frozen_prefixes": [
+  "_encoder",
+  "_dynamics"
+ ],
+ "n_frozen_tensors": 20,
+ "mpc": true,
+ "horizon": 3
+}

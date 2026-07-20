@@ -1,0 +1,77 @@
+[Sun Jul 19 21:31:37 UTC 2026] adapt RUN_ID=adapt_tm2freeq1s0_finger_seed13_ckpt500000 TASK=dmc_finger_turn_hard STEPS=125000 SEED=13
+/workspace/conda_envs/tdmpc2/lib/python3.11/site-packages/tensordict/_td.py:612: FutureWarning: TensorDict.to_module() is replacing an existing nn.Parameter in the destination module with a tensor leaf that is not an nn.Parameter. This historical behavior can remove the key from module.state_dict(). In tensordict v0.14, to_module() will preserve existing module parameter and buffer registrations by default. Pass preserve_module_state=False to keep the current replacement behavior, or preserve_module_state=True to opt in to the v0.14 behavior now.
+  local_out = _set_tensor_dict(
+Episode length: 1000
+Discount factor: 0.995
+Loaded + froze 20 tensors (928,512 params) from /workspace/dreamerv3_runs/tm2wm_finger_freeq1s0_seed13/tm2_ckpt.pt
+Architecture: TD-MPC2 World Model
+Encoder: ModuleDict(
+  (state): Sequential(
+    (0): NormedLinear(in_features=12, out_features=256, bias=True, act=Mish)
+    (1): NormedLinear(in_features=256, out_features=512, bias=True, act=SimNorm)
+  )
+)
+Dynamics: Sequential(
+  (0): NormedLinear(in_features=514, out_features=512, bias=True, act=Mish)
+  (1): NormedLinear(in_features=512, out_features=512, bias=True, act=Mish)
+  (2): NormedLinear(in_features=512, out_features=512, bias=True, act=SimNorm)
+)
+Reward: Sequential(
+  (0): NormedLinear(in_features=514, out_features=512, bias=True, act=Mish)
+  (1): NormedLinear(in_features=512, out_features=512, bias=True, act=Mish)
+  (2): Linear(in_features=512, out_features=101, bias=True)
+)
+Policy prior: Sequential(
+  (0): NormedLinear(in_features=512, out_features=512, bias=True, act=Mish)
+  (1): NormedLinear(in_features=512, out_features=512, bias=True, act=Mish)
+  (2): Linear(in_features=512, out_features=4, bias=True)
+)
+Q-functions: Vectorized 5x Sequential(
+  (0): NormedLinear(in_features=514, out_features=512, bias=True, dropout=0.01, act=Mish)
+  (1): NormedLinear(in_features=512, out_features=512, bias=True, act=Mish)
+  (2): Linear(in_features=512, out_features=101, bias=True)
+)
+Learnable parameters: 4,010,594
+[eval] {'eval/episode_reward': 21.875, 'eval/episode_success': 0.0, 'eval/episode_length': 1000.0, 'eval/step': 0.0, 'eval/episode': 0.0, 'eval/elapsed_time': 494.9279215335846, 'eval/steps_per_second': 0.0}
+Buffer capacity: 125,000
+Storage required: 0.01 GB
+Using CUDA:0 memory for storage.
+[92m2026-07-19 21:40:05,732 [torchrl][INFO][0m    Initialized LazyTensorStorage with torch.Size([125000]) shape[92m [END][0m
+Pretraining agent on seed data...
+/workspace/conda_envs/tdmpc2/lib/python3.11/site-packages/torch/jit/_script.py:365: DeprecationWarning: `torch.jit.script_method` is deprecated. Please switch to `torch.compile` or `torch.export`.
+  warnings.warn(
+/workspace/conda_envs/tdmpc2/lib/python3.11/site-packages/torch/jit/_script.py:365: DeprecationWarning: `torch.jit.script_method` is deprecated. Please switch to `torch.compile` or `torch.export`.
+  warnings.warn(
+/workspace/conda_envs/tdmpc2/lib/python3.11/site-packages/torch/jit/_script.py:365: DeprecationWarning: `torch.jit.script_method` is deprecated. Please switch to `torch.compile` or `torch.export`.
+  warnings.warn(
+/workspace/conda_envs/tdmpc2/lib/python3.11/site-packages/torch/jit/_script.py:365: DeprecationWarning: `torch.jit.script_method` is deprecated. Please switch to `torch.compile` or `torch.export`.
+  warnings.warn(
+/workspace/conda_envs/tdmpc2/lib/python3.11/site-packages/torch/jit/_script.py:365: DeprecationWarning: `torch.jit.script_method` is deprecated. Please switch to `torch.compile` or `torch.export`.
+  warnings.warn(
+/workspace/conda_envs/tdmpc2/lib/python3.11/site-packages/torch/jit/_script.py:365: DeprecationWarning: `torch.jit.script_method` is deprecated. Please switch to `torch.compile` or `torch.export`.
+  warnings.warn(
+/workspace/conda_envs/tdmpc2/lib/python3.11/site-packages/torch/jit/_script.py:365: DeprecationWarning: `torch.jit.script_method` is deprecated. Please switch to `torch.compile` or `torch.export`.
+  warnings.warn(
+/workspace/conda_envs/tdmpc2/lib/python3.11/site-packages/torch/jit/_script.py:365: DeprecationWarning: `torch.jit.script_method` is deprecated. Please switch to `torch.compile` or `torch.export`.
+  warnings.warn(
+/workspace/conda_envs/tdmpc2/lib/python3.11/site-packages/torch/jit/_script.py:365: DeprecationWarning: `torch.jit.script_method` is deprecated. Please switch to `torch.compile` or `torch.export`.
+  warnings.warn(
+/workspace/conda_envs/tdmpc2/lib/python3.11/site-packages/torch/jit/_script.py:365: DeprecationWarning: `torch.jit.script_method` is deprecated. Please switch to `torch.compile` or `torch.export`.
+  warnings.warn(
+/workspace/conda_envs/tdmpc2/lib/python3.11/site-packages/torch/jit/_script.py:365: DeprecationWarning: `torch.jit.script_method` is deprecated. Please switch to `torch.compile` or `torch.export`.
+  warnings.warn(
+/workspace/conda_envs/tdmpc2/lib/python3.11/site-packages/torch/jit/_script.py:365: DeprecationWarning: `torch.jit.script_method` is deprecated. Please switch to `torch.compile` or `torch.export`.
+  warnings.warn(
+/workspace/conda_envs/tdmpc2/lib/python3.11/site-packages/torch/jit/_script.py:365: DeprecationWarning: `torch.jit.script_method` is deprecated. Please switch to `torch.compile` or `torch.export`.
+  warnings.warn(
+/workspace/conda_envs/tdmpc2/lib/python3.11/site-packages/torch/jit/_script.py:365: DeprecationWarning: `torch.jit.script_method` is deprecated. Please switch to `torch.compile` or `torch.export`.
+  warnings.warn(
+[eval] {'eval/episode_reward': 0.0, 'eval/episode_success': 0.0, 'eval/episode_length': 1000.0, 'eval/step': 16000.0, 'eval/episode': 15.0, 'eval/elapsed_time': 1817.9080712795258, 'eval/steps_per_second': 8.801325134520404}
+[eval] {'eval/episode_reward': 250.0, 'eval/episode_success': 0.0, 'eval/episode_length': 1000.0, 'eval/step': 32000.0, 'eval/episode': 31.0, 'eval/elapsed_time': 3267.970079421997, 'eval/steps_per_second': 9.792011316596819}
+[eval] {'eval/episode_reward': 62.625, 'eval/episode_success': 0.0, 'eval/episode_length': 1000.0, 'eval/step': 48000.0, 'eval/episode': 47.0, 'eval/elapsed_time': 4736.891645669937, 'eval/steps_per_second': 10.133227354667804}
+[eval] {'eval/episode_reward': 62.5, 'eval/episode_success': 0.0, 'eval/episode_length': 1000.0, 'eval/step': 64000.0, 'eval/episode': 63.0, 'eval/elapsed_time': 6179.653765439987, 'eval/steps_per_second': 10.356567281798714}
+[eval] {'eval/episode_reward': 249.0, 'eval/episode_success': 0.0, 'eval/episode_length': 1000.0, 'eval/step': 80000.0, 'eval/episode': 79.0, 'eval/elapsed_time': 7633.654616832733, 'eval/steps_per_second': 10.479908250445927}
+[eval] {'eval/episode_reward': 195.75, 'eval/episode_success': 0.0, 'eval/episode_length': 1000.0, 'eval/step': 96000.0, 'eval/episode': 95.0, 'eval/elapsed_time': 9063.49446773529, 'eval/steps_per_second': 10.591941148278504}
+[eval] {'eval/episode_reward': 122.875, 'eval/episode_success': 0.0, 'eval/episode_length': 1000.0, 'eval/step': 112000.0, 'eval/episode': 111.0, 'eval/elapsed_time': 10520.19566655159, 'eval/steps_per_second': 10.64618981908275}
+ADAPT DONE -> /workspace/dreamerv3_runs/adapt_tm2freeq1s0_finger_seed13_ckpt500000
+[Mon Jul 20 00:40:23 UTC 2026] tdmpc2 adapt_tm2freeq1s0_finger_seed13_ckpt500000 rc=0 status=DONE
