@@ -159,6 +159,35 @@ immutable dated files; see plan v4.)
 
 ## Code notes and registrations (non-deviations)
 
+- **2026-07-19 — pixel X1 registration package BUILT + frozen-ready
+  (pre-outcome); G-X1 CLOSED on the X0 closeout.** X0 smoke
+  (`local_results/pixel_x0_closeout_20260719_131300/`): seed-99 fit+adapt
+  green on both sides of the image-only pair `pxq1_img` (20K updates in
+  16–40 min ⇒ 500K ≈ 7–17 h ≪ 36 h; pair storage 31 MB; adapt reaches
+  episode score ≈966/974 from pixels — learnability risk dead; loss set
+  {con,dyn,image,rep,rew}, `model_obs: image` in saved configs; 686,070
+  params). First attempt failed with `RuntimeError: 'image'` — the
+  original `pxq1` pair drew from image-LESS episodes (only 6 of 16
+  sources rendered); the user rebuilt on an image-only index. That
+  gotcha + the smoke pair's collector⊗occupancy confound (side0 = one
+  pure collector vs side1 = five others) drive the X1 design:
+  NEW `build_controlled_replay search-matched` (pooled high side, low
+  side repeats the high side's per-collector episode counts ⇒
+  collector_l1 = 0 by construction, side0 = low by construction;
+  `selfcheck-matched` PASS; `build` passes `collector_l1` into the
+  manifest confound deltas; note the binned `source_l1` metric
+  mechanically saturates for any occupancy pair, so `collector_l1` is
+  the controlled quantity). Registered: `prereg/PREREG_pixel_repl_20260719.md`
+  (K ladder 20/16/12 + buffer quality gate occ ≥.30/≤.05, fill record
+  before first submission, 32-job X2 with modes `ax1(f)pxpxq1ms*`,
+  P-C2 band [+84.0, +98.7] directional) + frozen
+  `analysis/pixel_repl_read.py` (selfcheck PASS: fires/null/
+  missing-cell/smoke-mode-exclusion). Smoke score sightings disclosed
+  in the prereg's ordering statement; no pxq1m pair, no X1/X2 outcome
+  exists. The 18-Jul plan's "50–100 eps/side" aspiration is superseded:
+  the image pool holds only ~30 high-occ episodes, so K=20 is the
+  registered ceiling.
+
 - **2026-07-18 night — decisions recorded + two correctives frozen
   (pre-outcome).** (1) **Goodhart DEMOTED** (owner decision, 18 Jul):
   the track is reported as a negative/boundary result with the 3-seed

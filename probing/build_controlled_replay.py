@@ -710,6 +710,168 @@ def cmd_search_within(args):
 
 
 # --------------------------------------------------------------------------
+# search-matched (pixel X1: pooled pair, collector composition matched)
+# --------------------------------------------------------------------------
+
+def cmd_search_matched(args):
+  """Pooled high/low-occupancy pair with COLLECTOR composition matched by
+  construction (collector_l1 = 0). The pooled `search` picks sides
+  independently, so its best pair can fully confound source composition
+  with occupancy (the E3v2 problem); `search-within` removes that but is
+  limited to one collector's episodes, which caps the high-occupancy
+  supply. This search pools collectors for the high side, then forces the
+  low side to draw the SAME per-collector episode counts from each
+  collector's low-occupancy end.
+
+  High-side candidates: the K most occupancy-extreme episodes across the
+  pool, plus rank-weighted random draws biased toward that extreme. For
+  each, low-side candidates repeat the high side's collector counts.
+  Match criteria keep the frozen semantics (|dcov| <= cov_tol with
+  cov_tol = cov_match_frac x raw source-coverage range; docc >=
+  occ_sep_mult x median bootstrap occupancy noise). Best valid pair by
+  max docc. Sides are emitted low-occupancy FIRST (side0 = low; the
+  Option C side-inversion cannot recur). Output is pairs-shaped, so
+  `build --which q1` materializes it unchanged."""
+  with open(args.index) as f:
+    index = json.load(f)
+  task = index['task']
+  spec = regimes.spec(task)
+  cov_keys = sorted(spec['coverage_keys'])
+  _, ref_mean, ref_std = compute_scaler(args.ref_replay, task)
+  rng = np.random.default_rng(args.seed)
+
+  ep_frames, ep_occ, ep_label = {}, {}, {}
+  raw_cov_sources = {}
+  by_label = collections.defaultdict(list)  # label -> eids, occ ascending
+  eid = 0
+  for label, src in index['sources'].items():
+    rows = []
+    for e in src['episodes']:
+      data = load_span(src['streams'][e['stream']], e['start'], e['end'],
+                       keys=cov_keys)
+      x = ((state_matrix(data, cov_keys) - ref_mean) / ref_std).astype(
+          np.float32)
+      ep_frames[eid] = x
+      ep_occ[eid] = e['occ']
+      ep_label[eid] = label
+      rows.append(eid)
+      eid += 1
+    by_label[label] = sorted(rows, key=lambda i: ep_occ[i])
+    pool = np.concatenate([ep_frames[i] for i in rows], 0)
+    idx = rng.choice(len(pool), size=min(args.max_frames, len(pool)),
+                     replace=False)
+    raw_cov_sources[label] = knn_entropy(pool[idx], args.knn, args.logc)
+  cov_vals = list(raw_cov_sources.values())
+  cov_tol = args.cov_match_frac * (max(cov_vals) - min(cov_vals))
+  print(f'source coverages: {raw_cov_sources} -> cov_tol={cov_tol:.4f}')
+
+  def measure(members):
+    occ = float(np.mean([ep_occ[m] for m in members]))
+    boots = [np.mean([ep_occ[m] for m in
+                      rng.choice(members, size=len(members))])
+             for _ in range(args.boot)]
+    frames = np.concatenate([ep_frames[i] for i in members], 0)
+    idx = rng.choice(len(frames), size=min(args.max_frames, len(frames)),
+                     replace=False)
+    cov = knn_entropy(frames[idx], args.knn, args.logc)
+    return dict(members=np.asarray(sorted(members)), cov=cov, occ=occ,
+                noise=float(np.std(boots)))
+
+  def rank_draw(ordered, k):
+    ranks = np.arange(len(ordered), dtype=np.float64)
+    w = np.exp(-ranks / max(len(ordered) / 3.0, 1.0))
+    w /= w.sum()
+    return list(rng.choice(ordered, size=k, replace=False, p=w))
+
+  k = args.n_episodes
+  by_occ_desc = sorted(ep_frames, key=lambda i: -ep_occ[i])
+  n_hi = max(args.n_candidates // 16, 4)
+  hi_sets = [by_occ_desc[:k]]
+  hi_pool = by_occ_desc[:max(k, min(len(by_occ_desc), 4 * k))]
+  for _ in range(n_hi - 1):
+    hi_sets.append(rank_draw(hi_pool, k))
+  n_lo = max(args.n_candidates // n_hi, 8)
+
+  best, n_valid, noises, measured_hi = None, 0, [], []
+  for hs in hi_sets:
+    hi = measure(hs)
+    counts = collections.Counter(ep_label[m] for m in hs)
+    measured_hi.append(hi)
+    noises.append(hi['noise'])
+    lo_cands = []
+    for _ in range(n_lo):
+      members = []
+      for label, c in counts.items():
+        avail = [i for i in by_label[label] if i not in set(hs)]
+        if len(avail) < c:
+          members = None
+          break
+        members.extend(rank_draw(avail, c))
+      if members is None:
+        continue
+      lo = measure(members)
+      lo_cands.append(lo)
+      noises.append(lo['noise'])
+    hi['lo_cands'] = lo_cands
+  occ_sep_min = args.occ_sep_mult * float(np.median(noises))
+  for hi in measured_hi:
+    for lo in hi['lo_cands']:
+      dcov = abs(lo['cov'] - hi['cov'])
+      docc = hi['occ'] - lo['occ']
+      if dcov > cov_tol or docc < occ_sep_min:
+        continue
+      n_valid += 1
+      if best is None or docc > best['docc']:
+        best = dict(lo=lo, hi=hi, dcov=dcov, docc=docc)
+
+  out = dict(kind='matched', task=task, index=args.index,
+             ref_replay=args.ref_replay, n_episodes=k,
+             ep_len=index['ep_len'],
+             criteria=dict(cov_match_frac=args.cov_match_frac,
+                           occ_sep_mult=args.occ_sep_mult, knn=args.knn,
+                           logc=args.logc, max_frames=args.max_frames,
+                           boot=args.boot, seed=args.seed,
+                           n_candidates=args.n_candidates,
+                           objective='max docc; low side repeats the high '
+                                     "side's per-collector episode counts "
+                                     '(collector_l1 = 0); |dcov| <= '
+                                     'cov_tol; side0 = low occupancy'),
+             source_coverages=raw_cov_sources, cov_tol=cov_tol,
+             occ_sep_min=occ_sep_min, n_pairs=dict(q1=n_valid), pairs={})
+  if best is None:
+    out['pairs']['q1'] = None
+    out['decision'] = 'SHORT'
+  else:
+    lo, hi = best['lo'], best['hi']
+    assert not (set(lo['members']) & set(hi['members']))
+    lo_counts = collections.Counter(ep_label[m] for m in lo['members'])
+    hi_counts = collections.Counter(ep_label[m] for m in hi['members'])
+    assert lo_counts == hi_counts, (lo_counts, hi_counts)
+
+    def side(c):
+      mixture = collections.Counter(
+          f'{ep_label[m]}/{occ_bin(ep_occ[m])}' for m in c['members'])
+      return dict(cov=round(c['cov'], 6), occ=round(c['occ'], 6),
+                  occ_noise=round(c['noise'], 6),
+                  mixture=dict(sorted(mixture.items())),
+                  members=[int(m) for m in c['members']])
+    sides = [side(lo), side(hi)]
+    out['pairs']['q1'] = dict(
+        dcov=round(best['dcov'], 6), docc=round(best['docc'], 6),
+        overlap=0.0, collector_l1=0.0,
+        source_l1=round(_source_l1(sides[0], sides[1], k), 4),
+        sides=sides)
+    out['decision'] = 'OK'
+    print(f"q1: dcov={best['dcov']:.4f} docc={best['docc']:.4f} "
+          f"lo_occ={lo['occ']:.4f} hi_occ={hi['occ']:.4f} "
+          f"({n_valid} valid pairs)")
+  os.makedirs(os.path.dirname(os.path.abspath(args.output)), exist_ok=True)
+  with open(args.output, 'w') as f:
+    json.dump(out, f, indent=2)
+  print(f"{out['decision']} -> {args.output}")
+
+
+# --------------------------------------------------------------------------
 # build
 # --------------------------------------------------------------------------
 
@@ -824,6 +986,8 @@ def cmd_build(args):
   s0, s1 = manifest['sides']
   deltas = _pairwise_deltas(s0, s1)
   deltas['source_l1'] = pair['source_l1']
+  if 'collector_l1' in pair:
+    deltas['collector_l1'] = pair['collector_l1']
   manifest['confound_deltas'] = deltas
 
   path = os.path.join(args.output_root, 'manifest.json')
@@ -1113,6 +1277,57 @@ def cmd_selfcheck_within(args):
           f"dcov={pair['dcov']:.3f}, {len(oks)} sources OK)")
 
 
+def cmd_selfcheck_matched(args):
+  """End-to-end check of search-matched/build on synthetic sources: the
+  pair must be collector-matched (identical per-collector counts), occ-
+  separated, cov-matched, side0 = low."""
+  import tempfile
+  with tempfile.TemporaryDirectory() as tmp:
+    goal, apt, p2e = (f'{tmp}/goal/replay', f'{tmp}/apt/replay',
+                      f'{tmp}/p2e/replay')
+    _synth_source(goal, 8000, 0.5, 0.3, seed=1)
+    _synth_source(apt, 8000, 0.4, 0.8, seed=3)
+    _synth_source(p2e, 8000, 0.3, 1.5, seed=2)
+    ns = argparse.Namespace(
+        task='dmc_cup_catch',
+        replay=[f'goal={goal}', f'apt={apt}', f'p2e={p2e}'],
+        output=f'{tmp}/episodes.json')
+    cmd_index(ns)
+    ns = argparse.Namespace(
+        index=f'{tmp}/episodes.json', ref_replay=goal, n_episodes=8,
+        n_candidates=160, max_frames=2000, knn=12, logc=1.0,
+        cov_match_frac=0.3, occ_sep_mult=3.0, boot=50, seed=0,
+        output=f'{tmp}/matched.json')
+    cmd_search_matched(ns)
+    with open(f'{tmp}/matched.json') as f:
+      mp = json.load(f)
+    assert mp['decision'] == 'OK', 'matched search SHORT on synthetic data'
+    pair = mp['pairs']['q1']
+    lo, hi = pair['sides']
+    assert lo['occ'] <= hi['occ'], 'side0 must be the low-occupancy side'
+    assert not (set(lo['members']) & set(hi['members'])), 'sides overlap'
+    assert pair['collector_l1'] == 0.0
+    assert pair['docc'] >= mp['occ_sep_min'] - 1e-9
+    assert pair['dcov'] <= mp['cov_tol'] + 1e-9
+    def counts(s):
+      c = collections.Counter()
+      for key, v in s['mixture'].items():
+        c[key.split('/')[0]] += v
+      return c
+    assert counts(lo) == counts(hi), (counts(lo), counts(hi))
+    ns = argparse.Namespace(index=f'{tmp}/episodes.json',
+                            pairs=f'{tmp}/matched.json', which='q1',
+                            output_root=f'{tmp}/m0')
+    cmd_build(ns)
+    with open(f'{tmp}/m0/manifest.json') as f:
+      m = json.load(f)
+    assert m['confound_deltas']['n_transitions'] == 0
+    assert m['confound_deltas']['collector_l1'] == 0.0
+    assert m['sides'][0]['occ_recomputed'] <= m['sides'][1]['occ_recomputed']
+    print(f"selfcheck-matched PASS (docc={pair['docc']:.3f} "
+          f"dcov={pair['dcov']:.3f} collectors={dict(counts(hi))})")
+
+
 def main():
   p = argparse.ArgumentParser(description=__doc__)
   sub = p.add_subparsers(dest='cmd', required=True)
@@ -1171,6 +1386,10 @@ def main():
                    help='Restrict to these collector labels.')
   swi.set_defaults(fn=cmd_search_within)
 
+  sm = sub.add_parser('search-matched')
+  add_search_args(sm)
+  sm.set_defaults(fn=cmd_search_matched)
+
   bu = sub.add_parser('build')
   bu.add_argument('--index', required=True)
   bu.add_argument('--pairs', required=True)
@@ -1192,6 +1411,9 @@ def main():
 
   sw = sub.add_parser('selfcheck-within')
   sw.set_defaults(fn=cmd_selfcheck_within)
+
+  sma = sub.add_parser('selfcheck-matched')
+  sma.set_defaults(fn=cmd_selfcheck_matched)
 
   args = p.parse_args()
   args.fn(args)
