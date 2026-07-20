@@ -1,0 +1,78 @@
+{
+  "task": "dmc_finger_turn_hard",
+  "which": "q1",
+  "index": "/scratch/midway3/rickybao/dreamerv3_runs/pixel_x0/episodes_x1.json",
+  "pairs": "/scratch/midway3/rickybao/dreamerv3_runs/pixel_x0/pairs_pxq1m.json",
+  "ep_len": 1001,
+  "chunk_contract": "one chunk per episode, succ=0; training windows never span episode boundaries (dropped on both sides of the pair)",
+  "note": "gradient-update count and model capacity are equalized at offline_fit time (same config/steps for both sides)",
+  "sides": [
+    {
+      "directory": "/scratch/midway3/rickybao/dreamerv3_runs/axis1_finger/pxq1m/side0",
+      "n_episodes": 20,
+      "n_transitions": 20020,
+      "occ_recomputed": 0.001948,
+      "occ_search": 0.001948,
+      "cov_search": 0.568709,
+      "mixture": {
+        "apt101/zero": 5,
+        "p2e101/zero": 2,
+        "p2e99/zero": 2,
+        "random100/zero": 4,
+        "random104/mid": 1,
+        "random104/zero": 3,
+        "random105/zero": 3
+      },
+      "terminal_fraction": 0.0,
+      "action_stats": {
+        "mean": [
+          -0.08535,
+          0.02352
+        ],
+        "std": [
+          0.79052,
+          0.72754
+        ]
+      }
+    },
+    {
+      "directory": "/scratch/midway3/rickybao/dreamerv3_runs/axis1_finger/pxq1m/side1",
+      "n_episodes": 20,
+      "n_transitions": 20020,
+      "occ_recomputed": 0.71044,
+      "occ_search": 0.71044,
+      "cov_search": 0.569155,
+      "mixture": {
+        "apt101/high": 4,
+        "apt101/mid": 1,
+        "p2e101/high": 2,
+        "p2e99/high": 2,
+        "random100/high": 1,
+        "random100/mid": 3,
+        "random104/high": 3,
+        "random104/mid": 1,
+        "random105/high": 3
+      },
+      "terminal_fraction": 0.0,
+      "action_stats": {
+        "mean": [
+          -0.10664,
+          0.03274
+        ],
+        "std": [
+          0.80835,
+          0.7367
+        ]
+      }
+    }
+  ],
+  "confound_deltas": {
+    "n_transitions": 0,
+    "action_mean_maxabs": 0.02129,
+    "action_std_maxabs": 0.01783,
+    "terminal_fraction": 0.0,
+    "episode_length": 0,
+    "source_l1": 0.95,
+    "collector_l1": 0.0
+  }
+}

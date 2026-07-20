@@ -1,0 +1,118 @@
+{
+  "kind": "matched",
+  "task": "dmc_finger_turn_hard",
+  "index": "/scratch/midway3/rickybao/dreamerv3_runs/pixel_x0/episodes_x1.json",
+  "ref_replay": "/scratch/midway3/rickybao/dreamerv3_runs/pretrain_apt_finger_seed101/replay",
+  "n_episodes": 20,
+  "ep_len": 1001,
+  "criteria": {
+    "cov_match_frac": 0.05,
+    "occ_sep_mult": 3.0,
+    "knn": 12,
+    "logc": 1.0,
+    "max_frames": 3000,
+    "boot": 100,
+    "seed": 0,
+    "n_candidates": 400,
+    "objective": "max docc; low side repeats the high side's per-collector episode counts (collector_l1 = 0); |dcov| <= cov_tol; side0 = low occupancy"
+  },
+  "source_coverages": {
+    "random100": 0.6210567203609995,
+    "random104": 0.6214810036105036,
+    "random105": 0.6250440639951187,
+    "p2e99": 0.6077453398455085,
+    "p2e101": 0.5917774682382508,
+    "apt101": 0.5988201238239031
+  },
+  "cov_tol": 0.0016633297878433928,
+  "occ_sep_min": 0.00949949535992118,
+  "n_pairs": {
+    "q1": 28
+  },
+  "pairs": {
+    "q1": {
+      "dcov": 0.000446,
+      "docc": 0.708492,
+      "overlap": 0.0,
+      "collector_l1": 0.0,
+      "source_l1": 0.95,
+      "sides": [
+        {
+          "cov": 0.568709,
+          "occ": 0.001948,
+          "occ_noise": 0.002085,
+          "mixture": {
+            "apt101/zero": 5,
+            "p2e101/zero": 2,
+            "p2e99/zero": 2,
+            "random100/zero": 4,
+            "random104/mid": 1,
+            "random104/zero": 3,
+            "random105/zero": 3
+          },
+          "members": [
+            2,
+            22,
+            42,
+            49,
+            93,
+            97,
+            133,
+            161,
+            190,
+            192,
+            201,
+            263,
+            281,
+            340,
+            352,
+            418,
+            426,
+            453,
+            469,
+            494
+          ]
+        },
+        {
+          "cov": 0.569155,
+          "occ": 0.71044,
+          "occ_noise": 0.058662,
+          "mixture": {
+            "apt101/high": 4,
+            "apt101/mid": 1,
+            "p2e101/high": 2,
+            "p2e99/high": 2,
+            "random100/high": 1,
+            "random100/mid": 3,
+            "random104/high": 3,
+            "random104/mid": 1,
+            "random105/high": 3
+          },
+          "members": [
+            36,
+            43,
+            76,
+            79,
+            91,
+            94,
+            132,
+            163,
+            199,
+            218,
+            251,
+            258,
+            266,
+            371,
+            375,
+            448,
+            463,
+            467,
+            490,
+            493
+          ]
+        }
+      ]
+    }
+  },
+  "decision": "OK"
+}
