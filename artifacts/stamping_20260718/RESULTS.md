@@ -116,10 +116,45 @@ mechanism-backed.** (The dyn/*-input deviation stands documented; the
 learned stamp is a function of obs+source-latents, which the trunk's
 history summary evidently suffices to predict.)
 
+## True-label E4 panel — panel (b) (landed 2026-07-19; descriptive-only)
+
+Snapshot `local_results/stamping_true_e4_20260719_122116/`
+(`e4_stamping_true_label_finger_v1.csv`, archived here): the same 32
+srd fits scored against the TRUE task reward on the frozen `finger_v1`
+probe set (128 measures = 32 runs × horizons {0,1,5,20}; all runs
+`expl.mode task`, reward_aware=1).
+
+True-reward NLL (h0, seed means; reference band from P3 E4 true labels,
+in-regime h0: included = full 1.02 / rgo 1.21, not-included = sgb 2.30):
+
+| cell | all | in-regime | out-regime | total-NLL in/out | err_diff |
+|---|---|---|---|---|---|
+| srd0 s0 | 1.42 | **15.09** | 0.05 | 0.26 / 0.20 | −0.064 |
+| srd0 s1 | 1.42 | **4.10** | 1.15 | 0.14 / 0.14 | +0.007 |
+| srd1 s0 | 1.02 | **10.77** | 0.04 | 0.26 / 0.18 | −0.076 |
+| srd1 s1 | 1.36 | **3.92** | 1.11 | 0.13 / 0.14 | +0.011 |
+
+**Reading: the triangulation closes.** The srd reward heads are far
+above even the not-included band on true reward in-regime (3.9–15.1 vs
+sgb's 2.30) — they know the stamp (override panel: stamp-NLL 0.24–1.49)
+and demonstrably do NOT know the true task reward. So the stamped arms'
+supervision was genuinely task-unaligned (no accidental alignment
+leakage through the dyn/*-input deviation), and the null primary is a
+clean test of "learnable-but-unaligned scalar supervision". Together
+with the override panel this is the full **included-but-useless**
+signature from both directions; P-B1's mechanism backing is complete.
+Secondary observations (descriptive): true-reward in-regime NLL is
+~3× lower on s1 fits (3.9–4.1 vs 10.8–15.1) — high-occupancy exposure
+leaks some true-reward structure even into stamp-trained heads — and
+err_diff (total-NLL out−in) stays in the tiny arm-invariant band
+(−0.08..+0.01), consistent with the P3 E4 d_errin invariance.
+
 ## Provenance
 
 - `auc.csv` — canonical local recompute (bit-identical to cluster).
 - `stamping_read.json` — full frozen-read output (deltas, CIs,
   sensitivity, audit).
+- `e4_stamping_true_label_finger_v1.csv` — true-label E4 measures
+  (panel (b) source).
 - Read command: `python -m analysis.stamping_read --auc auc.csv
   --runroot <snapshot>/runroot_light --output <dir>`.

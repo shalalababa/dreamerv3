@@ -159,6 +159,64 @@ immutable dated files; see plan v4.)
 
 ## Code notes and registrations (non-deviations)
 
+- **2026-07-20 — two follow-on registrations BUILT + frozen-ready
+  (pre-outcome): synth Phase-B″ and TD-MPC2 F2.** (1) **Phase-B″**
+  (authorized by the re-diagnosis gate, share .865):
+  `prereg/PREREG_synth_phasebpp_20260720.md` + frozen
+  `analysis/synth_phasebpp_read.py` (selfcheck PASS: fires /
+  lottery-null / missing-cell / rediag-mode-exclusion). 96 adapt-only
+  jobs, {task, apt} × sides × fit seeds 1–8 × FRESH adapt seeds
+  104–106 (101–103 were revealed in the re-diagnosis; no revealed
+  outcome enters B″); modes `ax1rb(f?)<fit>q1s<side>`; fit-level
+  AUC100k = 3-seed mean; primary = interaction CI>0; registered power
+  statement (decides ≳ ~90; between-fit floor ≈±49) and consequence
+  map (null ⇒ synth interaction leg CLOSED, no Phase-C). (2) **F2**
+  (G-F2 default GO on the coherent F1 read):
+  `probing/tdmpc2_stratified_error.py` (NEW instrument: closed-form
+  ridge reward probe on frozen latents at h=0 — required because the
+  free arm's native reward head is untrained (reward_coef=0) and
+  cannot report trunk content; one-step consistency d_errin analog;
+  descriptive native-head MSE; frozen finger_v1 probe set sha-pinned;
+  even/odd episode split, λ=1e-3·n_train; numpy-core selfcheck PASS;
+  `--smoke_random_init` = registered no-outcome API smoke) +
+  `analysis/tdmpc2_f2_read.py` (selfcheck PASS: lottery /
+  never-included / null / missing-cell) +
+  `prereg/PREREG_tdmpc2_f2_20260720.md` (P-F2a = mean ln-ratio
+  free/aware in-regime probe-MSE over 32 pairs, seed-clustered
+  bootstrap, fires iff CI>0; P-F2b consistency invariance band 0.5 +
+  lottery_fraction ≥ 0.15 map, all descriptors non-decisional).
+  Ordering: both preregs + scripts must be committed BEFORE the 96
+  B″ jobs / the F2 smoke+measures run.
+
+- **2026-07-20 — four reads executed (Option C corrective / synth
+  re-diagnosis / TD-MPC2 F1 / stamping true-E4 panel).** All three
+  frozen reads ran on cluster csvs with local canonical AUC recompute
+  bit-identical (36/36 + 64/64 rows) and local read jsons bit-identical
+  to the cluster-side jsons. (1) **Option C corrective**
+  (`artifacts/optc_corrective_20260719/`): C1 occupancy contrast at
+  fixed 400-ep volume +23.3 [−248, +302] spans 0 (registered:
+  occupancy saturates below .094 at this volume); **C2 volume contrast
+  at ≈fixed fraction +251.9 [+120, +396], 6/6 ⇒ P-B4 fraction-not-count
+  strong form REFUTED** (first refuted adjudicated prediction; theory
+  needs a volume/estimation-floor term; composition caveat as
+  registered). (2) **Synth re-diagnosis**
+  (`artifacts/synth_rediag_20260719/`): pooled within-share **0.865 ≥
+  0.5 ⇒ adapt-lottery CONFIRMED ⇒ Phase-B″ (adapt-averaged re-test)
+  AUTHORIZED**; side0 share 1.000 (σ²_b clamps to 0), adapt-seed swings
+  up to ~30× on a fixed fit. (3) **TD-MPC2 F1**
+  (`artifacts/tdmpc2_f1_20260719/`): PRIMARY pooled 1–16 +22.9 [−19.9,
+  +68.9] does NOT fire ⇒ family-scope limitation stands at doubled
+  power; aware simple +35.5 CI>0 confirmed; **P-C1 PARTIAL** (C1a share
+  .646 fails <0.6; C1b unresolved, free +12.5 point ≥ +10 spans 0; C1c
+  pass); audit 32/32; **G-F2 not incoherent ⇒ F2 (E4 mechanism port)
+  default GO**, reframed as lottery-vs-never-included discriminator.
+  (4) **Stamping true-label E4 panel (b)** appended to
+  `artifacts/stamping_20260718/RESULTS.md` (descriptive): srd heads'
+  true-reward in-regime NLL 3.9–15.1 ≫ sgb 2.30 while stamp-NLL was
+  low ⇒ included-but-useless signature complete from both directions;
+  no alignment leakage through the dyn/* deviation; err_diff stays in
+  the arm-invariant band.
+
 - **2026-07-19 — pixel X1 registration package BUILT + frozen-ready
   (pre-outcome); G-X1 CLOSED on the X0 closeout.** X0 smoke
   (`local_results/pixel_x0_closeout_20260719_131300/`): seed-99 fit+adapt
