@@ -1,0 +1,2001 @@
+[Wed Jul 22 02:36:07 CDT 2026] E4 measure ax1wm_finger_fv2q1v200s1_seed1
+Observations
+  reward           Space(float32, shape=(), low=-inf, high=inf)
+  is_first         Space(bool, shape=(), low=False, high=True)
+  is_last          Space(bool, shape=(), low=False, high=True)
+  is_terminal      Space(bool, shape=(), low=False, high=True)
+  position         Space(float32, shape=(4,), low=-inf, high=inf)
+  velocity         Space(float32, shape=(3,), low=-inf, high=inf)
+  touch            Space(float32, shape=(2,), low=-inf, high=inf)
+  target_position  Space(float32, shape=(2,), low=-inf, high=inf)
+  dist_to_target   Space(float32, shape=(), low=-inf, high=inf)
+Actions
+  action           Space(float32, shape=(2,), low=-1.0, high=1.0)
+Extras
+  consec           Space(int32, shape=(), low=-2147483648, high=2147483647)
+  stepid           Space(uint8, shape=(20,), low=0, high=255)
+  dyn/deter        Space(float32, shape=(512,), low=-inf, high=inf)
+  dyn/stoch        Space(float32, shape=(32, 4), low=-inf, high=inf)
+JAX devices (1): [cuda:0]
+Policy devices: cuda:0
+Train devices:  cuda:0
+Initializing parameters...
+Optimizer opt has 580,880 params:
+       364,160 dyn
+        66,111 val
+        50,316 dec
+        49,796 pol
+        41,153 con
+         9,344 enc
+Done initializing!
+Compiling 1 checkpoint groups...
+Largest checkpoint group: 0 GB
+Loading checkpoint: /scratch/midway3/rickybao/dreamerv3_runs/ax1wm_finger_fv2q1v200s1_seed1/ckpt/20260718T173650F519153-000000100000
+Loaded checkpoint.
+ax1wm_finger_fv2q1v200s1_seed1: expl.mode=apt reward_aware=False horizons=(1, 5, 20) probes 60x1001
+  episodes 0-3
+  episodes 4-7
+  episodes 8-11
+  episodes 12-15
+  episodes 16-19
+  episodes 20-23
+  episodes 24-27
+  episodes 28-31
+  episodes 32-35
+  episodes 36-39
+  episodes 40-43
+  episodes 44-47
+  episodes 48-51
+  episodes 52-55
+  episodes 56-59
+  h0: all=0.1434 in=0.1403 out=0.1437 rew=0.1383 norew=0.1439
+  h1: all=0.3911 in=0.3155 out=0.3987 rew=0.3155 norew=0.3987
+  h5: all=0.7330 in=0.5955 out=0.7467 rew=0.5955 norew=0.7467
+  h20: all=1.6630 in=1.0748 out=1.7217 rew=1.0748 norew=1.7217
+-> /scratch/midway3/rickybao/dreamerv3_runs/ax1wm_finger_fv2q1v200s1_seed1/e4_finger_v1
+[Wed Jul 22 02:36:41 CDT 2026] E4 measure ax1wm_finger_fv2q1v200s1_seed2
+Observations
+  reward           Space(float32, shape=(), low=-inf, high=inf)
+  is_first         Space(bool, shape=(), low=False, high=True)
+  is_last          Space(bool, shape=(), low=False, high=True)
+  is_terminal      Space(bool, shape=(), low=False, high=True)
+  position         Space(float32, shape=(4,), low=-inf, high=inf)
+  velocity         Space(float32, shape=(3,), low=-inf, high=inf)
+  touch            Space(float32, shape=(2,), low=-inf, high=inf)
+  target_position  Space(float32, shape=(2,), low=-inf, high=inf)
+  dist_to_target   Space(float32, shape=(), low=-inf, high=inf)
+Actions
+  action           Space(float32, shape=(2,), low=-1.0, high=1.0)
+Extras
+  consec           Space(int32, shape=(), low=-2147483648, high=2147483647)
+  stepid           Space(uint8, shape=(20,), low=0, high=255)
+  dyn/deter        Space(float32, shape=(512,), low=-inf, high=inf)
+  dyn/stoch        Space(float32, shape=(32, 4), low=-inf, high=inf)
+JAX devices (1): [cuda:0]
+Policy devices: cuda:0
+Train devices:  cuda:0
+Initializing parameters...
+Optimizer opt has 580,880 params:
+       364,160 dyn
+        66,111 val
+        50,316 dec
+        49,796 pol
+        41,153 con
+         9,344 enc
+Done initializing!
+Compiling 1 checkpoint groups...
+Largest checkpoint group: 0 GB
+Loading checkpoint: /scratch/midway3/rickybao/dreamerv3_runs/ax1wm_finger_fv2q1v200s1_seed2/ckpt/20260718T173422F624776-000000100000
+Loaded checkpoint.
+ax1wm_finger_fv2q1v200s1_seed2: expl.mode=apt reward_aware=False horizons=(1, 5, 20) probes 60x1001
+  episodes 0-3
+  episodes 4-7
+  episodes 8-11
+  episodes 12-15
+  episodes 16-19
+  episodes 20-23
+  episodes 24-27
+  episodes 28-31
+  episodes 32-35
+  episodes 36-39
+  episodes 40-43
+  episodes 44-47
+  episodes 48-51
+  episodes 52-55
+  episodes 56-59
+  h0: all=0.1365 in=0.1420 out=0.1360 rew=0.1404 norew=0.1361
+  h1: all=0.3691 in=0.3176 out=0.3742 rew=0.3176 norew=0.3742
+  h5: all=0.7165 in=0.6047 out=0.7276 rew=0.6047 norew=0.7276
+  h20: all=1.6347 in=1.0907 out=1.6890 rew=1.0907 norew=1.6890
+-> /scratch/midway3/rickybao/dreamerv3_runs/ax1wm_finger_fv2q1v200s1_seed2/e4_finger_v1
+[Wed Jul 22 02:37:00 CDT 2026] E4 measure ax1wm_finger_fv2q1v200s1_seed3
+Observations
+  reward           Space(float32, shape=(), low=-inf, high=inf)
+  is_first         Space(bool, shape=(), low=False, high=True)
+  is_last          Space(bool, shape=(), low=False, high=True)
+  is_terminal      Space(bool, shape=(), low=False, high=True)
+  position         Space(float32, shape=(4,), low=-inf, high=inf)
+  velocity         Space(float32, shape=(3,), low=-inf, high=inf)
+  touch            Space(float32, shape=(2,), low=-inf, high=inf)
+  target_position  Space(float32, shape=(2,), low=-inf, high=inf)
+  dist_to_target   Space(float32, shape=(), low=-inf, high=inf)
+Actions
+  action           Space(float32, shape=(2,), low=-1.0, high=1.0)
+Extras
+  consec           Space(int32, shape=(), low=-2147483648, high=2147483647)
+  stepid           Space(uint8, shape=(20,), low=0, high=255)
+  dyn/deter        Space(float32, shape=(512,), low=-inf, high=inf)
+  dyn/stoch        Space(float32, shape=(32, 4), low=-inf, high=inf)
+JAX devices (1): [cuda:0]
+Policy devices: cuda:0
+Train devices:  cuda:0
+Initializing parameters...
+Optimizer opt has 580,880 params:
+       364,160 dyn
+        66,111 val
+        50,316 dec
+        49,796 pol
+        41,153 con
+         9,344 enc
+Done initializing!
+Compiling 1 checkpoint groups...
+Largest checkpoint group: 0 GB
+Loading checkpoint: /scratch/midway3/rickybao/dreamerv3_runs/ax1wm_finger_fv2q1v200s1_seed3/ckpt/20260718T173010F193241-000000100000
+Loaded checkpoint.
+ax1wm_finger_fv2q1v200s1_seed3: expl.mode=apt reward_aware=False horizons=(1, 5, 20) probes 60x1001
+  episodes 0-3
+  episodes 4-7
+  episodes 8-11
+  episodes 12-15
+  episodes 16-19
+  episodes 20-23
+  episodes 24-27
+  episodes 28-31
+  episodes 32-35
+  episodes 36-39
+  episodes 40-43
+  episodes 44-47
+  episodes 48-51
+  episodes 52-55
+  episodes 56-59
+  h0: all=0.1346 in=0.1399 out=0.1341 rew=0.1381 norew=0.1343
+  h1: all=0.3759 in=0.3123 out=0.3822 rew=0.3123 norew=0.3822
+  h5: all=0.7341 in=0.6207 out=0.7454 rew=0.6207 norew=0.7454
+  h20: all=1.6913 in=1.1335 out=1.7469 rew=1.1335 norew=1.7469
+-> /scratch/midway3/rickybao/dreamerv3_runs/ax1wm_finger_fv2q1v200s1_seed3/e4_finger_v1
+[Wed Jul 22 02:37:19 CDT 2026] E4 measure ax1wm_finger_fv2q1v200s1_seed4
+Observations
+  reward           Space(float32, shape=(), low=-inf, high=inf)
+  is_first         Space(bool, shape=(), low=False, high=True)
+  is_last          Space(bool, shape=(), low=False, high=True)
+  is_terminal      Space(bool, shape=(), low=False, high=True)
+  position         Space(float32, shape=(4,), low=-inf, high=inf)
+  velocity         Space(float32, shape=(3,), low=-inf, high=inf)
+  touch            Space(float32, shape=(2,), low=-inf, high=inf)
+  target_position  Space(float32, shape=(2,), low=-inf, high=inf)
+  dist_to_target   Space(float32, shape=(), low=-inf, high=inf)
+Actions
+  action           Space(float32, shape=(2,), low=-1.0, high=1.0)
+Extras
+  consec           Space(int32, shape=(), low=-2147483648, high=2147483647)
+  stepid           Space(uint8, shape=(20,), low=0, high=255)
+  dyn/deter        Space(float32, shape=(512,), low=-inf, high=inf)
+  dyn/stoch        Space(float32, shape=(32, 4), low=-inf, high=inf)
+JAX devices (1): [cuda:0]
+Policy devices: cuda:0
+Train devices:  cuda:0
+Initializing parameters...
+Optimizer opt has 580,880 params:
+       364,160 dyn
+        66,111 val
+        50,316 dec
+        49,796 pol
+        41,153 con
+         9,344 enc
+Done initializing!
+Compiling 1 checkpoint groups...
+Largest checkpoint group: 0 GB
+Loading checkpoint: /scratch/midway3/rickybao/dreamerv3_runs/ax1wm_finger_fv2q1v200s1_seed4/ckpt/20260718T173138F449304-000000100000
+Loaded checkpoint.
+ax1wm_finger_fv2q1v200s1_seed4: expl.mode=apt reward_aware=False horizons=(1, 5, 20) probes 60x1001
+  episodes 0-3
+  episodes 4-7
+  episodes 8-11
+  episodes 12-15
+  episodes 16-19
+  episodes 20-23
+  episodes 24-27
+  episodes 28-31
+  episodes 32-35
+  episodes 36-39
+  episodes 40-43
+  episodes 44-47
+  episodes 48-51
+  episodes 52-55
+  episodes 56-59
+  h0: all=0.1394 in=0.1392 out=0.1394 rew=0.1373 norew=0.1396
+  h1: all=0.3800 in=0.3132 out=0.3866 rew=0.3132 norew=0.3866
+  h5: all=0.7250 in=0.5865 out=0.7388 rew=0.5865 norew=0.7388
+  h20: all=1.6651 in=1.1612 out=1.7154 rew=1.1612 norew=1.7154
+-> /scratch/midway3/rickybao/dreamerv3_runs/ax1wm_finger_fv2q1v200s1_seed4/e4_finger_v1
+[Wed Jul 22 02:37:38 CDT 2026] E4 measure ax1wm_finger_fv2q1v200s1_seed5
+Observations
+  reward           Space(float32, shape=(), low=-inf, high=inf)
+  is_first         Space(bool, shape=(), low=False, high=True)
+  is_last          Space(bool, shape=(), low=False, high=True)
+  is_terminal      Space(bool, shape=(), low=False, high=True)
+  position         Space(float32, shape=(4,), low=-inf, high=inf)
+  velocity         Space(float32, shape=(3,), low=-inf, high=inf)
+  touch            Space(float32, shape=(2,), low=-inf, high=inf)
+  target_position  Space(float32, shape=(2,), low=-inf, high=inf)
+  dist_to_target   Space(float32, shape=(), low=-inf, high=inf)
+Actions
+  action           Space(float32, shape=(2,), low=-1.0, high=1.0)
+Extras
+  consec           Space(int32, shape=(), low=-2147483648, high=2147483647)
+  stepid           Space(uint8, shape=(20,), low=0, high=255)
+  dyn/deter        Space(float32, shape=(512,), low=-inf, high=inf)
+  dyn/stoch        Space(float32, shape=(32, 4), low=-inf, high=inf)
+JAX devices (1): [cuda:0]
+Policy devices: cuda:0
+Train devices:  cuda:0
+Initializing parameters...
+Optimizer opt has 580,880 params:
+       364,160 dyn
+        66,111 val
+        50,316 dec
+        49,796 pol
+        41,153 con
+         9,344 enc
+Done initializing!
+Compiling 1 checkpoint groups...
+Largest checkpoint group: 0 GB
+Loading checkpoint: /scratch/midway3/rickybao/dreamerv3_runs/ax1wm_finger_fv2q1v200s1_seed5/ckpt/20260718T173049F668348-000000100000
+Loaded checkpoint.
+ax1wm_finger_fv2q1v200s1_seed5: expl.mode=apt reward_aware=False horizons=(1, 5, 20) probes 60x1001
+  episodes 0-3
+  episodes 4-7
+  episodes 8-11
+  episodes 12-15
+  episodes 16-19
+  episodes 20-23
+  episodes 24-27
+  episodes 28-31
+  episodes 32-35
+  episodes 36-39
+  episodes 40-43
+  episodes 44-47
+  episodes 48-51
+  episodes 52-55
+  episodes 56-59
+  h0: all=0.1342 in=0.1323 out=0.1344 rew=0.1305 norew=0.1346
+  h1: all=0.3765 in=0.3075 out=0.3834 rew=0.3075 norew=0.3834
+  h5: all=0.7736 in=0.5510 out=0.7958 rew=0.5510 norew=0.7958
+  h20: all=1.7513 in=1.1233 out=1.8140 rew=1.1233 norew=1.8140
+-> /scratch/midway3/rickybao/dreamerv3_runs/ax1wm_finger_fv2q1v200s1_seed5/e4_finger_v1
+[Wed Jul 22 02:37:57 CDT 2026] E4 measure ax1wm_finger_fv2q1v200s1_seed6
+Observations
+  reward           Space(float32, shape=(), low=-inf, high=inf)
+  is_first         Space(bool, shape=(), low=False, high=True)
+  is_last          Space(bool, shape=(), low=False, high=True)
+  is_terminal      Space(bool, shape=(), low=False, high=True)
+  position         Space(float32, shape=(4,), low=-inf, high=inf)
+  velocity         Space(float32, shape=(3,), low=-inf, high=inf)
+  touch            Space(float32, shape=(2,), low=-inf, high=inf)
+  target_position  Space(float32, shape=(2,), low=-inf, high=inf)
+  dist_to_target   Space(float32, shape=(), low=-inf, high=inf)
+Actions
+  action           Space(float32, shape=(2,), low=-1.0, high=1.0)
+Extras
+  consec           Space(int32, shape=(), low=-2147483648, high=2147483647)
+  stepid           Space(uint8, shape=(20,), low=0, high=255)
+  dyn/deter        Space(float32, shape=(512,), low=-inf, high=inf)
+  dyn/stoch        Space(float32, shape=(32, 4), low=-inf, high=inf)
+JAX devices (1): [cuda:0]
+Policy devices: cuda:0
+Train devices:  cuda:0
+Initializing parameters...
+Optimizer opt has 580,880 params:
+       364,160 dyn
+        66,111 val
+        50,316 dec
+        49,796 pol
+        41,153 con
+         9,344 enc
+Done initializing!
+Compiling 1 checkpoint groups...
+Largest checkpoint group: 0 GB
+Loading checkpoint: /scratch/midway3/rickybao/dreamerv3_runs/ax1wm_finger_fv2q1v200s1_seed6/ckpt/20260718T172952F904359-000000100000
+Loaded checkpoint.
+ax1wm_finger_fv2q1v200s1_seed6: expl.mode=apt reward_aware=False horizons=(1, 5, 20) probes 60x1001
+  episodes 0-3
+  episodes 4-7
+  episodes 8-11
+  episodes 12-15
+  episodes 16-19
+  episodes 20-23
+  episodes 24-27
+  episodes 28-31
+  episodes 32-35
+  episodes 36-39
+  episodes 40-43
+  episodes 44-47
+  episodes 48-51
+  episodes 52-55
+  episodes 56-59
+  h0: all=0.1342 in=0.1347 out=0.1342 rew=0.1331 norew=0.1343
+  h1: all=0.3808 in=0.3088 out=0.3880 rew=0.3088 norew=0.3880
+  h5: all=0.7515 in=0.5448 out=0.7721 rew=0.5448 norew=0.7721
+  h20: all=1.7215 in=1.0942 out=1.7841 rew=1.0942 norew=1.7841
+-> /scratch/midway3/rickybao/dreamerv3_runs/ax1wm_finger_fv2q1v200s1_seed6/e4_finger_v1
+[Wed Jul 22 02:38:16 CDT 2026] E4 measure ax1wm_finger_fv4q1v400s0_seed1
+Observations
+  reward           Space(float32, shape=(), low=-inf, high=inf)
+  is_first         Space(bool, shape=(), low=False, high=True)
+  is_last          Space(bool, shape=(), low=False, high=True)
+  is_terminal      Space(bool, shape=(), low=False, high=True)
+  position         Space(float32, shape=(4,), low=-inf, high=inf)
+  velocity         Space(float32, shape=(3,), low=-inf, high=inf)
+  touch            Space(float32, shape=(2,), low=-inf, high=inf)
+  target_position  Space(float32, shape=(2,), low=-inf, high=inf)
+  dist_to_target   Space(float32, shape=(), low=-inf, high=inf)
+Actions
+  action           Space(float32, shape=(2,), low=-1.0, high=1.0)
+Extras
+  consec           Space(int32, shape=(), low=-2147483648, high=2147483647)
+  stepid           Space(uint8, shape=(20,), low=0, high=255)
+  dyn/deter        Space(float32, shape=(512,), low=-inf, high=inf)
+  dyn/stoch        Space(float32, shape=(32, 4), low=-inf, high=inf)
+JAX devices (1): [cuda:0]
+Policy devices: cuda:0
+Train devices:  cuda:0
+Initializing parameters...
+Optimizer opt has 580,880 params:
+       364,160 dyn
+        66,111 val
+        50,316 dec
+        49,796 pol
+        41,153 con
+         9,344 enc
+Done initializing!
+Compiling 1 checkpoint groups...
+Largest checkpoint group: 0 GB
+Loading checkpoint: /scratch/midway3/rickybao/dreamerv3_runs/ax1wm_finger_fv4q1v400s0_seed1/ckpt/20260719T105147F398826-000000500000
+Loaded checkpoint.
+ax1wm_finger_fv4q1v400s0_seed1: expl.mode=apt reward_aware=False horizons=(1, 5, 20) probes 60x1001
+  episodes 0-3
+  episodes 4-7
+  episodes 8-11
+  episodes 12-15
+  episodes 16-19
+  episodes 20-23
+  episodes 24-27
+  episodes 28-31
+  episodes 32-35
+  episodes 36-39
+  episodes 40-43
+  episodes 44-47
+  episodes 48-51
+  episodes 52-55
+  episodes 56-59
+  h0: all=0.0944 in=0.0777 out=0.0961 rew=0.0758 norew=0.0963
+  h1: all=0.2358 in=0.1685 out=0.2425 rew=0.1685 norew=0.2425
+  h5: all=0.4918 in=0.3294 out=0.5080 rew=0.3294 norew=0.5080
+  h20: all=1.4047 in=0.8691 out=1.4581 rew=0.8691 norew=1.4581
+-> /scratch/midway3/rickybao/dreamerv3_runs/ax1wm_finger_fv4q1v400s0_seed1/e4_finger_v1
+[Wed Jul 22 02:38:35 CDT 2026] E4 measure ax1wm_finger_fv4q1v400s0_seed2
+Observations
+  reward           Space(float32, shape=(), low=-inf, high=inf)
+  is_first         Space(bool, shape=(), low=False, high=True)
+  is_last          Space(bool, shape=(), low=False, high=True)
+  is_terminal      Space(bool, shape=(), low=False, high=True)
+  position         Space(float32, shape=(4,), low=-inf, high=inf)
+  velocity         Space(float32, shape=(3,), low=-inf, high=inf)
+  touch            Space(float32, shape=(2,), low=-inf, high=inf)
+  target_position  Space(float32, shape=(2,), low=-inf, high=inf)
+  dist_to_target   Space(float32, shape=(), low=-inf, high=inf)
+Actions
+  action           Space(float32, shape=(2,), low=-1.0, high=1.0)
+Extras
+  consec           Space(int32, shape=(), low=-2147483648, high=2147483647)
+  stepid           Space(uint8, shape=(20,), low=0, high=255)
+  dyn/deter        Space(float32, shape=(512,), low=-inf, high=inf)
+  dyn/stoch        Space(float32, shape=(32, 4), low=-inf, high=inf)
+JAX devices (1): [cuda:0]
+Policy devices: cuda:0
+Train devices:  cuda:0
+Initializing parameters...
+Optimizer opt has 580,880 params:
+       364,160 dyn
+        66,111 val
+        50,316 dec
+        49,796 pol
+        41,153 con
+         9,344 enc
+Done initializing!
+Compiling 1 checkpoint groups...
+Largest checkpoint group: 0 GB
+Loading checkpoint: /scratch/midway3/rickybao/dreamerv3_runs/ax1wm_finger_fv4q1v400s0_seed2/ckpt/20260719T105153F141163-000000500000
+Loaded checkpoint.
+ax1wm_finger_fv4q1v400s0_seed2: expl.mode=apt reward_aware=False horizons=(1, 5, 20) probes 60x1001
+  episodes 0-3
+  episodes 4-7
+  episodes 8-11
+  episodes 12-15
+  episodes 16-19
+  episodes 20-23
+  episodes 24-27
+  episodes 28-31
+  episodes 32-35
+  episodes 36-39
+  episodes 40-43
+  episodes 44-47
+  episodes 48-51
+  episodes 52-55
+  episodes 56-59
+  h0: all=0.1043 in=0.0934 out=0.1054 rew=0.0918 norew=0.1056
+  h1: all=0.2568 in=0.1875 out=0.2637 rew=0.1875 norew=0.2637
+  h5: all=0.5021 in=0.3227 out=0.5199 rew=0.3227 norew=0.5199
+  h20: all=1.4113 in=0.8516 out=1.4671 rew=0.8516 norew=1.4671
+-> /scratch/midway3/rickybao/dreamerv3_runs/ax1wm_finger_fv4q1v400s0_seed2/e4_finger_v1
+[Wed Jul 22 02:38:54 CDT 2026] E4 measure ax1wm_finger_fv4q1v400s0_seed3
+Observations
+  reward           Space(float32, shape=(), low=-inf, high=inf)
+  is_first         Space(bool, shape=(), low=False, high=True)
+  is_last          Space(bool, shape=(), low=False, high=True)
+  is_terminal      Space(bool, shape=(), low=False, high=True)
+  position         Space(float32, shape=(4,), low=-inf, high=inf)
+  velocity         Space(float32, shape=(3,), low=-inf, high=inf)
+  touch            Space(float32, shape=(2,), low=-inf, high=inf)
+  target_position  Space(float32, shape=(2,), low=-inf, high=inf)
+  dist_to_target   Space(float32, shape=(), low=-inf, high=inf)
+Actions
+  action           Space(float32, shape=(2,), low=-1.0, high=1.0)
+Extras
+  consec           Space(int32, shape=(), low=-2147483648, high=2147483647)
+  stepid           Space(uint8, shape=(20,), low=0, high=255)
+  dyn/deter        Space(float32, shape=(512,), low=-inf, high=inf)
+  dyn/stoch        Space(float32, shape=(32, 4), low=-inf, high=inf)
+JAX devices (1): [cuda:0]
+Policy devices: cuda:0
+Train devices:  cuda:0
+Initializing parameters...
+Optimizer opt has 580,880 params:
+       364,160 dyn
+        66,111 val
+        50,316 dec
+        49,796 pol
+        41,153 con
+         9,344 enc
+Done initializing!
+Compiling 1 checkpoint groups...
+Largest checkpoint group: 0 GB
+Loading checkpoint: /scratch/midway3/rickybao/dreamerv3_runs/ax1wm_finger_fv4q1v400s0_seed3/ckpt/20260719T110123F366852-000000500000
+Loaded checkpoint.
+ax1wm_finger_fv4q1v400s0_seed3: expl.mode=apt reward_aware=False horizons=(1, 5, 20) probes 60x1001
+  episodes 0-3
+  episodes 4-7
+  episodes 8-11
+  episodes 12-15
+  episodes 16-19
+  episodes 20-23
+  episodes 24-27
+  episodes 28-31
+  episodes 32-35
+  episodes 36-39
+  episodes 40-43
+  episodes 44-47
+  episodes 48-51
+  episodes 52-55
+  episodes 56-59
+  h0: all=0.1036 in=0.0898 out=0.1050 rew=0.0887 norew=0.1051
+  h1: all=0.2520 in=0.1801 out=0.2592 rew=0.1801 norew=0.2592
+  h5: all=0.5148 in=0.3432 out=0.5319 rew=0.3432 norew=0.5319
+  h20: all=1.3883 in=0.8143 out=1.4456 rew=0.8143 norew=1.4456
+-> /scratch/midway3/rickybao/dreamerv3_runs/ax1wm_finger_fv4q1v400s0_seed3/e4_finger_v1
+[Wed Jul 22 02:39:13 CDT 2026] E4 measure ax1wm_finger_fv4q1v400s0_seed4
+Observations
+  reward           Space(float32, shape=(), low=-inf, high=inf)
+  is_first         Space(bool, shape=(), low=False, high=True)
+  is_last          Space(bool, shape=(), low=False, high=True)
+  is_terminal      Space(bool, shape=(), low=False, high=True)
+  position         Space(float32, shape=(4,), low=-inf, high=inf)
+  velocity         Space(float32, shape=(3,), low=-inf, high=inf)
+  touch            Space(float32, shape=(2,), low=-inf, high=inf)
+  target_position  Space(float32, shape=(2,), low=-inf, high=inf)
+  dist_to_target   Space(float32, shape=(), low=-inf, high=inf)
+Actions
+  action           Space(float32, shape=(2,), low=-1.0, high=1.0)
+Extras
+  consec           Space(int32, shape=(), low=-2147483648, high=2147483647)
+  stepid           Space(uint8, shape=(20,), low=0, high=255)
+  dyn/deter        Space(float32, shape=(512,), low=-inf, high=inf)
+  dyn/stoch        Space(float32, shape=(32, 4), low=-inf, high=inf)
+JAX devices (1): [cuda:0]
+Policy devices: cuda:0
+Train devices:  cuda:0
+Initializing parameters...
+Optimizer opt has 580,880 params:
+       364,160 dyn
+        66,111 val
+        50,316 dec
+        49,796 pol
+        41,153 con
+         9,344 enc
+Done initializing!
+Compiling 1 checkpoint groups...
+Largest checkpoint group: 0 GB
+Loading checkpoint: /scratch/midway3/rickybao/dreamerv3_runs/ax1wm_finger_fv4q1v400s0_seed4/ckpt/20260719T181408F433184-000000100000
+Loaded checkpoint.
+ax1wm_finger_fv4q1v400s0_seed4: expl.mode=apt reward_aware=False horizons=(1, 5, 20) probes 60x1001
+  episodes 0-3
+  episodes 4-7
+  episodes 8-11
+  episodes 12-15
+  episodes 16-19
+  episodes 20-23
+  episodes 24-27
+  episodes 28-31
+  episodes 32-35
+  episodes 36-39
+  episodes 40-43
+  episodes 44-47
+  episodes 48-51
+  episodes 52-55
+  episodes 56-59
+  h0: all=0.1282 in=0.1210 out=0.1289 rew=0.1193 norew=0.1290
+  h1: all=0.3378 in=0.2727 out=0.3443 rew=0.2727 norew=0.3443
+  h5: all=0.7183 in=0.5436 out=0.7357 rew=0.5436 norew=0.7357
+  h20: all=1.7571 in=1.1270 out=1.8200 rew=1.1270 norew=1.8200
+-> /scratch/midway3/rickybao/dreamerv3_runs/ax1wm_finger_fv4q1v400s0_seed4/e4_finger_v1
+[Wed Jul 22 02:39:32 CDT 2026] E4 measure ax1wm_finger_fv4q1v400s0_seed5
+Observations
+  reward           Space(float32, shape=(), low=-inf, high=inf)
+  is_first         Space(bool, shape=(), low=False, high=True)
+  is_last          Space(bool, shape=(), low=False, high=True)
+  is_terminal      Space(bool, shape=(), low=False, high=True)
+  position         Space(float32, shape=(4,), low=-inf, high=inf)
+  velocity         Space(float32, shape=(3,), low=-inf, high=inf)
+  touch            Space(float32, shape=(2,), low=-inf, high=inf)
+  target_position  Space(float32, shape=(2,), low=-inf, high=inf)
+  dist_to_target   Space(float32, shape=(), low=-inf, high=inf)
+Actions
+  action           Space(float32, shape=(2,), low=-1.0, high=1.0)
+Extras
+  consec           Space(int32, shape=(), low=-2147483648, high=2147483647)
+  stepid           Space(uint8, shape=(20,), low=0, high=255)
+  dyn/deter        Space(float32, shape=(512,), low=-inf, high=inf)
+  dyn/stoch        Space(float32, shape=(32, 4), low=-inf, high=inf)
+JAX devices (1): [cuda:0]
+Policy devices: cuda:0
+Train devices:  cuda:0
+Initializing parameters...
+Optimizer opt has 580,880 params:
+       364,160 dyn
+        66,111 val
+        50,316 dec
+        49,796 pol
+        41,153 con
+         9,344 enc
+Done initializing!
+Compiling 1 checkpoint groups...
+Largest checkpoint group: 0 GB
+Loading checkpoint: /scratch/midway3/rickybao/dreamerv3_runs/ax1wm_finger_fv4q1v400s0_seed5/ckpt/20260719T181342F797171-000000100000
+Loaded checkpoint.
+ax1wm_finger_fv4q1v400s0_seed5: expl.mode=apt reward_aware=False horizons=(1, 5, 20) probes 60x1001
+  episodes 0-3
+  episodes 4-7
+  episodes 8-11
+  episodes 12-15
+  episodes 16-19
+  episodes 20-23
+  episodes 24-27
+  episodes 28-31
+  episodes 32-35
+  episodes 36-39
+  episodes 40-43
+  episodes 44-47
+  episodes 48-51
+  episodes 52-55
+  episodes 56-59
+  h0: all=0.1262 in=0.1200 out=0.1268 rew=0.1179 norew=0.1270
+  h1: all=0.3216 in=0.2579 out=0.3279 rew=0.2579 norew=0.3279
+  h5: all=0.6747 in=0.4888 out=0.6933 rew=0.4888 norew=0.6933
+  h20: all=1.6889 in=1.0638 out=1.7512 rew=1.0638 norew=1.7512
+-> /scratch/midway3/rickybao/dreamerv3_runs/ax1wm_finger_fv4q1v400s0_seed5/e4_finger_v1
+[Wed Jul 22 02:39:50 CDT 2026] E4 measure ax1wm_finger_fv4q1v400s0_seed6
+Observations
+  reward           Space(float32, shape=(), low=-inf, high=inf)
+  is_first         Space(bool, shape=(), low=False, high=True)
+  is_last          Space(bool, shape=(), low=False, high=True)
+  is_terminal      Space(bool, shape=(), low=False, high=True)
+  position         Space(float32, shape=(4,), low=-inf, high=inf)
+  velocity         Space(float32, shape=(3,), low=-inf, high=inf)
+  touch            Space(float32, shape=(2,), low=-inf, high=inf)
+  target_position  Space(float32, shape=(2,), low=-inf, high=inf)
+  dist_to_target   Space(float32, shape=(), low=-inf, high=inf)
+Actions
+  action           Space(float32, shape=(2,), low=-1.0, high=1.0)
+Extras
+  consec           Space(int32, shape=(), low=-2147483648, high=2147483647)
+  stepid           Space(uint8, shape=(20,), low=0, high=255)
+  dyn/deter        Space(float32, shape=(512,), low=-inf, high=inf)
+  dyn/stoch        Space(float32, shape=(32, 4), low=-inf, high=inf)
+JAX devices (1): [cuda:0]
+Policy devices: cuda:0
+Train devices:  cuda:0
+Initializing parameters...
+Optimizer opt has 580,880 params:
+       364,160 dyn
+        66,111 val
+        50,316 dec
+        49,796 pol
+        41,153 con
+         9,344 enc
+Done initializing!
+Compiling 1 checkpoint groups...
+Largest checkpoint group: 0 GB
+Loading checkpoint: /scratch/midway3/rickybao/dreamerv3_runs/ax1wm_finger_fv4q1v400s0_seed6/ckpt/20260719T181350F267275-000000100000
+Loaded checkpoint.
+ax1wm_finger_fv4q1v400s0_seed6: expl.mode=apt reward_aware=False horizons=(1, 5, 20) probes 60x1001
+  episodes 0-3
+  episodes 4-7
+  episodes 8-11
+  episodes 12-15
+  episodes 16-19
+  episodes 20-23
+  episodes 24-27
+  episodes 28-31
+  episodes 32-35
+  episodes 36-39
+  episodes 40-43
+  episodes 44-47
+  episodes 48-51
+  episodes 52-55
+  episodes 56-59
+  h0: all=0.1250 in=0.1181 out=0.1257 rew=0.1164 norew=0.1258
+  h1: all=0.3209 in=0.2543 out=0.3276 rew=0.2543 norew=0.3276
+  h5: all=0.6693 in=0.5363 out=0.6825 rew=0.5363 norew=0.6825
+  h20: all=1.6634 in=1.1248 out=1.7171 rew=1.1248 norew=1.7171
+-> /scratch/midway3/rickybao/dreamerv3_runs/ax1wm_finger_fv4q1v400s0_seed6/e4_finger_v1
+[Wed Jul 22 02:40:09 CDT 2026] E4 measure ax1wm_finger_fv4q1v400s1_seed1
+Observations
+  reward           Space(float32, shape=(), low=-inf, high=inf)
+  is_first         Space(bool, shape=(), low=False, high=True)
+  is_last          Space(bool, shape=(), low=False, high=True)
+  is_terminal      Space(bool, shape=(), low=False, high=True)
+  position         Space(float32, shape=(4,), low=-inf, high=inf)
+  velocity         Space(float32, shape=(3,), low=-inf, high=inf)
+  touch            Space(float32, shape=(2,), low=-inf, high=inf)
+  target_position  Space(float32, shape=(2,), low=-inf, high=inf)
+  dist_to_target   Space(float32, shape=(), low=-inf, high=inf)
+Actions
+  action           Space(float32, shape=(2,), low=-1.0, high=1.0)
+Extras
+  consec           Space(int32, shape=(), low=-2147483648, high=2147483647)
+  stepid           Space(uint8, shape=(20,), low=0, high=255)
+  dyn/deter        Space(float32, shape=(512,), low=-inf, high=inf)
+  dyn/stoch        Space(float32, shape=(32, 4), low=-inf, high=inf)
+JAX devices (1): [cuda:0]
+Policy devices: cuda:0
+Train devices:  cuda:0
+Initializing parameters...
+Optimizer opt has 580,880 params:
+       364,160 dyn
+        66,111 val
+        50,316 dec
+        49,796 pol
+        41,153 con
+         9,344 enc
+Done initializing!
+Compiling 1 checkpoint groups...
+Largest checkpoint group: 0 GB
+Loading checkpoint: /scratch/midway3/rickybao/dreamerv3_runs/ax1wm_finger_fv4q1v400s1_seed1/ckpt/20260718T182754F129422-000000400000
+Loaded checkpoint.
+ax1wm_finger_fv4q1v400s1_seed1: expl.mode=apt reward_aware=False horizons=(1, 5, 20) probes 60x1001
+  episodes 0-3
+  episodes 4-7
+  episodes 8-11
+  episodes 12-15
+  episodes 16-19
+  episodes 20-23
+  episodes 24-27
+  episodes 28-31
+  episodes 32-35
+  episodes 36-39
+  episodes 40-43
+  episodes 44-47
+  episodes 48-51
+  episodes 52-55
+  episodes 56-59
+  h0: all=0.0948 in=0.1166 out=0.0926 rew=0.1158 norew=0.0927
+  h1: all=0.2156 in=0.2276 out=0.2144 rew=0.2276 norew=0.2144
+  h5: all=0.4363 in=0.4406 out=0.4359 rew=0.4406 norew=0.4359
+  h20: all=1.3641 in=0.8932 out=1.4110 rew=0.8932 norew=1.4110
+-> /scratch/midway3/rickybao/dreamerv3_runs/ax1wm_finger_fv4q1v400s1_seed1/e4_finger_v1
+[Wed Jul 22 02:40:28 CDT 2026] E4 measure ax1wm_finger_fv4q1v400s1_seed2
+Observations
+  reward           Space(float32, shape=(), low=-inf, high=inf)
+  is_first         Space(bool, shape=(), low=False, high=True)
+  is_last          Space(bool, shape=(), low=False, high=True)
+  is_terminal      Space(bool, shape=(), low=False, high=True)
+  position         Space(float32, shape=(4,), low=-inf, high=inf)
+  velocity         Space(float32, shape=(3,), low=-inf, high=inf)
+  touch            Space(float32, shape=(2,), low=-inf, high=inf)
+  target_position  Space(float32, shape=(2,), low=-inf, high=inf)
+  dist_to_target   Space(float32, shape=(), low=-inf, high=inf)
+Actions
+  action           Space(float32, shape=(2,), low=-1.0, high=1.0)
+Extras
+  consec           Space(int32, shape=(), low=-2147483648, high=2147483647)
+  stepid           Space(uint8, shape=(20,), low=0, high=255)
+  dyn/deter        Space(float32, shape=(512,), low=-inf, high=inf)
+  dyn/stoch        Space(float32, shape=(32, 4), low=-inf, high=inf)
+JAX devices (1): [cuda:0]
+Policy devices: cuda:0
+Train devices:  cuda:0
+Initializing parameters...
+Optimizer opt has 580,880 params:
+       364,160 dyn
+        66,111 val
+        50,316 dec
+        49,796 pol
+        41,153 con
+         9,344 enc
+Done initializing!
+Compiling 1 checkpoint groups...
+Largest checkpoint group: 0 GB
+Loading checkpoint: /scratch/midway3/rickybao/dreamerv3_runs/ax1wm_finger_fv4q1v400s1_seed2/ckpt/20260718T182728F371589-000000400000
+Loaded checkpoint.
+ax1wm_finger_fv4q1v400s1_seed2: expl.mode=apt reward_aware=False horizons=(1, 5, 20) probes 60x1001
+  episodes 0-3
+  episodes 4-7
+  episodes 8-11
+  episodes 12-15
+  episodes 16-19
+  episodes 20-23
+  episodes 24-27
+  episodes 28-31
+  episodes 32-35
+  episodes 36-39
+  episodes 40-43
+  episodes 44-47
+  episodes 48-51
+  episodes 52-55
+  episodes 56-59
+  h0: all=0.0951 in=0.1161 out=0.0930 rew=0.1151 norew=0.0931
+  h1: all=0.2209 in=0.2165 out=0.2214 rew=0.2165 norew=0.2214
+  h5: all=0.4483 in=0.3878 out=0.4543 rew=0.3878 norew=0.4543
+  h20: all=1.3691 in=1.0241 out=1.4035 rew=1.0241 norew=1.4035
+-> /scratch/midway3/rickybao/dreamerv3_runs/ax1wm_finger_fv4q1v400s1_seed2/e4_finger_v1
+[Wed Jul 22 02:40:47 CDT 2026] E4 measure ax1wm_finger_fv4q1v400s1_seed3
+Observations
+  reward           Space(float32, shape=(), low=-inf, high=inf)
+  is_first         Space(bool, shape=(), low=False, high=True)
+  is_last          Space(bool, shape=(), low=False, high=True)
+  is_terminal      Space(bool, shape=(), low=False, high=True)
+  position         Space(float32, shape=(4,), low=-inf, high=inf)
+  velocity         Space(float32, shape=(3,), low=-inf, high=inf)
+  touch            Space(float32, shape=(2,), low=-inf, high=inf)
+  target_position  Space(float32, shape=(2,), low=-inf, high=inf)
+  dist_to_target   Space(float32, shape=(), low=-inf, high=inf)
+Actions
+  action           Space(float32, shape=(2,), low=-1.0, high=1.0)
+Extras
+  consec           Space(int32, shape=(), low=-2147483648, high=2147483647)
+  stepid           Space(uint8, shape=(20,), low=0, high=255)
+  dyn/deter        Space(float32, shape=(512,), low=-inf, high=inf)
+  dyn/stoch        Space(float32, shape=(32, 4), low=-inf, high=inf)
+JAX devices (1): [cuda:0]
+Policy devices: cuda:0
+Train devices:  cuda:0
+Initializing parameters...
+Optimizer opt has 580,880 params:
+       364,160 dyn
+        66,111 val
+        50,316 dec
+        49,796 pol
+        41,153 con
+         9,344 enc
+Done initializing!
+Compiling 1 checkpoint groups...
+Largest checkpoint group: 0 GB
+Loading checkpoint: /scratch/midway3/rickybao/dreamerv3_runs/ax1wm_finger_fv4q1v400s1_seed3/ckpt/20260718T172928F961264-000000300000
+Loaded checkpoint.
+ax1wm_finger_fv4q1v400s1_seed3: expl.mode=apt reward_aware=False horizons=(1, 5, 20) probes 60x1001
+  episodes 0-3
+  episodes 4-7
+  episodes 8-11
+  episodes 12-15
+  episodes 16-19
+  episodes 20-23
+  episodes 24-27
+  episodes 28-31
+  episodes 32-35
+  episodes 36-39
+  episodes 40-43
+  episodes 44-47
+  episodes 48-51
+  episodes 52-55
+  episodes 56-59
+  h0: all=0.0984 in=0.1198 out=0.0963 rew=0.1174 norew=0.0965
+  h1: all=0.2280 in=0.2300 out=0.2278 rew=0.2300 norew=0.2278
+  h5: all=0.4720 in=0.4119 out=0.4779 rew=0.4119 norew=0.4779
+  h20: all=1.3690 in=0.9394 out=1.4119 rew=0.9394 norew=1.4119
+-> /scratch/midway3/rickybao/dreamerv3_runs/ax1wm_finger_fv4q1v400s1_seed3/e4_finger_v1
+[Wed Jul 22 02:41:06 CDT 2026] E4 measure ax1wm_finger_fv4q1v400s1_seed4
+Observations
+  reward           Space(float32, shape=(), low=-inf, high=inf)
+  is_first         Space(bool, shape=(), low=False, high=True)
+  is_last          Space(bool, shape=(), low=False, high=True)
+  is_terminal      Space(bool, shape=(), low=False, high=True)
+  position         Space(float32, shape=(4,), low=-inf, high=inf)
+  velocity         Space(float32, shape=(3,), low=-inf, high=inf)
+  touch            Space(float32, shape=(2,), low=-inf, high=inf)
+  target_position  Space(float32, shape=(2,), low=-inf, high=inf)
+  dist_to_target   Space(float32, shape=(), low=-inf, high=inf)
+Actions
+  action           Space(float32, shape=(2,), low=-1.0, high=1.0)
+Extras
+  consec           Space(int32, shape=(), low=-2147483648, high=2147483647)
+  stepid           Space(uint8, shape=(20,), low=0, high=255)
+  dyn/deter        Space(float32, shape=(512,), low=-inf, high=inf)
+  dyn/stoch        Space(float32, shape=(32, 4), low=-inf, high=inf)
+JAX devices (1): [cuda:0]
+Policy devices: cuda:0
+Train devices:  cuda:0
+Initializing parameters...
+Optimizer opt has 580,880 params:
+       364,160 dyn
+        66,111 val
+        50,316 dec
+        49,796 pol
+        41,153 con
+         9,344 enc
+Done initializing!
+Compiling 1 checkpoint groups...
+Largest checkpoint group: 0 GB
+Loading checkpoint: /scratch/midway3/rickybao/dreamerv3_runs/ax1wm_finger_fv4q1v400s1_seed4/ckpt/20260718T172708F215650-000000300000
+Loaded checkpoint.
+ax1wm_finger_fv4q1v400s1_seed4: expl.mode=apt reward_aware=False horizons=(1, 5, 20) probes 60x1001
+  episodes 0-3
+  episodes 4-7
+  episodes 8-11
+  episodes 12-15
+  episodes 16-19
+  episodes 20-23
+  episodes 24-27
+  episodes 28-31
+  episodes 32-35
+  episodes 36-39
+  episodes 40-43
+  episodes 44-47
+  episodes 48-51
+  episodes 52-55
+  episodes 56-59
+  h0: all=0.0979 in=0.1215 out=0.0956 rew=0.1205 norew=0.0957
+  h1: all=0.2315 in=0.2377 out=0.2309 rew=0.2377 norew=0.2309
+  h5: all=0.4914 in=0.4484 out=0.4957 rew=0.4484 norew=0.4957
+  h20: all=1.3855 in=0.9583 out=1.4281 rew=0.9583 norew=1.4281
+-> /scratch/midway3/rickybao/dreamerv3_runs/ax1wm_finger_fv4q1v400s1_seed4/e4_finger_v1
+[Wed Jul 22 02:41:25 CDT 2026] E4 measure ax1wm_finger_fv4q1v400s1_seed5
+Observations
+  reward           Space(float32, shape=(), low=-inf, high=inf)
+  is_first         Space(bool, shape=(), low=False, high=True)
+  is_last          Space(bool, shape=(), low=False, high=True)
+  is_terminal      Space(bool, shape=(), low=False, high=True)
+  position         Space(float32, shape=(4,), low=-inf, high=inf)
+  velocity         Space(float32, shape=(3,), low=-inf, high=inf)
+  touch            Space(float32, shape=(2,), low=-inf, high=inf)
+  target_position  Space(float32, shape=(2,), low=-inf, high=inf)
+  dist_to_target   Space(float32, shape=(), low=-inf, high=inf)
+Actions
+  action           Space(float32, shape=(2,), low=-1.0, high=1.0)
+Extras
+  consec           Space(int32, shape=(), low=-2147483648, high=2147483647)
+  stepid           Space(uint8, shape=(20,), low=0, high=255)
+  dyn/deter        Space(float32, shape=(512,), low=-inf, high=inf)
+  dyn/stoch        Space(float32, shape=(32, 4), low=-inf, high=inf)
+JAX devices (1): [cuda:0]
+Policy devices: cuda:0
+Train devices:  cuda:0
+Initializing parameters...
+Optimizer opt has 580,880 params:
+       364,160 dyn
+        66,111 val
+        50,316 dec
+        49,796 pol
+        41,153 con
+         9,344 enc
+Done initializing!
+Compiling 1 checkpoint groups...
+Largest checkpoint group: 0 GB
+Loading checkpoint: /scratch/midway3/rickybao/dreamerv3_runs/ax1wm_finger_fv4q1v400s1_seed5/ckpt/20260718T173737F441708-000000300000
+Loaded checkpoint.
+ax1wm_finger_fv4q1v400s1_seed5: expl.mode=apt reward_aware=False horizons=(1, 5, 20) probes 60x1001
+  episodes 0-3
+  episodes 4-7
+  episodes 8-11
+  episodes 12-15
+  episodes 16-19
+  episodes 20-23
+  episodes 24-27
+  episodes 28-31
+  episodes 32-35
+  episodes 36-39
+  episodes 40-43
+  episodes 44-47
+  episodes 48-51
+  episodes 52-55
+  episodes 56-59
+  h0: all=0.0969 in=0.1207 out=0.0946 rew=0.1195 norew=0.0947
+  h1: all=0.2211 in=0.2330 out=0.2199 rew=0.2330 norew=0.2199
+  h5: all=0.4620 in=0.4496 out=0.4633 rew=0.4496 norew=0.4633
+  h20: all=1.3471 in=0.9737 out=1.3844 rew=0.9737 norew=1.3844
+-> /scratch/midway3/rickybao/dreamerv3_runs/ax1wm_finger_fv4q1v400s1_seed5/e4_finger_v1
+[Wed Jul 22 02:41:44 CDT 2026] E4 measure ax1wm_finger_fv4q1v400s1_seed6
+Observations
+  reward           Space(float32, shape=(), low=-inf, high=inf)
+  is_first         Space(bool, shape=(), low=False, high=True)
+  is_last          Space(bool, shape=(), low=False, high=True)
+  is_terminal      Space(bool, shape=(), low=False, high=True)
+  position         Space(float32, shape=(4,), low=-inf, high=inf)
+  velocity         Space(float32, shape=(3,), low=-inf, high=inf)
+  touch            Space(float32, shape=(2,), low=-inf, high=inf)
+  target_position  Space(float32, shape=(2,), low=-inf, high=inf)
+  dist_to_target   Space(float32, shape=(), low=-inf, high=inf)
+Actions
+  action           Space(float32, shape=(2,), low=-1.0, high=1.0)
+Extras
+  consec           Space(int32, shape=(), low=-2147483648, high=2147483647)
+  stepid           Space(uint8, shape=(20,), low=0, high=255)
+  dyn/deter        Space(float32, shape=(512,), low=-inf, high=inf)
+  dyn/stoch        Space(float32, shape=(32, 4), low=-inf, high=inf)
+JAX devices (1): [cuda:0]
+Policy devices: cuda:0
+Train devices:  cuda:0
+Initializing parameters...
+Optimizer opt has 580,880 params:
+       364,160 dyn
+        66,111 val
+        50,316 dec
+        49,796 pol
+        41,153 con
+         9,344 enc
+Done initializing!
+Compiling 1 checkpoint groups...
+Largest checkpoint group: 0 GB
+Loading checkpoint: /scratch/midway3/rickybao/dreamerv3_runs/ax1wm_finger_fv4q1v400s1_seed6/ckpt/20260718T173707F345454-000000300000
+Loaded checkpoint.
+ax1wm_finger_fv4q1v400s1_seed6: expl.mode=apt reward_aware=False horizons=(1, 5, 20) probes 60x1001
+  episodes 0-3
+  episodes 4-7
+  episodes 8-11
+  episodes 12-15
+  episodes 16-19
+  episodes 20-23
+  episodes 24-27
+  episodes 28-31
+  episodes 32-35
+  episodes 36-39
+  episodes 40-43
+  episodes 44-47
+  episodes 48-51
+  episodes 52-55
+  episodes 56-59
+  h0: all=0.0978 in=0.1223 out=0.0954 rew=0.1208 norew=0.0955
+  h1: all=0.2236 in=0.2216 out=0.2238 rew=0.2216 norew=0.2238
+  h5: all=0.4654 in=0.4103 out=0.4709 rew=0.4103 norew=0.4709
+  h20: all=1.3991 in=0.9421 out=1.4447 rew=0.9421 norew=1.4447
+-> /scratch/midway3/rickybao/dreamerv3_runs/ax1wm_finger_fv4q1v400s1_seed6/e4_finger_v1
+[Wed Jul 22 02:42:03 CDT 2026] E4 measure ax1wm_finger_v2q1v200s1_seed1
+Observations
+  reward           Space(float32, shape=(), low=-inf, high=inf)
+  is_first         Space(bool, shape=(), low=False, high=True)
+  is_last          Space(bool, shape=(), low=False, high=True)
+  is_terminal      Space(bool, shape=(), low=False, high=True)
+  position         Space(float32, shape=(4,), low=-inf, high=inf)
+  velocity         Space(float32, shape=(3,), low=-inf, high=inf)
+  touch            Space(float32, shape=(2,), low=-inf, high=inf)
+  target_position  Space(float32, shape=(2,), low=-inf, high=inf)
+  dist_to_target   Space(float32, shape=(), low=-inf, high=inf)
+Actions
+  action           Space(float32, shape=(2,), low=-1.0, high=1.0)
+Extras
+  consec           Space(int32, shape=(), low=-2147483648, high=2147483647)
+  stepid           Space(uint8, shape=(20,), low=0, high=255)
+  dyn/deter        Space(float32, shape=(512,), low=-inf, high=inf)
+  dyn/stoch        Space(float32, shape=(32, 4), low=-inf, high=inf)
+JAX devices (1): [cuda:0]
+Policy devices: cuda:0
+Train devices:  cuda:0
+Initializing parameters...
+Optimizer opt has 638,543 params:
+       364,160 dyn
+        66,111 val
+        57,663 rew
+        50,316 dec
+        49,796 pol
+        41,153 con
+         9,344 enc
+Done initializing!
+Compiling 1 checkpoint groups...
+Largest checkpoint group: 0 GB
+Loading checkpoint: /scratch/midway3/rickybao/dreamerv3_runs/ax1wm_finger_v2q1v200s1_seed1/ckpt/20260718T174937F320738-000000300000
+Loaded checkpoint.
+ax1wm_finger_v2q1v200s1_seed1: expl.mode=task reward_aware=True horizons=(1, 5, 20) probes 60x1001
+  episodes 0-3
+  episodes 4-7
+  episodes 8-11
+  episodes 12-15
+  episodes 16-19
+  episodes 20-23
+  episodes 24-27
+  episodes 28-31
+  episodes 32-35
+  episodes 36-39
+  episodes 40-43
+  episodes 44-47
+  episodes 48-51
+  episodes 52-55
+  episodes 56-59
+  h0: all=0.1328 in=0.1264 out=0.1334 rew=0.1236 norew=0.1337
+  h1: all=0.3776 in=0.3090 out=0.3844 rew=0.3090 norew=0.3844
+  h5: all=0.7353 in=0.5622 out=0.7526 rew=0.5622 norew=0.7526
+  h20: all=1.7025 in=1.1191 out=1.7607 rew=1.1191 norew=1.7607
+-> /scratch/midway3/rickybao/dreamerv3_runs/ax1wm_finger_v2q1v200s1_seed1/e4_finger_v1
+[Wed Jul 22 02:42:24 CDT 2026] E4 measure ax1wm_finger_v2q1v200s1_seed2
+Observations
+  reward           Space(float32, shape=(), low=-inf, high=inf)
+  is_first         Space(bool, shape=(), low=False, high=True)
+  is_last          Space(bool, shape=(), low=False, high=True)
+  is_terminal      Space(bool, shape=(), low=False, high=True)
+  position         Space(float32, shape=(4,), low=-inf, high=inf)
+  velocity         Space(float32, shape=(3,), low=-inf, high=inf)
+  touch            Space(float32, shape=(2,), low=-inf, high=inf)
+  target_position  Space(float32, shape=(2,), low=-inf, high=inf)
+  dist_to_target   Space(float32, shape=(), low=-inf, high=inf)
+Actions
+  action           Space(float32, shape=(2,), low=-1.0, high=1.0)
+Extras
+  consec           Space(int32, shape=(), low=-2147483648, high=2147483647)
+  stepid           Space(uint8, shape=(20,), low=0, high=255)
+  dyn/deter        Space(float32, shape=(512,), low=-inf, high=inf)
+  dyn/stoch        Space(float32, shape=(32, 4), low=-inf, high=inf)
+JAX devices (1): [cuda:0]
+Policy devices: cuda:0
+Train devices:  cuda:0
+Initializing parameters...
+Optimizer opt has 638,543 params:
+       364,160 dyn
+        66,111 val
+        57,663 rew
+        50,316 dec
+        49,796 pol
+        41,153 con
+         9,344 enc
+Done initializing!
+Compiling 1 checkpoint groups...
+Largest checkpoint group: 0 GB
+Loading checkpoint: /scratch/midway3/rickybao/dreamerv3_runs/ax1wm_finger_v2q1v200s1_seed2/ckpt/20260718T174803F064901-000000300000
+Loaded checkpoint.
+ax1wm_finger_v2q1v200s1_seed2: expl.mode=task reward_aware=True horizons=(1, 5, 20) probes 60x1001
+  episodes 0-3
+  episodes 4-7
+  episodes 8-11
+  episodes 12-15
+  episodes 16-19
+  episodes 20-23
+  episodes 24-27
+  episodes 28-31
+  episodes 32-35
+  episodes 36-39
+  episodes 40-43
+  episodes 44-47
+  episodes 48-51
+  episodes 52-55
+  episodes 56-59
+  h0: all=0.1298 in=0.1194 out=0.1309 rew=0.1185 norew=0.1310
+  h1: all=0.3748 in=0.3147 out=0.3808 rew=0.3147 norew=0.3808
+  h5: all=0.7368 in=0.5731 out=0.7531 rew=0.5731 norew=0.7531
+  h20: all=1.6529 in=1.1315 out=1.7049 rew=1.1315 norew=1.7049
+-> /scratch/midway3/rickybao/dreamerv3_runs/ax1wm_finger_v2q1v200s1_seed2/e4_finger_v1
+[Wed Jul 22 02:42:45 CDT 2026] E4 measure ax1wm_finger_v2q1v200s1_seed3
+Observations
+  reward           Space(float32, shape=(), low=-inf, high=inf)
+  is_first         Space(bool, shape=(), low=False, high=True)
+  is_last          Space(bool, shape=(), low=False, high=True)
+  is_terminal      Space(bool, shape=(), low=False, high=True)
+  position         Space(float32, shape=(4,), low=-inf, high=inf)
+  velocity         Space(float32, shape=(3,), low=-inf, high=inf)
+  touch            Space(float32, shape=(2,), low=-inf, high=inf)
+  target_position  Space(float32, shape=(2,), low=-inf, high=inf)
+  dist_to_target   Space(float32, shape=(), low=-inf, high=inf)
+Actions
+  action           Space(float32, shape=(2,), low=-1.0, high=1.0)
+Extras
+  consec           Space(int32, shape=(), low=-2147483648, high=2147483647)
+  stepid           Space(uint8, shape=(20,), low=0, high=255)
+  dyn/deter        Space(float32, shape=(512,), low=-inf, high=inf)
+  dyn/stoch        Space(float32, shape=(32, 4), low=-inf, high=inf)
+JAX devices (1): [cuda:0]
+Policy devices: cuda:0
+Train devices:  cuda:0
+Initializing parameters...
+Optimizer opt has 638,543 params:
+       364,160 dyn
+        66,111 val
+        57,663 rew
+        50,316 dec
+        49,796 pol
+        41,153 con
+         9,344 enc
+Done initializing!
+Compiling 1 checkpoint groups...
+Largest checkpoint group: 0 GB
+Loading checkpoint: /scratch/midway3/rickybao/dreamerv3_runs/ax1wm_finger_v2q1v200s1_seed3/ckpt/20260718T174558F665635-000000300000
+Loaded checkpoint.
+ax1wm_finger_v2q1v200s1_seed3: expl.mode=task reward_aware=True horizons=(1, 5, 20) probes 60x1001
+  episodes 0-3
+  episodes 4-7
+  episodes 8-11
+  episodes 12-15
+  episodes 16-19
+  episodes 20-23
+  episodes 24-27
+  episodes 28-31
+  episodes 32-35
+  episodes 36-39
+  episodes 40-43
+  episodes 44-47
+  episodes 48-51
+  episodes 52-55
+  episodes 56-59
+  h0: all=0.1219 in=0.1201 out=0.1220 rew=0.1187 norew=0.1222
+  h1: all=0.3639 in=0.3145 out=0.3688 rew=0.3145 norew=0.3688
+  h5: all=0.7565 in=0.5775 out=0.7743 rew=0.5775 norew=0.7743
+  h20: all=1.7284 in=1.1333 out=1.7878 rew=1.1333 norew=1.7878
+-> /scratch/midway3/rickybao/dreamerv3_runs/ax1wm_finger_v2q1v200s1_seed3/e4_finger_v1
+[Wed Jul 22 02:43:05 CDT 2026] E4 measure ax1wm_finger_v2q1v200s1_seed4
+Observations
+  reward           Space(float32, shape=(), low=-inf, high=inf)
+  is_first         Space(bool, shape=(), low=False, high=True)
+  is_last          Space(bool, shape=(), low=False, high=True)
+  is_terminal      Space(bool, shape=(), low=False, high=True)
+  position         Space(float32, shape=(4,), low=-inf, high=inf)
+  velocity         Space(float32, shape=(3,), low=-inf, high=inf)
+  touch            Space(float32, shape=(2,), low=-inf, high=inf)
+  target_position  Space(float32, shape=(2,), low=-inf, high=inf)
+  dist_to_target   Space(float32, shape=(), low=-inf, high=inf)
+Actions
+  action           Space(float32, shape=(2,), low=-1.0, high=1.0)
+Extras
+  consec           Space(int32, shape=(), low=-2147483648, high=2147483647)
+  stepid           Space(uint8, shape=(20,), low=0, high=255)
+  dyn/deter        Space(float32, shape=(512,), low=-inf, high=inf)
+  dyn/stoch        Space(float32, shape=(32, 4), low=-inf, high=inf)
+JAX devices (1): [cuda:0]
+Policy devices: cuda:0
+Train devices:  cuda:0
+Initializing parameters...
+Optimizer opt has 638,543 params:
+       364,160 dyn
+        66,111 val
+        57,663 rew
+        50,316 dec
+        49,796 pol
+        41,153 con
+         9,344 enc
+Done initializing!
+Compiling 1 checkpoint groups...
+Largest checkpoint group: 0 GB
+Loading checkpoint: /scratch/midway3/rickybao/dreamerv3_runs/ax1wm_finger_v2q1v200s1_seed4/ckpt/20260718T174634F542665-000000300000
+Loaded checkpoint.
+ax1wm_finger_v2q1v200s1_seed4: expl.mode=task reward_aware=True horizons=(1, 5, 20) probes 60x1001
+  episodes 0-3
+  episodes 4-7
+  episodes 8-11
+  episodes 12-15
+  episodes 16-19
+  episodes 20-23
+  episodes 24-27
+  episodes 28-31
+  episodes 32-35
+  episodes 36-39
+  episodes 40-43
+  episodes 44-47
+  episodes 48-51
+  episodes 52-55
+  episodes 56-59
+  h0: all=0.1328 in=0.1268 out=0.1334 rew=0.1257 norew=0.1335
+  h1: all=0.3839 in=0.3226 out=0.3901 rew=0.3226 norew=0.3901
+  h5: all=0.7322 in=0.5810 out=0.7473 rew=0.5810 norew=0.7473
+  h20: all=1.6714 in=1.1157 out=1.7269 rew=1.1157 norew=1.7269
+-> /scratch/midway3/rickybao/dreamerv3_runs/ax1wm_finger_v2q1v200s1_seed4/e4_finger_v1
+[Wed Jul 22 02:43:26 CDT 2026] E4 measure ax1wm_finger_v2q1v200s1_seed5
+Observations
+  reward           Space(float32, shape=(), low=-inf, high=inf)
+  is_first         Space(bool, shape=(), low=False, high=True)
+  is_last          Space(bool, shape=(), low=False, high=True)
+  is_terminal      Space(bool, shape=(), low=False, high=True)
+  position         Space(float32, shape=(4,), low=-inf, high=inf)
+  velocity         Space(float32, shape=(3,), low=-inf, high=inf)
+  touch            Space(float32, shape=(2,), low=-inf, high=inf)
+  target_position  Space(float32, shape=(2,), low=-inf, high=inf)
+  dist_to_target   Space(float32, shape=(), low=-inf, high=inf)
+Actions
+  action           Space(float32, shape=(2,), low=-1.0, high=1.0)
+Extras
+  consec           Space(int32, shape=(), low=-2147483648, high=2147483647)
+  stepid           Space(uint8, shape=(20,), low=0, high=255)
+  dyn/deter        Space(float32, shape=(512,), low=-inf, high=inf)
+  dyn/stoch        Space(float32, shape=(32, 4), low=-inf, high=inf)
+JAX devices (1): [cuda:0]
+Policy devices: cuda:0
+Train devices:  cuda:0
+Initializing parameters...
+Optimizer opt has 638,543 params:
+       364,160 dyn
+        66,111 val
+        57,663 rew
+        50,316 dec
+        49,796 pol
+        41,153 con
+         9,344 enc
+Done initializing!
+Compiling 1 checkpoint groups...
+Largest checkpoint group: 0 GB
+Loading checkpoint: /scratch/midway3/rickybao/dreamerv3_runs/ax1wm_finger_v2q1v200s1_seed5/ckpt/20260718T173832F604540-000000200000
+Loaded checkpoint.
+ax1wm_finger_v2q1v200s1_seed5: expl.mode=task reward_aware=True horizons=(1, 5, 20) probes 60x1001
+  episodes 0-3
+  episodes 4-7
+  episodes 8-11
+  episodes 12-15
+  episodes 16-19
+  episodes 20-23
+  episodes 24-27
+  episodes 28-31
+  episodes 32-35
+  episodes 36-39
+  episodes 40-43
+  episodes 44-47
+  episodes 48-51
+  episodes 52-55
+  episodes 56-59
+  h0: all=0.1304 in=0.1406 out=0.1294 rew=0.1392 norew=0.1295
+  h1: all=0.3812 in=0.3341 out=0.3859 rew=0.3341 norew=0.3859
+  h5: all=0.7575 in=0.6032 out=0.7729 rew=0.6032 norew=0.7729
+  h20: all=1.7308 in=1.1154 out=1.7922 rew=1.1154 norew=1.7922
+-> /scratch/midway3/rickybao/dreamerv3_runs/ax1wm_finger_v2q1v200s1_seed5/e4_finger_v1
+[Wed Jul 22 02:43:47 CDT 2026] E4 measure ax1wm_finger_v2q1v200s1_seed6
+Observations
+  reward           Space(float32, shape=(), low=-inf, high=inf)
+  is_first         Space(bool, shape=(), low=False, high=True)
+  is_last          Space(bool, shape=(), low=False, high=True)
+  is_terminal      Space(bool, shape=(), low=False, high=True)
+  position         Space(float32, shape=(4,), low=-inf, high=inf)
+  velocity         Space(float32, shape=(3,), low=-inf, high=inf)
+  touch            Space(float32, shape=(2,), low=-inf, high=inf)
+  target_position  Space(float32, shape=(2,), low=-inf, high=inf)
+  dist_to_target   Space(float32, shape=(), low=-inf, high=inf)
+Actions
+  action           Space(float32, shape=(2,), low=-1.0, high=1.0)
+Extras
+  consec           Space(int32, shape=(), low=-2147483648, high=2147483647)
+  stepid           Space(uint8, shape=(20,), low=0, high=255)
+  dyn/deter        Space(float32, shape=(512,), low=-inf, high=inf)
+  dyn/stoch        Space(float32, shape=(32, 4), low=-inf, high=inf)
+JAX devices (1): [cuda:0]
+Policy devices: cuda:0
+Train devices:  cuda:0
+Initializing parameters...
+Optimizer opt has 638,543 params:
+       364,160 dyn
+        66,111 val
+        57,663 rew
+        50,316 dec
+        49,796 pol
+        41,153 con
+         9,344 enc
+Done initializing!
+Compiling 1 checkpoint groups...
+Largest checkpoint group: 0 GB
+Loading checkpoint: /scratch/midway3/rickybao/dreamerv3_runs/ax1wm_finger_v2q1v200s1_seed6/ckpt/20260718T173946F653136-000000200000
+Loaded checkpoint.
+ax1wm_finger_v2q1v200s1_seed6: expl.mode=task reward_aware=True horizons=(1, 5, 20) probes 60x1001
+  episodes 0-3
+  episodes 4-7
+  episodes 8-11
+  episodes 12-15
+  episodes 16-19
+  episodes 20-23
+  episodes 24-27
+  episodes 28-31
+  episodes 32-35
+  episodes 36-39
+  episodes 40-43
+  episodes 44-47
+  episodes 48-51
+  episodes 52-55
+  episodes 56-59
+  h0: all=0.1235 in=0.1280 out=0.1230 rew=0.1272 norew=0.1231
+  h1: all=0.3640 in=0.3183 out=0.3686 rew=0.3183 norew=0.3686
+  h5: all=0.7392 in=0.5901 out=0.7541 rew=0.5901 norew=0.7541
+  h20: all=1.6941 in=1.1425 out=1.7491 rew=1.1425 norew=1.7491
+-> /scratch/midway3/rickybao/dreamerv3_runs/ax1wm_finger_v2q1v200s1_seed6/e4_finger_v1
+[Wed Jul 22 02:44:08 CDT 2026] E4 measure ax1wm_finger_v4q1v400s0_seed1
+Observations
+  reward           Space(float32, shape=(), low=-inf, high=inf)
+  is_first         Space(bool, shape=(), low=False, high=True)
+  is_last          Space(bool, shape=(), low=False, high=True)
+  is_terminal      Space(bool, shape=(), low=False, high=True)
+  position         Space(float32, shape=(4,), low=-inf, high=inf)
+  velocity         Space(float32, shape=(3,), low=-inf, high=inf)
+  touch            Space(float32, shape=(2,), low=-inf, high=inf)
+  target_position  Space(float32, shape=(2,), low=-inf, high=inf)
+  dist_to_target   Space(float32, shape=(), low=-inf, high=inf)
+Actions
+  action           Space(float32, shape=(2,), low=-1.0, high=1.0)
+Extras
+  consec           Space(int32, shape=(), low=-2147483648, high=2147483647)
+  stepid           Space(uint8, shape=(20,), low=0, high=255)
+  dyn/deter        Space(float32, shape=(512,), low=-inf, high=inf)
+  dyn/stoch        Space(float32, shape=(32, 4), low=-inf, high=inf)
+JAX devices (1): [cuda:0]
+Policy devices: cuda:0
+Train devices:  cuda:0
+Initializing parameters...
+Optimizer opt has 638,543 params:
+       364,160 dyn
+        66,111 val
+        57,663 rew
+        50,316 dec
+        49,796 pol
+        41,153 con
+         9,344 enc
+Done initializing!
+Compiling 1 checkpoint groups...
+Largest checkpoint group: 0 GB
+Loading checkpoint: /scratch/midway3/rickybao/dreamerv3_runs/ax1wm_finger_v4q1v400s0_seed1/ckpt/20260719T082642F446288-000000500000
+Loaded checkpoint.
+ax1wm_finger_v4q1v400s0_seed1: expl.mode=task reward_aware=True horizons=(1, 5, 20) probes 60x1001
+  episodes 0-3
+  episodes 4-7
+  episodes 8-11
+  episodes 12-15
+  episodes 16-19
+  episodes 20-23
+  episodes 24-27
+  episodes 28-31
+  episodes 32-35
+  episodes 36-39
+  episodes 40-43
+  episodes 44-47
+  episodes 48-51
+  episodes 52-55
+  episodes 56-59
+  h0: all=0.0973 in=0.0908 out=0.0980 rew=0.0891 norew=0.0981
+  h1: all=0.2543 in=0.1990 out=0.2598 rew=0.1990 norew=0.2598
+  h5: all=0.5255 in=0.3867 out=0.5393 rew=0.3867 norew=0.5393
+  h20: all=1.4979 in=0.8824 out=1.5593 rew=0.8824 norew=1.5593
+-> /scratch/midway3/rickybao/dreamerv3_runs/ax1wm_finger_v4q1v400s0_seed1/e4_finger_v1
+[Wed Jul 22 02:44:29 CDT 2026] E4 measure ax1wm_finger_v4q1v400s0_seed2
+Observations
+  reward           Space(float32, shape=(), low=-inf, high=inf)
+  is_first         Space(bool, shape=(), low=False, high=True)
+  is_last          Space(bool, shape=(), low=False, high=True)
+  is_terminal      Space(bool, shape=(), low=False, high=True)
+  position         Space(float32, shape=(4,), low=-inf, high=inf)
+  velocity         Space(float32, shape=(3,), low=-inf, high=inf)
+  touch            Space(float32, shape=(2,), low=-inf, high=inf)
+  target_position  Space(float32, shape=(2,), low=-inf, high=inf)
+  dist_to_target   Space(float32, shape=(), low=-inf, high=inf)
+Actions
+  action           Space(float32, shape=(2,), low=-1.0, high=1.0)
+Extras
+  consec           Space(int32, shape=(), low=-2147483648, high=2147483647)
+  stepid           Space(uint8, shape=(20,), low=0, high=255)
+  dyn/deter        Space(float32, shape=(512,), low=-inf, high=inf)
+  dyn/stoch        Space(float32, shape=(32, 4), low=-inf, high=inf)
+JAX devices (1): [cuda:0]
+Policy devices: cuda:0
+Train devices:  cuda:0
+Initializing parameters...
+Optimizer opt has 638,543 params:
+       364,160 dyn
+        66,111 val
+        57,663 rew
+        50,316 dec
+        49,796 pol
+        41,153 con
+         9,344 enc
+Done initializing!
+Compiling 1 checkpoint groups...
+Largest checkpoint group: 0 GB
+Loading checkpoint: /scratch/midway3/rickybao/dreamerv3_runs/ax1wm_finger_v4q1v400s0_seed2/ckpt/20260719T090735F820840-000000500000
+Loaded checkpoint.
+ax1wm_finger_v4q1v400s0_seed2: expl.mode=task reward_aware=True horizons=(1, 5, 20) probes 60x1001
+  episodes 0-3
+  episodes 4-7
+  episodes 8-11
+  episodes 12-15
+  episodes 16-19
+  episodes 20-23
+  episodes 24-27
+  episodes 28-31
+  episodes 32-35
+  episodes 36-39
+  episodes 40-43
+  episodes 44-47
+  episodes 48-51
+  episodes 52-55
+  episodes 56-59
+  h0: all=0.0960 in=0.0892 out=0.0966 rew=0.0883 norew=0.0967
+  h1: all=0.2609 in=0.2025 out=0.2667 rew=0.2025 norew=0.2667
+  h5: all=0.5428 in=0.4207 out=0.5550 rew=0.4207 norew=0.5550
+  h20: all=1.5356 in=0.9940 out=1.5896 rew=0.9940 norew=1.5896
+-> /scratch/midway3/rickybao/dreamerv3_runs/ax1wm_finger_v4q1v400s0_seed2/e4_finger_v1
+[Wed Jul 22 02:44:50 CDT 2026] E4 measure ax1wm_finger_v4q1v400s0_seed3
+Observations
+  reward           Space(float32, shape=(), low=-inf, high=inf)
+  is_first         Space(bool, shape=(), low=False, high=True)
+  is_last          Space(bool, shape=(), low=False, high=True)
+  is_terminal      Space(bool, shape=(), low=False, high=True)
+  position         Space(float32, shape=(4,), low=-inf, high=inf)
+  velocity         Space(float32, shape=(3,), low=-inf, high=inf)
+  touch            Space(float32, shape=(2,), low=-inf, high=inf)
+  target_position  Space(float32, shape=(2,), low=-inf, high=inf)
+  dist_to_target   Space(float32, shape=(), low=-inf, high=inf)
+Actions
+  action           Space(float32, shape=(2,), low=-1.0, high=1.0)
+Extras
+  consec           Space(int32, shape=(), low=-2147483648, high=2147483647)
+  stepid           Space(uint8, shape=(20,), low=0, high=255)
+  dyn/deter        Space(float32, shape=(512,), low=-inf, high=inf)
+  dyn/stoch        Space(float32, shape=(32, 4), low=-inf, high=inf)
+JAX devices (1): [cuda:0]
+Policy devices: cuda:0
+Train devices:  cuda:0
+Initializing parameters...
+Optimizer opt has 638,543 params:
+       364,160 dyn
+        66,111 val
+        57,663 rew
+        50,316 dec
+        49,796 pol
+        41,153 con
+         9,344 enc
+Done initializing!
+Compiling 1 checkpoint groups...
+Largest checkpoint group: 0 GB
+Loading checkpoint: /scratch/midway3/rickybao/dreamerv3_runs/ax1wm_finger_v4q1v400s0_seed3/ckpt/20260719T090116F501327-000000500000
+Loaded checkpoint.
+ax1wm_finger_v4q1v400s0_seed3: expl.mode=task reward_aware=True horizons=(1, 5, 20) probes 60x1001
+  episodes 0-3
+  episodes 4-7
+  episodes 8-11
+  episodes 12-15
+  episodes 16-19
+  episodes 20-23
+  episodes 24-27
+  episodes 28-31
+  episodes 32-35
+  episodes 36-39
+  episodes 40-43
+  episodes 44-47
+  episodes 48-51
+  episodes 52-55
+  episodes 56-59
+  h0: all=0.0971 in=0.0876 out=0.0981 rew=0.0861 norew=0.0983
+  h1: all=0.2515 in=0.1868 out=0.2580 rew=0.1868 norew=0.2580
+  h5: all=0.5357 in=0.3735 out=0.5519 rew=0.3735 norew=0.5519
+  h20: all=1.5283 in=0.9677 out=1.5843 rew=0.9677 norew=1.5843
+-> /scratch/midway3/rickybao/dreamerv3_runs/ax1wm_finger_v4q1v400s0_seed3/e4_finger_v1
+[Wed Jul 22 02:45:10 CDT 2026] E4 measure ax1wm_finger_v4q1v400s0_seed4
+Observations
+  reward           Space(float32, shape=(), low=-inf, high=inf)
+  is_first         Space(bool, shape=(), low=False, high=True)
+  is_last          Space(bool, shape=(), low=False, high=True)
+  is_terminal      Space(bool, shape=(), low=False, high=True)
+  position         Space(float32, shape=(4,), low=-inf, high=inf)
+  velocity         Space(float32, shape=(3,), low=-inf, high=inf)
+  touch            Space(float32, shape=(2,), low=-inf, high=inf)
+  target_position  Space(float32, shape=(2,), low=-inf, high=inf)
+  dist_to_target   Space(float32, shape=(), low=-inf, high=inf)
+Actions
+  action           Space(float32, shape=(2,), low=-1.0, high=1.0)
+Extras
+  consec           Space(int32, shape=(), low=-2147483648, high=2147483647)
+  stepid           Space(uint8, shape=(20,), low=0, high=255)
+  dyn/deter        Space(float32, shape=(512,), low=-inf, high=inf)
+  dyn/stoch        Space(float32, shape=(32, 4), low=-inf, high=inf)
+JAX devices (1): [cuda:0]
+Policy devices: cuda:0
+Train devices:  cuda:0
+Initializing parameters...
+Optimizer opt has 638,543 params:
+       364,160 dyn
+        66,111 val
+        57,663 rew
+        50,316 dec
+        49,796 pol
+        41,153 con
+         9,344 enc
+Done initializing!
+Compiling 1 checkpoint groups...
+Largest checkpoint group: 0 GB
+Loading checkpoint: /scratch/midway3/rickybao/dreamerv3_runs/ax1wm_finger_v4q1v400s0_seed4/ckpt/20260719T092230F113698-000000500000
+Loaded checkpoint.
+ax1wm_finger_v4q1v400s0_seed4: expl.mode=task reward_aware=True horizons=(1, 5, 20) probes 60x1001
+  episodes 0-3
+  episodes 4-7
+  episodes 8-11
+  episodes 12-15
+  episodes 16-19
+  episodes 20-23
+  episodes 24-27
+  episodes 28-31
+  episodes 32-35
+  episodes 36-39
+  episodes 40-43
+  episodes 44-47
+  episodes 48-51
+  episodes 52-55
+  episodes 56-59
+  h0: all=0.0985 in=0.0922 out=0.0991 rew=0.0907 norew=0.0992
+  h1: all=0.2562 in=0.1939 out=0.2624 rew=0.1939 norew=0.2624
+  h5: all=0.5489 in=0.4321 out=0.5606 rew=0.4321 norew=0.5606
+  h20: all=1.4848 in=0.9601 out=1.5371 rew=0.9601 norew=1.5371
+-> /scratch/midway3/rickybao/dreamerv3_runs/ax1wm_finger_v4q1v400s0_seed4/e4_finger_v1
+[Wed Jul 22 02:45:31 CDT 2026] E4 measure ax1wm_finger_v4q1v400s0_seed5
+Observations
+  reward           Space(float32, shape=(), low=-inf, high=inf)
+  is_first         Space(bool, shape=(), low=False, high=True)
+  is_last          Space(bool, shape=(), low=False, high=True)
+  is_terminal      Space(bool, shape=(), low=False, high=True)
+  position         Space(float32, shape=(4,), low=-inf, high=inf)
+  velocity         Space(float32, shape=(3,), low=-inf, high=inf)
+  touch            Space(float32, shape=(2,), low=-inf, high=inf)
+  target_position  Space(float32, shape=(2,), low=-inf, high=inf)
+  dist_to_target   Space(float32, shape=(), low=-inf, high=inf)
+Actions
+  action           Space(float32, shape=(2,), low=-1.0, high=1.0)
+Extras
+  consec           Space(int32, shape=(), low=-2147483648, high=2147483647)
+  stepid           Space(uint8, shape=(20,), low=0, high=255)
+  dyn/deter        Space(float32, shape=(512,), low=-inf, high=inf)
+  dyn/stoch        Space(float32, shape=(32, 4), low=-inf, high=inf)
+JAX devices (1): [cuda:0]
+Policy devices: cuda:0
+Train devices:  cuda:0
+Initializing parameters...
+Optimizer opt has 638,543 params:
+       364,160 dyn
+        66,111 val
+        57,663 rew
+        50,316 dec
+        49,796 pol
+        41,153 con
+         9,344 enc
+Done initializing!
+Compiling 1 checkpoint groups...
+Largest checkpoint group: 0 GB
+Loading checkpoint: /scratch/midway3/rickybao/dreamerv3_runs/ax1wm_finger_v4q1v400s0_seed5/ckpt/20260719T092253F520562-000000500000
+Loaded checkpoint.
+ax1wm_finger_v4q1v400s0_seed5: expl.mode=task reward_aware=True horizons=(1, 5, 20) probes 60x1001
+  episodes 0-3
+  episodes 4-7
+  episodes 8-11
+  episodes 12-15
+  episodes 16-19
+  episodes 20-23
+  episodes 24-27
+  episodes 28-31
+  episodes 32-35
+  episodes 36-39
+  episodes 40-43
+  episodes 44-47
+  episodes 48-51
+  episodes 52-55
+  episodes 56-59
+  h0: all=0.0991 in=0.0898 out=0.1000 rew=0.0886 norew=0.1001
+  h1: all=0.2491 in=0.1874 out=0.2553 rew=0.1874 norew=0.2553
+  h5: all=0.5209 in=0.3687 out=0.5360 rew=0.3687 norew=0.5360
+  h20: all=1.4486 in=0.9777 out=1.4956 rew=0.9777 norew=1.4956
+-> /scratch/midway3/rickybao/dreamerv3_runs/ax1wm_finger_v4q1v400s0_seed5/e4_finger_v1
+[Wed Jul 22 02:45:52 CDT 2026] E4 measure ax1wm_finger_v4q1v400s0_seed6
+Observations
+  reward           Space(float32, shape=(), low=-inf, high=inf)
+  is_first         Space(bool, shape=(), low=False, high=True)
+  is_last          Space(bool, shape=(), low=False, high=True)
+  is_terminal      Space(bool, shape=(), low=False, high=True)
+  position         Space(float32, shape=(4,), low=-inf, high=inf)
+  velocity         Space(float32, shape=(3,), low=-inf, high=inf)
+  touch            Space(float32, shape=(2,), low=-inf, high=inf)
+  target_position  Space(float32, shape=(2,), low=-inf, high=inf)
+  dist_to_target   Space(float32, shape=(), low=-inf, high=inf)
+Actions
+  action           Space(float32, shape=(2,), low=-1.0, high=1.0)
+Extras
+  consec           Space(int32, shape=(), low=-2147483648, high=2147483647)
+  stepid           Space(uint8, shape=(20,), low=0, high=255)
+  dyn/deter        Space(float32, shape=(512,), low=-inf, high=inf)
+  dyn/stoch        Space(float32, shape=(32, 4), low=-inf, high=inf)
+JAX devices (1): [cuda:0]
+Policy devices: cuda:0
+Train devices:  cuda:0
+Initializing parameters...
+Optimizer opt has 638,543 params:
+       364,160 dyn
+        66,111 val
+        57,663 rew
+        50,316 dec
+        49,796 pol
+        41,153 con
+         9,344 enc
+Done initializing!
+Compiling 1 checkpoint groups...
+Largest checkpoint group: 0 GB
+Loading checkpoint: /scratch/midway3/rickybao/dreamerv3_runs/ax1wm_finger_v4q1v400s0_seed6/ckpt/20260719T092321F058374-000000500000
+Loaded checkpoint.
+ax1wm_finger_v4q1v400s0_seed6: expl.mode=task reward_aware=True horizons=(1, 5, 20) probes 60x1001
+  episodes 0-3
+  episodes 4-7
+  episodes 8-11
+  episodes 12-15
+  episodes 16-19
+  episodes 20-23
+  episodes 24-27
+  episodes 28-31
+  episodes 32-35
+  episodes 36-39
+  episodes 40-43
+  episodes 44-47
+  episodes 48-51
+  episodes 52-55
+  episodes 56-59
+  h0: all=0.1008 in=0.0913 out=0.1017 rew=0.0907 norew=0.1018
+  h1: all=0.2654 in=0.1987 out=0.2721 rew=0.1987 norew=0.2721
+  h5: all=0.5481 in=0.3902 out=0.5638 rew=0.3902 norew=0.5638
+  h20: all=1.5554 in=0.9730 out=1.6136 rew=0.9730 norew=1.6136
+-> /scratch/midway3/rickybao/dreamerv3_runs/ax1wm_finger_v4q1v400s0_seed6/e4_finger_v1
+[Wed Jul 22 02:46:13 CDT 2026] E4 measure ax1wm_finger_v4q1v400s1_seed1
+Observations
+  reward           Space(float32, shape=(), low=-inf, high=inf)
+  is_first         Space(bool, shape=(), low=False, high=True)
+  is_last          Space(bool, shape=(), low=False, high=True)
+  is_terminal      Space(bool, shape=(), low=False, high=True)
+  position         Space(float32, shape=(4,), low=-inf, high=inf)
+  velocity         Space(float32, shape=(3,), low=-inf, high=inf)
+  touch            Space(float32, shape=(2,), low=-inf, high=inf)
+  target_position  Space(float32, shape=(2,), low=-inf, high=inf)
+  dist_to_target   Space(float32, shape=(), low=-inf, high=inf)
+Actions
+  action           Space(float32, shape=(2,), low=-1.0, high=1.0)
+Extras
+  consec           Space(int32, shape=(), low=-2147483648, high=2147483647)
+  stepid           Space(uint8, shape=(20,), low=0, high=255)
+  dyn/deter        Space(float32, shape=(512,), low=-inf, high=inf)
+  dyn/stoch        Space(float32, shape=(32, 4), low=-inf, high=inf)
+JAX devices (1): [cuda:0]
+Policy devices: cuda:0
+Train devices:  cuda:0
+Initializing parameters...
+Optimizer opt has 638,543 params:
+       364,160 dyn
+        66,111 val
+        57,663 rew
+        50,316 dec
+        49,796 pol
+        41,153 con
+         9,344 enc
+Done initializing!
+Compiling 1 checkpoint groups...
+Largest checkpoint group: 0 GB
+Loading checkpoint: /scratch/midway3/rickybao/dreamerv3_runs/ax1wm_finger_v4q1v400s1_seed1/ckpt/20260718T174517F460716-000000250000
+Loaded checkpoint.
+ax1wm_finger_v4q1v400s1_seed1: expl.mode=task reward_aware=True horizons=(1, 5, 20) probes 60x1001
+  episodes 0-3
+  episodes 4-7
+  episodes 8-11
+  episodes 12-15
+  episodes 16-19
+  episodes 20-23
+  episodes 24-27
+  episodes 28-31
+  episodes 32-35
+  episodes 36-39
+  episodes 40-43
+  episodes 44-47
+  episodes 48-51
+  episodes 52-55
+  episodes 56-59
+  h0: all=0.1137 in=0.1347 out=0.1117 rew=0.1334 norew=0.1118
+  h1: all=0.2931 in=0.2742 out=0.2950 rew=0.2742 norew=0.2950
+  h5: all=0.6257 in=0.5290 out=0.6353 rew=0.5290 norew=0.6353
+  h20: all=1.5776 in=1.0537 out=1.6299 rew=1.0537 norew=1.6299
+-> /scratch/midway3/rickybao/dreamerv3_runs/ax1wm_finger_v4q1v400s1_seed1/e4_finger_v1
+[Wed Jul 22 02:46:34 CDT 2026] E4 measure ax1wm_finger_v4q1v400s1_seed2
+Observations
+  reward           Space(float32, shape=(), low=-inf, high=inf)
+  is_first         Space(bool, shape=(), low=False, high=True)
+  is_last          Space(bool, shape=(), low=False, high=True)
+  is_terminal      Space(bool, shape=(), low=False, high=True)
+  position         Space(float32, shape=(4,), low=-inf, high=inf)
+  velocity         Space(float32, shape=(3,), low=-inf, high=inf)
+  touch            Space(float32, shape=(2,), low=-inf, high=inf)
+  target_position  Space(float32, shape=(2,), low=-inf, high=inf)
+  dist_to_target   Space(float32, shape=(), low=-inf, high=inf)
+Actions
+  action           Space(float32, shape=(2,), low=-1.0, high=1.0)
+Extras
+  consec           Space(int32, shape=(), low=-2147483648, high=2147483647)
+  stepid           Space(uint8, shape=(20,), low=0, high=255)
+  dyn/deter        Space(float32, shape=(512,), low=-inf, high=inf)
+  dyn/stoch        Space(float32, shape=(32, 4), low=-inf, high=inf)
+JAX devices (1): [cuda:0]
+Policy devices: cuda:0
+Train devices:  cuda:0
+Initializing parameters...
+Optimizer opt has 638,543 params:
+       364,160 dyn
+        66,111 val
+        57,663 rew
+        50,316 dec
+        49,796 pol
+        41,153 con
+         9,344 enc
+Done initializing!
+Compiling 1 checkpoint groups...
+Largest checkpoint group: 0 GB
+Loading checkpoint: /scratch/midway3/rickybao/dreamerv3_runs/ax1wm_finger_v4q1v400s1_seed2/ckpt/20260718T174359F109896-000000250000
+Loaded checkpoint.
+ax1wm_finger_v4q1v400s1_seed2: expl.mode=task reward_aware=True horizons=(1, 5, 20) probes 60x1001
+  episodes 0-3
+  episodes 4-7
+  episodes 8-11
+  episodes 12-15
+  episodes 16-19
+  episodes 20-23
+  episodes 24-27
+  episodes 28-31
+  episodes 32-35
+  episodes 36-39
+  episodes 40-43
+  episodes 44-47
+  episodes 48-51
+  episodes 52-55
+  episodes 56-59
+  h0: all=0.1201 in=0.1477 out=0.1174 rew=0.1463 norew=0.1175
+  h1: all=0.3106 in=0.3065 out=0.3110 rew=0.3065 norew=0.3110
+  h5: all=0.6671 in=0.5451 out=0.6792 rew=0.5451 norew=0.6792
+  h20: all=1.7104 in=1.1270 out=1.7686 rew=1.1270 norew=1.7686
+-> /scratch/midway3/rickybao/dreamerv3_runs/ax1wm_finger_v4q1v400s1_seed2/e4_finger_v1
+[Wed Jul 22 02:46:55 CDT 2026] E4 measure ax1wm_finger_v4q1v400s1_seed3
+Observations
+  reward           Space(float32, shape=(), low=-inf, high=inf)
+  is_first         Space(bool, shape=(), low=False, high=True)
+  is_last          Space(bool, shape=(), low=False, high=True)
+  is_terminal      Space(bool, shape=(), low=False, high=True)
+  position         Space(float32, shape=(4,), low=-inf, high=inf)
+  velocity         Space(float32, shape=(3,), low=-inf, high=inf)
+  touch            Space(float32, shape=(2,), low=-inf, high=inf)
+  target_position  Space(float32, shape=(2,), low=-inf, high=inf)
+  dist_to_target   Space(float32, shape=(), low=-inf, high=inf)
+Actions
+  action           Space(float32, shape=(2,), low=-1.0, high=1.0)
+Extras
+  consec           Space(int32, shape=(), low=-2147483648, high=2147483647)
+  stepid           Space(uint8, shape=(20,), low=0, high=255)
+  dyn/deter        Space(float32, shape=(512,), low=-inf, high=inf)
+  dyn/stoch        Space(float32, shape=(32, 4), low=-inf, high=inf)
+JAX devices (1): [cuda:0]
+Policy devices: cuda:0
+Train devices:  cuda:0
+Initializing parameters...
+Optimizer opt has 638,543 params:
+       364,160 dyn
+        66,111 val
+        57,663 rew
+        50,316 dec
+        49,796 pol
+        41,153 con
+         9,344 enc
+Done initializing!
+Compiling 1 checkpoint groups...
+Largest checkpoint group: 0 GB
+Loading checkpoint: /scratch/midway3/rickybao/dreamerv3_runs/ax1wm_finger_v4q1v400s1_seed3/ckpt/20260718T174458F190581-000000250000
+Loaded checkpoint.
+ax1wm_finger_v4q1v400s1_seed3: expl.mode=task reward_aware=True horizons=(1, 5, 20) probes 60x1001
+  episodes 0-3
+  episodes 4-7
+  episodes 8-11
+  episodes 12-15
+  episodes 16-19
+  episodes 20-23
+  episodes 24-27
+  episodes 28-31
+  episodes 32-35
+  episodes 36-39
+  episodes 40-43
+  episodes 44-47
+  episodes 48-51
+  episodes 52-55
+  episodes 56-59
+  h0: all=0.1109 in=0.1253 out=0.1094 rew=0.1234 norew=0.1096
+  h1: all=0.2855 in=0.2617 out=0.2879 rew=0.2617 norew=0.2879
+  h5: all=0.5947 in=0.4913 out=0.6050 rew=0.4913 norew=0.6050
+  h20: all=1.6329 in=1.0338 out=1.6927 rew=1.0338 norew=1.6927
+-> /scratch/midway3/rickybao/dreamerv3_runs/ax1wm_finger_v4q1v400s1_seed3/e4_finger_v1
+[Wed Jul 22 02:47:16 CDT 2026] E4 measure ax1wm_finger_v4q1v400s1_seed4
+Observations
+  reward           Space(float32, shape=(), low=-inf, high=inf)
+  is_first         Space(bool, shape=(), low=False, high=True)
+  is_last          Space(bool, shape=(), low=False, high=True)
+  is_terminal      Space(bool, shape=(), low=False, high=True)
+  position         Space(float32, shape=(4,), low=-inf, high=inf)
+  velocity         Space(float32, shape=(3,), low=-inf, high=inf)
+  touch            Space(float32, shape=(2,), low=-inf, high=inf)
+  target_position  Space(float32, shape=(2,), low=-inf, high=inf)
+  dist_to_target   Space(float32, shape=(), low=-inf, high=inf)
+Actions
+  action           Space(float32, shape=(2,), low=-1.0, high=1.0)
+Extras
+  consec           Space(int32, shape=(), low=-2147483648, high=2147483647)
+  stepid           Space(uint8, shape=(20,), low=0, high=255)
+  dyn/deter        Space(float32, shape=(512,), low=-inf, high=inf)
+  dyn/stoch        Space(float32, shape=(32, 4), low=-inf, high=inf)
+JAX devices (1): [cuda:0]
+Policy devices: cuda:0
+Train devices:  cuda:0
+Initializing parameters...
+Optimizer opt has 638,543 params:
+       364,160 dyn
+        66,111 val
+        57,663 rew
+        50,316 dec
+        49,796 pol
+        41,153 con
+         9,344 enc
+Done initializing!
+Compiling 1 checkpoint groups...
+Largest checkpoint group: 0 GB
+Loading checkpoint: /scratch/midway3/rickybao/dreamerv3_runs/ax1wm_finger_v4q1v400s1_seed4/ckpt/20260718T174426F453784-000000250000
+Loaded checkpoint.
+ax1wm_finger_v4q1v400s1_seed4: expl.mode=task reward_aware=True horizons=(1, 5, 20) probes 60x1001
+  episodes 0-3
+  episodes 4-7
+  episodes 8-11
+  episodes 12-15
+  episodes 16-19
+  episodes 20-23
+  episodes 24-27
+  episodes 28-31
+  episodes 32-35
+  episodes 36-39
+  episodes 40-43
+  episodes 44-47
+  episodes 48-51
+  episodes 52-55
+  episodes 56-59
+  h0: all=0.1136 in=0.1388 out=0.1110 rew=0.1376 norew=0.1112
+  h1: all=0.2935 in=0.2837 out=0.2944 rew=0.2837 norew=0.2944
+  h5: all=0.6240 in=0.4912 out=0.6372 rew=0.4912 norew=0.6372
+  h20: all=1.6495 in=1.0576 out=1.7085 rew=1.0576 norew=1.7085
+-> /scratch/midway3/rickybao/dreamerv3_runs/ax1wm_finger_v4q1v400s1_seed4/e4_finger_v1
+[Wed Jul 22 02:47:36 CDT 2026] E4 measure ax1wm_finger_v4q1v400s1_seed5
+Observations
+  reward           Space(float32, shape=(), low=-inf, high=inf)
+  is_first         Space(bool, shape=(), low=False, high=True)
+  is_last          Space(bool, shape=(), low=False, high=True)
+  is_terminal      Space(bool, shape=(), low=False, high=True)
+  position         Space(float32, shape=(4,), low=-inf, high=inf)
+  velocity         Space(float32, shape=(3,), low=-inf, high=inf)
+  touch            Space(float32, shape=(2,), low=-inf, high=inf)
+  target_position  Space(float32, shape=(2,), low=-inf, high=inf)
+  dist_to_target   Space(float32, shape=(), low=-inf, high=inf)
+Actions
+  action           Space(float32, shape=(2,), low=-1.0, high=1.0)
+Extras
+  consec           Space(int32, shape=(), low=-2147483648, high=2147483647)
+  stepid           Space(uint8, shape=(20,), low=0, high=255)
+  dyn/deter        Space(float32, shape=(512,), low=-inf, high=inf)
+  dyn/stoch        Space(float32, shape=(32, 4), low=-inf, high=inf)
+JAX devices (1): [cuda:0]
+Policy devices: cuda:0
+Train devices:  cuda:0
+Initializing parameters...
+Optimizer opt has 638,543 params:
+       364,160 dyn
+        66,111 val
+        57,663 rew
+        50,316 dec
+        49,796 pol
+        41,153 con
+         9,344 enc
+Done initializing!
+Compiling 1 checkpoint groups...
+Largest checkpoint group: 0 GB
+Loading checkpoint: /scratch/midway3/rickybao/dreamerv3_runs/ax1wm_finger_v4q1v400s1_seed5/ckpt/20260718T172426F276798-000000500000
+Loaded checkpoint.
+ax1wm_finger_v4q1v400s1_seed5: expl.mode=task reward_aware=True horizons=(1, 5, 20) probes 60x1001
+  episodes 0-3
+  episodes 4-7
+  episodes 8-11
+  episodes 12-15
+  episodes 16-19
+  episodes 20-23
+  episodes 24-27
+  episodes 28-31
+  episodes 32-35
+  episodes 36-39
+  episodes 40-43
+  episodes 44-47
+  episodes 48-51
+  episodes 52-55
+  episodes 56-59
+  h0: all=0.0868 in=0.1050 out=0.0850 rew=0.1034 norew=0.0852
+  h1: all=0.2306 in=0.2189 out=0.2318 rew=0.2189 norew=0.2318
+  h5: all=0.5326 in=0.4862 out=0.5373 rew=0.4862 norew=0.5373
+  h20: all=1.5250 in=1.0611 out=1.5712 rew=1.0611 norew=1.5712
+-> /scratch/midway3/rickybao/dreamerv3_runs/ax1wm_finger_v4q1v400s1_seed5/e4_finger_v1
+[Wed Jul 22 02:47:57 CDT 2026] E4 measure ax1wm_finger_v4q1v400s1_seed6
+Observations
+  reward           Space(float32, shape=(), low=-inf, high=inf)
+  is_first         Space(bool, shape=(), low=False, high=True)
+  is_last          Space(bool, shape=(), low=False, high=True)
+  is_terminal      Space(bool, shape=(), low=False, high=True)
+  position         Space(float32, shape=(4,), low=-inf, high=inf)
+  velocity         Space(float32, shape=(3,), low=-inf, high=inf)
+  touch            Space(float32, shape=(2,), low=-inf, high=inf)
+  target_position  Space(float32, shape=(2,), low=-inf, high=inf)
+  dist_to_target   Space(float32, shape=(), low=-inf, high=inf)
+Actions
+  action           Space(float32, shape=(2,), low=-1.0, high=1.0)
+Extras
+  consec           Space(int32, shape=(), low=-2147483648, high=2147483647)
+  stepid           Space(uint8, shape=(20,), low=0, high=255)
+  dyn/deter        Space(float32, shape=(512,), low=-inf, high=inf)
+  dyn/stoch        Space(float32, shape=(32, 4), low=-inf, high=inf)
+JAX devices (1): [cuda:0]
+Policy devices: cuda:0
+Train devices:  cuda:0
+Initializing parameters...
+Optimizer opt has 638,543 params:
+       364,160 dyn
+        66,111 val
+        57,663 rew
+        50,316 dec
+        49,796 pol
+        41,153 con
+         9,344 enc
+Done initializing!
+Compiling 1 checkpoint groups...
+Largest checkpoint group: 0 GB
+Loading checkpoint: /scratch/midway3/rickybao/dreamerv3_runs/ax1wm_finger_v4q1v400s1_seed6/ckpt/20260718T172423F916834-000000500000
+Loaded checkpoint.
+ax1wm_finger_v4q1v400s1_seed6: expl.mode=task reward_aware=True horizons=(1, 5, 20) probes 60x1001
+  episodes 0-3
+  episodes 4-7
+  episodes 8-11
+  episodes 12-15
+  episodes 16-19
+  episodes 20-23
+  episodes 24-27
+  episodes 28-31
+  episodes 32-35
+  episodes 36-39
+  episodes 40-43
+  episodes 44-47
+  episodes 48-51
+  episodes 52-55
+  episodes 56-59
+  h0: all=0.0907 in=0.1072 out=0.0891 rew=0.1061 norew=0.0892
+  h1: all=0.2250 in=0.2177 out=0.2257 rew=0.2177 norew=0.2257
+  h5: all=0.4919 in=0.4540 out=0.4957 rew=0.4540 norew=0.4957
+  h20: all=1.4349 in=1.0352 out=1.4748 rew=1.0352 norew=1.4748
+-> /scratch/midway3/rickybao/dreamerv3_runs/ax1wm_finger_v4q1v400s1_seed6/e4_finger_v1
+[Wed Jul 22 02:48:18 CDT 2026] measured 36 new, 0 already done, 0 skipped
+144 rows (36 runs) -> /scratch/midway3/rickybao/dreamerv3_runs/e4_finger_v1_optionc_volume.csv
+[Wed Jul 22 02:48:18 CDT 2026] E4 sweep DONE -> /scratch/midway3/rickybao/dreamerv3_runs/e4_finger_v1_optionc_volume.csv
