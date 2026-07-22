@@ -349,6 +349,7 @@ def main_real(args):
 
   out_dir = pathlib.Path(args.output).parent
   config, train_seed = load_config(args, out_dir)
+  config = config.update({'jax': {'transfer_guard': False}})
   env = make_env(config, 0)
   agent = make_agent(config)
   ckpt = args.checkpoint or os.path.join(args.run_logdir, 'ckpt')
