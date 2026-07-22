@@ -1,0 +1,28 @@
+{
+ "primary_pf2a": {
+  "mean": 1.716977469588071,
+  "ci": [
+   1.6500560402868936,
+   1.77522406634176
+  ],
+  "n": 32
+ },
+ "fires": true,
+ "consistency_pf2b": {
+  "mean": -0.6079160359491544,
+  "ci": [
+   -0.6792421598151436,
+   -0.528813763254949
+  ],
+  "n": 32,
+  "invariant_like": false
+ },
+ "lottery": {
+  "fraction": 0.0,
+  "aware_p90_ln": -2.4632088168624886,
+  "dispersion_ratio": 0.818616807056549,
+  "bar": 0.15
+ },
+ "rew_head_mse_in_aware": 0.06564651383191938,
+ "interpretation": "never-included-like"
+}

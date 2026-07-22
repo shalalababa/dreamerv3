@@ -159,6 +159,47 @@ immutable dated files; see plan v4.)
 
 ## Code notes and registrations (non-deviations)
 
+- **2026-07-22 — Route-A R2 decision probe BUILT + frozen-ready
+  (pre-outcome; Paper-2 track, local-5090 execution).**
+  `prereg/PREREG_gate_d1_r2probe_20260722.md` +
+  `analysis/gate_d1_r2_read.py` (selfcheck PASS ×6; C1/C2/C3 imported
+  from the frozen 14-Jul gate_d1_read) + `scripts/d1r2_local.sh` +
+  `d0/oracle_labels.py` R2 extension (labeler_version r2_ext_20260722:
+  udyn + belief deter + strided latent reference + dose meta +
+  bootstrapped-G columns; selfcheck PASS; Gate-D1-era column semantics
+  unchanged). Design: 12 fresh local pilots {e1, e4=d0_dose3} ×
+  {cup, finger} × seeds 11–13 (platform-uniform, all-prospective) ×
+  {early≈25K, late=100K} ckpts ⇒ 24 label passes; dials PINNED this
+  time (200/100/25/8/16/seed0/ref_stride5; kNN k=10 excl ±10).
+  Registered rule: R2 fires iff C1 (ρ≥0.3, cluster CI>0) in ≥1
+  predicted cell {early×e1, early×e4, late×e4}, either op, either
+  feature set (F0 = five signals; F1 = +udyn/logdens/udyn_resid =
+  the Stage-1A asset, R1 riding along); late×e1 = registered
+  boundary-replication check (predicted FAIL). Consequence: fires ⇒
+  Route A revived as boundary-law paper (own wave + prereg required;
+  24+24 stay frozen either way); null ⇒ Route A CLOSED, Route B
+  absorbs. Ordering: freeze-commit BEFORE pilots; smoke before labels.
+
+- **2026-07-22 — TD-MPC2 F2 read executed: P-F2a FIRES +1.717
+  [+1.650, +1.775], lottery_fraction 0.000 ⇒ NEVER-INCLUDED-LIKE**
+  (`artifacts/tdmpc2_f2_20260722/`). Cluster code snapshot
+  bit-identical to the repo frozen instrument/read/prereg; 64/64 grid,
+  single probeset sha, smoke=0 throughout; the registered no-outcome
+  smoke ran 4× (all random-init, nothing revealed); no instrument
+  amendment was needed. Free-latent probe R² NEGATIVE (−0.24/−0.18 vs
+  aware +0.63/+0.76); ln-distributions fully disjoint (gap +0.47;
+  geometric ratio 5.6×) ⇒ consistency-only training deterministically
+  EXCLUDES the reward direction — **Prop A2's α→0 lottery account
+  WEAKENED per the registered map; the family boundary is
+  representational**; F1's free +12.5 ns is not
+  reward-representational. P-F2b NOT invariant-like (−0.61: free ~1.8×
+  better at consistency — registered qualitative difference from
+  Dreamer's arm-invariant d_errin). G-F3 stays NO-GO (dissociation
+  present, no paper-blocking ambiguity). Bit-check note: local vs
+  cluster read json differ in 4 float fields at the last 1–2 ulp
+  (platform BLAS); every decision field and reported digit identical —
+  local json is canonical.
+
 - **2026-07-20 — two follow-on registrations BUILT + frozen-ready
   (pre-outcome): synth Phase-B″ and TD-MPC2 F2.** (1) **Phase-B″**
   (authorized by the re-diagnosis gate, share .865):

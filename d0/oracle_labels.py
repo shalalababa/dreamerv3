@@ -31,11 +31,20 @@ then following the frozen policy (eval mode) for --horizon steps from the
 restored snapshot. Labels: delta_real = G(a_real) - G(a_now), delta_imag
 = G(a_imag) - G(a_now).
 
-Output: one npz per run with per-state signals (qfull/qhalf/udyn — the
-EVSI feature set), candidates, branch choices, G values, deltas, meters,
-and run/episode/step ids (cross-fitting by run happens in the Gate-D1
-read; labels carry their run identity). Amortized EVSI-hat training is
-downstream analysis, not this tool.
+Output: one npz per run with per-state signals (qfull + udyn), the
+belief latent (RSSM deter, float16) at each labeled state, candidates,
+branch choices, G values (plain and value-bootstrapped), deltas, meters,
+and run/episode/step ids (cross-fitting by run happens in the read;
+labels carry their run identity). A strided base-trajectory latent
+reference (ref_deter + ref_episode/ref_step) is stored per run so the
+read can compute a kNN density proxy at the labeled states. Amortized
+EVSI-hat training is downstream analysis, not this tool.
+
+R2-probe extension (2026-07-22, PREREG_gate_d1_r2probe_20260722.md):
+udyn + deter + ref arrays + bootstrapped G columns (g_*_boot = G_h +
+Vhat(s_h) from the agent's own ensemble at the truncation state; plain
+undiscounted G stays the primary label). The Gate-D1-era columns are
+unchanged bit-for-bit in semantics.
 
 Usage (cluster, dv3 env, run trained with the d0_probe config):
   python -m d0.oracle_labels --run_logdir <dir> --output <run>.npz \
@@ -151,12 +160,22 @@ class AgentOracle:
     return carry, acts, out
 
   def d0_eval(self, carry, obs):
-    """One d0 policy evaluation: (qfull [K,M], cands [M,A], act dict)."""
+    """One d0 policy evaluation:
+    (carry, qfull [K,M], cands [M,A], act dict, extras)."""
     carry2, acts, out = self.policy(carry, obs)
     q = np.asarray(out['d0/qfull'][0], np.float32)
     cands = np.asarray(out['d0/cands'][0], np.float32)
     act = {k: np.asarray(acts[k][0]) for k in self.act_keys}
-    return carry2, q, cands, act
+    extras = dict(udyn=float(np.asarray(out['d0/udyn'][0])),
+                  deter=self.latent_of(carry2))
+    return carry2, q, cands, act, extras
+
+  def latent_of(self, carry):
+    """Belief latent behind a policy carry: RSSM deter vector, float16.
+    Agent carry layout is (enc_carry, dyn_carry, dec_carry, prevact);
+    dyn_carry is the RSSM carry dict with 'deter' [B, D]."""
+    dyn = carry[1]
+    return np.asarray(dyn['deter'][0], np.float16)
 
   def vec2act(self, vec):
     return {self.act_key: np.asarray(vec, np.float32).reshape(self.act_shape)}
@@ -172,7 +191,11 @@ def plugin_choice(qfull):
 # --------------------------------------------------------------------------
 
 def rollout_return(env, oracle, carry, first_act, horizon, snap):
-  """G(a): restore, execute a, then frozen policy for `horizon` steps."""
+  """G(a): restore, execute a, then frozen policy for `horizon` steps.
+  Returns (G, G_boot): the plain undiscounted return (unchanged Gate-D1
+  semantics) and the value-bootstrapped truncation variant G + Vhat(s_h)
+  from the agent's own ensemble at the final state (R3 descriptive
+  companion; G_boot == G when the episode ended before the horizon)."""
   restore_env(env, snap)
   obs = env.step({**first_act, 'reset': np.array(False)})
   total = float(obs['reward'])
@@ -183,14 +206,17 @@ def rollout_return(env, oracle, carry, first_act, horizon, snap):
     act = {k: np.asarray(acts[k][0]) for k in oracle.act_keys}
     obs = env.step({**act, 'reset': np.array(False)})
     total += float(obs['reward'])
-  return total
+  if bool(obs['is_last']):
+    return total, total
+  _, qend, _, _, _ = oracle.d0_eval(carry, obs)
+  return total, total + float(qend.mean(0).max())
 
 
 def op_imag(oracle, carry, obs, qfull, budget):
   """Imagined purchase: `budget` extra d0 evaluations, averaged."""
   qs = [qfull]
   for _ in range(budget):
-    _, q, _, _ = oracle.d0_eval(carry, obs)
+    _, q, _, _, _ = oracle.d0_eval(carry, obs)
     qs.append(q)
   return plugin_choice(np.mean(qs, 0)), dict(env_steps=0,
                                              policy_calls=budget)
@@ -205,7 +231,7 @@ def op_real(env, oracle, carry, obs, qfull, cands, snap):
     restore_env(env, snap)
     nobs = env.step({**oracle.vec2act(cands[m]), 'reset': np.array(False)})
     r = float(nobs['reward'])
-    _, qn, _, _ = oracle.d0_eval(carry, nobs)
+    _, qn, _, _, _ = oracle.d0_eval(carry, nobs)
     vhat = float(qn.mean(0).max())
     scores[m] = r + oracle.discount * vhat
   return int(np.argmax(scores)), dict(env_steps=m_count,
@@ -217,8 +243,9 @@ def op_real(env, oracle, carry, obs, qfull, cands, snap):
 # --------------------------------------------------------------------------
 
 def label_run(env, oracle, n_states, horizon, label_every, max_steps,
-              rng, run_id, oracle_all=False):
+              rng, run_id, oracle_all=False, ref_stride=5):
   rows = []
+  ref = dict(deter=[], episode=[], step=[])
   zero_act = oracle.vec2act(np.zeros(int(np.prod(oracle.act_shape))))
   carry = oracle.init()
   obs = env.step({**zero_act, 'reset': np.array(True)})
@@ -235,7 +262,7 @@ def label_run(env, oracle, n_states, horizon, label_every, max_steps,
     if label_here:
       snap = snapshot_env(env)
       carry_s = carry  # jax pytrees are immutable: safe belief snapshot
-      _, qfull, cands, _ = oracle.d0_eval(carry_s, obs)
+      _, qfull, cands, _, extras = oracle.d0_eval(carry_s, obs)
       # determinism assert: restore must reproduce the same next obs
       restore_env(env, snap)
       probe1 = env.step({**oracle.vec2act(cands[0]), 'reset': np.array(False)})
@@ -259,10 +286,16 @@ def label_run(env, oracle, n_states, horizon, label_every, max_steps,
       rows.append(dict(
           run_id=run_id, episode=ep, step=t,
           qfull=qfull, cands=cands,
+          udyn=np.float32(extras['udyn']),
+          deter=np.asarray(extras['deter'], np.float16),
           m_now=m_now, m_imag=m_imag, m_real=m_real,
-          g_now=G[m_now], g_imag=G[m_imag], g_real=G[m_real],
-          delta_imag=G[m_imag] - G[m_now],
-          delta_real=G[m_real] - G[m_now],
+          g_now=G[m_now][0], g_imag=G[m_imag][0], g_real=G[m_real][0],
+          delta_imag=G[m_imag][0] - G[m_now][0],
+          delta_real=G[m_real][0] - G[m_now][0],
+          g_now_boot=G[m_now][1], g_imag_boot=G[m_imag][1],
+          g_real_boot=G[m_real][1],
+          delta_imag_boot=G[m_imag][1] - G[m_now][1],
+          delta_real_boot=G[m_real][1] - G[m_now][1],
           real_scores=real_scores,
           cost_imag_env=cost_imag['env_steps'],
           cost_imag_calls=cost_imag['policy_calls'],
@@ -271,13 +304,22 @@ def label_run(env, oracle, n_states, horizon, label_every, max_steps,
       ))
       restore_env(env, snap)  # resume the base trajectory untouched
     carry, acts, _ = oracle.policy(carry, obs)
+    if t % ref_stride == 0:
+      # belief at obs_t (same step convention as the labeled rows)
+      ref['deter'].append(oracle.latent_of(carry))
+      ref['episode'].append(ep)
+      ref['step'].append(t)
     act = {k: np.asarray(acts[k][0]) for k in oracle.act_keys}
     obs = env.step({**act, 'reset': np.array(False)})
     t += 1
-  return rows
+  ref_arrays = dict(
+      ref_deter=np.stack(ref['deter'], 0).astype(np.float16),
+      ref_episode=np.asarray(ref['episode'], np.int64),
+      ref_step=np.asarray(ref['step'], np.int64))
+  return rows, ref_arrays
 
 
-def save_rows(rows, output, meta):
+def save_rows(rows, output, meta, extra_arrays=None):
   cols = {}
   for key in rows[0]:
     vals = [r[key] for r in rows]
@@ -285,6 +327,9 @@ def save_rows(rows, output, meta):
       cols[key] = np.array(vals)
     else:
       cols[key] = np.stack([np.asarray(v) for v in vals], 0)
+  for key, arr in (extra_arrays or {}).items():
+    assert key not in cols, key
+    cols[key] = arr
   os.makedirs(os.path.dirname(output) or '.', exist_ok=True)
   np.savez_compressed(output, meta=json.dumps(meta), **cols)
   print(f'wrote {output}: {len(rows)} labeled states; '
@@ -312,16 +357,20 @@ def main_real(args):
           1 - 1 / config.agent.horizon)
   oracle = AgentOracle(agent, env.act_space, disc)
   rng = np.random.default_rng(args.seed)
-  rows = label_run(env, oracle, args.states, args.horizon,
-                   args.label_every, args.max_steps, rng,
-                   run_id=os.path.basename(args.run_logdir.rstrip('/')),
-                   oracle_all=args.oracle_all)
+  rows, ref_arrays = label_run(
+      env, oracle, args.states, args.horizon,
+      args.label_every, args.max_steps, rng,
+      run_id=os.path.basename(args.run_logdir.rstrip('/')),
+      oracle_all=args.oracle_all, ref_stride=args.ref_stride)
   save_rows(rows, args.output, meta=dict(
       run_logdir=args.run_logdir, checkpoint=str(ckpt),
       states=args.states, horizon=args.horizon,
       label_every=args.label_every, seed=args.seed,
       train_seed=train_seed, actions=args.actions, rollouts=args.rollouts,
-      operation_pair='real_vs_imag_matched_candidate_budget'))
+      ref_stride=args.ref_stride, labeler_version='r2_ext_20260722',
+      dose=dict(config.distractor),
+      operation_pair='real_vs_imag_matched_candidate_budget'),
+      extra_arrays=ref_arrays)
 
 
 # --------------------------------------------------------------------------
@@ -369,6 +418,7 @@ class _SynthOracle(AgentOracle):
     self.act_key = 'action'
     self.act_shape = (1,)
     self.discount = 0.0  # scores = observed reward only: exposes ranking
+    self._calls = 0
 
   def init(self):
     return None
@@ -376,16 +426,21 @@ class _SynthOracle(AgentOracle):
   def policy(self, carry, obs, mode='eval'):
     acts = {'action': self.CANDS[1][None]}  # frozen policy plays cand 1
     q = np.array([[0.1, 0.8, 0.0], [0.1, 0.8, 0.0]], np.float32)
-    out = {'d0/qfull': q[None], 'd0/cands': self.CANDS[None]}
+    out = {'d0/qfull': q[None], 'd0/cands': self.CANDS[None],
+           'd0/udyn': np.array([0.25], np.float32)}
     return carry, acts, out
+
+  def latent_of(self, carry):
+    self._calls += 1
+    return np.array([self._calls, 0.0], np.float16)
 
 
 def selfcheck():
   env = _SynthEnv()
   oracle = _SynthOracle()
   rng = np.random.default_rng(0)
-  rows = label_run(env, oracle, n_states=5, horizon=10, label_every=7,
-                   max_steps=200, rng=rng, run_id='synth')
+  rows, ref = label_run(env, oracle, n_states=5, horizon=10, label_every=7,
+                        max_steps=200, rng=rng, run_id='synth')
   for r in rows:
     assert r['m_now'] == 1, r  # plug-in picks the miscalibrated middle
     assert r['m_imag'] == 1, r  # imagined purchase repeats the belief
@@ -395,6 +450,17 @@ def selfcheck():
     assert abs(r['delta_real'] - 0.8) < 1e-5, r['delta_real']
     assert abs(r['delta_imag'] - 0.0) < 1e-5, r['delta_imag']
     assert r['cost_real_env'] == 3 and r['cost_imag_env'] == 0
+    # R2 extension: udyn + belief latent stored; bootstrapped G adds the
+    # synthetic Vhat(end) = 0.8 to every branch (constant => same delta)
+    assert abs(float(r['udyn']) - 0.25) < 1e-6, r['udyn']
+    assert r['deter'].shape == (2,) and r['deter'].dtype == np.float16
+    assert abs(r['g_now_boot'] - (r['g_now'] + 0.8)) < 1e-5, r
+    assert abs(r['delta_real_boot'] - r['delta_real']) < 1e-5, r
+    assert abs(r['delta_imag_boot'] - r['delta_imag']) < 1e-5, r
+  # base-trajectory latent reference: labels at t=7..35, stride 5 => 8 pts
+  assert ref['ref_deter'].shape == (8, 2), ref['ref_deter'].shape
+  assert list(ref['ref_step']) == [0, 5, 10, 15, 20, 25, 30, 35]
+  assert ref['ref_deter'].dtype == np.float16
   # snapshot/restore roundtrip determinism on the synthetic env
   s = snapshot_env(env)
   before = env.oracle_get_state()
@@ -402,10 +468,13 @@ def selfcheck():
   restore_env(env, s)
   assert env.oracle_get_state()[:2] == before[:2]
   out = pathlib.Path(os.environ.get('TMPDIR', '/tmp')) / 'oracle_sc.npz'
-  save_rows(rows, str(out), meta=dict(selfcheck=True))
+  save_rows(rows, str(out), meta=dict(selfcheck=True), extra_arrays=ref)
   data = np.load(out, allow_pickle=False)
   assert data['delta_real'].shape == (5,)
-  print('SELFCHECK PASS')
+  assert data['udyn'].shape == (5,) and data['deter'].shape == (5, 2)
+  assert data['delta_real_boot'].shape == (5,)
+  assert data['ref_deter'].shape == (8, 2)
+  print('SELFCHECK PASS (incl. R2 extension: udyn/deter/boot/ref)')
 
 
 def main():
@@ -426,6 +495,9 @@ def main():
                  help='One-step rollouts R per (head, action).')
   p.add_argument('--oracle_all', action='store_true',
                  help='ground-truth every candidate, not just the chosen')
+  p.add_argument('--ref_stride', type=int, default=5,
+                 help='Record a base-trajectory belief latent every N '
+                      'steps (kNN density reference for the R2 read).')
   p.add_argument('--platform', default='', choices=['', 'cpu', 'cuda'])
   p.add_argument('--selfcheck', action='store_true')
   args = p.parse_args()
