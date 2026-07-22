@@ -343,17 +343,18 @@ def save_rows(rows, output, meta, extra_arrays=None):
 
 def main_real(args):
   import elements
+  import jax
   import ruamel.yaml as yaml
   from dreamerv3.main import make_agent, make_env
   from d0.sweep import load_config, load_frozen_agent
 
   out_dir = pathlib.Path(args.output).parent
   config, train_seed = load_config(args, out_dir)
-  config = config.update({'jax': {'transfer_guard': False}})
   env = make_env(config, 0)
   agent = make_agent(config)
   ckpt = args.checkpoint or os.path.join(args.run_logdir, 'ckpt')
   agent = load_frozen_agent(agent, ckpt)
+  jax.config.update('jax_transfer_guard', 'allow')
   disc = (1.0 if config.agent.contdisc else
           1 - 1 / config.agent.horizon)
   oracle = AgentOracle(agent, env.act_space, disc)
