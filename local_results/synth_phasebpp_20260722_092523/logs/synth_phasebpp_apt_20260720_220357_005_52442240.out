@@ -1,0 +1,1793 @@
+[Tue Jul 21 07:11:19 CDT 2026] axis1 bundle script starting
+[Tue Jul 21 07:11:19 CDT 2026] job=52442240 host=midway3-0286.rcc.local pwd=/home/rickybao/projects/dreamerv3
+[Tue Jul 21 07:11:19 CDT 2026] REPO=/home/rickybao/projects/dreamerv3 RUNROOT=/scratch/midway3/rickybao/dreamerv3_runs CONDA_ENV=/scratch/midway3/rickybao/conda_envs/dreamerv3
+[Tue Jul 21 07:11:19 CDT 2026] RUN_ID=synth_phasebpp_apt_20260720_220357_005 RUNLIST=/scratch/midway3/rickybao/dreamerv3_runs/_submit_runlists/synth_phasebpp_20260720_220357/apt_bundle_005.tsv
+[Tue Jul 21 07:11:19 CDT 2026] env prepared: python=/scratch/midway3/rickybao/conda_envs/dreamerv3/bin/python
+python_executable=/scratch/midway3/rickybao/conda_envs/dreamerv3/bin/python
+[Tue Jul 21 07:11:19 CDT 2026] axis1 bundle RUN_ID=synth_phasebpp_apt_20260720_220357_005 RUNLIST=/scratch/midway3/rickybao/dreamerv3_runs/_submit_runlists/synth_phasebpp_20260720_220357/apt_bundle_005.tsv
+[Tue Jul 21 07:11:19 CDT 2026] bundle contents:
+  adapt_ax1rbf3q1s1_synth_seed106_ckpt500000	ax1wm_synth_fq1s1_seed3	synth_reach	106	/scratch/midway3/rickybao/dreamerv3_runs/axis1_synth/q1/side1	500000	1.25e5	axis1	ax1rbf_synth_q1
+  adapt_ax1rbf4q1s1_synth_seed104_ckpt500000	ax1wm_synth_fq1s1_seed4	synth_reach	104	/scratch/midway3/rickybao/dreamerv3_runs/axis1_synth/q1/side1	500000	1.25e5	axis1	ax1rbf_synth_q1
+  adapt_ax1rbf4q1s1_synth_seed105_ckpt500000	ax1wm_synth_fq1s1_seed4	synth_reach	105	/scratch/midway3/rickybao/dreamerv3_runs/axis1_synth/q1/side1	500000	1.25e5	axis1	ax1rbf_synth_q1
+  adapt_ax1rbf4q1s1_synth_seed106_ckpt500000	ax1wm_synth_fq1s1_seed4	synth_reach	106	/scratch/midway3/rickybao/dreamerv3_runs/axis1_synth/q1/side1	500000	1.25e5	axis1	ax1rbf_synth_q1
+  adapt_ax1rbf5q1s1_synth_seed104_ckpt500000	ax1wm_synth_fq1s1_seed5	synth_reach	104	/scratch/midway3/rickybao/dreamerv3_runs/axis1_synth/q1/side1	500000	1.25e5	axis1	ax1rbf_synth_q1
+  adapt_ax1rbf5q1s1_synth_seed105_ckpt500000	ax1wm_synth_fq1s1_seed5	synth_reach	105	/scratch/midway3/rickybao/dreamerv3_runs/axis1_synth/q1/side1	500000	1.25e5	axis1	ax1rbf_synth_q1
+  adapt_ax1rbf5q1s1_synth_seed106_ckpt500000	ax1wm_synth_fq1s1_seed5	synth_reach	106	/scratch/midway3/rickybao/dreamerv3_runs/axis1_synth/q1/side1	500000	1.25e5	axis1	ax1rbf_synth_q1
+  adapt_ax1rbf6q1s1_synth_seed104_ckpt500000	ax1wm_synth_fq1s1_seed6	synth_reach	104	/scratch/midway3/rickybao/dreamerv3_runs/axis1_synth/q1/side1	500000	1.25e5	axis1	ax1rbf_synth_q1
+[Tue Jul 21 07:11:19 CDT 2026] START child adapt_ax1rbf3q1s1_synth_seed106_ckpt500000 WM_RUN=ax1wm_synth_fq1s1_seed3
+[Tue Jul 21 07:11:19 CDT 2026] axis1 child starting RUN_ID=adapt_ax1rbf3q1s1_synth_seed106_ckpt500000 WM_RUN=ax1wm_synth_fq1s1_seed3 job=52442240 host=midway3-0286.rcc.local
+[Tue Jul 21 07:11:19 CDT 2026] env prepared: python=/scratch/midway3/rickybao/conda_envs/dreamerv3/bin/python
+python_executable=/scratch/midway3/rickybao/conda_envs/dreamerv3/bin/python
+[Tue Jul 21 07:11:19 CDT 2026] offline WM already fit: /scratch/midway3/rickybao/dreamerv3_runs/ax1wm_synth_fq1s1_seed3/ckpt/20260718T125817F915673-000000500000 (skipping stage 1)
+[Tue Jul 21 07:11:19 CDT 2026] adapt RUN_ID=adapt_ax1rbf3q1s1_synth_seed106_ckpt500000 TASK=synth_reach SEED=106 CKPT=/scratch/midway3/rickybao/dreamerv3_runs/ax1wm_synth_fq1s1_seed3/ckpt/20260718T125817F915673-000000500000 STEPS=1.25e5
+---  ___                           __   ______ ---
+--- |   \ _ _ ___ __ _ _ __  ___ _ \ \ / /__ / ---
+--- | |) | '_/ -_) _` | '  \/ -_) '/\ V / |_ \ ---
+--- |___/|_| \___\__,_|_|_|_\___|_|  \_/ |___/ ---
+Replica: 0 / 1
+Logdir: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf3q1s1_synth_seed106_ckpt500000
+Run script: train
+Observations
+  position         Space(float32, shape=(2,), low=-inf, high=inf)
+  velocity         Space(float32, shape=(2,), low=-inf, high=inf)
+  distractor       Space(float32, shape=(8,), low=-inf, high=inf)
+  to_target        Space(float32, shape=(2,), low=-inf, high=inf)
+  reward           Space(float32, shape=(), low=-inf, high=inf)
+  is_first         Space(bool, shape=(), low=False, high=True)
+  is_last          Space(bool, shape=(), low=False, high=True)
+  is_terminal      Space(bool, shape=(), low=False, high=True)
+Actions
+  action           Space(float32, shape=(2,), low=-1.0, high=1.0)
+Extras
+  consec           Space(int32, shape=(), low=-2147483648, high=2147483647)
+  stepid           Space(uint8, shape=(20,), low=0, high=255)
+  dyn/deter        Space(float32, shape=(512,), low=-inf, high=inf)
+  dyn/stoch        Space(float32, shape=(32, 4), low=-inf, high=inf)
+JAX devices (1): [cuda:0]
+Policy devices: cuda:0
+Train devices:  cuda:0
+Initializing parameters...
+Optimizer opt has 214,723 params:
+        66,111 val
+        57,663 rew
+        49,796 pol
+        41,153 con
+Done initializing!
+Compiling 1 checkpoint groups...
+Largest checkpoint group: 0 GB
+Compiling train and report...
+Train cost analysis:
+  FLOPS:            7.2e+09
+  Memory (temp):    1.8e+08
+  Memory (inputs):  7.3e+06
+  Memory (outputs): 5.9e+06
+  Memory (code):    1.5e+06
+
+Report cost analysis:
+  FLOPS:            2.0e+06
+  Memory (temp):    9.2e+05
+  Memory (inputs):  2.7e+06
+  Memory (outputs): 2.1e+04
+  Memory (code):    9.8e+04
+
+Done compiling!
+Loaded pretrained checkpoint with keys: ['dec/mlp/linear0/bias', 'dec/mlp/linear0/kernel', 'dec/mlp/linear1/bias', 'dec/mlp/linear1/kernel', 'dec/mlp/linear2/bias', 'dec/mlp/linear2/kernel', 'dec/mlp/norm0/scale', 'dec/mlp/norm1/scale', 'dec/mlp/norm2/scale', 'dec/vec/distractor/pred/bias', 'dec/vec/distractor/pred/kernel', 'dec/vec/position/pred/bias', 'dec/vec/position/pred/kernel', 'dec/vec/to_target/pred/bias', 'dec/vec/to_target/pred/kernel', 'dec/vec/velocity/pred/bias', 'dec/vec/velocity/pred/kernel', 'dyn/dyngru/bias', 'dyn/dyngru/kernel', 'dyn/dynhid0/bias', 'dyn/dynhid0/kernel', 'dyn/dynhid0norm/scale', 'dyn/dynin0/bias', 'dyn/dynin0/kernel', 'dyn/dynin0norm/scale', 'dyn/dynin1/bias', 'dyn/dynin1/kernel', 'dyn/dynin1norm/scale', 'dyn/dynin2/bias', 'dyn/dynin2/kernel', 'dyn/dynin2norm/scale', 'dyn/obs0/bias', 'dyn/obs0/kernel', 'dyn/obs0norm/scale', 'dyn/obslogit/bias', 'dyn/obslogit/kernel', 'dyn/prior0/bias', 'dyn/prior0/kernel', 'dyn/prior0norm/scale', 'dyn/prior1/bias', 'dyn/prior1/kernel', 'dyn/prior1norm/scale', 'dyn/priorlogit/bias', 'dyn/priorlogit/kernel', 'enc/mlp0/bias', 'enc/mlp0/kernel', 'enc/mlp0norm/scale', 'enc/mlp1/bias', 'enc/mlp1/kernel', 'enc/mlp1norm/scale', 'enc/mlp2/bias', 'enc/mlp2/kernel', 'enc/mlp2norm/scale']
+Did not find any checkpoint.
+Saving checkpoint: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf3q1s1_synth_seed106_ckpt500000/ckpt/20260721T071147F945934
+Saved checkpoint.
+Start training loop
+
+--------------------[Agent Step 7_584]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+train/loss/con 0.06 / train/loss/distractor 1.17 / train/loss/dyn 11.6 / train/loss/policy 0.02 / train/loss/position 0.19 / train/loss/rep 11.6 / train/loss/repval 2.5 / train/loss/rew 0.91 / train/loss/to_target 0.16 / train/loss/value 1.47 / train/loss/velocity 0.01 / replay/replay_ratio 877.98 / fps/policy 62.14 / fps/train 4.6e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf3q1s1_synth_seed106_ckpt500000/metrics.jsonl
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf3q1s1_synth_seed106_ckpt500000/scores.jsonl
+
+--------------------[Agent Step 13_152]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+train/loss/con 0.02 / train/loss/distractor 1.12 / train/loss/dyn 12.6 / train/loss/policy 0.02 / train/loss/position 0.19 / train/loss/rep 12.6 / train/loss/repval 1.08 / train/loss/rew 0.02 / train/loss/to_target 0.22 / train/loss/value 0.87 / train/loss/velocity 0.06 / replay/replay_ratio 1040 / fps/policy 46.37 / fps/train 4.7e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf3q1s1_synth_seed106_ckpt500000/scores.jsonlWriting metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf3q1s1_synth_seed106_ckpt500000/metrics.jsonl
+
+
+--------------------[Agent Step 18_720]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+episode/score 0 / episode/length 1001 / train/loss/con 0.02 / train/loss/distractor 1.13 / train/loss/dyn 12.84 / train/loss/policy -0.08 / train/loss/position 0.2 / train/loss/rep 12.84 / train/loss/repval 1.46 / train/loss/rew 0.02 / train/loss/to_target 0.23 / train/loss/value 1.27 / train/loss/velocity 0.05 / replay/replay_ratio 1040 / fps/policy 46.35 / fps/train 4.7e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf3q1s1_synth_seed106_ckpt500000/scores.jsonlWriting metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf3q1s1_synth_seed106_ckpt500000/metrics.jsonl
+
+
+--------------------[Agent Step 24_288]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+train/loss/con 0.02 / train/loss/distractor 1.14 / train/loss/dyn 12.68 / train/loss/policy -0.06 / train/loss/position 0.22 / train/loss/rep 12.68 / train/loss/repval 1.33 / train/loss/rew 0.02 / train/loss/to_target 0.24 / train/loss/value 1.15 / train/loss/velocity 0.04 / replay/replay_ratio 1040 / fps/policy 46.36 / fps/train 4.7e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf3q1s1_synth_seed106_ckpt500000/scores.jsonlWriting metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf3q1s1_synth_seed106_ckpt500000/metrics.jsonl
+
+
+--------------------[Agent Step 29_856]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+train/loss/con 0.02 / train/loss/distractor 1.15 / train/loss/dyn 12.67 / train/loss/policy -0.14 / train/loss/position 0.23 / train/loss/rep 12.67 / train/loss/repval 1.4 / train/loss/rew 0.04 / train/loss/to_target 0.24 / train/loss/value 1.08 / train/loss/velocity 0.04 / replay/replay_ratio 1040 / fps/policy 46.36 / fps/train 4.7e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf3q1s1_synth_seed106_ckpt500000/metrics.jsonlWriting metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf3q1s1_synth_seed106_ckpt500000/scores.jsonl
+
+
+--------------------[Agent Step 35_424]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+episode/score 25 / episode/length 1001 / train/loss/con 0.02 / train/loss/distractor 1.13 / train/loss/dyn 12.77 / train/loss/policy -0.05 / train/loss/position 0.29 / train/loss/rep 12.77 / train/loss/repval 1.33 / train/loss/rew 0.03 / train/loss/to_target 0.26 / train/loss/value 1.09 / train/loss/velocity 0.03 / replay/replay_ratio 1040 / fps/policy 46.38 / fps/train 4.7e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf3q1s1_synth_seed106_ckpt500000/scores.jsonlWriting metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf3q1s1_synth_seed106_ckpt500000/metrics.jsonl
+
+
+--------------------[Agent Step 40_992]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+train/loss/con 0.02 / train/loss/distractor 1.14 / train/loss/dyn 12.75 / train/loss/policy -0.02 / train/loss/position 0.3 / train/loss/rep 12.75 / train/loss/repval 1.29 / train/loss/rew 0.02 / train/loss/to_target 0.26 / train/loss/value 1.07 / train/loss/velocity 0.03 / replay/replay_ratio 1040 / fps/policy 46.3 / fps/train 4.7e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf3q1s1_synth_seed106_ckpt500000/metrics.jsonlWriting metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf3q1s1_synth_seed106_ckpt500000/scores.jsonl
+
+Saving checkpoint: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf3q1s1_synth_seed106_ckpt500000/ckpt/20260721T072649F721889
+Saved checkpoint.
+
+--------------------[Agent Step 46_480]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+train/loss/con 0.02 / train/loss/distractor 1.14 / train/loss/dyn 12.69 / train/loss/policy -2e-3 / train/loss/position 0.28 / train/loss/rep 12.69 / train/loss/repval 1.23 / train/loss/rew 0.02 / train/loss/to_target 0.25 / train/loss/value 0.99 / train/loss/velocity 0.03 / replay/replay_ratio 1040 / fps/policy 45.71 / fps/train 4.7e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf3q1s1_synth_seed106_ckpt500000/metrics.jsonl
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf3q1s1_synth_seed106_ckpt500000/scores.jsonl
+
+--------------------[Agent Step 52_048]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+episode/score 4 / episode/length 1001 / train/loss/con 0.02 / train/loss/distractor 1.14 / train/loss/dyn 12.65 / train/loss/policy -0.02 / train/loss/position 0.27 / train/loss/rep 12.65 / train/loss/repval 1.29 / train/loss/rew 0.02 / train/loss/to_target 0.24 / train/loss/value 1.08 / train/loss/velocity 0.04 / replay/replay_ratio 1040 / fps/policy 46.36 / fps/train 4.7e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf3q1s1_synth_seed106_ckpt500000/metrics.jsonlWriting metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf3q1s1_synth_seed106_ckpt500000/scores.jsonl
+
+
+--------------------[Agent Step 57_616]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+train/loss/con 0.02 / train/loss/distractor 1.14 / train/loss/dyn 12.67 / train/loss/policy -0.03 / train/loss/position 0.28 / train/loss/rep 12.67 / train/loss/repval 1.31 / train/loss/rew 0.02 / train/loss/to_target 0.26 / train/loss/value 1.05 / train/loss/velocity 0.04 / replay/replay_ratio 1040 / fps/policy 46.36 / fps/train 4.7e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf3q1s1_synth_seed106_ckpt500000/scores.jsonlWriting metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf3q1s1_synth_seed106_ckpt500000/metrics.jsonl
+
+
+--------------------[Agent Step 63_184]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+train/loss/con 0.02 / train/loss/distractor 1.15 / train/loss/dyn 12.74 / train/loss/policy -0.01 / train/loss/position 0.29 / train/loss/rep 12.74 / train/loss/repval 1.21 / train/loss/rew 0.01 / train/loss/to_target 0.27 / train/loss/value 1.03 / train/loss/velocity 0.04 / replay/replay_ratio 1040 / fps/policy 46.37 / fps/train 4.7e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf3q1s1_synth_seed106_ckpt500000/metrics.jsonl
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf3q1s1_synth_seed106_ckpt500000/scores.jsonl
+
+--------------------[Agent Step 68_752]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+episode/score 6 / episode/length 1001 / train/loss/con 0.02 / train/loss/distractor 1.15 / train/loss/dyn 12.82 / train/loss/policy -9e-3 / train/loss/position 0.3 / train/loss/rep 12.82 / train/loss/repval 1.27 / train/loss/rew 0.01 / train/loss/to_target 0.28 / train/loss/value 1.02 / train/loss/velocity 0.04 / replay/replay_ratio 1040 / fps/policy 46.38 / fps/train 4.7e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf3q1s1_synth_seed106_ckpt500000/metrics.jsonlWriting metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf3q1s1_synth_seed106_ckpt500000/scores.jsonl
+
+
+--------------------[Agent Step 74_320]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+train/loss/con 0.02 / train/loss/distractor 1.15 / train/loss/dyn 12.85 / train/loss/policy -7.9e-3 / train/loss/position 0.28 / train/loss/rep 12.85 / train/loss/repval 1.31 / train/loss/rew 0.01 / train/loss/to_target 0.27 / train/loss/value 1.02 / train/loss/velocity 0.05 / replay/replay_ratio 1040 / fps/policy 46.39 / fps/train 4.7e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf3q1s1_synth_seed106_ckpt500000/metrics.jsonl
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf3q1s1_synth_seed106_ckpt500000/scores.jsonl
+
+--------------------[Agent Step 79_888]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+train/loss/con 0.02 / train/loss/distractor 1.15 / train/loss/dyn 12.87 / train/loss/policy -0.02 / train/loss/position 0.27 / train/loss/rep 12.87 / train/loss/repval 1.22 / train/loss/rew 0.02 / train/loss/to_target 0.26 / train/loss/value 1.09 / train/loss/velocity 0.05 / replay/replay_ratio 1040 / fps/policy 46.38 / fps/train 4.7e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf3q1s1_synth_seed106_ckpt500000/metrics.jsonlWriting metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf3q1s1_synth_seed106_ckpt500000/scores.jsonl
+
+Saving checkpoint: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf3q1s1_synth_seed106_ckpt500000/ckpt/20260721T074149F816545
+Saved checkpoint.
+
+--------------------[Agent Step 85_424]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+episode/score 16 / episode/length 1001 / train/loss/con 0.02 / train/loss/distractor 1.14 / train/loss/dyn 12.88 / train/loss/policy -0.03 / train/loss/position 0.26 / train/loss/rep 12.88 / train/loss/repval 1.26 / train/loss/rew 0.02 / train/loss/to_target 0.26 / train/loss/value 1.05 / train/loss/velocity 0.05 / replay/replay_ratio 1040 / fps/policy 45.94 / fps/train 4.7e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf3q1s1_synth_seed106_ckpt500000/metrics.jsonl
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf3q1s1_synth_seed106_ckpt500000/scores.jsonl
+
+--------------------[Agent Step 90_976]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+train/loss/con 0.02 / train/loss/distractor 1.14 / train/loss/dyn 12.87 / train/loss/policy -0.03 / train/loss/position 0.26 / train/loss/rep 12.87 / train/loss/repval 1.24 / train/loss/rew 0.02 / train/loss/to_target 0.25 / train/loss/value 1.05 / train/loss/velocity 0.05 / replay/replay_ratio 1040 / fps/policy 46.23 / fps/train 4.7e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf3q1s1_synth_seed106_ckpt500000/metrics.jsonlWriting metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf3q1s1_synth_seed106_ckpt500000/scores.jsonl
+
+
+--------------------[Agent Step 96_544]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+episode/score 39 / episode/length 1001 / train/loss/con 0.02 / train/loss/distractor 1.14 / train/loss/dyn 12.86 / train/loss/policy -0.02 / train/loss/position 0.25 / train/loss/rep 12.86 / train/loss/repval 1.2 / train/loss/rew 0.02 / train/loss/to_target 0.24 / train/loss/value 1.09 / train/loss/velocity 0.06 / replay/replay_ratio 1040 / fps/policy 46.39 / fps/train 4.8e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf3q1s1_synth_seed106_ckpt500000/scores.jsonlWriting metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf3q1s1_synth_seed106_ckpt500000/metrics.jsonl
+
+
+--------------------[Agent Step 102_112]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+train/loss/con 0.02 / train/loss/distractor 1.14 / train/loss/dyn 12.85 / train/loss/policy -0.02 / train/loss/position 0.24 / train/loss/rep 12.85 / train/loss/repval 1.19 / train/loss/rew 0.03 / train/loss/to_target 0.24 / train/loss/value 1.08 / train/loss/velocity 0.06 / replay/replay_ratio 1040 / fps/policy 46.39 / fps/train 4.8e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf3q1s1_synth_seed106_ckpt500000/metrics.jsonlWriting metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf3q1s1_synth_seed106_ckpt500000/scores.jsonl
+
+
+--------------------[Agent Step 107_680]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+train/loss/con 0.02 / train/loss/distractor 1.14 / train/loss/dyn 12.84 / train/loss/policy -0.02 / train/loss/position 0.24 / train/loss/rep 12.84 / train/loss/repval 1.23 / train/loss/rew 0.03 / train/loss/to_target 0.23 / train/loss/value 1.07 / train/loss/velocity 0.06 / replay/replay_ratio 1040 / fps/policy 46.37 / fps/train 4.7e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf3q1s1_synth_seed106_ckpt500000/scores.jsonlWriting metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf3q1s1_synth_seed106_ckpt500000/metrics.jsonl
+
+
+--------------------[Agent Step 113_248]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+episode/score 63 / episode/length 1001 / train/loss/con 0.02 / train/loss/distractor 1.14 / train/loss/dyn 12.83 / train/loss/policy -0.01 / train/loss/position 0.23 / train/loss/rep 12.83 / train/loss/repval 1.27 / train/loss/rew 0.02 / train/loss/to_target 0.23 / train/loss/value 1.06 / train/loss/velocity 0.07 / replay/replay_ratio 1040 / fps/policy 46.33 / fps/train 4.7e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf3q1s1_synth_seed106_ckpt500000/metrics.jsonlWriting metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf3q1s1_synth_seed106_ckpt500000/scores.jsonl
+
+
+--------------------[Agent Step 118_832]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+train/loss/con 0.02 / train/loss/distractor 1.14 / train/loss/dyn 12.8 / train/loss/policy -0.02 / train/loss/position 0.23 / train/loss/rep 12.8 / train/loss/repval 1.27 / train/loss/rew 0.03 / train/loss/to_target 0.23 / train/loss/value 1.09 / train/loss/velocity 0.07 / replay/replay_ratio 1040 / fps/policy 46.42 / fps/train 4.8e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf3q1s1_synth_seed106_ckpt500000/metrics.jsonlWriting metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf3q1s1_synth_seed106_ckpt500000/scores.jsonl
+
+
+--------------------[Agent Step 124_416]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+train/loss/con 0.02 / train/loss/distractor 1.14 / train/loss/dyn 12.82 / train/loss/policy -0.02 / train/loss/position 0.22 / train/loss/rep 12.82 / train/loss/repval 1.24 / train/loss/rew 0.03 / train/loss/to_target 0.23 / train/loss/value 1.02 / train/loss/velocity 0.07 / replay/replay_ratio 1040 / fps/policy 46.42 / fps/train 4.8e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf3q1s1_synth_seed106_ckpt500000/scores.jsonl
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf3q1s1_synth_seed106_ckpt500000/metrics.jsonl
+[Tue Jul 21 07:56:05 CDT 2026] adapt adapt_ax1rbf3q1s1_synth_seed106_ckpt500000 rc=0 status=DONE
+[Tue Jul 21 07:56:05 CDT 2026] DONE child adapt_ax1rbf3q1s1_synth_seed106_ckpt500000
+[Tue Jul 21 07:56:05 CDT 2026] START child adapt_ax1rbf4q1s1_synth_seed104_ckpt500000 WM_RUN=ax1wm_synth_fq1s1_seed4
+[Tue Jul 21 07:56:05 CDT 2026] axis1 child starting RUN_ID=adapt_ax1rbf4q1s1_synth_seed104_ckpt500000 WM_RUN=ax1wm_synth_fq1s1_seed4 job=52442240 host=midway3-0286.rcc.local
+[Tue Jul 21 07:56:05 CDT 2026] env prepared: python=/scratch/midway3/rickybao/conda_envs/dreamerv3/bin/python
+python_executable=/scratch/midway3/rickybao/conda_envs/dreamerv3/bin/python
+[Tue Jul 21 07:56:05 CDT 2026] offline WM already fit: /scratch/midway3/rickybao/dreamerv3_runs/ax1wm_synth_fq1s1_seed4/ckpt/20260718T125353F555047-000000500000 (skipping stage 1)
+[Tue Jul 21 07:56:05 CDT 2026] adapt RUN_ID=adapt_ax1rbf4q1s1_synth_seed104_ckpt500000 TASK=synth_reach SEED=104 CKPT=/scratch/midway3/rickybao/dreamerv3_runs/ax1wm_synth_fq1s1_seed4/ckpt/20260718T125353F555047-000000500000 STEPS=1.25e5
+---  ___                           __   ______ ---
+--- |   \ _ _ ___ __ _ _ __  ___ _ \ \ / /__ / ---
+--- | |) | '_/ -_) _` | '  \/ -_) '/\ V / |_ \ ---
+--- |___/|_| \___\__,_|_|_|_\___|_|  \_/ |___/ ---
+Replica: 0 / 1
+Logdir: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf4q1s1_synth_seed104_ckpt500000
+Run script: train
+Observations
+  position         Space(float32, shape=(2,), low=-inf, high=inf)
+  velocity         Space(float32, shape=(2,), low=-inf, high=inf)
+  distractor       Space(float32, shape=(8,), low=-inf, high=inf)
+  to_target        Space(float32, shape=(2,), low=-inf, high=inf)
+  reward           Space(float32, shape=(), low=-inf, high=inf)
+  is_first         Space(bool, shape=(), low=False, high=True)
+  is_last          Space(bool, shape=(), low=False, high=True)
+  is_terminal      Space(bool, shape=(), low=False, high=True)
+Actions
+  action           Space(float32, shape=(2,), low=-1.0, high=1.0)
+Extras
+  consec           Space(int32, shape=(), low=-2147483648, high=2147483647)
+  stepid           Space(uint8, shape=(20,), low=0, high=255)
+  dyn/deter        Space(float32, shape=(512,), low=-inf, high=inf)
+  dyn/stoch        Space(float32, shape=(32, 4), low=-inf, high=inf)
+JAX devices (1): [cuda:0]
+Policy devices: cuda:0
+Train devices:  cuda:0
+Initializing parameters...
+Optimizer opt has 214,723 params:
+        66,111 val
+        57,663 rew
+        49,796 pol
+        41,153 con
+Done initializing!
+Compiling 1 checkpoint groups...
+Largest checkpoint group: 0 GB
+Compiling train and report...
+Train cost analysis:
+  FLOPS:            7.2e+09
+  Memory (temp):    1.8e+08
+  Memory (inputs):  7.3e+06
+  Memory (outputs): 5.9e+06
+  Memory (code):    1.5e+06
+
+Report cost analysis:
+  FLOPS:            2.0e+06
+  Memory (temp):    9.2e+05
+  Memory (inputs):  2.7e+06
+  Memory (outputs): 2.1e+04
+  Memory (code):    9.8e+04
+
+Done compiling!
+Loaded pretrained checkpoint with keys: ['dec/mlp/linear0/bias', 'dec/mlp/linear0/kernel', 'dec/mlp/linear1/bias', 'dec/mlp/linear1/kernel', 'dec/mlp/linear2/bias', 'dec/mlp/linear2/kernel', 'dec/mlp/norm0/scale', 'dec/mlp/norm1/scale', 'dec/mlp/norm2/scale', 'dec/vec/distractor/pred/bias', 'dec/vec/distractor/pred/kernel', 'dec/vec/position/pred/bias', 'dec/vec/position/pred/kernel', 'dec/vec/to_target/pred/bias', 'dec/vec/to_target/pred/kernel', 'dec/vec/velocity/pred/bias', 'dec/vec/velocity/pred/kernel', 'dyn/dyngru/bias', 'dyn/dyngru/kernel', 'dyn/dynhid0/bias', 'dyn/dynhid0/kernel', 'dyn/dynhid0norm/scale', 'dyn/dynin0/bias', 'dyn/dynin0/kernel', 'dyn/dynin0norm/scale', 'dyn/dynin1/bias', 'dyn/dynin1/kernel', 'dyn/dynin1norm/scale', 'dyn/dynin2/bias', 'dyn/dynin2/kernel', 'dyn/dynin2norm/scale', 'dyn/obs0/bias', 'dyn/obs0/kernel', 'dyn/obs0norm/scale', 'dyn/obslogit/bias', 'dyn/obslogit/kernel', 'dyn/prior0/bias', 'dyn/prior0/kernel', 'dyn/prior0norm/scale', 'dyn/prior1/bias', 'dyn/prior1/kernel', 'dyn/prior1norm/scale', 'dyn/priorlogit/bias', 'dyn/priorlogit/kernel', 'enc/mlp0/bias', 'enc/mlp0/kernel', 'enc/mlp0norm/scale', 'enc/mlp1/bias', 'enc/mlp1/kernel', 'enc/mlp1norm/scale', 'enc/mlp2/bias', 'enc/mlp2/kernel', 'enc/mlp2norm/scale']
+Did not find any checkpoint.
+Saving checkpoint: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf4q1s1_synth_seed104_ckpt500000/ckpt/20260721T075632F488735
+Saved checkpoint.
+Start training loop
+
+--------------------[Agent Step 7_584]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+train/loss/con 0.06 / train/loss/distractor 1.16 / train/loss/dyn 12.09 / train/loss/policy -7.5e-4 / train/loss/position 0.32 / train/loss/rep 12.09 / train/loss/repval 1.75 / train/loss/rew 0.89 / train/loss/to_target 0.2 / train/loss/value 0.86 / train/loss/velocity 7.8e-3 / replay/replay_ratio 877.98 / fps/policy 62.15 / fps/train 4.6e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf4q1s1_synth_seed104_ckpt500000/scores.jsonlWriting metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf4q1s1_synth_seed104_ckpt500000/metrics.jsonl
+
+
+--------------------[Agent Step 13_152]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+train/loss/con 0.02 / train/loss/distractor 1.14 / train/loss/dyn 11.74 / train/loss/policy -1.8e-3 / train/loss/position 0.27 / train/loss/rep 11.74 / train/loss/repval 0.25 / train/loss/rew 4.3e-3 / train/loss/to_target 0.17 / train/loss/value 0.24 / train/loss/velocity 7.3e-3 / replay/replay_ratio 1040 / fps/policy 46.39 / fps/train 4.8e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf4q1s1_synth_seed104_ckpt500000/metrics.jsonlWriting metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf4q1s1_synth_seed104_ckpt500000/scores.jsonl
+
+
+--------------------[Agent Step 18_736]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+episode/score 0 / episode/length 1001 / train/loss/con 0.02 / train/loss/distractor 1.1 / train/loss/dyn 12.05 / train/loss/policy 6.9e-3 / train/loss/position 0.26 / train/loss/rep 12.05 / train/loss/repval 1.1 / train/loss/rew 0.01 / train/loss/to_target 0.2 / train/loss/value 0.87 / train/loss/velocity 0.04 / replay/replay_ratio 1040 / fps/policy 46.4 / fps/train 4.8e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf4q1s1_synth_seed104_ckpt500000/metrics.jsonlWriting metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf4q1s1_synth_seed104_ckpt500000/scores.jsonl
+
+
+--------------------[Agent Step 24_320]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+train/loss/con 0.02 / train/loss/distractor 1.04 / train/loss/dyn 12.77 / train/loss/policy -0.02 / train/loss/position 0.24 / train/loss/rep 12.77 / train/loss/repval 1.34 / train/loss/rew 3.7e-3 / train/loss/to_target 0.24 / train/loss/value 1.11 / train/loss/velocity 0.11 / replay/replay_ratio 1040 / fps/policy 46.41 / fps/train 4.8e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf4q1s1_synth_seed104_ckpt500000/metrics.jsonl
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf4q1s1_synth_seed104_ckpt500000/scores.jsonl
+
+--------------------[Agent Step 29_888]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+train/loss/con 0.02 / train/loss/distractor 1.01 / train/loss/dyn 13.19 / train/loss/policy -0.02 / train/loss/position 0.23 / train/loss/rep 13.19 / train/loss/repval 1.4 / train/loss/rew 2e-3 / train/loss/to_target 0.26 / train/loss/value 1.14 / train/loss/velocity 0.15 / replay/replay_ratio 1040 / fps/policy 46.39 / fps/train 4.8e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf4q1s1_synth_seed104_ckpt500000/metrics.jsonl
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf4q1s1_synth_seed104_ckpt500000/scores.jsonl
+
+--------------------[Agent Step 35_472]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+episode/score 0 / episode/length 1001 / train/loss/con 0.02 / train/loss/distractor 0.99 / train/loss/dyn 13.43 / train/loss/policy -0.02 / train/loss/position 0.22 / train/loss/rep 13.43 / train/loss/repval 1.56 / train/loss/rew 1.9e-3 / train/loss/to_target 0.28 / train/loss/value 1.38 / train/loss/velocity 0.18 / replay/replay_ratio 1040 / fps/policy 46.4 / fps/train 4.8e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf4q1s1_synth_seed104_ckpt500000/scores.jsonlWriting metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf4q1s1_synth_seed104_ckpt500000/metrics.jsonl
+
+
+--------------------[Agent Step 41_040]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+train/loss/con 0.02 / train/loss/distractor 0.98 / train/loss/dyn 13.57 / train/loss/policy -0.02 / train/loss/position 0.21 / train/loss/rep 13.57 / train/loss/repval 1.27 / train/loss/rew 1.6e-3 / train/loss/to_target 0.29 / train/loss/value 1.15 / train/loss/velocity 0.19 / replay/replay_ratio 1040 / fps/policy 46.34 / fps/train 4.7e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf4q1s1_synth_seed104_ckpt500000/scores.jsonlWriting metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf4q1s1_synth_seed104_ckpt500000/metrics.jsonl
+
+Saving checkpoint: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf4q1s1_synth_seed104_ckpt500000/ckpt/20260721T081134F019230
+Saved checkpoint.
+
+--------------------[Agent Step 46_544]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+train/loss/con 0.02 / train/loss/distractor 0.97 / train/loss/dyn 13.67 / train/loss/policy -0.01 / train/loss/position 0.21 / train/loss/rep 13.67 / train/loss/repval 0.98 / train/loss/rew 1.3e-3 / train/loss/to_target 0.3 / train/loss/value 0.88 / train/loss/velocity 0.21 / replay/replay_ratio 1040 / fps/policy 45.75 / fps/train 4.7e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf4q1s1_synth_seed104_ckpt500000/scores.jsonl
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf4q1s1_synth_seed104_ckpt500000/metrics.jsonl
+
+--------------------[Agent Step 52_112]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+episode/score 0 / episode/length 1001 / train/loss/con 0.02 / train/loss/distractor 0.96 / train/loss/dyn 13.73 / train/loss/policy -0.01 / train/loss/position 0.21 / train/loss/rep 13.73 / train/loss/repval 0.7 / train/loss/rew 1.5e-3 / train/loss/to_target 0.3 / train/loss/value 0.6 / train/loss/velocity 0.22 / replay/replay_ratio 1040 / fps/policy 46.39 / fps/train 4.8e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf4q1s1_synth_seed104_ckpt500000/scores.jsonl
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf4q1s1_synth_seed104_ckpt500000/metrics.jsonl
+
+--------------------[Agent Step 57_696]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+train/loss/con 0.02 / train/loss/distractor 0.95 / train/loss/dyn 13.78 / train/loss/policy -8.1e-3 / train/loss/position 0.2 / train/loss/rep 13.78 / train/loss/repval 0.65 / train/loss/rew 1.2e-3 / train/loss/to_target 0.31 / train/loss/value 0.57 / train/loss/velocity 0.22 / replay/replay_ratio 1040 / fps/policy 46.41 / fps/train 4.8e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf4q1s1_synth_seed104_ckpt500000/metrics.jsonlWriting metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf4q1s1_synth_seed104_ckpt500000/scores.jsonl
+
+
+--------------------[Agent Step 63_280]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+train/loss/con 0.02 / train/loss/distractor 0.95 / train/loss/dyn 13.86 / train/loss/policy -6.5e-3 / train/loss/position 0.2 / train/loss/rep 13.86 / train/loss/repval 0.64 / train/loss/rew 1e-3 / train/loss/to_target 0.31 / train/loss/value 0.57 / train/loss/velocity 0.23 / replay/replay_ratio 1040 / fps/policy 46.42 / fps/train 4.8e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf4q1s1_synth_seed104_ckpt500000/metrics.jsonl
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf4q1s1_synth_seed104_ckpt500000/scores.jsonl
+
+--------------------[Agent Step 68_864]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+episode/score 0 / episode/length 1001 / train/loss/con 0.02 / train/loss/distractor 0.94 / train/loss/dyn 13.86 / train/loss/policy -7.1e-3 / train/loss/position 0.2 / train/loss/rep 13.86 / train/loss/repval 0.53 / train/loss/rew 1.6e-3 / train/loss/to_target 0.31 / train/loss/value 0.45 / train/loss/velocity 0.24 / replay/replay_ratio 1040 / fps/policy 46.42 / fps/train 4.8e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf4q1s1_synth_seed104_ckpt500000/scores.jsonlWriting metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf4q1s1_synth_seed104_ckpt500000/metrics.jsonl
+
+
+--------------------[Agent Step 74_448]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+train/loss/con 0.02 / train/loss/distractor 0.94 / train/loss/dyn 13.86 / train/loss/policy -5.8e-3 / train/loss/position 0.2 / train/loss/rep 13.86 / train/loss/repval 0.42 / train/loss/rew 1.1e-3 / train/loss/to_target 0.31 / train/loss/value 0.34 / train/loss/velocity 0.24 / replay/replay_ratio 1040 / fps/policy 46.41 / fps/train 4.8e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf4q1s1_synth_seed104_ckpt500000/scores.jsonlWriting metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf4q1s1_synth_seed104_ckpt500000/metrics.jsonl
+
+
+--------------------[Agent Step 80_032]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+train/loss/con 0.02 / train/loss/distractor 0.94 / train/loss/dyn 13.94 / train/loss/policy -5.7e-3 / train/loss/position 0.19 / train/loss/rep 13.94 / train/loss/repval 0.36 / train/loss/rew 1e-3 / train/loss/to_target 0.32 / train/loss/value 0.29 / train/loss/velocity 0.25 / replay/replay_ratio 1040 / fps/policy 46.41 / fps/train 4.8e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf4q1s1_synth_seed104_ckpt500000/scores.jsonl
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf4q1s1_synth_seed104_ckpt500000/metrics.jsonl
+Saving checkpoint: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf4q1s1_synth_seed104_ckpt500000/ckpt/20260721T082634F112656
+Saved checkpoint.
+
+--------------------[Agent Step 85_536]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+episode/score 0 / episode/length 1001 / train/loss/con 0.02 / train/loss/distractor 0.93 / train/loss/dyn 13.95 / train/loss/policy -4.5e-3 / train/loss/position 0.19 / train/loss/rep 13.95 / train/loss/repval 0.38 / train/loss/rew 1.6e-3 / train/loss/to_target 0.32 / train/loss/value 0.3 / train/loss/velocity 0.25 / replay/replay_ratio 1040 / fps/policy 45.86 / fps/train 4.7e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf4q1s1_synth_seed104_ckpt500000/scores.jsonlWriting metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf4q1s1_synth_seed104_ckpt500000/metrics.jsonl
+
+
+--------------------[Agent Step 91_120]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+train/loss/con 0.02 / train/loss/distractor 0.93 / train/loss/dyn 13.99 / train/loss/policy -4.9e-3 / train/loss/position 0.19 / train/loss/rep 13.99 / train/loss/repval 0.47 / train/loss/rew 1.3e-3 / train/loss/to_target 0.32 / train/loss/value 0.4 / train/loss/velocity 0.25 / replay/replay_ratio 1040 / fps/policy 46.42 / fps/train 4.8e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf4q1s1_synth_seed104_ckpt500000/metrics.jsonl
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf4q1s1_synth_seed104_ckpt500000/scores.jsonl
+
+--------------------[Agent Step 96_704]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+episode/score 6 / episode/length 1001 / train/loss/con 0.02 / train/loss/distractor 0.93 / train/loss/dyn 14.01 / train/loss/policy -4.8e-3 / train/loss/position 0.19 / train/loss/rep 14.01 / train/loss/repval 0.44 / train/loss/rew 1.1e-3 / train/loss/to_target 0.32 / train/loss/value 0.37 / train/loss/velocity 0.26 / replay/replay_ratio 1040 / fps/policy 46.41 / fps/train 4.8e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf4q1s1_synth_seed104_ckpt500000/metrics.jsonlWriting metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf4q1s1_synth_seed104_ckpt500000/scores.jsonl
+
+
+--------------------[Agent Step 102_288]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+train/loss/con 0.02 / train/loss/distractor 0.93 / train/loss/dyn 14.02 / train/loss/policy -4.3e-3 / train/loss/position 0.19 / train/loss/rep 14.02 / train/loss/repval 0.36 / train/loss/rew 9.9e-4 / train/loss/to_target 0.32 / train/loss/value 0.3 / train/loss/velocity 0.26 / replay/replay_ratio 1040 / fps/policy 46.42 / fps/train 4.8e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf4q1s1_synth_seed104_ckpt500000/scores.jsonlWriting metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf4q1s1_synth_seed104_ckpt500000/metrics.jsonl
+
+
+--------------------[Agent Step 107_872]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+train/loss/con 0.02 / train/loss/distractor 0.93 / train/loss/dyn 14.05 / train/loss/policy -3.9e-3 / train/loss/position 0.19 / train/loss/rep 14.05 / train/loss/repval 0.31 / train/loss/rew 8.8e-4 / train/loss/to_target 0.33 / train/loss/value 0.25 / train/loss/velocity 0.26 / replay/replay_ratio 1040 / fps/policy 46.42 / fps/train 4.8e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf4q1s1_synth_seed104_ckpt500000/metrics.jsonlWriting metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf4q1s1_synth_seed104_ckpt500000/scores.jsonl
+
+
+--------------------[Agent Step 113_440]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+episode/score 0 / episode/length 1001 / train/loss/con 0.02 / train/loss/distractor 0.93 / train/loss/dyn 14.09 / train/loss/policy -3.3e-3 / train/loss/position 0.19 / train/loss/rep 14.09 / train/loss/repval 0.28 / train/loss/rew 8.4e-4 / train/loss/to_target 0.33 / train/loss/value 0.23 / train/loss/velocity 0.26 / replay/replay_ratio 1040 / fps/policy 46.34 / fps/train 4.7e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf4q1s1_synth_seed104_ckpt500000/scores.jsonlWriting metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf4q1s1_synth_seed104_ckpt500000/metrics.jsonl
+
+
+--------------------[Agent Step 119_024]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+train/loss/con 0.02 / train/loss/distractor 0.92 / train/loss/dyn 14.07 / train/loss/policy -3.8e-3 / train/loss/position 0.19 / train/loss/rep 14.07 / train/loss/repval 0.26 / train/loss/rew 9e-4 / train/loss/to_target 0.33 / train/loss/value 0.21 / train/loss/velocity 0.26 / replay/replay_ratio 1040 / fps/policy 46.42 / fps/train 4.8e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf4q1s1_synth_seed104_ckpt500000/metrics.jsonl
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf4q1s1_synth_seed104_ckpt500000/scores.jsonl
+
+--------------------[Agent Step 124_608]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+train/loss/con 0.02 / train/loss/distractor 0.92 / train/loss/dyn 14.12 / train/loss/policy -3.1e-3 / train/loss/position 0.19 / train/loss/rep 14.12 / train/loss/repval 0.23 / train/loss/rew 7.8e-4 / train/loss/to_target 0.33 / train/loss/value 0.19 / train/loss/velocity 0.27 / replay/replay_ratio 1040 / fps/policy 46.42 / fps/train 4.8e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf4q1s1_synth_seed104_ckpt500000/metrics.jsonlWriting metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf4q1s1_synth_seed104_ckpt500000/scores.jsonl
+
+[Tue Jul 21 08:40:48 CDT 2026] adapt adapt_ax1rbf4q1s1_synth_seed104_ckpt500000 rc=0 status=DONE
+[Tue Jul 21 08:40:48 CDT 2026] DONE child adapt_ax1rbf4q1s1_synth_seed104_ckpt500000
+[Tue Jul 21 08:40:48 CDT 2026] START child adapt_ax1rbf4q1s1_synth_seed105_ckpt500000 WM_RUN=ax1wm_synth_fq1s1_seed4
+[Tue Jul 21 08:40:48 CDT 2026] axis1 child starting RUN_ID=adapt_ax1rbf4q1s1_synth_seed105_ckpt500000 WM_RUN=ax1wm_synth_fq1s1_seed4 job=52442240 host=midway3-0286.rcc.local
+[Tue Jul 21 08:40:48 CDT 2026] env prepared: python=/scratch/midway3/rickybao/conda_envs/dreamerv3/bin/python
+python_executable=/scratch/midway3/rickybao/conda_envs/dreamerv3/bin/python
+[Tue Jul 21 08:40:48 CDT 2026] offline WM already fit: /scratch/midway3/rickybao/dreamerv3_runs/ax1wm_synth_fq1s1_seed4/ckpt/20260718T125353F555047-000000500000 (skipping stage 1)
+[Tue Jul 21 08:40:48 CDT 2026] adapt RUN_ID=adapt_ax1rbf4q1s1_synth_seed105_ckpt500000 TASK=synth_reach SEED=105 CKPT=/scratch/midway3/rickybao/dreamerv3_runs/ax1wm_synth_fq1s1_seed4/ckpt/20260718T125353F555047-000000500000 STEPS=1.25e5
+---  ___                           __   ______ ---
+--- |   \ _ _ ___ __ _ _ __  ___ _ \ \ / /__ / ---
+--- | |) | '_/ -_) _` | '  \/ -_) '/\ V / |_ \ ---
+--- |___/|_| \___\__,_|_|_|_\___|_|  \_/ |___/ ---
+Replica: 0 / 1
+Logdir: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf4q1s1_synth_seed105_ckpt500000
+Run script: train
+Observations
+  position         Space(float32, shape=(2,), low=-inf, high=inf)
+  velocity         Space(float32, shape=(2,), low=-inf, high=inf)
+  distractor       Space(float32, shape=(8,), low=-inf, high=inf)
+  to_target        Space(float32, shape=(2,), low=-inf, high=inf)
+  reward           Space(float32, shape=(), low=-inf, high=inf)
+  is_first         Space(bool, shape=(), low=False, high=True)
+  is_last          Space(bool, shape=(), low=False, high=True)
+  is_terminal      Space(bool, shape=(), low=False, high=True)
+Actions
+  action           Space(float32, shape=(2,), low=-1.0, high=1.0)
+Extras
+  consec           Space(int32, shape=(), low=-2147483648, high=2147483647)
+  stepid           Space(uint8, shape=(20,), low=0, high=255)
+  dyn/deter        Space(float32, shape=(512,), low=-inf, high=inf)
+  dyn/stoch        Space(float32, shape=(32, 4), low=-inf, high=inf)
+JAX devices (1): [cuda:0]
+Policy devices: cuda:0
+Train devices:  cuda:0
+Initializing parameters...
+Optimizer opt has 214,723 params:
+        66,111 val
+        57,663 rew
+        49,796 pol
+        41,153 con
+Done initializing!
+Compiling 1 checkpoint groups...
+Largest checkpoint group: 0 GB
+Compiling train and report...
+Train cost analysis:
+  FLOPS:            7.2e+09
+  Memory (temp):    1.8e+08
+  Memory (inputs):  7.3e+06
+  Memory (outputs): 5.9e+06
+  Memory (code):    1.5e+06
+
+Report cost analysis:
+  FLOPS:            2.0e+06
+  Memory (temp):    9.2e+05
+  Memory (inputs):  2.7e+06
+  Memory (outputs): 2.1e+04
+  Memory (code):    9.8e+04
+
+Done compiling!
+Loaded pretrained checkpoint with keys: ['dec/mlp/linear0/bias', 'dec/mlp/linear0/kernel', 'dec/mlp/linear1/bias', 'dec/mlp/linear1/kernel', 'dec/mlp/linear2/bias', 'dec/mlp/linear2/kernel', 'dec/mlp/norm0/scale', 'dec/mlp/norm1/scale', 'dec/mlp/norm2/scale', 'dec/vec/distractor/pred/bias', 'dec/vec/distractor/pred/kernel', 'dec/vec/position/pred/bias', 'dec/vec/position/pred/kernel', 'dec/vec/to_target/pred/bias', 'dec/vec/to_target/pred/kernel', 'dec/vec/velocity/pred/bias', 'dec/vec/velocity/pred/kernel', 'dyn/dyngru/bias', 'dyn/dyngru/kernel', 'dyn/dynhid0/bias', 'dyn/dynhid0/kernel', 'dyn/dynhid0norm/scale', 'dyn/dynin0/bias', 'dyn/dynin0/kernel', 'dyn/dynin0norm/scale', 'dyn/dynin1/bias', 'dyn/dynin1/kernel', 'dyn/dynin1norm/scale', 'dyn/dynin2/bias', 'dyn/dynin2/kernel', 'dyn/dynin2norm/scale', 'dyn/obs0/bias', 'dyn/obs0/kernel', 'dyn/obs0norm/scale', 'dyn/obslogit/bias', 'dyn/obslogit/kernel', 'dyn/prior0/bias', 'dyn/prior0/kernel', 'dyn/prior0norm/scale', 'dyn/prior1/bias', 'dyn/prior1/kernel', 'dyn/prior1norm/scale', 'dyn/priorlogit/bias', 'dyn/priorlogit/kernel', 'enc/mlp0/bias', 'enc/mlp0/kernel', 'enc/mlp0norm/scale', 'enc/mlp1/bias', 'enc/mlp1/kernel', 'enc/mlp1norm/scale', 'enc/mlp2/bias', 'enc/mlp2/kernel', 'enc/mlp2norm/scale']
+Did not find any checkpoint.
+Saving checkpoint: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf4q1s1_synth_seed105_ckpt500000/ckpt/20260721T084115F248538
+Saved checkpoint.
+Start training loop
+
+--------------------[Agent Step 7_584]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+train/loss/con 0.06 / train/loss/distractor 1.14 / train/loss/dyn 12.54 / train/loss/policy 0.02 / train/loss/position 0.3 / train/loss/rep 12.54 / train/loss/repval 2.41 / train/loss/rew 0.9 / train/loss/to_target 0.2 / train/loss/value 1.47 / train/loss/velocity 0.03 / replay/replay_ratio 877.98 / fps/policy 62.21 / fps/train 4.7e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf4q1s1_synth_seed105_ckpt500000/metrics.jsonlWriting metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf4q1s1_synth_seed105_ckpt500000/scores.jsonl
+
+
+--------------------[Agent Step 13_168]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+train/loss/con 0.02 / train/loss/distractor 1.19 / train/loss/dyn 12.92 / train/loss/policy 0.01 / train/loss/position 0.15 / train/loss/rep 12.92 / train/loss/repval 1.11 / train/loss/rew 4.2e-3 / train/loss/to_target 0.11 / train/loss/value 1.07 / train/loss/velocity 0.07 / replay/replay_ratio 1040 / fps/policy 46.44 / fps/train 4.8e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf4q1s1_synth_seed105_ckpt500000/metrics.jsonlWriting metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf4q1s1_synth_seed105_ckpt500000/scores.jsonl
+
+
+--------------------[Agent Step 18_752]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+episode/score 0 / episode/length 1001 / train/loss/con 0.02 / train/loss/distractor 1.18 / train/loss/dyn 13.05 / train/loss/policy -2.5e-3 / train/loss/position 0.11 / train/loss/rep 13.05 / train/loss/repval 1.19 / train/loss/rew 2.3e-3 / train/loss/to_target 0.09 / train/loss/value 1 / train/loss/velocity 0.07 / replay/replay_ratio 1040 / fps/policy 46.44 / fps/train 4.8e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf4q1s1_synth_seed105_ckpt500000/metrics.jsonlWriting metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf4q1s1_synth_seed105_ckpt500000/scores.jsonl
+
+
+--------------------[Agent Step 24_336]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+train/loss/con 0.02 / train/loss/distractor 1.16 / train/loss/dyn 13.47 / train/loss/policy -5.3e-3 / train/loss/position 0.12 / train/loss/rep 13.47 / train/loss/repval 1.26 / train/loss/rew 2e-3 / train/loss/to_target 0.1 / train/loss/value 1.13 / train/loss/velocity 0.14 / replay/replay_ratio 1040 / fps/policy 46.45 / fps/train 4.8e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf4q1s1_synth_seed105_ckpt500000/metrics.jsonlWriting metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf4q1s1_synth_seed105_ckpt500000/scores.jsonl
+
+
+--------------------[Agent Step 29_920]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+train/loss/con 0.02 / train/loss/distractor 1.12 / train/loss/dyn 14.12 / train/loss/policy -3.9e-3 / train/loss/position 0.16 / train/loss/rep 14.12 / train/loss/repval 1.35 / train/loss/rew 9.3e-4 / train/loss/to_target 0.18 / train/loss/value 1.1 / train/loss/velocity 0.22 / replay/replay_ratio 1040 / fps/policy 46.44 / fps/train 4.8e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf4q1s1_synth_seed105_ckpt500000/metrics.jsonlWriting metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf4q1s1_synth_seed105_ckpt500000/scores.jsonl
+
+
+--------------------[Agent Step 35_504]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+episode/score 0 / episode/length 1001 / train/loss/con 0.02 / train/loss/distractor 1.14 / train/loss/dyn 14.49 / train/loss/policy 1.4e-3 / train/loss/position 0.17 / train/loss/rep 14.49 / train/loss/repval 1.22 / train/loss/rew 1.1e-3 / train/loss/to_target 0.19 / train/loss/value 1.04 / train/loss/velocity 0.23 / replay/replay_ratio 1040 / fps/policy 46.44 / fps/train 4.8e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf4q1s1_synth_seed105_ckpt500000/metrics.jsonl
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf4q1s1_synth_seed105_ckpt500000/scores.jsonl
+
+--------------------[Agent Step 41_072]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+train/loss/con 0.02 / train/loss/distractor 1.17 / train/loss/dyn 14.47 / train/loss/policy -0.03 / train/loss/position 0.18 / train/loss/rep 14.47 / train/loss/repval 1.35 / train/loss/rew 2.2e-3 / train/loss/to_target 0.18 / train/loss/value 1.14 / train/loss/velocity 0.24 / replay/replay_ratio 1040 / fps/policy 46.36 / fps/train 4.7e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf4q1s1_synth_seed105_ckpt500000/metrics.jsonlWriting metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf4q1s1_synth_seed105_ckpt500000/scores.jsonl
+
+Saving checkpoint: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf4q1s1_synth_seed105_ckpt500000/ckpt/20260721T085616F718666
+Saved checkpoint.
+
+--------------------[Agent Step 46_576]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+train/loss/con 0.02 / train/loss/distractor 1.18 / train/loss/dyn 14.23 / train/loss/policy -0.03 / train/loss/position 0.19 / train/loss/rep 14.23 / train/loss/repval 1.22 / train/loss/rew 1.8e-3 / train/loss/to_target 0.18 / train/loss/value 1.06 / train/loss/velocity 0.23 / replay/replay_ratio 1040 / fps/policy 45.78 / fps/train 4.7e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf4q1s1_synth_seed105_ckpt500000/metrics.jsonlWriting metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf4q1s1_synth_seed105_ckpt500000/scores.jsonl
+
+
+--------------------[Agent Step 52_160]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+episode/score 5 / episode/length 1001 / train/loss/con 0.02 / train/loss/distractor 1.16 / train/loss/dyn 14.19 / train/loss/policy -0.05 / train/loss/position 0.19 / train/loss/rep 14.19 / train/loss/repval 1.21 / train/loss/rew 5.4e-3 / train/loss/to_target 0.19 / train/loss/value 1.06 / train/loss/velocity 0.21 / replay/replay_ratio 1040 / fps/policy 46.46 / fps/train 4.8e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf4q1s1_synth_seed105_ckpt500000/metrics.jsonlWriting metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf4q1s1_synth_seed105_ckpt500000/scores.jsonl
+
+
+--------------------[Agent Step 57_744]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+train/loss/con 0.02 / train/loss/distractor 1.15 / train/loss/dyn 14.13 / train/loss/policy -0.03 / train/loss/position 0.19 / train/loss/rep 14.13 / train/loss/repval 1.17 / train/loss/rew 6.2e-3 / train/loss/to_target 0.19 / train/loss/value 1.07 / train/loss/velocity 0.19 / replay/replay_ratio 1040 / fps/policy 46.45 / fps/train 4.8e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf4q1s1_synth_seed105_ckpt500000/metrics.jsonlWriting metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf4q1s1_synth_seed105_ckpt500000/scores.jsonl
+
+
+--------------------[Agent Step 63_328]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+train/loss/con 0.02 / train/loss/distractor 1.16 / train/loss/dyn 14.1 / train/loss/policy -0.04 / train/loss/position 0.23 / train/loss/rep 14.1 / train/loss/repval 1.24 / train/loss/rew 6.9e-3 / train/loss/to_target 0.24 / train/loss/value 1.07 / train/loss/velocity 0.18 / replay/replay_ratio 1040 / fps/policy 46.45 / fps/train 4.8e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf4q1s1_synth_seed105_ckpt500000/scores.jsonlWriting metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf4q1s1_synth_seed105_ckpt500000/metrics.jsonl
+
+
+--------------------[Agent Step 68_912]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+episode/score 17 / episode/length 1001 / train/loss/con 0.02 / train/loss/distractor 1.16 / train/loss/dyn 14.01 / train/loss/policy -0.05 / train/loss/position 0.25 / train/loss/rep 14.01 / train/loss/repval 1.22 / train/loss/rew 0.01 / train/loss/to_target 0.26 / train/loss/value 1.07 / train/loss/velocity 0.17 / replay/replay_ratio 1040 / fps/policy 46.45 / fps/train 4.8e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf4q1s1_synth_seed105_ckpt500000/scores.jsonlWriting metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf4q1s1_synth_seed105_ckpt500000/metrics.jsonl
+
+
+--------------------[Agent Step 74_496]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+train/loss/con 0.02 / train/loss/distractor 1.16 / train/loss/dyn 13.91 / train/loss/policy -0.02 / train/loss/position 0.25 / train/loss/rep 13.91 / train/loss/repval 1.13 / train/loss/rew 0.01 / train/loss/to_target 0.25 / train/loss/value 1.04 / train/loss/velocity 0.16 / replay/replay_ratio 1040 / fps/policy 46.45 / fps/train 4.8e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf4q1s1_synth_seed105_ckpt500000/scores.jsonlWriting metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf4q1s1_synth_seed105_ckpt500000/metrics.jsonl
+
+
+--------------------[Agent Step 80_080]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+episode/score 60 / episode/length 1001 / train/loss/con 0.02 / train/loss/distractor 1.16 / train/loss/dyn 13.89 / train/loss/policy -0.05 / train/loss/position 0.26 / train/loss/rep 13.89 / train/loss/repval 1.23 / train/loss/rew 0.03 / train/loss/to_target 0.26 / train/loss/value 1.02 / train/loss/velocity 0.15 / replay/replay_ratio 1040 / fps/policy 46.44 / fps/train 4.8e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf4q1s1_synth_seed105_ckpt500000/metrics.jsonlWriting metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf4q1s1_synth_seed105_ckpt500000/scores.jsonl
+
+Saving checkpoint: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf4q1s1_synth_seed105_ckpt500000/ckpt/20260721T091116F795145
+Saved checkpoint.
+
+--------------------[Agent Step 85_600]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+train/loss/con 0.02 / train/loss/distractor 1.16 / train/loss/dyn 13.8 / train/loss/policy -0.05 / train/loss/position 0.26 / train/loss/rep 13.8 / train/loss/repval 1.18 / train/loss/rew 0.04 / train/loss/to_target 0.28 / train/loss/value 1.04 / train/loss/velocity 0.14 / replay/replay_ratio 1040 / fps/policy 45.87 / fps/train 4.7e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf4q1s1_synth_seed105_ckpt500000/scores.jsonl
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf4q1s1_synth_seed105_ckpt500000/metrics.jsonl
+
+--------------------[Agent Step 91_184]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+train/loss/con 0.02 / train/loss/distractor 1.16 / train/loss/dyn 13.74 / train/loss/policy -0.04 / train/loss/position 0.27 / train/loss/rep 13.74 / train/loss/repval 1.17 / train/loss/rew 0.05 / train/loss/to_target 0.28 / train/loss/value 1.04 / train/loss/velocity 0.13 / replay/replay_ratio 1040 / fps/policy 46.44 / fps/train 4.8e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf4q1s1_synth_seed105_ckpt500000/metrics.jsonlWriting metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf4q1s1_synth_seed105_ckpt500000/scores.jsonl
+
+
+--------------------[Agent Step 96_768]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+episode/score 120 / episode/length 1001 / train/loss/con 0.02 / train/loss/distractor 1.16 / train/loss/dyn 13.66 / train/loss/policy -0.03 / train/loss/position 0.28 / train/loss/rep 13.66 / train/loss/repval 1.12 / train/loss/rew 0.07 / train/loss/to_target 0.3 / train/loss/value 1.04 / train/loss/velocity 0.13 / replay/replay_ratio 1040 / fps/policy 46.44 / fps/train 4.8e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf4q1s1_synth_seed105_ckpt500000/scores.jsonl
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf4q1s1_synth_seed105_ckpt500000/metrics.jsonl
+
+--------------------[Agent Step 102_352]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+train/loss/con 0.02 / train/loss/distractor 1.16 / train/loss/dyn 13.58 / train/loss/policy -0.02 / train/loss/position 0.29 / train/loss/rep 13.58 / train/loss/repval 1.14 / train/loss/rew 0.08 / train/loss/to_target 0.3 / train/loss/value 1.08 / train/loss/velocity 0.12 / replay/replay_ratio 1040 / fps/policy 46.44 / fps/train 4.8e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf4q1s1_synth_seed105_ckpt500000/scores.jsonl
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf4q1s1_synth_seed105_ckpt500000/metrics.jsonl
+
+--------------------[Agent Step 107_936]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+train/loss/con 0.02 / train/loss/distractor 1.17 / train/loss/dyn 13.53 / train/loss/policy -0.02 / train/loss/position 0.29 / train/loss/rep 13.53 / train/loss/repval 1.13 / train/loss/rew 0.09 / train/loss/to_target 0.31 / train/loss/value 1.1 / train/loss/velocity 0.12 / replay/replay_ratio 1040 / fps/policy 46.44 / fps/train 4.8e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf4q1s1_synth_seed105_ckpt500000/metrics.jsonlWriting metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf4q1s1_synth_seed105_ckpt500000/scores.jsonl
+
+
+--------------------[Agent Step 113_504]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+episode/score 176 / episode/length 1001 / train/loss/con 0.02 / train/loss/distractor 1.17 / train/loss/dyn 13.5 / train/loss/policy -0.03 / train/loss/position 0.3 / train/loss/rep 13.5 / train/loss/repval 1.14 / train/loss/rew 0.1 / train/loss/to_target 0.32 / train/loss/value 1.01 / train/loss/velocity 0.11 / replay/replay_ratio 1040 / fps/policy 46.35 / fps/train 4.7e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf4q1s1_synth_seed105_ckpt500000/scores.jsonl
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf4q1s1_synth_seed105_ckpt500000/metrics.jsonl
+
+--------------------[Agent Step 119_088]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+train/loss/con 0.02 / train/loss/distractor 1.16 / train/loss/dyn 13.48 / train/loss/policy -0.01 / train/loss/position 0.29 / train/loss/rep 13.48 / train/loss/repval 1.15 / train/loss/rew 0.1 / train/loss/to_target 0.31 / train/loss/value 0.97 / train/loss/velocity 0.11 / replay/replay_ratio 1040 / fps/policy 46.44 / fps/train 4.8e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf4q1s1_synth_seed105_ckpt500000/scores.jsonl
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf4q1s1_synth_seed105_ckpt500000/metrics.jsonl
+
+--------------------[Agent Step 124_672]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+train/loss/con 0.02 / train/loss/distractor 1.17 / train/loss/dyn 13.46 / train/loss/policy -0.02 / train/loss/position 0.29 / train/loss/rep 13.46 / train/loss/repval 1.19 / train/loss/rew 0.1 / train/loss/to_target 0.31 / train/loss/value 0.99 / train/loss/velocity 0.11 / replay/replay_ratio 1040 / fps/policy 46.44 / fps/train 4.8e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf4q1s1_synth_seed105_ckpt500000/metrics.jsonl
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf4q1s1_synth_seed105_ckpt500000/scores.jsonl
+[Tue Jul 21 09:25:29 CDT 2026] adapt adapt_ax1rbf4q1s1_synth_seed105_ckpt500000 rc=0 status=DONE
+[Tue Jul 21 09:25:29 CDT 2026] DONE child adapt_ax1rbf4q1s1_synth_seed105_ckpt500000
+[Tue Jul 21 09:25:29 CDT 2026] START child adapt_ax1rbf4q1s1_synth_seed106_ckpt500000 WM_RUN=ax1wm_synth_fq1s1_seed4
+[Tue Jul 21 09:25:29 CDT 2026] axis1 child starting RUN_ID=adapt_ax1rbf4q1s1_synth_seed106_ckpt500000 WM_RUN=ax1wm_synth_fq1s1_seed4 job=52442240 host=midway3-0286.rcc.local
+[Tue Jul 21 09:25:29 CDT 2026] env prepared: python=/scratch/midway3/rickybao/conda_envs/dreamerv3/bin/python
+python_executable=/scratch/midway3/rickybao/conda_envs/dreamerv3/bin/python
+[Tue Jul 21 09:25:29 CDT 2026] offline WM already fit: /scratch/midway3/rickybao/dreamerv3_runs/ax1wm_synth_fq1s1_seed4/ckpt/20260718T125353F555047-000000500000 (skipping stage 1)
+[Tue Jul 21 09:25:29 CDT 2026] adapt RUN_ID=adapt_ax1rbf4q1s1_synth_seed106_ckpt500000 TASK=synth_reach SEED=106 CKPT=/scratch/midway3/rickybao/dreamerv3_runs/ax1wm_synth_fq1s1_seed4/ckpt/20260718T125353F555047-000000500000 STEPS=1.25e5
+---  ___                           __   ______ ---
+--- |   \ _ _ ___ __ _ _ __  ___ _ \ \ / /__ / ---
+--- | |) | '_/ -_) _` | '  \/ -_) '/\ V / |_ \ ---
+--- |___/|_| \___\__,_|_|_|_\___|_|  \_/ |___/ ---
+Replica: 0 / 1
+Logdir: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf4q1s1_synth_seed106_ckpt500000
+Run script: train
+Observations
+  position         Space(float32, shape=(2,), low=-inf, high=inf)
+  velocity         Space(float32, shape=(2,), low=-inf, high=inf)
+  distractor       Space(float32, shape=(8,), low=-inf, high=inf)
+  to_target        Space(float32, shape=(2,), low=-inf, high=inf)
+  reward           Space(float32, shape=(), low=-inf, high=inf)
+  is_first         Space(bool, shape=(), low=False, high=True)
+  is_last          Space(bool, shape=(), low=False, high=True)
+  is_terminal      Space(bool, shape=(), low=False, high=True)
+Actions
+  action           Space(float32, shape=(2,), low=-1.0, high=1.0)
+Extras
+  consec           Space(int32, shape=(), low=-2147483648, high=2147483647)
+  stepid           Space(uint8, shape=(20,), low=0, high=255)
+  dyn/deter        Space(float32, shape=(512,), low=-inf, high=inf)
+  dyn/stoch        Space(float32, shape=(32, 4), low=-inf, high=inf)
+JAX devices (1): [cuda:0]
+Policy devices: cuda:0
+Train devices:  cuda:0
+Initializing parameters...
+Optimizer opt has 214,723 params:
+        66,111 val
+        57,663 rew
+        49,796 pol
+        41,153 con
+Done initializing!
+Compiling 1 checkpoint groups...
+Largest checkpoint group: 0 GB
+Compiling train and report...
+Train cost analysis:
+  FLOPS:            7.2e+09
+  Memory (temp):    1.8e+08
+  Memory (inputs):  7.3e+06
+  Memory (outputs): 5.9e+06
+  Memory (code):    1.5e+06
+
+Report cost analysis:
+  FLOPS:            2.0e+06
+  Memory (temp):    9.2e+05
+  Memory (inputs):  2.7e+06
+  Memory (outputs): 2.1e+04
+  Memory (code):    9.8e+04
+
+Done compiling!
+Loaded pretrained checkpoint with keys: ['dec/mlp/linear0/bias', 'dec/mlp/linear0/kernel', 'dec/mlp/linear1/bias', 'dec/mlp/linear1/kernel', 'dec/mlp/linear2/bias', 'dec/mlp/linear2/kernel', 'dec/mlp/norm0/scale', 'dec/mlp/norm1/scale', 'dec/mlp/norm2/scale', 'dec/vec/distractor/pred/bias', 'dec/vec/distractor/pred/kernel', 'dec/vec/position/pred/bias', 'dec/vec/position/pred/kernel', 'dec/vec/to_target/pred/bias', 'dec/vec/to_target/pred/kernel', 'dec/vec/velocity/pred/bias', 'dec/vec/velocity/pred/kernel', 'dyn/dyngru/bias', 'dyn/dyngru/kernel', 'dyn/dynhid0/bias', 'dyn/dynhid0/kernel', 'dyn/dynhid0norm/scale', 'dyn/dynin0/bias', 'dyn/dynin0/kernel', 'dyn/dynin0norm/scale', 'dyn/dynin1/bias', 'dyn/dynin1/kernel', 'dyn/dynin1norm/scale', 'dyn/dynin2/bias', 'dyn/dynin2/kernel', 'dyn/dynin2norm/scale', 'dyn/obs0/bias', 'dyn/obs0/kernel', 'dyn/obs0norm/scale', 'dyn/obslogit/bias', 'dyn/obslogit/kernel', 'dyn/prior0/bias', 'dyn/prior0/kernel', 'dyn/prior0norm/scale', 'dyn/prior1/bias', 'dyn/prior1/kernel', 'dyn/prior1norm/scale', 'dyn/priorlogit/bias', 'dyn/priorlogit/kernel', 'enc/mlp0/bias', 'enc/mlp0/kernel', 'enc/mlp0norm/scale', 'enc/mlp1/bias', 'enc/mlp1/kernel', 'enc/mlp1norm/scale', 'enc/mlp2/bias', 'enc/mlp2/kernel', 'enc/mlp2norm/scale']
+Did not find any checkpoint.
+Saving checkpoint: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf4q1s1_synth_seed106_ckpt500000/ckpt/20260721T092556F396812
+Saved checkpoint.
+Start training loop
+
+--------------------[Agent Step 7_584]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+train/loss/con 0.06 / train/loss/distractor 1.1 / train/loss/dyn 12.21 / train/loss/policy 0.03 / train/loss/position 0.18 / train/loss/rep 12.21 / train/loss/repval 2.65 / train/loss/rew 0.93 / train/loss/to_target 0.15 / train/loss/value 1.58 / train/loss/velocity 8.5e-3 / replay/replay_ratio 877.98 / fps/policy 62.16 / fps/train 4.6e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf4q1s1_synth_seed106_ckpt500000/metrics.jsonlWriting metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf4q1s1_synth_seed106_ckpt500000/scores.jsonl
+
+
+--------------------[Agent Step 13_152]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+train/loss/con 0.02 / train/loss/distractor 1.04 / train/loss/dyn 13.16 / train/loss/policy -0.04 / train/loss/position 0.2 / train/loss/rep 13.16 / train/loss/repval 1.55 / train/loss/rew 0.02 / train/loss/to_target 0.23 / train/loss/value 1.36 / train/loss/velocity 0.03 / replay/replay_ratio 1040 / fps/policy 46.39 / fps/train 4.8e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf4q1s1_synth_seed106_ckpt500000/metrics.jsonlWriting metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf4q1s1_synth_seed106_ckpt500000/scores.jsonl
+
+
+--------------------[Agent Step 18_736]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+episode/score 0 / episode/length 1001 / train/loss/con 0.02 / train/loss/distractor 0.98 / train/loss/dyn 13.6 / train/loss/policy -0.04 / train/loss/position 0.18 / train/loss/rep 13.6 / train/loss/repval 1.26 / train/loss/rew 7e-3 / train/loss/to_target 0.25 / train/loss/value 1.17 / train/loss/velocity 0.03 / replay/replay_ratio 1040 / fps/policy 46.4 / fps/train 4.8e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf4q1s1_synth_seed106_ckpt500000/scores.jsonlWriting metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf4q1s1_synth_seed106_ckpt500000/metrics.jsonl
+
+
+--------------------[Agent Step 24_304]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+train/loss/con 0.02 / train/loss/distractor 0.99 / train/loss/dyn 13.71 / train/loss/policy -0.03 / train/loss/position 0.2 / train/loss/rep 13.71 / train/loss/repval 1.23 / train/loss/rew 9.1e-3 / train/loss/to_target 0.27 / train/loss/value 1.05 / train/loss/velocity 0.03 / replay/replay_ratio 1040 / fps/policy 46.4 / fps/train 4.8e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf4q1s1_synth_seed106_ckpt500000/metrics.jsonl
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf4q1s1_synth_seed106_ckpt500000/scores.jsonl
+
+--------------------[Agent Step 29_872]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+train/loss/con 0.02 / train/loss/distractor 1.02 / train/loss/dyn 14.14 / train/loss/policy -0.02 / train/loss/position 0.22 / train/loss/rep 14.14 / train/loss/repval 1.18 / train/loss/rew 4.9e-3 / train/loss/to_target 0.32 / train/loss/value 1.03 / train/loss/velocity 0.05 / replay/replay_ratio 1040 / fps/policy 46.39 / fps/train 4.8e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf4q1s1_synth_seed106_ckpt500000/scores.jsonl
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf4q1s1_synth_seed106_ckpt500000/metrics.jsonl
+
+--------------------[Agent Step 35_456]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+episode/score 15 / episode/length 1001 / train/loss/con 0.02 / train/loss/distractor 1.03 / train/loss/dyn 14.3 / train/loss/policy -9.4e-3 / train/loss/position 0.24 / train/loss/rep 14.3 / train/loss/repval 1.28 / train/loss/rew 4.8e-3 / train/loss/to_target 0.33 / train/loss/value 1.02 / train/loss/velocity 0.07 / replay/replay_ratio 1040 / fps/policy 46.4 / fps/train 4.8e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf4q1s1_synth_seed106_ckpt500000/metrics.jsonlWriting metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf4q1s1_synth_seed106_ckpt500000/scores.jsonl
+
+
+--------------------[Agent Step 41_024]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+train/loss/con 0.02 / train/loss/distractor 1.06 / train/loss/dyn 14.48 / train/loss/policy -0.02 / train/loss/position 0.23 / train/loss/rep 14.48 / train/loss/repval 1.18 / train/loss/rew 3.7e-3 / train/loss/to_target 0.31 / train/loss/value 0.91 / train/loss/velocity 0.07 / replay/replay_ratio 1040 / fps/policy 46.34 / fps/train 4.7e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf4q1s1_synth_seed106_ckpt500000/scores.jsonl
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf4q1s1_synth_seed106_ckpt500000/metrics.jsonl
+Saving checkpoint: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf4q1s1_synth_seed106_ckpt500000/ckpt/20260721T094057F939117
+Saved checkpoint.
+
+--------------------[Agent Step 46_512]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+train/loss/con 0.02 / train/loss/distractor 1.08 / train/loss/dyn 14.73 / train/loss/policy -0.04 / train/loss/position 0.25 / train/loss/rep 14.73 / train/loss/repval 1.14 / train/loss/rew 3.6e-3 / train/loss/to_target 0.34 / train/loss/value 1 / train/loss/velocity 0.08 / replay/replay_ratio 1040 / fps/policy 45.71 / fps/train 4.7e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf4q1s1_synth_seed106_ckpt500000/scores.jsonlWriting metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf4q1s1_synth_seed106_ckpt500000/metrics.jsonl
+
+
+--------------------[Agent Step 52_096]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+episode/score 17 / episode/length 1001 / train/loss/con 0.02 / train/loss/distractor 1.09 / train/loss/dyn 14.62 / train/loss/policy -0.05 / train/loss/position 0.27 / train/loss/rep 14.62 / train/loss/repval 1.23 / train/loss/rew 3.9e-3 / train/loss/to_target 0.34 / train/loss/value 1.06 / train/loss/velocity 0.07 / replay/replay_ratio 1040 / fps/policy 46.41 / fps/train 4.8e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf4q1s1_synth_seed106_ckpt500000/metrics.jsonlWriting metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf4q1s1_synth_seed106_ckpt500000/scores.jsonl
+
+
+--------------------[Agent Step 57_680]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+train/loss/con 0.02 / train/loss/distractor 1.11 / train/loss/dyn 14.62 / train/loss/policy -0.01 / train/loss/position 0.25 / train/loss/rep 14.62 / train/loss/repval 1.21 / train/loss/rew 3.1e-3 / train/loss/to_target 0.31 / train/loss/value 0.98 / train/loss/velocity 0.07 / replay/replay_ratio 1040 / fps/policy 46.4 / fps/train 4.8e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf4q1s1_synth_seed106_ckpt500000/scores.jsonlWriting metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf4q1s1_synth_seed106_ckpt500000/metrics.jsonl
+
+
+--------------------[Agent Step 63_264]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+train/loss/con 0.02 / train/loss/distractor 1.12 / train/loss/dyn 14.61 / train/loss/policy -0.03 / train/loss/position 0.24 / train/loss/rep 14.61 / train/loss/repval 1.2 / train/loss/rew 2.6e-3 / train/loss/to_target 0.29 / train/loss/value 0.96 / train/loss/velocity 0.07 / replay/replay_ratio 1040 / fps/policy 46.41 / fps/train 4.8e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf4q1s1_synth_seed106_ckpt500000/metrics.jsonlWriting metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf4q1s1_synth_seed106_ckpt500000/scores.jsonl
+
+
+--------------------[Agent Step 68_848]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+episode/score 0 / episode/length 1001 / train/loss/con 0.02 / train/loss/distractor 1.12 / train/loss/dyn 14.64 / train/loss/policy -0.02 / train/loss/position 0.23 / train/loss/rep 14.64 / train/loss/repval 1.09 / train/loss/rew 2.6e-3 / train/loss/to_target 0.27 / train/loss/value 1.01 / train/loss/velocity 0.07 / replay/replay_ratio 1040 / fps/policy 46.41 / fps/train 4.8e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf4q1s1_synth_seed106_ckpt500000/scores.jsonlWriting metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf4q1s1_synth_seed106_ckpt500000/metrics.jsonl
+
+
+--------------------[Agent Step 74_432]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+train/loss/con 0.02 / train/loss/distractor 1.13 / train/loss/dyn 14.68 / train/loss/policy -6.1e-3 / train/loss/position 0.22 / train/loss/rep 14.68 / train/loss/repval 1.17 / train/loss/rew 2.2e-3 / train/loss/to_target 0.26 / train/loss/value 1 / train/loss/velocity 0.07 / replay/replay_ratio 1040 / fps/policy 46.41 / fps/train 4.8e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf4q1s1_synth_seed106_ckpt500000/metrics.jsonlWriting metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf4q1s1_synth_seed106_ckpt500000/scores.jsonl
+
+
+--------------------[Agent Step 80_016]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+train/loss/con 0.02 / train/loss/distractor 1.14 / train/loss/dyn 14.78 / train/loss/policy 4.6e-5 / train/loss/position 0.21 / train/loss/rep 14.78 / train/loss/repval 1.17 / train/loss/rew 1.9e-3 / train/loss/to_target 0.24 / train/loss/value 0.95 / train/loss/velocity 0.07 / replay/replay_ratio 1040 / fps/policy 46.41 / fps/train 4.8e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf4q1s1_synth_seed106_ckpt500000/scores.jsonlWriting metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf4q1s1_synth_seed106_ckpt500000/metrics.jsonl
+
+Saving checkpoint: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf4q1s1_synth_seed106_ckpt500000/ckpt/20260721T095558F232753
+Saved checkpoint.
+
+--------------------[Agent Step 85_520]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+episode/score 0 / episode/length 1001 / train/loss/con 0.02 / train/loss/distractor 1.14 / train/loss/dyn 14.89 / train/loss/policy 0.02 / train/loss/position 0.21 / train/loss/rep 14.89 / train/loss/repval 1.31 / train/loss/rew 2.1e-3 / train/loss/to_target 0.24 / train/loss/value 1.1 / train/loss/velocity 0.08 / replay/replay_ratio 1040 / fps/policy 45.82 / fps/train 4.7e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf4q1s1_synth_seed106_ckpt500000/metrics.jsonlWriting metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf4q1s1_synth_seed106_ckpt500000/scores.jsonl
+
+
+--------------------[Agent Step 91_088]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+train/loss/con 0.02 / train/loss/distractor 1.14 / train/loss/dyn 14.94 / train/loss/policy -0.04 / train/loss/position 0.21 / train/loss/rep 14.94 / train/loss/repval 1.08 / train/loss/rew 2.9e-3 / train/loss/to_target 0.24 / train/loss/value 1.09 / train/loss/velocity 0.09 / replay/replay_ratio 1040 / fps/policy 46.4 / fps/train 4.8e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf4q1s1_synth_seed106_ckpt500000/scores.jsonl
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf4q1s1_synth_seed106_ckpt500000/metrics.jsonl
+
+--------------------[Agent Step 96_656]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+episode/score 15 / episode/length 1001 / train/loss/con 0.02 / train/loss/distractor 1.15 / train/loss/dyn 14.84 / train/loss/policy -1.7e-3 / train/loss/position 0.2 / train/loss/rep 14.84 / train/loss/repval 1.27 / train/loss/rew 4.7e-3 / train/loss/to_target 0.24 / train/loss/value 1.07 / train/loss/velocity 0.09 / replay/replay_ratio 1040 / fps/policy 46.39 / fps/train 4.8e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf4q1s1_synth_seed106_ckpt500000/metrics.jsonlWriting metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf4q1s1_synth_seed106_ckpt500000/scores.jsonl
+
+
+--------------------[Agent Step 102_240]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+train/loss/con 0.02 / train/loss/distractor 1.14 / train/loss/dyn 14.75 / train/loss/policy -0.07 / train/loss/position 0.2 / train/loss/rep 14.75 / train/loss/repval 1.16 / train/loss/rew 5.4e-3 / train/loss/to_target 0.23 / train/loss/value 1.16 / train/loss/velocity 0.09 / replay/replay_ratio 1040 / fps/policy 46.41 / fps/train 4.8e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf4q1s1_synth_seed106_ckpt500000/metrics.jsonlWriting metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf4q1s1_synth_seed106_ckpt500000/scores.jsonl
+
+
+--------------------[Agent Step 107_824]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+train/loss/con 0.02 / train/loss/distractor 1.14 / train/loss/dyn 14.7 / train/loss/policy -0.06 / train/loss/position 0.2 / train/loss/rep 14.7 / train/loss/repval 1.08 / train/loss/rew 5.7e-3 / train/loss/to_target 0.23 / train/loss/value 1.05 / train/loss/velocity 0.09 / replay/replay_ratio 1040 / fps/policy 46.43 / fps/train 4.8e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf4q1s1_synth_seed106_ckpt500000/scores.jsonlWriting metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf4q1s1_synth_seed106_ckpt500000/metrics.jsonl
+
+
+--------------------[Agent Step 113_392]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+episode/score 14 / episode/length 1001 / train/loss/con 0.02 / train/loss/distractor 1.14 / train/loss/dyn 14.67 / train/loss/policy -0.06 / train/loss/position 0.2 / train/loss/rep 14.67 / train/loss/repval 1.19 / train/loss/rew 8.9e-3 / train/loss/to_target 0.23 / train/loss/value 1.11 / train/loss/velocity 0.09 / replay/replay_ratio 1040 / fps/policy 46.35 / fps/train 4.7e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf4q1s1_synth_seed106_ckpt500000/metrics.jsonlWriting metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf4q1s1_synth_seed106_ckpt500000/scores.jsonl
+
+
+--------------------[Agent Step 118_976]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+train/loss/con 0.02 / train/loss/distractor 1.14 / train/loss/dyn 14.61 / train/loss/policy -0.03 / train/loss/position 0.2 / train/loss/rep 14.61 / train/loss/repval 1.23 / train/loss/rew 0.01 / train/loss/to_target 0.23 / train/loss/value 0.99 / train/loss/velocity 0.09 / replay/replay_ratio 1040 / fps/policy 46.45 / fps/train 4.8e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf4q1s1_synth_seed106_ckpt500000/scores.jsonl
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf4q1s1_synth_seed106_ckpt500000/metrics.jsonl
+
+--------------------[Agent Step 124_560]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+train/loss/con 0.02 / train/loss/distractor 1.14 / train/loss/dyn 14.62 / train/loss/policy -0.04 / train/loss/position 0.19 / train/loss/rep 14.62 / train/loss/repval 1.25 / train/loss/rew 0.01 / train/loss/to_target 0.23 / train/loss/value 1.12 / train/loss/velocity 0.09 / replay/replay_ratio 1040 / fps/policy 46.46 / fps/train 4.8e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf4q1s1_synth_seed106_ckpt500000/metrics.jsonlWriting metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf4q1s1_synth_seed106_ckpt500000/scores.jsonl
+
+[Tue Jul 21 10:10:12 CDT 2026] adapt adapt_ax1rbf4q1s1_synth_seed106_ckpt500000 rc=0 status=DONE
+[Tue Jul 21 10:10:12 CDT 2026] DONE child adapt_ax1rbf4q1s1_synth_seed106_ckpt500000
+[Tue Jul 21 10:10:12 CDT 2026] START child adapt_ax1rbf5q1s1_synth_seed104_ckpt500000 WM_RUN=ax1wm_synth_fq1s1_seed5
+[Tue Jul 21 10:10:12 CDT 2026] axis1 child starting RUN_ID=adapt_ax1rbf5q1s1_synth_seed104_ckpt500000 WM_RUN=ax1wm_synth_fq1s1_seed5 job=52442240 host=midway3-0286.rcc.local
+[Tue Jul 21 10:10:12 CDT 2026] env prepared: python=/scratch/midway3/rickybao/conda_envs/dreamerv3/bin/python
+python_executable=/scratch/midway3/rickybao/conda_envs/dreamerv3/bin/python
+[Tue Jul 21 10:10:12 CDT 2026] offline WM already fit: /scratch/midway3/rickybao/dreamerv3_runs/ax1wm_synth_fq1s1_seed5/ckpt/20260718T125958F390689-000000500000 (skipping stage 1)
+[Tue Jul 21 10:10:12 CDT 2026] adapt RUN_ID=adapt_ax1rbf5q1s1_synth_seed104_ckpt500000 TASK=synth_reach SEED=104 CKPT=/scratch/midway3/rickybao/dreamerv3_runs/ax1wm_synth_fq1s1_seed5/ckpt/20260718T125958F390689-000000500000 STEPS=1.25e5
+---  ___                           __   ______ ---
+--- |   \ _ _ ___ __ _ _ __  ___ _ \ \ / /__ / ---
+--- | |) | '_/ -_) _` | '  \/ -_) '/\ V / |_ \ ---
+--- |___/|_| \___\__,_|_|_|_\___|_|  \_/ |___/ ---
+Replica: 0 / 1
+Logdir: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf5q1s1_synth_seed104_ckpt500000
+Run script: train
+Observations
+  position         Space(float32, shape=(2,), low=-inf, high=inf)
+  velocity         Space(float32, shape=(2,), low=-inf, high=inf)
+  distractor       Space(float32, shape=(8,), low=-inf, high=inf)
+  to_target        Space(float32, shape=(2,), low=-inf, high=inf)
+  reward           Space(float32, shape=(), low=-inf, high=inf)
+  is_first         Space(bool, shape=(), low=False, high=True)
+  is_last          Space(bool, shape=(), low=False, high=True)
+  is_terminal      Space(bool, shape=(), low=False, high=True)
+Actions
+  action           Space(float32, shape=(2,), low=-1.0, high=1.0)
+Extras
+  consec           Space(int32, shape=(), low=-2147483648, high=2147483647)
+  stepid           Space(uint8, shape=(20,), low=0, high=255)
+  dyn/deter        Space(float32, shape=(512,), low=-inf, high=inf)
+  dyn/stoch        Space(float32, shape=(32, 4), low=-inf, high=inf)
+JAX devices (1): [cuda:0]
+Policy devices: cuda:0
+Train devices:  cuda:0
+Initializing parameters...
+Optimizer opt has 214,723 params:
+        66,111 val
+        57,663 rew
+        49,796 pol
+        41,153 con
+Done initializing!
+Compiling 1 checkpoint groups...
+Largest checkpoint group: 0 GB
+Compiling train and report...
+Train cost analysis:
+  FLOPS:            7.2e+09
+  Memory (temp):    1.8e+08
+  Memory (inputs):  7.3e+06
+  Memory (outputs): 5.9e+06
+  Memory (code):    1.5e+06
+
+Report cost analysis:
+  FLOPS:            2.0e+06
+  Memory (temp):    9.2e+05
+  Memory (inputs):  2.7e+06
+  Memory (outputs): 2.1e+04
+  Memory (code):    9.8e+04
+
+Done compiling!
+Loaded pretrained checkpoint with keys: ['dec/mlp/linear0/bias', 'dec/mlp/linear0/kernel', 'dec/mlp/linear1/bias', 'dec/mlp/linear1/kernel', 'dec/mlp/linear2/bias', 'dec/mlp/linear2/kernel', 'dec/mlp/norm0/scale', 'dec/mlp/norm1/scale', 'dec/mlp/norm2/scale', 'dec/vec/distractor/pred/bias', 'dec/vec/distractor/pred/kernel', 'dec/vec/position/pred/bias', 'dec/vec/position/pred/kernel', 'dec/vec/to_target/pred/bias', 'dec/vec/to_target/pred/kernel', 'dec/vec/velocity/pred/bias', 'dec/vec/velocity/pred/kernel', 'dyn/dyngru/bias', 'dyn/dyngru/kernel', 'dyn/dynhid0/bias', 'dyn/dynhid0/kernel', 'dyn/dynhid0norm/scale', 'dyn/dynin0/bias', 'dyn/dynin0/kernel', 'dyn/dynin0norm/scale', 'dyn/dynin1/bias', 'dyn/dynin1/kernel', 'dyn/dynin1norm/scale', 'dyn/dynin2/bias', 'dyn/dynin2/kernel', 'dyn/dynin2norm/scale', 'dyn/obs0/bias', 'dyn/obs0/kernel', 'dyn/obs0norm/scale', 'dyn/obslogit/bias', 'dyn/obslogit/kernel', 'dyn/prior0/bias', 'dyn/prior0/kernel', 'dyn/prior0norm/scale', 'dyn/prior1/bias', 'dyn/prior1/kernel', 'dyn/prior1norm/scale', 'dyn/priorlogit/bias', 'dyn/priorlogit/kernel', 'enc/mlp0/bias', 'enc/mlp0/kernel', 'enc/mlp0norm/scale', 'enc/mlp1/bias', 'enc/mlp1/kernel', 'enc/mlp1norm/scale', 'enc/mlp2/bias', 'enc/mlp2/kernel', 'enc/mlp2norm/scale']
+Did not find any checkpoint.
+Saving checkpoint: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf5q1s1_synth_seed104_ckpt500000/ckpt/20260721T101039F370842
+Saved checkpoint.
+Start training loop
+
+--------------------[Agent Step 7_584]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+train/loss/con 0.05 / train/loss/distractor 1.23 / train/loss/dyn 12.47 / train/loss/policy -7.5e-4 / train/loss/position 0.28 / train/loss/rep 12.47 / train/loss/repval 1.76 / train/loss/rew 0.91 / train/loss/to_target 0.17 / train/loss/value 0.97 / train/loss/velocity 7.8e-3 / replay/replay_ratio 877.98 / fps/policy 62.19 / fps/train 4.6e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf5q1s1_synth_seed104_ckpt500000/metrics.jsonl
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf5q1s1_synth_seed104_ckpt500000/scores.jsonl
+
+--------------------[Agent Step 13_168]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+train/loss/con 0.02 / train/loss/distractor 1.23 / train/loss/dyn 12.26 / train/loss/policy 1.2e-3 / train/loss/position 0.26 / train/loss/rep 12.26 / train/loss/repval 0.79 / train/loss/rew 9.8e-3 / train/loss/to_target 0.18 / train/loss/value 0.75 / train/loss/velocity 0.01 / replay/replay_ratio 1040 / fps/policy 46.4 / fps/train 4.8e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf5q1s1_synth_seed104_ckpt500000/metrics.jsonlWriting metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf5q1s1_synth_seed104_ckpt500000/scores.jsonl
+
+
+--------------------[Agent Step 18_736]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+episode/score 0 / episode/length 1001 / train/loss/con 0.02 / train/loss/distractor 1.17 / train/loss/dyn 12.75 / train/loss/policy -0.07 / train/loss/position 0.27 / train/loss/rep 12.75 / train/loss/repval 1.51 / train/loss/rew 6.7e-3 / train/loss/to_target 0.24 / train/loss/value 1.35 / train/loss/velocity 0.06 / replay/replay_ratio 1040 / fps/policy 46.4 / fps/train 4.8e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf5q1s1_synth_seed104_ckpt500000/scores.jsonl
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf5q1s1_synth_seed104_ckpt500000/metrics.jsonl
+
+--------------------[Agent Step 24_304]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+train/loss/con 0.02 / train/loss/distractor 1.09 / train/loss/dyn 13.2 / train/loss/policy -0.01 / train/loss/position 0.27 / train/loss/rep 13.2 / train/loss/repval 1.45 / train/loss/rew 2.5e-3 / train/loss/to_target 0.29 / train/loss/value 1.22 / train/loss/velocity 0.11 / replay/replay_ratio 1040 / fps/policy 46.39 / fps/train 4.8e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf5q1s1_synth_seed104_ckpt500000/scores.jsonl
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf5q1s1_synth_seed104_ckpt500000/metrics.jsonl
+
+--------------------[Agent Step 29_888]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+train/loss/con 0.02 / train/loss/distractor 1.09 / train/loss/dyn 13.44 / train/loss/policy 7.6e-3 / train/loss/position 0.29 / train/loss/rep 13.44 / train/loss/repval 1.21 / train/loss/rew 2.6e-3 / train/loss/to_target 0.31 / train/loss/value 1.07 / train/loss/velocity 0.13 / replay/replay_ratio 1040 / fps/policy 46.42 / fps/train 4.8e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf5q1s1_synth_seed104_ckpt500000/metrics.jsonl
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf5q1s1_synth_seed104_ckpt500000/scores.jsonl
+
+--------------------[Agent Step 35_472]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+episode/score 8 / episode/length 1001 / train/loss/con 0.02 / train/loss/distractor 1.1 / train/loss/dyn 13.67 / train/loss/policy -0.04 / train/loss/position 0.33 / train/loss/rep 13.67 / train/loss/repval 1.27 / train/loss/rew 9.2e-3 / train/loss/to_target 0.34 / train/loss/value 1.13 / train/loss/velocity 0.12 / replay/replay_ratio 1040 / fps/policy 46.47 / fps/train 4.8e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf5q1s1_synth_seed104_ckpt500000/scores.jsonl
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf5q1s1_synth_seed104_ckpt500000/metrics.jsonl
+
+--------------------[Agent Step 41_056]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+train/loss/con 0.02 / train/loss/distractor 1.12 / train/loss/dyn 13.72 / train/loss/policy -0.01 / train/loss/position 0.32 / train/loss/rep 13.72 / train/loss/repval 1.2 / train/loss/rew 7.2e-3 / train/loss/to_target 0.33 / train/loss/value 1.07 / train/loss/velocity 0.11 / replay/replay_ratio 1040 / fps/policy 46.41 / fps/train 4.8e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf5q1s1_synth_seed104_ckpt500000/metrics.jsonlWriting metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf5q1s1_synth_seed104_ckpt500000/scores.jsonl
+
+Saving checkpoint: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf5q1s1_synth_seed104_ckpt500000/ckpt/20260721T102540F952360
+Saved checkpoint.
+
+--------------------[Agent Step 46_560]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+train/loss/con 0.02 / train/loss/distractor 1.12 / train/loss/dyn 13.97 / train/loss/policy 2.6e-3 / train/loss/position 0.36 / train/loss/rep 13.97 / train/loss/repval 1.21 / train/loss/rew 5.3e-3 / train/loss/to_target 0.37 / train/loss/value 1.01 / train/loss/velocity 0.1 / replay/replay_ratio 1040 / fps/policy 45.86 / fps/train 4.7e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf5q1s1_synth_seed104_ckpt500000/metrics.jsonlWriting metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf5q1s1_synth_seed104_ckpt500000/scores.jsonl
+
+
+--------------------[Agent Step 52_144]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+episode/score 0 / episode/length 1001 / train/loss/con 0.02 / train/loss/distractor 1.11 / train/loss/dyn 14.14 / train/loss/policy -0.01 / train/loss/position 0.39 / train/loss/rep 14.14 / train/loss/repval 1.33 / train/loss/rew 5.1e-3 / train/loss/to_target 0.41 / train/loss/value 1.09 / train/loss/velocity 0.11 / replay/replay_ratio 1040 / fps/policy 46.46 / fps/train 4.8e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf5q1s1_synth_seed104_ckpt500000/metrics.jsonlWriting metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf5q1s1_synth_seed104_ckpt500000/scores.jsonl
+
+
+--------------------[Agent Step 57_728]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+train/loss/con 0.02 / train/loss/distractor 1.11 / train/loss/dyn 14.13 / train/loss/policy -0.06 / train/loss/position 0.39 / train/loss/rep 14.13 / train/loss/repval 1.23 / train/loss/rew 0.01 / train/loss/to_target 0.41 / train/loss/value 1.05 / train/loss/velocity 0.11 / replay/replay_ratio 1040 / fps/policy 46.46 / fps/train 4.8e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf5q1s1_synth_seed104_ckpt500000/scores.jsonlWriting metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf5q1s1_synth_seed104_ckpt500000/metrics.jsonl
+
+
+--------------------[Agent Step 63_312]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+train/loss/con 0.02 / train/loss/distractor 1.12 / train/loss/dyn 13.97 / train/loss/policy -0.06 / train/loss/position 0.41 / train/loss/rep 13.97 / train/loss/repval 1.33 / train/loss/rew 0.02 / train/loss/to_target 0.41 / train/loss/value 1.03 / train/loss/velocity 0.1 / replay/replay_ratio 1040 / fps/policy 46.45 / fps/train 4.8e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf5q1s1_synth_seed104_ckpt500000/scores.jsonl
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf5q1s1_synth_seed104_ckpt500000/metrics.jsonl
+
+--------------------[Agent Step 68_896]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+episode/score 8 / episode/length 1001 / train/loss/con 0.02 / train/loss/distractor 1.13 / train/loss/dyn 13.88 / train/loss/policy -0.03 / train/loss/position 0.38 / train/loss/rep 13.88 / train/loss/repval 1.18 / train/loss/rew 0.01 / train/loss/to_target 0.38 / train/loss/value 1.02 / train/loss/velocity 0.09 / replay/replay_ratio 1040 / fps/policy 46.46 / fps/train 4.8e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf5q1s1_synth_seed104_ckpt500000/metrics.jsonlWriting metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf5q1s1_synth_seed104_ckpt500000/scores.jsonl
+
+
+--------------------[Agent Step 74_480]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+train/loss/con 0.02 / train/loss/distractor 1.14 / train/loss/dyn 13.91 / train/loss/policy -0.01 / train/loss/position 0.37 / train/loss/rep 13.91 / train/loss/repval 1.22 / train/loss/rew 0.01 / train/loss/to_target 0.37 / train/loss/value 1 / train/loss/velocity 0.09 / replay/replay_ratio 1040 / fps/policy 46.46 / fps/train 4.8e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf5q1s1_synth_seed104_ckpt500000/scores.jsonl
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf5q1s1_synth_seed104_ckpt500000/metrics.jsonl
+
+--------------------[Agent Step 80_064]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+train/loss/con 0.02 / train/loss/distractor 1.15 / train/loss/dyn 13.91 / train/loss/policy -0.07 / train/loss/position 0.38 / train/loss/rep 13.91 / train/loss/repval 1.29 / train/loss/rew 0.01 / train/loss/to_target 0.38 / train/loss/value 1.07 / train/loss/velocity 0.09 / replay/replay_ratio 1040 / fps/policy 46.46 / fps/train 4.8e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf5q1s1_synth_seed104_ckpt500000/scores.jsonlWriting metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf5q1s1_synth_seed104_ckpt500000/metrics.jsonl
+
+Saving checkpoint: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf5q1s1_synth_seed104_ckpt500000/ckpt/20260721T104041F007178
+Saved checkpoint.
+
+--------------------[Agent Step 85_568]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+episode/score 7 / episode/length 1001 / train/loss/con 0.02 / train/loss/distractor 1.15 / train/loss/dyn 13.81 / train/loss/policy -0.05 / train/loss/position 0.39 / train/loss/rep 13.81 / train/loss/repval 1.25 / train/loss/rew 0.02 / train/loss/to_target 0.38 / train/loss/value 1 / train/loss/velocity 0.08 / replay/replay_ratio 1040 / fps/policy 45.83 / fps/train 4.7e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf5q1s1_synth_seed104_ckpt500000/metrics.jsonlWriting metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf5q1s1_synth_seed104_ckpt500000/scores.jsonl
+
+
+--------------------[Agent Step 91_152]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+train/loss/con 0.02 / train/loss/distractor 1.16 / train/loss/dyn 13.75 / train/loss/policy -0.02 / train/loss/position 0.39 / train/loss/rep 13.75 / train/loss/repval 1.22 / train/loss/rew 0.02 / train/loss/to_target 0.38 / train/loss/value 1.08 / train/loss/velocity 0.08 / replay/replay_ratio 1040 / fps/policy 46.47 / fps/train 4.8e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf5q1s1_synth_seed104_ckpt500000/metrics.jsonl
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf5q1s1_synth_seed104_ckpt500000/scores.jsonl
+
+--------------------[Agent Step 96_736]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+episode/score 50 / episode/length 1001 / train/loss/con 0.02 / train/loss/distractor 1.16 / train/loss/dyn 13.75 / train/loss/policy -0.04 / train/loss/position 0.41 / train/loss/rep 13.75 / train/loss/repval 1.22 / train/loss/rew 0.03 / train/loss/to_target 0.4 / train/loss/value 1.04 / train/loss/velocity 0.08 / replay/replay_ratio 1040 / fps/policy 46.46 / fps/train 4.8e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf5q1s1_synth_seed104_ckpt500000/scores.jsonlWriting metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf5q1s1_synth_seed104_ckpt500000/metrics.jsonl
+
+
+--------------------[Agent Step 102_320]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+train/loss/con 0.02 / train/loss/distractor 1.16 / train/loss/dyn 13.74 / train/loss/policy -0.03 / train/loss/position 0.42 / train/loss/rep 13.74 / train/loss/repval 1.21 / train/loss/rew 0.04 / train/loss/to_target 0.41 / train/loss/value 1.03 / train/loss/velocity 0.07 / replay/replay_ratio 1040 / fps/policy 46.46 / fps/train 4.8e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf5q1s1_synth_seed104_ckpt500000/metrics.jsonlWriting metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf5q1s1_synth_seed104_ckpt500000/scores.jsonl
+
+
+--------------------[Agent Step 107_904]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+train/loss/con 0.02 / train/loss/distractor 1.16 / train/loss/dyn 13.74 / train/loss/policy -0.03 / train/loss/position 0.42 / train/loss/rep 13.74 / train/loss/repval 1.2 / train/loss/rew 0.04 / train/loss/to_target 0.41 / train/loss/value 1.04 / train/loss/velocity 0.07 / replay/replay_ratio 1040 / fps/policy 46.46 / fps/train 4.8e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf5q1s1_synth_seed104_ckpt500000/metrics.jsonl
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf5q1s1_synth_seed104_ckpt500000/scores.jsonl
+
+--------------------[Agent Step 113_472]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+episode/score 158 / episode/length 1001 / train/loss/con 0.02 / train/loss/distractor 1.16 / train/loss/dyn 13.75 / train/loss/policy -0.03 / train/loss/position 0.43 / train/loss/rep 13.75 / train/loss/repval 1.18 / train/loss/rew 0.05 / train/loss/to_target 0.42 / train/loss/value 1.04 / train/loss/velocity 0.07 / replay/replay_ratio 1040 / fps/policy 46.39 / fps/train 4.8e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf5q1s1_synth_seed104_ckpt500000/metrics.jsonl
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf5q1s1_synth_seed104_ckpt500000/scores.jsonl
+
+--------------------[Agent Step 119_056]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+train/loss/con 0.02 / train/loss/distractor 1.16 / train/loss/dyn 13.73 / train/loss/policy -0.02 / train/loss/position 0.43 / train/loss/rep 13.73 / train/loss/repval 1.12 / train/loss/rew 0.06 / train/loss/to_target 0.42 / train/loss/value 1.11 / train/loss/velocity 0.07 / replay/replay_ratio 1040 / fps/policy 46.47 / fps/train 4.8e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf5q1s1_synth_seed104_ckpt500000/metrics.jsonlWriting metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf5q1s1_synth_seed104_ckpt500000/scores.jsonl
+
+
+--------------------[Agent Step 124_640]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+train/loss/con 0.02 / train/loss/distractor 1.16 / train/loss/dyn 13.73 / train/loss/policy -0.02 / train/loss/position 0.44 / train/loss/rep 13.73 / train/loss/repval 1.19 / train/loss/rew 0.07 / train/loss/to_target 0.43 / train/loss/value 1.01 / train/loss/velocity 0.07 / replay/replay_ratio 1040 / fps/policy 46.47 / fps/train 4.8e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf5q1s1_synth_seed104_ckpt500000/metrics.jsonlWriting metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf5q1s1_synth_seed104_ckpt500000/scores.jsonl
+
+[Tue Jul 21 10:54:53 CDT 2026] adapt adapt_ax1rbf5q1s1_synth_seed104_ckpt500000 rc=0 status=DONE
+[Tue Jul 21 10:54:53 CDT 2026] DONE child adapt_ax1rbf5q1s1_synth_seed104_ckpt500000
+[Tue Jul 21 10:54:53 CDT 2026] START child adapt_ax1rbf5q1s1_synth_seed105_ckpt500000 WM_RUN=ax1wm_synth_fq1s1_seed5
+[Tue Jul 21 10:54:53 CDT 2026] axis1 child starting RUN_ID=adapt_ax1rbf5q1s1_synth_seed105_ckpt500000 WM_RUN=ax1wm_synth_fq1s1_seed5 job=52442240 host=midway3-0286.rcc.local
+[Tue Jul 21 10:54:53 CDT 2026] env prepared: python=/scratch/midway3/rickybao/conda_envs/dreamerv3/bin/python
+python_executable=/scratch/midway3/rickybao/conda_envs/dreamerv3/bin/python
+[Tue Jul 21 10:54:53 CDT 2026] offline WM already fit: /scratch/midway3/rickybao/dreamerv3_runs/ax1wm_synth_fq1s1_seed5/ckpt/20260718T125958F390689-000000500000 (skipping stage 1)
+[Tue Jul 21 10:54:53 CDT 2026] adapt RUN_ID=adapt_ax1rbf5q1s1_synth_seed105_ckpt500000 TASK=synth_reach SEED=105 CKPT=/scratch/midway3/rickybao/dreamerv3_runs/ax1wm_synth_fq1s1_seed5/ckpt/20260718T125958F390689-000000500000 STEPS=1.25e5
+---  ___                           __   ______ ---
+--- |   \ _ _ ___ __ _ _ __  ___ _ \ \ / /__ / ---
+--- | |) | '_/ -_) _` | '  \/ -_) '/\ V / |_ \ ---
+--- |___/|_| \___\__,_|_|_|_\___|_|  \_/ |___/ ---
+Replica: 0 / 1
+Logdir: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf5q1s1_synth_seed105_ckpt500000
+Run script: train
+Observations
+  position         Space(float32, shape=(2,), low=-inf, high=inf)
+  velocity         Space(float32, shape=(2,), low=-inf, high=inf)
+  distractor       Space(float32, shape=(8,), low=-inf, high=inf)
+  to_target        Space(float32, shape=(2,), low=-inf, high=inf)
+  reward           Space(float32, shape=(), low=-inf, high=inf)
+  is_first         Space(bool, shape=(), low=False, high=True)
+  is_last          Space(bool, shape=(), low=False, high=True)
+  is_terminal      Space(bool, shape=(), low=False, high=True)
+Actions
+  action           Space(float32, shape=(2,), low=-1.0, high=1.0)
+Extras
+  consec           Space(int32, shape=(), low=-2147483648, high=2147483647)
+  stepid           Space(uint8, shape=(20,), low=0, high=255)
+  dyn/deter        Space(float32, shape=(512,), low=-inf, high=inf)
+  dyn/stoch        Space(float32, shape=(32, 4), low=-inf, high=inf)
+JAX devices (1): [cuda:0]
+Policy devices: cuda:0
+Train devices:  cuda:0
+Initializing parameters...
+Optimizer opt has 214,723 params:
+        66,111 val
+        57,663 rew
+        49,796 pol
+        41,153 con
+Done initializing!
+Compiling 1 checkpoint groups...
+Largest checkpoint group: 0 GB
+Compiling train and report...
+Train cost analysis:
+  FLOPS:            7.2e+09
+  Memory (temp):    1.8e+08
+  Memory (inputs):  7.3e+06
+  Memory (outputs): 5.9e+06
+  Memory (code):    1.5e+06
+
+Report cost analysis:
+  FLOPS:            2.0e+06
+  Memory (temp):    9.2e+05
+  Memory (inputs):  2.7e+06
+  Memory (outputs): 2.1e+04
+  Memory (code):    9.8e+04
+
+Done compiling!
+Loaded pretrained checkpoint with keys: ['dec/mlp/linear0/bias', 'dec/mlp/linear0/kernel', 'dec/mlp/linear1/bias', 'dec/mlp/linear1/kernel', 'dec/mlp/linear2/bias', 'dec/mlp/linear2/kernel', 'dec/mlp/norm0/scale', 'dec/mlp/norm1/scale', 'dec/mlp/norm2/scale', 'dec/vec/distractor/pred/bias', 'dec/vec/distractor/pred/kernel', 'dec/vec/position/pred/bias', 'dec/vec/position/pred/kernel', 'dec/vec/to_target/pred/bias', 'dec/vec/to_target/pred/kernel', 'dec/vec/velocity/pred/bias', 'dec/vec/velocity/pred/kernel', 'dyn/dyngru/bias', 'dyn/dyngru/kernel', 'dyn/dynhid0/bias', 'dyn/dynhid0/kernel', 'dyn/dynhid0norm/scale', 'dyn/dynin0/bias', 'dyn/dynin0/kernel', 'dyn/dynin0norm/scale', 'dyn/dynin1/bias', 'dyn/dynin1/kernel', 'dyn/dynin1norm/scale', 'dyn/dynin2/bias', 'dyn/dynin2/kernel', 'dyn/dynin2norm/scale', 'dyn/obs0/bias', 'dyn/obs0/kernel', 'dyn/obs0norm/scale', 'dyn/obslogit/bias', 'dyn/obslogit/kernel', 'dyn/prior0/bias', 'dyn/prior0/kernel', 'dyn/prior0norm/scale', 'dyn/prior1/bias', 'dyn/prior1/kernel', 'dyn/prior1norm/scale', 'dyn/priorlogit/bias', 'dyn/priorlogit/kernel', 'enc/mlp0/bias', 'enc/mlp0/kernel', 'enc/mlp0norm/scale', 'enc/mlp1/bias', 'enc/mlp1/kernel', 'enc/mlp1norm/scale', 'enc/mlp2/bias', 'enc/mlp2/kernel', 'enc/mlp2norm/scale']
+Did not find any checkpoint.
+Saving checkpoint: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf5q1s1_synth_seed105_ckpt500000/ckpt/20260721T105518F692499
+Saved checkpoint.
+Start training loop
+
+--------------------[Agent Step 7_584]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+train/loss/con 0.06 / train/loss/distractor 1.24 / train/loss/dyn 13.1 / train/loss/policy 0.04 / train/loss/position 0.33 / train/loss/rep 13.1 / train/loss/repval 2.73 / train/loss/rew 0.92 / train/loss/to_target 0.24 / train/loss/value 1.66 / train/loss/velocity 0.01 / replay/replay_ratio 877.98 / fps/policy 62.2 / fps/train 4.7e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf5q1s1_synth_seed105_ckpt500000/metrics.jsonlWriting metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf5q1s1_synth_seed105_ckpt500000/scores.jsonl
+
+
+--------------------[Agent Step 13_152]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+train/loss/con 0.02 / train/loss/distractor 1.22 / train/loss/dyn 13.07 / train/loss/policy -0.05 / train/loss/position 0.28 / train/loss/rep 13.07 / train/loss/repval 1.44 / train/loss/rew 0.01 / train/loss/to_target 0.23 / train/loss/value 1.3 / train/loss/velocity 0.02 / replay/replay_ratio 1040 / fps/policy 46.36 / fps/train 4.7e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf5q1s1_synth_seed105_ckpt500000/scores.jsonlWriting metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf5q1s1_synth_seed105_ckpt500000/metrics.jsonl
+
+
+--------------------[Agent Step 18_720]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+episode/score 0 / episode/length 1001 / train/loss/con 0.02 / train/loss/distractor 1.2 / train/loss/dyn 12.98 / train/loss/policy -3.6e-3 / train/loss/position 0.25 / train/loss/rep 12.98 / train/loss/repval 1.26 / train/loss/rew 6.6e-3 / train/loss/to_target 0.22 / train/loss/value 1.02 / train/loss/velocity 0.03 / replay/replay_ratio 1040 / fps/policy 46.33 / fps/train 4.7e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf5q1s1_synth_seed105_ckpt500000/metrics.jsonlWriting metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf5q1s1_synth_seed105_ckpt500000/scores.jsonl
+
+
+--------------------[Agent Step 24_288]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+train/loss/con 0.02 / train/loss/distractor 1.2 / train/loss/dyn 13.3 / train/loss/policy -0.04 / train/loss/position 0.26 / train/loss/rep 13.3 / train/loss/repval 1.34 / train/loss/rew 0.01 / train/loss/to_target 0.23 / train/loss/value 1.07 / train/loss/velocity 0.04 / replay/replay_ratio 1040 / fps/policy 46.34 / fps/train 4.7e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf5q1s1_synth_seed105_ckpt500000/scores.jsonl
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf5q1s1_synth_seed105_ckpt500000/metrics.jsonl
+
+--------------------[Agent Step 29_856]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+train/loss/con 0.02 / train/loss/distractor 1.18 / train/loss/dyn 13.54 / train/loss/policy -0.05 / train/loss/position 0.28 / train/loss/rep 13.54 / train/loss/repval 1.36 / train/loss/rew 0.01 / train/loss/to_target 0.28 / train/loss/value 1.08 / train/loss/velocity 0.05 / replay/replay_ratio 1040 / fps/policy 46.34 / fps/train 4.7e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf5q1s1_synth_seed105_ckpt500000/scores.jsonlWriting metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf5q1s1_synth_seed105_ckpt500000/metrics.jsonl
+
+
+--------------------[Agent Step 35_424]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+episode/score 29 / episode/length 1001 / train/loss/con 0.02 / train/loss/distractor 1.16 / train/loss/dyn 13.7 / train/loss/policy -0.04 / train/loss/position 0.3 / train/loss/rep 13.7 / train/loss/repval 1.33 / train/loss/rew 0.02 / train/loss/to_target 0.3 / train/loss/value 1.07 / train/loss/velocity 0.07 / replay/replay_ratio 1040 / fps/policy 46.34 / fps/train 4.7e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf5q1s1_synth_seed105_ckpt500000/scores.jsonlWriting metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf5q1s1_synth_seed105_ckpt500000/metrics.jsonl
+
+
+--------------------[Agent Step 40_976]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+train/loss/con 0.02 / train/loss/distractor 1.15 / train/loss/dyn 13.69 / train/loss/policy -0.02 / train/loss/position 0.29 / train/loss/rep 13.69 / train/loss/repval 1.33 / train/loss/rew 0.02 / train/loss/to_target 0.29 / train/loss/value 1.02 / train/loss/velocity 0.08 / replay/replay_ratio 1040 / fps/policy 46.26 / fps/train 4.7e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf5q1s1_synth_seed105_ckpt500000/metrics.jsonlWriting metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf5q1s1_synth_seed105_ckpt500000/scores.jsonl
+
+Saving checkpoint: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf5q1s1_synth_seed105_ckpt500000/ckpt/20260721T111020F458671
+Saved checkpoint.
+
+--------------------[Agent Step 46_448]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+train/loss/con 0.02 / train/loss/distractor 1.15 / train/loss/dyn 13.85 / train/loss/policy -0.02 / train/loss/position 0.31 / train/loss/rep 13.85 / train/loss/repval 1.33 / train/loss/rew 0.03 / train/loss/to_target 0.32 / train/loss/value 1.04 / train/loss/velocity 0.08 / replay/replay_ratio 1040 / fps/policy 45.59 / fps/train 4.7e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf5q1s1_synth_seed105_ckpt500000/metrics.jsonlWriting metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf5q1s1_synth_seed105_ckpt500000/scores.jsonl
+
+
+--------------------[Agent Step 52_016]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+episode/score 40 / episode/length 1001 / train/loss/con 0.02 / train/loss/distractor 1.14 / train/loss/dyn 13.87 / train/loss/policy -0.02 / train/loss/position 0.32 / train/loss/rep 13.87 / train/loss/repval 1.31 / train/loss/rew 0.04 / train/loss/to_target 0.33 / train/loss/value 1.02 / train/loss/velocity 0.08 / replay/replay_ratio 1040 / fps/policy 46.3 / fps/train 4.7e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf5q1s1_synth_seed105_ckpt500000/scores.jsonlWriting metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf5q1s1_synth_seed105_ckpt500000/metrics.jsonl
+
+
+--------------------[Agent Step 57_584]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+train/loss/con 0.02 / train/loss/distractor 1.14 / train/loss/dyn 13.85 / train/loss/policy -0.02 / train/loss/position 0.32 / train/loss/rep 13.85 / train/loss/repval 1.3 / train/loss/rew 0.04 / train/loss/to_target 0.32 / train/loss/value 1.02 / train/loss/velocity 0.08 / replay/replay_ratio 1040 / fps/policy 46.3 / fps/train 4.7e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf5q1s1_synth_seed105_ckpt500000/metrics.jsonlWriting metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf5q1s1_synth_seed105_ckpt500000/scores.jsonl
+
+
+--------------------[Agent Step 63_152]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+train/loss/con 0.02 / train/loss/distractor 1.13 / train/loss/dyn 13.89 / train/loss/policy -0.03 / train/loss/position 0.33 / train/loss/rep 13.89 / train/loss/repval 1.29 / train/loss/rew 0.05 / train/loss/to_target 0.34 / train/loss/value 1 / train/loss/velocity 0.08 / replay/replay_ratio 1040 / fps/policy 46.35 / fps/train 4.7e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf5q1s1_synth_seed105_ckpt500000/scores.jsonlWriting metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf5q1s1_synth_seed105_ckpt500000/metrics.jsonl
+
+
+--------------------[Agent Step 68_720]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+episode/score 80 / episode/length 1001 / train/loss/con 0.02 / train/loss/distractor 1.12 / train/loss/dyn 13.85 / train/loss/policy -0.02 / train/loss/position 0.34 / train/loss/rep 13.85 / train/loss/repval 1.26 / train/loss/rew 0.06 / train/loss/to_target 0.35 / train/loss/value 1 / train/loss/velocity 0.08 / replay/replay_ratio 1040 / fps/policy 46.36 / fps/train 4.7e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf5q1s1_synth_seed105_ckpt500000/scores.jsonlWriting metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf5q1s1_synth_seed105_ckpt500000/metrics.jsonl
+
+
+--------------------[Agent Step 74_288]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+train/loss/con 0.02 / train/loss/distractor 1.12 / train/loss/dyn 13.78 / train/loss/policy -0.02 / train/loss/position 0.33 / train/loss/rep 13.78 / train/loss/repval 1.23 / train/loss/rew 0.06 / train/loss/to_target 0.34 / train/loss/value 1 / train/loss/velocity 0.08 / replay/replay_ratio 1040 / fps/policy 46.36 / fps/train 4.7e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf5q1s1_synth_seed105_ckpt500000/metrics.jsonl
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf5q1s1_synth_seed105_ckpt500000/scores.jsonl
+
+--------------------[Agent Step 79_856]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+train/loss/con 0.02 / train/loss/distractor 1.12 / train/loss/dyn 13.81 / train/loss/policy -0.03 / train/loss/position 0.34 / train/loss/rep 13.81 / train/loss/repval 1.25 / train/loss/rew 0.07 / train/loss/to_target 0.35 / train/loss/value 1.01 / train/loss/velocity 0.08 / replay/replay_ratio 1040 / fps/policy 46.35 / fps/train 4.7e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf5q1s1_synth_seed105_ckpt500000/metrics.jsonlWriting metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf5q1s1_synth_seed105_ckpt500000/scores.jsonl
+
+Saving checkpoint: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf5q1s1_synth_seed105_ckpt500000/ckpt/20260721T112520F793230
+Saved checkpoint.
+
+--------------------[Agent Step 85_376]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+episode/score 79 / episode/length 1001 / train/loss/con 0.02 / train/loss/distractor 1.12 / train/loss/dyn 13.82 / train/loss/policy -0.02 / train/loss/position 0.35 / train/loss/rep 13.82 / train/loss/repval 1.2 / train/loss/rew 0.08 / train/loss/to_target 0.35 / train/loss/value 0.98 / train/loss/velocity 0.08 / replay/replay_ratio 1040 / fps/policy 45.66 / fps/train 4.7e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf5q1s1_synth_seed105_ckpt500000/metrics.jsonl
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf5q1s1_synth_seed105_ckpt500000/scores.jsonl
+
+--------------------[Agent Step 90_944]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+train/loss/con 0.02 / train/loss/distractor 1.12 / train/loss/dyn 13.82 / train/loss/policy -0.02 / train/loss/position 0.35 / train/loss/rep 13.82 / train/loss/repval 1.19 / train/loss/rew 0.08 / train/loss/to_target 0.35 / train/loss/value 0.99 / train/loss/velocity 0.08 / replay/replay_ratio 1040 / fps/policy 46.33 / fps/train 4.7e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf5q1s1_synth_seed105_ckpt500000/metrics.jsonl
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf5q1s1_synth_seed105_ckpt500000/scores.jsonl
+
+--------------------[Agent Step 96_512]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+episode/score 127 / episode/length 1001 / train/loss/con 0.02 / train/loss/distractor 1.11 / train/loss/dyn 13.87 / train/loss/policy -0.02 / train/loss/position 0.36 / train/loss/rep 13.87 / train/loss/repval 1.22 / train/loss/rew 0.09 / train/loss/to_target 0.36 / train/loss/value 1.02 / train/loss/velocity 0.08 / replay/replay_ratio 1040 / fps/policy 46.36 / fps/train 4.7e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf5q1s1_synth_seed105_ckpt500000/metrics.jsonlWriting metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf5q1s1_synth_seed105_ckpt500000/scores.jsonl
+
+
+--------------------[Agent Step 102_080]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+train/loss/con 0.02 / train/loss/distractor 1.12 / train/loss/dyn 13.88 / train/loss/policy -0.02 / train/loss/position 0.36 / train/loss/rep 13.88 / train/loss/repval 1.22 / train/loss/rew 0.09 / train/loss/to_target 0.37 / train/loss/value 1.03 / train/loss/velocity 0.08 / replay/replay_ratio 1040 / fps/policy 46.36 / fps/train 4.7e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf5q1s1_synth_seed105_ckpt500000/scores.jsonlWriting metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf5q1s1_synth_seed105_ckpt500000/metrics.jsonl
+
+
+--------------------[Agent Step 107_648]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+train/loss/con 0.02 / train/loss/distractor 1.12 / train/loss/dyn 13.89 / train/loss/policy -0.02 / train/loss/position 0.37 / train/loss/rep 13.89 / train/loss/repval 1.22 / train/loss/rew 0.09 / train/loss/to_target 0.37 / train/loss/value 1.04 / train/loss/velocity 0.08 / replay/replay_ratio 1040 / fps/policy 46.39 / fps/train 4.8e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf5q1s1_synth_seed105_ckpt500000/scores.jsonlWriting metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf5q1s1_synth_seed105_ckpt500000/metrics.jsonl
+
+
+--------------------[Agent Step 113_216]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+episode/score 167 / episode/length 1001 / train/loss/con 0.02 / train/loss/distractor 1.12 / train/loss/dyn 13.95 / train/loss/policy -0.02 / train/loss/position 0.38 / train/loss/rep 13.95 / train/loss/repval 1.21 / train/loss/rew 0.1 / train/loss/to_target 0.38 / train/loss/value 1.01 / train/loss/velocity 0.08 / replay/replay_ratio 1040 / fps/policy 46.31 / fps/train 4.7e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf5q1s1_synth_seed105_ckpt500000/scores.jsonl
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf5q1s1_synth_seed105_ckpt500000/metrics.jsonl
+
+--------------------[Agent Step 118_784]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+train/loss/con 0.02 / train/loss/distractor 1.12 / train/loss/dyn 13.97 / train/loss/policy -0.02 / train/loss/position 0.38 / train/loss/rep 13.97 / train/loss/repval 1.17 / train/loss/rew 0.1 / train/loss/to_target 0.38 / train/loss/value 0.97 / train/loss/velocity 0.08 / replay/replay_ratio 1040 / fps/policy 46.38 / fps/train 4.7e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf5q1s1_synth_seed105_ckpt500000/metrics.jsonlWriting metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf5q1s1_synth_seed105_ckpt500000/scores.jsonl
+
+
+--------------------[Agent Step 124_352]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+train/loss/con 0.02 / train/loss/distractor 1.12 / train/loss/dyn 13.98 / train/loss/policy -0.01 / train/loss/position 0.38 / train/loss/rep 13.98 / train/loss/repval 1.17 / train/loss/rew 0.11 / train/loss/to_target 0.38 / train/loss/value 0.97 / train/loss/velocity 0.08 / replay/replay_ratio 1040 / fps/policy 46.37 / fps/train 4.7e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf5q1s1_synth_seed105_ckpt500000/scores.jsonlWriting metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf5q1s1_synth_seed105_ckpt500000/metrics.jsonl
+
+[Tue Jul 21 11:39:38 CDT 2026] adapt adapt_ax1rbf5q1s1_synth_seed105_ckpt500000 rc=0 status=DONE
+[Tue Jul 21 11:39:38 CDT 2026] DONE child adapt_ax1rbf5q1s1_synth_seed105_ckpt500000
+[Tue Jul 21 11:39:38 CDT 2026] START child adapt_ax1rbf5q1s1_synth_seed106_ckpt500000 WM_RUN=ax1wm_synth_fq1s1_seed5
+[Tue Jul 21 11:39:38 CDT 2026] axis1 child starting RUN_ID=adapt_ax1rbf5q1s1_synth_seed106_ckpt500000 WM_RUN=ax1wm_synth_fq1s1_seed5 job=52442240 host=midway3-0286.rcc.local
+[Tue Jul 21 11:39:38 CDT 2026] env prepared: python=/scratch/midway3/rickybao/conda_envs/dreamerv3/bin/python
+python_executable=/scratch/midway3/rickybao/conda_envs/dreamerv3/bin/python
+[Tue Jul 21 11:39:38 CDT 2026] offline WM already fit: /scratch/midway3/rickybao/dreamerv3_runs/ax1wm_synth_fq1s1_seed5/ckpt/20260718T125958F390689-000000500000 (skipping stage 1)
+[Tue Jul 21 11:39:38 CDT 2026] adapt RUN_ID=adapt_ax1rbf5q1s1_synth_seed106_ckpt500000 TASK=synth_reach SEED=106 CKPT=/scratch/midway3/rickybao/dreamerv3_runs/ax1wm_synth_fq1s1_seed5/ckpt/20260718T125958F390689-000000500000 STEPS=1.25e5
+---  ___                           __   ______ ---
+--- |   \ _ _ ___ __ _ _ __  ___ _ \ \ / /__ / ---
+--- | |) | '_/ -_) _` | '  \/ -_) '/\ V / |_ \ ---
+--- |___/|_| \___\__,_|_|_|_\___|_|  \_/ |___/ ---
+Replica: 0 / 1
+Logdir: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf5q1s1_synth_seed106_ckpt500000
+Run script: train
+Observations
+  position         Space(float32, shape=(2,), low=-inf, high=inf)
+  velocity         Space(float32, shape=(2,), low=-inf, high=inf)
+  distractor       Space(float32, shape=(8,), low=-inf, high=inf)
+  to_target        Space(float32, shape=(2,), low=-inf, high=inf)
+  reward           Space(float32, shape=(), low=-inf, high=inf)
+  is_first         Space(bool, shape=(), low=False, high=True)
+  is_last          Space(bool, shape=(), low=False, high=True)
+  is_terminal      Space(bool, shape=(), low=False, high=True)
+Actions
+  action           Space(float32, shape=(2,), low=-1.0, high=1.0)
+Extras
+  consec           Space(int32, shape=(), low=-2147483648, high=2147483647)
+  stepid           Space(uint8, shape=(20,), low=0, high=255)
+  dyn/deter        Space(float32, shape=(512,), low=-inf, high=inf)
+  dyn/stoch        Space(float32, shape=(32, 4), low=-inf, high=inf)
+JAX devices (1): [cuda:0]
+Policy devices: cuda:0
+Train devices:  cuda:0
+Initializing parameters...
+Optimizer opt has 214,723 params:
+        66,111 val
+        57,663 rew
+        49,796 pol
+        41,153 con
+Done initializing!
+Compiling 1 checkpoint groups...
+Largest checkpoint group: 0 GB
+Compiling train and report...
+Train cost analysis:
+  FLOPS:            7.2e+09
+  Memory (temp):    1.8e+08
+  Memory (inputs):  7.3e+06
+  Memory (outputs): 5.9e+06
+  Memory (code):    1.5e+06
+
+Report cost analysis:
+  FLOPS:            2.0e+06
+  Memory (temp):    9.2e+05
+  Memory (inputs):  2.7e+06
+  Memory (outputs): 2.1e+04
+  Memory (code):    9.8e+04
+
+Done compiling!
+Loaded pretrained checkpoint with keys: ['dec/mlp/linear0/bias', 'dec/mlp/linear0/kernel', 'dec/mlp/linear1/bias', 'dec/mlp/linear1/kernel', 'dec/mlp/linear2/bias', 'dec/mlp/linear2/kernel', 'dec/mlp/norm0/scale', 'dec/mlp/norm1/scale', 'dec/mlp/norm2/scale', 'dec/vec/distractor/pred/bias', 'dec/vec/distractor/pred/kernel', 'dec/vec/position/pred/bias', 'dec/vec/position/pred/kernel', 'dec/vec/to_target/pred/bias', 'dec/vec/to_target/pred/kernel', 'dec/vec/velocity/pred/bias', 'dec/vec/velocity/pred/kernel', 'dyn/dyngru/bias', 'dyn/dyngru/kernel', 'dyn/dynhid0/bias', 'dyn/dynhid0/kernel', 'dyn/dynhid0norm/scale', 'dyn/dynin0/bias', 'dyn/dynin0/kernel', 'dyn/dynin0norm/scale', 'dyn/dynin1/bias', 'dyn/dynin1/kernel', 'dyn/dynin1norm/scale', 'dyn/dynin2/bias', 'dyn/dynin2/kernel', 'dyn/dynin2norm/scale', 'dyn/obs0/bias', 'dyn/obs0/kernel', 'dyn/obs0norm/scale', 'dyn/obslogit/bias', 'dyn/obslogit/kernel', 'dyn/prior0/bias', 'dyn/prior0/kernel', 'dyn/prior0norm/scale', 'dyn/prior1/bias', 'dyn/prior1/kernel', 'dyn/prior1norm/scale', 'dyn/priorlogit/bias', 'dyn/priorlogit/kernel', 'enc/mlp0/bias', 'enc/mlp0/kernel', 'enc/mlp0norm/scale', 'enc/mlp1/bias', 'enc/mlp1/kernel', 'enc/mlp1norm/scale', 'enc/mlp2/bias', 'enc/mlp2/kernel', 'enc/mlp2norm/scale']
+Did not find any checkpoint.
+Saving checkpoint: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf5q1s1_synth_seed106_ckpt500000/ckpt/20260721T114005F464704
+Saved checkpoint.
+Start training loop
+
+--------------------[Agent Step 7_584]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+train/loss/con 0.05 / train/loss/distractor 1.21 / train/loss/dyn 12.71 / train/loss/policy 0.02 / train/loss/position 0.22 / train/loss/rep 12.71 / train/loss/repval 2.48 / train/loss/rew 0.9 / train/loss/to_target 0.18 / train/loss/value 1.53 / train/loss/velocity 7e-3 / replay/replay_ratio 877.98 / fps/policy 62.14 / fps/train 4.6e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf5q1s1_synth_seed106_ckpt500000/metrics.jsonl
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf5q1s1_synth_seed106_ckpt500000/scores.jsonl
+
+--------------------[Agent Step 13_152]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+train/loss/con 0.02 / train/loss/distractor 1.23 / train/loss/dyn 13.32 / train/loss/policy 0.05 / train/loss/position 0.22 / train/loss/rep 13.32 / train/loss/repval 1.13 / train/loss/rew 0.01 / train/loss/to_target 0.22 / train/loss/value 0.96 / train/loss/velocity 0.04 / replay/replay_ratio 1040 / fps/policy 46.37 / fps/train 4.7e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf5q1s1_synth_seed106_ckpt500000/metrics.jsonl
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf5q1s1_synth_seed106_ckpt500000/scores.jsonl
+
+--------------------[Agent Step 18_720]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+episode/score 0 / episode/length 1001 / train/loss/con 0.02 / train/loss/distractor 1.15 / train/loss/dyn 14.07 / train/loss/policy 0.02 / train/loss/position 0.25 / train/loss/rep 14.07 / train/loss/repval 1.22 / train/loss/rew 4.6e-3 / train/loss/to_target 0.29 / train/loss/value 1 / train/loss/velocity 0.06 / replay/replay_ratio 1040 / fps/policy 46.37 / fps/train 4.7e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf5q1s1_synth_seed106_ckpt500000/scores.jsonl
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf5q1s1_synth_seed106_ckpt500000/metrics.jsonl
+
+--------------------[Agent Step 24_288]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+train/loss/con 0.02 / train/loss/distractor 1.09 / train/loss/dyn 14.18 / train/loss/policy -2.2e-3 / train/loss/position 0.25 / train/loss/rep 14.18 / train/loss/repval 1.23 / train/loss/rew 3.3e-3 / train/loss/to_target 0.33 / train/loss/value 0.93 / train/loss/velocity 0.1 / replay/replay_ratio 1040 / fps/policy 46.39 / fps/train 4.8e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf5q1s1_synth_seed106_ckpt500000/scores.jsonl
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf5q1s1_synth_seed106_ckpt500000/metrics.jsonl
+
+--------------------[Agent Step 29_856]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+train/loss/con 0.02 / train/loss/distractor 1.07 / train/loss/dyn 14.09 / train/loss/policy -4.4e-3 / train/loss/position 0.25 / train/loss/rep 14.09 / train/loss/repval 1.33 / train/loss/rew 4.3e-3 / train/loss/to_target 0.33 / train/loss/value 1.04 / train/loss/velocity 0.12 / replay/replay_ratio 1040 / fps/policy 46.38 / fps/train 4.7e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf5q1s1_synth_seed106_ckpt500000/scores.jsonlWriting metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf5q1s1_synth_seed106_ckpt500000/metrics.jsonl
+
+
+--------------------[Agent Step 35_424]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+episode/score 0 / episode/length 1001 / train/loss/con 0.02 / train/loss/distractor 1.06 / train/loss/dyn 14.21 / train/loss/policy -0.02 / train/loss/position 0.28 / train/loss/rep 14.21 / train/loss/repval 1.26 / train/loss/rew 6.8e-3 / train/loss/to_target 0.36 / train/loss/value 1.08 / train/loss/velocity 0.13 / replay/replay_ratio 1040 / fps/policy 46.39 / fps/train 4.8e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf5q1s1_synth_seed106_ckpt500000/scores.jsonl
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf5q1s1_synth_seed106_ckpt500000/metrics.jsonl
+
+--------------------[Agent Step 40_992]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+train/loss/con 0.02 / train/loss/distractor 1.05 / train/loss/dyn 14.19 / train/loss/policy -0.05 / train/loss/position 0.28 / train/loss/rep 14.19 / train/loss/repval 1.32 / train/loss/rew 0.02 / train/loss/to_target 0.35 / train/loss/value 1.06 / train/loss/velocity 0.13 / replay/replay_ratio 1040 / fps/policy 46.32 / fps/train 4.7e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf5q1s1_synth_seed106_ckpt500000/metrics.jsonl
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf5q1s1_synth_seed106_ckpt500000/scores.jsonl
+Saving checkpoint: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf5q1s1_synth_seed106_ckpt500000/ckpt/20260721T115506F961902
+Saved checkpoint.
+
+--------------------[Agent Step 46_480]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+train/loss/con 0.02 / train/loss/distractor 1.05 / train/loss/dyn 14.29 / train/loss/policy -0.06 / train/loss/position 0.29 / train/loss/rep 14.29 / train/loss/repval 1.35 / train/loss/rew 0.03 / train/loss/to_target 0.36 / train/loss/value 1.06 / train/loss/velocity 0.14 / replay/replay_ratio 1040 / fps/policy 45.72 / fps/train 4.7e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf5q1s1_synth_seed106_ckpt500000/metrics.jsonlWriting metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf5q1s1_synth_seed106_ckpt500000/scores.jsonl
+
+
+--------------------[Agent Step 52_048]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+episode/score 72 / episode/length 1001 / train/loss/con 0.02 / train/loss/distractor 1.06 / train/loss/dyn 14.31 / train/loss/policy -0.05 / train/loss/position 0.29 / train/loss/rep 14.31 / train/loss/repval 1.24 / train/loss/rew 0.05 / train/loss/to_target 0.36 / train/loss/value 1 / train/loss/velocity 0.13 / replay/replay_ratio 1040 / fps/policy 46.36 / fps/train 4.7e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf5q1s1_synth_seed106_ckpt500000/scores.jsonlWriting metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf5q1s1_synth_seed106_ckpt500000/metrics.jsonl
+
+
+--------------------[Agent Step 57_616]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+train/loss/con 0.02 / train/loss/distractor 1.06 / train/loss/dyn 14.34 / train/loss/policy -0.03 / train/loss/position 0.29 / train/loss/rep 14.34 / train/loss/repval 1.21 / train/loss/rew 0.06 / train/loss/to_target 0.36 / train/loss/value 0.96 / train/loss/velocity 0.13 / replay/replay_ratio 1040 / fps/policy 46.38 / fps/train 4.7e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf5q1s1_synth_seed106_ckpt500000/metrics.jsonl
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf5q1s1_synth_seed106_ckpt500000/scores.jsonl
+
+--------------------[Agent Step 63_184]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+train/loss/con 0.02 / train/loss/distractor 1.06 / train/loss/dyn 14.36 / train/loss/policy -0.03 / train/loss/position 0.29 / train/loss/rep 14.36 / train/loss/repval 1.17 / train/loss/rew 0.08 / train/loss/to_target 0.36 / train/loss/value 0.96 / train/loss/velocity 0.13 / replay/replay_ratio 1040 / fps/policy 46.39 / fps/train 4.8e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf5q1s1_synth_seed106_ckpt500000/metrics.jsonlWriting metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf5q1s1_synth_seed106_ckpt500000/scores.jsonl
+
+
+--------------------[Agent Step 68_768]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+episode/score 141 / episode/length 1001 / train/loss/con 0.02 / train/loss/distractor 1.06 / train/loss/dyn 14.35 / train/loss/policy -0.02 / train/loss/position 0.3 / train/loss/rep 14.35 / train/loss/repval 1.15 / train/loss/rew 0.09 / train/loss/to_target 0.37 / train/loss/value 0.95 / train/loss/velocity 0.12 / replay/replay_ratio 1040 / fps/policy 46.4 / fps/train 4.8e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf5q1s1_synth_seed106_ckpt500000/scores.jsonlWriting metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf5q1s1_synth_seed106_ckpt500000/metrics.jsonl
+
+
+--------------------[Agent Step 74_352]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+train/loss/con 0.02 / train/loss/distractor 1.06 / train/loss/dyn 14.33 / train/loss/policy -0.02 / train/loss/position 0.3 / train/loss/rep 14.33 / train/loss/repval 1.15 / train/loss/rew 0.1 / train/loss/to_target 0.37 / train/loss/value 1.05 / train/loss/velocity 0.12 / replay/replay_ratio 1040 / fps/policy 46.44 / fps/train 4.8e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf5q1s1_synth_seed106_ckpt500000/metrics.jsonlWriting metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf5q1s1_synth_seed106_ckpt500000/scores.jsonl
+
+
+--------------------[Agent Step 79_936]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+train/loss/con 0.02 / train/loss/distractor 1.07 / train/loss/dyn 14.39 / train/loss/policy -0.02 / train/loss/position 0.31 / train/loss/rep 14.39 / train/loss/repval 1.16 / train/loss/rew 0.11 / train/loss/to_target 0.38 / train/loss/value 1.06 / train/loss/velocity 0.13 / replay/replay_ratio 1040 / fps/policy 46.42 / fps/train 4.8e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf5q1s1_synth_seed106_ckpt500000/metrics.jsonlWriting metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf5q1s1_synth_seed106_ckpt500000/scores.jsonl
+
+Saving checkpoint: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf5q1s1_synth_seed106_ckpt500000/ckpt/20260721T121007F030575
+Saved checkpoint.
+
+--------------------[Agent Step 85_440]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+episode/score 167 / episode/length 1001 / train/loss/con 0.02 / train/loss/distractor 1.07 / train/loss/dyn 14.37 / train/loss/policy -0.02 / train/loss/position 0.31 / train/loss/rep 14.37 / train/loss/repval 1.13 / train/loss/rew 0.12 / train/loss/to_target 0.38 / train/loss/value 1.02 / train/loss/velocity 0.12 / replay/replay_ratio 1040 / fps/policy 45.69 / fps/train 4.7e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf5q1s1_synth_seed106_ckpt500000/metrics.jsonl
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf5q1s1_synth_seed106_ckpt500000/scores.jsonl
+
+--------------------[Agent Step 91_008]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+train/loss/con 0.02 / train/loss/distractor 1.07 / train/loss/dyn 14.4 / train/loss/policy -0.02 / train/loss/position 0.31 / train/loss/rep 14.4 / train/loss/repval 1.12 / train/loss/rew 0.13 / train/loss/to_target 0.38 / train/loss/value 0.99 / train/loss/velocity 0.12 / replay/replay_ratio 1040 / fps/policy 46.37 / fps/train 4.7e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf5q1s1_synth_seed106_ckpt500000/metrics.jsonlWriting metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf5q1s1_synth_seed106_ckpt500000/scores.jsonl
+
+
+--------------------[Agent Step 96_576]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+episode/score 178 / episode/length 1001 / train/loss/con 0.02 / train/loss/distractor 1.07 / train/loss/dyn 14.36 / train/loss/policy -0.02 / train/loss/position 0.31 / train/loss/rep 14.36 / train/loss/repval 1.08 / train/loss/rew 0.14 / train/loss/to_target 0.39 / train/loss/value 0.96 / train/loss/velocity 0.12 / replay/replay_ratio 1040 / fps/policy 46.38 / fps/train 4.7e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf5q1s1_synth_seed106_ckpt500000/scores.jsonlWriting metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf5q1s1_synth_seed106_ckpt500000/metrics.jsonl
+
+
+--------------------[Agent Step 102_144]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+train/loss/con 0.02 / train/loss/distractor 1.07 / train/loss/dyn 14.37 / train/loss/policy -0.02 / train/loss/position 0.31 / train/loss/rep 14.37 / train/loss/repval 1.16 / train/loss/rew 0.14 / train/loss/to_target 0.39 / train/loss/value 1.12 / train/loss/velocity 0.12 / replay/replay_ratio 1040 / fps/policy 46.38 / fps/train 4.7e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf5q1s1_synth_seed106_ckpt500000/scores.jsonl
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf5q1s1_synth_seed106_ckpt500000/metrics.jsonl
+
+--------------------[Agent Step 107_712]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+train/loss/con 0.02 / train/loss/distractor 1.08 / train/loss/dyn 14.41 / train/loss/policy -0.02 / train/loss/position 0.32 / train/loss/rep 14.41 / train/loss/repval 1.14 / train/loss/rew 0.15 / train/loss/to_target 0.4 / train/loss/value 1.11 / train/loss/velocity 0.11 / replay/replay_ratio 1040 / fps/policy 46.38 / fps/train 4.7e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf5q1s1_synth_seed106_ckpt500000/scores.jsonl
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf5q1s1_synth_seed106_ckpt500000/metrics.jsonl
+
+--------------------[Agent Step 113_280]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+episode/score 220 / episode/length 1001 / train/loss/con 0.02 / train/loss/distractor 1.08 / train/loss/dyn 14.42 / train/loss/policy -0.02 / train/loss/position 0.32 / train/loss/rep 14.42 / train/loss/repval 1.16 / train/loss/rew 0.15 / train/loss/to_target 0.4 / train/loss/value 1.13 / train/loss/velocity 0.11 / replay/replay_ratio 1040 / fps/policy 46.3 / fps/train 4.7e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf5q1s1_synth_seed106_ckpt500000/metrics.jsonlWriting metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf5q1s1_synth_seed106_ckpt500000/scores.jsonl
+
+
+--------------------[Agent Step 118_848]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+train/loss/con 0.02 / train/loss/distractor 1.09 / train/loss/dyn 14.4 / train/loss/policy -0.01 / train/loss/position 0.32 / train/loss/rep 14.4 / train/loss/repval 1.16 / train/loss/rew 0.16 / train/loss/to_target 0.4 / train/loss/value 1.13 / train/loss/velocity 0.11 / replay/replay_ratio 1040 / fps/policy 46.39 / fps/train 4.8e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf5q1s1_synth_seed106_ckpt500000/metrics.jsonlWriting metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf5q1s1_synth_seed106_ckpt500000/scores.jsonl
+
+
+--------------------[Agent Step 124_416]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+train/loss/con 0.02 / train/loss/distractor 1.09 / train/loss/dyn 14.42 / train/loss/policy -0.01 / train/loss/position 0.33 / train/loss/rep 14.42 / train/loss/repval 1.17 / train/loss/rew 0.16 / train/loss/to_target 0.41 / train/loss/value 1.13 / train/loss/velocity 0.11 / replay/replay_ratio 1040 / fps/policy 46.39 / fps/train 4.8e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf5q1s1_synth_seed106_ckpt500000/scores.jsonlWriting metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf5q1s1_synth_seed106_ckpt500000/metrics.jsonl
+
+[Tue Jul 21 12:24:23 CDT 2026] adapt adapt_ax1rbf5q1s1_synth_seed106_ckpt500000 rc=0 status=DONE
+[Tue Jul 21 12:24:23 CDT 2026] DONE child adapt_ax1rbf5q1s1_synth_seed106_ckpt500000
+[Tue Jul 21 12:24:23 CDT 2026] START child adapt_ax1rbf6q1s1_synth_seed104_ckpt500000 WM_RUN=ax1wm_synth_fq1s1_seed6
+[Tue Jul 21 12:24:23 CDT 2026] axis1 child starting RUN_ID=adapt_ax1rbf6q1s1_synth_seed104_ckpt500000 WM_RUN=ax1wm_synth_fq1s1_seed6 job=52442240 host=midway3-0286.rcc.local
+[Tue Jul 21 12:24:23 CDT 2026] env prepared: python=/scratch/midway3/rickybao/conda_envs/dreamerv3/bin/python
+python_executable=/scratch/midway3/rickybao/conda_envs/dreamerv3/bin/python
+[Tue Jul 21 12:24:23 CDT 2026] offline WM already fit: /scratch/midway3/rickybao/dreamerv3_runs/ax1wm_synth_fq1s1_seed6/ckpt/20260718T125600F739889-000000500000 (skipping stage 1)
+[Tue Jul 21 12:24:23 CDT 2026] adapt RUN_ID=adapt_ax1rbf6q1s1_synth_seed104_ckpt500000 TASK=synth_reach SEED=104 CKPT=/scratch/midway3/rickybao/dreamerv3_runs/ax1wm_synth_fq1s1_seed6/ckpt/20260718T125600F739889-000000500000 STEPS=1.25e5
+---  ___                           __   ______ ---
+--- |   \ _ _ ___ __ _ _ __  ___ _ \ \ / /__ / ---
+--- | |) | '_/ -_) _` | '  \/ -_) '/\ V / |_ \ ---
+--- |___/|_| \___\__,_|_|_|_\___|_|  \_/ |___/ ---
+Replica: 0 / 1
+Logdir: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf6q1s1_synth_seed104_ckpt500000
+Run script: train
+Observations
+  position         Space(float32, shape=(2,), low=-inf, high=inf)
+  velocity         Space(float32, shape=(2,), low=-inf, high=inf)
+  distractor       Space(float32, shape=(8,), low=-inf, high=inf)
+  to_target        Space(float32, shape=(2,), low=-inf, high=inf)
+  reward           Space(float32, shape=(), low=-inf, high=inf)
+  is_first         Space(bool, shape=(), low=False, high=True)
+  is_last          Space(bool, shape=(), low=False, high=True)
+  is_terminal      Space(bool, shape=(), low=False, high=True)
+Actions
+  action           Space(float32, shape=(2,), low=-1.0, high=1.0)
+Extras
+  consec           Space(int32, shape=(), low=-2147483648, high=2147483647)
+  stepid           Space(uint8, shape=(20,), low=0, high=255)
+  dyn/deter        Space(float32, shape=(512,), low=-inf, high=inf)
+  dyn/stoch        Space(float32, shape=(32, 4), low=-inf, high=inf)
+JAX devices (1): [cuda:0]
+Policy devices: cuda:0
+Train devices:  cuda:0
+Initializing parameters...
+Optimizer opt has 214,723 params:
+        66,111 val
+        57,663 rew
+        49,796 pol
+        41,153 con
+Done initializing!
+Compiling 1 checkpoint groups...
+Largest checkpoint group: 0 GB
+Compiling train and report...
+Train cost analysis:
+  FLOPS:            7.2e+09
+  Memory (temp):    1.8e+08
+  Memory (inputs):  7.3e+06
+  Memory (outputs): 5.9e+06
+  Memory (code):    1.5e+06
+
+Report cost analysis:
+  FLOPS:            2.0e+06
+  Memory (temp):    9.2e+05
+  Memory (inputs):  2.7e+06
+  Memory (outputs): 2.1e+04
+  Memory (code):    9.8e+04
+
+Done compiling!
+Loaded pretrained checkpoint with keys: ['dec/mlp/linear0/bias', 'dec/mlp/linear0/kernel', 'dec/mlp/linear1/bias', 'dec/mlp/linear1/kernel', 'dec/mlp/linear2/bias', 'dec/mlp/linear2/kernel', 'dec/mlp/norm0/scale', 'dec/mlp/norm1/scale', 'dec/mlp/norm2/scale', 'dec/vec/distractor/pred/bias', 'dec/vec/distractor/pred/kernel', 'dec/vec/position/pred/bias', 'dec/vec/position/pred/kernel', 'dec/vec/to_target/pred/bias', 'dec/vec/to_target/pred/kernel', 'dec/vec/velocity/pred/bias', 'dec/vec/velocity/pred/kernel', 'dyn/dyngru/bias', 'dyn/dyngru/kernel', 'dyn/dynhid0/bias', 'dyn/dynhid0/kernel', 'dyn/dynhid0norm/scale', 'dyn/dynin0/bias', 'dyn/dynin0/kernel', 'dyn/dynin0norm/scale', 'dyn/dynin1/bias', 'dyn/dynin1/kernel', 'dyn/dynin1norm/scale', 'dyn/dynin2/bias', 'dyn/dynin2/kernel', 'dyn/dynin2norm/scale', 'dyn/obs0/bias', 'dyn/obs0/kernel', 'dyn/obs0norm/scale', 'dyn/obslogit/bias', 'dyn/obslogit/kernel', 'dyn/prior0/bias', 'dyn/prior0/kernel', 'dyn/prior0norm/scale', 'dyn/prior1/bias', 'dyn/prior1/kernel', 'dyn/prior1norm/scale', 'dyn/priorlogit/bias', 'dyn/priorlogit/kernel', 'enc/mlp0/bias', 'enc/mlp0/kernel', 'enc/mlp0norm/scale', 'enc/mlp1/bias', 'enc/mlp1/kernel', 'enc/mlp1norm/scale', 'enc/mlp2/bias', 'enc/mlp2/kernel', 'enc/mlp2norm/scale']
+Did not find any checkpoint.
+Saving checkpoint: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf6q1s1_synth_seed104_ckpt500000/ckpt/20260721T122450F460390
+Saved checkpoint.
+Start training loop
+
+--------------------[Agent Step 7_584]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+train/loss/con 0.06 / train/loss/distractor 1.2 / train/loss/dyn 11.45 / train/loss/policy -7.4e-4 / train/loss/position 0.29 / train/loss/rep 11.45 / train/loss/repval 1.72 / train/loss/rew 0.89 / train/loss/to_target 0.17 / train/loss/value 0.83 / train/loss/velocity 6.5e-3 / replay/replay_ratio 877.98 / fps/policy 62.17 / fps/train 4.6e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf6q1s1_synth_seed104_ckpt500000/metrics.jsonlWriting metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf6q1s1_synth_seed104_ckpt500000/scores.jsonl
+
+
+--------------------[Agent Step 13_168]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+train/loss/con 0.02 / train/loss/distractor 1.22 / train/loss/dyn 10.98 / train/loss/policy -3.1e-3 / train/loss/position 0.3 / train/loss/rep 10.98 / train/loss/repval 0.37 / train/loss/rew 5.3e-3 / train/loss/to_target 0.19 / train/loss/value 0.37 / train/loss/velocity 6.8e-3 / replay/replay_ratio 1040 / fps/policy 46.41 / fps/train 4.8e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf6q1s1_synth_seed104_ckpt500000/scores.jsonlWriting metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf6q1s1_synth_seed104_ckpt500000/metrics.jsonl
+
+
+--------------------[Agent Step 18_736]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+episode/score 0 / episode/length 1001 / train/loss/con 0.02 / train/loss/distractor 1.18 / train/loss/dyn 11.5 / train/loss/policy 3.5e-3 / train/loss/position 0.27 / train/loss/rep 11.5 / train/loss/repval 1.08 / train/loss/rew 3.3e-3 / train/loss/to_target 0.19 / train/loss/value 1.02 / train/loss/velocity 0.04 / replay/replay_ratio 1040 / fps/policy 46.39 / fps/train 4.8e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf6q1s1_synth_seed104_ckpt500000/scores.jsonl
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf6q1s1_synth_seed104_ckpt500000/metrics.jsonl
+
+--------------------[Agent Step 24_304]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+train/loss/con 0.02 / train/loss/distractor 1.17 / train/loss/dyn 11.99 / train/loss/policy -5.2e-3 / train/loss/position 0.23 / train/loss/rep 11.99 / train/loss/repval 1.08 / train/loss/rew 1e-3 / train/loss/to_target 0.17 / train/loss/value 0.99 / train/loss/velocity 0.05 / replay/replay_ratio 1040 / fps/policy 46.38 / fps/train 4.7e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf6q1s1_synth_seed104_ckpt500000/scores.jsonl
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf6q1s1_synth_seed104_ckpt500000/metrics.jsonl
+
+--------------------[Agent Step 29_872]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+train/loss/con 0.02 / train/loss/distractor 1.19 / train/loss/dyn 12.47 / train/loss/policy 7.3e-3 / train/loss/position 0.19 / train/loss/rep 12.47 / train/loss/repval 1.22 / train/loss/rew 5.7e-4 / train/loss/to_target 0.14 / train/loss/value 1.1 / train/loss/velocity 0.07 / replay/replay_ratio 1040 / fps/policy 46.39 / fps/train 4.8e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf6q1s1_synth_seed104_ckpt500000/metrics.jsonl
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf6q1s1_synth_seed104_ckpt500000/scores.jsonl
+
+--------------------[Agent Step 35_440]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+episode/score 0 / episode/length 1001 / train/loss/con 0.02 / train/loss/distractor 1.21 / train/loss/dyn 12.48 / train/loss/policy 2.3e-3 / train/loss/position 0.18 / train/loss/rep 12.48 / train/loss/repval 1.04 / train/loss/rew 4e-4 / train/loss/to_target 0.13 / train/loss/value 0.98 / train/loss/velocity 0.06 / replay/replay_ratio 1040 / fps/policy 46.39 / fps/train 4.8e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf6q1s1_synth_seed104_ckpt500000/scores.jsonl
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf6q1s1_synth_seed104_ckpt500000/metrics.jsonl
+
+--------------------[Agent Step 41_008]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+train/loss/con 0.02 / train/loss/distractor 1.22 / train/loss/dyn 12.55 / train/loss/policy -0.01 / train/loss/position 0.17 / train/loss/rep 12.55 / train/loss/repval 1.18 / train/loss/rew 4e-4 / train/loss/to_target 0.12 / train/loss/value 1.07 / train/loss/velocity 0.05 / replay/replay_ratio 1040 / fps/policy 46.33 / fps/train 4.7e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf6q1s1_synth_seed104_ckpt500000/metrics.jsonlWriting metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf6q1s1_synth_seed104_ckpt500000/scores.jsonl
+
+Saving checkpoint: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf6q1s1_synth_seed104_ckpt500000/ckpt/20260721T123952F059005
+Saved checkpoint.
+
+--------------------[Agent Step 46_496]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+train/loss/con 0.02 / train/loss/distractor 1.22 / train/loss/dyn 12.65 / train/loss/policy 6.3e-3 / train/loss/position 0.18 / train/loss/rep 12.65 / train/loss/repval 1.24 / train/loss/rew 8e-3 / train/loss/to_target 0.14 / train/loss/value 1.12 / train/loss/velocity 0.05 / replay/replay_ratio 1040 / fps/policy 45.72 / fps/train 4.7e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf6q1s1_synth_seed104_ckpt500000/scores.jsonlWriting metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf6q1s1_synth_seed104_ckpt500000/metrics.jsonl
+
+
+--------------------[Agent Step 52_064]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+episode/score 15 / episode/length 1001 / train/loss/con 0.02 / train/loss/distractor 1.22 / train/loss/dyn 12.61 / train/loss/policy -0.01 / train/loss/position 0.22 / train/loss/rep 12.61 / train/loss/repval 1.27 / train/loss/rew 0.02 / train/loss/to_target 0.17 / train/loss/value 1.05 / train/loss/velocity 0.04 / replay/replay_ratio 1040 / fps/policy 46.39 / fps/train 4.8e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf6q1s1_synth_seed104_ckpt500000/scores.jsonl
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf6q1s1_synth_seed104_ckpt500000/metrics.jsonl
+
+--------------------[Agent Step 57_632]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+train/loss/con 0.02 / train/loss/distractor 1.21 / train/loss/dyn 12.53 / train/loss/policy -0.02 / train/loss/position 0.23 / train/loss/rep 12.53 / train/loss/repval 1.23 / train/loss/rew 0.01 / train/loss/to_target 0.19 / train/loss/value 1.06 / train/loss/velocity 0.04 / replay/replay_ratio 1040 / fps/policy 46.39 / fps/train 4.8e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf6q1s1_synth_seed104_ckpt500000/scores.jsonlWriting metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf6q1s1_synth_seed104_ckpt500000/metrics.jsonl
+
+
+--------------------[Agent Step 63_200]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+train/loss/con 0.02 / train/loss/distractor 1.21 / train/loss/dyn 12.49 / train/loss/policy -9.5e-3 / train/loss/position 0.27 / train/loss/rep 12.49 / train/loss/repval 1.2 / train/loss/rew 0.01 / train/loss/to_target 0.23 / train/loss/value 1.06 / train/loss/velocity 0.04 / replay/replay_ratio 1040 / fps/policy 46.4 / fps/train 4.8e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf6q1s1_synth_seed104_ckpt500000/metrics.jsonlWriting metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf6q1s1_synth_seed104_ckpt500000/scores.jsonl
+
+
+--------------------[Agent Step 68_768]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+episode/score 0 / episode/length 1001 / train/loss/con 0.02 / train/loss/distractor 1.21 / train/loss/dyn 12.43 / train/loss/policy -0.01 / train/loss/position 0.32 / train/loss/rep 12.43 / train/loss/repval 1.23 / train/loss/rew 7.9e-3 / train/loss/to_target 0.27 / train/loss/value 1.04 / train/loss/velocity 0.04 / replay/replay_ratio 1040 / fps/policy 46.39 / fps/train 4.8e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf6q1s1_synth_seed104_ckpt500000/metrics.jsonlWriting metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf6q1s1_synth_seed104_ckpt500000/scores.jsonl
+
+
+--------------------[Agent Step 74_352]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+train/loss/con 0.02 / train/loss/distractor 1.21 / train/loss/dyn 12.35 / train/loss/policy -0.02 / train/loss/position 0.33 / train/loss/rep 12.35 / train/loss/repval 1.26 / train/loss/rew 8.2e-3 / train/loss/to_target 0.28 / train/loss/value 1.07 / train/loss/velocity 0.03 / replay/replay_ratio 1040 / fps/policy 46.41 / fps/train 4.8e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf6q1s1_synth_seed104_ckpt500000/scores.jsonlWriting metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf6q1s1_synth_seed104_ckpt500000/metrics.jsonl
+
+
+--------------------[Agent Step 79_936]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+train/loss/con 0.02 / train/loss/distractor 1.21 / train/loss/dyn 12.42 / train/loss/policy -0.01 / train/loss/position 0.35 / train/loss/rep 12.42 / train/loss/repval 1.2 / train/loss/rew 8.6e-3 / train/loss/to_target 0.31 / train/loss/value 1.05 / train/loss/velocity 0.03 / replay/replay_ratio 1040 / fps/policy 46.41 / fps/train 4.8e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf6q1s1_synth_seed104_ckpt500000/scores.jsonlWriting metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf6q1s1_synth_seed104_ckpt500000/metrics.jsonl
+
+Saving checkpoint: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf6q1s1_synth_seed104_ckpt500000/ckpt/20260721T125452F398493
+Saved checkpoint.
+
+--------------------[Agent Step 85_488]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+episode/score 0 / episode/length 1001 / train/loss/con 0.02 / train/loss/distractor 1.2 / train/loss/dyn 12.38 / train/loss/policy -0.01 / train/loss/position 0.37 / train/loss/rep 12.38 / train/loss/repval 1.19 / train/loss/rew 8.5e-3 / train/loss/to_target 0.33 / train/loss/value 1.03 / train/loss/velocity 0.03 / replay/replay_ratio 1040 / fps/policy 45.88 / fps/train 4.7e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf6q1s1_synth_seed104_ckpt500000/metrics.jsonlWriting metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf6q1s1_synth_seed104_ckpt500000/scores.jsonl
+
+
+--------------------[Agent Step 91_056]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+train/loss/con 0.02 / train/loss/distractor 1.2 / train/loss/dyn 12.3 / train/loss/policy -0.01 / train/loss/position 0.39 / train/loss/rep 12.3 / train/loss/repval 1.18 / train/loss/rew 6.2e-3 / train/loss/to_target 0.34 / train/loss/value 1.01 / train/loss/velocity 0.03 / replay/replay_ratio 1040 / fps/policy 46.38 / fps/train 4.7e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf6q1s1_synth_seed104_ckpt500000/scores.jsonlWriting metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf6q1s1_synth_seed104_ckpt500000/metrics.jsonl
+
+
+--------------------[Agent Step 96_640]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+episode/score 0 / episode/length 1001 / train/loss/con 0.02 / train/loss/distractor 1.2 / train/loss/dyn 12.24 / train/loss/policy -0.03 / train/loss/position 0.43 / train/loss/rep 12.24 / train/loss/repval 1.13 / train/loss/rew 5.1e-3 / train/loss/to_target 0.38 / train/loss/value 1.02 / train/loss/velocity 0.03 / replay/replay_ratio 1040 / fps/policy 46.41 / fps/train 4.8e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf6q1s1_synth_seed104_ckpt500000/metrics.jsonlWriting metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf6q1s1_synth_seed104_ckpt500000/scores.jsonl
+
+
+--------------------[Agent Step 102_224]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+train/loss/con 0.02 / train/loss/distractor 1.2 / train/loss/dyn 12.24 / train/loss/policy -0.02 / train/loss/position 0.47 / train/loss/rep 12.24 / train/loss/repval 1.14 / train/loss/rew 5.4e-3 / train/loss/to_target 0.4 / train/loss/value 1.01 / train/loss/velocity 0.03 / replay/replay_ratio 1040 / fps/policy 46.41 / fps/train 4.8e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf6q1s1_synth_seed104_ckpt500000/scores.jsonlWriting metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf6q1s1_synth_seed104_ckpt500000/metrics.jsonl
+
+
+--------------------[Agent Step 107_792]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+train/loss/con 0.02 / train/loss/distractor 1.21 / train/loss/dyn 12.21 / train/loss/policy -0.01 / train/loss/position 0.47 / train/loss/rep 12.21 / train/loss/repval 1.13 / train/loss/rew 5.6e-3 / train/loss/to_target 0.4 / train/loss/value 1.02 / train/loss/velocity 0.03 / replay/replay_ratio 1040 / fps/policy 46.4 / fps/train 4.8e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf6q1s1_synth_seed104_ckpt500000/metrics.jsonl
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf6q1s1_synth_seed104_ckpt500000/scores.jsonl
+
+--------------------[Agent Step 113_360]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+episode/score 7 / episode/length 1001 / train/loss/con 0.02 / train/loss/distractor 1.21 / train/loss/dyn 12.19 / train/loss/policy 0.02 / train/loss/position 0.49 / train/loss/rep 12.19 / train/loss/repval 1.28 / train/loss/rew 5.2e-3 / train/loss/to_target 0.41 / train/loss/value 1 / train/loss/velocity 0.02 / replay/replay_ratio 1040 / fps/policy 46.33 / fps/train 4.7e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf6q1s1_synth_seed104_ckpt500000/scores.jsonlWriting metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf6q1s1_synth_seed104_ckpt500000/metrics.jsonl
+
+
+--------------------[Agent Step 118_928]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+train/loss/con 0.02 / train/loss/distractor 1.21 / train/loss/dyn 12.2 / train/loss/policy -0.03 / train/loss/position 0.49 / train/loss/rep 12.2 / train/loss/repval 1.15 / train/loss/rew 4.1e-3 / train/loss/to_target 0.4 / train/loss/value 1.04 / train/loss/velocity 0.02 / replay/replay_ratio 1040 / fps/policy 46.39 / fps/train 4.8e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf6q1s1_synth_seed104_ckpt500000/scores.jsonlWriting metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf6q1s1_synth_seed104_ckpt500000/metrics.jsonl
+
+
+--------------------[Agent Step 124_496]--------------------
+Metrics filtered by: 'score|length|fps|ratio|train/loss/|train/rand/'
+train/loss/con 0.02 / train/loss/distractor 1.21 / train/loss/dyn 12.21 / train/loss/policy -0.02 / train/loss/position 0.47 / train/loss/rep 12.21 / train/loss/repval 1.17 / train/loss/rew 3.5e-3 / train/loss/to_target 0.39 / train/loss/value 0.99 / train/loss/velocity 0.02 / replay/replay_ratio 1040 / fps/policy 46.39 / fps/train 4.8e4
+
+Writing metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf6q1s1_synth_seed104_ckpt500000/metrics.jsonlWriting metrics: /scratch/midway3/rickybao/dreamerv3_runs/adapt_ax1rbf6q1s1_synth_seed104_ckpt500000/scores.jsonl
+
+[Tue Jul 21 13:09:07 CDT 2026] adapt adapt_ax1rbf6q1s1_synth_seed104_ckpt500000 rc=0 status=DONE
+[Tue Jul 21 13:09:07 CDT 2026] DONE child adapt_ax1rbf6q1s1_synth_seed104_ckpt500000
+[Tue Jul 21 13:09:07 CDT 2026] axis1 bundle synth_phasebpp_apt_20260720_220357_005 finished
