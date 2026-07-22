@@ -1,0 +1,91 @@
+{
+ "run_id": "tm2wm_finger_freeq1s1_seed9",
+ "arm": "free",
+ "side": 1,
+ "seed": 9,
+ "head_trained": false,
+ "smoke": false,
+ "task": "dmc_finger_turn_hard",
+ "probeset": {
+  "id": "finger_v1",
+  "sha256": "a78fe58ca526b51c9fd567b9627e6524eef9df55d918d49ac3f24994c452c786"
+ },
+ "cfg_echo": {
+  "model_size": 5,
+  "consistency_coef": 20,
+  "reward_coef": 0.0,
+  "value_coef": 0.0,
+  "latent_dim": 512
+ },
+ "metrics": {
+  "probe_mse": {
+   "all": {
+    "mean": 0.08296280382532331,
+    "n": 30030
+   },
+   "in_regime": {
+    "mean": 0.35565587902431184,
+    "n": 2094
+   },
+   "out_regime": {
+    "mean": 0.06252253680546785,
+    "n": 27936
+   },
+   "rewarded": {
+    "mean": 0.355513439321434,
+    "n": 2092
+   },
+   "unrewarded": {
+    "mean": 0.06255418726515925,
+    "n": 27938
+   }
+  },
+  "probe_r2_eval": -0.2800799413567625,
+  "n_train_frames": 30030,
+  "n_eval_frames": 30030,
+  "cons_err": {
+   "all": {
+    "mean": 0.00015069218844102655,
+    "n": 60000
+   },
+   "in_regime": {
+    "mean": 0.00010436078200283184,
+    "n": 5440
+   },
+   "out_regime": {
+    "mean": 0.00015531174216213686,
+    "n": 54560
+   },
+   "rewarded": {
+    "mean": 0.00010436078200283184,
+    "n": 5440
+   },
+   "unrewarded": {
+    "mean": 0.00015531174216213686,
+    "n": 54560
+   }
+  },
+  "rew_head_mse": {
+   "all": {
+    "mean": 0.09066666666666667,
+    "n": 60000
+   },
+   "in_regime": {
+    "mean": 1.0,
+    "n": 5440
+   },
+   "out_regime": {
+    "mean": 0.0,
+    "n": 54560
+   },
+   "rewarded": {
+    "mean": 1.0,
+    "n": 5440
+   },
+   "unrewarded": {
+    "mean": 0.0,
+    "n": 54560
+   }
+  }
+ }
+}
