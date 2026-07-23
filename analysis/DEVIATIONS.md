@@ -180,6 +180,28 @@ immutable dated files; see plan v4.)
 
 ## Code notes and registrations (non-deviations)
 
+- **2026-07-23 (later) — Paper-2 post-closure build wave: ladder
+  addendum + shift-consequence probe, both frozen-ready pre-outcome.**
+  (1) Actionability ladder (`prereg/PREREG_d1_ladder_20260723.md` +
+  `analysis/d1_ladder_read.py`, selfcheck PASS): registered-descriptive
+  L0–L3 ladder on the EXISTING R2 labels, real op only; new quantity =
+  L3 nested-LORO ridge on [deter 512 + F1] (λ ∈ 1e1..1e4 inner-CV);
+  known R2 scalar outcomes disclosed at freeze; non-decisional
+  "compression signature" heuristic (L3 ρ ≥ .2 CI>0 & L2 < .1) whose
+  only consequence is resource-side (ensemble-arm design). (2) Shift
+  probe (`prereg/PREREG_d1_shift_20260723.md` +
+  `analysis/d1_shift_read.py` selfcheck PASS +
+  `scripts/d1shift_local.sh` + labeler shift extension
+  `shift_ext_20260723`: `--behavior_checkpoint` cross-policy driver +
+  `--mass_scale` dm_control body-mass scaling, behavior=None path
+  bit-identical to r2_ext; labeler selfcheck PASS): 6 fresh e1 pilots
+  seeds 21–23 × {base, xpol sibling-rotation, phys ×1.3} = 18 label
+  passes, final ckpts only; PRIMARY per arm = paired pooled
+  mean-Δ_real difference cluster CI > 0 (2 looks); calibration
+  descriptors never decisional; explicitly NOT a Route-A revival.
+  Ordering: freeze-commit → ladder read (labels exist) and pilots →
+  smoke → labels → shift read.
+
 - **2026-07-23 — R2 probe READ EXECUTED: NULL ⇒ ROUTE A CLOSED.**
   Frozen `analysis/gate_d1_r2_read.py` run unchanged on the 24 rerun
   (save60) labels; 16/16 cell×op×fset fail C1 (best ρ +0.085,

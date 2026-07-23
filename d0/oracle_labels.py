@@ -119,6 +119,23 @@ def snapshot_env(env):
   return snap
 
 
+def apply_mass_scale(env, scale):
+  """Physics-shift arm: scale every body mass of the underlying
+  dm_control model ONCE at setup. Model parameters are not part of
+  physics.get_state(), so CRN snapshot/restore is unaffected. Refuses
+  to run silently unshifted."""
+  if float(scale) == 1.0:
+    return
+  for node in _chain(env):
+    dmenv = _own(node, '_dmenv')
+    if dmenv is not None:
+      dmenv.physics.model.body_mass[:] = (
+          dmenv.physics.model.body_mass * float(scale))
+      return
+  raise SystemExit('apply_mass_scale: no dm_control physics in the '
+                   'wrapper chain; refusing to label unshifted')
+
+
 def restore_env(env, snap):
   if 'custom' in snap:
     node, state = snap['custom']
@@ -243,16 +260,25 @@ def op_real(env, oracle, carry, obs, qfull, cands, snap):
 # --------------------------------------------------------------------------
 
 def label_run(env, oracle, n_states, horizon, label_every, max_steps,
-              rng, run_id, oracle_all=False, ref_stride=5):
+              rng, run_id, oracle_all=False, ref_stride=5,
+              behavior=None):
+  """behavior: optional second AgentOracle that DRIVES the base
+  trajectory (state visitation) while `oracle` remains the evaluation
+  agent for beliefs, d0 evals, operations, and rollouts — the
+  cross-policy shift arm. With behavior=None this is bit-identical to
+  the r2_ext labeler path."""
   rows = []
   ref = dict(deter=[], episode=[], step=[])
   zero_act = oracle.vec2act(np.zeros(int(np.prod(oracle.act_shape))))
   carry = oracle.init()
+  bcarry = behavior.init() if behavior is not None else None
   obs = env.step({**zero_act, 'reset': np.array(True)})
   ep, t = 0, 0
   while len(rows) < n_states:
     if bool(obs['is_last']):
       carry = oracle.init()
+      if behavior is not None:
+        bcarry = behavior.init()
       obs = env.step({**zero_act, 'reset': np.array(True)})
       ep += 1
       t = 0
@@ -303,7 +329,10 @@ def label_run(env, oracle, n_states, horizon, label_every, max_steps,
           cost_real_calls=cost_real['policy_calls'],
       ))
       restore_env(env, snap)  # resume the base trajectory untouched
+    # the evaluation agent's belief always tracks the observed stream
     carry, acts, _ = oracle.policy(carry, obs)
+    if behavior is not None:
+      bcarry, acts, _ = behavior.policy(bcarry, obs)
     if t % ref_stride == 0:
       # belief at obs_t (same step convention as the labeled rows)
       ref['deter'].append(oracle.latent_of(carry))
@@ -351,6 +380,7 @@ def main_real(args):
   out_dir = pathlib.Path(args.output).parent
   config, train_seed = load_config(args, out_dir)
   env = make_env(config, 0)
+  apply_mass_scale(env, args.mass_scale)
   agent = make_agent(config)
   ckpt = args.checkpoint or os.path.join(args.run_logdir, 'ckpt')
   agent = load_frozen_agent(agent, ckpt)
@@ -358,19 +388,29 @@ def main_real(args):
   disc = (1.0 if config.agent.contdisc else
           1 - 1 / config.agent.horizon)
   oracle = AgentOracle(agent, env.act_space, disc)
+  behavior = None
+  if args.behavior_checkpoint:
+    assert os.path.abspath(args.behavior_checkpoint) != os.path.abspath(
+        str(ckpt)), 'behavior checkpoint must differ from the eval one'
+    bagent = load_frozen_agent(make_agent(config),
+                               args.behavior_checkpoint)
+    behavior = AgentOracle(bagent, env.act_space, disc)
   rng = np.random.default_rng(args.seed)
   rows, ref_arrays = label_run(
       env, oracle, args.states, args.horizon,
       args.label_every, args.max_steps, rng,
       run_id=os.path.basename(args.run_logdir.rstrip('/')),
-      oracle_all=args.oracle_all, ref_stride=args.ref_stride)
+      oracle_all=args.oracle_all, ref_stride=args.ref_stride,
+      behavior=behavior)
   save_rows(rows, args.output, meta=dict(
       run_logdir=args.run_logdir, checkpoint=str(ckpt),
       states=args.states, horizon=args.horizon,
       label_every=args.label_every, seed=args.seed,
       train_seed=train_seed, actions=args.actions, rollouts=args.rollouts,
-      ref_stride=args.ref_stride, labeler_version='r2_ext_20260722',
+      ref_stride=args.ref_stride, labeler_version='shift_ext_20260723',
       dose=dict(config.distractor),
+      behavior_checkpoint=str(args.behavior_checkpoint or ''),
+      mass_scale=float(args.mass_scale),
       operation_pair='real_vs_imag_matched_candidate_budget'),
       extra_arrays=ref_arrays)
 
@@ -476,7 +516,53 @@ def selfcheck():
   assert data['udyn'].shape == (5,) and data['deter'].shape == (5, 2)
   assert data['delta_real_boot'].shape == (5,)
   assert data['ref_deter'].shape == (8, 2)
-  print('SELFCHECK PASS (incl. R2 extension: udyn/deter/boot/ref)')
+
+  # --- shift extension: cross-policy behavior drives the trajectory ---
+  class _SynthBehavior(_SynthOracle):
+    def __init__(self):
+      super().__init__()
+      self._policy_calls = 0
+
+    def policy(self, carry, obs, mode='eval'):
+      self._policy_calls += 1
+      carry, acts, out = super().policy(carry, obs, mode)
+      return carry, {'action': self.CANDS[0][None]}, out
+
+  env_b = _SynthEnv()
+  oracle_b = _SynthOracle()
+  beh = _SynthBehavior()
+  rows_b, ref_b = label_run(env_b, oracle_b, n_states=5, horizon=10,
+                            label_every=7, max_steps=200,
+                            rng=np.random.default_rng(0),
+                            run_id='synth', behavior=beh)
+  assert beh._policy_calls > 30, beh._policy_calls  # behavior drove
+  for r in rows_b:
+    # eval-agent semantics unchanged on behavior-visited states:
+    # beliefs, ops, and rollouts all come from the evaluation oracle
+    assert r['m_now'] == 1 and r['m_real'] == 0, r
+    assert abs(r['delta_real'] - 0.8) < 1e-5, r['delta_real']
+  assert ref_b['ref_deter'].shape == (8, 2)  # ref latents = eval agent
+
+  # --- shift extension: mass-scale plumbing ---
+  apply_mass_scale(env_b, 1.0)  # no-op path never touches the chain
+  try:
+    apply_mass_scale(env_b, 1.3)
+    raise AssertionError('mass_scale must refuse envs without physics')
+  except SystemExit:
+    pass
+
+  class _N:
+    pass
+
+  mock, dm, phys, model = _N(), _N(), _N(), _N()
+  model.body_mass = np.array([1.0, 2.0])
+  phys.model = model
+  dm.physics = phys
+  mock._dmenv = dm
+  apply_mass_scale(mock, 1.5)
+  assert np.allclose(model.body_mass, [1.5, 3.0]), model.body_mass
+  print('SELFCHECK PASS (incl. R2 extension: udyn/deter/boot/ref; '
+        'shift extension: behavior-driven trajectory + mass-scale)')
 
 
 def main():
@@ -497,6 +583,13 @@ def main():
                  help='One-step rollouts R per (head, action).')
   p.add_argument('--oracle_all', action='store_true',
                  help='ground-truth every candidate, not just the chosen')
+  p.add_argument('--behavior_checkpoint', default='',
+                 help='optional second ckpt whose policy DRIVES the '
+                      'base trajectory (cross-policy shift arm); the '
+                      'main checkpoint stays the evaluation agent')
+  p.add_argument('--mass_scale', type=float, default=1.0,
+                 help='scale all dm_control body masses at setup '
+                      '(physics shift arm); 1.0 = unshifted')
   p.add_argument('--ref_stride', type=int, default=5,
                  help='Record a base-trajectory belief latent every N '
                       'steps (kNN density reference for the R2 read).')
