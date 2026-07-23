@@ -1,0 +1,352 @@
+{
+ "cells": {
+  "early_e1": {
+   "L0": {
+    "always_mean": -0.2075,
+    "always_ci": [
+     -0.4725,
+     -0.0033333333333333335
+    ],
+    "never": 0.0,
+    "best_constant": 0.0
+   },
+   "L1": {
+    "spearman": 0.033275766293495906,
+    "spearman_ci": [
+     0.0001607649585658194,
+     0.08462580756668599
+    ],
+    "c1_pass": false,
+    "pop_mean_delta": -0.2075,
+    "lift": NaN,
+    "lift_ci": [
+     5.0,
+     30.780837419841568
+    ],
+    "c2_pass": false,
+    "net_gain_price0": 0.005833333333333334,
+    "net_gain_ci": [
+     -0.0375,
+     0.04583333333333333
+    ],
+    "c3_pass": false,
+    "gate_pass": false
+   },
+   "L2": {
+    "spearman": 0.08506062091122654,
+    "spearman_ci": [
+     -0.00863801051314499,
+     0.14850372258953964
+    ],
+    "c1_pass": false,
+    "pop_mean_delta": -0.2075,
+    "lift": NaN,
+    "lift_ci": [
+     -3.3057851239669422,
+     9.876543209876544
+    ],
+    "c2_pass": false,
+    "net_gain_price0": 0.004166666666666667,
+    "net_gain_ci": [
+     -0.02666666666666667,
+     0.0375
+    ],
+    "c3_pass": false,
+    "gate_pass": false
+   },
+   "L3": {
+    "spearman": -0.042436531564336286,
+    "spearman_ci": [
+     -0.08919525222869762,
+     -0.007292574753198973
+    ],
+    "c1_pass": false,
+    "pop_mean_delta": -0.2075,
+    "lift": NaN,
+    "lift_ci": [
+     -5.267489711934156,
+     0.0
+    ],
+    "c2_pass": false,
+    "net_gain_price0": -0.155,
+    "net_gain_ci": [
+     -0.38,
+     0.0
+    ],
+    "c3_pass": false,
+    "gate_pass": false,
+    "lambda_per_fold": {
+     "cup_e1_11_early": 1000.0,
+     "cup_e1_12_early": 10000.0,
+     "cup_e1_13_early": 10000.0,
+     "finger_e1_11_early": 10.0,
+     "finger_e1_12_early": 10.0,
+     "finger_e1_13_early": 10000.0
+    }
+   },
+   "compression_signature": false
+  },
+  "early_e4": {
+   "L0": {
+    "always_mean": -0.14583333333333334,
+    "always_ci": [
+     -0.5925,
+     0.145
+    ],
+    "never": 0.0,
+    "best_constant": 0.0
+   },
+   "L1": {
+    "spearman": 0.0058620309093541005,
+    "spearman_ci": [
+     -0.012043095450165386,
+     0.10388266072309314
+    ],
+    "c1_pass": false,
+    "pop_mean_delta": -0.14583333333333334,
+    "lift": NaN,
+    "lift_ci": [
+     0.6424842725204122,
+     12.008196721311476
+    ],
+    "c2_pass": false,
+    "net_gain_price0": 0.14083333333333334,
+    "net_gain_ci": [
+     0.0,
+     0.2808333333333333
+    ],
+    "c3_pass": false,
+    "gate_pass": false
+   },
+   "L2": {
+    "spearman": -0.004515547108446542,
+    "spearman_ci": [
+     -0.041594938691432715,
+     0.10340545517421748
+    ],
+    "c1_pass": false,
+    "pop_mean_delta": -0.14583333333333334,
+    "lift": NaN,
+    "lift_ci": [
+     -3.433967663471169,
+     12.155172413793105
+    ],
+    "c2_pass": false,
+    "net_gain_price0": 0.03,
+    "net_gain_ci": [
+     -0.1175,
+     0.1225
+    ],
+    "c3_pass": false,
+    "gate_pass": false
+   },
+   "L3": {
+    "spearman": 0.03532492616164706,
+    "spearman_ci": [
+     0.0024504938923363227,
+     0.04351513688355368
+    ],
+    "c1_pass": false,
+    "pop_mean_delta": -0.14583333333333334,
+    "lift": NaN,
+    "lift_ci": [
+     0.0,
+     2.5
+    ],
+    "c2_pass": false,
+    "net_gain_price0": -0.050833333333333335,
+    "net_gain_ci": [
+     -0.2725,
+     0.0
+    ],
+    "c3_pass": false,
+    "gate_pass": false,
+    "lambda_per_fold": {
+     "cup_e4_11_early": 1000.0,
+     "cup_e4_12_early": 1000.0,
+     "cup_e4_13_early": 1000.0,
+     "finger_e4_11_early": 10.0,
+     "finger_e4_12_early": 10000.0,
+     "finger_e4_13_early": 10000.0
+    }
+   },
+   "compression_signature": false
+  },
+  "late_e1": {
+   "L0": {
+    "always_mean": 0.06833333333333333,
+    "always_ci": [
+     -0.2375,
+     0.5433333333333333
+    ],
+    "never": 0.0,
+    "best_constant": 0.06833333333333333
+   },
+   "L1": {
+    "spearman": 0.034997470174993356,
+    "spearman_ci": [
+     0.003013705278513008,
+     0.06486840041901643
+    ],
+    "c1_pass": false,
+    "pop_mean_delta": 0.06833333333333333,
+    "lift": 2.4390243902439024,
+    "lift_ci": [
+     0.7575757575757576,
+     26.666666666666664
+    ],
+    "c2_pass": false,
+    "net_gain_price0": 0.049166666666666664,
+    "net_gain_ci": [
+     -0.2,
+     0.11416666666666667
+    ],
+    "c3_pass": false,
+    "gate_pass": false
+   },
+   "L2": {
+    "spearman": 0.026155957420996735,
+    "spearman_ci": [
+     -0.008685958254628291,
+     0.05722971148710129
+    ],
+    "c1_pass": false,
+    "pop_mean_delta": 0.06833333333333333,
+    "lift": -0.12195121951219513,
+    "lift_ci": [
+     -0.17857142857142855,
+     2.5652173913043477
+    ],
+    "c2_pass": false,
+    "net_gain_price0": -0.03,
+    "net_gain_ci": [
+     -0.435,
+     0.035833333333333335
+    ],
+    "c3_pass": false,
+    "gate_pass": false
+   },
+   "L3": {
+    "spearman": -0.003418557541634913,
+    "spearman_ci": [
+     -0.04696654197143673,
+     0.0470967699929259
+    ],
+    "c1_pass": false,
+    "pop_mean_delta": 0.06833333333333333,
+    "lift": -0.48780487804878053,
+    "lift_ci": [
+     -3.8900414937759336,
+     33.56385431074228
+    ],
+    "c2_pass": false,
+    "net_gain_price0": 0.09833333333333333,
+    "net_gain_ci": [
+     -0.085,
+     0.1825
+    ],
+    "c3_pass": false,
+    "gate_pass": false,
+    "lambda_per_fold": {
+     "cup_e1_11_late": 1000.0,
+     "cup_e1_12_late": 100.0,
+     "cup_e1_13_late": 1000.0,
+     "finger_e1_11_late": 100.0,
+     "finger_e1_12_late": 10.0,
+     "finger_e1_13_late": 100.0
+    }
+   },
+   "compression_signature": false
+  },
+  "late_e4": {
+   "L0": {
+    "always_mean": 0.31333333333333335,
+    "always_ci": [
+     0.050833333333333335,
+     0.6275
+    ],
+    "never": 0.0,
+    "best_constant": 0.31333333333333335
+   },
+   "L1": {
+    "spearman": 0.004426026105911873,
+    "spearman_ci": [
+     -0.03978527862715057,
+     0.023263309394944552
+    ],
+    "c1_pass": false,
+    "pop_mean_delta": 0.31333333333333335,
+    "lift": 0.7446808510638298,
+    "lift_ci": [
+     -1.7096774193548385,
+     2.4728047549624317
+    ],
+    "c2_pass": false,
+    "net_gain_price0": -0.023333333333333373,
+    "net_gain_ci": [
+     -0.07,
+     0.0
+    ],
+    "c3_pass": false,
+    "gate_pass": false
+   },
+   "L2": {
+    "spearman": 0.007213714730207704,
+    "spearman_ci": [
+     -0.02173357273388041,
+     0.02593520853572094
+    ],
+    "c1_pass": false,
+    "pop_mean_delta": 0.31333333333333335,
+    "lift": 1.1436170212765957,
+    "lift_ci": [
+     -1.3692946058091287,
+     7.295081967213115
+    ],
+    "c2_pass": false,
+    "net_gain_price0": -0.06833333333333336,
+    "net_gain_ci": [
+     -0.17166666666666666,
+     0.0
+    ],
+    "c3_pass": false,
+    "gate_pass": false
+   },
+   "L3": {
+    "spearman": 0.01197901205176239,
+    "spearman_ci": [
+     -0.01781470045655993,
+     0.056416952145412536
+    ],
+    "c1_pass": false,
+    "pop_mean_delta": 0.31333333333333335,
+    "lift": 4.002659574468085,
+    "lift_ci": [
+     -0.12849685450408244,
+     5.9558823529411775
+    ],
+    "c2_pass": false,
+    "net_gain_price0": -0.03500000000000003,
+    "net_gain_ci": [
+     -0.10500000000000001,
+     0.0
+    ],
+    "c3_pass": false,
+    "gate_pass": false,
+    "lambda_per_fold": {
+     "cup_e4_11_late": 10000.0,
+     "cup_e4_12_late": 1000.0,
+     "cup_e4_13_late": 10000.0,
+     "finger_e4_11_late": 10000.0,
+     "finger_e4_12_late": 10000.0,
+     "finger_e4_13_late": 10000.0
+    }
+   },
+   "compression_signature": false
+  }
+ },
+ "compression_signature": [],
+ "op": "real",
+ "verdict": "No compression signature: at this information level the calibration null is not a scalar-summary artifact => no-exploitable-heterogeneity reading stands; boundary framing unchanged. (Resource consequence: ensemble arm stays gated.)",
+ "labels_dir": "/scratch/midway3/rickybao/dreamerv3_runs/d1r2_r2probe_save60/d1_labels"
+}
