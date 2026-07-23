@@ -180,6 +180,36 @@ immutable dated files; see plan v4.)
 
 ## Code notes and registrations (non-deviations)
 
+- **2026-07-23 (night) — Paper-1 band-ledger BUILD WAVE: three
+  registration packages frozen-ready pre-outcome.** (1) **Unfrozen
+  calibration** (PREREG_unfrozen_calib_20260723.md +
+  analysis/unfrozen_calib_read.py selfcheck PASS): 32 adapt-only jobs,
+  {rgo,sgb}×{s0,s1}×seeds 1–8 from the existing 500K fits under NEW
+  config `unfrozen_readout` (same enc/dyn/dec init, nothing frozen);
+  PRIMARY = seed-level pooled rgo−sgb, cluster CI>0; frozen baselines
+  = committed auc_pooled_1_16.csv (disclosed). (2) **Orthogonal
+  objective** (PREREG_orthogonal_obj_20260723.md +
+  analysis/orthogonal_obj_read.py selfcheck PASS + NEW
+  embodied/envs/orthreward.py): finger:spin sparse reward evaluated ON
+  the turn_hard env (same obs space ⇒ ckpts load exactly; wrapper ==
+  dm_control Spin.get_reward on shared physics, validated locally
+  pre-freeze incl. injected-velocity readout + make_env config path);
+  frozen-readout adapt, grid seeds 1–16 conditional on sgb-9–16 fit
+  existence (fallback 1–8, existence ≠ outcome); registered FLOOR
+  gate (pooled AUC < 20 ⇒ uninformative); PRIMARY = pooled rgo−sgb on
+  spin, CI>0; both outcomes land the band leg (interpretation map
+  frozen). (3) **vgo extended-fit discriminator**
+  (PREREG_vgo_extended_20260723.md + analysis/vgo_extended_read.py
+  selfcheck PASS): FRESH 1.5M-update fits {vgo,sgb}×seeds 1–8×s1 (new
+  WM dirs, frozen 500K fits untouched) + standard adapt; PRIMARY =
+  diff-in-diff vs the committed 500K baselines (sgb = generic-
+  extension control), CI>0 ⇒ P-B2 attenuation form. Plumbing (all
+  smoked): configs `unfrozen_readout`/`orth_spin`/`orth_spin_frozen`,
+  orthreward wiring in make_env, `AXIS1_ADAPT_CONFIG` knob in
+  axis1.sbatch (default frozen_readout — already-queued jobs read
+  their submission-time script copy; behavior unchanged when unset).
+  Ordering: freeze-commit everything BEFORE any submission.
+
 - **2026-07-23 (evening) — SYNTH B″ READ EXECUTED: NULL ⇒ SYNTH
   INTERACTION LEG CLOSED; + E4 panels for Amendment-1/Option-C.**
   (1) Frozen `synth_phasebpp_read` on the 96-job grid: I = +30.5

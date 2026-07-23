@@ -43,6 +43,9 @@ defaults:
   # Gate D0 E2 arm: OU distractor observations (dim 0 disables the wrapper).
   distractor: {dim: 0, scale: 1.0, theta: 0.1, basesd: 0.0, calib: 1000}
 
+  # Orthogonal-objective reward override (empty task disables the wrapper).
+  orthreward: {task: ''}
+
   replay:
     size: 5e6
     online: True
@@ -251,6 +254,24 @@ expl_apt:
   agent.expl.mode: apt
 
 frozen_readout:
+  agent.frozen_wm: True
+  run.from_checkpoint_regex: '^(enc|dyn|dec)/'
+
+unfrozen_readout:
+  # Full-adaptation calibration: same WM initialization as frozen_readout,
+  # nothing frozen — enc/dyn/dec continue training during adaptation.
+  agent.frozen_wm: False
+  run.from_checkpoint_regex: '^(enc|dyn|dec)/'
+
+orth_spin:
+  # Orthogonal-objective adapt: finger:spin reward on the turn_hard env
+  # (obs space unchanged; combine with frozen_readout on the CLI).
+  orthreward.task: finger_spin
+
+orth_spin_frozen:
+  # Single-token combination of orth_spin + frozen_readout for sbatch
+  # --export values (spaces in exported values are a submission hazard).
+  orthreward.task: finger_spin
   agent.frozen_wm: True
   run.from_checkpoint_regex: '^(enc|dyn|dec)/'
 

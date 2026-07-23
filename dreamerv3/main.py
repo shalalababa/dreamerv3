@@ -244,6 +244,10 @@ def make_env(config, index, **overrides):
   if kwargs.pop('use_logdir', False):
     kwargs['logdir'] = elements.Path(config.logdir) / f'env{index}'
   env = ctor(task, **kwargs)
+  orth_task = config.get('orthreward', {}).get('task', '')
+  if orth_task:
+    from embodied.envs import orthreward
+    env = orthreward.OrthReward(env, orth_task)
   distractor_cfg = config.get('distractor', {})
   if distractor_cfg.get('dim', 0):
     from embodied.envs import distractor

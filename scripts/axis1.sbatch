@@ -159,14 +159,19 @@ else
   stage "offline_fit_done"
 fi
 
-# --- Stage 2: frozen-readout adapt (mirrors adapt.sbatch) -------------------
+# --- Stage 2: adapt (mirrors adapt.sbatch) ----------------------------------
+# AXIS1_ADAPT_CONFIG selects the adapt config(s); default frozen_readout
+# preserves every existing wave. Multi-token values are allowed (e.g.
+# "orth_spin frozen_readout"); the manifest joins tokens with '+'.
+ADAPT_CFG="${AXIS1_ADAPT_CONFIG:-frozen_readout}"
+ADAPT_CFG_TAG="${ADAPT_CFG// /+}"
 stage "adapt_running"
-echo "[$(date)] adapt RUN_ID=$RUN_ID TASK=$TASK SEED=$SEED CKPT=$CKPT STEPS=$STEPS"
-manifest_append "$RUN_ID" adapt "$TASK" frozen_readout "$SEED" "$STEPS" "$CKPT" "$LOGDIR" RUNNING
+echo "[$(date)] adapt RUN_ID=$RUN_ID TASK=$TASK SEED=$SEED CKPT=$CKPT STEPS=$STEPS CFG=$ADAPT_CFG_TAG"
+manifest_append "$RUN_ID" adapt "$TASK" "$ADAPT_CFG_TAG" "$SEED" "$STEPS" "$CKPT" "$LOGDIR" RUNNING
 
 RC=0
 "$PYTHON" -u dreamerv3/main.py \
-  --logdir "$LOGDIR" --configs "${AXIS1_BASE_CONFIG:-dmc_proprio}" ${AXIS1_SIZE:+$AXIS1_SIZE} frozen_readout \
+  --logdir "$LOGDIR" --configs "${AXIS1_BASE_CONFIG:-dmc_proprio}" ${AXIS1_SIZE:+$AXIS1_SIZE} $ADAPT_CFG \
   --task "$TASK" --seed "$SEED" \
   --env.dmc.render "${RENDER:-False}" \
   --run.from_checkpoint "$CKPT" --run.steps "$STEPS" || RC=$?
@@ -178,5 +183,5 @@ if [ "$RC" -eq 0 ]; then
 else
   stage "adapt_failed"
 fi
-sed -i "s#^$RUN_ID,.*,RUNNING,#$RUN_ID,adapt,$TASK,frozen_readout,$SEED,$STEPS,$CKPT,$LOGDIR,$STATUS,#" "$MANIFEST" 2>/dev/null || true
+sed -i "s#^$RUN_ID,.*,RUNNING,#$RUN_ID,adapt,$TASK,$ADAPT_CFG_TAG,$SEED,$STEPS,$CKPT,$LOGDIR,$STATUS,#" "$MANIFEST" 2>/dev/null || true
 exit "$RC"
