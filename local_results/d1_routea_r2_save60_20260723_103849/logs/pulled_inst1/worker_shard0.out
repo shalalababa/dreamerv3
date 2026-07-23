@@ -1,0 +1,47 @@
+[Sat Jul 18 00:14:48 UTC 2026] START shard=0/16 gpu=0 run=adapt_ax1sgbq1s0_finger_seed9_ckpt500000
+[Sat Jul 18 03:08:37 UTC 2026] DONE run=adapt_ax1sgbq1s0_finger_seed9_ckpt500000 log=/workspace/dreamerv3_runs/_cloud_logs/adapt_ax1sgbq1s0_finger_seed9_ckpt500000.out
+[Sat Jul 18 03:08:37 UTC 2026] shard=0 finished ran=1
+[Sat Jul 18 03:45:03 UTC 2026] launcher worker start gpu=0 shard=0/1 arm= transform= seeds=99
+[Sat Jul 18 03:45:03 UTC 2026] START shard=0/1 gpu=0 run=adapt_ax1q1s0_synth_seed99_ckpt20000
+[Sat Jul 18 04:11:47 UTC 2026] launcher worker end gpu=0 shard=0/1 rc=130
+[Sat Jul 18 04:15:36 UTC 2026] launcher worker start gpu=0 shard=0/1 arm= transform= seeds=99
+[Sat Jul 18 04:15:36 UTC 2026] START shard=0/1 gpu=0 run=adapt_ax1q1s0_synth_seed99_ckpt20000
+[Sat Jul 18 04:23:50 UTC 2026] DONE run=adapt_ax1q1s0_synth_seed99_ckpt20000 log=/workspace/dreamerv3_runs/_cloud_logs/adapt_ax1q1s0_synth_seed99_ckpt20000.out
+[Sat Jul 18 04:23:50 UTC 2026] START shard=0/1 gpu=0 run=adapt_ax1q1s1_synth_seed99_ckpt20000
+[Sat Jul 18 04:54:45 UTC 2026] DONE run=adapt_ax1q1s1_synth_seed99_ckpt20000 log=/workspace/dreamerv3_runs/_cloud_logs/adapt_ax1q1s1_synth_seed99_ckpt20000.out
+[Sat Jul 18 04:54:45 UTC 2026] shard=0 finished ran=2
+[Sat Jul 18 04:54:45 UTC 2026] launcher worker end gpu=0 shard=0/1 rc=0
+[Sat Jul 18 05:01:53 UTC 2026] launcher worker start gpu=0 shard=0/16 arm= transform= seeds=1 2 3 4 5 6 7 8
+[Sat Jul 18 05:01:53 UTC 2026] START shard=0/16 gpu=0 run=adapt_ax1q1s0_synth_seed1_ckpt500000
+[Sat Jul 18 08:00:07 UTC 2026] DONE run=adapt_ax1q1s0_synth_seed1_ckpt500000 log=/workspace/dreamerv3_runs/_cloud_logs/adapt_ax1q1s0_synth_seed1_ckpt500000.out
+[Sat Jul 18 08:00:07 UTC 2026] shard=0 finished ran=1
+[Sat Jul 18 08:00:07 UTC 2026] launcher worker end gpu=0 shard=0/16 rc=0
+[Sat Jul 18 08:00:07 UTC 2026] launcher worker start gpu=0 shard=0/16 arm= transform= seeds=1 2 3 4 5 6 7 8
+[Sat Jul 18 08:00:07 UTC 2026] START shard=0/16 gpu=0 run=adapt_ax1fq1s0_synth_seed1_ckpt500000
+[Sat Jul 18 13:13:49 UTC 2026] DONE run=adapt_ax1fq1s0_synth_seed1_ckpt500000 log=/workspace/dreamerv3_runs/_cloud_logs/adapt_ax1fq1s0_synth_seed1_ckpt500000.out
+[Sat Jul 18 13:13:49 UTC 2026] shard=0 finished ran=1
+[Sat Jul 18 13:13:49 UTC 2026] launcher worker end gpu=0 shard=0/16 rc=0
+[Sat Jul 18 13:13:49 UTC 2026] launcher worker start gpu=0 shard=0/16 arm= transform=sh seeds=1 2 3 4 5 6 7 8
+[Sat Jul 18 13:13:49 UTC 2026] START shard=0/16 gpu=0 run=adapt_ax1shq1s0_synth_seed1_ckpt500000
+[Sat Jul 18 16:12:00 UTC 2026] DONE run=adapt_ax1shq1s0_synth_seed1_ckpt500000 log=/workspace/dreamerv3_runs/_cloud_logs/adapt_ax1shq1s0_synth_seed1_ckpt500000.out
+[Sat Jul 18 16:12:00 UTC 2026] shard=0 finished ran=1
+[Sat Jul 18 16:12:00 UTC 2026] launcher worker end gpu=0 shard=0/16 rc=0
+[Sat Jul 18 16:15:58 UTC 2026] START gpu=0 run=adapt_ax1v2q1v200s1_finger_seed1_ckpt500000 mode=task replay=/workspace/dreamerv3_runs/axis1_finger/q1v200/side1
+[Sat Jul 18 18:28:24 UTC 2026] tdmpc2_f1 start label=inst1 shard=0 gpu=0 tasks=1
+[Sat Jul 18 18:28:24 UTC 2026] waiting for previous cloud jobs to finish
+[Sat Jul 18 18:33:24 UTC 2026] waiting for previous cloud jobs to finish
+[Sat Jul 18 18:38:24 UTC 2026] waiting for previous cloud jobs to finish
+[Sat Jul 18 18:43:24 UTC 2026] waiting for previous cloud jobs to finish
+[Sat Jul 18 18:48:24 UTC 2026] waiting for previous cloud jobs to finish
+[Sat Jul 18 18:53:24 UTC 2026] waiting for previous cloud jobs to finish
+[Sat Jul 18 18:58:24 UTC 2026] waiting for previous cloud jobs to finish
+[Sat Jul 18 19:03:24 UTC 2026] waiting for previous cloud jobs to finish
+[Sat Jul 18 19:08:24 UTC 2026] waiting for previous cloud jobs to finish
+[Sat Jul 18 19:13:25 UTC 2026] waiting for previous cloud jobs to finish
+[Sat Jul 18 19:14:36 UTC 2026] DONE gpu=0 run=adapt_ax1v2q1v200s1_finger_seed1_ckpt500000 log=/workspace/dreamerv3_runs/_cloud_logs/adapt_ax1v2q1v200s1_finger_seed1_ckpt500000.out
+[Sat Jul 18 19:14:36 UTC 2026] shard=0 finished
+[Sat Jul 18 19:18:25 UTC 2026] START gpu=0 adapt_tm2freeq1s0_finger_seed9_ckpt500000
+Terminated
+[Sat Jul 18 20:57:34 UTC 2026] START gpu=0 adapt_tm2freeq1s0_finger_seed9_ckpt500000
+[Sun Jul 19 05:41:00 UTC 2026] DONE adapt_tm2freeq1s0_finger_seed9_ckpt500000
+[Sun Jul 19 05:51:39 UTC 2026] START gpu=0 run=adapt_ax1v4q1v400s0_finger_seed1_ckpt500000
