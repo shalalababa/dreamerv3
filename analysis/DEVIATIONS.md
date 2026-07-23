@@ -6,6 +6,27 @@ immutable dated files; see plan v4.)
 
 ## Deviations
 
+- **2026-07-23 — R2 probe: imag-op estimand DEFECT confirmed pre-read;
+  rule tightened by dated amendment; two process deviations recorded.**
+  (1) External review (`research_notes/D1_GPT_Analysis_20260723.md`)
+  claimed and code inspection CONFIRMED (before any R2 label was read)
+  that `op_imag` averages Q matrices column-wise across `d0_eval`
+  calls that each sample M−1 FRESH candidates — only the mode column
+  is action-aligned, so the imagined-purchase Δ is a muddled estimand.
+  `prereg/PREREG_gate_d1_r2probe_amend1_20260723.md` (written BEFORE
+  executing the frozen read) restricts the decision rule to real-op
+  cells (6 looks, strict tightening) and demotes all imag numbers to
+  descriptive-defective. Retroactive: Gate-D1's imag cells carry the
+  same defect (verdict unchanged — real cells also failed; imag ≈ 0
+  reclassified uninterpretable). (2) Process deviation: the two
+  transfer-guard patches (`fd66addb`, `f2798309`, plumbing only,
+  diff-verified) were applied between smoke and labels WITHOUT the
+  dated amendment the prereg required; disclosed one day late in
+  Amendment 1 §B. (3) Attempt 1 of the probe was discarded
+  outcome-blind (early snapshots at ~41.4K steps, outside the
+  registered [10K,40K] window; step metadata only) and the full grid
+  rerun with denser saving (`save60`); Amendment 1 §C.
+
 - **2026-07-18 — Option C realized design ≠ registered ladder (side
   inversion).** The registered volume rider ("ladder on the hi side,
   occupancy matched") was not realized: the plain `search` subcommand
@@ -158,6 +179,20 @@ immutable dated files; see plan v4.)
   reserved).
 
 ## Code notes and registrations (non-deviations)
+
+- **2026-07-23 — R2 probe READ EXECUTED: NULL ⇒ ROUTE A CLOSED.**
+  Frozen `analysis/gate_d1_r2_read.py` run unchanged on the 24 rerun
+  (save60) labels; 16/16 cell×op×fset fail C1 (best ρ +0.085,
+  early×e1 real F1; threshold 0.3); rule-robust under the original
+  12-look and Amendment-1 6-look rules; boundary cell late×e1
+  replicates Gate-D1 near-zero (local port validated, no anomaly).
+  R1 adjudicated: udyn_resid |ρ| ≤ .029 as ÊVSI feature. Registered
+  consequence executed: Route A CLOSED, Route B = Paper 2, 24+24
+  frozen permanently. Descriptives: pooled Δ_real early NEGATIVE
+  (−0.21 e1 / −0.15 e4) vs late positive (+0.07 e1 / **+0.31 e4**),
+  change_rate ≈ .85 everywhere. Artifact:
+  `artifacts/gate_d1_r2_20260723/`. Plan v3 (gitignored):
+  `research_notes/other research/EVPI_Plan_Revision_20260723.md`.
 
 - **2026-07-22 — Route-A R2 decision probe BUILT + frozen-ready
   (pre-outcome; Paper-2 track, local-5090 execution).**
