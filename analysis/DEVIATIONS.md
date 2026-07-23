@@ -180,6 +180,39 @@ immutable dated files; see plan v4.)
 
 ## Code notes and registrations (non-deviations)
 
+- **2026-07-23 (evening) — SYNTH B″ READ EXECUTED: NULL ⇒ SYNTH
+  INTERACTION LEG CLOSED; + E4 panels for Amendment-1/Option-C.**
+  (1) Frozen `synth_phasebpp_read` on the 96-job grid: I = +30.5
+  [−18.7, +100.2], perm p .53 ⇒ does not fire; registered consequence
+  = no Phase C, synth stays shuffle-collapse-only; power honest
+  (realized CI ±60 vs registered ±87 prediction); local read ==
+  cluster json exactly (artifacts/synth_phasebpp_20260723/). Apt
+  simple nominally negative (−24.5 [−48.6, −0.8], descriptive).
+  (2) E4 descriptive panels (artifacts/e4_amend1_optionc_20260723/):
+  Amendment-1 rgo fresh batch REPLICATES the mechanism level (hi-side
+  rew_nll_in h0 = 1.07 ± 0.10 vs original 1.21 ± 0.20; err_diff
+  batch-invariant) — mechanism + behavior now replicate on the same
+  fresh seeds; **COVERAGE GAP: sgb csv contains seeds 1–8 only, the
+  Amendment-1 sgb fits (9–16) were not measured** (repeat pass needed
+  if fits persist); Option-C volume: occupancy-matched 2× volume
+  0.83→0.73 with sd collapse 0.16→0.02 (stability > level; P-B4
+  note), and the 18-Jul behavioral anomaly has NO rep-level
+  counterpart (anomalous cell worst+noisiest, 0.94 ± 0.29).
+
+- **2026-07-23 (evening) — LADDER READ EXECUTED: NO COMPRESSION
+  SIGNATURE; ensemble arm stays gated.** Owner ran the frozen
+  `d1_ladder_read` after the freeze commit (`d68277f1` 13:51 → read
+  15:01; ordering verified). L3 belief-state ridge |ρ| ≤ 0.042 in all
+  4 cells (two CIs exclude 0 at trivial magnitude, one negative) ⇒
+  the D1/R2 null is no-exploitable-heterogeneity up to the agent's
+  full belief state, NOT a scalar-compression artifact; level-5
+  (privileged state) not stored = recorded gap. New with-CI
+  descriptives: always-buy Δ_real early×e1 −0.208 [−0.472, −0.003]
+  (harmful), late×e4 +0.313 [+0.051, +0.627] (valuable) — value is
+  context-legible, state-illegible. Registered resource consequence
+  executed: support-diverse-ensemble arm NOT authorized. Artifact:
+  `artifacts/d1_ladder_20260723/`.
+
 - **2026-07-23 (later) — Paper-2 post-closure build wave: ladder
   addendum + shift-consequence probe, both frozen-ready pre-outcome.**
   (1) Actionability ladder (`prereg/PREREG_d1_ladder_20260723.md` +
