@@ -180,6 +180,17 @@ immutable dated files; see plan v4.)
 
 ## Code notes and registrations (non-deviations)
 
+- **2026-07-23 (night) — D1 shift smoke fix, ON-TIME dated amendment.**
+  xpol smoke crashed on the transfer-guard gotcha in its two-agent
+  form: the behavior agent's `make_agent` re-arms the guard
+  (embodied/jax/internal.py 'disallow') AFTER the 'allow' line the R2
+  run placed post-first-load. Fix = move the allow to after the LAST
+  agent construction (`d0/oracle_labels.py` main_real; plumbing only,
+  labeler_version unchanged, selfcheck PASS).
+  `prereg/PREREG_d1_shift_amend1_20260723.md` written BEFORE any shift
+  label exists — the registered smoke→fix→amendment→labels flow,
+  followed on time this round. Resume at the smoke stage.
+
 - **2026-07-23 (night) — Paper-1 band-ledger BUILD WAVE: three
   registration packages frozen-ready pre-outcome.** (1) **Unfrozen
   calibration** (PREREG_unfrozen_calib_20260723.md +

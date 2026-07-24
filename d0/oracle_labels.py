@@ -386,7 +386,6 @@ def main_real(args):
   agent = make_agent(config)
   ckpt = args.checkpoint or os.path.join(args.run_logdir, 'ckpt')
   agent = load_frozen_agent(agent, ckpt)
-  jax.config.update('jax_transfer_guard', 'allow')
   disc = (1.0 if config.agent.contdisc else
           1 - 1 / config.agent.horizon)
   oracle = AgentOracle(agent, env.act_space, disc)
@@ -397,6 +396,10 @@ def main_real(args):
     bagent = load_frozen_agent(make_agent(config),
                                args.behavior_checkpoint)
     behavior = AgentOracle(bagent, env.act_space, disc)
+  # AFTER the last make_agent: every agent setup re-arms the guard
+  # (embodied/jax/internal.py jax_transfer_guard='disallow'), so setting
+  # it earlier is undone by the behavior agent's construction.
+  jax.config.update('jax_transfer_guard', 'allow')
   rng = np.random.default_rng(args.seed)
   rows, ref_arrays = label_run(
       env, oracle, args.states, args.horizon,
