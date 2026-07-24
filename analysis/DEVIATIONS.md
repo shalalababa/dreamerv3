@@ -251,6 +251,42 @@ immutable dated files; see plan v4.)
 
 ## Code notes and registrations (non-deviations)
 
+- **2026-07-24 (night) — TRAINING-SIDE CODE AUDIT: clean; one recorded
+  scoping caveat, no code changes.** Systematic audit of the
+  training/loss/adapt stack (companion to the same-day labeling-stack
+  audit). VERIFIED CLEAN: (1) arm gradient wiring exact — rew loss
+  input `sg(..., skip=reward_grad)`, repval `sg(..., skip=
+  repval_grad)`, axis1.sbatch arm→flag mapping matches registered
+  semantics (sgb both False / rgo repval False / vgo reward False),
+  `ac_grads: False` so actor-critic gradients never reach the trunk;
+  (2) 'reward' hard-excluded from enc/dec spaces independent of
+  model_obs — reward-free arms structurally reward-blind; (3)
+  measurement-only guarantees hold — valens imag + replay-grounding
+  losses on sg'd inputs with `update=False` on the shared valnorm,
+  Disag.loss internally sg's feat/action/target (passive-probe claim
+  correct); (4) intrinsic rewards (apt kNN, p2e disag) are sg'd; (5)
+  labeler Q denormalization (`pred*vscale+voffset`) matches the
+  imag_loss target convention exactly; (6) adapt stage passes NO
+  replay pointer — readout heads train on freshly collected online
+  episodes only (REPLAY feeds only the offline fit), so the
+  orthogonal-objective wave has no stored-reward contamination; (7)
+  frozen/unfrozen readout configs + `load(regex)` partial-checkpoint
+  semantics correct (heads left at fresh init); (8) runtime invariants
+  (losses↔scales key-set assert, (B,T) shape assert) catch arm
+  misconfiguration at launch. RECORDED CAVEAT (immaterial for DMC, no
+  change): the continuation-head loss input is NOT sg'd, so con
+  gradients reach the trunk in every non-random arm — in DMC episodes
+  never terminate early, the con target is constant, and the path is
+  task-information-free and arm-invariant; if this pipeline is ever
+  ported to terminating envs (e.g. Atari), con becomes a
+  task-information gradient path into the trunk in ALL arms including
+  sgb, and the stopped-gradient-baseline claim would need the sg
+  extended (do NOT change mid-study — it would alter every existing
+  arm's semantics). Upstream-standard surfaces (replay sampling,
+  Consec streams, return computation, slow-value updates) relied on
+  upstream correctness + cross-wave empirical consistency, not
+  re-derived.
+
 - **2026-07-24 — E4 sgb COVERAGE GAP CLOSED: fresh-batch separation
   replicates at n=16 both arms.** Repeat pass
   (`local_results/e4_sgbq1_20260724_101758/`, 32 sgb fits sides×seeds
