@@ -180,6 +180,25 @@ immutable dated files; see plan v4.)
 
 ## Code notes and registrations (non-deviations)
 
+- **2026-07-24 — D1 SHIFT READ EXECUTED: NEITHER ARM FIRES ⇒
+  consequence leg CLOSED; Paper-2 experimental program COMPLETE.**
+  Frozen read on the 18 label passes
+  (`local_results/d1_shift_20260724_091746/`): xpol D −0.006
+  [−0.853, +0.772], phys D −0.055 [−0.483, +0.325]; per-domain signs
+  opposite within each arm (cup/finger mirror). Secondary C1
+  calibration fails in all three arms (F1 ρ ≤ 0.06) — state-
+  illegibility extends to shifted support/dynamics. Registered
+  consequence applied: Route B rests on mechanism + boundary; no
+  further shift arms without new registration; 24+24 frozen, Route A
+  closed, imag retired — all unchanged. Integrity: 18/18 cells n=200,
+  meta conforms (rotation, mass_scale, dials), results-dir code
+  snapshot diffs clean vs repo, freeze ordering verified
+  (registration d68277f1 → amend-1 fix commits → labels 24 Jul →
+  read). Power caveat recorded: xpol CI wide (excludes only > +0.77);
+  phys bounds effects > +0.33. Descriptive: finger 22/23 base cells
+  at exact 0.000 (reward floor at 1e5 pilots) depress finger paired
+  sensitivity. Record: `artifacts/d1_shift_20260724/`.
+
 - **2026-07-23 (night) — D1 shift smoke fix, ON-TIME dated amendment.**
   xpol smoke crashed on the transfer-guard gotcha in its two-agent
   form: the behavior agent's `make_agent` re-arms the guard

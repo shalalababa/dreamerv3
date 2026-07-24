@@ -1,0 +1,333 @@
+{
+ "integrity": {
+  "cup_21_base": {
+   "n": 200,
+   "change_rate_real": 0.875,
+   "mean_delta_real": 0.485
+  },
+  "cup_21_phys": {
+   "n": 200,
+   "change_rate_real": 0.865,
+   "mean_delta_real": -0.485
+  },
+  "cup_21_xpol": {
+   "n": 200,
+   "change_rate_real": 0.815,
+   "mean_delta_real": -0.45
+  },
+  "cup_22_base": {
+   "n": 200,
+   "change_rate_real": 0.875,
+   "mean_delta_real": -0.095
+  },
+  "cup_22_phys": {
+   "n": 200,
+   "change_rate_real": 0.88,
+   "mean_delta_real": -0.05
+  },
+  "cup_22_xpol": {
+   "n": 200,
+   "change_rate_real": 0.9,
+   "mean_delta_real": 0.41
+  },
+  "cup_23_base": {
+   "n": 200,
+   "change_rate_real": 0.86,
+   "mean_delta_real": 0.37
+  },
+  "cup_23_phys": {
+   "n": 200,
+   "change_rate_real": 0.83,
+   "mean_delta_real": 0.335
+  },
+  "cup_23_xpol": {
+   "n": 200,
+   "change_rate_real": 0.84,
+   "mean_delta_real": 1.42
+  },
+  "finger_21_base": {
+   "n": 200,
+   "change_rate_real": 0.815,
+   "mean_delta_real": 0.44
+  },
+  "finger_21_phys": {
+   "n": 200,
+   "change_rate_real": 0.89,
+   "mean_delta_real": 1.1
+  },
+  "finger_21_xpol": {
+   "n": 200,
+   "change_rate_real": 0.89,
+   "mean_delta_real": -1.23
+  },
+  "finger_22_base": {
+   "n": 200,
+   "change_rate_real": 0.84,
+   "mean_delta_real": 0.0
+  },
+  "finger_22_phys": {
+   "n": 200,
+   "change_rate_real": 0.885,
+   "mean_delta_real": 0.0
+  },
+  "finger_22_xpol": {
+   "n": 200,
+   "change_rate_real": 0.85,
+   "mean_delta_real": -0.015
+  },
+  "finger_23_base": {
+   "n": 200,
+   "change_rate_real": 0.86,
+   "mean_delta_real": 0.0
+  },
+  "finger_23_phys": {
+   "n": 200,
+   "change_rate_real": 0.855,
+   "mean_delta_real": -0.03
+  },
+  "finger_23_xpol": {
+   "n": 200,
+   "change_rate_real": 0.845,
+   "mean_delta_real": 1.03
+  }
+ },
+ "primary": {
+  "xpol": {
+   "point": -0.005833333333333357,
+   "ci": [
+    -0.8525,
+    0.7716666666666666
+   ],
+   "fires": false,
+   "per_run": {
+    "cup_21": -0.935,
+    "cup_22": 0.505,
+    "cup_23": 1.0499999999999998,
+    "finger_21": -1.67,
+    "finger_22": -0.015,
+    "finger_23": 1.03
+   },
+   "per_domain": {
+    "cup": 0.20666666666666658,
+    "finger": -0.21833333333333327
+   }
+  },
+  "phys": {
+   "point": -0.05499999999999997,
+   "ci": [
+    -0.48333333333333334,
+    0.32500000000000007
+   ],
+   "fires": false,
+   "per_run": {
+    "cup_21": -0.97,
+    "cup_22": 0.045,
+    "cup_23": -0.034999999999999976,
+    "finger_21": 0.6600000000000001,
+    "finger_22": 0.0,
+    "finger_23": -0.03
+   },
+   "per_domain": {
+    "cup": -0.32,
+    "finger": 0.21000000000000005
+   }
+  }
+ },
+ "secondary": {
+  "base": {
+   "F0": {
+    "spearman": 0.0618776455131902,
+    "spearman_ci": [
+     -0.02233312398418244,
+     0.1381043572077664
+    ],
+    "c1_pass": false,
+    "pop_mean_delta": 0.2,
+    "lift": 2.1666666666666665,
+    "lift_ci": [
+     -1.5699208443271768,
+     10.489510489510488
+    ],
+    "c2_pass": false,
+    "net_gain_price0": 0.010833333333333334,
+    "net_gain_ci": [
+     -0.014999999999999986,
+     0.0475
+    ],
+    "c3_pass": false,
+    "gate_pass": false
+   },
+   "F1": {
+    "spearman": 0.05813988297664164,
+    "spearman_ci": [
+     -0.02205017770516903,
+     0.1498228573065013
+    ],
+    "c1_pass": false,
+    "pop_mean_delta": 0.2,
+    "lift": 2.708333333333333,
+    "lift_ci": [
+     -0.9307745368545526,
+     8.032138242894044
+    ],
+    "c2_pass": false,
+    "net_gain_price0": -0.06833333333333336,
+    "net_gain_ci": [
+     -0.2525,
+     0.0475
+    ],
+    "c3_pass": false,
+    "gate_pass": false
+   },
+   "per_feature": {
+    "uq": 0.07470950051349297,
+    "uq_boot": 0.022531788293418013,
+    "aflip": -0.039723807804574296,
+    "aflip_boot": 0.021336223607841112,
+    "evpi_plugin": 0.0004741106385190121,
+    "evpi_plugin_boot": 0.004753814533599784,
+    "evpi_split": 0.007373724360351384,
+    "evpi_split_boot": 0.013343618839352993,
+    "gap": 0.05819874812756885,
+    "gap_boot": -0.015084945348949514,
+    "udyn": 0.05965467872362944,
+    "udyn_boot": -0.006281874733969913,
+    "logdens": 0.013197581909026255,
+    "logdens_boot": 0.04143396905474912,
+    "udyn_resid": -0.0342868518876437,
+    "udyn_resid_boot": -0.01824827314664257
+   }
+  },
+  "xpol": {
+   "F0": {
+    "spearman": -0.027003773760243897,
+    "spearman_ci": [
+     -0.06873613690713752,
+     0.04718906656784282
+    ],
+    "c1_pass": false,
+    "pop_mean_delta": 0.19416666666666665,
+    "lift": -6.931330472103006,
+    "lift_ci": [
+     -52.41935483870968,
+     0.7569558101472995
+    ],
+    "c2_pass": false,
+    "net_gain_price0": -0.4483333333333333,
+    "net_gain_ci": [
+     -0.9291666666666667,
+     -0.215
+    ],
+    "c3_pass": false,
+    "gate_pass": false
+   },
+   "F1": {
+    "spearman": -0.02244306463711847,
+    "spearman_ci": [
+     -0.06525747433972226,
+     0.01483501090980322
+    ],
+    "c1_pass": false,
+    "pop_mean_delta": 0.19416666666666665,
+    "lift": 0.02145922746781116,
+    "lift_ci": [
+     -16.260162601626018,
+     1.9580924855491328
+    ],
+    "c2_pass": false,
+    "net_gain_price0": -0.19583333333333333,
+    "net_gain_ci": [
+     -0.8266666666666667,
+     0.25333333333333335
+    ],
+    "c3_pass": false,
+    "gate_pass": false
+   },
+   "per_feature": {
+    "uq": 0.029600683802224623,
+    "uq_boot": -0.00419501366968752,
+    "aflip": -0.041492723680846444,
+    "aflip_boot": 0.026952000217862614,
+    "evpi_plugin": -0.03260270842688885,
+    "evpi_plugin_boot": 0.026521957595737056,
+    "evpi_split": -0.033706672797889276,
+    "evpi_split_boot": 0.024440826977345016,
+    "gap": 0.015820601572654126,
+    "gap_boot": -0.02352662320579111,
+    "udyn": 0.004989157367043839,
+    "udyn_boot": 0.014137955137170343,
+    "logdens": 0.03034103884170066,
+    "logdens_boot": 0.032384459682763926,
+    "udyn_resid": -0.001606977174798099,
+    "udyn_resid_boot": -0.02367869608783797
+   }
+  },
+  "phys": {
+   "F0": {
+    "spearman": 0.019228413507442362,
+    "spearman_ci": [
+     -0.020460061172804713,
+     0.06514235925978658
+    ],
+    "c1_pass": false,
+    "pop_mean_delta": 0.145,
+    "lift": 0.8045977011494253,
+    "lift_ci": [
+     -32.5,
+     12.407407407407408
+    ],
+    "c2_pass": false,
+    "net_gain_price0": -0.014999999999999986,
+    "net_gain_ci": [
+     -0.19416666666666665,
+     0.021666666666666667
+    ],
+    "c3_pass": false,
+    "gate_pass": false
+   },
+   "F1": {
+    "spearman": 0.039739860489924075,
+    "spearman_ci": [
+     -0.000274561265430923,
+     0.0831328510469733
+    ],
+    "c1_pass": false,
+    "pop_mean_delta": 0.145,
+    "lift": 4.971264367816092,
+    "lift_ci": [
+     -40.45643153526971,
+     38.36953868684403
+    ],
+    "c2_pass": false,
+    "net_gain_price0": -0.027499999999999997,
+    "net_gain_ci": [
+     -0.18000000000000005,
+     0.025
+    ],
+    "c3_pass": false,
+    "gate_pass": false
+   },
+   "per_feature": {
+    "uq": 0.03611580105234601,
+    "uq_boot": 0.03482681053040205,
+    "aflip": -0.02946573609273223,
+    "aflip_boot": -0.02515716782203546,
+    "evpi_plugin": -0.020066094306964873,
+    "evpi_plugin_boot": 0.011279593859803963,
+    "evpi_split": -0.02152015760369995,
+    "evpi_split_boot": 0.015329721134478384,
+    "gap": 0.031517550513268204,
+    "gap_boot": 0.04187779649117156,
+    "udyn": 0.03418971510648076,
+    "udyn_boot": 0.027029821715052485,
+    "logdens": -0.064003607159447,
+    "logdens_boot": -0.012383423173839496,
+    "udyn_resid": -0.0786890399524875,
+    "udyn_resid_boot": -0.05201456762612333
+   }
+  }
+ },
+ "fired_arms": [],
+ "verdict": "Shift consequence does not fire: purchase value does not detectably rise under either shift arm \u2014 the consequence leg fails; Route B rests on mechanism + boundary alone.",
+ "labels_dir": "local_results/d1_shift_20260724_091746/runroot_light/d1shift_local/d1_labels"
+}
