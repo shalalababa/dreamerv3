@@ -180,6 +180,20 @@ immutable dated files; see plan v4.)
 
 ## Code notes and registrations (non-deviations)
 
+- **2026-07-24 — E4 sgb COVERAGE GAP CLOSED: fresh-batch separation
+  replicates at n=16 both arms.** Repeat pass
+  (`local_results/e4_sgbq1_20260724_101758/`, 32 sgb fits sides×seeds
+  1–16): fresh sgb (9–16) rew_nll_in h0 = s1 2.03±0.10 / s0
+  3.78±0.21 vs rgo fresh 1.07/1.92 — the rgo/sgb level separation
+  (≈1.0 nat hi side) that anchors the E4 mechanism now stands at
+  n=16 per arm per side on the Amendment-1 seeds. Common-mode batch
+  drift noted (both arms slightly lower in fresh batch; separation
+  batch-stable). err_diff arm- and batch-invariant at n=16. Integrity:
+  64 overlapping seed-1–8 rows match the 23-Jul csv EXACTLY.
+  Descriptive panels only. Record:
+  `artifacts/e4_amend1_optionc_20260723/RESULTS.md` §A′ + full csv
+  copied there.
+
 - **2026-07-24 — D1 SHIFT READ EXECUTED: NEITHER ARM FIRES ⇒
   consequence leg CLOSED; Paper-2 experimental program COMPLETE.**
   Frozen read on the 18 label passes
