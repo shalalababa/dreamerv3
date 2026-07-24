@@ -66,6 +66,7 @@ RESOURCE decisions stand. DEVIATIONS 07-24 entries = tracked record.
 | 07-23 | Actionability ladder | `PREREG_d1_ladder_20260723` | `artifacts/d1_ladder_20260723/` | ✖ no compression signature → ensemble arm stays gated (off-by-default stands) |
 | 07-24 | Shift-consequence probe | `PREREG_d1_shift_20260723` + Amend 1 | `artifacts/d1_shift_20260724/` | ✖ neither arm fires (xpol also carries the prevact defect) |
 | 07-24 | Instrument correction + relabel | `PREREG_d1_relabel_20260724` (+ audit additions) | — pending | labeler `d1fix_20260724` built + registered; 18 relabel passes on existing shift pilots; then R3 consumer-competence factorial (plan v4) |
+| 07-24 | Relabel Amendment 1 — d1pilot cohort | `PREREG_d1_relabel_amend1_20260724` | — pending | Gate-D1 pilots confirmed alive (same 1e5 maturity) ⇒ +18 passes; replication family + pooled-12 headline; frozen d1s primary UNCHANGED; driver `scripts/d1pilot_relabel_local.sh`; read extended pre-outcome (selfcheck PASS) |
 
 Paper-2 plan: `research_notes/other research/EVPI_Plan_Revision_20260724.md`
 (v4). Constants (early −0.208\*/late×e4 +0.313\*) = hypotheses to
@@ -78,7 +79,10 @@ re-test, not results. 24+24 permanently frozen; imag op retired.
 - **Unfrozen calibration** (to submit, 32 jobs): `PREREG_unfrozen_calib_20260723` → `analysis/unfrozen_calib_read.py`.
 - **Orthogonal-objective test** (to submit, 32–64 jobs, grid conditional on sgb-9–16 fit existence): `PREREG_orthogonal_obj_20260723` → `analysis/orthogonal_obj_read.py`; lands the band leg under either outcome.
 - **vgo extended discriminator** (to submit, 16 fresh 1.5M fits + adapt): `PREREG_vgo_extended_20260723` → `analysis/vgo_extended_read.py`; adjudicates P-B2 attenuation form.
-- **D1 relabel** (user's 5090): smoke → 18 labels → `analysis/d1_shift_read.py` re-read.
+- **D1 relabel** (user's 5090): smoke → 18 + 18 labels (base campaign + Amendment-1 d1pilot cohort after pull) → ONE `analysis/d1_shift_read.py` execution over both cohorts.
+- **Spectral domain-contrast pass** (registered 07-24, to run on login node/CPU): `PREREG_spectral_domains_20260724` → `probing/spectral_measure.py` (selfcheck PASS); P-SM1 = cup reward-direction variance rank < finger, every matched side; freeze-commit before first real measurement.
+- **Comp×capacity theory predictions** (registered 07-24, adjudicated by Scaling B + 12m E4 + volume replication): `PREREG_compcapacity_theory_20260724` (P-E1 ordered un-nulling / forbidden pattern; P-E2 task-lo-first; P-E3 metric split; P-E4 diversity-as-λ); derivations in `research_notes/Theory_CompCapacity_Addendum_20260724.tex`; MUST be committed before the Scaling B read.
+- **Paper 4 collusion pilot** (built 07-24, CPU): `collusion/` harness (selfcheck PASS; p^N/p^M match published 1.473/1.925; ~20 s per 2M-iter session) + `research_notes/Design_Collusion_Pilot_20260724.md`; stage 1 = 100-session baseline reproduction, go/no-go in the memo; confirmatory prereg AFTER pilot calibration.
 
 ## Cross-cutting audits (2026-07-24, DEVIATIONS entries)
 

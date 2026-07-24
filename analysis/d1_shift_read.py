@@ -27,6 +27,16 @@ revival): C1-style calibration (frozen Gate-D1 criteria via the R2
 machinery, F0/F1) inside each arm's pooled 6-run cell; per-domain
 splits; change rates.
 
+AMENDMENT 1 (PREREG_d1_relabel_amend1_20260724.md, frozen before any
+d1pilot corrected label exists): a second cohort of 18 passes on the
+six Gate-D1 pilots (d1pilot_{cup,finger}_e1_seed{1,2,3}, same 1e5
+maturity, e1, rotation 1->2->3->1). The d1s primary above is
+UNCHANGED and still decides `fired_arms`. Added outputs when the
+d1pilot cohort is present (all-or-nothing): `replication` = the same
+2-look rule on the d1pilot cohort alone; `pooled` = the 12-cluster
+estimate (headline magnitude). Cross-cohort consequence map lives in
+the amendment, not in this script's verdict logic.
+
 Usage:
   python -m analysis.d1_shift_read --labels <dir> --output <dir>
   python -m analysis.d1_shift_read --selfcheck
@@ -46,8 +56,6 @@ import analysis.gate_d1_r2_read as r2
 ARMS = ("base", "xpol", "phys")
 SHIFT_ARMS = ("xpol", "phys")
 DOMS = ("cup", "finger")
-SEEDS = (21, 22, 23)
-ROTATION = {21: 22, 22: 23, 23: 21}
 MASS_SCALE = 1.3
 LATE_STEP_MIN = 90_000
 # d1fix_20260724: corrected-instrument campaign (candidate-conditioned
@@ -55,8 +63,21 @@ LATE_STEP_MIN = 90_000
 # 23-Jul defective-labeler wave (shift_ext_20260723) was read at commit
 # cf0eeead; this read no longer accepts those labels.
 LABELER_VERSION = "d1fix_20260724"
-FILE_RE = re.compile(
-    r"^d1s_(cup|finger)_seed(\d+)_(base|xpol|phys)\.npz$")
+COHORTS = {
+    "d1s": dict(
+        seeds=(21, 22, 23), rotation={21: 22, 22: 23, 23: 21},
+        run_fmt="d1s_{dom}_seed{seed}"),
+    "d1pilot": dict(
+        seeds=(1, 2, 3), rotation={1: 2, 2: 3, 3: 1},
+        run_fmt="d1pilot_{dom}_e1_seed{seed}"),
+}
+SEEDS = COHORTS["d1s"]["seeds"]          # frozen-primary cohort
+ROTATION = COHORTS["d1s"]["rotation"]
+FILE_RES = {
+    "d1s": re.compile(r"^d1s_(cup|finger)_seed(\d+)_(base|xpol|phys)\.npz$"),
+    "d1pilot": re.compile(
+        r"^d1pilot_(cup|finger)_e1_seed(\d+)_(base|xpol|phys)\.npz$"),
+}
 
 
 def load_labels(labels_dir):
@@ -65,9 +86,16 @@ def load_labels(labels_dir):
     name = os.path.basename(path)
     if name.endswith("_smoke.npz"):
       continue
-    m = FILE_RE.match(name)
+    cohort = m = None
+    for co, rx in FILE_RES.items():
+      m = rx.match(name)
+      if m:
+        cohort = co
+        break
     assert m, f"unparseable label file {name}"
     dom, seed, arm = m.group(1), int(m.group(2)), m.group(3)
+    spec = COHORTS[cohort]
+    assert seed in spec["seeds"], f"{name}: seed outside cohort {cohort}"
     d = np.load(path, allow_pickle=True)
     meta = json.loads(str(d["meta"]))
     for k, v in r2.PINNED_DIALS.items():
@@ -83,20 +111,20 @@ def load_labels(labels_dir):
       assert beh == "" and mass == 1.0, f"{name}: base arm shifted"
     elif arm == "xpol":
       assert mass == 1.0, f"{name}: xpol arm must not mass-shift"
-      sib = f"d1s_{dom}_seed{ROTATION[seed]}"
+      sib = spec["run_fmt"].format(dom=dom, seed=spec["rotation"][seed])
       assert sib in beh, (
           f"{name}: behavior ckpt {beh!r} is not sibling {sib}")
-      own = f"d1s_{dom}_seed{seed}"
+      own = spec["run_fmt"].format(dom=dom, seed=seed)
       assert own not in beh, f"{name}: behavior ckpt is the eval run"
     else:
       assert beh == "" and mass == MASS_SCALE, (
           f"{name}: phys arm needs mass_scale={MASS_SCALE}, got "
           f"beh={beh!r} mass={mass}")
-    key = (dom, seed, arm)
+    key = (cohort, dom, seed, arm)
     assert key not in runs, f"duplicate {key}"
     runs[key] = dict(
-        domain=dom, dose="e1", seed=seed, ckpt="late", arm=arm,
-        meta=meta, ckpt_step=None,
+        cohort=cohort, domain=dom, dose="e1", seed=seed, ckpt="late",
+        arm=arm, meta=meta, ckpt_step=None,
         qfull=np.asarray(d["qfull"], np.float64),
         udyn=np.asarray(d["udyn"], np.float64),
         deter=np.asarray(d["deter"], np.float64),
@@ -107,10 +135,17 @@ def load_labels(labels_dir):
             "delta_real", "delta_imag", "delta_real_boot",
             "delta_imag_boot", "m_now", "m_real", "m_imag",
             "episode", "step", "cost_real_env")})
-  for dom in DOMS:
-    for seed in SEEDS:
-      for arm in ARMS:
-        assert (dom, seed, arm) in runs, f"missing {dom} seed{seed} {arm}"
+  # d1s (frozen primary) must be complete; d1pilot is all-or-nothing.
+  present = {co: any(k[0] == co for k in runs) for co in COHORTS}
+  assert present["d1s"], "no d1s cohort labels found"
+  for cohort, spec in COHORTS.items():
+    if not present[cohort]:
+      continue
+    for dom in DOMS:
+      for seed in spec["seeds"]:
+        for arm in ARMS:
+          assert (cohort, dom, seed, arm) in runs, (
+              f"missing {cohort} {dom} seed{seed} {arm}")
   return runs
 
 
@@ -127,13 +162,14 @@ def integrity(runs):
   return report
 
 
-def primary(runs, arm):
+def primary(runs, arm, cohorts=("d1s",)):
   diffs = {}
-  for dom in DOMS:
-    for seed in SEEDS:
-      diffs[(dom, seed)] = (
-          float(runs[(dom, seed, arm)]["delta_real"].mean())
-          - float(runs[(dom, seed, "base")]["delta_real"].mean()))
+  for cohort in cohorts:
+    for dom in DOMS:
+      for seed in COHORTS[cohort]["seeds"]:
+        diffs[(cohort, dom, seed)] = (
+            float(runs[(cohort, dom, seed, arm)]["delta_real"].mean())
+            - float(runs[(cohort, dom, seed, "base")]["delta_real"].mean()))
 
   def _mean(chunks):
     return float(np.mean(chunks))
@@ -142,14 +178,16 @@ def primary(runs, arm):
   point = _mean(list(diffs.values()))
   return dict(
       point=point, ci=ci, fires=bool(ci[0] > 0),
+      n_clusters=len(diffs),
       per_run={"_".join(map(str, k)): v for k, v in diffs.items()},
       per_domain={dom: float(np.mean(
-          [v for k, v in diffs.items() if k[0] == dom]))
+          [v for k, v in diffs.items() if k[1] == dom]))
           for dom in DOMS})
 
 
-def secondary_calibration(runs, arm):
-  cell_runs = {k: v for k, v in runs.items() if k[2] == arm}
+def secondary_calibration(runs, arm, cohort="d1s"):
+  cell_runs = {k: v for k, v in runs.items()
+               if k[0] == cohort and k[3] == arm}
   out = {}
   for fset in ("F0", "F1"):
     preds, y = r2.crossfit(cell_runs, "real", fset)
@@ -159,14 +197,27 @@ def secondary_calibration(runs, arm):
 
 
 def analyze(runs):
+  have_pilot = any(k[0] == "d1pilot" for k in runs)
   result = dict(integrity=integrity(runs), primary={}, secondary={},
                 fired_arms=[])
   for arm in SHIFT_ARMS:
-    result["primary"][arm] = primary(runs, arm)
+    result["primary"][arm] = primary(runs, arm, cohorts=("d1s",))
     if result["primary"][arm]["fires"]:
       result["fired_arms"].append(arm)
   for arm in ARMS:
-    result["secondary"][arm] = secondary_calibration(runs, arm)
+    result["secondary"][arm] = secondary_calibration(runs, arm, "d1s")
+  if have_pilot:
+    # Amendment 1: replication family (d1pilot alone) + pooled headline.
+    result["replication"] = {}
+    result["pooled"] = {}
+    result["fired_arms_replication"] = []
+    for arm in SHIFT_ARMS:
+      result["replication"][arm] = primary(runs, arm, cohorts=("d1pilot",))
+      if result["replication"][arm]["fires"]:
+        result["fired_arms_replication"].append(arm)
+      result["pooled"][arm] = primary(runs, arm, cohorts=("d1s", "d1pilot"))
+    result["secondary_d1pilot"] = {
+        arm: secondary_calibration(runs, arm, "d1pilot") for arm in ARMS}
   if result["fired_arms"]:
     result["verdict"] = (
         f"SHIFT CONSEQUENCE FIRES ({result['fired_arms']}): the real "
@@ -179,6 +230,11 @@ def analyze(runs):
         "Shift consequence does not fire: purchase value does not "
         "detectably rise under either shift arm — the consequence leg "
         "fails; Route B rests on mechanism + boundary alone.")
+  if have_pilot:
+    result["verdict"] += (
+        f" [Amendment 1: replication cohort fires "
+        f"{result['fired_arms_replication'] or 'nothing'}; cross-cohort "
+        "consequence map per PREREG_d1_relabel_amend1_20260724.md.]")
   return result
 
 
@@ -189,11 +245,13 @@ def read(labels_dir, output):
   os.makedirs(output, exist_ok=True)
   with open(os.path.join(output, "d1_shift.json"), "w") as f:
     json.dump(result, f, indent=1, default=float)
-  for arm in SHIFT_ARMS:
-    p = result["primary"][arm]
-    print(f"{arm}: D={p['point']:+.3f} CI=[{p['ci'][0]:+.3f},"
-          f"{p['ci'][1]:+.3f}] fires={p['fires']} "
-          f"per-domain={ {k: round(v, 3) for k, v in p['per_domain'].items()} }")
+  for label, block in (("primary", result["primary"]),
+                       ("replication", result.get("replication", {})),
+                       ("pooled", result.get("pooled", {}))):
+    for arm, p in block.items():
+      print(f"{label}/{arm}: D={p['point']:+.3f} CI=[{p['ci'][0]:+.3f},"
+            f"{p['ci'][1]:+.3f}] fires={p['fires']} n={p['n_clusters']} "
+            f"per-domain={ {k: round(v, 3) for k, v in p['per_domain'].items()} }")
   print()
   print(result["verdict"])
   return result
@@ -203,13 +261,14 @@ def read(labels_dir, output):
 # Selfcheck: synthetic label grid, no MuJoCo/jax
 # --------------------------------------------------------------------------
 
-def _synth_run(rng, dom, seed, arm, delta_mean, n=120, refn=200):
+def _synth_run(rng, dom, seed, arm, delta_mean, n=120, refn=200,
+               cohort="d1s"):
   delta = delta_mean + 0.3 * rng.normal(size=n)
   m_now = np.zeros(n, np.int64)
   m_real = np.ones(n, np.int64)
   return dict(
-      domain=dom, dose="e1", seed=seed, ckpt="late", arm=arm, meta={},
-      ckpt_step=None,
+      cohort=cohort, domain=dom, dose="e1", seed=seed, ckpt="late",
+      arm=arm, meta={}, ckpt_step=None,
       qfull=rng.normal(size=(n, 3, 4)), udyn=rng.normal(size=n),
       deter=rng.normal(size=(n, 16)),
       ref_deter=rng.normal(size=(refn, 16)),
@@ -222,16 +281,20 @@ def _synth_run(rng, dom, seed, arm, delta_mean, n=120, refn=200):
       cost_real_env=np.full(n, 4))
 
 
-def _synth_grid(xpol_lift=0.0, phys_lift=0.0):
+def _synth_grid(xpol_lift=0.0, phys_lift=0.0, cohorts=("d1s",),
+                pilot_xpol_lift=None):
   rng = np.random.default_rng(0)
   runs = {}
-  for dom in DOMS:
-    for seed in SEEDS:
-      base_mean = float(rng.normal(0.1, 0.05))
-      lifts = dict(base=0.0, xpol=xpol_lift, phys=phys_lift)
-      for arm in ARMS:
-        runs[(dom, seed, arm)] = _synth_run(
-            rng, dom, seed, arm, base_mean + lifts[arm])
+  for cohort in cohorts:
+    xl = xpol_lift if (cohort == "d1s" or pilot_xpol_lift is None) \
+        else pilot_xpol_lift
+    for dom in DOMS:
+      for seed in COHORTS[cohort]["seeds"]:
+        base_mean = float(rng.normal(0.1, 0.05))
+        lifts = dict(base=0.0, xpol=xl, phys=phys_lift)
+        for arm in ARMS:
+          runs[(cohort, dom, seed, arm)] = _synth_run(
+              rng, dom, seed, arm, base_mean + lifts[arm], cohort=cohort)
   return runs
 
 
@@ -240,18 +303,40 @@ def selfcheck():
   assert res["primary"]["xpol"]["fires"], res["primary"]["xpol"]
   assert not res["primary"]["phys"]["fires"], res["primary"]["phys"]
   assert res["fired_arms"] == ["xpol"]
+  assert "replication" not in res, "single-cohort grid must not replicate"
   res2 = analyze(_synth_grid())
   assert res2["fired_arms"] == [], res2["fired_arms"]
+  # Amendment 1: two-cohort grids.
+  both = analyze(_synth_grid(xpol_lift=0.5, cohorts=("d1s", "d1pilot")))
+  assert both["fired_arms"] == ["xpol"]
+  assert both["fired_arms_replication"] == ["xpol"], both["replication"]
+  assert both["pooled"]["xpol"]["fires"], both["pooled"]["xpol"]
+  assert both["pooled"]["xpol"]["n_clusters"] == 12
+  assert not both["pooled"]["phys"]["fires"]
+  split = analyze(_synth_grid(
+      xpol_lift=0.5, cohorts=("d1s", "d1pilot"), pilot_xpol_lift=0.0))
+  assert split["fired_arms"] == ["xpol"]
+  assert split["fired_arms_replication"] == [], split["replication"]
   runs = _synth_grid()
-  del runs[("cup", 22, "phys")]
+  del runs[("d1s", "cup", 22, "phys")]
   tripped = False
   try:
     analyze(runs)
   except (AssertionError, KeyError):
     tripped = True
   assert tripped, "missing-cell grid must trip"
-  print("selfcheck PASS: planted xpol lift fires xpol only, null grid "
-        "fires nothing, missing cell trips")
+  runs = _synth_grid(cohorts=("d1s", "d1pilot"))
+  del runs[("d1pilot", "finger", 2, "xpol")]
+  tripped = False
+  try:
+    analyze(runs)
+  except (AssertionError, KeyError):
+    tripped = True
+  assert tripped, "missing d1pilot cell must trip when cohort present"
+  print("selfcheck PASS: planted xpol lift fires xpol only (both "
+        "cohorts + pooled n=12), cohort-split grid separates primary "
+        "from replication, null grid fires nothing, missing cells trip "
+        "in both cohorts")
 
 
 def main():

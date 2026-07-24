@@ -51,7 +51,14 @@ Frozen pre-outcome readers, one per registered experiment; each has a
   `latent_uq.py` + `latent_uq_analysis.py` (Stage 0/1A; the
   density-deconfounded residual), `wm_evaluator.py` (Goodhart, demoted),
   `tdmpc2_*.py` (family-boundary bridge), `probeset.py`/`regimes.py`/
-  `resize_replay_context.py` (probe sets, regime labels, ctx rebuilds).
+  `resize_replay_context.py` (probe sets, regime labels, ctx rebuilds),
+  `spectral_measure.py` (24 Jul: λ-spectrum / reward-direction
+  variance-rank pass on raw buffers; P-SM1,
+  PREREG_spectral_domains_20260724).
+- `collusion/` — Paper 4 CPU harness (24 Jul): `env.py` (Calvano logit
+  duopoly, equilibrium anchors), `pilot.py` (coupled Q-learning
+  sessions, deviation impulse-response fingerprint, coverage /
+  punishment-occupancy stats; selfcheck PASS).
 - `embodied/envs/distractor.py` — OU distractor wrapper (dose arms;
   restorable via oracle_get/set_state).
 - `embodied/envs/orthreward.py` — orthogonal-objective reward override
@@ -85,6 +92,9 @@ Frozen pre-outcome readers, one per registered experiment; each has a
 - `goodhart.sbatch` — demoted track.
 - `d1r2_local.sh`, `d1shift_local.sh` — local 5090 drivers (R2; shift
   relabel: pilots→smoke→labels into `d1_labels_fix/`).
+- `d1pilot_relabel_local.sh` — relabel Amendment-1 companion driver
+  (pull cluster d1pilot ckpts → smoke → 18 passes; same
+  `d1_labels_fix/`).
 - `submit_all.sh`, `run_status.py`, `env.sh` — submission wrapper
   (clean-shell rule: --export=ALL module-leakage gotcha), status,
   environment.
@@ -94,8 +104,18 @@ Frozen pre-outcome readers, one per registered experiment; each has a
 - `Roadmap_20260718.md` — the live status board (bands A–D + standing
   tracks), updated every read.
 - `Research_Plan_v4_20260711.tex` — Paper-1 plan of record (v4).
-- `Theory_SpectralTransfer_20260717.tex` (+ decoder-free addendum) —
-  spectral-competition model behind the P-A/P-B predictions.
+- `Theory_SpectralTransfer_20260717.tex` (+ decoder-free addendum
+  18 Jul + comp×capacity addendum
+  `Theory_CompCapacity_Addendum_20260724.tex`) — spectral-competition
+  model behind the P-A/P-B/P-E predictions.
+- `Direction_Review_TheoryMapping_20260724.md` — ledger sweep + method
+  mapping (λ/βa²/g table) + SOTA sequencing.
+- `Note_ExplainedBoundary_20260724.md` — draft-section note: TD-MPC2
+  boundary as predicted structure + "inclusion ≠ usefulness" named
+  claim.
+- Paper 3/4 launches: `Plan_CompCapacity_Launch_20260724.md`,
+  `Plan_Collusion_Launch_20260724.md`,
+  `Design_Collusion_Pilot_20260724.md` (pilot design of record).
 - `Research_Branch_Ideas_Triage_20260717.tex` — branch-idea scoring;
   band definitions for the 40–55% claim strength.
 - Exec plans: `Plan_Stamping_20260717.md`,

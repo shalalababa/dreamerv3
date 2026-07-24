@@ -251,6 +251,40 @@ immutable dated files; see plan v4.)
 
 ## Code notes and registrations (non-deviations)
 
+- **2026-07-24 (post-audit session) — RELABEL AMENDMENT 1 + THREE NEW
+  REGISTRATIONS/BUILDS (all pre-outcome).** (1) **D1 relabel
+  Amendment 1** (`prereg/PREREG_d1_relabel_amend1_20260724.md`): the
+  owner confirmed the six Gate-D1 cluster pilots
+  (`d1pilot_{cup,finger}_e1_seed{1,2,3}`) are alive ⇒ +18 corrected
+  passes registered (same 1e5 maturity as the shift pilots — adds
+  CLUSTERS, not a maturity axis). `analysis/d1_shift_read.py` extended
+  BEFORE any corrected label is read: cohort-aware loader
+  (all-or-nothing d1pilot cohort), frozen d1s primary byte-for-byte in
+  semantics (still solely decides `fired_arms`), new
+  replication/pooled-12 outputs; extended selfcheck PASS (cohort-split
+  grid separates primary from replication; missing cells trip in both
+  cohorts). New companion driver `scripts/d1pilot_relabel_local.sh`
+  (pull/smoke/labels). (2) **Comp×capacity theory predictions
+  registered** (`prereg/PREREG_compcapacity_theory_20260724.md`,
+  derivations `research_notes/Theory_CompCapacity_Addendum_20260724.tex`):
+  P-E1 ordered un-nulling (forbidden pattern: apt off floor while
+  task-lo floored), P-E2 task-lo-first, P-E3 membership-vs-budget
+  split, P-E4 diversity-as-λ; frozen with zero 12m outcomes known;
+  MUST be committed before the Scaling B read. (3) **Spectral
+  domain-contrast pass built + registered**
+  (`probing/spectral_measure.py`, selfcheck PASS;
+  `prereg/PREREG_spectral_domains_20260724.md`): P-SM1 = cup
+  reward-direction variance rank < finger on every matched side;
+  design note — per-dim standardization was rejected mid-build in
+  favor of symlog (the encoder's own transform) because standardizing
+  erases the variance-salience quantity λ measures. (4) **Paper-4
+  collusion harness built** (`collusion/env.py` + `collusion/pilot.py`,
+  selfcheck PASS incl. planted punish-then-forgive fingerprint;
+  computed p^N=1.4729/p^M=1.9250 match the published Calvano pair;
+  ~20 s per 2M-iter session) + pilot design memo
+  (`research_notes/Design_Collusion_Pilot_20260724.md`) frozen before
+  any production session.
+
 - **2026-07-24 (late night) — UPSTREAM-SURFACES AUDIT (completes the
   audit series): clean; one arm-invariant nuance recorded.** Surfaces
   previously relied on without re-derivation, now read: (1)
