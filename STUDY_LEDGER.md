@@ -1,0 +1,93 @@
+# Study Ledger
+
+One entry per experiment/read: registration → record → verdict →
+decision. This is the INDEX; the authoritative documents are the
+per-experiment `prereg/` files (immutable after their freeze commit),
+the `artifacts/<wave>/` records (RESULTS.md + machine json), and
+`analysis/DEVIATIONS.md` (chronological deviations + code
+notes/registrations). Plans live in `research_notes/` (gitignored);
+the live status board is `research_notes/Roadmap_20260718.md`. See
+`PROJECT_INDEX.md` for the file map.
+
+Maintenance rule: append/update the relevant row in the same session
+that writes an artifact record. Flags: ⚠ = later qualified;
+✖ = instrument-invalidated (see the 2026-07-24 DEVIATIONS entry).
+
+## Paper 1 — causal WM-transfer (ICLR 2027, branch causal-wm-transfer)
+
+| Date | Experiment | Registration | Record | Verdict → decision |
+|---|---|---|---|---|
+| 07-02 | Gate 0 (pilot probe sets, cup/finger/reacher) | note App. A | `artifacts/gate0_20260702/GATE0_DECISION.md` | pilots pass → probe-set protocol frozen |
+| 07-07 | Phase 5a (reward-free WM transfer, unblinded) | `analysis/PREREG_phase5a.md` | `artifacts/phase5a_20260707/` | cup reward-free transfer large → Axis-1 program launched |
+| 07-10 | Phase 6 / Axis-1 controlled buffers | plan v3/v4 | `artifacts/phase6_axis1_20260710/` (+ `axis1_2026*` AUC snapshots) | occupancy-controlled q1 pairs established |
+| 07-11 | E2 Gate F; E3 precheck; expl smoke | per-file | `e2_gatef_*/DECISION.md`, `e3_precheck_*/PRECHECK.md` | gates passed → E3 wave authorized |
+| 07-11/12 | E1 reacher replication (driver-level) | corrective prereg + amds | `artifacts/e1_reacher_final_20260712/` | registered driver-level read done |
+| 07-13 | P0 corrective refit (reward-free finger Q1) | `PREREG_axis1_corrective_*` | `artifacts/p0_axis1_corrective_20260713/` | **NULL → pivot fired** (plan v4, Act-1-only) |
+| 07-13 | W0 fully-paired n=16 interaction | corrective Amendment 2 §A | `artifacts/w0_n16_interaction_20260713/` | **CONFIRMED +98.7\*, perm p=.0027** |
+| 07-14 | E4 stratified error + Goodhart sprint | `PREREG_e4_stratified_error_20260714`, `PREREG_goodhart_sprint_20260714` | `artifacts/e4_goodhart_20260714/` | mechanism = reward-predictability of transferred features; Goodhart continue-but-weaker |
+| 07-16 | W1 (E3v2 within-collector) + W2 + W3 | registered reads | `artifacts/w123_e3v2_20260716/` | **W1 REPLICATES +84.0, 14/14, p=.00012, de-confounded**; apt −5.1 = 3rd reward-free null; W2 cup +93 directional-only; W3 Q2 null → scaling pilot authorized |
+| 07-17 | P3 gradient-path factorial | `PREREG_p3_gradient_path_20260714` | `artifacts/p3_wave_20260717/` | primary rgo−sgb +50 NOT confirmed at n=8; **shuffle collapse FIRES** (binding necessary); rgo +65 own-CI>0; vgo dead; E4 rew-NLL LEVEL separates arms |
+| 07-17 | vgo wiring audit | — (audit) | `artifacts/vgo_wiring_audit_20260717/AUDIT.md` | case (b) replay-grounded → P-B2 shifts to attenuation form |
+| 07-17 | TD-MPC2 cross-family n=8 + Goodhart ensemble + D1 pilot | `PREREG_tdmpc2_crossfamily_20260716` | `artifacts/tdmpc2_goodhart_d1pilot_20260717/` | [B_aware−B_free] +9.5 ns; ensemble does not fix top-1 regret (demote-leaning); D1 pilots 6/6 |
+| 07-17 | **P3 Amendment 1, pooled n=16** | `PREREG_p3_amendment1_20260717` | `artifacts/p3_amend1_20260717/` | **PRIMARY FIRES +51.5 [+9.0,+94.6]; rgo +56.7\*; sgb +5.2 tight null → reward-gradient path CONFIRMED sufficient carrier** |
+| 07-17 | Theory predictions frozen | `PREREG_theory_predictions_20260717` | (spectral model, `research_notes/Theory_SpectralTransfer_20260717.tex`) | P-A1 landed (Amend-1); P-B1 stands (stamping); P-B2 pending vgo-x; P-B4 strong REFUTED (Opt-C corrective); P-B5 pending scaling |
+| 07-18 | Stamping | `PREREG_stamping_20260717` | `artifacts/stamping_20260718/` | primary does NOT fire → **P-B1 strong form STANDS** |
+| 07-18 | Scaling Option C (volume rider) | `PREREG_scaling_pilot_20260717` | `artifacts/scaling_optc_20260718/` | ⚠ realized design ≠ registered (side inversion; DEVIATIONS 07-18); P-B4 not adjudicated; behavioral anomaly recorded |
+| 07-19 | Option C corrective | `PREREG_scaling_optc_amend1_20260718` | `artifacts/optc_corrective_20260719/` | **C2 FIRES: P-B4 strong form REFUTED** |
+| 07-18 | Synth Phase B | `PREREG_synth_phaseb_20260717` | `artifacts/synth_phaseb_20260718/` | collapse-only (interaction null; shuffle −226.6\*); Phase C not authorized |
+| 07-18/19 | Synth diagnosis + re-diagnosis | `PREREG_synth_diagnosis_20260718`, `PREREG_synth_rediag_20260718` | `artifacts/synth_diagnosis_20260718/`, `synth_rediag_20260719/` | in-subspace refuted at model level; adapt lottery confirmed → B″ authorized |
+| 07-23 | Synth Phase B″ | `PREREG_synth_phasebpp_20260720` | `artifacts/synth_phasebpp_20260723/` | NULL +30.5 [−18.7,+100.2] → **synth interaction leg CLOSED** (shuffle-collapse-only exhibit) |
+| 07-19 | TD-MPC2 F1 (n=16 pooled) | `PREREG_tdmpc2_amend1_20260718` | `artifacts/tdmpc2_f1_20260719/` | null at doubled power; P-C1 PARTIAL; **family-scope limitation registered** (headline restricted to reconstruction-based WMs); G-F2 GO |
+| 07-22 | TD-MPC2 F2 (E4 mechanism port) | `PREREG_tdmpc2_f2_20260720` | `artifacts/tdmpc2_f2_20260722/` | **P-F2a FIRES +1.717, lottery 0 → never-included-like**; G-F3 NO-GO; TD-MPC2 track complete |
+| 07-23/24 | E4 passes: Amend-1 fits + Opt-C volume + sgb gap | E4 prereg (descriptive) | `artifacts/e4_amend1_optionc_20260723/` (+§A′) | rgo mechanism REPLICATES (1.07 vs 1.21); volume buys stability not level; **sgb gap closed 07-24: separation replicates at n=16 both arms (2.03 vs 1.07 hi side)** |
+| 07-19 | Pixel X1 pair build | `PREREG_pixel_repl_20260719` | `artifacts/pixel_x1_pair_20260719/PAIR.md` | pair built → X2 submitted |
+
+Standing Paper-1 decisions: headline = "support must be legible to the
+objective" (17 Jul editorial); claim band 40–55% via n=16 ✓ + TD-MPC2 ✗
+(F1 retests) + unfrozen calibration (registered) + orthogonal test
+(registered, lands either way); **Goodhart DEMOTED** (18 Jul, re-confirmed
+22 Jul — negative/boundary exhibit only); 9a un-embargoed (Amend-1).
+
+## Paper 2 — EVPI / value-of-computation (off ICLR path)
+
+**⚠ 2026-07-24 INSTRUMENT INVALIDATION**: the shared D1 real-op labeler
+carried two defects (stale-carry candidate branches; policy-RNG not
+common across branches) + audit found a third (xpol trajectory
+prevact). ALL D1 decision-value verdicts below marked ✖ are withdrawn
+as evidence (faithful reads of an unintended estimand); frozen
+RESOURCE decisions stand. DEVIATIONS 07-24 entries = tracked record.
+
+| Date | Experiment | Registration | Record | Verdict → decision |
+|---|---|---|---|---|
+| 07-10 | Latent-UQ Stage 0 | Gate-D0 App. A | `artifacts/latent_uq_stage0_20260710_221232/DECISION.md` | attractor bias found (disagreement → density-tracking at convergence); phase change + cross-policy boundary |
+| 07-14 | Stage 1A (density-residual instrument) | `PREREG_gate_d1_stage1a_20260714` | `artifacts/latent_uq_stage1a_20260714/` | registered battery PASSES (10/10 flip + 4 cross cells) → renamed **density-deconfounded disagreement residual** (diagnostic, not per-state gate; audit-verified leakage-free) — STANDS |
+| 07-18 | Gate D1 (Stage-1B labels, 24+24 unfreeze) | Stage-1A prereg criteria | `artifacts/gate_d1_20260718/` | ✖ FAILS 0/4 → 24+24 frozen (resource decision stands; verdict uninterpretable) |
+| 07-23 | Route-A R2 decision probe | `PREREG_gate_d1_r2probe_20260722` + Amend 1 (imag demoted pre-read) | `artifacts/gate_d1_r2_20260723/` | ✖ NULL 16/16 → **Route A CLOSED** (resource decision stands); imag-op defect confirmed independently (retired — stands) |
+| 07-23 | Actionability ladder | `PREREG_d1_ladder_20260723` | `artifacts/d1_ladder_20260723/` | ✖ no compression signature → ensemble arm stays gated (off-by-default stands) |
+| 07-24 | Shift-consequence probe | `PREREG_d1_shift_20260723` + Amend 1 | `artifacts/d1_shift_20260724/` | ✖ neither arm fires (xpol also carries the prevact defect) |
+| 07-24 | Instrument correction + relabel | `PREREG_d1_relabel_20260724` (+ audit additions) | — pending | labeler `d1fix_20260724` built + registered; 18 relabel passes on existing shift pilots; then R3 consumer-competence factorial (plan v4) |
+
+Paper-2 plan: `research_notes/other research/EVPI_Plan_Revision_20260724.md`
+(v4). Constants (early −0.208\*/late×e4 +0.313\*) = hypotheses to
+re-test, not results. 24+24 permanently frozen; imag op retired.
+
+## Registered / running, no read yet
+
+- **Pixel X2** (running): `PREREG_pixel_repl_20260719` → read = `analysis/pixel_repl_read.py`; G-X3 gate on its outcome.
+- **Scaling Option B** (running): `PREREG_scaling_pilot_20260717` → `analysis/scaling_read.py`; 12m E4 pass waits on it (P-B5).
+- **Unfrozen calibration** (to submit, 32 jobs): `PREREG_unfrozen_calib_20260723` → `analysis/unfrozen_calib_read.py`.
+- **Orthogonal-objective test** (to submit, 32–64 jobs, grid conditional on sgb-9–16 fit existence): `PREREG_orthogonal_obj_20260723` → `analysis/orthogonal_obj_read.py`; lands the band leg under either outcome.
+- **vgo extended discriminator** (to submit, 16 fresh 1.5M fits + adapt): `PREREG_vgo_extended_20260723` → `analysis/vgo_extended_read.py`; adjudicates P-B2 attenuation form.
+- **D1 relabel** (user's 5090): smoke → 18 labels → `analysis/d1_shift_read.py` re-read.
+
+## Cross-cutting audits (2026-07-24, DEVIATIONS entries)
+
+Labeling stack: 3 defects fixed pre-freeze (xpol prevact, distractor OU
+snapshot, FromDM._done). Training side: clean (arm sg wiring exact;
+reward hard-excluded from the model; valens/disag measurement-only;
+caveat: con-head grads reach trunk — constant target in DMC,
+arm-invariant, do not change mid-study). Upstream surfaces: clean
+(offline_fit replay read-only by construction; replay_context
+foreign-latent transient is arm-invariant; return math canonical; AUC =
+online wrapper-emitted reward; E4 err_diff = out−in; Stage-1A residual
+out-of-fold). No known open defects on the decision path.
