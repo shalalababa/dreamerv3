@@ -1,5 +1,16 @@
 # D1 actionability ladder — READ (2026-07-23)
 
+> **INSTRUMENT-INVALIDATED (2026-07-24).** The shared D1 real-operation
+> labeler contained two confirmed implementation defects (stale-carry
+> candidate branches: obs_t never assimilated, prevact = a_{t-1} not the
+> candidate; and policy-RNG not common across branches), so delta_real /
+> G labels realize an unintended estimand. The read below remains a
+> faithful record of the registered procedure ON THOSE LABELS, but its
+> decision-value conclusions cannot be interpreted as established.
+> Details: analysis/DEVIATIONS.md 2026-07-24 deviation entry; repair +
+> relabel registration: prereg/PREREG_d1_relabel_20260724.md.
+
+
 Registration: `prereg/PREREG_d1_ladder_20260723.md` (registered-
 descriptive addendum; freeze commit `d68277f1` 13:51, read executed
 15:01 — ordering verified). Frozen script: `analysis/d1_ladder_read.py`

@@ -1,16 +1,18 @@
 #!/bin/bash
 # ---------------------------------------------------------------------------
 # Route-B shift-consequence probe: local single-GPU driver (5090).
-# Registration: prereg/PREREG_d1_shift_20260723.md — the prereg + read
-# script + labeler diff MUST be freeze-committed BEFORE the first pilot.
+# CORRECTED-INSTRUMENT campaign (labeler d1fix_20260724):
+# prereg/PREREG_d1_relabel_20260724.md — freeze-commit the prereg +
+# repaired labeler + read BEFORE the first relabel pass. Original wave
+# (defective labels, preserved): $ROOT/d1_labels + PREREG_d1_shift_20260723.
 #
 # Stages (run in this order; `labels` refuses to start before `smoke`):
-#   ./scripts/d1shift_local.sh pilots   # 6 x 1e5-step e1 d0-probe runs
+#   ./scripts/d1shift_local.sh pilots   # skips: the 6 pilots exist
 #   ./scripts/d1shift_local.sh smoke    # 5-state xpol + phys smokes
-#   ./scripts/d1shift_local.sh labels   # 18 labeling passes (3 arms x 6)
+#   ./scripts/d1shift_local.sh labels   # 18 relabel passes (3 arms x 6)
 # Then:
-#   python -m analysis.d1_shift_read --labels $D1S_ROOT/d1_labels \
-#       --output artifacts/d1_shift_<date>
+#   python -m analysis.d1_shift_read --labels $D1S_ROOT/d1_labels_fix \
+#       --output artifacts/d1_shift_fix_<date>
 #
 # Env: activated dv3 conda env; D1S_ROOT (default ~/d1shift_local).
 # All dials below are pinned by the prereg — do not override.
@@ -18,11 +20,11 @@
 set -euo pipefail
 cd "$(dirname "$0")/.."
 ROOT="${D1S_ROOT:-$HOME/d1shift_local}"
-LABELS="$ROOT/d1_labels"
+LABELS="$ROOT/d1_labels_fix"
 mkdir -p "$ROOT" "$LABELS"
 STAGE="${1:?usage: d1shift_local.sh pilots|smoke|labels}"
 
-DIALS="--states 200 --horizon 100 --label_every 25 --actions 8 --rollouts 16 --seed 0 --ref_stride 5"
+DIALS="--states 200 --horizon 100 --label_every 25 --actions 8 --rollouts 16 --seed 0 --ref_stride 5 --oracle_all"
 MASS=1.3
 
 task_of() { case "$1" in cup) echo dmc_cup_catch;; finger) echo dmc_finger_turn_hard;; esac; }
@@ -54,12 +56,12 @@ elif [ "$STAGE" = smoke ]; then
       --behavior_checkpoint "$BEH" \
       --output "$LABELS/d1s_cup_seed21_xpol_smoke.npz" \
       --states 5 --horizon 100 --label_every 25 --actions 8 --rollouts 16 \
-      --seed 0 --ref_stride 5
+      --seed 0 --ref_stride 5 --oracle_all
   python -m d0.oracle_labels --run_logdir "$SRUN" \
       --mass_scale "$MASS" \
       --output "$LABELS/d1s_cup_seed21_phys_smoke.npz" \
       --states 5 --horizon 100 --label_every 25 --actions 8 --rollouts 16 \
-      --seed 0 --ref_stride 5
+      --seed 0 --ref_stride 5 --oracle_all
   echo "SMOKE OK: both shift arms exercised the real MuJoCo path (5"
   echo "states each; determinism assert covers CRN under mass scaling;"
   echo "smoke npz excluded from the read by filename). Any instrument"

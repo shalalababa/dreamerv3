@@ -1,5 +1,20 @@
 # Route-A R2 decision probe — READ (2026-07-23)
 
+> **INSTRUMENT-INVALIDATED (2026-07-24).** The shared D1 real-operation
+> labeler contained two confirmed implementation defects (stale-carry
+> candidate branches: obs_t never assimilated, prevact = a_{t-1} not the
+> candidate; and policy-RNG not common across branches), so delta_real /
+> G labels realize an unintended estimand. The read below remains a
+> faithful record of the registered procedure ON THOSE LABELS, but its
+> decision-value conclusions cannot be interpreted as established.
+> Details: analysis/DEVIATIONS.md 2026-07-24 deviation entry; repair +
+> relabel registration: prereg/PREREG_d1_relabel_20260724.md.
+> Audit addendum (same day): the e4 (dosed) cells carry an additional
+> defect — the OU distractor's process state was not in the branch
+> snapshot, so CRN was broken in the distractor observation dims
+> (DEVIATIONS 24-Jul audit entry, item 2).
+
+
 Registration: `prereg/PREREG_gate_d1_r2probe_20260722.md` + Amendment 1
 (`prereg/PREREG_gate_d1_r2probe_amend1_20260723.md`, written BEFORE this
 read executed). Frozen read: `analysis/gate_d1_r2_read.py` (unchanged

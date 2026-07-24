@@ -1,5 +1,16 @@
 # Gate D1 read — FAILS 0/4 cells; 24+24 stays frozen (2026-07-18)
 
+> **INSTRUMENT-INVALIDATED (2026-07-24).** The shared D1 real-operation
+> labeler contained two confirmed implementation defects (stale-carry
+> candidate branches: obs_t never assimilated, prevact = a_{t-1} not the
+> candidate; and policy-RNG not common across branches), so delta_real /
+> G labels realize an unintended estimand. The read below remains a
+> faithful record of the registered procedure ON THOSE LABELS, but its
+> decision-value conclusions cannot be interpreted as established.
+> Details: analysis/DEVIATIONS.md 2026-07-24 deviation entry; repair +
+> relabel registration: prereg/PREREG_d1_relabel_20260724.md.
+
+
 Snapshot: `local_results/d1_oracle_labels_20260718_103952/` — Stage-1B
 oracle labels from the 6 D1-pilot runs (cup/finger × seeds 1–3, E1
 dose-zero), 200 labeled states each, `d0/oracle_labels.py` at dials

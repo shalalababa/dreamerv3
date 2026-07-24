@@ -50,7 +50,11 @@ SEEDS = (21, 22, 23)
 ROTATION = {21: 22, 22: 23, 23: 21}
 MASS_SCALE = 1.3
 LATE_STEP_MIN = 90_000
-LABELER_VERSION = "shift_ext_20260723"
+# d1fix_20260724: corrected-instrument campaign (candidate-conditioned
+# branch carries + policy-RNG CRN; PREREG_d1_relabel_20260724). The
+# 23-Jul defective-labeler wave (shift_ext_20260723) was read at commit
+# cf0eeead; this read no longer accepts those labels.
+LABELER_VERSION = "d1fix_20260724"
 FILE_RE = re.compile(
     r"^d1s_(cup|finger)_seed(\d+)_(base|xpol|phys)\.npz$")
 

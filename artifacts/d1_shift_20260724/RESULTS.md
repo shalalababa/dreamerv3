@@ -1,5 +1,20 @@
 # D1 shift-consequence probe — READ (2026-07-24)
 
+> **INSTRUMENT-INVALIDATED (2026-07-24).** The shared D1 real-operation
+> labeler contained two confirmed implementation defects (stale-carry
+> candidate branches: obs_t never assimilated, prevact = a_{t-1} not the
+> candidate; and policy-RNG not common across branches), so delta_real /
+> G labels realize an unintended estimand. The read below remains a
+> faithful record of the registered procedure ON THOSE LABELS, but its
+> decision-value conclusions cannot be interpreted as established.
+> Details: analysis/DEVIATIONS.md 2026-07-24 deviation entry; repair +
+> relabel registration: prereg/PREREG_d1_relabel_20260724.md.
+> Audit addendum (same day): the xpol cells carry a THIRD defect — on
+> behavior-driven trajectories the eval belief's prevact was the eval
+> agent's own counterfactual sample, not the executed behavior action
+> (DEVIATIONS 24-Jul audit entry, item 1).
+
+
 Frozen read `analysis/d1_shift_read.py` executed on
 `local_results/d1_shift_20260724_091746/runroot_light/d1shift_local/d1_labels`
 (18 label passes, 6 fresh e1 pilots × {base, xpol, phys}).

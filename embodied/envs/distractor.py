@@ -92,3 +92,31 @@ class Distractor(embodied.wrappers.Wrapper):
       return 1.0
     persd = np.sqrt(self._m2 / (self._count - 1))
     return max(float(persd.mean()), 1e-6)
+
+  # Restorable-state protocol for the oracle labeler (d0/oracle_labels
+  # snapshot_env/restore_env). The OU value _state is mutable per-step
+  # state: capturing only the RNG would replay identical noise increments
+  # from branch-shifted starting values, breaking CRN in the distractor
+  # dims. The Welford calibration triple is included so branch steps
+  # cannot contaminate the reference-sd estimate.
+  def oracle_get_state(self):
+    import json
+    state = dict(
+        state=self._state.tolist(),
+        rng=json.dumps(self._rng.bit_generator.state),
+        frozen_refsd=self.frozen_refsd)
+    if not self._basesd:
+      state.update(count=self._count, mean=self._mean.tolist(),
+                   m2=self._m2.tolist())
+    return json.dumps(state)
+
+  def oracle_set_state(self, blob):
+    import json
+    state = json.loads(blob)
+    self._state = np.asarray(state['state'], np.float64)
+    self._rng.bit_generator.state = json.loads(state['rng'])
+    self.frozen_refsd = state['frozen_refsd']
+    if not self._basesd:
+      self._count = int(state['count'])
+      self._mean = np.asarray(state['mean'], np.float64)
+      self._m2 = np.asarray(state['m2'], np.float64)

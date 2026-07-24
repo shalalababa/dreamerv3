@@ -6,6 +6,77 @@ immutable dated files; see plan v4.)
 
 ## Deviations
 
+- **2026-07-24 (later) — FULL CODE AUDIT: three further instrument
+  issues found and fixed pre-freeze (one labels-affecting, two
+  latent).** Systematic audit of the labeling/env/read stack after the
+  morning's invalidation. (1) **xpol trajectory prevact
+  mis-attribution** (AFFECTS the 23/24-Jul xpol labels — a third
+  defect in those cells): with a behavior driver, the eval carry's
+  prevact was the eval agent's own counterfactual sample while the env
+  executed the behavior action ⇒ eval belief mis-conditioned on every
+  xpol trajectory step. Fixed (`with_prevact` substitution +
+  behavior-driven selfcheck section). (2) **Distractor OU state not in
+  snapshot_env** (latent for e1 waves — wrapper not applied; REAL for
+  any dosed labeling: R2's old e4 cells carried it, on top of the
+  carry defect): rng captured but not the OU value/Welford triple ⇒
+  branch CRN broken in distractor dims. Fixed
+  (Distractor.oracle_get/set_state, exact round-trip verified,
+  rng-only restore demonstrated inexact; snapshot custom slot now a
+  list — was last-writer-wins). (3) **FromDM._done not restored**
+  (latent — verified never fired: episodes 1000 wrapper steps, labels
+  ≤ 875, branch reach ≤ 975): an episode ending inside a branch would
+  have auto-reset the next branch and the resumed trajectory. Fixed
+  (done-latch snapshot/restore + selfcheck). AUDITED-CLEAN (no
+  change): d0 signal alignment (qfull columns ↔ cands rows within a
+  call, row-major reshape verified), d1_shift_read pairing/meta
+  asserts, adapt-run naming vs all three band-ledger read regexes
+  (ax1ufz/ax1og/ax1x match the prereg submit loops exactly, milestone
+  asserts correct), pixel_repl_read MODE_RE vs the running X2 modes,
+  scaling_read MODES vs the Scaling-B naming (+ its selfcheck),
+  baseline csv paths exist, orthreward wrapper (canonical Physics
+  call, is_first guard, stateless), cluster-CI bootstrap, remaining
+  wrapper chain stateless (NormalizeAction/UnifyDtypes/CheckSpaces/
+  ClipAction). All fixes folded into the not-yet-committed relabel
+  registration (PREREG_d1_relabel_20260724.md "Audit additions") —
+  zero corrected labels existed at fix time. Labeler selfcheck PASS;
+  distractor round-trip EXACT.
+
+- **2026-07-24 — D1 REAL-OP LABELER: TWO IMPLEMENTATION DEFECTS
+  CONFIRMED ⇒ ALL D1 decision-value conclusions reclassified
+  INSTRUMENT-INVALIDATED (Gate-D1, R2, ladder, shift, context
+  constants).** External review (`research_notes/other research/
+  D1_GPT_Analysis_20260724.md`) claimed and code inspection CONFIRMED:
+  (1) candidate branches evaluated obs_{t+1} from the PRE-obs_t carry
+  with prevact = a_{t-1} instead of the candidate (`d0_eval`'s updated
+  carry discarded at the label site; op_real and rollout_return both
+  affected) — the labels are a well-defined but UNINTENDED estimand
+  (returns under a belief-corrupted follower): nulls attenuated,
+  positives unanchored; (2) eval-mode policy SAMPLES with seeds from
+  the global n_actions counter, never restored across branches — the
+  "exact CRN" claim covered env+belief only, not follower noise.
+  Independently verified: finger 22/23 base cells are literal reward
+  floor (all 200 G ≡ 0); small-cluster t-intervals are materially
+  wider than the registered percentile bootstrap (xpol [−1.16,+1.15],
+  phys [−0.60,+0.49] vs [−0.48,+0.33]); the ladder's "up to the full
+  belief state" wording overclaims (L3 = deter512 + scalars, linear —
+  no stoch, no qfull, no nonlinear). SCOPE: everything downstream of
+  delta_real/G labels. NOT affected: Stage-0 attractor/phase-change,
+  Stage-1A density residual (renamed "density-deconfounded
+  disagreement residual" — diagnostic, not per-state gate), all of
+  Paper 1 (no Paper-1 pipeline consumes D1 labels), belief features
+  (deter was taken post-assimilation, correct). ACTIONS: labeler
+  REPAIRED (candidate-conditioned branch carries + policy-RNG
+  marks + g_all per-candidate returns; labeler_version d1fix_20260724;
+  selfcheck extended with a carry-sensitive recurrent mock whose
+  closed-form scores the stale convention provably fails — PASS);
+  relabel campaign REGISTERED pre-outcome
+  (prereg/PREREG_d1_relabel_20260724.md; 18 passes, existing shift
+  pilots, d1_labels_fix/, defective labels preserved); invalidation
+  addenda added to all four affected artifact records; original
+  artifacts preserved unchanged as provenance. Paper-2 status
+  reverted: experimental program NOT complete; "closure" claims of
+  23–24 Jul withdrawn (plan v4 = EVPI_Plan_Revision_20260724.md).
+
 - **2026-07-23 — R2 probe: imag-op estimand DEFECT confirmed pre-read;
   rule tightened by dated amendment; two process deviations recorded.**
   (1) External review (`research_notes/D1_GPT_Analysis_20260723.md`)
