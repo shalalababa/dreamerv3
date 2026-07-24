@@ -251,6 +251,46 @@ immutable dated files; see plan v4.)
 
 ## Code notes and registrations (non-deviations)
 
+- **2026-07-24 (late night) — UPSTREAM-SURFACES AUDIT (completes the
+  audit series): clean; one arm-invariant nuance recorded.** Surfaces
+  previously relied on without re-derivation, now read: (1)
+  **offline_fit replay is read-only by construction** — the checkpoint
+  attaches only step+agent (never the replay), `replay.load` ingests
+  chunks in-memory, no env interaction ⇒ the shared frozen buffers
+  cannot be mutated by fits (no cross-arm contamination path exists);
+  (2) **replay_context=1 nuance (recorded)**: first-visit chunk
+  prefixes initialize the RSSM carry from latent entries STORED IN THE
+  BUFFER — i.e. the collector agent's latents — then `replay.update`
+  overwrites them with the fit agent's own after each visit; a
+  transient foreign-carry initialization, identical for every arm and
+  side (same buffers, same mechanism) ⇒ not a contrast confound; the
+  12m fits' context shapes were handled by the registered ctx12
+  rebuild; (3) **return math is canonical upstream DreamerV3** —
+  lambda_return recursion (reward offset rew[:,1:], term cuts
+  discounting, last cuts λ-mixing), imag_loss (all targets sg'd,
+  valnorm updates gated on training), repl_loss (weight=~last, boot =
+  imagination λ-return per replay step, indexing aligned via
+  imgloss_out['ret'][:,0]), head_value_loss never updates shared
+  normalizers; (4) **AUC provenance**: episode/score = sum of
+  wrapper-emitted rewards over ONLINE train-env episodes (embodied/
+  run/train.py aggregator) ⇒ the registered adaptation metric, and the
+  orthogonal wave's AUC therefore measures spin reward as intended;
+  (5) **RSSM one-step imagine** (single=True, action tensor) applies
+  the candidate at the current posterior and prior-samples s' ⇒
+  d0-signal Q = r̂(s')+γ·ĉ·v̂(s') is exactly the intended estimand,
+  consistent with the observe() prevact convention the labeler fix
+  restored; (6) **Consec stream** chunking matches
+  _apply_replay_context's consec==0 convention; replay sample/update
+  standard (uniform sampler, KeyError-tolerant in-memory latent
+  refresh); (7) **E4 err_diff literally out_minus_in** in
+  stratified_error (matches every recorded panel convention); (8)
+  **Stage-1A density_residualize is genuinely out-of-fold** (stream-
+  cluster folds via seeded permutation, isotonic direction chosen by
+  SSE on TRAIN folds only, degenerate-fold guard) — the surviving
+  Paper-2 diagnostic is leakage-free as registered. With this, the
+  full path physics → wrappers → replay → training → labels → reads
+  has been read adversarially; open defects: none known.
+
 - **2026-07-24 (night) — TRAINING-SIDE CODE AUDIT: clean; one recorded
   scoping caveat, no code changes.** Systematic audit of the
   training/loss/adapt stack (companion to the same-day labeling-stack
