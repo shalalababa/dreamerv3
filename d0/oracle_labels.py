@@ -191,8 +191,10 @@ class AgentOracle:
     """Belief latent behind a policy carry: RSSM deter vector, float16.
     Agent carry layout is (enc_carry, dyn_carry, dec_carry, prevact);
     dyn_carry is the RSSM carry dict with 'deter' [B, D]."""
+    import jax
     dyn = carry[1]
-    return np.asarray(dyn['deter'][0], np.float16)
+    with jax._src.config.explicit_device_get_scope():
+      return np.asarray(jax.device_get(dyn['deter'][0]), np.float16)
 
   def vec2act(self, vec):
     return {self.act_key: np.asarray(vec, np.float32).reshape(self.act_shape)}
