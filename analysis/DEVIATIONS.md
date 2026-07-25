@@ -251,6 +251,21 @@ immutable dated files; see plan v4.)
 
 ## Code notes and registrations (non-deviations)
 
+- **2026-07-24 — RELABEL AMENDMENT 2: config schema-drift fix after
+  Amendment-1 smoke failure.** The d1pilot smoke crashed at agent
+  construction (`AttributeError: model_obs`): the 18-Jul pilot configs
+  predate the `agent.model_obs` / `env.synth.*` / `orthreward.task`
+  schema additions. NOT a labeler defect; no label was produced (the
+  ordering guard held). FIX: `d0/sweep.py load_config` backfills
+  absent keys from current `configs.yaml` defaults (saved values win;
+  every backfilled key printed to the pass log). Validated on the
+  retained true 18-Jul pilot config: exactly 8 keys backfill, all
+  inert for dmc_proprio labeling; `model_obs='.*'` reproduces the
+  pre-key include-everything behavior; strict no-op on
+  schema-current configs. Registered:
+  `prereg/PREREG_d1_relabel_amend2_20260724.md`; smoke re-runs from
+  the top before labels.
+
 - **2026-07-24 (post-audit session) — RELABEL AMENDMENT 1 + THREE NEW
   REGISTRATIONS/BUILDS (all pre-outcome).** (1) **D1 relabel
   Amendment 1** (`prereg/PREREG_d1_relabel_amend1_20260724.md`): the

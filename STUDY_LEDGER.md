@@ -67,6 +67,7 @@ RESOURCE decisions stand. DEVIATIONS 07-24 entries = tracked record.
 | 07-24 | Shift-consequence probe | `PREREG_d1_shift_20260723` + Amend 1 | `artifacts/d1_shift_20260724/` | ✖ neither arm fires (xpol also carries the prevact defect) |
 | 07-24 | Instrument correction + relabel | `PREREG_d1_relabel_20260724` (+ audit additions) | — pending | labeler `d1fix_20260724` built + registered; 18 relabel passes on existing shift pilots; then R3 consumer-competence factorial (plan v4) |
 | 07-24 | Relabel Amendment 1 — d1pilot cohort | `PREREG_d1_relabel_amend1_20260724` | — pending | Gate-D1 pilots confirmed alive (same 1e5 maturity) ⇒ +18 passes; replication family + pooled-12 headline; frozen d1s primary UNCHANGED; driver `scripts/d1pilot_relabel_local.sh`; read extended pre-outcome (selfcheck PASS) |
+| 07-24 | Relabel Amendment 2 — schema-drift loader fix | `PREREG_d1_relabel_amend2_20260724` | — pending | amend-1 smoke crashed (`model_obs` absent from 18-Jul configs); `load_config` backfills absent keys from defaults (8 keys, all inert; logged per pass); no label existed — ordering guard held; smoke re-runs before labels |
 
 Paper-2 plan: `research_notes/other research/EVPI_Plan_Revision_20260724.md`
 (v4). Constants (early −0.208\*/late×e4 +0.313\*) = hypotheses to

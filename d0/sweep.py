@@ -62,6 +62,47 @@ def parse_args():
   return p.parse_args()
 
 
+def _flat(d, prefix=''):
+  out = {}
+  for k, v in d.items():
+    key = f'{prefix}{k}'
+    if isinstance(v, dict):
+      out.update(_flat(v, key + '.'))
+    else:
+      out[key] = v
+  return out
+
+
+def _backfill_defaults(saved):
+  """Add config keys the CURRENT code requires but an older run's saved
+  config predates, using the repo defaults (PREREG_d1_relabel_amend2:
+  schema-drift compatibility; e.g. `agent.model_obs` default '.*'
+  reproduces the pre-key include-everything behavior). Only ABSENT keys
+  are added — saved values always win — and every backfilled key is
+  printed so label logs record exactly what was filled."""
+  path = os.path.join(
+      os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
+      'dreamerv3', 'configs.yaml')
+  with open(path) as f:
+    defaults = yaml.YAML(typ='safe').load(f)['defaults']
+  flat_saved = _flat(saved)
+  missing = {
+      k: v for k, v in _flat(defaults).items()
+      if k not in flat_saved
+      and not any(s.startswith(k + '.') for s in flat_saved)
+      and not any(k.startswith(s + '.') for s in flat_saved)}
+  for key, value in missing.items():
+    node = saved
+    parts = key.split('.')
+    for part in parts[:-1]:
+      node = node.setdefault(part, {})
+    node[parts[-1]] = value
+  if missing:
+    print('[load_config] saved config predates current schema; '
+          'backfilled from defaults:', sorted(missing))
+  return saved
+
+
 def load_config(args, out_dir):
   """Returns (sweep config, train_seed).
 
@@ -72,6 +113,7 @@ def load_config(args, out_dir):
   """
   with open(os.path.join(args.run_logdir, 'config.yaml')) as f:
     saved = yaml.YAML(typ='safe').load(f)
+  saved = _backfill_defaults(saved)
   config = elements.Config(saved)
   train_seed = int(config.seed)
   updates = {
