@@ -298,7 +298,12 @@ dv3_add_cmd_tasks () {
   ) 9>"$qc/queue.lock"
 }
 
-dv3_queue_or_add () { dv3_add_cmd_tasks "${1:?command file}" "${2:?gpu lane}" || dv3_queue_cmds_list "$1" "$2" "${3:-}"; }
+dv3_queue_or_add () {
+  dv3_add_cmd_tasks "${1:?command file}" "${2:?gpu lane}" || {
+    echo "queue_or_add: nothing to append to; starting a new queue on lane $2"
+    dv3_queue_cmds_list "$1" "$2" "${3:-}"
+  }
+}
 
 dv3_queue_supervisor () {
   local gpu="${1:?gpu lane}" qid="${2:?queue id}" qc qdir shard abort grace cmd idx rc frc failures=0 idle_start="" now result=DONE
