@@ -34,8 +34,10 @@ Frozen pre-outcome readers, one per registered experiment; each has a
 - `stamping_read.py`, `scaling_read.py`, `optc_amend_read.py` — stamping + scaling pilot + Option-C corrective.
 - `synth_phaseb_read.py`, `synth_diagnosis_read.py`, `synth_rediag_read.py`, `synth_phasebpp_read.py` — synth series.
 - `tdmpc2_amend_read.py`, `tdmpc2_f2_read.py` — TD-MPC2 family boundary.
-- `pixel_repl_read.py` — pixel X2 (pending results).
-- `unfrozen_calib_read.py`, `orthogonal_obj_read.py`, `vgo_extended_read.py` — Paper-1 band-ledger waves (pending submission).
+- `pixel_repl_read.py` — pixel X2 (read 24 Jul: null, G-X3 NO-GO).
+- `pixel_swamping_read.py` — pixel swamping diagnostic read (frozen 25 Jul pre-outcome; task-arm rew-NLL level + trivial two-hot floor guard; awaits the resubmitted E4 csv).
+- `unfrozen_calib_read.py`, `vgo_extended_read.py` — Paper-1 band-ledger waves (pending submission).
+- `orthogonal_obj_read.py` — orthogonal-objective band leg (read 25 Jul: objective-specific).
 - `buffer_battery.py`, `collate_drivers.py`, `fit_mixed_effects.py` — shared statistics/collation helpers.
 
 ## Instruments

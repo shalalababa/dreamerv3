@@ -6,6 +6,59 @@ immutable dated files; see plan v4.)
 
 ## Deviations
 
+- **2026-07-25 — PIXEL SWAMPING E4 CRASH: measure-side instrument
+  defect found and fixed; Amendment 1 registered PRE-OUTCOME.** Job
+  52626590 crashed on its first run (`KeyError: 'image'`,
+  `rssm.py:228`) before writing any score: `stratified_error.py
+  cmd_measure` selected obs keys with `len(shape) <= 1` — a
+  proprio-era assumption — so the obs dict fed to a pixel encoder
+  (`model_obs: image`) lacked its only input. The frozen `fingerpx_v1`
+  probe set is NOT defective (npz carries `image`, 120×1001×64×64×3
+  uint8) and stays FROZEN. Fix: obs feeding and decode-NLL targets now
+  come from the model's own enc/dec spaces (agent.py's model_obs
+  filtering); images stay uint8 into the encoder (it asserts uint8)
+  and score against f32/255 (the agent's own training-loss
+  convention). Backward identity: for proprio WMs `dec.obs_space`
+  equals the old vector-key list exactly ⇒ every existing proprio E4
+  number is unchanged, no re-measurement triggered.
+  `stratified_error` selfcheck PASS. The registered read is now also
+  frozen pre-outcome: `analysis/pixel_swamping_read.py` (selfcheck
+  PASS) pins the trivial-floor convention (marginal two-hot under the
+  symexp_twohot 255-bin scheme, one common floor — probe set is
+  side-common) and records the apt secondary as absent-by-design
+  (reward_aware gate scores no intrinsic-reward head against true
+  reward). `prereg/PREREG_pixel_swamping_amend1_20260725.md` = the
+  registration; zero pixel E4 quantities existed at freeze (crash
+  preceded all output). User resubmits the SAME sbatch command.
+- **2026-07-25 — FIVE-BUNDLE READ WAVE EXECUTED** (all frozen
+  instruments, one execution each; artifacts + ledger updated same
+  session). (1) **D1 relabel read** (both cohorts, ONE execution;
+  `artifacts/d1_relabel_20260725/`): neither arm fires in any family ⇒
+  corrected negative at 12 clusters; consequence leg fails on the
+  corrected instrument; registered t-interval disclosure reported;
+  backfill logs show ONLY registered keys (7-key subset early, 8-key
+  later — checkout drift between passes, all inert for dmc_proprio;
+  disclosed in the artifact); opportunity/achieved decomposition
+  computed from g_all as registered (secondary #3) — opportunity large
+  (xpol finger +6.3), achieved ≈0 ⇒ parameterizes R3; defect-impact
+  panel (secondary #1) computed against `artifacts/d1_shift_20260724/`
+  per-run means. (2) **Orthogonal-objective read**
+  (`artifacts/orthogonal_obj_20260725/`): local re-run IDENTICAL to
+  cluster json; above floor; does not fire ⇒ objective-specific
+  support; band leg landed. (3) **Spectral compare**
+  (`artifacts/spectral_domains_20260725/`): local compare IDENTICAL to
+  cluster; P-SM1 NOT confirmed (hi side reversed) ⇒ domain account
+  refuted as registered; all 4 buffers own-θ (Amendment-1 fallbacks
+  never engaged). (4) **Collusion stage-1**
+  (`artifacts/collusion_stage1_20260725/`): GO (Δ_profit 0.831 in
+  published range; fingerprint 68/100); coverage saturated at 1.000
+  everywhere ⇒ RQ1 needs a coverage knob before the confirmatory
+  prereg; first slurm job cancelled mid-sweep, complete second job is
+  the record (seed-deterministic). (5) Swamping = crash + amendment
+  (entry above). Cross-cutting: the Scaling-B missing-scores set
+  CHANGED between snapshots (now `fs12q1s0_seed8`, `fs12q1s1_seed7`,
+  `s12q1s1_seed2`, `s12q1s1_seed7`) — flagged as a completeness
+  blocker on the Scaling B read.
 - **2026-07-24 (later) — FULL CODE AUDIT: three further instrument
   issues found and fixed pre-freeze (one labels-affecting, two
   latent).** Systematic audit of the labeling/env/read stack after the

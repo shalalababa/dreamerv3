@@ -298,11 +298,16 @@ def cmd_measure(args):
   model = agent.model
   jax.config.update('jax_transfer_guard', 'allow')
 
-  exclude = ('is_first', 'is_last', 'is_terminal', 'reward')
-  obs_keys = sorted(k for k, v in agent.obs_space.items()
-                    if k not in exclude and len(v.shape) <= 1)
+  # The model's own enc/dec spaces (already filtered by model_obs) decide
+  # what the encoder consumes and what the decoder can be scored on; for
+  # proprio WMs this is exactly the vector-key set, for pixel WMs it is
+  # the image key (probing amendment, prereg/PREREG_pixel_swamping
+  # amendment 1: the previous len(shape)<=1 filter starved pixel encoders).
+  obs_keys = sorted(model.dec.obs_space.keys())
+  feed_keys = sorted(set(obs_keys) | set(model.enc.obs_space.keys()))
+  isimg = {k: len(agent.obs_space[k].shape) == 3 for k in feed_keys}
   act_keys = sorted(agent.act_space.keys())
-  missing = [k for k in obs_keys + act_keys if k not in arrays]
+  missing = [k for k in feed_keys + act_keys if k not in arrays]
   assert not missing, f'E4 probe set lacks keys {missing}.'
   print(f'{os.path.basename(args.run_logdir.rstrip("/"))}: expl.mode='
         f'{expl_mode} reward_aware={reward_aware} horizons={horizons} '
@@ -325,7 +330,10 @@ def cmd_measure(args):
     def decode_nll(feat, k):
       _, _, rec = model.dec(model.dec.initial(B), feat, reset, training=False)
       for key in obs_keys:
-        out[f'h{k}/{key}'] = f32(rec[key].loss(shift(f32(obs[key]), k)))
+        # Same target convention as agent.py loss(): images score against
+        # f32/255, vectors against f32.
+        tgt = f32(obs[key]) / 255 if isimg[key] else f32(obs[key])
+        out[f'h{k}/{key}'] = f32(rec[key].loss(shift(tgt, k)))
       if reward_aware:
         inp = model.feat2tensor({'deter': feat['deter'],
                                  'stoch': feat['stoch']})
@@ -357,7 +365,9 @@ def cmd_measure(args):
   acc = {}
   for lo in range(0, N, args.ep_batch):
     hi = min(lo + args.ep_batch, N)
-    obs = {k: jnp.asarray(arrays[k][lo:hi], np.float32) for k in obs_keys}
+    obs = {k: (jnp.asarray(arrays[k][lo:hi]) if isimg[k]  # uint8: enc asserts
+               else jnp.asarray(arrays[k][lo:hi], np.float32))
+           for k in feed_keys}
     action_dict = {k: jnp.asarray(arrays[k][lo:hi], np.float32)
                    for k in act_keys}
     reward = jnp.asarray(arrays['reward'][lo:hi], np.float32)
