@@ -298,6 +298,8 @@ dv3_add_cmd_tasks () {
   ) 9>"$qc/queue.lock"
 }
 
+dv3_queue_or_add () { dv3_add_cmd_tasks "${1:?command file}" "${2:?gpu lane}" || dv3_queue_cmds_list "$1" "$2" "${3:-}"; }
+
 dv3_queue_supervisor () {
   local gpu="${1:?gpu lane}" qid="${2:?queue id}" qc qdir shard abort grace cmd idx rc frc failures=0 idle_start="" now result=DONE
   qc="$(dv3_qc "$gpu")" || exit 1
