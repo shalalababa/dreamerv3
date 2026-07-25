@@ -1,0 +1,1322 @@
+
+===== [Sat Jul 25 02:26:19 UTC 2026] START d1pilot_relabel_labels gpu=0 =====
+smoke npz missing — run './scripts/d1pilot_relabel_local.sh smoke' first
+
+===== [Sat Jul 25 02:30:34 UTC 2026] START d1pilot_relabel_labels gpu=0 =====
+[Sat Jul 25 02:30:34 UTC 2026] labeling d1pilot_cup_e1_seed1 base
+[load_config] saved config predates current schema; backfilled from defaults: ['agent.model_obs', 'env.synth.coupling', 'env.synth.distractor_scale', 'env.synth.distractors', 'env.synth.length', 'env.synth.radius', 'env.synth.use_seed']
+Observations
+  reward           Space(float32, shape=(), low=-inf, high=inf)
+  is_first         Space(bool, shape=(), low=False, high=True)
+  is_last          Space(bool, shape=(), low=False, high=True)
+  is_terminal      Space(bool, shape=(), low=False, high=True)
+  position         Space(float32, shape=(4,), low=-inf, high=inf)
+  velocity         Space(float32, shape=(4,), low=-inf, high=inf)
+Actions
+  action           Space(float32, shape=(2,), low=-1.0, high=1.0)
+Extras
+  consec           Space(int32, shape=(), low=-2147483648, high=2147483647)
+  stepid           Space(uint8, shape=(20,), low=0, high=255)
+  dyn/deter        Space(float32, shape=(512,), low=-inf, high=inf)
+  dyn/stoch        Space(float32, shape=(32, 4), low=-inf, high=inf)
+JAX devices (1): [cuda:0]
+Policy devices: cuda:0
+Train devices:  cuda:0
+Initializing parameters...
+/workspace/dreamerv3/embodied/jax/agent.py:112: DeprecationWarning: `with mesh:` context manager has been deprecated. Please use `with jax.set_mesh(mesh):` instead.
+  with self.train_mesh:
+Optimizer opt has 4,131,718 params:
+     3,163,136 disag
+       396,666 val
+       364,160 dyn
+        66,111 valens1
+        66,111 valens2
+        66,111 valens0
+        66,111 valens4
+        66,111 valens3
+        57,663 rew
+        50,056 dec
+        49,796 pol
+        41,153 con
+         9,088 enc
+/venv/main/lib/python3.11/site-packages/optax/_src/linear_algebra.py:44: DeprecationWarning: optax.global_norm is deprecated in favor of optax.tree.norm
+  warnings.warn(
+Done initializing!
+Compiling 1 checkpoint groups...
+Largest checkpoint group: 0 GB
+Compiling train and report...
+/workspace/dreamerv3/embodied/jax/agent.py:187: DeprecationWarning: `with mesh:` context manager has been deprecated. Please use `with jax.set_mesh(mesh):` instead.
+  with self.train_mesh:
+/venv/main/lib/python3.11/site-packages/optax/_src/linear_algebra.py:44: DeprecationWarning: optax.global_norm is deprecated in favor of optax.tree.norm
+  warnings.warn(
+Train cost analysis:
+No available
+Report cost analysis:
+No available
+Done compiling!
+Loading checkpoint: /workspace/dreamerv3_runs/d1shift_local/d1pilot_cup_e1_seed1/ckpt/20260717T103014F828248
+Loaded checkpoint.
+wrote /workspace/dreamerv3_runs/d1shift_local/d1_labels_fix/d1pilot_cup_e1_seed1_base.npz: 200 labeled states; mean delta_real +0.015, mean delta_imag -0.015
+[Sat Jul 25 02:41:54 UTC 2026] labeling d1pilot_cup_e1_seed1 xpol (behavior /workspace/dreamerv3_runs/d1shift_local/d1pilot_cup_e1_seed2/ckpt)
+[load_config] saved config predates current schema; backfilled from defaults: ['agent.model_obs', 'env.synth.coupling', 'env.synth.distractor_scale', 'env.synth.distractors', 'env.synth.length', 'env.synth.radius', 'env.synth.use_seed']
+Observations
+  reward           Space(float32, shape=(), low=-inf, high=inf)
+  is_first         Space(bool, shape=(), low=False, high=True)
+  is_last          Space(bool, shape=(), low=False, high=True)
+  is_terminal      Space(bool, shape=(), low=False, high=True)
+  position         Space(float32, shape=(4,), low=-inf, high=inf)
+  velocity         Space(float32, shape=(4,), low=-inf, high=inf)
+Actions
+  action           Space(float32, shape=(2,), low=-1.0, high=1.0)
+Extras
+  consec           Space(int32, shape=(), low=-2147483648, high=2147483647)
+  stepid           Space(uint8, shape=(20,), low=0, high=255)
+  dyn/deter        Space(float32, shape=(512,), low=-inf, high=inf)
+  dyn/stoch        Space(float32, shape=(32, 4), low=-inf, high=inf)
+JAX devices (1): [cuda:0]
+Policy devices: cuda:0
+Train devices:  cuda:0
+Initializing parameters...
+/workspace/dreamerv3/embodied/jax/agent.py:112: DeprecationWarning: `with mesh:` context manager has been deprecated. Please use `with jax.set_mesh(mesh):` instead.
+  with self.train_mesh:
+Optimizer opt has 4,131,718 params:
+     3,163,136 disag
+       396,666 val
+       364,160 dyn
+        66,111 valens2
+        66,111 valens4
+        66,111 valens3
+        66,111 valens0
+        66,111 valens1
+        57,663 rew
+        50,056 dec
+        49,796 pol
+        41,153 con
+         9,088 enc
+/venv/main/lib/python3.11/site-packages/optax/_src/linear_algebra.py:44: DeprecationWarning: optax.global_norm is deprecated in favor of optax.tree.norm
+  warnings.warn(
+Done initializing!
+Compiling 1 checkpoint groups...
+Largest checkpoint group: 0 GB
+Compiling train and report...
+/workspace/dreamerv3/embodied/jax/agent.py:187: DeprecationWarning: `with mesh:` context manager has been deprecated. Please use `with jax.set_mesh(mesh):` instead.
+  with self.train_mesh:
+/venv/main/lib/python3.11/site-packages/optax/_src/linear_algebra.py:44: DeprecationWarning: optax.global_norm is deprecated in favor of optax.tree.norm
+  warnings.warn(
+Train cost analysis:
+No available
+Report cost analysis:
+No available
+Done compiling!
+Loading checkpoint: /workspace/dreamerv3_runs/d1shift_local/d1pilot_cup_e1_seed1/ckpt/20260717T103014F828248
+Loaded checkpoint.
+Observations
+  reward           Space(float32, shape=(), low=-inf, high=inf)
+  is_first         Space(bool, shape=(), low=False, high=True)
+  is_last          Space(bool, shape=(), low=False, high=True)
+  is_terminal      Space(bool, shape=(), low=False, high=True)
+  position         Space(float32, shape=(4,), low=-inf, high=inf)
+  velocity         Space(float32, shape=(4,), low=-inf, high=inf)
+Actions
+  action           Space(float32, shape=(2,), low=-1.0, high=1.0)
+Extras
+  consec           Space(int32, shape=(), low=-2147483648, high=2147483647)
+  stepid           Space(uint8, shape=(20,), low=0, high=255)
+  dyn/deter        Space(float32, shape=(512,), low=-inf, high=inf)
+  dyn/stoch        Space(float32, shape=(32, 4), low=-inf, high=inf)
+JAX devices (1): [cuda:0]
+Policy devices: cuda:0
+Train devices:  cuda:0
+Initializing parameters...
+/workspace/dreamerv3/embodied/jax/agent.py:112: DeprecationWarning: `with mesh:` context manager has been deprecated. Please use `with jax.set_mesh(mesh):` instead.
+  with self.train_mesh:
+Optimizer opt has 4,131,718 params:
+     3,163,136 disag
+       396,666 val
+       364,160 dyn
+        66,111 valens2
+        66,111 valens4
+        66,111 valens3
+        66,111 valens0
+        66,111 valens1
+        57,663 rew
+        50,056 dec
+        49,796 pol
+        41,153 con
+         9,088 enc
+/venv/main/lib/python3.11/site-packages/optax/_src/linear_algebra.py:44: DeprecationWarning: optax.global_norm is deprecated in favor of optax.tree.norm
+  warnings.warn(
+Done initializing!
+Compiling 1 checkpoint groups...
+Largest checkpoint group: 0 GB
+Compiling train and report...
+/workspace/dreamerv3/embodied/jax/agent.py:187: DeprecationWarning: `with mesh:` context manager has been deprecated. Please use `with jax.set_mesh(mesh):` instead.
+  with self.train_mesh:
+/venv/main/lib/python3.11/site-packages/optax/_src/linear_algebra.py:44: DeprecationWarning: optax.global_norm is deprecated in favor of optax.tree.norm
+  warnings.warn(
+Train cost analysis:
+No available
+Report cost analysis:
+No available
+Done compiling!
+Loading checkpoint: /workspace/dreamerv3_runs/d1shift_local/d1pilot_cup_e1_seed2/ckpt/20260717T103010F615717
+Loaded checkpoint.
+wrote /workspace/dreamerv3_runs/d1shift_local/d1_labels_fix/d1pilot_cup_e1_seed1_xpol.npz: 200 labeled states; mean delta_real +0.040, mean delta_imag +0.045
+[Sat Jul 25 02:55:28 UTC 2026] labeling d1pilot_cup_e1_seed1 phys (mass x1.3)
+[load_config] saved config predates current schema; backfilled from defaults: ['agent.model_obs', 'env.synth.coupling', 'env.synth.distractor_scale', 'env.synth.distractors', 'env.synth.length', 'env.synth.radius', 'env.synth.use_seed']
+Observations
+  reward           Space(float32, shape=(), low=-inf, high=inf)
+  is_first         Space(bool, shape=(), low=False, high=True)
+  is_last          Space(bool, shape=(), low=False, high=True)
+  is_terminal      Space(bool, shape=(), low=False, high=True)
+  position         Space(float32, shape=(4,), low=-inf, high=inf)
+  velocity         Space(float32, shape=(4,), low=-inf, high=inf)
+Actions
+  action           Space(float32, shape=(2,), low=-1.0, high=1.0)
+Extras
+  consec           Space(int32, shape=(), low=-2147483648, high=2147483647)
+  stepid           Space(uint8, shape=(20,), low=0, high=255)
+  dyn/deter        Space(float32, shape=(512,), low=-inf, high=inf)
+  dyn/stoch        Space(float32, shape=(32, 4), low=-inf, high=inf)
+JAX devices (1): [cuda:0]
+Policy devices: cuda:0
+Train devices:  cuda:0
+Initializing parameters...
+/workspace/dreamerv3/embodied/jax/agent.py:112: DeprecationWarning: `with mesh:` context manager has been deprecated. Please use `with jax.set_mesh(mesh):` instead.
+  with self.train_mesh:
+Optimizer opt has 4,131,718 params:
+     3,163,136 disag
+       396,666 val
+       364,160 dyn
+        66,111 valens3
+        66,111 valens4
+        66,111 valens0
+        66,111 valens2
+        66,111 valens1
+        57,663 rew
+        50,056 dec
+        49,796 pol
+        41,153 con
+         9,088 enc
+/venv/main/lib/python3.11/site-packages/optax/_src/linear_algebra.py:44: DeprecationWarning: optax.global_norm is deprecated in favor of optax.tree.norm
+  warnings.warn(
+Done initializing!
+Compiling 1 checkpoint groups...
+Largest checkpoint group: 0 GB
+Compiling train and report...
+/workspace/dreamerv3/embodied/jax/agent.py:187: DeprecationWarning: `with mesh:` context manager has been deprecated. Please use `with jax.set_mesh(mesh):` instead.
+  with self.train_mesh:
+/venv/main/lib/python3.11/site-packages/optax/_src/linear_algebra.py:44: DeprecationWarning: optax.global_norm is deprecated in favor of optax.tree.norm
+  warnings.warn(
+Train cost analysis:
+No available
+Report cost analysis:
+No available
+Done compiling!
+Loading checkpoint: /workspace/dreamerv3_runs/d1shift_local/d1pilot_cup_e1_seed1/ckpt/20260717T103014F828248
+Loaded checkpoint.
+wrote /workspace/dreamerv3_runs/d1shift_local/d1_labels_fix/d1pilot_cup_e1_seed1_phys.npz: 200 labeled states; mean delta_real -0.315, mean delta_imag +0.010
+[Sat Jul 25 03:06:46 UTC 2026] labeling d1pilot_cup_e1_seed2 base
+[load_config] saved config predates current schema; backfilled from defaults: ['agent.model_obs', 'env.synth.coupling', 'env.synth.distractor_scale', 'env.synth.distractors', 'env.synth.length', 'env.synth.radius', 'env.synth.use_seed']
+Observations
+  reward           Space(float32, shape=(), low=-inf, high=inf)
+  is_first         Space(bool, shape=(), low=False, high=True)
+  is_last          Space(bool, shape=(), low=False, high=True)
+  is_terminal      Space(bool, shape=(), low=False, high=True)
+  position         Space(float32, shape=(4,), low=-inf, high=inf)
+  velocity         Space(float32, shape=(4,), low=-inf, high=inf)
+Actions
+  action           Space(float32, shape=(2,), low=-1.0, high=1.0)
+Extras
+  consec           Space(int32, shape=(), low=-2147483648, high=2147483647)
+  stepid           Space(uint8, shape=(20,), low=0, high=255)
+  dyn/deter        Space(float32, shape=(512,), low=-inf, high=inf)
+  dyn/stoch        Space(float32, shape=(32, 4), low=-inf, high=inf)
+JAX devices (1): [cuda:0]
+Policy devices: cuda:0
+Train devices:  cuda:0
+Initializing parameters...
+/workspace/dreamerv3/embodied/jax/agent.py:112: DeprecationWarning: `with mesh:` context manager has been deprecated. Please use `with jax.set_mesh(mesh):` instead.
+  with self.train_mesh:
+Optimizer opt has 4,131,718 params:
+     3,163,136 disag
+       396,666 val
+       364,160 dyn
+        66,111 valens2
+        66,111 valens1
+        66,111 valens3
+        66,111 valens4
+        66,111 valens0
+        57,663 rew
+        50,056 dec
+        49,796 pol
+        41,153 con
+         9,088 enc
+/venv/main/lib/python3.11/site-packages/optax/_src/linear_algebra.py:44: DeprecationWarning: optax.global_norm is deprecated in favor of optax.tree.norm
+  warnings.warn(
+Done initializing!
+Compiling 1 checkpoint groups...
+Largest checkpoint group: 0 GB
+Compiling train and report...
+/workspace/dreamerv3/embodied/jax/agent.py:187: DeprecationWarning: `with mesh:` context manager has been deprecated. Please use `with jax.set_mesh(mesh):` instead.
+  with self.train_mesh:
+/venv/main/lib/python3.11/site-packages/optax/_src/linear_algebra.py:44: DeprecationWarning: optax.global_norm is deprecated in favor of optax.tree.norm
+  warnings.warn(
+Train cost analysis:
+No available
+Report cost analysis:
+No available
+Done compiling!
+Loading checkpoint: /workspace/dreamerv3_runs/d1shift_local/d1pilot_cup_e1_seed2/ckpt/20260717T103010F615717
+Loaded checkpoint.
+wrote /workspace/dreamerv3_runs/d1shift_local/d1_labels_fix/d1pilot_cup_e1_seed2_base.npz: 200 labeled states; mean delta_real +0.315, mean delta_imag +0.235
+[Sat Jul 25 03:18:04 UTC 2026] labeling d1pilot_cup_e1_seed2 xpol (behavior /workspace/dreamerv3_runs/d1shift_local/d1pilot_cup_e1_seed3/ckpt)
+[load_config] saved config predates current schema; backfilled from defaults: ['agent.model_obs', 'env.synth.coupling', 'env.synth.distractor_scale', 'env.synth.distractors', 'env.synth.length', 'env.synth.radius', 'env.synth.use_seed']
+Observations
+  reward           Space(float32, shape=(), low=-inf, high=inf)
+  is_first         Space(bool, shape=(), low=False, high=True)
+  is_last          Space(bool, shape=(), low=False, high=True)
+  is_terminal      Space(bool, shape=(), low=False, high=True)
+  position         Space(float32, shape=(4,), low=-inf, high=inf)
+  velocity         Space(float32, shape=(4,), low=-inf, high=inf)
+Actions
+  action           Space(float32, shape=(2,), low=-1.0, high=1.0)
+Extras
+  consec           Space(int32, shape=(), low=-2147483648, high=2147483647)
+  stepid           Space(uint8, shape=(20,), low=0, high=255)
+  dyn/deter        Space(float32, shape=(512,), low=-inf, high=inf)
+  dyn/stoch        Space(float32, shape=(32, 4), low=-inf, high=inf)
+JAX devices (1): [cuda:0]
+Policy devices: cuda:0
+Train devices:  cuda:0
+Initializing parameters...
+/workspace/dreamerv3/embodied/jax/agent.py:112: DeprecationWarning: `with mesh:` context manager has been deprecated. Please use `with jax.set_mesh(mesh):` instead.
+  with self.train_mesh:
+Optimizer opt has 4,131,718 params:
+     3,163,136 disag
+       396,666 val
+       364,160 dyn
+        66,111 valens4
+        66,111 valens0
+        66,111 valens2
+        66,111 valens1
+        66,111 valens3
+        57,663 rew
+        50,056 dec
+        49,796 pol
+        41,153 con
+         9,088 enc
+/venv/main/lib/python3.11/site-packages/optax/_src/linear_algebra.py:44: DeprecationWarning: optax.global_norm is deprecated in favor of optax.tree.norm
+  warnings.warn(
+Done initializing!
+Compiling 1 checkpoint groups...
+Largest checkpoint group: 0 GB
+Compiling train and report...
+/workspace/dreamerv3/embodied/jax/agent.py:187: DeprecationWarning: `with mesh:` context manager has been deprecated. Please use `with jax.set_mesh(mesh):` instead.
+  with self.train_mesh:
+/venv/main/lib/python3.11/site-packages/optax/_src/linear_algebra.py:44: DeprecationWarning: optax.global_norm is deprecated in favor of optax.tree.norm
+  warnings.warn(
+Train cost analysis:
+No available
+Report cost analysis:
+No available
+Done compiling!
+Loading checkpoint: /workspace/dreamerv3_runs/d1shift_local/d1pilot_cup_e1_seed2/ckpt/20260717T103010F615717
+Loaded checkpoint.
+Observations
+  reward           Space(float32, shape=(), low=-inf, high=inf)
+  is_first         Space(bool, shape=(), low=False, high=True)
+  is_last          Space(bool, shape=(), low=False, high=True)
+  is_terminal      Space(bool, shape=(), low=False, high=True)
+  position         Space(float32, shape=(4,), low=-inf, high=inf)
+  velocity         Space(float32, shape=(4,), low=-inf, high=inf)
+Actions
+  action           Space(float32, shape=(2,), low=-1.0, high=1.0)
+Extras
+  consec           Space(int32, shape=(), low=-2147483648, high=2147483647)
+  stepid           Space(uint8, shape=(20,), low=0, high=255)
+  dyn/deter        Space(float32, shape=(512,), low=-inf, high=inf)
+  dyn/stoch        Space(float32, shape=(32, 4), low=-inf, high=inf)
+JAX devices (1): [cuda:0]
+Policy devices: cuda:0
+Train devices:  cuda:0
+Initializing parameters...
+/workspace/dreamerv3/embodied/jax/agent.py:112: DeprecationWarning: `with mesh:` context manager has been deprecated. Please use `with jax.set_mesh(mesh):` instead.
+  with self.train_mesh:
+Optimizer opt has 4,131,718 params:
+     3,163,136 disag
+       396,666 val
+       364,160 dyn
+        66,111 valens4
+        66,111 valens0
+        66,111 valens2
+        66,111 valens1
+        66,111 valens3
+        57,663 rew
+        50,056 dec
+        49,796 pol
+        41,153 con
+         9,088 enc
+/venv/main/lib/python3.11/site-packages/optax/_src/linear_algebra.py:44: DeprecationWarning: optax.global_norm is deprecated in favor of optax.tree.norm
+  warnings.warn(
+Done initializing!
+Compiling 1 checkpoint groups...
+Largest checkpoint group: 0 GB
+Compiling train and report...
+/workspace/dreamerv3/embodied/jax/agent.py:187: DeprecationWarning: `with mesh:` context manager has been deprecated. Please use `with jax.set_mesh(mesh):` instead.
+  with self.train_mesh:
+/venv/main/lib/python3.11/site-packages/optax/_src/linear_algebra.py:44: DeprecationWarning: optax.global_norm is deprecated in favor of optax.tree.norm
+  warnings.warn(
+Train cost analysis:
+No available
+Report cost analysis:
+No available
+Done compiling!
+Loading checkpoint: /workspace/dreamerv3_runs/d1shift_local/d1pilot_cup_e1_seed3/ckpt/20260717T120650F309798
+Loaded checkpoint.
+wrote /workspace/dreamerv3_runs/d1shift_local/d1_labels_fix/d1pilot_cup_e1_seed2_xpol.npz: 200 labeled states; mean delta_real +0.010, mean delta_imag +0.205
+[Sat Jul 25 03:31:42 UTC 2026] labeling d1pilot_cup_e1_seed2 phys (mass x1.3)
+[load_config] saved config predates current schema; backfilled from defaults: ['agent.model_obs', 'env.synth.coupling', 'env.synth.distractor_scale', 'env.synth.distractors', 'env.synth.length', 'env.synth.radius', 'env.synth.use_seed']
+Observations
+  reward           Space(float32, shape=(), low=-inf, high=inf)
+  is_first         Space(bool, shape=(), low=False, high=True)
+  is_last          Space(bool, shape=(), low=False, high=True)
+  is_terminal      Space(bool, shape=(), low=False, high=True)
+  position         Space(float32, shape=(4,), low=-inf, high=inf)
+  velocity         Space(float32, shape=(4,), low=-inf, high=inf)
+Actions
+  action           Space(float32, shape=(2,), low=-1.0, high=1.0)
+Extras
+  consec           Space(int32, shape=(), low=-2147483648, high=2147483647)
+  stepid           Space(uint8, shape=(20,), low=0, high=255)
+  dyn/deter        Space(float32, shape=(512,), low=-inf, high=inf)
+  dyn/stoch        Space(float32, shape=(32, 4), low=-inf, high=inf)
+JAX devices (1): [cuda:0]
+Policy devices: cuda:0
+Train devices:  cuda:0
+Initializing parameters...
+/workspace/dreamerv3/embodied/jax/agent.py:112: DeprecationWarning: `with mesh:` context manager has been deprecated. Please use `with jax.set_mesh(mesh):` instead.
+  with self.train_mesh:
+Optimizer opt has 4,131,718 params:
+     3,163,136 disag
+       396,666 val
+       364,160 dyn
+        66,111 valens2
+        66,111 valens0
+        66,111 valens1
+        66,111 valens4
+        66,111 valens3
+        57,663 rew
+        50,056 dec
+        49,796 pol
+        41,153 con
+         9,088 enc
+/venv/main/lib/python3.11/site-packages/optax/_src/linear_algebra.py:44: DeprecationWarning: optax.global_norm is deprecated in favor of optax.tree.norm
+  warnings.warn(
+Done initializing!
+Compiling 1 checkpoint groups...
+Largest checkpoint group: 0 GB
+Compiling train and report...
+/workspace/dreamerv3/embodied/jax/agent.py:187: DeprecationWarning: `with mesh:` context manager has been deprecated. Please use `with jax.set_mesh(mesh):` instead.
+  with self.train_mesh:
+/venv/main/lib/python3.11/site-packages/optax/_src/linear_algebra.py:44: DeprecationWarning: optax.global_norm is deprecated in favor of optax.tree.norm
+  warnings.warn(
+Train cost analysis:
+No available
+Report cost analysis:
+No available
+Done compiling!
+Loading checkpoint: /workspace/dreamerv3_runs/d1shift_local/d1pilot_cup_e1_seed2/ckpt/20260717T103010F615717
+Loaded checkpoint.
+wrote /workspace/dreamerv3_runs/d1shift_local/d1_labels_fix/d1pilot_cup_e1_seed2_phys.npz: 200 labeled states; mean delta_real -0.010, mean delta_imag -0.005
+[Sat Jul 25 03:43:05 UTC 2026] labeling d1pilot_cup_e1_seed3 base
+[load_config] saved config predates current schema; backfilled from defaults: ['agent.model_obs', 'env.synth.coupling', 'env.synth.distractor_scale', 'env.synth.distractors', 'env.synth.length', 'env.synth.radius', 'env.synth.use_seed']
+Observations
+  reward           Space(float32, shape=(), low=-inf, high=inf)
+  is_first         Space(bool, shape=(), low=False, high=True)
+  is_last          Space(bool, shape=(), low=False, high=True)
+  is_terminal      Space(bool, shape=(), low=False, high=True)
+  position         Space(float32, shape=(4,), low=-inf, high=inf)
+  velocity         Space(float32, shape=(4,), low=-inf, high=inf)
+Actions
+  action           Space(float32, shape=(2,), low=-1.0, high=1.0)
+Extras
+  consec           Space(int32, shape=(), low=-2147483648, high=2147483647)
+  stepid           Space(uint8, shape=(20,), low=0, high=255)
+  dyn/deter        Space(float32, shape=(512,), low=-inf, high=inf)
+  dyn/stoch        Space(float32, shape=(32, 4), low=-inf, high=inf)
+JAX devices (1): [cuda:0]
+Policy devices: cuda:0
+Train devices:  cuda:0
+Initializing parameters...
+/workspace/dreamerv3/embodied/jax/agent.py:112: DeprecationWarning: `with mesh:` context manager has been deprecated. Please use `with jax.set_mesh(mesh):` instead.
+  with self.train_mesh:
+Optimizer opt has 4,131,718 params:
+     3,163,136 disag
+       396,666 val
+       364,160 dyn
+        66,111 valens1
+        66,111 valens2
+        66,111 valens4
+        66,111 valens0
+        66,111 valens3
+        57,663 rew
+        50,056 dec
+        49,796 pol
+        41,153 con
+         9,088 enc
+/venv/main/lib/python3.11/site-packages/optax/_src/linear_algebra.py:44: DeprecationWarning: optax.global_norm is deprecated in favor of optax.tree.norm
+  warnings.warn(
+Done initializing!
+Compiling 1 checkpoint groups...
+Largest checkpoint group: 0 GB
+Compiling train and report...
+/workspace/dreamerv3/embodied/jax/agent.py:187: DeprecationWarning: `with mesh:` context manager has been deprecated. Please use `with jax.set_mesh(mesh):` instead.
+  with self.train_mesh:
+/venv/main/lib/python3.11/site-packages/optax/_src/linear_algebra.py:44: DeprecationWarning: optax.global_norm is deprecated in favor of optax.tree.norm
+  warnings.warn(
+Train cost analysis:
+No available
+Report cost analysis:
+No available
+Done compiling!
+Loading checkpoint: /workspace/dreamerv3_runs/d1shift_local/d1pilot_cup_e1_seed3/ckpt/20260717T120650F309798
+Loaded checkpoint.
+wrote /workspace/dreamerv3_runs/d1shift_local/d1_labels_fix/d1pilot_cup_e1_seed3_base.npz: 200 labeled states; mean delta_real +0.010, mean delta_imag +0.010
+[Sat Jul 25 03:54:22 UTC 2026] labeling d1pilot_cup_e1_seed3 xpol (behavior /workspace/dreamerv3_runs/d1shift_local/d1pilot_cup_e1_seed1/ckpt)
+[load_config] saved config predates current schema; backfilled from defaults: ['agent.model_obs', 'env.synth.coupling', 'env.synth.distractor_scale', 'env.synth.distractors', 'env.synth.length', 'env.synth.radius', 'env.synth.use_seed']
+Observations
+  reward           Space(float32, shape=(), low=-inf, high=inf)
+  is_first         Space(bool, shape=(), low=False, high=True)
+  is_last          Space(bool, shape=(), low=False, high=True)
+  is_terminal      Space(bool, shape=(), low=False, high=True)
+  position         Space(float32, shape=(4,), low=-inf, high=inf)
+  velocity         Space(float32, shape=(4,), low=-inf, high=inf)
+Actions
+  action           Space(float32, shape=(2,), low=-1.0, high=1.0)
+Extras
+  consec           Space(int32, shape=(), low=-2147483648, high=2147483647)
+  stepid           Space(uint8, shape=(20,), low=0, high=255)
+  dyn/deter        Space(float32, shape=(512,), low=-inf, high=inf)
+  dyn/stoch        Space(float32, shape=(32, 4), low=-inf, high=inf)
+JAX devices (1): [cuda:0]
+Policy devices: cuda:0
+Train devices:  cuda:0
+Initializing parameters...
+/workspace/dreamerv3/embodied/jax/agent.py:112: DeprecationWarning: `with mesh:` context manager has been deprecated. Please use `with jax.set_mesh(mesh):` instead.
+  with self.train_mesh:
+Optimizer opt has 4,131,718 params:
+     3,163,136 disag
+       396,666 val
+       364,160 dyn
+        66,111 valens3
+        66,111 valens0
+        66,111 valens4
+        66,111 valens2
+        66,111 valens1
+        57,663 rew
+        50,056 dec
+        49,796 pol
+        41,153 con
+         9,088 enc
+/venv/main/lib/python3.11/site-packages/optax/_src/linear_algebra.py:44: DeprecationWarning: optax.global_norm is deprecated in favor of optax.tree.norm
+  warnings.warn(
+Done initializing!
+Compiling 1 checkpoint groups...
+Largest checkpoint group: 0 GB
+Compiling train and report...
+/workspace/dreamerv3/embodied/jax/agent.py:187: DeprecationWarning: `with mesh:` context manager has been deprecated. Please use `with jax.set_mesh(mesh):` instead.
+  with self.train_mesh:
+/venv/main/lib/python3.11/site-packages/optax/_src/linear_algebra.py:44: DeprecationWarning: optax.global_norm is deprecated in favor of optax.tree.norm
+  warnings.warn(
+Train cost analysis:
+No available
+Report cost analysis:
+No available
+Done compiling!
+Loading checkpoint: /workspace/dreamerv3_runs/d1shift_local/d1pilot_cup_e1_seed3/ckpt/20260717T120650F309798
+Loaded checkpoint.
+Observations
+  reward           Space(float32, shape=(), low=-inf, high=inf)
+  is_first         Space(bool, shape=(), low=False, high=True)
+  is_last          Space(bool, shape=(), low=False, high=True)
+  is_terminal      Space(bool, shape=(), low=False, high=True)
+  position         Space(float32, shape=(4,), low=-inf, high=inf)
+  velocity         Space(float32, shape=(4,), low=-inf, high=inf)
+Actions
+  action           Space(float32, shape=(2,), low=-1.0, high=1.0)
+Extras
+  consec           Space(int32, shape=(), low=-2147483648, high=2147483647)
+  stepid           Space(uint8, shape=(20,), low=0, high=255)
+  dyn/deter        Space(float32, shape=(512,), low=-inf, high=inf)
+  dyn/stoch        Space(float32, shape=(32, 4), low=-inf, high=inf)
+JAX devices (1): [cuda:0]
+Policy devices: cuda:0
+Train devices:  cuda:0
+Initializing parameters...
+/workspace/dreamerv3/embodied/jax/agent.py:112: DeprecationWarning: `with mesh:` context manager has been deprecated. Please use `with jax.set_mesh(mesh):` instead.
+  with self.train_mesh:
+Optimizer opt has 4,131,718 params:
+     3,163,136 disag
+       396,666 val
+       364,160 dyn
+        66,111 valens3
+        66,111 valens0
+        66,111 valens4
+        66,111 valens2
+        66,111 valens1
+        57,663 rew
+        50,056 dec
+        49,796 pol
+        41,153 con
+         9,088 enc
+/venv/main/lib/python3.11/site-packages/optax/_src/linear_algebra.py:44: DeprecationWarning: optax.global_norm is deprecated in favor of optax.tree.norm
+  warnings.warn(
+Done initializing!
+Compiling 1 checkpoint groups...
+Largest checkpoint group: 0 GB
+Compiling train and report...
+/workspace/dreamerv3/embodied/jax/agent.py:187: DeprecationWarning: `with mesh:` context manager has been deprecated. Please use `with jax.set_mesh(mesh):` instead.
+  with self.train_mesh:
+/venv/main/lib/python3.11/site-packages/optax/_src/linear_algebra.py:44: DeprecationWarning: optax.global_norm is deprecated in favor of optax.tree.norm
+  warnings.warn(
+Train cost analysis:
+No available
+Report cost analysis:
+No available
+Done compiling!
+Loading checkpoint: /workspace/dreamerv3_runs/d1shift_local/d1pilot_cup_e1_seed1/ckpt/20260717T103014F828248
+Loaded checkpoint.
+wrote /workspace/dreamerv3_runs/d1shift_local/d1_labels_fix/d1pilot_cup_e1_seed3_xpol.npz: 200 labeled states; mean delta_real -0.135, mean delta_imag -0.755
+[Sat Jul 25 04:07:57 UTC 2026] labeling d1pilot_cup_e1_seed3 phys (mass x1.3)
+[load_config] saved config predates current schema; backfilled from defaults: ['agent.model_obs', 'env.synth.coupling', 'env.synth.distractor_scale', 'env.synth.distractors', 'env.synth.length', 'env.synth.radius', 'env.synth.use_seed']
+Observations
+  reward           Space(float32, shape=(), low=-inf, high=inf)
+  is_first         Space(bool, shape=(), low=False, high=True)
+  is_last          Space(bool, shape=(), low=False, high=True)
+  is_terminal      Space(bool, shape=(), low=False, high=True)
+  position         Space(float32, shape=(4,), low=-inf, high=inf)
+  velocity         Space(float32, shape=(4,), low=-inf, high=inf)
+Actions
+  action           Space(float32, shape=(2,), low=-1.0, high=1.0)
+Extras
+  consec           Space(int32, shape=(), low=-2147483648, high=2147483647)
+  stepid           Space(uint8, shape=(20,), low=0, high=255)
+  dyn/deter        Space(float32, shape=(512,), low=-inf, high=inf)
+  dyn/stoch        Space(float32, shape=(32, 4), low=-inf, high=inf)
+JAX devices (1): [cuda:0]
+Policy devices: cuda:0
+Train devices:  cuda:0
+Initializing parameters...
+/workspace/dreamerv3/embodied/jax/agent.py:112: DeprecationWarning: `with mesh:` context manager has been deprecated. Please use `with jax.set_mesh(mesh):` instead.
+  with self.train_mesh:
+Optimizer opt has 4,131,718 params:
+     3,163,136 disag
+       396,666 val
+       364,160 dyn
+        66,111 valens0
+        66,111 valens3
+        66,111 valens2
+        66,111 valens1
+        66,111 valens4
+        57,663 rew
+        50,056 dec
+        49,796 pol
+        41,153 con
+         9,088 enc
+/venv/main/lib/python3.11/site-packages/optax/_src/linear_algebra.py:44: DeprecationWarning: optax.global_norm is deprecated in favor of optax.tree.norm
+  warnings.warn(
+Done initializing!
+Compiling 1 checkpoint groups...
+Largest checkpoint group: 0 GB
+Compiling train and report...
+/workspace/dreamerv3/embodied/jax/agent.py:187: DeprecationWarning: `with mesh:` context manager has been deprecated. Please use `with jax.set_mesh(mesh):` instead.
+  with self.train_mesh:
+/venv/main/lib/python3.11/site-packages/optax/_src/linear_algebra.py:44: DeprecationWarning: optax.global_norm is deprecated in favor of optax.tree.norm
+  warnings.warn(
+Train cost analysis:
+No available
+Report cost analysis:
+No available
+Done compiling!
+Loading checkpoint: /workspace/dreamerv3_runs/d1shift_local/d1pilot_cup_e1_seed3/ckpt/20260717T120650F309798
+Loaded checkpoint.
+wrote /workspace/dreamerv3_runs/d1shift_local/d1_labels_fix/d1pilot_cup_e1_seed3_phys.npz: 200 labeled states; mean delta_real -0.010, mean delta_imag +0.005
+[Sat Jul 25 04:19:18 UTC 2026] labeling d1pilot_finger_e1_seed1 base
+[load_config] saved config predates current schema; backfilled from defaults: ['agent.model_obs', 'env.synth.coupling', 'env.synth.distractor_scale', 'env.synth.distractors', 'env.synth.length', 'env.synth.radius', 'env.synth.use_seed']
+Observations
+  reward           Space(float32, shape=(), low=-inf, high=inf)
+  is_first         Space(bool, shape=(), low=False, high=True)
+  is_last          Space(bool, shape=(), low=False, high=True)
+  is_terminal      Space(bool, shape=(), low=False, high=True)
+  position         Space(float32, shape=(4,), low=-inf, high=inf)
+  velocity         Space(float32, shape=(3,), low=-inf, high=inf)
+  touch            Space(float32, shape=(2,), low=-inf, high=inf)
+  target_position  Space(float32, shape=(2,), low=-inf, high=inf)
+  dist_to_target   Space(float32, shape=(), low=-inf, high=inf)
+Actions
+  action           Space(float32, shape=(2,), low=-1.0, high=1.0)
+Extras
+  consec           Space(int32, shape=(), low=-2147483648, high=2147483647)
+  stepid           Space(uint8, shape=(20,), low=0, high=255)
+  dyn/deter        Space(float32, shape=(512,), low=-inf, high=inf)
+  dyn/stoch        Space(float32, shape=(32, 4), low=-inf, high=inf)
+JAX devices (1): [cuda:0]
+Policy devices: cuda:0
+Train devices:  cuda:0
+Initializing parameters...
+/workspace/dreamerv3/embodied/jax/agent.py:112: DeprecationWarning: `with mesh:` context manager has been deprecated. Please use `with jax.set_mesh(mesh):` instead.
+  with self.train_mesh:
+Optimizer opt has 4,132,234 params:
+     3,163,136 disag
+       396,666 val
+       364,160 dyn
+        66,111 valens1
+        66,111 valens2
+        66,111 valens0
+        66,111 valens4
+        66,111 valens3
+        57,663 rew
+        50,316 dec
+        49,796 pol
+        41,153 con
+         9,344 enc
+/venv/main/lib/python3.11/site-packages/optax/_src/linear_algebra.py:44: DeprecationWarning: optax.global_norm is deprecated in favor of optax.tree.norm
+  warnings.warn(
+Done initializing!
+Compiling 1 checkpoint groups...
+Largest checkpoint group: 0 GB
+Compiling train and report...
+/workspace/dreamerv3/embodied/jax/agent.py:187: DeprecationWarning: `with mesh:` context manager has been deprecated. Please use `with jax.set_mesh(mesh):` instead.
+  with self.train_mesh:
+/venv/main/lib/python3.11/site-packages/optax/_src/linear_algebra.py:44: DeprecationWarning: optax.global_norm is deprecated in favor of optax.tree.norm
+  warnings.warn(
+Train cost analysis:
+No available
+Report cost analysis:
+No available
+Done compiling!
+Loading checkpoint: /workspace/dreamerv3_runs/d1shift_local/d1pilot_finger_e1_seed1/ckpt/20260717T103012F290013
+Loaded checkpoint.
+wrote /workspace/dreamerv3_runs/d1shift_local/d1_labels_fix/d1pilot_finger_e1_seed1_base.npz: 200 labeled states; mean delta_real -0.480, mean delta_imag -0.715
+[Sat Jul 25 04:32:00 UTC 2026] labeling d1pilot_finger_e1_seed1 xpol (behavior /workspace/dreamerv3_runs/d1shift_local/d1pilot_finger_e1_seed2/ckpt)
+[load_config] saved config predates current schema; backfilled from defaults: ['agent.model_obs', 'env.synth.coupling', 'env.synth.distractor_scale', 'env.synth.distractors', 'env.synth.length', 'env.synth.radius', 'env.synth.use_seed']
+Observations
+  reward           Space(float32, shape=(), low=-inf, high=inf)
+  is_first         Space(bool, shape=(), low=False, high=True)
+  is_last          Space(bool, shape=(), low=False, high=True)
+  is_terminal      Space(bool, shape=(), low=False, high=True)
+  position         Space(float32, shape=(4,), low=-inf, high=inf)
+  velocity         Space(float32, shape=(3,), low=-inf, high=inf)
+  touch            Space(float32, shape=(2,), low=-inf, high=inf)
+  target_position  Space(float32, shape=(2,), low=-inf, high=inf)
+  dist_to_target   Space(float32, shape=(), low=-inf, high=inf)
+Actions
+  action           Space(float32, shape=(2,), low=-1.0, high=1.0)
+Extras
+  consec           Space(int32, shape=(), low=-2147483648, high=2147483647)
+  stepid           Space(uint8, shape=(20,), low=0, high=255)
+  dyn/deter        Space(float32, shape=(512,), low=-inf, high=inf)
+  dyn/stoch        Space(float32, shape=(32, 4), low=-inf, high=inf)
+JAX devices (1): [cuda:0]
+Policy devices: cuda:0
+Train devices:  cuda:0
+Initializing parameters...
+/workspace/dreamerv3/embodied/jax/agent.py:112: DeprecationWarning: `with mesh:` context manager has been deprecated. Please use `with jax.set_mesh(mesh):` instead.
+  with self.train_mesh:
+Optimizer opt has 4,132,234 params:
+     3,163,136 disag
+       396,666 val
+       364,160 dyn
+        66,111 valens0
+        66,111 valens4
+        66,111 valens3
+        66,111 valens1
+        66,111 valens2
+        57,663 rew
+        50,316 dec
+        49,796 pol
+        41,153 con
+         9,344 enc
+/venv/main/lib/python3.11/site-packages/optax/_src/linear_algebra.py:44: DeprecationWarning: optax.global_norm is deprecated in favor of optax.tree.norm
+  warnings.warn(
+Done initializing!
+Compiling 1 checkpoint groups...
+Largest checkpoint group: 0 GB
+Compiling train and report...
+/workspace/dreamerv3/embodied/jax/agent.py:187: DeprecationWarning: `with mesh:` context manager has been deprecated. Please use `with jax.set_mesh(mesh):` instead.
+  with self.train_mesh:
+/venv/main/lib/python3.11/site-packages/optax/_src/linear_algebra.py:44: DeprecationWarning: optax.global_norm is deprecated in favor of optax.tree.norm
+  warnings.warn(
+Train cost analysis:
+No available
+Report cost analysis:
+No available
+Done compiling!
+Loading checkpoint: /workspace/dreamerv3_runs/d1shift_local/d1pilot_finger_e1_seed1/ckpt/20260717T103012F290013
+Loaded checkpoint.
+Observations
+  reward           Space(float32, shape=(), low=-inf, high=inf)
+  is_first         Space(bool, shape=(), low=False, high=True)
+  is_last          Space(bool, shape=(), low=False, high=True)
+  is_terminal      Space(bool, shape=(), low=False, high=True)
+  position         Space(float32, shape=(4,), low=-inf, high=inf)
+  velocity         Space(float32, shape=(3,), low=-inf, high=inf)
+  touch            Space(float32, shape=(2,), low=-inf, high=inf)
+  target_position  Space(float32, shape=(2,), low=-inf, high=inf)
+  dist_to_target   Space(float32, shape=(), low=-inf, high=inf)
+Actions
+  action           Space(float32, shape=(2,), low=-1.0, high=1.0)
+Extras
+  consec           Space(int32, shape=(), low=-2147483648, high=2147483647)
+  stepid           Space(uint8, shape=(20,), low=0, high=255)
+  dyn/deter        Space(float32, shape=(512,), low=-inf, high=inf)
+  dyn/stoch        Space(float32, shape=(32, 4), low=-inf, high=inf)
+JAX devices (1): [cuda:0]
+Policy devices: cuda:0
+Train devices:  cuda:0
+Initializing parameters...
+/workspace/dreamerv3/embodied/jax/agent.py:112: DeprecationWarning: `with mesh:` context manager has been deprecated. Please use `with jax.set_mesh(mesh):` instead.
+  with self.train_mesh:
+Optimizer opt has 4,132,234 params:
+     3,163,136 disag
+       396,666 val
+       364,160 dyn
+        66,111 valens0
+        66,111 valens4
+        66,111 valens3
+        66,111 valens1
+        66,111 valens2
+        57,663 rew
+        50,316 dec
+        49,796 pol
+        41,153 con
+         9,344 enc
+/venv/main/lib/python3.11/site-packages/optax/_src/linear_algebra.py:44: DeprecationWarning: optax.global_norm is deprecated in favor of optax.tree.norm
+  warnings.warn(
+Done initializing!
+Compiling 1 checkpoint groups...
+Largest checkpoint group: 0 GB
+Compiling train and report...
+/workspace/dreamerv3/embodied/jax/agent.py:187: DeprecationWarning: `with mesh:` context manager has been deprecated. Please use `with jax.set_mesh(mesh):` instead.
+  with self.train_mesh:
+/venv/main/lib/python3.11/site-packages/optax/_src/linear_algebra.py:44: DeprecationWarning: optax.global_norm is deprecated in favor of optax.tree.norm
+  warnings.warn(
+Train cost analysis:
+No available
+Report cost analysis:
+No available
+Done compiling!
+Loading checkpoint: /workspace/dreamerv3_runs/d1shift_local/d1pilot_finger_e1_seed2/ckpt/20260717T113045F241443
+Loaded checkpoint.
+wrote /workspace/dreamerv3_runs/d1shift_local/d1_labels_fix/d1pilot_finger_e1_seed1_xpol.npz: 200 labeled states; mean delta_real -0.140, mean delta_imag +1.340
+[Sat Jul 25 04:47:03 UTC 2026] labeling d1pilot_finger_e1_seed1 phys (mass x1.3)
+[load_config] saved config predates current schema; backfilled from defaults: ['agent.model_obs', 'env.synth.coupling', 'env.synth.distractor_scale', 'env.synth.distractors', 'env.synth.length', 'env.synth.radius', 'env.synth.use_seed']
+Observations
+  reward           Space(float32, shape=(), low=-inf, high=inf)
+  is_first         Space(bool, shape=(), low=False, high=True)
+  is_last          Space(bool, shape=(), low=False, high=True)
+  is_terminal      Space(bool, shape=(), low=False, high=True)
+  position         Space(float32, shape=(4,), low=-inf, high=inf)
+  velocity         Space(float32, shape=(3,), low=-inf, high=inf)
+  touch            Space(float32, shape=(2,), low=-inf, high=inf)
+  target_position  Space(float32, shape=(2,), low=-inf, high=inf)
+  dist_to_target   Space(float32, shape=(), low=-inf, high=inf)
+Actions
+  action           Space(float32, shape=(2,), low=-1.0, high=1.0)
+Extras
+  consec           Space(int32, shape=(), low=-2147483648, high=2147483647)
+  stepid           Space(uint8, shape=(20,), low=0, high=255)
+  dyn/deter        Space(float32, shape=(512,), low=-inf, high=inf)
+  dyn/stoch        Space(float32, shape=(32, 4), low=-inf, high=inf)
+JAX devices (1): [cuda:0]
+Policy devices: cuda:0
+Train devices:  cuda:0
+Initializing parameters...
+/workspace/dreamerv3/embodied/jax/agent.py:112: DeprecationWarning: `with mesh:` context manager has been deprecated. Please use `with jax.set_mesh(mesh):` instead.
+  with self.train_mesh:
+Optimizer opt has 4,132,234 params:
+     3,163,136 disag
+       396,666 val
+       364,160 dyn
+        66,111 valens1
+        66,111 valens2
+        66,111 valens3
+        66,111 valens0
+        66,111 valens4
+        57,663 rew
+        50,316 dec
+        49,796 pol
+        41,153 con
+         9,344 enc
+/venv/main/lib/python3.11/site-packages/optax/_src/linear_algebra.py:44: DeprecationWarning: optax.global_norm is deprecated in favor of optax.tree.norm
+  warnings.warn(
+Done initializing!
+Compiling 1 checkpoint groups...
+Largest checkpoint group: 0 GB
+Compiling train and report...
+/workspace/dreamerv3/embodied/jax/agent.py:187: DeprecationWarning: `with mesh:` context manager has been deprecated. Please use `with jax.set_mesh(mesh):` instead.
+  with self.train_mesh:
+/venv/main/lib/python3.11/site-packages/optax/_src/linear_algebra.py:44: DeprecationWarning: optax.global_norm is deprecated in favor of optax.tree.norm
+  warnings.warn(
+Train cost analysis:
+No available
+Report cost analysis:
+No available
+Done compiling!
+Loading checkpoint: /workspace/dreamerv3_runs/d1shift_local/d1pilot_finger_e1_seed1/ckpt/20260717T103012F290013
+Loaded checkpoint.
+wrote /workspace/dreamerv3_runs/d1shift_local/d1_labels_fix/d1pilot_finger_e1_seed1_phys.npz: 200 labeled states; mean delta_real +0.150, mean delta_imag +0.065
+[Sat Jul 25 04:59:46 UTC 2026] labeling d1pilot_finger_e1_seed2 base
+[load_config] saved config predates current schema; backfilled from defaults: ['agent.model_obs', 'env.synth.coupling', 'env.synth.distractor_scale', 'env.synth.distractors', 'env.synth.length', 'env.synth.radius', 'env.synth.use_seed']
+Observations
+  reward           Space(float32, shape=(), low=-inf, high=inf)
+  is_first         Space(bool, shape=(), low=False, high=True)
+  is_last          Space(bool, shape=(), low=False, high=True)
+  is_terminal      Space(bool, shape=(), low=False, high=True)
+  position         Space(float32, shape=(4,), low=-inf, high=inf)
+  velocity         Space(float32, shape=(3,), low=-inf, high=inf)
+  touch            Space(float32, shape=(2,), low=-inf, high=inf)
+  target_position  Space(float32, shape=(2,), low=-inf, high=inf)
+  dist_to_target   Space(float32, shape=(), low=-inf, high=inf)
+Actions
+  action           Space(float32, shape=(2,), low=-1.0, high=1.0)
+Extras
+  consec           Space(int32, shape=(), low=-2147483648, high=2147483647)
+  stepid           Space(uint8, shape=(20,), low=0, high=255)
+  dyn/deter        Space(float32, shape=(512,), low=-inf, high=inf)
+  dyn/stoch        Space(float32, shape=(32, 4), low=-inf, high=inf)
+JAX devices (1): [cuda:0]
+Policy devices: cuda:0
+Train devices:  cuda:0
+Initializing parameters...
+/workspace/dreamerv3/embodied/jax/agent.py:112: DeprecationWarning: `with mesh:` context manager has been deprecated. Please use `with jax.set_mesh(mesh):` instead.
+  with self.train_mesh:
+Optimizer opt has 4,132,234 params:
+     3,163,136 disag
+       396,666 val
+       364,160 dyn
+        66,111 valens2
+        66,111 valens1
+        66,111 valens3
+        66,111 valens4
+        66,111 valens0
+        57,663 rew
+        50,316 dec
+        49,796 pol
+        41,153 con
+         9,344 enc
+/venv/main/lib/python3.11/site-packages/optax/_src/linear_algebra.py:44: DeprecationWarning: optax.global_norm is deprecated in favor of optax.tree.norm
+  warnings.warn(
+Done initializing!
+Compiling 1 checkpoint groups...
+Largest checkpoint group: 0 GB
+Compiling train and report...
+/workspace/dreamerv3/embodied/jax/agent.py:187: DeprecationWarning: `with mesh:` context manager has been deprecated. Please use `with jax.set_mesh(mesh):` instead.
+  with self.train_mesh:
+/venv/main/lib/python3.11/site-packages/optax/_src/linear_algebra.py:44: DeprecationWarning: optax.global_norm is deprecated in favor of optax.tree.norm
+  warnings.warn(
+Train cost analysis:
+No available
+Report cost analysis:
+No available
+Done compiling!
+Loading checkpoint: /workspace/dreamerv3_runs/d1shift_local/d1pilot_finger_e1_seed2/ckpt/20260717T113045F241443
+Loaded checkpoint.
+wrote /workspace/dreamerv3_runs/d1shift_local/d1_labels_fix/d1pilot_finger_e1_seed2_base.npz: 200 labeled states; mean delta_real +0.000, mean delta_imag +0.000
+[Sat Jul 25 05:12:27 UTC 2026] labeling d1pilot_finger_e1_seed2 xpol (behavior /workspace/dreamerv3_runs/d1shift_local/d1pilot_finger_e1_seed3/ckpt)
+[load_config] saved config predates current schema; backfilled from defaults: ['agent.model_obs', 'env.synth.coupling', 'env.synth.distractor_scale', 'env.synth.distractors', 'env.synth.length', 'env.synth.radius', 'env.synth.use_seed', 'orthreward.task']
+Observations
+  reward           Space(float32, shape=(), low=-inf, high=inf)
+  is_first         Space(bool, shape=(), low=False, high=True)
+  is_last          Space(bool, shape=(), low=False, high=True)
+  is_terminal      Space(bool, shape=(), low=False, high=True)
+  position         Space(float32, shape=(4,), low=-inf, high=inf)
+  velocity         Space(float32, shape=(3,), low=-inf, high=inf)
+  touch            Space(float32, shape=(2,), low=-inf, high=inf)
+  target_position  Space(float32, shape=(2,), low=-inf, high=inf)
+  dist_to_target   Space(float32, shape=(), low=-inf, high=inf)
+Actions
+  action           Space(float32, shape=(2,), low=-1.0, high=1.0)
+Extras
+  consec           Space(int32, shape=(), low=-2147483648, high=2147483647)
+  stepid           Space(uint8, shape=(20,), low=0, high=255)
+  dyn/deter        Space(float32, shape=(512,), low=-inf, high=inf)
+  dyn/stoch        Space(float32, shape=(32, 4), low=-inf, high=inf)
+JAX devices (1): [cuda:0]
+Policy devices: cuda:0
+Train devices:  cuda:0
+Initializing parameters...
+/workspace/dreamerv3/embodied/jax/agent.py:112: DeprecationWarning: `with mesh:` context manager has been deprecated. Please use `with jax.set_mesh(mesh):` instead.
+  with self.train_mesh:
+Optimizer opt has 4,132,234 params:
+     3,163,136 disag
+       396,666 val
+       364,160 dyn
+        66,111 valens2
+        66,111 valens3
+        66,111 valens1
+        66,111 valens0
+        66,111 valens4
+        57,663 rew
+        50,316 dec
+        49,796 pol
+        41,153 con
+         9,344 enc
+/venv/main/lib/python3.11/site-packages/optax/_src/linear_algebra.py:44: DeprecationWarning: optax.global_norm is deprecated in favor of optax.tree.norm
+  warnings.warn(
+Done initializing!
+Compiling 1 checkpoint groups...
+Largest checkpoint group: 0 GB
+Compiling train and report...
+/workspace/dreamerv3/embodied/jax/agent.py:187: DeprecationWarning: `with mesh:` context manager has been deprecated. Please use `with jax.set_mesh(mesh):` instead.
+  with self.train_mesh:
+/venv/main/lib/python3.11/site-packages/optax/_src/linear_algebra.py:44: DeprecationWarning: optax.global_norm is deprecated in favor of optax.tree.norm
+  warnings.warn(
+Train cost analysis:
+No available
+Report cost analysis:
+No available
+Done compiling!
+Loading checkpoint: /workspace/dreamerv3_runs/d1shift_local/d1pilot_finger_e1_seed2/ckpt/20260717T113045F241443
+Loaded checkpoint.
+Observations
+  reward           Space(float32, shape=(), low=-inf, high=inf)
+  is_first         Space(bool, shape=(), low=False, high=True)
+  is_last          Space(bool, shape=(), low=False, high=True)
+  is_terminal      Space(bool, shape=(), low=False, high=True)
+  position         Space(float32, shape=(4,), low=-inf, high=inf)
+  velocity         Space(float32, shape=(3,), low=-inf, high=inf)
+  touch            Space(float32, shape=(2,), low=-inf, high=inf)
+  target_position  Space(float32, shape=(2,), low=-inf, high=inf)
+  dist_to_target   Space(float32, shape=(), low=-inf, high=inf)
+Actions
+  action           Space(float32, shape=(2,), low=-1.0, high=1.0)
+Extras
+  consec           Space(int32, shape=(), low=-2147483648, high=2147483647)
+  stepid           Space(uint8, shape=(20,), low=0, high=255)
+  dyn/deter        Space(float32, shape=(512,), low=-inf, high=inf)
+  dyn/stoch        Space(float32, shape=(32, 4), low=-inf, high=inf)
+JAX devices (1): [cuda:0]
+Policy devices: cuda:0
+Train devices:  cuda:0
+Initializing parameters...
+/workspace/dreamerv3/embodied/jax/agent.py:112: DeprecationWarning: `with mesh:` context manager has been deprecated. Please use `with jax.set_mesh(mesh):` instead.
+  with self.train_mesh:
+Optimizer opt has 4,132,234 params:
+     3,163,136 disag
+       396,666 val
+       364,160 dyn
+        66,111 valens2
+        66,111 valens3
+        66,111 valens1
+        66,111 valens0
+        66,111 valens4
+        57,663 rew
+        50,316 dec
+        49,796 pol
+        41,153 con
+         9,344 enc
+/venv/main/lib/python3.11/site-packages/optax/_src/linear_algebra.py:44: DeprecationWarning: optax.global_norm is deprecated in favor of optax.tree.norm
+  warnings.warn(
+Done initializing!
+Compiling 1 checkpoint groups...
+Largest checkpoint group: 0 GB
+Compiling train and report...
+/workspace/dreamerv3/embodied/jax/agent.py:187: DeprecationWarning: `with mesh:` context manager has been deprecated. Please use `with jax.set_mesh(mesh):` instead.
+  with self.train_mesh:
+/venv/main/lib/python3.11/site-packages/optax/_src/linear_algebra.py:44: DeprecationWarning: optax.global_norm is deprecated in favor of optax.tree.norm
+  warnings.warn(
+Train cost analysis:
+No available
+Report cost analysis:
+No available
+Done compiling!
+Loading checkpoint: /workspace/dreamerv3_runs/d1shift_local/d1pilot_finger_e1_seed3/ckpt/20260717T120850F807951
+Loaded checkpoint.
+wrote /workspace/dreamerv3_runs/d1shift_local/d1_labels_fix/d1pilot_finger_e1_seed2_xpol.npz: 200 labeled states; mean delta_real +0.405, mean delta_imag -0.055
+[Sat Jul 25 05:27:32 UTC 2026] labeling d1pilot_finger_e1_seed2 phys (mass x1.3)
+[load_config] saved config predates current schema; backfilled from defaults: ['agent.model_obs', 'env.synth.coupling', 'env.synth.distractor_scale', 'env.synth.distractors', 'env.synth.length', 'env.synth.radius', 'env.synth.use_seed', 'orthreward.task']
+Observations
+  reward           Space(float32, shape=(), low=-inf, high=inf)
+  is_first         Space(bool, shape=(), low=False, high=True)
+  is_last          Space(bool, shape=(), low=False, high=True)
+  is_terminal      Space(bool, shape=(), low=False, high=True)
+  position         Space(float32, shape=(4,), low=-inf, high=inf)
+  velocity         Space(float32, shape=(3,), low=-inf, high=inf)
+  touch            Space(float32, shape=(2,), low=-inf, high=inf)
+  target_position  Space(float32, shape=(2,), low=-inf, high=inf)
+  dist_to_target   Space(float32, shape=(), low=-inf, high=inf)
+Actions
+  action           Space(float32, shape=(2,), low=-1.0, high=1.0)
+Extras
+  consec           Space(int32, shape=(), low=-2147483648, high=2147483647)
+  stepid           Space(uint8, shape=(20,), low=0, high=255)
+  dyn/deter        Space(float32, shape=(512,), low=-inf, high=inf)
+  dyn/stoch        Space(float32, shape=(32, 4), low=-inf, high=inf)
+JAX devices (1): [cuda:0]
+Policy devices: cuda:0
+Train devices:  cuda:0
+Initializing parameters...
+/workspace/dreamerv3/embodied/jax/agent.py:112: DeprecationWarning: `with mesh:` context manager has been deprecated. Please use `with jax.set_mesh(mesh):` instead.
+  with self.train_mesh:
+Optimizer opt has 4,132,234 params:
+     3,163,136 disag
+       396,666 val
+       364,160 dyn
+        66,111 valens2
+        66,111 valens0
+        66,111 valens1
+        66,111 valens4
+        66,111 valens3
+        57,663 rew
+        50,316 dec
+        49,796 pol
+        41,153 con
+         9,344 enc
+/venv/main/lib/python3.11/site-packages/optax/_src/linear_algebra.py:44: DeprecationWarning: optax.global_norm is deprecated in favor of optax.tree.norm
+  warnings.warn(
+Done initializing!
+Compiling 1 checkpoint groups...
+Largest checkpoint group: 0 GB
+Compiling train and report...
+/workspace/dreamerv3/embodied/jax/agent.py:187: DeprecationWarning: `with mesh:` context manager has been deprecated. Please use `with jax.set_mesh(mesh):` instead.
+  with self.train_mesh:
+/venv/main/lib/python3.11/site-packages/optax/_src/linear_algebra.py:44: DeprecationWarning: optax.global_norm is deprecated in favor of optax.tree.norm
+  warnings.warn(
+Train cost analysis:
+No available
+Report cost analysis:
+No available
+Done compiling!
+Loading checkpoint: /workspace/dreamerv3_runs/d1shift_local/d1pilot_finger_e1_seed2/ckpt/20260717T113045F241443
+Loaded checkpoint.
+wrote /workspace/dreamerv3_runs/d1shift_local/d1_labels_fix/d1pilot_finger_e1_seed2_phys.npz: 200 labeled states; mean delta_real +0.000, mean delta_imag +0.000
+[Sat Jul 25 05:40:16 UTC 2026] labeling d1pilot_finger_e1_seed3 base
+[load_config] saved config predates current schema; backfilled from defaults: ['agent.model_obs', 'env.synth.coupling', 'env.synth.distractor_scale', 'env.synth.distractors', 'env.synth.length', 'env.synth.radius', 'env.synth.use_seed', 'orthreward.task']
+Observations
+  reward           Space(float32, shape=(), low=-inf, high=inf)
+  is_first         Space(bool, shape=(), low=False, high=True)
+  is_last          Space(bool, shape=(), low=False, high=True)
+  is_terminal      Space(bool, shape=(), low=False, high=True)
+  position         Space(float32, shape=(4,), low=-inf, high=inf)
+  velocity         Space(float32, shape=(3,), low=-inf, high=inf)
+  touch            Space(float32, shape=(2,), low=-inf, high=inf)
+  target_position  Space(float32, shape=(2,), low=-inf, high=inf)
+  dist_to_target   Space(float32, shape=(), low=-inf, high=inf)
+Actions
+  action           Space(float32, shape=(2,), low=-1.0, high=1.0)
+Extras
+  consec           Space(int32, shape=(), low=-2147483648, high=2147483647)
+  stepid           Space(uint8, shape=(20,), low=0, high=255)
+  dyn/deter        Space(float32, shape=(512,), low=-inf, high=inf)
+  dyn/stoch        Space(float32, shape=(32, 4), low=-inf, high=inf)
+JAX devices (1): [cuda:0]
+Policy devices: cuda:0
+Train devices:  cuda:0
+Initializing parameters...
+/workspace/dreamerv3/embodied/jax/agent.py:112: DeprecationWarning: `with mesh:` context manager has been deprecated. Please use `with jax.set_mesh(mesh):` instead.
+  with self.train_mesh:
+Optimizer opt has 4,132,234 params:
+     3,163,136 disag
+       396,666 val
+       364,160 dyn
+        66,111 valens1
+        66,111 valens2
+        66,111 valens3
+        66,111 valens4
+        66,111 valens0
+        57,663 rew
+        50,316 dec
+        49,796 pol
+        41,153 con
+         9,344 enc
+/venv/main/lib/python3.11/site-packages/optax/_src/linear_algebra.py:44: DeprecationWarning: optax.global_norm is deprecated in favor of optax.tree.norm
+  warnings.warn(
+Done initializing!
+Compiling 1 checkpoint groups...
+Largest checkpoint group: 0 GB
+Compiling train and report...
+/workspace/dreamerv3/embodied/jax/agent.py:187: DeprecationWarning: `with mesh:` context manager has been deprecated. Please use `with jax.set_mesh(mesh):` instead.
+  with self.train_mesh:
+/venv/main/lib/python3.11/site-packages/optax/_src/linear_algebra.py:44: DeprecationWarning: optax.global_norm is deprecated in favor of optax.tree.norm
+  warnings.warn(
+Train cost analysis:
+No available
+Report cost analysis:
+No available
+Done compiling!
+Loading checkpoint: /workspace/dreamerv3_runs/d1shift_local/d1pilot_finger_e1_seed3/ckpt/20260717T120850F807951
+Loaded checkpoint.
+wrote /workspace/dreamerv3_runs/d1shift_local/d1_labels_fix/d1pilot_finger_e1_seed3_base.npz: 200 labeled states; mean delta_real -0.075, mean delta_imag -0.065
+[Sat Jul 25 05:52:56 UTC 2026] labeling d1pilot_finger_e1_seed3 xpol (behavior /workspace/dreamerv3_runs/d1shift_local/d1pilot_finger_e1_seed1/ckpt)
+[load_config] saved config predates current schema; backfilled from defaults: ['agent.model_obs', 'env.synth.coupling', 'env.synth.distractor_scale', 'env.synth.distractors', 'env.synth.length', 'env.synth.radius', 'env.synth.use_seed', 'orthreward.task']
+Observations
+  reward           Space(float32, shape=(), low=-inf, high=inf)
+  is_first         Space(bool, shape=(), low=False, high=True)
+  is_last          Space(bool, shape=(), low=False, high=True)
+  is_terminal      Space(bool, shape=(), low=False, high=True)
+  position         Space(float32, shape=(4,), low=-inf, high=inf)
+  velocity         Space(float32, shape=(3,), low=-inf, high=inf)
+  touch            Space(float32, shape=(2,), low=-inf, high=inf)
+  target_position  Space(float32, shape=(2,), low=-inf, high=inf)
+  dist_to_target   Space(float32, shape=(), low=-inf, high=inf)
+Actions
+  action           Space(float32, shape=(2,), low=-1.0, high=1.0)
+Extras
+  consec           Space(int32, shape=(), low=-2147483648, high=2147483647)
+  stepid           Space(uint8, shape=(20,), low=0, high=255)
+  dyn/deter        Space(float32, shape=(512,), low=-inf, high=inf)
+  dyn/stoch        Space(float32, shape=(32, 4), low=-inf, high=inf)
+JAX devices (1): [cuda:0]
+Policy devices: cuda:0
+Train devices:  cuda:0
+Initializing parameters...
+/workspace/dreamerv3/embodied/jax/agent.py:112: DeprecationWarning: `with mesh:` context manager has been deprecated. Please use `with jax.set_mesh(mesh):` instead.
+  with self.train_mesh:
+Optimizer opt has 4,132,234 params:
+     3,163,136 disag
+       396,666 val
+       364,160 dyn
+        66,111 valens2
+        66,111 valens3
+        66,111 valens4
+        66,111 valens1
+        66,111 valens0
+        57,663 rew
+        50,316 dec
+        49,796 pol
+        41,153 con
+         9,344 enc
+/venv/main/lib/python3.11/site-packages/optax/_src/linear_algebra.py:44: DeprecationWarning: optax.global_norm is deprecated in favor of optax.tree.norm
+  warnings.warn(
+Done initializing!
+Compiling 1 checkpoint groups...
+Largest checkpoint group: 0 GB
+Compiling train and report...
+/workspace/dreamerv3/embodied/jax/agent.py:187: DeprecationWarning: `with mesh:` context manager has been deprecated. Please use `with jax.set_mesh(mesh):` instead.
+  with self.train_mesh:
+/venv/main/lib/python3.11/site-packages/optax/_src/linear_algebra.py:44: DeprecationWarning: optax.global_norm is deprecated in favor of optax.tree.norm
+  warnings.warn(
+Train cost analysis:
+No available
+Report cost analysis:
+No available
+Done compiling!
+Loading checkpoint: /workspace/dreamerv3_runs/d1shift_local/d1pilot_finger_e1_seed3/ckpt/20260717T120850F807951
+Loaded checkpoint.
+Observations
+  reward           Space(float32, shape=(), low=-inf, high=inf)
+  is_first         Space(bool, shape=(), low=False, high=True)
+  is_last          Space(bool, shape=(), low=False, high=True)
+  is_terminal      Space(bool, shape=(), low=False, high=True)
+  position         Space(float32, shape=(4,), low=-inf, high=inf)
+  velocity         Space(float32, shape=(3,), low=-inf, high=inf)
+  touch            Space(float32, shape=(2,), low=-inf, high=inf)
+  target_position  Space(float32, shape=(2,), low=-inf, high=inf)
+  dist_to_target   Space(float32, shape=(), low=-inf, high=inf)
+Actions
+  action           Space(float32, shape=(2,), low=-1.0, high=1.0)
+Extras
+  consec           Space(int32, shape=(), low=-2147483648, high=2147483647)
+  stepid           Space(uint8, shape=(20,), low=0, high=255)
+  dyn/deter        Space(float32, shape=(512,), low=-inf, high=inf)
+  dyn/stoch        Space(float32, shape=(32, 4), low=-inf, high=inf)
+JAX devices (1): [cuda:0]
+Policy devices: cuda:0
+Train devices:  cuda:0
+Initializing parameters...
+/workspace/dreamerv3/embodied/jax/agent.py:112: DeprecationWarning: `with mesh:` context manager has been deprecated. Please use `with jax.set_mesh(mesh):` instead.
+  with self.train_mesh:
+Optimizer opt has 4,132,234 params:
+     3,163,136 disag
+       396,666 val
+       364,160 dyn
+        66,111 valens2
+        66,111 valens3
+        66,111 valens4
+        66,111 valens1
+        66,111 valens0
+        57,663 rew
+        50,316 dec
+        49,796 pol
+        41,153 con
+         9,344 enc
+/venv/main/lib/python3.11/site-packages/optax/_src/linear_algebra.py:44: DeprecationWarning: optax.global_norm is deprecated in favor of optax.tree.norm
+  warnings.warn(
+Done initializing!
+Compiling 1 checkpoint groups...
+Largest checkpoint group: 0 GB
+Compiling train and report...
+/workspace/dreamerv3/embodied/jax/agent.py:187: DeprecationWarning: `with mesh:` context manager has been deprecated. Please use `with jax.set_mesh(mesh):` instead.
+  with self.train_mesh:
+/venv/main/lib/python3.11/site-packages/optax/_src/linear_algebra.py:44: DeprecationWarning: optax.global_norm is deprecated in favor of optax.tree.norm
+  warnings.warn(
+Train cost analysis:
+No available
+Report cost analysis:
+No available
+Done compiling!
+Loading checkpoint: /workspace/dreamerv3_runs/d1shift_local/d1pilot_finger_e1_seed1/ckpt/20260717T103012F290013
+Loaded checkpoint.
+wrote /workspace/dreamerv3_runs/d1shift_local/d1_labels_fix/d1pilot_finger_e1_seed3_xpol.npz: 200 labeled states; mean delta_real +0.470, mean delta_imag -0.070
+[Sat Jul 25 06:07:57 UTC 2026] labeling d1pilot_finger_e1_seed3 phys (mass x1.3)
+[load_config] saved config predates current schema; backfilled from defaults: ['agent.model_obs', 'env.synth.coupling', 'env.synth.distractor_scale', 'env.synth.distractors', 'env.synth.length', 'env.synth.radius', 'env.synth.use_seed', 'orthreward.task']
+Observations
+  reward           Space(float32, shape=(), low=-inf, high=inf)
+  is_first         Space(bool, shape=(), low=False, high=True)
+  is_last          Space(bool, shape=(), low=False, high=True)
+  is_terminal      Space(bool, shape=(), low=False, high=True)
+  position         Space(float32, shape=(4,), low=-inf, high=inf)
+  velocity         Space(float32, shape=(3,), low=-inf, high=inf)
+  touch            Space(float32, shape=(2,), low=-inf, high=inf)
+  target_position  Space(float32, shape=(2,), low=-inf, high=inf)
+  dist_to_target   Space(float32, shape=(), low=-inf, high=inf)
+Actions
+  action           Space(float32, shape=(2,), low=-1.0, high=1.0)
+Extras
+  consec           Space(int32, shape=(), low=-2147483648, high=2147483647)
+  stepid           Space(uint8, shape=(20,), low=0, high=255)
+  dyn/deter        Space(float32, shape=(512,), low=-inf, high=inf)
+  dyn/stoch        Space(float32, shape=(32, 4), low=-inf, high=inf)
+JAX devices (1): [cuda:0]
+Policy devices: cuda:0
+Train devices:  cuda:0
+Initializing parameters...
+/workspace/dreamerv3/embodied/jax/agent.py:112: DeprecationWarning: `with mesh:` context manager has been deprecated. Please use `with jax.set_mesh(mesh):` instead.
+  with self.train_mesh:
+Optimizer opt has 4,132,234 params:
+     3,163,136 disag
+       396,666 val
+       364,160 dyn
+        66,111 valens1
+        66,111 valens3
+        66,111 valens2
+        66,111 valens4
+        66,111 valens0
+        57,663 rew
+        50,316 dec
+        49,796 pol
+        41,153 con
+         9,344 enc
+/venv/main/lib/python3.11/site-packages/optax/_src/linear_algebra.py:44: DeprecationWarning: optax.global_norm is deprecated in favor of optax.tree.norm
+  warnings.warn(
+Done initializing!
+Compiling 1 checkpoint groups...
+Largest checkpoint group: 0 GB
+Compiling train and report...
+/workspace/dreamerv3/embodied/jax/agent.py:187: DeprecationWarning: `with mesh:` context manager has been deprecated. Please use `with jax.set_mesh(mesh):` instead.
+  with self.train_mesh:
+/venv/main/lib/python3.11/site-packages/optax/_src/linear_algebra.py:44: DeprecationWarning: optax.global_norm is deprecated in favor of optax.tree.norm
+  warnings.warn(
+Train cost analysis:
+No available
+Report cost analysis:
+No available
+Done compiling!
+Loading checkpoint: /workspace/dreamerv3_runs/d1shift_local/d1pilot_finger_e1_seed3/ckpt/20260717T120850F807951
+Loaded checkpoint.
+wrote /workspace/dreamerv3_runs/d1shift_local/d1_labels_fix/d1pilot_finger_e1_seed3_phys.npz: 200 labeled states; mean delta_real +0.415, mean delta_imag +0.695
+[Sat Jul 25 06:20:45 UTC 2026] all 18 d1pilot label passes done; run the SINGLE read
+over both cohorts once the d1s passes are also complete:
+  python -m analysis.d1_shift_read --labels /workspace/dreamerv3_runs/d1shift_local/d1_labels_fix --output artifacts/d1_shift_fix_20260725
