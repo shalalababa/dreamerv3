@@ -29,7 +29,8 @@ Frozen pre-outcome readers, one per registered experiment; each has a
 `--selfcheck` with planted-positive/null cases.
 
 - `adaptation_auc.py` — collector: adapt-run scores → AUC csv (all waves consume this).
-- `gate_d1_read.py`, `gate_d1_r2_read.py`, `d1_ladder_read.py`, `d1_shift_read.py` — Paper-2 D1 series (shift read = the relabel re-reader, version `d1fix_20260724`).
+- `gate_d1_read.py`, `gate_d1_r2_read.py`, `d1_ladder_read.py`, `d1_shift_read.py` — Paper-2 D1 series (shift read = the relabel re-reader, version `d1fix_20260724`; read 25 Jul: corrected negative).
+- `r3_read.py` — R3 consumer-competence factorial read (frozen 25 Jul pre-outcome; opportunity/achieved/gap primaries; driver `scripts/r3_local.sh`).
 - `p3_factorial_read.py` — P3 gradient-path factorial + Amendment 1.
 - `stamping_read.py`, `scaling_read.py`, `optc_amend_read.py` — stamping + scaling pilot + Option-C corrective.
 - `synth_phaseb_read.py`, `synth_diagnosis_read.py`, `synth_rediag_read.py`, `synth_phasebpp_read.py` — synth series.
@@ -57,10 +58,14 @@ Frozen pre-outcome readers, one per registered experiment; each has a
   `spectral_measure.py` (24 Jul: λ-spectrum / reward-direction
   variance-rank pass on raw buffers; P-SM1,
   PREREG_spectral_domains_20260724).
-- `collusion/` — Paper 4 CPU harness (24 Jul): `env.py` (Calvano logit
-  duopoly, equilibrium anchors), `pilot.py` (coupled Q-learning
-  sessions, deviation impulse-response fingerprint, coverage /
-  punishment-occupancy stats; selfcheck PASS).
+- `collusion/` — Paper 4 CPU harness (24 Jul, v2 25 Jul): `env.py`
+  (Calvano logit duopoly, equilibrium anchors), `pilot.py` (coupled
+  Q-learning sessions, IR fingerprint, coverage/coverage_late,
+  undercut + distance punishment labels, --alpha/--beta knobs;
+  selfcheck PASS), `designb.py` (recorded sessions + float-exact
+  offline stream replay + volume-controlled composition interventions;
+  selfcheck PASS). Pilot records: artifacts/collusion_stage1_20260725
+  + collusion_stage23_20260725.
 - `embodied/envs/distractor.py` — OU distractor wrapper (dose arms;
   restorable via oracle_get/set_state).
 - `embodied/envs/orthreward.py` — orthogonal-objective reward override

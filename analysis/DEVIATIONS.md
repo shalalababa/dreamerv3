@@ -6,6 +6,32 @@ immutable dated files; see plan v4.)
 
 ## Deviations
 
+- **2026-07-25 (later) — POST-READ BUILD WAVE: R3 registered +
+  collusion stages 2–3 executed locally.** (1) **R3
+  consumer-competence factorial REGISTERED pre-outcome**
+  (`prereg/PREREG_r3_competence_20260725.md` + `analysis/r3_read.py`
+  selfcheck PASS + `scripts/r3_local.sh`): {cup,finger}×{e1,e4}×seeds
+  31–38 × {early 2.5e4, late 1e5}, base arm, oracle_all; primaries
+  P-R3a/b/c; reacher conditional-GO all-or-nothing cohort; power
+  pre-sized from the 25-Jul measured run-sd (n=32 ⇒ detectable gap
+  0.42); driver enforces the dosed-env smoke gate (24-Jul audit) and
+  pins `save_every 60` with realized-step recording (train loop has NO
+  exit-time save — verified in `embodied/run/train.py`; snapshots are
+  clock-tick states, disclosed in the prereg). No seed-31–38 run or
+  label exists at freeze. (2) **Collusion harness v2 + stages 2–3**
+  (`collusion/pilot.py` v2 adds distance label/coverage_late/knobs;
+  `collusion/designb.py` new; both selfchecks PASS; record =
+  `artifacts/collusion_stage23_20260725/ANALYSIS.md`): v1 columns
+  validated against the cluster stage-1 csv (identical except
+  ULP-level `delta_profit` float noise on 11/100 sessions — disclosed);
+  distance regime label recommended; RQ1 feasibility resolved via
+  coverage_late; Design-B viable with float-exact replay anchor 20/20;
+  the size-matched random-drop control was ADDED mid-probe after the
+  first pass showed a 72%-volume confound (sessions deterministic ⇒
+  identical on all pre-existing columns; superseded first-pass csv not
+  retained) — pilot analyses only, nothing confirmatory. Theory
+  honesty box updated same session (P-SM1 refutation + orthogonal
+  support entry in `Theory_SpectralTransfer_20260717.tex`).
 - **2026-07-25 — PIXEL SWAMPING E4 CRASH: measure-side instrument
   defect found and fixed; Amendment 1 registered PRE-OUTCOME.** Job
   52626590 crashed on its first run (`KeyError: 'image'`,

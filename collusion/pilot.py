@@ -28,7 +28,11 @@ CONV_WINDOW = 100_000   # greedy profile stable this long => converged
 IR_PRE = 5          # pre-deviation cycle periods recorded
 IR_POST = 15        # post-deviation periods recorded
 PUNISH_W = 5        # punishment-phase window after an undercut event
-HARNESS_VERSION = "collusion_pilot_v1_20260724"
+HARNESS_VERSION = "collusion_pilot_v2_20260725"
+# v2 (stage-2 calibration, Design memo stage 2): adds the
+# distance-from-collusive-path punishment label + --beta/--alpha knobs.
+# Every v1 column is computed identically (validated: seeds 0-4 rows
+# match the cluster stage-1 csv exactly on shared columns).
 
 
 def init_q(env):
@@ -154,23 +158,63 @@ def experience_stats(env, actions_log, window=PUNISH_W):
   idx = np.flatnonzero(under)
   for i in idx:
     phase[i:i + window] = True
-  return dict(coverage=coverage,
+  # v2: coverage over the last 20% of the log (the whole-log measure
+  # saturates under early exploration; stage-1 finding 25 Jul).
+  late = states[int(0.8 * len(states)):]
+  cov_late = float(len(np.unique(late)) / env.n_states)
+  return dict(coverage=coverage, coverage_late=cov_late,
               punish_occupancy=float(phase.mean()),
               undercut_rate=float(under.mean()))
 
 
-def run_session(seed, max_iters, conv_window=CONV_WINDOW, env=None):
+def distance_stats(env, actions_log, qs, state, T=100):
+  """Stage-2 alternative punishment label (calibration pilot only):
+  reference = the session's terminal greedy path; a period is
+  punishment-phase-dist iff the lower of the two prices sits >= 1 grid
+  step below the reference path's minimum price. Offline label (uses
+  the end-of-session profile); never decisional in stage 1."""
+  path, _ = greedy_path(env, qs, state, T)
+  ref_min = int(np.min(np.asarray(path)))
+  arr = np.asarray(actions_log, np.int64)
+  cur_min = np.minimum(arr[:, 0], arr[:, 1])
+  phase = cur_min < ref_min
+  return dict(punish_occ_dist=float(phase.mean()), ref_min_idx=ref_min)
+
+
+def _phase_masks(env, actions_log, qs, state, window=PUNISH_W, T=100):
+  """Both punishment labels as masks, for the overlap diagnostic."""
+  arr = np.asarray(actions_log, np.int64)
+  prev_min = np.minimum(arr[:-1, 0], arr[:-1, 1])
+  cur_min = np.minimum(arr[1:, 0], arr[1:, 1])
+  under = np.zeros(len(arr), bool)
+  under[1:] = cur_min < prev_min
+  phase_u = np.zeros(len(arr), bool)
+  for i in np.flatnonzero(under):
+    phase_u[i:i + window] = True
+  path, _ = greedy_path(env, qs, state, T)
+  ref_min = int(np.min(np.asarray(path)))
+  phase_d = np.minimum(arr[:, 0], arr[:, 1]) < ref_min
+  return phase_u, phase_d
+
+
+def run_session(seed, max_iters, conv_window=CONV_WINDOW, env=None,
+                alpha=ALPHA, beta=BETA):
   env = env or Duopoly()
-  sess = Session(env, seed)
+  sess = Session(env, seed, alpha=alpha, beta=beta)
   t_end, converged = sess.run(max_iters, conv_window)
   dpi, dpr = collusion_indices(env, sess.q, sess.state)
   ir = impulse_response(env, sess.q, sess.state)
   stats = experience_stats(env, sess.actions_log)
+  dstats = distance_stats(env, sess.actions_log, sess.q, sess.state)
+  pu, pd = _phase_masks(env, sess.actions_log, sess.q, sess.state)
+  union = float(np.mean(pu | pd))
+  overlap = float(np.mean(pu & pd) / union) if union else 0.0
   return dict(
       seed=seed, iters=t_end, converged=converged,
       delta_profit=dpi, delta_price=dpr,
       fingerprint=ir["fingerprint"], punish_depth=ir["punish_depth"],
-      recovered=ir["recovered"], **stats)
+      recovered=ir["recovered"], **stats, **dstats,
+      punish_label_jaccard=overlap)
 
 
 # --------------------------------------------------------------------------
@@ -230,18 +274,32 @@ def selfcheck():
   st = experience_stats(env, path, window=5)
   assert st["undercut_rate"] == 1 / 21
   assert abs(st["punish_occupancy"] - 5 / 21) < 1e-12, st
+  # 5b. distance labeler (v2): forgiving pair's reference path is the
+  # collusive cycle (min = C), so a punish dip below C is labeled and
+  # steady collusive play is not; competitive pair labels nothing.
+  log = [(C, C)] * 10 + [(P, C), (P, P)] + [(C, C)] * 10
+  ds = distance_stats(env, log, qs, env.state(C, C))
+  assert ds["ref_min_idx"] == C, ds
+  assert abs(ds["punish_occ_dist"] - 2 / 22) < 1e-12, ds
+  ds2 = distance_stats(env, [(nash_idx, nash_idx)] * 20, qs2,
+                       env.state(nash_idx, nash_idx))
+  assert ds2["punish_occ_dist"] == 0.0, ds2
+  pu, pd = _phase_masks(env, log, qs, env.state(C, C))
+  assert pd.sum() == 2 and pu.sum() >= 2
   # 6. learning machinery end-to-end (tiny run; no convergence claim)
   out = run_session(seed=0, max_iters=3000, conv_window=10 ** 9)
   assert out["iters"] == 3000 and not out["converged"]
   assert 0 < out["coverage"] <= 1.0
   assert np.isfinite(out["delta_profit"])
+  assert 0.0 <= out["punish_occ_dist"] <= 1.0
+  assert 0.0 <= out["punish_label_jaccard"] <= 1.0
   # 7. determinism: same seed => same outcome
   out2 = run_session(seed=0, max_iters=3000, conv_window=10 ** 9)
   assert out == out2, "sessions must be seed-deterministic"
   print("selfcheck PASS: equilibrium math, BR undercut, index anchors, "
         "planted punish-then-forgive fingerprint fires (competitive "
-        "pair does not), undercut labeler exact, tiny session runs "
-        "deterministically")
+        "pair does not), undercut + distance labelers exact, tiny "
+        "session runs deterministically")
 
 
 def main():
@@ -251,6 +309,8 @@ def main():
   ap.add_argument("--seed0", type=int, default=0)
   ap.add_argument("--max_iters", type=int, default=2_000_000)
   ap.add_argument("--conv_window", type=int, default=CONV_WINDOW)
+  ap.add_argument("--alpha", type=float, default=ALPHA)
+  ap.add_argument("--beta", type=float, default=BETA)
   ap.add_argument("--output", default="")
   ap.add_argument("--selfcheck", action="store_true")
   args = ap.parse_args()
@@ -261,7 +321,8 @@ def main():
   env = Duopoly()
   rows = []
   for s in range(args.seed0, args.seed0 + args.sessions):
-    row = run_session(s, args.max_iters, args.conv_window, env=env)
+    row = run_session(s, args.max_iters, args.conv_window, env=env,
+                      alpha=args.alpha, beta=args.beta)
     rows.append(row)
     print(f"seed {s}: iters={row['iters']} conv={row['converged']} "
           f"dP={row['delta_profit']:+.3f} "
