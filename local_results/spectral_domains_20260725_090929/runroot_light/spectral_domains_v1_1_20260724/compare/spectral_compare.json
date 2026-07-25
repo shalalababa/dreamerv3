@@ -1,0 +1,83 @@
+{
+ "primary": {
+  "hi": {
+   "rank_cup": 492.0,
+   "rank_finger": 455.0,
+   "holds": false
+  },
+  "lo": {
+   "rank_cup": 582.0,
+   "rank_finger": 640.0,
+   "holds": true
+  }
+ },
+ "confirmed": false,
+ "dropped_sides": [],
+ "secondary": {
+  "hi": {
+   "cup": {
+    "ratio_profile": {
+     "4": 0.0029927851650251754,
+     "8": 0.0068718636802019666,
+     "16": 0.012666933854951924,
+     "32": 0.024227712674616448,
+     "64": 0.05604195298247721
+    },
+    "lambda_need": 0.009435848832163161,
+    "f_rewarded": 0.17215284715284715,
+    "diversity_pr": 7.684227489346711,
+    "r2_oof": 0.6400765391597937
+   },
+   "finger": {
+    "ratio_profile": {
+     "4": 0.0031120115943955467,
+     "8": 0.004293616005458581,
+     "16": 0.007229397187473005,
+     "32": 0.02225637797377401,
+     "64": 0.06472869082492663
+    },
+    "lambda_need": 0.011096752352643758,
+    "f_rewarded": 0.32317182817182816,
+    "diversity_pr": 9.230033291492585,
+    "r2_oof": 0.3994753158188702
+   }
+  },
+  "lo": {
+   "cup": {
+    "ratio_profile": {
+     "4": 0.0009067932649050939,
+     "8": 0.0020479320629857244,
+     "16": 0.004726171554787806,
+     "32": 0.013290493651455354,
+     "64": 0.03345090249236583
+    },
+    "lambda_need": 0.0027143862930759416,
+    "f_rewarded": 0.22193306693306694,
+    "diversity_pr": 9.821803832787058,
+    "r2_oof": 0.7279966133834808
+   },
+   "finger": {
+    "ratio_profile": {
+     "4": 0.0006088537469257074,
+     "8": 0.0009094761189127434,
+     "16": 0.0015695333052192335,
+     "32": 0.00458945715981343,
+     "64": 0.019189142570947594
+    },
+    "lambda_need": 0.0027802890259439866,
+    "f_rewarded": 0.053606393606393604,
+    "diversity_pr": 8.06718342680508,
+    "r2_oof": 0.25243977604723944
+   }
+  }
+ },
+ "secondary_crossbuffer": [],
+ "inestimable": [],
+ "verdict": "P-SM1 NOT confirmed: the reward-direction variance-rank ordering does not hold in every evaluable matched side \u2014 the spectral account of the cup/finger boundary fails as registered.",
+ "inputs": [
+  "cup_q1_s0.json",
+  "cup_q1_s1.json",
+  "finger_q1_s0.json",
+  "finger_q1_s1.json"
+ ]
+}
