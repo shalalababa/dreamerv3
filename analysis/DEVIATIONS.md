@@ -6,6 +6,19 @@ immutable dated files; see plan v4.)
 
 ## Deviations
 
+- **2026-07-25 (pm) — PIXEL SWAMPING READ EXECUTED: P-SW1
+  SWAMPING-CONSISTENT FIRES.** Resubmitted E4 sweep complete (32/32,
+  no skips; bundle code md5-identical to the frozen repo versions);
+  ONE read execution with the pre-frozen
+  `analysis/pixel_swamping_read.py`; local read ≡ cluster json on
+  every decisional field (trivial_floor differs by 5.6e-16 —
+  cross-machine float summation, disclosed). Task-arm in-regime
+  rew-NLL 23.3 [19.4, 27.3] ≫ 2.0; floor 0.67 (informative);
+  side-robust (all 16 task runs ≥ 2.0). Frozen consequences applied:
+  pixel boundary = predicted structure (g > G2), G-X3 stays NO-GO, no
+  further pixel arms; theory honesty-box entry (b) updated to the
+  confirmed resolution. Record:
+  `artifacts/pixel_swamping_20260725/`. Pixel leg CLOSED.
 - **2026-07-25 (later) — POST-READ BUILD WAVE: R3 registered +
   collusion stages 2–3 executed locally.** (1) **R3
   consumer-competence factorial REGISTERED pre-outcome**
