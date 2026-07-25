@@ -40,10 +40,15 @@ WINDOW = 8                     # frames per history window (registered)
 CUTS = (4, 8, 16, 32, 64)      # capacity cuts for the ratio profile
 RIDGE_SCALE = 1e-3             # ridge = RIDGE_SCALE * tr(Sigma)/D
 MAX_STEPS = 500_000            # uniform chunk subsample above this
+MIN_REWARDED = 50              # amend 1: fewer rewarded frames =>
+                               # theta inestimable, spectrum-only record
 EXCLUDE_PREFIX = ("log", "stepid")
 EXCLUDE_KEYS = ("is_first", "is_last", "is_terminal", "reward",
                 "action", "reset", "cont")
-MEASURE_VERSION = "spectral_v1_20260724"
+# v1_1 (amend 1): theta_estimable/theta_source/theta/n_rewarded fields;
+# v1 jsons (pre-amendment) are refused by compare() — re-measure them
+# (deterministic; same numbers plus the new fields).
+MEASURE_VERSION = "spectral_v1_1_20260724"
 
 
 # --------------------------------------------------------------------------
@@ -161,7 +166,14 @@ def _ridge_theta(x, r, lam):
 
 
 def reward_direction(x, r, fold):
-  """OOF ridge: theta from all data (direction), R2 out-of-fold."""
+  """OOF ridge: theta from all data (direction), R2 out-of-fold.
+
+  Returns (None, 0.0) when theta is inestimable — too few rewarded
+  frames or (near-)constant rewards make the centered cross-moment
+  identically zero (amendment 1: registered spectrum-only fallback,
+  MIN_REWARDED threshold)."""
+  if int((r > 0).sum()) < MIN_REWARDED or float(np.var(r)) == 0.0:
+    return None, 0.0
   xc = x - x.mean(0)
   rc = r - r.mean()
   lam = RIDGE_SCALE * np.trace(xc.T @ xc / len(xc)) / xc.shape[1]
@@ -181,7 +193,8 @@ def reward_direction(x, r, fold):
     sst += float((rc[te] ** 2).sum())
   r2_oof = 1.0 - sse / sst if sst > 0 else 0.0
   norm = np.linalg.norm(theta)
-  assert norm > 0, "degenerate reward direction (no reward signal?)"
+  if norm == 0:
+    return None, 0.0
   return theta / norm, float(r2_oof)
 
 
@@ -195,7 +208,11 @@ def participation_ratio(mat):
 
 
 def measure(replay_dir, domain, side, tag, window=WINDOW,
-            max_steps=MAX_STEPS):
+            max_steps=MAX_STEPS, theta_from=None):
+  """theta_from (amend 1, cross-buffer secondary): a prior measure
+  json of the SAME domain whose own-estimated theta is evaluated
+  against THIS buffer's spectrum (theta is a task property, Sigma a
+  buffer property). Feature spaces must match (obs_keys + window)."""
   chunks = load_chunks(replay_dir, max_steps=max_steps)
   keys = obs_keys(chunks[0])
   x, r, fold, flat, flat_rew, ep_reward = build_windows(
@@ -204,11 +221,28 @@ def measure(replay_dir, domain, side, tag, window=WINDOW,
   cov = xc.T @ xc / len(xc)
   eigs = np.sort(np.linalg.eigvalsh(cov))[::-1]
   eigs = np.clip(eigs, 0, None)
-  theta, r2_oof = reward_direction(x, r, fold)
-  lam_need = float(theta @ cov @ theta)
-  rank = int((eigs > lam_need).sum())
-  ratio = {int(k): (float(lam_need / eigs[k - 1]) if k <= len(eigs)
-                    else None) for k in CUTS}
+  theta_source = "own"
+  if theta_from is None:
+    theta, r2_oof = reward_direction(x, r, fold)
+  else:
+    with open(theta_from) as f:
+      src = json.load(f)
+    assert src["domain"] == domain, "cross-buffer theta: same domain only"
+    assert src["obs_keys"] == keys and src["window"] == window, (
+        "cross-buffer theta: feature space mismatch")
+    assert src.get("theta") is not None, "source json has no theta"
+    theta = np.asarray(src["theta"], np.float64)
+    theta /= np.linalg.norm(theta)
+    r2_oof = None                     # not evaluated for imported theta
+    theta_source = os.path.basename(theta_from)
+  estimable = theta is not None
+  if estimable:
+    lam_need = float(theta @ cov @ theta)
+    rank = int((eigs > lam_need).sum())
+    ratio = {int(k): (float(lam_need / eigs[k - 1]) if k <= len(eigs)
+                      else None) for k in CUTS}
+  else:
+    lam_need = rank = ratio = None
   rewarded = flat_rew > 0
   out = dict(
       version=MEASURE_VERSION, domain=domain, side=side, tag=tag,
@@ -218,9 +252,13 @@ def measure(replay_dir, domain, side, tag, window=WINDOW,
       spectrum_top=[float(v) for v in eigs[:64]],
       spectrum_pr=float(
           eigs.sum() ** 2 / (eigs ** 2).sum()) if eigs.sum() else 0.0,
+      theta_estimable=bool(estimable), theta_source=theta_source,
+      theta=([float(v) for v in theta] if estimable
+             and theta_source == "own" else None),
       lambda_need=lam_need, variance_rank=rank, ratio_profile=ratio,
       r2_oof=r2_oof,
       f_rewarded=float(rewarded.mean()),
+      n_rewarded=int(rewarded.sum()),
       mean_reward=float(flat_rew.mean()),
       s2_rewarded=float(np.var(flat_rew[rewarded])) if rewarded.any()
       else 0.0,
@@ -240,15 +278,32 @@ def compare(inputs):
   for p in inputs:
     with open(p) as f:
       meas.append(json.load(f))
+  for m in meas:
+    assert m.get("version") == MEASURE_VERSION, (
+        f"{m.get('tag')}: json version {m.get('version')!r} != "
+        f"{MEASURE_VERSION} — re-measure with the amended script")
   doms = sorted({m["domain"] for m in meas})
   assert set(doms) >= {"cup", "finger"}, (
       "registered primary needs cup and finger measurements")
+  # primary population: own-theta estimable records only (amend 1;
+  # cross-buffer-theta records are the registered secondary)
+  own = [m for m in meas if m.get("theta_estimable")
+         and m.get("theta_source") == "own"]
+  cross = [m for m in meas if m.get("theta_estimable")
+           and m.get("theta_source") != "own"]
   by = {}
-  for m in meas:
+  for m in own:
     by.setdefault((m["domain"], m["side"]), []).append(m)
-  sides = sorted({s for (d, s) in by if ("cup", s) in by
-                  and ("finger", s) in by})
-  assert sides, "no side measured in both domains"
+  matched = sorted({m["side"] for m in meas
+                    if any(x["domain"] == "cup" and x["side"] == m["side"]
+                           for x in meas)
+                    and any(x["domain"] == "finger"
+                            and x["side"] == m["side"] for x in meas)})
+  sides = [s for s in matched
+           if ("cup", s) in by and ("finger", s) in by]
+  dropped = [s for s in matched if s not in sides]
+  assert sides, (
+      "no matched side has own-theta-estimable records in both domains")
   primary = {}
   agree = []
   for s in sides:
@@ -270,15 +325,34 @@ def compare(inputs):
                 [m["diversity_pr"] for m in by[(dom, s)]])),
             r2_oof=float(np.median([m["r2_oof"] for m in by[(dom, s)]])),
         ) for dom in ("cup", "finger")}
+  crossbuffer = [
+      dict(domain=m["domain"], side=m["side"], tag=m["tag"],
+           theta_source=m["theta_source"],
+           variance_rank=m["variance_rank"],
+           lambda_need=m["lambda_need"])
+      for m in cross]
+  inest = [dict(domain=m["domain"], side=m["side"], tag=m["tag"],
+                n_rewarded=m.get("n_rewarded"),
+                f_rewarded=m["f_rewarded"])
+           for m in meas if not m.get("theta_estimable")]
   verdict = (
       "P-SM1 CONFIRMED: cup's reward direction outranks finger's in "
-      "every matched side — the domain contrast is a lambda-spectrum "
-      "fact, as the spectral account requires." if confirmed else
+      "every evaluable matched side — the domain contrast is a "
+      "lambda-spectrum fact, as the spectral account requires."
+      if confirmed else
       "P-SM1 NOT confirmed: the reward-direction variance-rank "
-      "ordering does not hold in every matched side — the spectral "
-      "account of the cup/finger boundary fails as registered.")
+      "ordering does not hold in every evaluable matched side — the "
+      "spectral account of the cup/finger boundary fails as "
+      "registered.")
+  if dropped:
+    verdict += (f" [Amend 1 disclosure: matched side(s) {dropped} "
+                "had no own-theta-estimable records in both domains "
+                "and were excluded from the primary; see "
+                "inestimable/crossbuffer blocks.]")
   return dict(primary=primary, confirmed=bool(confirmed),
-              secondary=secondary, verdict=verdict,
+              dropped_sides=dropped, secondary=secondary,
+              secondary_crossbuffer=crossbuffer,
+              inestimable=inest, verdict=verdict,
               inputs=[os.path.basename(p) for p in inputs])
 
 
@@ -353,15 +427,50 @@ def selfcheck():
     json.dump(mc, open(pc, "w")); json.dump(mf, open(pf, "w"))
     res = compare([pc, pf])
     assert res["confirmed"], res
+    assert res["dropped_sides"] == [], res
     mc2, mf2 = dict(mc), dict(mf)
     mc2["domain"], mf2["domain"] = "finger", "cup"
     json.dump(mc2, open(pc, "w")); json.dump(mf2, open(pf, "w"))
     res2 = compare([pc, pf])
     assert not res2["confirmed"], res2
+    json.dump(mc, open(pc, "w"))     # restore after the relabel test
+    # amend 1: zero-reward buffer -> inestimable spectrum-only record
+    zero = _write_synth(tmp, "zerorew", hi_var_reward=True, f=0.0,
+                        seed=5)
+    mz = measure(zero, "finger", "lo", "zr")
+    assert not mz["theta_estimable"] and mz["variance_rank"] is None
+    assert mz["n_rewarded"] == 0 and mz["f_rewarded"] == 0.0
+    # amend 1: cross-buffer theta restores a rank on the sparse buffer
+    # (theta from a same-domain rewarded buffer; pc holds the cup json)
+    mzx = measure(zero, "cup", "lo", "zrx", theta_from=pc)
+    assert mzx["theta_estimable"] and mzx["variance_rank"] is not None
+    assert mzx["theta_source"] == os.path.basename(pc)
+    assert mzx["r2_oof"] is None and mzx["theta"] is None
+    tripped = False
+    try:
+      measure(zero, "finger", "lo", "wrongdom", theta_from=pc)
+    except AssertionError:
+      tripped = True
+    assert tripped, "cross-domain theta import must trip"
+    # amend 1: compare drops the side with no estimable pair, discloses
+    pz = os.path.join(tmp, "z.json")
+    json.dump(mz, open(pz, "w"))
+    mch = dict(mc); mch["domain"] = "cup"; mch["side"] = "lo"
+    pcl = os.path.join(tmp, "cl.json")
+    json.dump(mch, open(pcl, "w"))
+    json.dump(mc, open(pc, "w")); json.dump(mf, open(pf, "w"))
+    res3 = compare([pc, pf, pcl, pz])
+    assert res3["dropped_sides"] == ["lo"], res3["dropped_sides"]
+    assert list(res3["primary"]) == ["hi"], res3["primary"]
+    assert res3["confirmed"], res3
+    assert res3["inestimable"][0]["side"] == "lo"
   print("selfcheck PASS: planted high-variance reward dim outranks "
         "low-variance one (rank + ratio), f recovered, OOF R2 "
         "positive, all-first buffer trips, diversity separates broad "
-        "from narrow support, compare confirms/refutes correctly")
+        "from narrow support, compare confirms/refutes correctly; "
+        "amend 1: zero-reward buffer yields spectrum-only record, "
+        "cross-buffer theta restores rank (cross-domain trips), "
+        "compare drops+discloses inestimable sides")
 
 
 def main():
@@ -374,6 +483,10 @@ def main():
   ap.add_argument("--inputs", nargs="*")
   ap.add_argument("--output")
   ap.add_argument("--max_steps", type=int, default=MAX_STEPS)
+  ap.add_argument("--theta_from", default=None,
+                  help="measure json of the same domain whose theta is "
+                       "evaluated against this buffer's spectrum "
+                       "(amend-1 cross-buffer secondary)")
   ap.add_argument("--selfcheck", action="store_true")
   args = ap.parse_args()
   if args.selfcheck:
@@ -382,13 +495,24 @@ def main():
   if args.cmd == "measure":
     assert args.replay and args.domain and args.side and args.output
     out = measure(args.replay, args.domain, args.side, args.tag,
-                  max_steps=args.max_steps)
+                  max_steps=args.max_steps, theta_from=args.theta_from)
     with open(args.output, "w") as f:
       json.dump(out, f, indent=1)
-    print(f"{args.domain}/{args.side}: rank={out['variance_rank']} "
-          f"lambda_need={out['lambda_need']:.4f} "
-          f"f={out['f_rewarded']:.4f} r2_oof={out['r2_oof']:.3f} "
-          f"diversity_pr={out['diversity_pr']:.2f}")
+    if out["theta_estimable"]:
+      r2 = ("n/a" if out["r2_oof"] is None else f"{out['r2_oof']:.3f}")
+      print(f"{args.domain}/{args.side}: rank={out['variance_rank']} "
+            f"lambda_need={out['lambda_need']:.4f} "
+            f"f={out['f_rewarded']:.4f} r2_oof={r2} "
+            f"diversity_pr={out['diversity_pr']:.2f} "
+            f"theta_source={out['theta_source']}")
+    else:
+      print(f"{args.domain}/{args.side}: THETA INESTIMABLE "
+            f"(n_rewarded={out['n_rewarded']} < {MIN_REWARDED} or "
+            f"constant reward) — spectrum-only record; "
+            f"f={out['f_rewarded']:.6f} "
+            f"diversity_pr={out['diversity_pr']:.2f}; consider "
+            f"--theta_from <same-domain json> for the cross-buffer "
+            f"secondary")
   elif args.cmd == "compare":
     assert args.inputs and args.output
     res = compare(args.inputs)

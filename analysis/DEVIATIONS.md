@@ -251,6 +251,20 @@ immutable dated files; see plan v4.)
 
 ## Code notes and registrations (non-deviations)
 
+- **2026-07-24 — SPECTRAL PASS AMENDMENT 1: θ-inestimable buffers.**
+  First real run crashed on a buffer with zero rewarded frames in the
+  loaded sample (no reward direction exists; the instrument asserted
+  instead of handling it). Amended
+  (`prereg/PREREG_spectral_domains_amend1_20260724.md`, instrument
+  v1_1, selfcheck extended PASS): ≥50-rewarded-frames estimability
+  rule with spectrum-only fallback records; primary restricted to
+  own-θ-estimable records with dropped-side disclosure; NEW
+  cross-buffer θ secondary (`--theta_from`, same-domain only — θ is a
+  task property, Σ a buffer property); version gate forces
+  re-measurement of the few pre-amendment jsons (deterministic
+  estimators unchanged). Disclosure: a few successful per-buffer
+  print lines were seen pre-amendment; no compare verdict ever ran.
+
 - **2026-07-24 — RELABEL AMENDMENT 2: config schema-drift fix after
   Amendment-1 smoke failure.** The d1pilot smoke crashed at agent
   construction (`AttributeError: model_obs`): the 18-Jul pilot configs
