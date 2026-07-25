@@ -1,0 +1,2422 @@
+
+===== [Sat Jul 25 15:14:08 UTC 2026] START pixel_swamping_e4 gpu=0 =====
+[32mActivated conda/uv virtual environment at [36m/venv/main[0m
+[Sat Jul 25 15:14:09 UTC 2026] E4 measure ax1wm_finger_fpxpxq1ms0_seed1
+Observations
+  reward           Space(float32, shape=(), low=-inf, high=inf)
+  is_first         Space(bool, shape=(), low=False, high=True)
+  is_last          Space(bool, shape=(), low=False, high=True)
+  is_terminal      Space(bool, shape=(), low=False, high=True)
+  position         Space(float32, shape=(4,), low=-inf, high=inf)
+  velocity         Space(float32, shape=(3,), low=-inf, high=inf)
+  touch            Space(float32, shape=(2,), low=-inf, high=inf)
+  target_position  Space(float32, shape=(2,), low=-inf, high=inf)
+  dist_to_target   Space(float32, shape=(), low=-inf, high=inf)
+  image            Space(uint8, shape=(64, 64, 3), low=0, high=255)
+Actions
+  action           Space(float32, shape=(2,), low=-1.0, high=1.0)
+Extras
+  consec           Space(int32, shape=(), low=-2147483648, high=2147483647)
+  stepid           Space(uint8, shape=(20,), low=0, high=255)
+  dyn/deter        Space(float32, shape=(512,), low=-inf, high=inf)
+  dyn/stoch        Space(float32, shape=(32, 4), low=-inf, high=inf)
+JAX devices (1): [cuda:0]
+Policy devices: cuda:0
+Train devices:  cuda:0
+Initializing parameters...
+/workspace/dreamerv3/embodied/jax/agent.py:112: DeprecationWarning: `with mesh:` context manager has been deprecated. Please use `with jax.set_mesh(mesh):` instead.
+  with self.train_mesh:
+Optimizer opt has 628,407 params:
+       376,448 dyn
+        80,595 dec
+        66,111 val
+        49,796 pol
+        41,153 con
+        14,304 enc
+/venv/main/lib/python3.11/site-packages/optax/_src/linear_algebra.py:44: DeprecationWarning: optax.global_norm is deprecated in favor of optax.tree.norm
+  warnings.warn(
+Done initializing!
+Compiling 1 checkpoint groups...
+Largest checkpoint group: 0 GB
+Loading checkpoint: /workspace/dreamerv3_runs/ax1wm_finger_fpxpxq1ms0_seed1/ckpt/20260722T073242F194151-000000500000
+Loaded checkpoint.
+ax1wm_finger_fpxpxq1ms0_seed1: expl.mode=apt reward_aware=False horizons=(1, 5, 20) probes 120x1001
+  episodes 0-3
+  episodes 4-7
+  episodes 8-11
+  episodes 12-15
+  episodes 16-19
+  episodes 20-23
+  episodes 24-27
+  episodes 28-31
+  episodes 32-35
+  episodes 36-39
+  episodes 40-43
+  episodes 44-47
+  episodes 48-51
+  episodes 52-55
+  episodes 56-59
+  episodes 60-63
+  episodes 64-67
+  episodes 68-71
+  episodes 72-75
+  episodes 76-79
+  episodes 80-83
+  episodes 84-87
+  episodes 88-91
+  episodes 92-95
+  episodes 96-99
+  episodes 100-103
+  episodes 104-107
+  episodes 108-111
+  episodes 112-115
+  episodes 116-119
+  h0: all=35.2686 in=29.2505 out=35.7397 rew=29.1976 norew=35.7434
+  h1: all=36.3965 in=30.2375 out=36.8788 rew=30.2375 norew=36.8788
+  h5: all=39.3738 in=32.9409 out=39.8779 rew=32.9409 norew=39.8779
+  h20: all=46.6284 in=39.1709 out=47.2132 rew=39.1709 norew=47.2132
+-> /workspace/dreamerv3_runs/ax1wm_finger_fpxpxq1ms0_seed1/e4_fingerpx_v1
+[Sat Jul 25 15:14:56 UTC 2026] E4 measure ax1wm_finger_fpxpxq1ms0_seed2
+Observations
+  reward           Space(float32, shape=(), low=-inf, high=inf)
+  is_first         Space(bool, shape=(), low=False, high=True)
+  is_last          Space(bool, shape=(), low=False, high=True)
+  is_terminal      Space(bool, shape=(), low=False, high=True)
+  position         Space(float32, shape=(4,), low=-inf, high=inf)
+  velocity         Space(float32, shape=(3,), low=-inf, high=inf)
+  touch            Space(float32, shape=(2,), low=-inf, high=inf)
+  target_position  Space(float32, shape=(2,), low=-inf, high=inf)
+  dist_to_target   Space(float32, shape=(), low=-inf, high=inf)
+  image            Space(uint8, shape=(64, 64, 3), low=0, high=255)
+Actions
+  action           Space(float32, shape=(2,), low=-1.0, high=1.0)
+Extras
+  consec           Space(int32, shape=(), low=-2147483648, high=2147483647)
+  stepid           Space(uint8, shape=(20,), low=0, high=255)
+  dyn/deter        Space(float32, shape=(512,), low=-inf, high=inf)
+  dyn/stoch        Space(float32, shape=(32, 4), low=-inf, high=inf)
+JAX devices (1): [cuda:0]
+Policy devices: cuda:0
+Train devices:  cuda:0
+Initializing parameters...
+/workspace/dreamerv3/embodied/jax/agent.py:112: DeprecationWarning: `with mesh:` context manager has been deprecated. Please use `with jax.set_mesh(mesh):` instead.
+  with self.train_mesh:
+Optimizer opt has 628,407 params:
+       376,448 dyn
+        80,595 dec
+        66,111 val
+        49,796 pol
+        41,153 con
+        14,304 enc
+/venv/main/lib/python3.11/site-packages/optax/_src/linear_algebra.py:44: DeprecationWarning: optax.global_norm is deprecated in favor of optax.tree.norm
+  warnings.warn(
+Done initializing!
+Compiling 1 checkpoint groups...
+Largest checkpoint group: 0 GB
+Loading checkpoint: /workspace/dreamerv3_runs/ax1wm_finger_fpxpxq1ms0_seed2/ckpt/20260720T213911F048568-000000350000
+Loaded checkpoint.
+ax1wm_finger_fpxpxq1ms0_seed2: expl.mode=apt reward_aware=False horizons=(1, 5, 20) probes 120x1001
+  episodes 0-3
+  episodes 4-7
+  episodes 8-11
+  episodes 12-15
+  episodes 16-19
+  episodes 20-23
+  episodes 24-27
+  episodes 28-31
+  episodes 32-35
+  episodes 36-39
+  episodes 40-43
+  episodes 44-47
+  episodes 48-51
+  episodes 52-55
+  episodes 56-59
+  episodes 60-63
+  episodes 64-67
+  episodes 68-71
+  episodes 72-75
+  episodes 76-79
+  episodes 80-83
+  episodes 84-87
+  episodes 88-91
+  episodes 92-95
+  episodes 96-99
+  episodes 100-103
+  episodes 104-107
+  episodes 108-111
+  episodes 112-115
+  episodes 116-119
+  h0: all=26.6093 in=25.0010 out=26.7352 rew=24.9427 norew=26.7396
+  h1: all=27.7714 in=26.2010 out=27.8944 rew=26.2010 norew=27.8944
+  h5: all=30.9738 in=29.1561 out=31.1162 rew=29.1561 norew=31.1162
+  h20: all=38.9911 in=35.9758 out=39.2275 rew=35.9758 norew=39.2275
+-> /workspace/dreamerv3_runs/ax1wm_finger_fpxpxq1ms0_seed2/e4_fingerpx_v1
+[Sat Jul 25 15:15:59 UTC 2026] E4 measure ax1wm_finger_fpxpxq1ms0_seed3
+Observations
+  reward           Space(float32, shape=(), low=-inf, high=inf)
+  is_first         Space(bool, shape=(), low=False, high=True)
+  is_last          Space(bool, shape=(), low=False, high=True)
+  is_terminal      Space(bool, shape=(), low=False, high=True)
+  position         Space(float32, shape=(4,), low=-inf, high=inf)
+  velocity         Space(float32, shape=(3,), low=-inf, high=inf)
+  touch            Space(float32, shape=(2,), low=-inf, high=inf)
+  target_position  Space(float32, shape=(2,), low=-inf, high=inf)
+  dist_to_target   Space(float32, shape=(), low=-inf, high=inf)
+  image            Space(uint8, shape=(64, 64, 3), low=0, high=255)
+Actions
+  action           Space(float32, shape=(2,), low=-1.0, high=1.0)
+Extras
+  consec           Space(int32, shape=(), low=-2147483648, high=2147483647)
+  stepid           Space(uint8, shape=(20,), low=0, high=255)
+  dyn/deter        Space(float32, shape=(512,), low=-inf, high=inf)
+  dyn/stoch        Space(float32, shape=(32, 4), low=-inf, high=inf)
+JAX devices (1): [cuda:0]
+Policy devices: cuda:0
+Train devices:  cuda:0
+Initializing parameters...
+/workspace/dreamerv3/embodied/jax/agent.py:112: DeprecationWarning: `with mesh:` context manager has been deprecated. Please use `with jax.set_mesh(mesh):` instead.
+  with self.train_mesh:
+Optimizer opt has 628,407 params:
+       376,448 dyn
+        80,595 dec
+        66,111 val
+        49,796 pol
+        41,153 con
+        14,304 enc
+/venv/main/lib/python3.11/site-packages/optax/_src/linear_algebra.py:44: DeprecationWarning: optax.global_norm is deprecated in favor of optax.tree.norm
+  warnings.warn(
+Done initializing!
+Compiling 1 checkpoint groups...
+Largest checkpoint group: 0 GB
+Loading checkpoint: /workspace/dreamerv3_runs/ax1wm_finger_fpxpxq1ms0_seed3/ckpt/20260722T170354F932383-000000500000
+Loaded checkpoint.
+ax1wm_finger_fpxpxq1ms0_seed3: expl.mode=apt reward_aware=False horizons=(1, 5, 20) probes 120x1001
+  episodes 0-3
+  episodes 4-7
+  episodes 8-11
+  episodes 12-15
+  episodes 16-19
+  episodes 20-23
+  episodes 24-27
+  episodes 28-31
+  episodes 32-35
+  episodes 36-39
+  episodes 40-43
+  episodes 44-47
+  episodes 48-51
+  episodes 52-55
+  episodes 56-59
+  episodes 60-63
+  episodes 64-67
+  episodes 68-71
+  episodes 72-75
+  episodes 76-79
+  episodes 80-83
+  episodes 84-87
+  episodes 88-91
+  episodes 92-95
+  episodes 96-99
+  episodes 100-103
+  episodes 104-107
+  episodes 108-111
+  episodes 112-115
+  episodes 116-119
+  h0: all=31.0159 in=28.8103 out=31.1885 rew=28.7553 norew=31.1927
+  h1: all=32.2206 in=29.9068 out=32.4018 rew=29.9068 norew=32.4018
+  h5: all=35.3442 in=32.7140 out=35.5504 rew=32.7140 norew=35.5504
+  h20: all=43.2157 in=39.4051 out=43.5145 rew=39.4051 norew=43.5145
+-> /workspace/dreamerv3_runs/ax1wm_finger_fpxpxq1ms0_seed3/e4_fingerpx_v1
+[Sat Jul 25 15:16:59 UTC 2026] E4 measure ax1wm_finger_fpxpxq1ms0_seed4
+Observations
+  reward           Space(float32, shape=(), low=-inf, high=inf)
+  is_first         Space(bool, shape=(), low=False, high=True)
+  is_last          Space(bool, shape=(), low=False, high=True)
+  is_terminal      Space(bool, shape=(), low=False, high=True)
+  position         Space(float32, shape=(4,), low=-inf, high=inf)
+  velocity         Space(float32, shape=(3,), low=-inf, high=inf)
+  touch            Space(float32, shape=(2,), low=-inf, high=inf)
+  target_position  Space(float32, shape=(2,), low=-inf, high=inf)
+  dist_to_target   Space(float32, shape=(), low=-inf, high=inf)
+  image            Space(uint8, shape=(64, 64, 3), low=0, high=255)
+Actions
+  action           Space(float32, shape=(2,), low=-1.0, high=1.0)
+Extras
+  consec           Space(int32, shape=(), low=-2147483648, high=2147483647)
+  stepid           Space(uint8, shape=(20,), low=0, high=255)
+  dyn/deter        Space(float32, shape=(512,), low=-inf, high=inf)
+  dyn/stoch        Space(float32, shape=(32, 4), low=-inf, high=inf)
+JAX devices (1): [cuda:0]
+Policy devices: cuda:0
+Train devices:  cuda:0
+Initializing parameters...
+/workspace/dreamerv3/embodied/jax/agent.py:112: DeprecationWarning: `with mesh:` context manager has been deprecated. Please use `with jax.set_mesh(mesh):` instead.
+  with self.train_mesh:
+Optimizer opt has 628,407 params:
+       376,448 dyn
+        80,595 dec
+        66,111 val
+        49,796 pol
+        41,153 con
+        14,304 enc
+/venv/main/lib/python3.11/site-packages/optax/_src/linear_algebra.py:44: DeprecationWarning: optax.global_norm is deprecated in favor of optax.tree.norm
+  warnings.warn(
+Done initializing!
+Compiling 1 checkpoint groups...
+Largest checkpoint group: 0 GB
+Loading checkpoint: /workspace/dreamerv3_runs/ax1wm_finger_fpxpxq1ms0_seed4/ckpt/20260722T214752F920290-000000500000
+Loaded checkpoint.
+ax1wm_finger_fpxpxq1ms0_seed4: expl.mode=apt reward_aware=False horizons=(1, 5, 20) probes 120x1001
+  episodes 0-3
+  episodes 4-7
+  episodes 8-11
+  episodes 12-15
+  episodes 16-19
+  episodes 20-23
+  episodes 24-27
+  episodes 28-31
+  episodes 32-35
+  episodes 36-39
+  episodes 40-43
+  episodes 44-47
+  episodes 48-51
+  episodes 52-55
+  episodes 56-59
+  episodes 60-63
+  episodes 64-67
+  episodes 68-71
+  episodes 72-75
+  episodes 76-79
+  episodes 80-83
+  episodes 84-87
+  episodes 88-91
+  episodes 92-95
+  episodes 96-99
+  episodes 100-103
+  episodes 104-107
+  episodes 108-111
+  episodes 112-115
+  episodes 116-119
+  h0: all=33.8700 in=33.2751 out=33.9165 rew=33.2276 norew=33.9202
+  h1: all=35.0808 in=34.3378 out=35.1390 rew=34.3378 norew=35.1390
+  h5: all=38.1494 in=36.9629 out=38.2424 rew=36.9629 norew=38.2424
+  h20: all=45.7493 in=43.3046 out=45.9410 rew=43.3046 norew=45.9410
+-> /workspace/dreamerv3_runs/ax1wm_finger_fpxpxq1ms0_seed4/e4_fingerpx_v1
+[Sat Jul 25 15:17:53 UTC 2026] E4 measure ax1wm_finger_fpxpxq1ms0_seed5
+Observations
+  reward           Space(float32, shape=(), low=-inf, high=inf)
+  is_first         Space(bool, shape=(), low=False, high=True)
+  is_last          Space(bool, shape=(), low=False, high=True)
+  is_terminal      Space(bool, shape=(), low=False, high=True)
+  position         Space(float32, shape=(4,), low=-inf, high=inf)
+  velocity         Space(float32, shape=(3,), low=-inf, high=inf)
+  touch            Space(float32, shape=(2,), low=-inf, high=inf)
+  target_position  Space(float32, shape=(2,), low=-inf, high=inf)
+  dist_to_target   Space(float32, shape=(), low=-inf, high=inf)
+  image            Space(uint8, shape=(64, 64, 3), low=0, high=255)
+Actions
+  action           Space(float32, shape=(2,), low=-1.0, high=1.0)
+Extras
+  consec           Space(int32, shape=(), low=-2147483648, high=2147483647)
+  stepid           Space(uint8, shape=(20,), low=0, high=255)
+  dyn/deter        Space(float32, shape=(512,), low=-inf, high=inf)
+  dyn/stoch        Space(float32, shape=(32, 4), low=-inf, high=inf)
+JAX devices (1): [cuda:0]
+Policy devices: cuda:0
+Train devices:  cuda:0
+Initializing parameters...
+/workspace/dreamerv3/embodied/jax/agent.py:112: DeprecationWarning: `with mesh:` context manager has been deprecated. Please use `with jax.set_mesh(mesh):` instead.
+  with self.train_mesh:
+Optimizer opt has 628,407 params:
+       376,448 dyn
+        80,595 dec
+        66,111 val
+        49,796 pol
+        41,153 con
+        14,304 enc
+/venv/main/lib/python3.11/site-packages/optax/_src/linear_algebra.py:44: DeprecationWarning: optax.global_norm is deprecated in favor of optax.tree.norm
+  warnings.warn(
+Done initializing!
+Compiling 1 checkpoint groups...
+Largest checkpoint group: 0 GB
+Loading checkpoint: /workspace/dreamerv3_runs/ax1wm_finger_fpxpxq1ms0_seed5/ckpt/20260722T235128F561985-000000200000
+Loaded checkpoint.
+ax1wm_finger_fpxpxq1ms0_seed5: expl.mode=apt reward_aware=False horizons=(1, 5, 20) probes 120x1001
+  episodes 0-3
+  episodes 4-7
+  episodes 8-11
+  episodes 12-15
+  episodes 16-19
+  episodes 20-23
+  episodes 24-27
+  episodes 28-31
+  episodes 32-35
+  episodes 36-39
+  episodes 40-43
+  episodes 44-47
+  episodes 48-51
+  episodes 52-55
+  episodes 56-59
+  episodes 60-63
+  episodes 64-67
+  episodes 68-71
+  episodes 72-75
+  episodes 76-79
+  episodes 80-83
+  episodes 84-87
+  episodes 88-91
+  episodes 92-95
+  episodes 96-99
+  episodes 100-103
+  episodes 104-107
+  episodes 108-111
+  episodes 112-115
+  episodes 116-119
+  h0: all=28.5716 in=26.0960 out=28.7654 rew=26.0370 norew=28.7699
+  h1: all=29.8389 in=27.1863 out=30.0466 rew=27.1863 norew=30.0466
+  h5: all=33.2915 in=30.2535 out=33.5296 rew=30.2535 norew=33.5296
+  h20: all=41.5638 in=37.5547 out=41.8782 rew=37.5547 norew=41.8782
+-> /workspace/dreamerv3_runs/ax1wm_finger_fpxpxq1ms0_seed5/e4_fingerpx_v1
+[Sat Jul 25 15:18:49 UTC 2026] E4 measure ax1wm_finger_fpxpxq1ms0_seed6
+Observations
+  reward           Space(float32, shape=(), low=-inf, high=inf)
+  is_first         Space(bool, shape=(), low=False, high=True)
+  is_last          Space(bool, shape=(), low=False, high=True)
+  is_terminal      Space(bool, shape=(), low=False, high=True)
+  position         Space(float32, shape=(4,), low=-inf, high=inf)
+  velocity         Space(float32, shape=(3,), low=-inf, high=inf)
+  touch            Space(float32, shape=(2,), low=-inf, high=inf)
+  target_position  Space(float32, shape=(2,), low=-inf, high=inf)
+  dist_to_target   Space(float32, shape=(), low=-inf, high=inf)
+  image            Space(uint8, shape=(64, 64, 3), low=0, high=255)
+Actions
+  action           Space(float32, shape=(2,), low=-1.0, high=1.0)
+Extras
+  consec           Space(int32, shape=(), low=-2147483648, high=2147483647)
+  stepid           Space(uint8, shape=(20,), low=0, high=255)
+  dyn/deter        Space(float32, shape=(512,), low=-inf, high=inf)
+  dyn/stoch        Space(float32, shape=(32, 4), low=-inf, high=inf)
+JAX devices (1): [cuda:0]
+Policy devices: cuda:0
+Train devices:  cuda:0
+Initializing parameters...
+/workspace/dreamerv3/embodied/jax/agent.py:112: DeprecationWarning: `with mesh:` context manager has been deprecated. Please use `with jax.set_mesh(mesh):` instead.
+  with self.train_mesh:
+Optimizer opt has 628,407 params:
+       376,448 dyn
+        80,595 dec
+        66,111 val
+        49,796 pol
+        41,153 con
+        14,304 enc
+/venv/main/lib/python3.11/site-packages/optax/_src/linear_algebra.py:44: DeprecationWarning: optax.global_norm is deprecated in favor of optax.tree.norm
+  warnings.warn(
+Done initializing!
+Compiling 1 checkpoint groups...
+Largest checkpoint group: 0 GB
+Loading checkpoint: /workspace/dreamerv3_runs/ax1wm_finger_fpxpxq1ms0_seed6/ckpt/20260723T084132F405435-000000500000
+Loaded checkpoint.
+ax1wm_finger_fpxpxq1ms0_seed6: expl.mode=apt reward_aware=False horizons=(1, 5, 20) probes 120x1001
+  episodes 0-3
+  episodes 4-7
+  episodes 8-11
+  episodes 12-15
+  episodes 16-19
+  episodes 20-23
+  episodes 24-27
+  episodes 28-31
+  episodes 32-35
+  episodes 36-39
+  episodes 40-43
+  episodes 44-47
+  episodes 48-51
+  episodes 52-55
+  episodes 56-59
+  episodes 60-63
+  episodes 64-67
+  episodes 68-71
+  episodes 72-75
+  episodes 76-79
+  episodes 80-83
+  episodes 84-87
+  episodes 88-91
+  episodes 92-95
+  episodes 96-99
+  episodes 100-103
+  episodes 104-107
+  episodes 108-111
+  episodes 112-115
+  episodes 116-119
+  h0: all=31.6963 in=29.2320 out=31.8892 rew=29.1771 norew=31.8933
+  h1: all=32.9027 in=30.3672 out=33.1013 rew=30.3672 norew=33.1013
+  h5: all=36.0534 in=33.3594 out=36.2645 rew=33.3594 norew=36.2645
+  h20: all=43.3880 in=39.5869 out=43.6861 rew=39.5869 norew=43.6861
+-> /workspace/dreamerv3_runs/ax1wm_finger_fpxpxq1ms0_seed6/e4_fingerpx_v1
+[Sat Jul 25 15:19:46 UTC 2026] E4 measure ax1wm_finger_fpxpxq1ms0_seed7
+Observations
+  reward           Space(float32, shape=(), low=-inf, high=inf)
+  is_first         Space(bool, shape=(), low=False, high=True)
+  is_last          Space(bool, shape=(), low=False, high=True)
+  is_terminal      Space(bool, shape=(), low=False, high=True)
+  position         Space(float32, shape=(4,), low=-inf, high=inf)
+  velocity         Space(float32, shape=(3,), low=-inf, high=inf)
+  touch            Space(float32, shape=(2,), low=-inf, high=inf)
+  target_position  Space(float32, shape=(2,), low=-inf, high=inf)
+  dist_to_target   Space(float32, shape=(), low=-inf, high=inf)
+  image            Space(uint8, shape=(64, 64, 3), low=0, high=255)
+Actions
+  action           Space(float32, shape=(2,), low=-1.0, high=1.0)
+Extras
+  consec           Space(int32, shape=(), low=-2147483648, high=2147483647)
+  stepid           Space(uint8, shape=(20,), low=0, high=255)
+  dyn/deter        Space(float32, shape=(512,), low=-inf, high=inf)
+  dyn/stoch        Space(float32, shape=(32, 4), low=-inf, high=inf)
+JAX devices (1): [cuda:0]
+Policy devices: cuda:0
+Train devices:  cuda:0
+Initializing parameters...
+/workspace/dreamerv3/embodied/jax/agent.py:112: DeprecationWarning: `with mesh:` context manager has been deprecated. Please use `with jax.set_mesh(mesh):` instead.
+  with self.train_mesh:
+Optimizer opt has 628,407 params:
+       376,448 dyn
+        80,595 dec
+        66,111 val
+        49,796 pol
+        41,153 con
+        14,304 enc
+/venv/main/lib/python3.11/site-packages/optax/_src/linear_algebra.py:44: DeprecationWarning: optax.global_norm is deprecated in favor of optax.tree.norm
+  warnings.warn(
+Done initializing!
+Compiling 1 checkpoint groups...
+Largest checkpoint group: 0 GB
+Loading checkpoint: /workspace/dreamerv3_runs/ax1wm_finger_fpxpxq1ms0_seed7/ckpt/20260723T131204F615268-000000500000
+Loaded checkpoint.
+ax1wm_finger_fpxpxq1ms0_seed7: expl.mode=apt reward_aware=False horizons=(1, 5, 20) probes 120x1001
+  episodes 0-3
+  episodes 4-7
+  episodes 8-11
+  episodes 12-15
+  episodes 16-19
+  episodes 20-23
+  episodes 24-27
+  episodes 28-31
+  episodes 32-35
+  episodes 36-39
+  episodes 40-43
+  episodes 44-47
+  episodes 48-51
+  episodes 52-55
+  episodes 56-59
+  episodes 60-63
+  episodes 64-67
+  episodes 68-71
+  episodes 72-75
+  episodes 76-79
+  episodes 80-83
+  episodes 84-87
+  episodes 88-91
+  episodes 92-95
+  episodes 96-99
+  episodes 100-103
+  episodes 104-107
+  episodes 108-111
+  episodes 112-115
+  episodes 116-119
+  h0: all=31.7320 in=30.4546 out=31.8320 rew=30.3996 norew=31.8362
+  h1: all=32.9393 in=31.6669 out=33.0390 rew=31.6669 norew=33.0390
+  h5: all=36.1141 in=34.7224 out=36.2232 rew=34.7224 norew=36.2232
+  h20: all=43.5875 in=42.1380 out=43.7012 rew=42.1380 norew=43.7012
+-> /workspace/dreamerv3_runs/ax1wm_finger_fpxpxq1ms0_seed7/e4_fingerpx_v1
+[Sat Jul 25 15:20:41 UTC 2026] E4 measure ax1wm_finger_fpxpxq1ms0_seed8
+Observations
+  reward           Space(float32, shape=(), low=-inf, high=inf)
+  is_first         Space(bool, shape=(), low=False, high=True)
+  is_last          Space(bool, shape=(), low=False, high=True)
+  is_terminal      Space(bool, shape=(), low=False, high=True)
+  position         Space(float32, shape=(4,), low=-inf, high=inf)
+  velocity         Space(float32, shape=(3,), low=-inf, high=inf)
+  touch            Space(float32, shape=(2,), low=-inf, high=inf)
+  target_position  Space(float32, shape=(2,), low=-inf, high=inf)
+  dist_to_target   Space(float32, shape=(), low=-inf, high=inf)
+  image            Space(uint8, shape=(64, 64, 3), low=0, high=255)
+Actions
+  action           Space(float32, shape=(2,), low=-1.0, high=1.0)
+Extras
+  consec           Space(int32, shape=(), low=-2147483648, high=2147483647)
+  stepid           Space(uint8, shape=(20,), low=0, high=255)
+  dyn/deter        Space(float32, shape=(512,), low=-inf, high=inf)
+  dyn/stoch        Space(float32, shape=(32, 4), low=-inf, high=inf)
+JAX devices (1): [cuda:0]
+Policy devices: cuda:0
+Train devices:  cuda:0
+Initializing parameters...
+/workspace/dreamerv3/embodied/jax/agent.py:112: DeprecationWarning: `with mesh:` context manager has been deprecated. Please use `with jax.set_mesh(mesh):` instead.
+  with self.train_mesh:
+Optimizer opt has 628,407 params:
+       376,448 dyn
+        80,595 dec
+        66,111 val
+        49,796 pol
+        41,153 con
+        14,304 enc
+/venv/main/lib/python3.11/site-packages/optax/_src/linear_algebra.py:44: DeprecationWarning: optax.global_norm is deprecated in favor of optax.tree.norm
+  warnings.warn(
+Done initializing!
+Compiling 1 checkpoint groups...
+Largest checkpoint group: 0 GB
+Loading checkpoint: /workspace/dreamerv3_runs/ax1wm_finger_fpxpxq1ms0_seed8/ckpt/20260723T174247F069406-000000500000
+Loaded checkpoint.
+ax1wm_finger_fpxpxq1ms0_seed8: expl.mode=apt reward_aware=False horizons=(1, 5, 20) probes 120x1001
+  episodes 0-3
+  episodes 4-7
+  episodes 8-11
+  episodes 12-15
+  episodes 16-19
+  episodes 20-23
+  episodes 24-27
+  episodes 28-31
+  episodes 32-35
+  episodes 36-39
+  episodes 40-43
+  episodes 44-47
+  episodes 48-51
+  episodes 52-55
+  episodes 56-59
+  episodes 60-63
+  episodes 64-67
+  episodes 68-71
+  episodes 72-75
+  episodes 76-79
+  episodes 80-83
+  episodes 84-87
+  episodes 88-91
+  episodes 92-95
+  episodes 96-99
+  episodes 100-103
+  episodes 104-107
+  episodes 108-111
+  episodes 112-115
+  episodes 116-119
+  h0: all=32.9542 in=27.7977 out=33.3579 rew=27.7494 norew=33.3613
+  h1: all=34.1588 in=28.9950 out=34.5631 rew=28.9950 norew=34.5631
+  h5: all=37.3073 in=32.0370 out=37.7204 rew=32.0370 norew=37.7204
+  h20: all=44.8411 in=39.5838 out=45.2533 rew=39.5838 norew=45.2533
+-> /workspace/dreamerv3_runs/ax1wm_finger_fpxpxq1ms0_seed8/e4_fingerpx_v1
+[Sat Jul 25 15:21:34 UTC 2026] E4 measure ax1wm_finger_fpxpxq1ms1_seed1
+Observations
+  reward           Space(float32, shape=(), low=-inf, high=inf)
+  is_first         Space(bool, shape=(), low=False, high=True)
+  is_last          Space(bool, shape=(), low=False, high=True)
+  is_terminal      Space(bool, shape=(), low=False, high=True)
+  position         Space(float32, shape=(4,), low=-inf, high=inf)
+  velocity         Space(float32, shape=(3,), low=-inf, high=inf)
+  touch            Space(float32, shape=(2,), low=-inf, high=inf)
+  target_position  Space(float32, shape=(2,), low=-inf, high=inf)
+  dist_to_target   Space(float32, shape=(), low=-inf, high=inf)
+  image            Space(uint8, shape=(64, 64, 3), low=0, high=255)
+Actions
+  action           Space(float32, shape=(2,), low=-1.0, high=1.0)
+Extras
+  consec           Space(int32, shape=(), low=-2147483648, high=2147483647)
+  stepid           Space(uint8, shape=(20,), low=0, high=255)
+  dyn/deter        Space(float32, shape=(512,), low=-inf, high=inf)
+  dyn/stoch        Space(float32, shape=(32, 4), low=-inf, high=inf)
+JAX devices (1): [cuda:0]
+Policy devices: cuda:0
+Train devices:  cuda:0
+Initializing parameters...
+/workspace/dreamerv3/embodied/jax/agent.py:112: DeprecationWarning: `with mesh:` context manager has been deprecated. Please use `with jax.set_mesh(mesh):` instead.
+  with self.train_mesh:
+Optimizer opt has 628,407 params:
+       376,448 dyn
+        80,595 dec
+        66,111 val
+        49,796 pol
+        41,153 con
+        14,304 enc
+/venv/main/lib/python3.11/site-packages/optax/_src/linear_algebra.py:44: DeprecationWarning: optax.global_norm is deprecated in favor of optax.tree.norm
+  warnings.warn(
+Done initializing!
+Compiling 1 checkpoint groups...
+Largest checkpoint group: 0 GB
+Loading checkpoint: /workspace/dreamerv3_runs/ax1wm_finger_fpxpxq1ms1_seed1/ckpt/20260723T221428F032399-000000500000
+Loaded checkpoint.
+ax1wm_finger_fpxpxq1ms1_seed1: expl.mode=apt reward_aware=False horizons=(1, 5, 20) probes 120x1001
+  episodes 0-3
+  episodes 4-7
+  episodes 8-11
+  episodes 12-15
+  episodes 16-19
+  episodes 20-23
+  episodes 24-27
+  episodes 28-31
+  episodes 32-35
+  episodes 36-39
+  episodes 40-43
+  episodes 44-47
+  episodes 48-51
+  episodes 52-55
+  episodes 56-59
+  episodes 60-63
+  episodes 64-67
+  episodes 68-71
+  episodes 72-75
+  episodes 76-79
+  episodes 80-83
+  episodes 84-87
+  episodes 88-91
+  episodes 92-95
+  episodes 96-99
+  episodes 100-103
+  episodes 104-107
+  episodes 108-111
+  episodes 112-115
+  episodes 116-119
+  h0: all=33.9169 in=25.0480 out=34.6112 rew=24.9896 norew=34.6151
+  h1: all=35.1276 in=25.8594 out=35.8533 rew=25.8594 norew=35.8533
+  h5: all=38.2389 in=27.9812 out=39.0428 rew=27.9812 norew=39.0428
+  h20: all=46.0948 in=32.8358 out=47.1345 rew=32.8358 norew=47.1345
+-> /workspace/dreamerv3_runs/ax1wm_finger_fpxpxq1ms1_seed1/e4_fingerpx_v1
+[Sat Jul 25 15:22:28 UTC 2026] E4 measure ax1wm_finger_fpxpxq1ms1_seed2
+Observations
+  reward           Space(float32, shape=(), low=-inf, high=inf)
+  is_first         Space(bool, shape=(), low=False, high=True)
+  is_last          Space(bool, shape=(), low=False, high=True)
+  is_terminal      Space(bool, shape=(), low=False, high=True)
+  position         Space(float32, shape=(4,), low=-inf, high=inf)
+  velocity         Space(float32, shape=(3,), low=-inf, high=inf)
+  touch            Space(float32, shape=(2,), low=-inf, high=inf)
+  target_position  Space(float32, shape=(2,), low=-inf, high=inf)
+  dist_to_target   Space(float32, shape=(), low=-inf, high=inf)
+  image            Space(uint8, shape=(64, 64, 3), low=0, high=255)
+Actions
+  action           Space(float32, shape=(2,), low=-1.0, high=1.0)
+Extras
+  consec           Space(int32, shape=(), low=-2147483648, high=2147483647)
+  stepid           Space(uint8, shape=(20,), low=0, high=255)
+  dyn/deter        Space(float32, shape=(512,), low=-inf, high=inf)
+  dyn/stoch        Space(float32, shape=(32, 4), low=-inf, high=inf)
+JAX devices (1): [cuda:0]
+Policy devices: cuda:0
+Train devices:  cuda:0
+Initializing parameters...
+/workspace/dreamerv3/embodied/jax/agent.py:112: DeprecationWarning: `with mesh:` context manager has been deprecated. Please use `with jax.set_mesh(mesh):` instead.
+  with self.train_mesh:
+Optimizer opt has 628,407 params:
+       376,448 dyn
+        80,595 dec
+        66,111 val
+        49,796 pol
+        41,153 con
+        14,304 enc
+/venv/main/lib/python3.11/site-packages/optax/_src/linear_algebra.py:44: DeprecationWarning: optax.global_norm is deprecated in favor of optax.tree.norm
+  warnings.warn(
+Done initializing!
+Compiling 1 checkpoint groups...
+Largest checkpoint group: 0 GB
+Loading checkpoint: /workspace/dreamerv3_runs/ax1wm_finger_fpxpxq1ms1_seed2/ckpt/20260724T010227F861363-000000300000
+Loaded checkpoint.
+ax1wm_finger_fpxpxq1ms1_seed2: expl.mode=apt reward_aware=False horizons=(1, 5, 20) probes 120x1001
+  episodes 0-3
+  episodes 4-7
+  episodes 8-11
+  episodes 12-15
+  episodes 16-19
+  episodes 20-23
+  episodes 24-27
+  episodes 28-31
+  episodes 32-35
+  episodes 36-39
+  episodes 40-43
+  episodes 44-47
+  episodes 48-51
+  episodes 52-55
+  episodes 56-59
+  episodes 60-63
+  episodes 64-67
+  episodes 68-71
+  episodes 72-75
+  episodes 76-79
+  episodes 80-83
+  episodes 84-87
+  episodes 88-91
+  episodes 92-95
+  episodes 96-99
+  episodes 100-103
+  episodes 104-107
+  episodes 108-111
+  episodes 112-115
+  episodes 116-119
+  h0: all=28.7617 in=21.7609 out=29.3098 rew=21.7042 norew=29.3138
+  h1: all=29.9994 in=22.5104 out=30.5859 rew=22.5104 norew=30.5859
+  h5: all=33.1929 in=24.5327 out=33.8716 rew=24.5327 norew=33.8716
+  h20: all=40.9421 in=29.6510 out=41.8275 rew=29.6510 norew=41.8275
+-> /workspace/dreamerv3_runs/ax1wm_finger_fpxpxq1ms1_seed2/e4_fingerpx_v1
+[Sat Jul 25 15:23:21 UTC 2026] E4 measure ax1wm_finger_fpxpxq1ms1_seed3
+Observations
+  reward           Space(float32, shape=(), low=-inf, high=inf)
+  is_first         Space(bool, shape=(), low=False, high=True)
+  is_last          Space(bool, shape=(), low=False, high=True)
+  is_terminal      Space(bool, shape=(), low=False, high=True)
+  position         Space(float32, shape=(4,), low=-inf, high=inf)
+  velocity         Space(float32, shape=(3,), low=-inf, high=inf)
+  touch            Space(float32, shape=(2,), low=-inf, high=inf)
+  target_position  Space(float32, shape=(2,), low=-inf, high=inf)
+  dist_to_target   Space(float32, shape=(), low=-inf, high=inf)
+  image            Space(uint8, shape=(64, 64, 3), low=0, high=255)
+Actions
+  action           Space(float32, shape=(2,), low=-1.0, high=1.0)
+Extras
+  consec           Space(int32, shape=(), low=-2147483648, high=2147483647)
+  stepid           Space(uint8, shape=(20,), low=0, high=255)
+  dyn/deter        Space(float32, shape=(512,), low=-inf, high=inf)
+  dyn/stoch        Space(float32, shape=(32, 4), low=-inf, high=inf)
+JAX devices (1): [cuda:0]
+Policy devices: cuda:0
+Train devices:  cuda:0
+Initializing parameters...
+/workspace/dreamerv3/embodied/jax/agent.py:112: DeprecationWarning: `with mesh:` context manager has been deprecated. Please use `with jax.set_mesh(mesh):` instead.
+  with self.train_mesh:
+Optimizer opt has 628,407 params:
+       376,448 dyn
+        80,595 dec
+        66,111 val
+        49,796 pol
+        41,153 con
+        14,304 enc
+/venv/main/lib/python3.11/site-packages/optax/_src/linear_algebra.py:44: DeprecationWarning: optax.global_norm is deprecated in favor of optax.tree.norm
+  warnings.warn(
+Done initializing!
+Compiling 1 checkpoint groups...
+Largest checkpoint group: 0 GB
+Loading checkpoint: /workspace/dreamerv3_runs/ax1wm_finger_fpxpxq1ms1_seed3/ckpt/20260724T044422F048978-000000200000
+Loaded checkpoint.
+ax1wm_finger_fpxpxq1ms1_seed3: expl.mode=apt reward_aware=False horizons=(1, 5, 20) probes 120x1001
+  episodes 0-3
+  episodes 4-7
+  episodes 8-11
+  episodes 12-15
+  episodes 16-19
+  episodes 20-23
+  episodes 24-27
+  episodes 28-31
+  episodes 32-35
+  episodes 36-39
+  episodes 40-43
+  episodes 44-47
+  episodes 48-51
+  episodes 52-55
+  episodes 56-59
+  episodes 60-63
+  episodes 64-67
+  episodes 68-71
+  episodes 72-75
+  episodes 76-79
+  episodes 80-83
+  episodes 84-87
+  episodes 88-91
+  episodes 92-95
+  episodes 96-99
+  episodes 100-103
+  episodes 104-107
+  episodes 108-111
+  episodes 112-115
+  episodes 116-119
+  h0: all=27.3494 in=16.2518 out=28.2182 rew=16.1885 norew=28.2224
+  h1: all=28.6347 in=17.1388 out=29.5349 rew=17.1388 norew=29.5349
+  h5: all=32.3118 in=19.6475 out=33.3043 rew=19.6475 norew=33.3043
+  h20: all=41.0167 in=25.3686 out=42.2437 rew=25.3686 norew=42.2437
+-> /workspace/dreamerv3_runs/ax1wm_finger_fpxpxq1ms1_seed3/e4_fingerpx_v1
+[Sat Jul 25 15:24:12 UTC 2026] E4 measure ax1wm_finger_fpxpxq1ms1_seed4
+Observations
+  reward           Space(float32, shape=(), low=-inf, high=inf)
+  is_first         Space(bool, shape=(), low=False, high=True)
+  is_last          Space(bool, shape=(), low=False, high=True)
+  is_terminal      Space(bool, shape=(), low=False, high=True)
+  position         Space(float32, shape=(4,), low=-inf, high=inf)
+  velocity         Space(float32, shape=(3,), low=-inf, high=inf)
+  touch            Space(float32, shape=(2,), low=-inf, high=inf)
+  target_position  Space(float32, shape=(2,), low=-inf, high=inf)
+  dist_to_target   Space(float32, shape=(), low=-inf, high=inf)
+  image            Space(uint8, shape=(64, 64, 3), low=0, high=255)
+Actions
+  action           Space(float32, shape=(2,), low=-1.0, high=1.0)
+Extras
+  consec           Space(int32, shape=(), low=-2147483648, high=2147483647)
+  stepid           Space(uint8, shape=(20,), low=0, high=255)
+  dyn/deter        Space(float32, shape=(512,), low=-inf, high=inf)
+  dyn/stoch        Space(float32, shape=(32, 4), low=-inf, high=inf)
+JAX devices (1): [cuda:0]
+Policy devices: cuda:0
+Train devices:  cuda:0
+Initializing parameters...
+/workspace/dreamerv3/embodied/jax/agent.py:112: DeprecationWarning: `with mesh:` context manager has been deprecated. Please use `with jax.set_mesh(mesh):` instead.
+  with self.train_mesh:
+Optimizer opt has 628,407 params:
+       376,448 dyn
+        80,595 dec
+        66,111 val
+        49,796 pol
+        41,153 con
+        14,304 enc
+/venv/main/lib/python3.11/site-packages/optax/_src/linear_algebra.py:44: DeprecationWarning: optax.global_norm is deprecated in favor of optax.tree.norm
+  warnings.warn(
+Done initializing!
+Compiling 1 checkpoint groups...
+Largest checkpoint group: 0 GB
+Loading checkpoint: /workspace/dreamerv3_runs/ax1wm_finger_fpxpxq1ms1_seed4/ckpt/20260724T142752F011440-000000050000
+Loaded checkpoint.
+ax1wm_finger_fpxpxq1ms1_seed4: expl.mode=apt reward_aware=False horizons=(1, 5, 20) probes 120x1001
+  episodes 0-3
+  episodes 4-7
+  episodes 8-11
+  episodes 12-15
+  episodes 16-19
+  episodes 20-23
+  episodes 24-27
+  episodes 28-31
+  episodes 32-35
+  episodes 36-39
+  episodes 40-43
+  episodes 44-47
+  episodes 48-51
+  episodes 52-55
+  episodes 56-59
+  episodes 60-63
+  episodes 64-67
+  episodes 68-71
+  episodes 72-75
+  episodes 76-79
+  episodes 80-83
+  episodes 84-87
+  episodes 88-91
+  episodes 92-95
+  episodes 96-99
+  episodes 100-103
+  episodes 104-107
+  episodes 108-111
+  episodes 112-115
+  episodes 116-119
+  h0: all=22.5938 in=11.9115 out=23.4301 rew=11.8414 norew=23.4349
+  h1: all=24.0496 in=12.9081 out=24.9221 rew=12.9081 norew=24.9221
+  h5: all=28.8135 in=16.2887 out=29.7951 rew=16.2887 norew=29.7951
+  h20: all=40.0775 in=24.5031 out=41.2988 rew=24.5031 norew=41.2988
+-> /workspace/dreamerv3_runs/ax1wm_finger_fpxpxq1ms1_seed4/e4_fingerpx_v1
+[Sat Jul 25 15:25:07 UTC 2026] E4 measure ax1wm_finger_fpxpxq1ms1_seed5
+Observations
+  reward           Space(float32, shape=(), low=-inf, high=inf)
+  is_first         Space(bool, shape=(), low=False, high=True)
+  is_last          Space(bool, shape=(), low=False, high=True)
+  is_terminal      Space(bool, shape=(), low=False, high=True)
+  position         Space(float32, shape=(4,), low=-inf, high=inf)
+  velocity         Space(float32, shape=(3,), low=-inf, high=inf)
+  touch            Space(float32, shape=(2,), low=-inf, high=inf)
+  target_position  Space(float32, shape=(2,), low=-inf, high=inf)
+  dist_to_target   Space(float32, shape=(), low=-inf, high=inf)
+  image            Space(uint8, shape=(64, 64, 3), low=0, high=255)
+Actions
+  action           Space(float32, shape=(2,), low=-1.0, high=1.0)
+Extras
+  consec           Space(int32, shape=(), low=-2147483648, high=2147483647)
+  stepid           Space(uint8, shape=(20,), low=0, high=255)
+  dyn/deter        Space(float32, shape=(512,), low=-inf, high=inf)
+  dyn/stoch        Space(float32, shape=(32, 4), low=-inf, high=inf)
+JAX devices (1): [cuda:0]
+Policy devices: cuda:0
+Train devices:  cuda:0
+Initializing parameters...
+/workspace/dreamerv3/embodied/jax/agent.py:112: DeprecationWarning: `with mesh:` context manager has been deprecated. Please use `with jax.set_mesh(mesh):` instead.
+  with self.train_mesh:
+Optimizer opt has 628,407 params:
+       376,448 dyn
+        80,595 dec
+        66,111 val
+        49,796 pol
+        41,153 con
+        14,304 enc
+/venv/main/lib/python3.11/site-packages/optax/_src/linear_algebra.py:44: DeprecationWarning: optax.global_norm is deprecated in favor of optax.tree.norm
+  warnings.warn(
+Done initializing!
+Compiling 1 checkpoint groups...
+Largest checkpoint group: 0 GB
+Loading checkpoint: /workspace/dreamerv3_runs/ax1wm_finger_fpxpxq1ms1_seed5/ckpt/20260724T063126F980910-000000200000
+Loaded checkpoint.
+ax1wm_finger_fpxpxq1ms1_seed5: expl.mode=apt reward_aware=False horizons=(1, 5, 20) probes 120x1001
+  episodes 0-3
+  episodes 4-7
+  episodes 8-11
+  episodes 12-15
+  episodes 16-19
+  episodes 20-23
+  episodes 24-27
+  episodes 28-31
+  episodes 32-35
+  episodes 36-39
+  episodes 40-43
+  episodes 44-47
+  episodes 48-51
+  episodes 52-55
+  episodes 56-59
+  episodes 60-63
+  episodes 64-67
+  episodes 68-71
+  episodes 72-75
+  episodes 76-79
+  episodes 80-83
+  episodes 84-87
+  episodes 88-91
+  episodes 92-95
+  episodes 96-99
+  episodes 100-103
+  episodes 104-107
+  episodes 108-111
+  episodes 112-115
+  episodes 116-119
+  h0: all=28.7776 in=22.2179 out=29.2912 rew=22.1594 norew=29.2953
+  h1: all=30.1475 in=23.1308 out=30.6969 rew=23.1308 norew=30.6969
+  h5: all=34.1055 in=25.9625 out=34.7436 rew=25.9625 norew=34.7436
+  h20: all=43.6151 in=31.7674 out=44.5441 rew=31.7674 norew=44.5441
+-> /workspace/dreamerv3_runs/ax1wm_finger_fpxpxq1ms1_seed5/e4_fingerpx_v1
+[Sat Jul 25 15:26:03 UTC 2026] E4 measure ax1wm_finger_fpxpxq1ms1_seed6
+Observations
+  reward           Space(float32, shape=(), low=-inf, high=inf)
+  is_first         Space(bool, shape=(), low=False, high=True)
+  is_last          Space(bool, shape=(), low=False, high=True)
+  is_terminal      Space(bool, shape=(), low=False, high=True)
+  position         Space(float32, shape=(4,), low=-inf, high=inf)
+  velocity         Space(float32, shape=(3,), low=-inf, high=inf)
+  touch            Space(float32, shape=(2,), low=-inf, high=inf)
+  target_position  Space(float32, shape=(2,), low=-inf, high=inf)
+  dist_to_target   Space(float32, shape=(), low=-inf, high=inf)
+  image            Space(uint8, shape=(64, 64, 3), low=0, high=255)
+Actions
+  action           Space(float32, shape=(2,), low=-1.0, high=1.0)
+Extras
+  consec           Space(int32, shape=(), low=-2147483648, high=2147483647)
+  stepid           Space(uint8, shape=(20,), low=0, high=255)
+  dyn/deter        Space(float32, shape=(512,), low=-inf, high=inf)
+  dyn/stoch        Space(float32, shape=(32, 4), low=-inf, high=inf)
+JAX devices (1): [cuda:0]
+Policy devices: cuda:0
+Train devices:  cuda:0
+Initializing parameters...
+/workspace/dreamerv3/embodied/jax/agent.py:112: DeprecationWarning: `with mesh:` context manager has been deprecated. Please use `with jax.set_mesh(mesh):` instead.
+  with self.train_mesh:
+Optimizer opt has 628,407 params:
+       376,448 dyn
+        80,595 dec
+        66,111 val
+        49,796 pol
+        41,153 con
+        14,304 enc
+/venv/main/lib/python3.11/site-packages/optax/_src/linear_algebra.py:44: DeprecationWarning: optax.global_norm is deprecated in favor of optax.tree.norm
+  warnings.warn(
+Done initializing!
+Compiling 1 checkpoint groups...
+Largest checkpoint group: 0 GB
+Loading checkpoint: /workspace/dreamerv3_runs/ax1wm_finger_fpxpxq1ms1_seed6/ckpt/20260724T212919F003679-000000500000
+Loaded checkpoint.
+ax1wm_finger_fpxpxq1ms1_seed6: expl.mode=apt reward_aware=False horizons=(1, 5, 20) probes 120x1001
+  episodes 0-3
+  episodes 4-7
+  episodes 8-11
+  episodes 12-15
+  episodes 16-19
+  episodes 20-23
+  episodes 24-27
+  episodes 28-31
+  episodes 32-35
+  episodes 36-39
+  episodes 40-43
+  episodes 44-47
+  episodes 48-51
+  episodes 52-55
+  episodes 56-59
+  episodes 60-63
+  episodes 64-67
+  episodes 68-71
+  episodes 72-75
+  episodes 76-79
+  episodes 80-83
+  episodes 84-87
+  episodes 88-91
+  episodes 92-95
+  episodes 96-99
+  episodes 100-103
+  episodes 104-107
+  episodes 108-111
+  episodes 112-115
+  episodes 116-119
+  h0: all=34.4961 in=19.4092 out=35.6772 rew=19.3471 norew=35.6810
+  h1: all=35.6580 in=20.1315 out=36.8738 rew=20.1315 norew=36.8738
+  h5: all=38.7424 in=22.1758 out=40.0407 rew=22.1758 norew=40.0407
+  h20: all=46.3981 in=27.3474 out=47.8920 rew=27.3474 norew=47.8920
+-> /workspace/dreamerv3_runs/ax1wm_finger_fpxpxq1ms1_seed6/e4_fingerpx_v1
+[Sat Jul 25 15:26:51 UTC 2026] E4 measure ax1wm_finger_fpxpxq1ms1_seed7
+Observations
+  reward           Space(float32, shape=(), low=-inf, high=inf)
+  is_first         Space(bool, shape=(), low=False, high=True)
+  is_last          Space(bool, shape=(), low=False, high=True)
+  is_terminal      Space(bool, shape=(), low=False, high=True)
+  position         Space(float32, shape=(4,), low=-inf, high=inf)
+  velocity         Space(float32, shape=(3,), low=-inf, high=inf)
+  touch            Space(float32, shape=(2,), low=-inf, high=inf)
+  target_position  Space(float32, shape=(2,), low=-inf, high=inf)
+  dist_to_target   Space(float32, shape=(), low=-inf, high=inf)
+  image            Space(uint8, shape=(64, 64, 3), low=0, high=255)
+Actions
+  action           Space(float32, shape=(2,), low=-1.0, high=1.0)
+Extras
+  consec           Space(int32, shape=(), low=-2147483648, high=2147483647)
+  stepid           Space(uint8, shape=(20,), low=0, high=255)
+  dyn/deter        Space(float32, shape=(512,), low=-inf, high=inf)
+  dyn/stoch        Space(float32, shape=(32, 4), low=-inf, high=inf)
+JAX devices (1): [cuda:0]
+Policy devices: cuda:0
+Train devices:  cuda:0
+Initializing parameters...
+/workspace/dreamerv3/embodied/jax/agent.py:112: DeprecationWarning: `with mesh:` context manager has been deprecated. Please use `with jax.set_mesh(mesh):` instead.
+  with self.train_mesh:
+Optimizer opt has 628,407 params:
+       376,448 dyn
+        80,595 dec
+        66,111 val
+        49,796 pol
+        41,153 con
+        14,304 enc
+/venv/main/lib/python3.11/site-packages/optax/_src/linear_algebra.py:44: DeprecationWarning: optax.global_norm is deprecated in favor of optax.tree.norm
+  warnings.warn(
+Done initializing!
+Compiling 1 checkpoint groups...
+Largest checkpoint group: 0 GB
+Loading checkpoint: /workspace/dreamerv3_runs/ax1wm_finger_fpxpxq1ms1_seed7/ckpt/20260724T225934F346898-000000150000
+Loaded checkpoint.
+ax1wm_finger_fpxpxq1ms1_seed7: expl.mode=apt reward_aware=False horizons=(1, 5, 20) probes 120x1001
+  episodes 0-3
+  episodes 4-7
+  episodes 8-11
+  episodes 12-15
+  episodes 16-19
+  episodes 20-23
+  episodes 24-27
+  episodes 28-31
+  episodes 32-35
+  episodes 36-39
+  episodes 40-43
+  episodes 44-47
+  episodes 48-51
+  episodes 52-55
+  episodes 56-59
+  episodes 60-63
+  episodes 64-67
+  episodes 68-71
+  episodes 72-75
+  episodes 76-79
+  episodes 80-83
+  episodes 84-87
+  episodes 88-91
+  episodes 92-95
+  episodes 96-99
+  episodes 100-103
+  episodes 104-107
+  episodes 108-111
+  episodes 112-115
+  episodes 116-119
+  h0: all=27.8511 in=20.3766 out=28.4363 rew=20.3186 norew=28.4403
+  h1: all=29.3757 in=21.4547 out=29.9959 rew=21.4547 norew=29.9959
+  h5: all=33.4802 in=24.3901 out=34.1926 rew=24.3901 norew=34.1926
+  h20: all=43.3799 in=30.2652 out=44.4083 rew=30.2652 norew=44.4083
+-> /workspace/dreamerv3_runs/ax1wm_finger_fpxpxq1ms1_seed7/e4_fingerpx_v1
+[Sat Jul 25 15:27:44 UTC 2026] E4 measure ax1wm_finger_fpxpxq1ms1_seed8
+Observations
+  reward           Space(float32, shape=(), low=-inf, high=inf)
+  is_first         Space(bool, shape=(), low=False, high=True)
+  is_last          Space(bool, shape=(), low=False, high=True)
+  is_terminal      Space(bool, shape=(), low=False, high=True)
+  position         Space(float32, shape=(4,), low=-inf, high=inf)
+  velocity         Space(float32, shape=(3,), low=-inf, high=inf)
+  touch            Space(float32, shape=(2,), low=-inf, high=inf)
+  target_position  Space(float32, shape=(2,), low=-inf, high=inf)
+  dist_to_target   Space(float32, shape=(), low=-inf, high=inf)
+  image            Space(uint8, shape=(64, 64, 3), low=0, high=255)
+Actions
+  action           Space(float32, shape=(2,), low=-1.0, high=1.0)
+Extras
+  consec           Space(int32, shape=(), low=-2147483648, high=2147483647)
+  stepid           Space(uint8, shape=(20,), low=0, high=255)
+  dyn/deter        Space(float32, shape=(512,), low=-inf, high=inf)
+  dyn/stoch        Space(float32, shape=(32, 4), low=-inf, high=inf)
+JAX devices (1): [cuda:0]
+Policy devices: cuda:0
+Train devices:  cuda:0
+Initializing parameters...
+/workspace/dreamerv3/embodied/jax/agent.py:112: DeprecationWarning: `with mesh:` context manager has been deprecated. Please use `with jax.set_mesh(mesh):` instead.
+  with self.train_mesh:
+Optimizer opt has 628,407 params:
+       376,448 dyn
+        80,595 dec
+        66,111 val
+        49,796 pol
+        41,153 con
+        14,304 enc
+/venv/main/lib/python3.11/site-packages/optax/_src/linear_algebra.py:44: DeprecationWarning: optax.global_norm is deprecated in favor of optax.tree.norm
+  warnings.warn(
+Done initializing!
+Compiling 1 checkpoint groups...
+Largest checkpoint group: 0 GB
+Loading checkpoint: /workspace/dreamerv3_runs/ax1wm_finger_fpxpxq1ms1_seed8/ckpt/20260724T224426F146693-000000500000
+Loaded checkpoint.
+ax1wm_finger_fpxpxq1ms1_seed8: expl.mode=apt reward_aware=False horizons=(1, 5, 20) probes 120x1001
+  episodes 0-3
+  episodes 4-7
+  episodes 8-11
+  episodes 12-15
+  episodes 16-19
+  episodes 20-23
+  episodes 24-27
+  episodes 28-31
+  episodes 32-35
+  episodes 36-39
+  episodes 40-43
+  episodes 44-47
+  episodes 48-51
+  episodes 52-55
+  episodes 56-59
+  episodes 60-63
+  episodes 64-67
+  episodes 68-71
+  episodes 72-75
+  episodes 76-79
+  episodes 80-83
+  episodes 84-87
+  episodes 88-91
+  episodes 92-95
+  episodes 96-99
+  episodes 100-103
+  episodes 104-107
+  episodes 108-111
+  episodes 112-115
+  episodes 116-119
+  h0: all=35.9183 in=28.6428 out=36.4879 rew=28.5846 norew=36.4920
+  h1: all=37.1535 in=29.6599 out=37.7403 rew=29.6599 norew=37.7403
+  h5: all=40.2375 in=31.9253 out=40.8889 rew=31.9253 norew=40.8889
+  h20: all=47.7437 in=36.8086 out=48.6012 rew=36.8086 norew=48.6012
+-> /workspace/dreamerv3_runs/ax1wm_finger_fpxpxq1ms1_seed8/e4_fingerpx_v1
+[Sat Jul 25 15:28:42 UTC 2026] E4 measure ax1wm_finger_pxpxq1ms0_seed1
+Observations
+  reward           Space(float32, shape=(), low=-inf, high=inf)
+  is_first         Space(bool, shape=(), low=False, high=True)
+  is_last          Space(bool, shape=(), low=False, high=True)
+  is_terminal      Space(bool, shape=(), low=False, high=True)
+  position         Space(float32, shape=(4,), low=-inf, high=inf)
+  velocity         Space(float32, shape=(3,), low=-inf, high=inf)
+  touch            Space(float32, shape=(2,), low=-inf, high=inf)
+  target_position  Space(float32, shape=(2,), low=-inf, high=inf)
+  dist_to_target   Space(float32, shape=(), low=-inf, high=inf)
+  image            Space(uint8, shape=(64, 64, 3), low=0, high=255)
+Actions
+  action           Space(float32, shape=(2,), low=-1.0, high=1.0)
+Extras
+  consec           Space(int32, shape=(), low=-2147483648, high=2147483647)
+  stepid           Space(uint8, shape=(20,), low=0, high=255)
+  dyn/deter        Space(float32, shape=(512,), low=-inf, high=inf)
+  dyn/stoch        Space(float32, shape=(32, 4), low=-inf, high=inf)
+JAX devices (1): [cuda:0]
+Policy devices: cuda:0
+Train devices:  cuda:0
+Initializing parameters...
+/workspace/dreamerv3/embodied/jax/agent.py:112: DeprecationWarning: `with mesh:` context manager has been deprecated. Please use `with jax.set_mesh(mesh):` instead.
+  with self.train_mesh:
+Optimizer opt has 686,070 params:
+       376,448 dyn
+        80,595 dec
+        66,111 val
+        57,663 rew
+        49,796 pol
+        41,153 con
+        14,304 enc
+/venv/main/lib/python3.11/site-packages/optax/_src/linear_algebra.py:44: DeprecationWarning: optax.global_norm is deprecated in favor of optax.tree.norm
+  warnings.warn(
+Done initializing!
+Compiling 1 checkpoint groups...
+Largest checkpoint group: 0 GB
+Loading checkpoint: /workspace/dreamerv3_runs/ax1wm_finger_pxpxq1ms0_seed1/ckpt/20260722T050514F892041-000000500000
+Loaded checkpoint.
+ax1wm_finger_pxpxq1ms0_seed1: expl.mode=task reward_aware=True horizons=(1, 5, 20) probes 120x1001
+  episodes 0-3
+  episodes 4-7
+  episodes 8-11
+  episodes 12-15
+  episodes 16-19
+  episodes 20-23
+  episodes 24-27
+  episodes 28-31
+  episodes 32-35
+  episodes 36-39
+  episodes 40-43
+  episodes 44-47
+  episodes 48-51
+  episodes 52-55
+  episodes 56-59
+  episodes 60-63
+  episodes 64-67
+  episodes 68-71
+  episodes 72-75
+  episodes 76-79
+  episodes 80-83
+  episodes 84-87
+  episodes 88-91
+  episodes 92-95
+  episodes 96-99
+  episodes 100-103
+  episodes 104-107
+  episodes 108-111
+  episodes 112-115
+  episodes 116-119
+  h0: all=28.8732 in=26.9272 out=29.0256 rew=26.8579 norew=29.0308
+  h1: all=30.0628 in=27.9920 out=30.2250 rew=27.9920 norew=30.2250
+  h5: all=33.3679 in=30.8485 out=33.5654 rew=30.8485 norew=33.5654
+  h20: all=41.3794 in=37.2207 out=41.7055 rew=37.2207 norew=41.7055
+-> /workspace/dreamerv3_runs/ax1wm_finger_pxpxq1ms0_seed1/e4_fingerpx_v1
+[Sat Jul 25 15:29:43 UTC 2026] E4 measure ax1wm_finger_pxpxq1ms0_seed2
+Observations
+  reward           Space(float32, shape=(), low=-inf, high=inf)
+  is_first         Space(bool, shape=(), low=False, high=True)
+  is_last          Space(bool, shape=(), low=False, high=True)
+  is_terminal      Space(bool, shape=(), low=False, high=True)
+  position         Space(float32, shape=(4,), low=-inf, high=inf)
+  velocity         Space(float32, shape=(3,), low=-inf, high=inf)
+  touch            Space(float32, shape=(2,), low=-inf, high=inf)
+  target_position  Space(float32, shape=(2,), low=-inf, high=inf)
+  dist_to_target   Space(float32, shape=(), low=-inf, high=inf)
+  image            Space(uint8, shape=(64, 64, 3), low=0, high=255)
+Actions
+  action           Space(float32, shape=(2,), low=-1.0, high=1.0)
+Extras
+  consec           Space(int32, shape=(), low=-2147483648, high=2147483647)
+  stepid           Space(uint8, shape=(20,), low=0, high=255)
+  dyn/deter        Space(float32, shape=(512,), low=-inf, high=inf)
+  dyn/stoch        Space(float32, shape=(32, 4), low=-inf, high=inf)
+JAX devices (1): [cuda:0]
+Policy devices: cuda:0
+Train devices:  cuda:0
+Initializing parameters...
+/workspace/dreamerv3/embodied/jax/agent.py:112: DeprecationWarning: `with mesh:` context manager has been deprecated. Please use `with jax.set_mesh(mesh):` instead.
+  with self.train_mesh:
+Optimizer opt has 686,070 params:
+       376,448 dyn
+        80,595 dec
+        66,111 val
+        57,663 rew
+        49,796 pol
+        41,153 con
+        14,304 enc
+/venv/main/lib/python3.11/site-packages/optax/_src/linear_algebra.py:44: DeprecationWarning: optax.global_norm is deprecated in favor of optax.tree.norm
+  warnings.warn(
+Done initializing!
+Compiling 1 checkpoint groups...
+Largest checkpoint group: 0 GB
+Loading checkpoint: /workspace/dreamerv3_runs/ax1wm_finger_pxpxq1ms0_seed2/ckpt/20260722T083318F949424-000000500000
+Loaded checkpoint.
+ax1wm_finger_pxpxq1ms0_seed2: expl.mode=task reward_aware=True horizons=(1, 5, 20) probes 120x1001
+  episodes 0-3
+  episodes 4-7
+  episodes 8-11
+  episodes 12-15
+  episodes 16-19
+  episodes 20-23
+  episodes 24-27
+  episodes 28-31
+  episodes 32-35
+  episodes 36-39
+  episodes 40-43
+  episodes 44-47
+  episodes 48-51
+  episodes 52-55
+  episodes 56-59
+  episodes 60-63
+  episodes 64-67
+  episodes 68-71
+  episodes 72-75
+  episodes 76-79
+  episodes 80-83
+  episodes 84-87
+  episodes 88-91
+  episodes 92-95
+  episodes 96-99
+  episodes 100-103
+  episodes 104-107
+  episodes 108-111
+  episodes 112-115
+  episodes 116-119
+  h0: all=32.8551 in=28.7830 out=33.1739 rew=28.7209 norew=33.1784
+  h1: all=33.9712 in=29.7435 out=34.3023 rew=29.7435 norew=34.3023
+  h5: all=37.0572 in=32.6365 out=37.4036 rew=32.6365 norew=37.4036
+  h20: all=44.1916 in=39.2373 out=44.5801 rew=39.2373 norew=44.5801
+-> /workspace/dreamerv3_runs/ax1wm_finger_pxpxq1ms0_seed2/e4_fingerpx_v1
+[Sat Jul 25 15:30:38 UTC 2026] E4 measure ax1wm_finger_pxpxq1ms0_seed3
+Observations
+  reward           Space(float32, shape=(), low=-inf, high=inf)
+  is_first         Space(bool, shape=(), low=False, high=True)
+  is_last          Space(bool, shape=(), low=False, high=True)
+  is_terminal      Space(bool, shape=(), low=False, high=True)
+  position         Space(float32, shape=(4,), low=-inf, high=inf)
+  velocity         Space(float32, shape=(3,), low=-inf, high=inf)
+  touch            Space(float32, shape=(2,), low=-inf, high=inf)
+  target_position  Space(float32, shape=(2,), low=-inf, high=inf)
+  dist_to_target   Space(float32, shape=(), low=-inf, high=inf)
+  image            Space(uint8, shape=(64, 64, 3), low=0, high=255)
+Actions
+  action           Space(float32, shape=(2,), low=-1.0, high=1.0)
+Extras
+  consec           Space(int32, shape=(), low=-2147483648, high=2147483647)
+  stepid           Space(uint8, shape=(20,), low=0, high=255)
+  dyn/deter        Space(float32, shape=(512,), low=-inf, high=inf)
+  dyn/stoch        Space(float32, shape=(32, 4), low=-inf, high=inf)
+JAX devices (1): [cuda:0]
+Policy devices: cuda:0
+Train devices:  cuda:0
+Initializing parameters...
+/workspace/dreamerv3/embodied/jax/agent.py:112: DeprecationWarning: `with mesh:` context manager has been deprecated. Please use `with jax.set_mesh(mesh):` instead.
+  with self.train_mesh:
+Optimizer opt has 686,070 params:
+       376,448 dyn
+        80,595 dec
+        66,111 val
+        57,663 rew
+        49,796 pol
+        41,153 con
+        14,304 enc
+/venv/main/lib/python3.11/site-packages/optax/_src/linear_algebra.py:44: DeprecationWarning: optax.global_norm is deprecated in favor of optax.tree.norm
+  warnings.warn(
+Done initializing!
+Compiling 1 checkpoint groups...
+Largest checkpoint group: 0 GB
+Loading checkpoint: /workspace/dreamerv3_runs/ax1wm_finger_pxpxq1ms0_seed3/ckpt/20260722T120005F047306-000000500000
+Loaded checkpoint.
+ax1wm_finger_pxpxq1ms0_seed3: expl.mode=task reward_aware=True horizons=(1, 5, 20) probes 120x1001
+  episodes 0-3
+  episodes 4-7
+  episodes 8-11
+  episodes 12-15
+  episodes 16-19
+  episodes 20-23
+  episodes 24-27
+  episodes 28-31
+  episodes 32-35
+  episodes 36-39
+  episodes 40-43
+  episodes 44-47
+  episodes 48-51
+  episodes 52-55
+  episodes 56-59
+  episodes 60-63
+  episodes 64-67
+  episodes 68-71
+  episodes 72-75
+  episodes 76-79
+  episodes 80-83
+  episodes 84-87
+  episodes 88-91
+  episodes 92-95
+  episodes 96-99
+  episodes 100-103
+  episodes 104-107
+  episodes 108-111
+  episodes 112-115
+  episodes 116-119
+  h0: all=28.5683 in=29.6379 out=28.4846 rew=29.5845 norew=28.4888
+  h1: all=29.7613 in=30.8727 out=29.6743 rew=30.8727 norew=29.6743
+  h5: all=32.8928 in=33.8053 out=32.8213 rew=33.8053 norew=32.8213
+  h20: all=40.0226 in=40.0287 out=40.0221 rew=40.0287 norew=40.0221
+-> /workspace/dreamerv3_runs/ax1wm_finger_pxpxq1ms0_seed3/e4_fingerpx_v1
+[Sat Jul 25 15:31:34 UTC 2026] E4 measure ax1wm_finger_pxpxq1ms0_seed4
+Observations
+  reward           Space(float32, shape=(), low=-inf, high=inf)
+  is_first         Space(bool, shape=(), low=False, high=True)
+  is_last          Space(bool, shape=(), low=False, high=True)
+  is_terminal      Space(bool, shape=(), low=False, high=True)
+  position         Space(float32, shape=(4,), low=-inf, high=inf)
+  velocity         Space(float32, shape=(3,), low=-inf, high=inf)
+  touch            Space(float32, shape=(2,), low=-inf, high=inf)
+  target_position  Space(float32, shape=(2,), low=-inf, high=inf)
+  dist_to_target   Space(float32, shape=(), low=-inf, high=inf)
+  image            Space(uint8, shape=(64, 64, 3), low=0, high=255)
+Actions
+  action           Space(float32, shape=(2,), low=-1.0, high=1.0)
+Extras
+  consec           Space(int32, shape=(), low=-2147483648, high=2147483647)
+  stepid           Space(uint8, shape=(20,), low=0, high=255)
+  dyn/deter        Space(float32, shape=(512,), low=-inf, high=inf)
+  dyn/stoch        Space(float32, shape=(32, 4), low=-inf, high=inf)
+JAX devices (1): [cuda:0]
+Policy devices: cuda:0
+Train devices:  cuda:0
+Initializing parameters...
+/workspace/dreamerv3/embodied/jax/agent.py:112: DeprecationWarning: `with mesh:` context manager has been deprecated. Please use `with jax.set_mesh(mesh):` instead.
+  with self.train_mesh:
+Optimizer opt has 686,070 params:
+       376,448 dyn
+        80,595 dec
+        66,111 val
+        57,663 rew
+        49,796 pol
+        41,153 con
+        14,304 enc
+/venv/main/lib/python3.11/site-packages/optax/_src/linear_algebra.py:44: DeprecationWarning: optax.global_norm is deprecated in favor of optax.tree.norm
+  warnings.warn(
+Done initializing!
+Compiling 1 checkpoint groups...
+Largest checkpoint group: 0 GB
+Loading checkpoint: /workspace/dreamerv3_runs/ax1wm_finger_pxpxq1ms0_seed4/ckpt/20260722T152637F076537-000000500000
+Loaded checkpoint.
+ax1wm_finger_pxpxq1ms0_seed4: expl.mode=task reward_aware=True horizons=(1, 5, 20) probes 120x1001
+  episodes 0-3
+  episodes 4-7
+  episodes 8-11
+  episodes 12-15
+  episodes 16-19
+  episodes 20-23
+  episodes 24-27
+  episodes 28-31
+  episodes 32-35
+  episodes 36-39
+  episodes 40-43
+  episodes 44-47
+  episodes 48-51
+  episodes 52-55
+  episodes 56-59
+  episodes 60-63
+  episodes 64-67
+  episodes 68-71
+  episodes 72-75
+  episodes 76-79
+  episodes 80-83
+  episodes 84-87
+  episodes 88-91
+  episodes 92-95
+  episodes 96-99
+  episodes 100-103
+  episodes 104-107
+  episodes 108-111
+  episodes 112-115
+  episodes 116-119
+  h0: all=27.8880 in=25.5876 out=28.0681 rew=25.5255 norew=28.0728
+  h1: all=29.1148 in=26.7516 out=29.2998 rew=26.7516 norew=29.2998
+  h5: all=32.4338 in=29.9166 out=32.6310 rew=29.9166 norew=32.6310
+  h20: all=40.4552 in=37.3035 out=40.7024 rew=37.3035 norew=40.7024
+-> /workspace/dreamerv3_runs/ax1wm_finger_pxpxq1ms0_seed4/e4_fingerpx_v1
+[Sat Jul 25 15:32:24 UTC 2026] E4 measure ax1wm_finger_pxpxq1ms0_seed5
+Observations
+  reward           Space(float32, shape=(), low=-inf, high=inf)
+  is_first         Space(bool, shape=(), low=False, high=True)
+  is_last          Space(bool, shape=(), low=False, high=True)
+  is_terminal      Space(bool, shape=(), low=False, high=True)
+  position         Space(float32, shape=(4,), low=-inf, high=inf)
+  velocity         Space(float32, shape=(3,), low=-inf, high=inf)
+  touch            Space(float32, shape=(2,), low=-inf, high=inf)
+  target_position  Space(float32, shape=(2,), low=-inf, high=inf)
+  dist_to_target   Space(float32, shape=(), low=-inf, high=inf)
+  image            Space(uint8, shape=(64, 64, 3), low=0, high=255)
+Actions
+  action           Space(float32, shape=(2,), low=-1.0, high=1.0)
+Extras
+  consec           Space(int32, shape=(), low=-2147483648, high=2147483647)
+  stepid           Space(uint8, shape=(20,), low=0, high=255)
+  dyn/deter        Space(float32, shape=(512,), low=-inf, high=inf)
+  dyn/stoch        Space(float32, shape=(32, 4), low=-inf, high=inf)
+JAX devices (1): [cuda:0]
+Policy devices: cuda:0
+Train devices:  cuda:0
+Initializing parameters...
+/workspace/dreamerv3/embodied/jax/agent.py:112: DeprecationWarning: `with mesh:` context manager has been deprecated. Please use `with jax.set_mesh(mesh):` instead.
+  with self.train_mesh:
+Optimizer opt has 686,070 params:
+       376,448 dyn
+        80,595 dec
+        66,111 val
+        57,663 rew
+        49,796 pol
+        41,153 con
+        14,304 enc
+/venv/main/lib/python3.11/site-packages/optax/_src/linear_algebra.py:44: DeprecationWarning: optax.global_norm is deprecated in favor of optax.tree.norm
+  warnings.warn(
+Done initializing!
+Compiling 1 checkpoint groups...
+Largest checkpoint group: 0 GB
+Loading checkpoint: /workspace/dreamerv3_runs/ax1wm_finger_pxpxq1ms0_seed5/ckpt/20260722T185309F629084-000000500000
+Loaded checkpoint.
+ax1wm_finger_pxpxq1ms0_seed5: expl.mode=task reward_aware=True horizons=(1, 5, 20) probes 120x1001
+  episodes 0-3
+  episodes 4-7
+  episodes 8-11
+  episodes 12-15
+  episodes 16-19
+  episodes 20-23
+  episodes 24-27
+  episodes 28-31
+  episodes 32-35
+  episodes 36-39
+  episodes 40-43
+  episodes 44-47
+  episodes 48-51
+  episodes 52-55
+  episodes 56-59
+  episodes 60-63
+  episodes 64-67
+  episodes 68-71
+  episodes 72-75
+  episodes 76-79
+  episodes 80-83
+  episodes 84-87
+  episodes 88-91
+  episodes 92-95
+  episodes 96-99
+  episodes 100-103
+  episodes 104-107
+  episodes 108-111
+  episodes 112-115
+  episodes 116-119
+  h0: all=33.6390 in=30.1172 out=33.9148 rew=30.0530 norew=33.9195
+  h1: all=34.8802 in=31.2771 out=35.1623 rew=31.2771 norew=35.1623
+  h5: all=38.0656 in=34.3548 out=38.3564 rew=34.3548 norew=38.3564
+  h20: all=45.4391 in=41.2702 out=45.7660 rew=41.2702 norew=45.7660
+-> /workspace/dreamerv3_runs/ax1wm_finger_pxpxq1ms0_seed5/e4_fingerpx_v1
+[Sat Jul 25 15:33:19 UTC 2026] E4 measure ax1wm_finger_pxpxq1ms0_seed6
+Observations
+  reward           Space(float32, shape=(), low=-inf, high=inf)
+  is_first         Space(bool, shape=(), low=False, high=True)
+  is_last          Space(bool, shape=(), low=False, high=True)
+  is_terminal      Space(bool, shape=(), low=False, high=True)
+  position         Space(float32, shape=(4,), low=-inf, high=inf)
+  velocity         Space(float32, shape=(3,), low=-inf, high=inf)
+  touch            Space(float32, shape=(2,), low=-inf, high=inf)
+  target_position  Space(float32, shape=(2,), low=-inf, high=inf)
+  dist_to_target   Space(float32, shape=(), low=-inf, high=inf)
+  image            Space(uint8, shape=(64, 64, 3), low=0, high=255)
+Actions
+  action           Space(float32, shape=(2,), low=-1.0, high=1.0)
+Extras
+  consec           Space(int32, shape=(), low=-2147483648, high=2147483647)
+  stepid           Space(uint8, shape=(20,), low=0, high=255)
+  dyn/deter        Space(float32, shape=(512,), low=-inf, high=inf)
+  dyn/stoch        Space(float32, shape=(32, 4), low=-inf, high=inf)
+JAX devices (1): [cuda:0]
+Policy devices: cuda:0
+Train devices:  cuda:0
+Initializing parameters...
+/workspace/dreamerv3/embodied/jax/agent.py:112: DeprecationWarning: `with mesh:` context manager has been deprecated. Please use `with jax.set_mesh(mesh):` instead.
+  with self.train_mesh:
+Optimizer opt has 686,070 params:
+       376,448 dyn
+        80,595 dec
+        66,111 val
+        57,663 rew
+        49,796 pol
+        41,153 con
+        14,304 enc
+/venv/main/lib/python3.11/site-packages/optax/_src/linear_algebra.py:44: DeprecationWarning: optax.global_norm is deprecated in favor of optax.tree.norm
+  warnings.warn(
+Done initializing!
+Compiling 1 checkpoint groups...
+Largest checkpoint group: 0 GB
+Loading checkpoint: /workspace/dreamerv3_runs/ax1wm_finger_pxpxq1ms0_seed6/ckpt/20260722T222226F343870-000000500000
+Loaded checkpoint.
+ax1wm_finger_pxpxq1ms0_seed6: expl.mode=task reward_aware=True horizons=(1, 5, 20) probes 120x1001
+  episodes 0-3
+  episodes 4-7
+  episodes 8-11
+  episodes 12-15
+  episodes 16-19
+  episodes 20-23
+  episodes 24-27
+  episodes 28-31
+  episodes 32-35
+  episodes 36-39
+  episodes 40-43
+  episodes 44-47
+  episodes 48-51
+  episodes 52-55
+  episodes 56-59
+  episodes 60-63
+  episodes 64-67
+  episodes 68-71
+  episodes 72-75
+  episodes 76-79
+  episodes 80-83
+  episodes 84-87
+  episodes 88-91
+  episodes 92-95
+  episodes 96-99
+  episodes 100-103
+  episodes 104-107
+  episodes 108-111
+  episodes 112-115
+  episodes 116-119
+  h0: all=23.7651 in=22.8465 out=23.8370 rew=22.7772 norew=23.8424
+  h1: all=24.9456 in=23.9257 out=25.0254 rew=23.9257 norew=25.0254
+  h5: all=28.5899 in=27.1048 out=28.7062 rew=27.1048 norew=28.7062
+  h20: all=37.4435 in=34.1929 out=37.6985 rew=34.1929 norew=37.6985
+-> /workspace/dreamerv3_runs/ax1wm_finger_pxpxq1ms0_seed6/e4_fingerpx_v1
+[Sat Jul 25 15:34:15 UTC 2026] E4 measure ax1wm_finger_pxpxq1ms0_seed7
+Observations
+  reward           Space(float32, shape=(), low=-inf, high=inf)
+  is_first         Space(bool, shape=(), low=False, high=True)
+  is_last          Space(bool, shape=(), low=False, high=True)
+  is_terminal      Space(bool, shape=(), low=False, high=True)
+  position         Space(float32, shape=(4,), low=-inf, high=inf)
+  velocity         Space(float32, shape=(3,), low=-inf, high=inf)
+  touch            Space(float32, shape=(2,), low=-inf, high=inf)
+  target_position  Space(float32, shape=(2,), low=-inf, high=inf)
+  dist_to_target   Space(float32, shape=(), low=-inf, high=inf)
+  image            Space(uint8, shape=(64, 64, 3), low=0, high=255)
+Actions
+  action           Space(float32, shape=(2,), low=-1.0, high=1.0)
+Extras
+  consec           Space(int32, shape=(), low=-2147483648, high=2147483647)
+  stepid           Space(uint8, shape=(20,), low=0, high=255)
+  dyn/deter        Space(float32, shape=(512,), low=-inf, high=inf)
+  dyn/stoch        Space(float32, shape=(32, 4), low=-inf, high=inf)
+JAX devices (1): [cuda:0]
+Policy devices: cuda:0
+Train devices:  cuda:0
+Initializing parameters...
+/workspace/dreamerv3/embodied/jax/agent.py:112: DeprecationWarning: `with mesh:` context manager has been deprecated. Please use `with jax.set_mesh(mesh):` instead.
+  with self.train_mesh:
+Optimizer opt has 686,070 params:
+       376,448 dyn
+        80,595 dec
+        66,111 val
+        57,663 rew
+        49,796 pol
+        41,153 con
+        14,304 enc
+/venv/main/lib/python3.11/site-packages/optax/_src/linear_algebra.py:44: DeprecationWarning: optax.global_norm is deprecated in favor of optax.tree.norm
+  warnings.warn(
+Done initializing!
+Compiling 1 checkpoint groups...
+Largest checkpoint group: 0 GB
+Loading checkpoint: /workspace/dreamerv3_runs/ax1wm_finger_pxpxq1ms0_seed7/ckpt/20260723T003445F716812-000000300000
+Loaded checkpoint.
+ax1wm_finger_pxpxq1ms0_seed7: expl.mode=task reward_aware=True horizons=(1, 5, 20) probes 120x1001
+  episodes 0-3
+  episodes 4-7
+  episodes 8-11
+  episodes 12-15
+  episodes 16-19
+  episodes 20-23
+  episodes 24-27
+  episodes 28-31
+  episodes 32-35
+  episodes 36-39
+  episodes 40-43
+  episodes 44-47
+  episodes 48-51
+  episodes 52-55
+  episodes 56-59
+  episodes 60-63
+  episodes 64-67
+  episodes 68-71
+  episodes 72-75
+  episodes 76-79
+  episodes 80-83
+  episodes 84-87
+  episodes 88-91
+  episodes 92-95
+  episodes 96-99
+  episodes 100-103
+  episodes 104-107
+  episodes 108-111
+  episodes 112-115
+  episodes 116-119
+  h0: all=24.7491 in=24.2664 out=24.7869 rew=24.2005 norew=24.7920
+  h1: all=25.9838 in=25.4041 out=26.0292 rew=25.4041 norew=26.0292
+  h5: all=29.3517 in=28.4130 out=29.4252 rew=28.4130 norew=29.4252
+  h20: all=37.2687 in=35.2447 out=37.4274 rew=35.2447 norew=37.4274
+-> /workspace/dreamerv3_runs/ax1wm_finger_pxpxq1ms0_seed7/e4_fingerpx_v1
+[Sat Jul 25 15:35:09 UTC 2026] E4 measure ax1wm_finger_pxpxq1ms0_seed8
+Observations
+  reward           Space(float32, shape=(), low=-inf, high=inf)
+  is_first         Space(bool, shape=(), low=False, high=True)
+  is_last          Space(bool, shape=(), low=False, high=True)
+  is_terminal      Space(bool, shape=(), low=False, high=True)
+  position         Space(float32, shape=(4,), low=-inf, high=inf)
+  velocity         Space(float32, shape=(3,), low=-inf, high=inf)
+  touch            Space(float32, shape=(2,), low=-inf, high=inf)
+  target_position  Space(float32, shape=(2,), low=-inf, high=inf)
+  dist_to_target   Space(float32, shape=(), low=-inf, high=inf)
+  image            Space(uint8, shape=(64, 64, 3), low=0, high=255)
+Actions
+  action           Space(float32, shape=(2,), low=-1.0, high=1.0)
+Extras
+  consec           Space(int32, shape=(), low=-2147483648, high=2147483647)
+  stepid           Space(uint8, shape=(20,), low=0, high=255)
+  dyn/deter        Space(float32, shape=(512,), low=-inf, high=inf)
+  dyn/stoch        Space(float32, shape=(32, 4), low=-inf, high=inf)
+JAX devices (1): [cuda:0]
+Policy devices: cuda:0
+Train devices:  cuda:0
+Initializing parameters...
+/workspace/dreamerv3/embodied/jax/agent.py:112: DeprecationWarning: `with mesh:` context manager has been deprecated. Please use `with jax.set_mesh(mesh):` instead.
+  with self.train_mesh:
+Optimizer opt has 686,070 params:
+       376,448 dyn
+        80,595 dec
+        66,111 val
+        57,663 rew
+        49,796 pol
+        41,153 con
+        14,304 enc
+/venv/main/lib/python3.11/site-packages/optax/_src/linear_algebra.py:44: DeprecationWarning: optax.global_norm is deprecated in favor of optax.tree.norm
+  warnings.warn(
+Done initializing!
+Compiling 1 checkpoint groups...
+Largest checkpoint group: 0 GB
+Loading checkpoint: /workspace/dreamerv3_runs/ax1wm_finger_pxpxq1ms0_seed8/ckpt/20260723T042448F900259-000000350000
+Loaded checkpoint.
+ax1wm_finger_pxpxq1ms0_seed8: expl.mode=task reward_aware=True horizons=(1, 5, 20) probes 120x1001
+  episodes 0-3
+  episodes 4-7
+  episodes 8-11
+  episodes 12-15
+  episodes 16-19
+  episodes 20-23
+  episodes 24-27
+  episodes 28-31
+  episodes 32-35
+  episodes 36-39
+  episodes 40-43
+  episodes 44-47
+  episodes 48-51
+  episodes 52-55
+  episodes 56-59
+  episodes 60-63
+  episodes 64-67
+  episodes 68-71
+  episodes 72-75
+  episodes 76-79
+  episodes 80-83
+  episodes 84-87
+  episodes 88-91
+  episodes 92-95
+  episodes 96-99
+  episodes 100-103
+  episodes 104-107
+  episodes 108-111
+  episodes 112-115
+  episodes 116-119
+  h0: all=28.5422 in=27.7771 out=28.6021 rew=27.7145 norew=28.6069
+  h1: all=29.7604 in=28.8838 out=29.8290 rew=28.8838 norew=29.8290
+  h5: all=33.2792 in=32.0338 out=33.3768 rew=32.0338 norew=33.3768
+  h20: all=41.2814 in=38.8207 out=41.4743 rew=38.8207 norew=41.4743
+-> /workspace/dreamerv3_runs/ax1wm_finger_pxpxq1ms0_seed8/e4_fingerpx_v1
+[Sat Jul 25 15:36:00 UTC 2026] E4 measure ax1wm_finger_pxpxq1ms1_seed1
+Observations
+  reward           Space(float32, shape=(), low=-inf, high=inf)
+  is_first         Space(bool, shape=(), low=False, high=True)
+  is_last          Space(bool, shape=(), low=False, high=True)
+  is_terminal      Space(bool, shape=(), low=False, high=True)
+  position         Space(float32, shape=(4,), low=-inf, high=inf)
+  velocity         Space(float32, shape=(3,), low=-inf, high=inf)
+  touch            Space(float32, shape=(2,), low=-inf, high=inf)
+  target_position  Space(float32, shape=(2,), low=-inf, high=inf)
+  dist_to_target   Space(float32, shape=(), low=-inf, high=inf)
+  image            Space(uint8, shape=(64, 64, 3), low=0, high=255)
+Actions
+  action           Space(float32, shape=(2,), low=-1.0, high=1.0)
+Extras
+  consec           Space(int32, shape=(), low=-2147483648, high=2147483647)
+  stepid           Space(uint8, shape=(20,), low=0, high=255)
+  dyn/deter        Space(float32, shape=(512,), low=-inf, high=inf)
+  dyn/stoch        Space(float32, shape=(32, 4), low=-inf, high=inf)
+JAX devices (1): [cuda:0]
+Policy devices: cuda:0
+Train devices:  cuda:0
+Initializing parameters...
+/workspace/dreamerv3/embodied/jax/agent.py:112: DeprecationWarning: `with mesh:` context manager has been deprecated. Please use `with jax.set_mesh(mesh):` instead.
+  with self.train_mesh:
+Optimizer opt has 686,070 params:
+       376,448 dyn
+        80,595 dec
+        66,111 val
+        57,663 rew
+        49,796 pol
+        41,153 con
+        14,304 enc
+/venv/main/lib/python3.11/site-packages/optax/_src/linear_algebra.py:44: DeprecationWarning: optax.global_norm is deprecated in favor of optax.tree.norm
+  warnings.warn(
+Done initializing!
+Compiling 1 checkpoint groups...
+Largest checkpoint group: 0 GB
+Loading checkpoint: /workspace/dreamerv3_runs/ax1wm_finger_pxpxq1ms1_seed1/ckpt/20260723T084906F871346-000000500000
+Loaded checkpoint.
+ax1wm_finger_pxpxq1ms1_seed1: expl.mode=task reward_aware=True horizons=(1, 5, 20) probes 120x1001
+  episodes 0-3
+  episodes 4-7
+  episodes 8-11
+  episodes 12-15
+  episodes 16-19
+  episodes 20-23
+  episodes 24-27
+  episodes 28-31
+  episodes 32-35
+  episodes 36-39
+  episodes 40-43
+  episodes 44-47
+  episodes 48-51
+  episodes 52-55
+  episodes 56-59
+  episodes 60-63
+  episodes 64-67
+  episodes 68-71
+  episodes 72-75
+  episodes 76-79
+  episodes 80-83
+  episodes 84-87
+  episodes 88-91
+  episodes 92-95
+  episodes 96-99
+  episodes 100-103
+  episodes 104-107
+  episodes 108-111
+  episodes 112-115
+  episodes 116-119
+  h0: all=35.7316 in=26.8316 out=36.4284 rew=26.7747 norew=36.4322
+  h1: all=36.8931 in=27.6289 out=37.6186 rew=27.6289 norew=37.6186
+  h5: all=39.9868 in=29.7358 out=40.7902 rew=29.7358 norew=40.7902
+  h20: all=47.6938 in=34.3867 out=48.7373 rew=34.3867 norew=48.7373
+-> /workspace/dreamerv3_runs/ax1wm_finger_pxpxq1ms1_seed1/e4_fingerpx_v1
+[Sat Jul 25 15:36:51 UTC 2026] E4 measure ax1wm_finger_pxpxq1ms1_seed2
+Observations
+  reward           Space(float32, shape=(), low=-inf, high=inf)
+  is_first         Space(bool, shape=(), low=False, high=True)
+  is_last          Space(bool, shape=(), low=False, high=True)
+  is_terminal      Space(bool, shape=(), low=False, high=True)
+  position         Space(float32, shape=(4,), low=-inf, high=inf)
+  velocity         Space(float32, shape=(3,), low=-inf, high=inf)
+  touch            Space(float32, shape=(2,), low=-inf, high=inf)
+  target_position  Space(float32, shape=(2,), low=-inf, high=inf)
+  dist_to_target   Space(float32, shape=(), low=-inf, high=inf)
+  image            Space(uint8, shape=(64, 64, 3), low=0, high=255)
+Actions
+  action           Space(float32, shape=(2,), low=-1.0, high=1.0)
+Extras
+  consec           Space(int32, shape=(), low=-2147483648, high=2147483647)
+  stepid           Space(uint8, shape=(20,), low=0, high=255)
+  dyn/deter        Space(float32, shape=(512,), low=-inf, high=inf)
+  dyn/stoch        Space(float32, shape=(32, 4), low=-inf, high=inf)
+JAX devices (1): [cuda:0]
+Policy devices: cuda:0
+Train devices:  cuda:0
+Initializing parameters...
+/workspace/dreamerv3/embodied/jax/agent.py:112: DeprecationWarning: `with mesh:` context manager has been deprecated. Please use `with jax.set_mesh(mesh):` instead.
+  with self.train_mesh:
+Optimizer opt has 686,070 params:
+       376,448 dyn
+        80,595 dec
+        66,111 val
+        57,663 rew
+        49,796 pol
+        41,153 con
+        14,304 enc
+/venv/main/lib/python3.11/site-packages/optax/_src/linear_algebra.py:44: DeprecationWarning: optax.global_norm is deprecated in favor of optax.tree.norm
+  warnings.warn(
+Done initializing!
+Compiling 1 checkpoint groups...
+Largest checkpoint group: 0 GB
+Loading checkpoint: /workspace/dreamerv3_runs/ax1wm_finger_pxpxq1ms1_seed2/ckpt/20260723T121616F042410-000000500000
+Loaded checkpoint.
+ax1wm_finger_pxpxq1ms1_seed2: expl.mode=task reward_aware=True horizons=(1, 5, 20) probes 120x1001
+  episodes 0-3
+  episodes 4-7
+  episodes 8-11
+  episodes 12-15
+  episodes 16-19
+  episodes 20-23
+  episodes 24-27
+  episodes 28-31
+  episodes 32-35
+  episodes 36-39
+  episodes 40-43
+  episodes 44-47
+  episodes 48-51
+  episodes 52-55
+  episodes 56-59
+  episodes 60-63
+  episodes 64-67
+  episodes 68-71
+  episodes 72-75
+  episodes 76-79
+  episodes 80-83
+  episodes 84-87
+  episodes 88-91
+  episodes 92-95
+  episodes 96-99
+  episodes 100-103
+  episodes 104-107
+  episodes 108-111
+  episodes 112-115
+  episodes 116-119
+  h0: all=36.1131 in=24.7368 out=37.0037 rew=24.6817 norew=37.0072
+  h1: all=37.2942 in=25.6212 out=38.2082 rew=25.6212 norew=38.2082
+  h5: all=40.5192 in=27.9034 out=41.5079 rew=27.9034 norew=41.5079
+  h20: all=48.2432 in=33.6757 out=49.3855 rew=33.6757 norew=49.3855
+-> /workspace/dreamerv3_runs/ax1wm_finger_pxpxq1ms1_seed2/e4_fingerpx_v1
+[Sat Jul 25 15:37:46 UTC 2026] E4 measure ax1wm_finger_pxpxq1ms1_seed3
+Observations
+  reward           Space(float32, shape=(), low=-inf, high=inf)
+  is_first         Space(bool, shape=(), low=False, high=True)
+  is_last          Space(bool, shape=(), low=False, high=True)
+  is_terminal      Space(bool, shape=(), low=False, high=True)
+  position         Space(float32, shape=(4,), low=-inf, high=inf)
+  velocity         Space(float32, shape=(3,), low=-inf, high=inf)
+  touch            Space(float32, shape=(2,), low=-inf, high=inf)
+  target_position  Space(float32, shape=(2,), low=-inf, high=inf)
+  dist_to_target   Space(float32, shape=(), low=-inf, high=inf)
+  image            Space(uint8, shape=(64, 64, 3), low=0, high=255)
+Actions
+  action           Space(float32, shape=(2,), low=-1.0, high=1.0)
+Extras
+  consec           Space(int32, shape=(), low=-2147483648, high=2147483647)
+  stepid           Space(uint8, shape=(20,), low=0, high=255)
+  dyn/deter        Space(float32, shape=(512,), low=-inf, high=inf)
+  dyn/stoch        Space(float32, shape=(32, 4), low=-inf, high=inf)
+JAX devices (1): [cuda:0]
+Policy devices: cuda:0
+Train devices:  cuda:0
+Initializing parameters...
+/workspace/dreamerv3/embodied/jax/agent.py:112: DeprecationWarning: `with mesh:` context manager has been deprecated. Please use `with jax.set_mesh(mesh):` instead.
+  with self.train_mesh:
+Optimizer opt has 686,070 params:
+       376,448 dyn
+        80,595 dec
+        66,111 val
+        57,663 rew
+        49,796 pol
+        41,153 con
+        14,304 enc
+/venv/main/lib/python3.11/site-packages/optax/_src/linear_algebra.py:44: DeprecationWarning: optax.global_norm is deprecated in favor of optax.tree.norm
+  warnings.warn(
+Done initializing!
+Compiling 1 checkpoint groups...
+Largest checkpoint group: 0 GB
+Loading checkpoint: /workspace/dreamerv3_runs/ax1wm_finger_pxpxq1ms1_seed3/ckpt/20260723T154225F752869-000000500000
+Loaded checkpoint.
+ax1wm_finger_pxpxq1ms1_seed3: expl.mode=task reward_aware=True horizons=(1, 5, 20) probes 120x1001
+  episodes 0-3
+  episodes 4-7
+  episodes 8-11
+  episodes 12-15
+  episodes 16-19
+  episodes 20-23
+  episodes 24-27
+  episodes 28-31
+  episodes 32-35
+  episodes 36-39
+  episodes 40-43
+  episodes 44-47
+  episodes 48-51
+  episodes 52-55
+  episodes 56-59
+  episodes 60-63
+  episodes 64-67
+  episodes 68-71
+  episodes 72-75
+  episodes 76-79
+  episodes 80-83
+  episodes 84-87
+  episodes 88-91
+  episodes 92-95
+  episodes 96-99
+  episodes 100-103
+  episodes 104-107
+  episodes 108-111
+  episodes 112-115
+  episodes 116-119
+  h0: all=32.4234 in=20.4908 out=33.3576 rew=20.4257 norew=33.3619
+  h1: all=33.5835 in=21.2949 out=34.5458 rew=21.2949 norew=34.5458
+  h5: all=36.5818 in=23.3254 out=37.6207 rew=23.3254 norew=37.6207
+  h20: all=44.0720 in=27.3978 out=45.3796 rew=27.3978 norew=45.3796
+-> /workspace/dreamerv3_runs/ax1wm_finger_pxpxq1ms1_seed3/e4_fingerpx_v1
+[Sat Jul 25 15:38:39 UTC 2026] E4 measure ax1wm_finger_pxpxq1ms1_seed4
+Observations
+  reward           Space(float32, shape=(), low=-inf, high=inf)
+  is_first         Space(bool, shape=(), low=False, high=True)
+  is_last          Space(bool, shape=(), low=False, high=True)
+  is_terminal      Space(bool, shape=(), low=False, high=True)
+  position         Space(float32, shape=(4,), low=-inf, high=inf)
+  velocity         Space(float32, shape=(3,), low=-inf, high=inf)
+  touch            Space(float32, shape=(2,), low=-inf, high=inf)
+  target_position  Space(float32, shape=(2,), low=-inf, high=inf)
+  dist_to_target   Space(float32, shape=(), low=-inf, high=inf)
+  image            Space(uint8, shape=(64, 64, 3), low=0, high=255)
+Actions
+  action           Space(float32, shape=(2,), low=-1.0, high=1.0)
+Extras
+  consec           Space(int32, shape=(), low=-2147483648, high=2147483647)
+  stepid           Space(uint8, shape=(20,), low=0, high=255)
+  dyn/deter        Space(float32, shape=(512,), low=-inf, high=inf)
+  dyn/stoch        Space(float32, shape=(32, 4), low=-inf, high=inf)
+JAX devices (1): [cuda:0]
+Policy devices: cuda:0
+Train devices:  cuda:0
+Initializing parameters...
+/workspace/dreamerv3/embodied/jax/agent.py:112: DeprecationWarning: `with mesh:` context manager has been deprecated. Please use `with jax.set_mesh(mesh):` instead.
+  with self.train_mesh:
+Optimizer opt has 686,070 params:
+       376,448 dyn
+        80,595 dec
+        66,111 val
+        57,663 rew
+        49,796 pol
+        41,153 con
+        14,304 enc
+/venv/main/lib/python3.11/site-packages/optax/_src/linear_algebra.py:44: DeprecationWarning: optax.global_norm is deprecated in favor of optax.tree.norm
+  warnings.warn(
+Done initializing!
+Compiling 1 checkpoint groups...
+Largest checkpoint group: 0 GB
+Loading checkpoint: /workspace/dreamerv3_runs/ax1wm_finger_pxpxq1ms1_seed4/ckpt/20260723T190843F712208-000000500000
+Loaded checkpoint.
+ax1wm_finger_pxpxq1ms1_seed4: expl.mode=task reward_aware=True horizons=(1, 5, 20) probes 120x1001
+  episodes 0-3
+  episodes 4-7
+  episodes 8-11
+  episodes 12-15
+  episodes 16-19
+  episodes 20-23
+  episodes 24-27
+  episodes 28-31
+  episodes 32-35
+  episodes 36-39
+  episodes 40-43
+  episodes 44-47
+  episodes 48-51
+  episodes 52-55
+  episodes 56-59
+  episodes 60-63
+  episodes 64-67
+  episodes 68-71
+  episodes 72-75
+  episodes 76-79
+  episodes 80-83
+  episodes 84-87
+  episodes 88-91
+  episodes 92-95
+  episodes 96-99
+  episodes 100-103
+  episodes 104-107
+  episodes 108-111
+  episodes 112-115
+  episodes 116-119
+  h0: all=32.5927 in=21.5095 out=33.4603 rew=21.4466 norew=33.4645
+  h1: all=33.8273 in=22.3479 out=34.7261 rew=22.3479 norew=34.7261
+  h5: all=36.9334 in=24.4613 out=37.9108 rew=24.4613 norew=37.9108
+  h20: all=44.3766 in=28.7722 out=45.6002 rew=28.7722 norew=45.6002
+-> /workspace/dreamerv3_runs/ax1wm_finger_pxpxq1ms1_seed4/e4_fingerpx_v1
+[Sat Jul 25 15:39:34 UTC 2026] E4 measure ax1wm_finger_pxpxq1ms1_seed5
+Observations
+  reward           Space(float32, shape=(), low=-inf, high=inf)
+  is_first         Space(bool, shape=(), low=False, high=True)
+  is_last          Space(bool, shape=(), low=False, high=True)
+  is_terminal      Space(bool, shape=(), low=False, high=True)
+  position         Space(float32, shape=(4,), low=-inf, high=inf)
+  velocity         Space(float32, shape=(3,), low=-inf, high=inf)
+  touch            Space(float32, shape=(2,), low=-inf, high=inf)
+  target_position  Space(float32, shape=(2,), low=-inf, high=inf)
+  dist_to_target   Space(float32, shape=(), low=-inf, high=inf)
+  image            Space(uint8, shape=(64, 64, 3), low=0, high=255)
+Actions
+  action           Space(float32, shape=(2,), low=-1.0, high=1.0)
+Extras
+  consec           Space(int32, shape=(), low=-2147483648, high=2147483647)
+  stepid           Space(uint8, shape=(20,), low=0, high=255)
+  dyn/deter        Space(float32, shape=(512,), low=-inf, high=inf)
+  dyn/stoch        Space(float32, shape=(32, 4), low=-inf, high=inf)
+JAX devices (1): [cuda:0]
+Policy devices: cuda:0
+Train devices:  cuda:0
+Initializing parameters...
+/workspace/dreamerv3/embodied/jax/agent.py:112: DeprecationWarning: `with mesh:` context manager has been deprecated. Please use `with jax.set_mesh(mesh):` instead.
+  with self.train_mesh:
+Optimizer opt has 686,070 params:
+       376,448 dyn
+        80,595 dec
+        66,111 val
+        57,663 rew
+        49,796 pol
+        41,153 con
+        14,304 enc
+/venv/main/lib/python3.11/site-packages/optax/_src/linear_algebra.py:44: DeprecationWarning: optax.global_norm is deprecated in favor of optax.tree.norm
+  warnings.warn(
+Done initializing!
+Compiling 1 checkpoint groups...
+Largest checkpoint group: 0 GB
+Loading checkpoint: /workspace/dreamerv3_runs/ax1wm_finger_pxpxq1ms1_seed5/ckpt/20260723T223420F184264-000000500000
+Loaded checkpoint.
+ax1wm_finger_pxpxq1ms1_seed5: expl.mode=task reward_aware=True horizons=(1, 5, 20) probes 120x1001
+  episodes 0-3
+  episodes 4-7
+  episodes 8-11
+  episodes 12-15
+  episodes 16-19
+  episodes 20-23
+  episodes 24-27
+  episodes 28-31
+  episodes 32-35
+  episodes 36-39
+  episodes 40-43
+  episodes 44-47
+  episodes 48-51
+  episodes 52-55
+  episodes 56-59
+  episodes 60-63
+  episodes 64-67
+  episodes 68-71
+  episodes 72-75
+  episodes 76-79
+  episodes 80-83
+  episodes 84-87
+  episodes 88-91
+  episodes 92-95
+  episodes 96-99
+  episodes 100-103
+  episodes 104-107
+  episodes 108-111
+  episodes 112-115
+  episodes 116-119
+  h0: all=30.8527 in=20.1526 out=31.6904 rew=20.0922 norew=31.6944
+  h1: all=32.0747 in=20.8865 out=32.9507 rew=20.8865 norew=32.9507
+  h5: all=35.4416 in=22.9269 out=36.4224 rew=22.9269 norew=36.4224
+  h20: all=43.6896 in=27.8722 out=44.9300 rew=27.8722 norew=44.9300
+-> /workspace/dreamerv3_runs/ax1wm_finger_pxpxq1ms1_seed5/e4_fingerpx_v1
+[Sat Jul 25 15:40:34 UTC 2026] E4 measure ax1wm_finger_pxpxq1ms1_seed6
+Observations
+  reward           Space(float32, shape=(), low=-inf, high=inf)
+  is_first         Space(bool, shape=(), low=False, high=True)
+  is_last          Space(bool, shape=(), low=False, high=True)
+  is_terminal      Space(bool, shape=(), low=False, high=True)
+  position         Space(float32, shape=(4,), low=-inf, high=inf)
+  velocity         Space(float32, shape=(3,), low=-inf, high=inf)
+  touch            Space(float32, shape=(2,), low=-inf, high=inf)
+  target_position  Space(float32, shape=(2,), low=-inf, high=inf)
+  dist_to_target   Space(float32, shape=(), low=-inf, high=inf)
+  image            Space(uint8, shape=(64, 64, 3), low=0, high=255)
+Actions
+  action           Space(float32, shape=(2,), low=-1.0, high=1.0)
+Extras
+  consec           Space(int32, shape=(), low=-2147483648, high=2147483647)
+  stepid           Space(uint8, shape=(20,), low=0, high=255)
+  dyn/deter        Space(float32, shape=(512,), low=-inf, high=inf)
+  dyn/stoch        Space(float32, shape=(32, 4), low=-inf, high=inf)
+JAX devices (1): [cuda:0]
+Policy devices: cuda:0
+Train devices:  cuda:0
+Initializing parameters...
+/workspace/dreamerv3/embodied/jax/agent.py:112: DeprecationWarning: `with mesh:` context manager has been deprecated. Please use `with jax.set_mesh(mesh):` instead.
+  with self.train_mesh:
+Optimizer opt has 686,070 params:
+       376,448 dyn
+        80,595 dec
+        66,111 val
+        57,663 rew
+        49,796 pol
+        41,153 con
+        14,304 enc
+/venv/main/lib/python3.11/site-packages/optax/_src/linear_algebra.py:44: DeprecationWarning: optax.global_norm is deprecated in favor of optax.tree.norm
+  warnings.warn(
+Done initializing!
+Compiling 1 checkpoint groups...
+Largest checkpoint group: 0 GB
+Loading checkpoint: /workspace/dreamerv3_runs/ax1wm_finger_pxpxq1ms1_seed6/ckpt/20260724T010445F955956-000000350000
+Loaded checkpoint.
+ax1wm_finger_pxpxq1ms1_seed6: expl.mode=task reward_aware=True horizons=(1, 5, 20) probes 120x1001
+  episodes 0-3
+  episodes 4-7
+  episodes 8-11
+  episodes 12-15
+  episodes 16-19
+  episodes 20-23
+  episodes 24-27
+  episodes 28-31
+  episodes 32-35
+  episodes 36-39
+  episodes 40-43
+  episodes 44-47
+  episodes 48-51
+  episodes 52-55
+  episodes 56-59
+  episodes 60-63
+  episodes 64-67
+  episodes 68-71
+  episodes 72-75
+  episodes 76-79
+  episodes 80-83
+  episodes 84-87
+  episodes 88-91
+  episodes 92-95
+  episodes 96-99
+  episodes 100-103
+  episodes 104-107
+  episodes 108-111
+  episodes 112-115
+  episodes 116-119
+  h0: all=28.0171 in=23.4982 out=28.3709 rew=23.4377 norew=28.3753
+  h1: all=29.2124 in=24.3337 out=29.5944 rew=24.3337 norew=29.5944
+  h5: all=32.6786 in=26.8413 out=33.1360 rew=26.8413 norew=33.1360
+  h20: all=41.0996 in=32.1232 out=41.8035 rew=32.1232 norew=41.8035
+-> /workspace/dreamerv3_runs/ax1wm_finger_pxpxq1ms1_seed6/e4_fingerpx_v1
+[Sat Jul 25 15:41:28 UTC 2026] E4 measure ax1wm_finger_pxpxq1ms1_seed7
+Observations
+  reward           Space(float32, shape=(), low=-inf, high=inf)
+  is_first         Space(bool, shape=(), low=False, high=True)
+  is_last          Space(bool, shape=(), low=False, high=True)
+  is_terminal      Space(bool, shape=(), low=False, high=True)
+  position         Space(float32, shape=(4,), low=-inf, high=inf)
+  velocity         Space(float32, shape=(3,), low=-inf, high=inf)
+  touch            Space(float32, shape=(2,), low=-inf, high=inf)
+  target_position  Space(float32, shape=(2,), low=-inf, high=inf)
+  dist_to_target   Space(float32, shape=(), low=-inf, high=inf)
+  image            Space(uint8, shape=(64, 64, 3), low=0, high=255)
+Actions
+  action           Space(float32, shape=(2,), low=-1.0, high=1.0)
+Extras
+  consec           Space(int32, shape=(), low=-2147483648, high=2147483647)
+  stepid           Space(uint8, shape=(20,), low=0, high=255)
+  dyn/deter        Space(float32, shape=(512,), low=-inf, high=inf)
+  dyn/stoch        Space(float32, shape=(32, 4), low=-inf, high=inf)
+JAX devices (1): [cuda:0]
+Policy devices: cuda:0
+Train devices:  cuda:0
+Initializing parameters...
+/workspace/dreamerv3/embodied/jax/agent.py:112: DeprecationWarning: `with mesh:` context manager has been deprecated. Please use `with jax.set_mesh(mesh):` instead.
+  with self.train_mesh:
+Optimizer opt has 686,070 params:
+       376,448 dyn
+        80,595 dec
+        66,111 val
+        57,663 rew
+        49,796 pol
+        41,153 con
+        14,304 enc
+/venv/main/lib/python3.11/site-packages/optax/_src/linear_algebra.py:44: DeprecationWarning: optax.global_norm is deprecated in favor of optax.tree.norm
+  warnings.warn(
+Done initializing!
+Compiling 1 checkpoint groups...
+Largest checkpoint group: 0 GB
+Loading checkpoint: /workspace/dreamerv3_runs/ax1wm_finger_pxpxq1ms1_seed7/ckpt/20260724T050822F001003-000000400000
+Loaded checkpoint.
+ax1wm_finger_pxpxq1ms1_seed7: expl.mode=task reward_aware=True horizons=(1, 5, 20) probes 120x1001
+  episodes 0-3
+  episodes 4-7
+  episodes 8-11
+  episodes 12-15
+  episodes 16-19
+  episodes 20-23
+  episodes 24-27
+  episodes 28-31
+  episodes 32-35
+  episodes 36-39
+  episodes 40-43
+  episodes 44-47
+  episodes 48-51
+  episodes 52-55
+  episodes 56-59
+  episodes 60-63
+  episodes 64-67
+  episodes 68-71
+  episodes 72-75
+  episodes 76-79
+  episodes 80-83
+  episodes 84-87
+  episodes 88-91
+  episodes 92-95
+  episodes 96-99
+  episodes 100-103
+  episodes 104-107
+  episodes 108-111
+  episodes 112-115
+  episodes 116-119
+  h0: all=33.5774 in=24.5681 out=34.2827 rew=24.5155 norew=34.2862
+  h1: all=34.9904 in=25.5053 out=35.7331 rew=25.5053 norew=35.7331
+  h5: all=38.5763 in=27.9444 out=39.4095 rew=27.9444 norew=39.4095
+  h20: all=46.8937 in=32.4368 out=48.0274 rew=32.4368 norew=48.0274
+-> /workspace/dreamerv3_runs/ax1wm_finger_pxpxq1ms1_seed7/e4_fingerpx_v1
+[Sat Jul 25 15:42:21 UTC 2026] E4 measure ax1wm_finger_pxpxq1ms1_seed8
+Observations
+  reward           Space(float32, shape=(), low=-inf, high=inf)
+  is_first         Space(bool, shape=(), low=False, high=True)
+  is_last          Space(bool, shape=(), low=False, high=True)
+  is_terminal      Space(bool, shape=(), low=False, high=True)
+  position         Space(float32, shape=(4,), low=-inf, high=inf)
+  velocity         Space(float32, shape=(3,), low=-inf, high=inf)
+  touch            Space(float32, shape=(2,), low=-inf, high=inf)
+  target_position  Space(float32, shape=(2,), low=-inf, high=inf)
+  dist_to_target   Space(float32, shape=(), low=-inf, high=inf)
+  image            Space(uint8, shape=(64, 64, 3), low=0, high=255)
+Actions
+  action           Space(float32, shape=(2,), low=-1.0, high=1.0)
+Extras
+  consec           Space(int32, shape=(), low=-2147483648, high=2147483647)
+  stepid           Space(uint8, shape=(20,), low=0, high=255)
+  dyn/deter        Space(float32, shape=(512,), low=-inf, high=inf)
+  dyn/stoch        Space(float32, shape=(32, 4), low=-inf, high=inf)
+JAX devices (1): [cuda:0]
+Policy devices: cuda:0
+Train devices:  cuda:0
+Initializing parameters...
+/workspace/dreamerv3/embodied/jax/agent.py:112: DeprecationWarning: `with mesh:` context manager has been deprecated. Please use `with jax.set_mesh(mesh):` instead.
+  with self.train_mesh:
+Optimizer opt has 686,070 params:
+       376,448 dyn
+        80,595 dec
+        66,111 val
+        57,663 rew
+        49,796 pol
+        41,153 con
+        14,304 enc
+/venv/main/lib/python3.11/site-packages/optax/_src/linear_algebra.py:44: DeprecationWarning: optax.global_norm is deprecated in favor of optax.tree.norm
+  warnings.warn(
+Done initializing!
+Compiling 1 checkpoint groups...
+Largest checkpoint group: 0 GB
+Loading checkpoint: /workspace/dreamerv3_runs/ax1wm_finger_pxpxq1ms1_seed8/ckpt/20260724T091631F098872-000000500000
+Loaded checkpoint.
+ax1wm_finger_pxpxq1ms1_seed8: expl.mode=task reward_aware=True horizons=(1, 5, 20) probes 120x1001
+  episodes 0-3
+  episodes 4-7
+  episodes 8-11
+  episodes 12-15
+  episodes 16-19
+  episodes 20-23
+  episodes 24-27
+  episodes 28-31
+  episodes 32-35
+  episodes 36-39
+  episodes 40-43
+  episodes 44-47
+  episodes 48-51
+  episodes 52-55
+  episodes 56-59
+  episodes 60-63
+  episodes 64-67
+  episodes 68-71
+  episodes 72-75
+  episodes 76-79
+  episodes 80-83
+  episodes 84-87
+  episodes 88-91
+  episodes 92-95
+  episodes 96-99
+  episodes 100-103
+  episodes 104-107
+  episodes 108-111
+  episodes 112-115
+  episodes 116-119
+  h0: all=36.4600 in=27.6536 out=37.1494 rew=27.5977 norew=37.1532
+  h1: all=37.8197 in=28.5030 out=38.5492 rew=28.5030 norew=38.5492
+  h5: all=41.1441 in=30.4153 out=41.9849 rew=30.4153 norew=41.9849
+  h20: all=48.9015 in=34.4424 out=50.0353 rew=34.4424 norew=50.0353
+-> /workspace/dreamerv3_runs/ax1wm_finger_pxpxq1ms1_seed8/e4_fingerpx_v1
+[Sat Jul 25 15:43:17 UTC 2026] measured 32 new, 0 already done, 0 skipped
+128 rows (32 runs) -> /workspace/dreamerv3_runs/e4_fingerpx_v1.csv
+[Sat Jul 25 15:43:17 UTC 2026] E4 sweep DONE -> /workspace/dreamerv3_runs/e4_fingerpx_v1.csv
