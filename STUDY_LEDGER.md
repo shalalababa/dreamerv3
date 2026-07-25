@@ -30,7 +30,7 @@ that writes an artifact record. Flags: ⚠ = later qualified;
 | 07-17 | vgo wiring audit | — (audit) | `artifacts/vgo_wiring_audit_20260717/AUDIT.md` | case (b) replay-grounded → P-B2 shifts to attenuation form |
 | 07-17 | TD-MPC2 cross-family n=8 + Goodhart ensemble + D1 pilot | `PREREG_tdmpc2_crossfamily_20260716` | `artifacts/tdmpc2_goodhart_d1pilot_20260717/` | [B_aware−B_free] +9.5 ns; ensemble does not fix top-1 regret (demote-leaning); D1 pilots 6/6 |
 | 07-17 | **P3 Amendment 1, pooled n=16** | `PREREG_p3_amendment1_20260717` | `artifacts/p3_amend1_20260717/` | **PRIMARY FIRES +51.5 [+9.0,+94.6]; rgo +56.7\*; sgb +5.2 tight null → reward-gradient path CONFIRMED sufficient carrier** |
-| 07-17 | Theory predictions frozen | `PREREG_theory_predictions_20260717` | (spectral model, `research_notes/Theory_SpectralTransfer_20260717.tex`) | P-A1 landed (Amend-1); P-B1 stands (stamping); P-B2 pending vgo-x; P-B4 strong REFUTED (Opt-C corrective); P-B5 pending scaling |
+| 07-17 | Theory predictions frozen | `PREREG_theory_predictions_20260717` | (spectral model, `research_notes/Theory_SpectralTransfer_20260717.tex`) | P-A1 landed (Amend-1); P-B1 stands (stamping); P-B2 pending vgo-x; P-B4 strong REFUTED (Opt-C corrective); P-B5 pending scaling; P-C2 premise-failed 07-24 (pixel X2 null — monotone form fails, swamping regime survives pending `PREREG_pixel_swamping_20260724`) |
 | 07-18 | Stamping | `PREREG_stamping_20260717` | `artifacts/stamping_20260718/` | primary does NOT fire → **P-B1 strong form STANDS** |
 | 07-18 | Scaling Option C (volume rider) | `PREREG_scaling_pilot_20260717` | `artifacts/scaling_optc_20260718/` | ⚠ realized design ≠ registered (side inversion; DEVIATIONS 07-18); P-B4 not adjudicated; behavioral anomaly recorded |
 | 07-19 | Option C corrective | `PREREG_scaling_optc_amend1_20260718` | `artifacts/optc_corrective_20260719/` | **C2 FIRES: P-B4 strong form REFUTED** |
@@ -41,6 +41,7 @@ that writes an artifact record. Flags: ⚠ = later qualified;
 | 07-22 | TD-MPC2 F2 (E4 mechanism port) | `PREREG_tdmpc2_f2_20260720` | `artifacts/tdmpc2_f2_20260722/` | **P-F2a FIRES +1.717, lottery 0 → never-included-like**; G-F3 NO-GO; TD-MPC2 track complete |
 | 07-23/24 | E4 passes: Amend-1 fits + Opt-C volume + sgb gap | E4 prereg (descriptive) | `artifacts/e4_amend1_optionc_20260723/` (+§A′) | rgo mechanism REPLICATES (1.07 vs 1.21); volume buys stability not level; **sgb gap closed 07-24: separation replicates at n=16 both arms (2.03 vs 1.07 hi side)** |
 | 07-19 | Pixel X1 pair build | `PREREG_pixel_repl_20260719` | `artifacts/pixel_x1_pair_20260719/PAIR.md` | pair built → X2 submitted |
+| 07-24 | **Pixel X2 read** | `PREREG_pixel_repl_20260719` | `artifacts/pixel_x2_20260724/` | **interaction does NOT fire** (+3.6 [−29.9,+40.9], p=.87; both simples null; all four cells on a common AUC floor; audit 32/32 clean) → **G-X3 NO-GO**; P-C2 premise-failed (monotone form fails; swamping regime = surviving branch); pixel leg = registered scope boundary; swamping diagnostic REGISTERED same day |
 
 Standing Paper-1 decisions: headline = "support must be legible to the
 objective" (17 Jul editorial); claim band 40–55% via n=16 ✓ + TD-MPC2 ✗
@@ -75,7 +76,7 @@ re-test, not results. 24+24 permanently frozen; imag op retired.
 
 ## Registered / running, no read yet
 
-- **Pixel X2** (running): `PREREG_pixel_repl_20260719` → read = `analysis/pixel_repl_read.py`; G-X3 gate on its outcome.
+- **Pixel swamping diagnostic** (registered 07-24, 1 GPU job + login probe-set build): `PREREG_pixel_swamping_20260724` — task-arm in-regime rew-NLL level vs frozen proprio bands (≥2.0 swamping-consistent / ≤1.5 membership-form / else unresolved; trivial-floor guard); build `fingerpx_v1` probe set FIRST (freeze before scoring). X2 itself is DONE (see Paper-1 table).
 - **Scaling Option B** (running): `PREREG_scaling_pilot_20260717` → `analysis/scaling_read.py`; 12m E4 pass waits on it (P-B5).
 - **Unfrozen calibration** (to submit, 32 jobs): `PREREG_unfrozen_calib_20260723` → `analysis/unfrozen_calib_read.py`.
 - **Orthogonal-objective test** (to submit, 32–64 jobs, grid conditional on sgb-9–16 fit existence): `PREREG_orthogonal_obj_20260723` → `analysis/orthogonal_obj_read.py`; lands the band leg under either outcome.

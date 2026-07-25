@@ -251,6 +251,27 @@ immutable dated files; see plan v4.)
 
 ## Code notes and registrations (non-deviations)
 
+- **2026-07-24 (night) — PIXEL X2 READ EXECUTED: NULL; G-X3 NO-GO;
+  swamping diagnostic registered.** Frozen read
+  (`analysis/pixel_repl_read.py`, selfcheck PASS) on
+  `local_results/pixel_x2_20260724_213538/`: primary interaction
+  +3.6 [−29.9, +40.9] (perm p=.867, d_z=.06) — does NOT fire; task
+  simple +5.4 ns, apt +1.8 ns; all four cells at AUC100k 77–83
+  (common floor); local json IDENTICAL to cluster json; config audit
+  32/32 clean (`model_obs: image`, correct expl modes). Registered
+  decision tree: G-X3 NO-GO; P-C2 not evaluated (premise failed);
+  pixel leg = registered scope boundary. Registered next step
+  executed as registration: `PREREG_pixel_swamping_20260724.md`
+  (task-arm head is the membership readout — reward_grad true on
+  true labels; apt head trains on INTRINSIC reward, disclosed
+  non-readout; thresholds 2.0/1.5 nats vs frozen proprio bands;
+  trivial-floor guard; fingerpx_v1 probe set to build+freeze first).
+  Record: `artifacts/pixel_x2_20260724/`. NOTE for the runner: the
+  bundle's exclusions.csv shows 3 Scaling-B adapt runs
+  (`ax1fs12q1s0_seed8`, `ax1fs12q1s1_seed6`, `ax1s12q1s1_seed2`)
+  missing scores.jsonl — the scaling read will need these re-run or
+  the miss explained before it executes.
+
 - **2026-07-24 — SPECTRAL PASS AMENDMENT 1: θ-inestimable buffers.**
   First real run crashed on a buffer with zero rewarded frames in the
   loaded sample (no reward direction exists; the instrument asserted
