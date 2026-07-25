@@ -6,6 +6,21 @@ immutable dated files; see plan v4.)
 
 ## Deviations
 
+- **2026-07-25 (evening) — UNFROZEN CALIBRATION READ EXECUTED: FIRES,
+  AMPLIFIED ×4.3.** 32/32 `ax1ufz*` cells; bundle read code
+  md5-identical to the frozen repo version; local read ≡ cluster json
+  on every key; selfcheck PASS before the read. Primary unfrozen
+  rgo−sgb +267.2 [+206.7, +331.4] (perm p=.0078 = the n=8 minimum —
+  every seed positive; d_z 2.77; both side simples fire); frozen
+  same-seed baseline +62.5 (committed p3_amend1 csv, disclosed);
+  calibration ratio 4.28 = AMPLIFICATION (the registered prediction
+  was "persists, plausibly attenuated" — the strong branch landed).
+  Level changes: rgo +235.2*, sgb +30.4* — the reward-legible support
+  is a better initialization, frozen-readout was the conservative
+  protocol. Band-ledger leg lands; all four 40–55% band conditions
+  now adjudicated. Record: `artifacts/unfrozen_calib_20260725/`.
+  exclusions.csv again lists only the in-flight ax1(f)s12 Scaling-B
+  rows (owner-confirmed running; not flagged further).
 - **2026-07-25 (pm) — PIXEL SWAMPING READ EXECUTED: P-SW1
   SWAMPING-CONSISTENT FIRES.** Resubmitted E4 sweep complete (32/32,
   no skips; bundle code md5-identical to the frozen repo versions);

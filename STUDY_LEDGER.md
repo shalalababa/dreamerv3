@@ -44,12 +44,14 @@ that writes an artifact record. Flags: ⚠ = later qualified;
 | 07-24 | **Pixel X2 read** | `PREREG_pixel_repl_20260719` | `artifacts/pixel_x2_20260724/` | **interaction does NOT fire** (+3.6 [−29.9,+40.9], p=.87; both simples null; all four cells on a common AUC floor; audit 32/32 clean) → **G-X3 NO-GO**; P-C2 premise-failed (monotone form fails; swamping regime = surviving branch); pixel leg = registered scope boundary; swamping diagnostic REGISTERED same day |
 | 07-25 | **Orthogonal-objective test** (full grid, seeds 1–16) | `PREREG_orthogonal_obj_20260723` | `artifacts/orthogonal_obj_20260725/` | validity gate passed (45.3 ≥ 20); **primary rgo−sgb +1.0 [−16.1,+17.0] does NOT fire ⇒ objective-specific support** (same fits: +45.0\* on the ORIGINAL objective; ratio .023); band leg LANDED; strict headline reading stands (scope does not widen); local read ≡ cluster json |
 | 07-25 | **Pixel swamping diagnostic** | `PREREG_pixel_swamping_20260724` + Amend 1 (07-25 E4 repair after `KeyError: 'image'` crash — measure keyed off model enc/dec spaces, proprio numbers bit-identical, read frozen pre-outcome) | `artifacts/pixel_swamping_20260725/` | **P-SW1 SWAMPING-CONSISTENT FIRES**: task-arm in-regime rew-NLL 23.3 [19.4, 27.3] nats ≫ 2.0 bar (floor 0.67 informative; side-robust — all 16 runs ≥ 2.0; s0 24–58 / s1 4.0–7.3); reward info ABSENT from pixel trunk ⇒ **pixel boundary = predicted structure (g > G2 regime), mechanism-complete**; membership→transfer link unchallenged; G-X3 stays NO-GO, no further pixel arms |
+| 07-25 | **Unfrozen-adaptation calibration** | `PREREG_unfrozen_calib_20260723` | `artifacts/unfrozen_calib_20260725/` | **FIRES, AMPLIFIED ×4.3**: unfrozen rgo−sgb +267.2 [+206.7,+331.4] (p=.0078 = n=8 min, every seed positive, d_z=2.77, both sides fire) vs frozen same-seed +62.5; level changes rgo +235.2\* / sgb +30.4\* ⇒ reward-legible support = better INITIALIZATION, frozen-readout was the CONSERVATIVE protocol; **band leg lands in the strong form — all four band conditions now adjudicated** |
 | 07-25 | **Spectral domains read** | `PREREG_spectral_domains_20260724` + Amend 1 | `artifacts/spectral_domains_20260725/` | **P-SM1 NOT confirmed** (hi side REVERSED: rank cup 492 vs finger 455; lo holds; all 4 buffers own-θ, no fallback engaged) ⇒ spectral DOMAIN account refuted as registered; cup/finger = unexplained scope condition; theory E5 cup section loses measurement support; arm-level results untouched per frozen map |
 
 Standing Paper-1 decisions: headline = "support must be legible to the
-objective" (17 Jul editorial); claim band 40–55% via n=16 ✓ + TD-MPC2 ✗
-(F1 retests) + unfrozen calibration (registered) + orthogonal test ✓
-(**objective-specific**, 07-25 — strengthens the strict reading);
+objective" (17 Jul editorial); claim band 40–55% — **all four conditions
+adjudicated 07-25**: n=16 ✓ + TD-MPC2 ✗ (explained boundary) +
+unfrozen calibration ✓ (**AMPLIFIED ×4.3** — frozen-readout was the
+conservative protocol) + orthogonal test ✓ (**objective-specific**);
 **Goodhart DEMOTED** (18 Jul, re-confirmed
 22 Jul — negative/boundary exhibit only); 9a un-embargoed (Amend-1).
 
@@ -83,7 +85,6 @@ re-test, not results. 24+24 permanently frozen; imag op retired.
 ## Registered / running, no read yet
 
 - **Scaling Option B** (running): `PREREG_scaling_pilot_20260717` → `analysis/scaling_read.py`; 12m E4 pass waits on it (P-B5).
-- **Unfrozen calibration** (to submit, 32 jobs): `PREREG_unfrozen_calib_20260723` → `analysis/unfrozen_calib_read.py`.
 - **vgo extended discriminator** (to submit, 16 fresh 1.5M fits + adapt): `PREREG_vgo_extended_20260723` → `analysis/vgo_extended_read.py`; adjudicates P-B2 attenuation form.
 - **Scaling-B completeness blocker**: latest exclusions snapshot (07-25 orthogonal bundle) lists 4 `ax1(f)s12*` adapt runs missing scores.jsonl (`fs12q1s0_seed8`, `fs12q1s1_seed7`, `s12q1s1_seed2`, `s12q1s1_seed7` — set CHANGED from the X2 snapshot; seed6 completed since). Re-run or explain before the Scaling B read.
 - **Comp×capacity theory predictions** (registered 07-24, adjudicated by Scaling B + 12m E4 + volume replication): `PREREG_compcapacity_theory_20260724` (P-E1 ordered un-nulling / forbidden pattern; P-E2 task-lo-first; P-E3 metric split; P-E4 diversity-as-λ); derivations in `research_notes/Theory_CompCapacity_Addendum_20260724.tex`; MUST be committed before the Scaling B read.
