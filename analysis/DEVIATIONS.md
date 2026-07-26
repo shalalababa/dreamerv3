@@ -6,6 +6,26 @@ immutable dated files; see plan v4.)
 
 ## Deviations
 
+- **2026-07-26 — SCALING OPTION B READ + 12m E4 PASS EXECUTED:
+  interaction SCALE-ROBUST at 12×.** Freeze-ordering honored
+  (compcapacity predictions committed 746d0b13 pre-read). 32/32 cells
+  (exclusions empty — the 4 in-flight runs completed); local read ≡
+  cluster json on every decisional quantity (only ULP float noise in
+  scipy t-interval sensitivity blocks); size audit via E4 log (deter
+  2048 / 9.73M params); ctx12 buffer line in 14/14 retained adapt
+  logs; 1m bit-check passed in-read. PRIMARY three-way −30.8
+  [−154.5,+83.4] includes 0 ⇒ registered scale-robust branch; S2
+  P-B6-lite confirmed; P-E1 holds (regime A at 12m ⇒ 25m targets
+  A→B); P-B5 sign-consistent underpowered. TWO housekeeping
+  disclosures: (1) the prereg's FILL slots (upd/s, bundle time, rank
+  prior) were never filled — update count verifiable as the
+  registered 500000; the rank prior (stated-prior-only, no decision
+  role) was never recorded; (2) READER GAP: the frozen read's
+  docstring promises the pooled-1–16 robustness variant "reported
+  alongside" but the code never computes it — computed descriptively
+  in the artifact from the committed W0 constant (+98.7): +27.8
+  [−35.7,+77.6], same branch (never decision-bearing either way).
+  Record: `artifacts/scaling_optionb_20260726/`.
 - **2026-07-25 (evening) — UNFROZEN CALIBRATION READ EXECUTED: FIRES,
   AMPLIFIED ×4.3.** 32/32 `ax1ufz*` cells; bundle read code
   md5-identical to the frozen repo version; local read ≡ cluster json
