@@ -37,7 +37,8 @@ Frozen pre-outcome readers, one per registered experiment; each has a
 - `tdmpc2_amend_read.py`, `tdmpc2_f2_read.py` — TD-MPC2 family boundary.
 - `pixel_repl_read.py` — pixel X2 (read 24 Jul: null, G-X3 NO-GO).
 - `pixel_swamping_read.py` — pixel swamping diagnostic read (frozen 25 Jul pre-outcome; task-arm rew-NLL level + trivial two-hot floor guard; awaits the resubmitted E4 csv).
-- `unfrozen_calib_read.py`, `vgo_extended_read.py` — Paper-1 band-ledger waves (pending submission).
+- `unfrozen_calib_read.py` (read 25 Jul: fires ×4.3 amplified), `vgo_extended_read.py` (running) — Paper-1 band-ledger waves.
+- `scaling_read.py` (read 26 Jul: scale-robust), `compcapacity_read.py` (25m A→B point, frozen pre-outcome), `volume_repl_read.py` (P-E4a, frozen pre-outcome) — capacity axis.
 - `orthogonal_obj_read.py` — orthogonal-objective band leg (read 25 Jul: objective-specific).
 - `buffer_battery.py`, `collate_drivers.py`, `fit_mixed_effects.py` — shared statistics/collation helpers.
 

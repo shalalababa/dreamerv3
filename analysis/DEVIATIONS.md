@@ -6,6 +6,29 @@ immutable dated files; see plan v4.)
 
 ## Deviations
 
+- **2026-07-26 (later) — POST-B REGISTRATION WAVE: 25m point + volume
+  replication both registered pre-outcome.** (1)
+  `PREREG_compcapacity_confirm_20260726` + `analysis/compcapacity_read.py`
+  (selfcheck: fire/null/forbidden branches, seed-99 exclusion,
+  missing-seed trip): primary = task-lo rise (25m−12m two-sample seed
+  bootstrap), guard = the P-E1 forbidden pattern made decisional at
+  25m; buy-rule reconciliation disclosed (the launch plan's draft
+  sign-stability rule was superseded by the frozen consequence map's
+  regime-A branch); size25m config block pre-existing and unused;
+  ctx25 resize via the committed tool (deter 3072, stoch 32×24);
+  NO blank FILL slots — realized upd/s and any update-count fallback
+  go in the artifact (correcting the Option B lapse). (2)
+  `PREREG_volume_repl_20260726` + `analysis/volume_repl_read.py`
+  (selfcheck: replicate/demote branches, partial-cohort trips):
+  P-E4a fresh-seed primary; the 24-job both-sides form registered
+  because the standard submit loop has no side restriction —
+  s0 cells (incl. the never-run v200s0) become P-E4b-feeding
+  secondaries; diversity_pr on the two s1 buffers pinned as the
+  P-E4b operational index. Data-hygiene note from the build: the
+  canonical auc.csv retains seed-99 timing-smoke rows for the s12
+  cells; the frozen scaling read excluded them by its seeds-1–8 rule
+  (verified behaviorally: its cell means differ from naive csv
+  means), and both new readers exclude by explicit seed lists.
 - **2026-07-26 — SCALING OPTION B READ + 12m E4 PASS EXECUTED:
   interaction SCALE-ROBUST at 12×.** Freeze-ordering honored
   (compcapacity predictions committed 746d0b13 pre-read). 32/32 cells
