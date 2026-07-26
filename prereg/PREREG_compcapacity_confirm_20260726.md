@@ -33,7 +33,7 @@ is 139.2). Well-powered for any theory-relevant movement.
   loading — the built-in audit guard, as at 12m).
 - Buffer: `axis1_finger/q1_ctx25` — the frozen q1 pair resized with
   the committed tool
-  (`python -m probing.resize_replay_context --input
+  (`python -m probing.resize_replay_context resize --input
   $RUNROOT/axis1_finger/q1 --output $RUNROOT/axis1_finger/q1_ctx25
   --deter 3072 --stoch 32 24`, per side as at ctx12), submitted via
   `AXIS1_QUAD_SUFFIX=_ctx25`. Zero-init ctx protocol is IDENTICAL to
