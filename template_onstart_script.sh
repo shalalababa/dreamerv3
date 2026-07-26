@@ -13,10 +13,8 @@ chmod 700 /workspace/dreamerv3_runs/_queue_control 2>/dev/null || true
 
 chown root:root /root /root/.ssh
 chmod 700 /root /root/.ssh
-if [ -f /root/.ssh/authorized_keys ]; then
-  chown root:root /root/.ssh/authorized_keys
-  chmod 600 /root/.ssh/authorized_keys
-fi
+k=/root/.ssh/authorized_keys
+[ -f "$k" ] && { chown root:root "$k"; chmod 600 "$k"; } || true
 
 cat > /root/.dreamer_vast_env <<'EOF'
 export REPO=/workspace/dreamerv3
@@ -33,7 +31,7 @@ export CUDA_DEVICE_ORDER=PCI_BUS_ID
 
 export PATH=$CONDA_ENV/bin:/opt/instance-tools/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 
-[ -f "$CONDA_ENV/bin/activate" ] && source "$CONDA_ENV/bin/activate" >/dev/null 2>&1 || true
+source "$CONDA_ENV/bin/activate" >/dev/null 2>&1 || true
 EOF
 
 cat > /root/dreamer_instance_helpers.sh <<'EOF'
@@ -87,7 +85,7 @@ dv3_status () {
   echo; echo "== gpu =="
   nvidia-smi --query-gpu=index,name,utilization.gpu,memory.used --format=csv 2>/dev/null || nvidia-smi || true
   echo; echo "== procs =="
-  ps -eo pid,ppid,stat,etime,args |
+  ps -eo pid,etime,args |
     grep -E 'dv3_queue_supervisor|axis1\.sbatch|dreamerv3/main.py|python -m' |
     grep -v grep || true
   echo; echo "== queues =="
@@ -103,7 +101,7 @@ dv3_status () {
     dead=""; dv3_alive "$pid" || dead=" (DEAD)"
     echo "-- lane $gpu --"
     echo "id=$active shard=$(cat "$qdir/shard" 2>/dev/null) next=$nxt total=$total supervisor=${pid:-none}$dead"
-    echo "abort_on_fail=$(cat "$qdir/abort_on_fail" 2>/dev/null || echo 1) grace=$(cat "$qdir/idle_grace_seconds" 2>/dev/null || echo 300)"
+    echo "abort=$(cat "$qdir/abort_on_fail" 2>/dev/null || echo 1) grace=$(cat "$qdir/idle_grace_seconds" 2>/dev/null || echo 300)"
     awk -v nxt="$nxt" '{
       s = (NR < nxt ? "done" : (NR == nxt ? "next" : "queued"))
       printf "%4d %-6s %s\n", NR, s, $0
@@ -122,8 +120,8 @@ dv3_validate_args () {
   local gpu="${1:?gpu}" shard="${2:?shard}" abort="${3:-1}" grace="${4:-300}"
   [[ "$gpu" =~ ^[0-9]+$ || "$gpu" = "none" ]] || { echo "ERROR: gpu must be integer or none"; return 2; }
   [[ "$shard" =~ ^[A-Za-z0-9_-]+$ ]] || { echo "ERROR: bad shard"; return 2; }
-  [[ "$abort" =~ ^[01]$ ]] || { echo "ERROR: DV3_ABORT_ON_FAIL must be 0 or 1"; return 2; }
-  [[ "$grace" =~ ^[0-9]+$ ]] || { echo "ERROR: DV3_QUEUE_IDLE_GRACE_SECONDS must be integer"; return 2; }
+  [[ "$abort" =~ ^[01]$ ]] || { echo "ERROR: bad abort flag"; return 2; }
+  [[ "$grace" =~ ^[0-9]+$ ]] || { echo "ERROR: bad grace"; return 2; }
   if [ "$gpu" != "none" ]; then
     command -v nvidia-smi >/dev/null 2>&1 || { echo "ERROR: nvidia-smi missing"; return 2; }
     nvidia-smi --id="$gpu" --query-gpu=index --format=csv,noheader,nounits >/dev/null 2>&1 ||
@@ -133,7 +131,7 @@ dv3_validate_args () {
 
 dv3_snapshot_cmds () {
   local input="${1:?command file}" output="${2:?snapshot file}" count
-  [ -f "$input" ] || { echo "ERROR: command file not found: $input"; return 2; }
+  [ -f "$input" ] || { echo "ERROR: no such file: $input"; return 2; }
   awk '{ sub(/\r$/, "") } NF && $0 !~ /^[[:space:]]*#/ { print }' "$input" > "$output"
   [ -s "$output" ] || { echo "ERROR: no commands in $input"; return 2; }
   count="$(wc -l < "$output")"
@@ -153,17 +151,14 @@ dv3_task_name () {
 }
 
 dv3_wait_gpu_idle () {
-  local gpu="${1:-0}" pids printed=0 last=0 now
+  local gpu="${1:-0}" pids last=0 now
   [ "$gpu" = "none" ] && return 0
   while :; do
     pids="$(nvidia-smi --id="$gpu" --query-compute-apps=pid --format=csv,noheader,nounits 2>/dev/null | tr -d ' \t\r' | awk 'NF' | paste -sd, -)"
     [ -z "$pids" ] && break
     now="$(date +%s)"
-    if [ "$printed" -eq 0 ]; then
+    if [ $((now - last)) -ge 1800 ]; then
       echo "[$(date)] WAIT gpu${gpu}: $pids"
-      printed=1; last="$now"
-    elif [ $((now - last)) -ge 1800 ]; then
-      echo "[$(date)] STILL_WAIT gpu${gpu}: $pids"
       last="$now"
     fi
     sleep 60
@@ -175,7 +170,11 @@ dv3_claim_next () {
   (
     flock -w 30 9 || exit 1
     idx="$(cat "$qdir/next_index" 2>/dev/null || echo 1)"
-    cmd="$(sed -n "${idx}p" "$qdir/tasks.txt" 2>/dev/null || true)"
+    while :; do
+      cmd="$(sed -n "${idx}p" "$qdir/tasks.txt" 2>/dev/null || true)"
+      case "$cmd" in '#removed#'*) idx=$((idx + 1));; *) break;; esac
+    done
+    printf '%s\n' "$idx" > "$qdir/next_index"
     [ -n "$cmd" ] || exit 0
     printf '%s\n' "$idx" > "$qdir/running_index"
     printf '%s\n' "$cmd" > "$qdir/running_task"
@@ -188,7 +187,7 @@ dv3_advance () {
   (
     flock -w 30 9 || exit 1
     cur="$(cat "$qdir/next_index" 2>/dev/null || echo 1)"
-    [ "$cur" = "$idx" ] || { echo "ERROR: queue index changed: expected=$idx actual=$cur"; exit 2; }
+    [ "$cur" = "$idx" ] || { echo "ERROR: index changed $idx->$cur"; exit 2; }
     printf '%s\n' "$((idx + 1))" > "$qdir/next_index"
     rm -f "$qdir/running_index" "$qdir/running_task" "$qdir/child.pid"
   ) 9>"$qc/queue.lock"
@@ -305,6 +304,29 @@ dv3_queue_or_add () {
   }
 }
 
+dv3_remove_tasks () {
+  local gpu="${1:?gpu lane}" qc qdir nxt run total i
+  shift
+  [ $# -gt 0 ] || { echo "usage: dv3_remove_tasks gpu idx..."; return 2; }
+  dv3_lane_ok "$gpu" || return $?
+  qc="$(dv3_qc "$gpu")" || return 1
+  (
+    flock -w 30 9 || { echo "ERROR: lane $gpu lock busy"; exit 1; }
+    [ -f "$qc/active_queue" ] || { echo "ERROR: no active queue lane $gpu"; exit 1; }
+    qdir="$qc/$(cat "$qc/active_queue")"
+    nxt="$(cat "$qdir/next_index" 2>/dev/null || echo 1)"
+    run="$(cat "$qdir/running_index" 2>/dev/null || echo 0)"
+    total="$(wc -l < "$qdir/tasks.txt")"
+    for i in "$@"; do
+      [[ "$i" =~ ^[0-9]+$ ]] && [ "$i" -ge "$nxt" ] && [ "$i" -le "$total" ] ||
+        { echo "SKIP $i: not a pending index"; continue; }
+      [ "$i" = "$run" ] && { echo "SKIP $i: running; use dv3_cancel_queue"; continue; }
+      sed -i "${i}s/^/#removed# /" "$qdir/tasks.txt"
+      echo "removed task $i"
+    done
+  ) 9>"$qc/queue.lock"
+}
+
 dv3_queue_supervisor () {
   local gpu="${1:?gpu lane}" qid="${2:?queue id}" qc qdir shard abort grace cmd idx rc frc failures=0 idle_start="" now result=DONE
   qc="$(dv3_qc "$gpu")" || exit 1
@@ -387,7 +409,7 @@ dv3_cancel_queue () {
 }
 
 dv3_cancel_lane () {
-  local gpu="${1:?gpu lane}" qc active qdir spid cpid late
+  local gpu="${1:?gpu lane}" qc active qdir spid cpid
   qc="$(dv3_qc "$gpu")" || return 1
   (
     flock -w 30 9 || { echo "ERROR: lane $gpu lock busy"; exit 1; }
@@ -402,27 +424,16 @@ dv3_cancel_lane () {
     [ -n "$cpid" ] && kill -TERM -- "-$cpid" 2>/dev/null || true
     [ -n "$spid" ] && kill -TERM -- "-$spid" 2>/dev/null || true
     sleep 2
-    late="$(cat "$qdir/child.pid" 2>/dev/null || true)"
-    if [ -n "$late" ] && [ "$late" != "$cpid" ]; then
-      kill -TERM -- "-$late" 2>/dev/null || true
-    fi
     [ -n "$cpid" ] && kill -KILL -- "-$cpid" 2>/dev/null || true
     [ -n "$spid" ] && kill -KILL -- "-$spid" 2>/dev/null || true
-    if [ -n "$late" ] && [ "$late" != "$cpid" ]; then
-      kill -KILL -- "-$late" 2>/dev/null || true
-    fi
     echo "[$(date)] cancelled $active lane $gpu"
   ) 9>"$qc/queue.lock"
 }
 EOF
 
-chmod 644 /root/dreamer_instance_helpers.sh
+chmod 644 /root/dreamer_instance_helpers.sh /root/.dreamer_vast_env
 
-grep -qxF 'source /root/.dreamer_vast_env' /root/.bashrc 2>/dev/null || \
-  echo 'source /root/.dreamer_vast_env' >> /root/.bashrc
-grep -qxF 'source /root/dreamer_instance_helpers.sh' /root/.bashrc 2>/dev/null || \
-  echo 'source /root/dreamer_instance_helpers.sh' >> /root/.bashrc
-
-chmod 644 /root/.dreamer_vast_env
+grep -q dreamer_vast_env /root/.bashrc 2>/dev/null ||
+  printf 'source /root/.dreamer_vast_env\nsource /root/dreamer_instance_helpers.sh\n' >> /root/.bashrc
 
 echo "[$(date)] startup done"
