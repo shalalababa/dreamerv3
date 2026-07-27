@@ -6,6 +6,17 @@ immutable dated files; see plan v4.)
 
 ## Deviations
 
+- **2026-07-26 (night) — VGO EXTENDED READ EXECUTED: does not fire ⇒
+  PAPER-1 EXPERIMENTAL PROGRAM COMPLETE.** 16 fresh 1.5M fits +
+  adapts complete; bundle read code md5-identical to frozen; local
+  read ≡ cluster json; selfcheck PASS pre-read. Primary diff-in-diff
+  −2.2 [−35.2,+40.2] (p=.93); both arms' extension gains generic-sized
+  and ns. Frozen consequence applied: P-B2 attenuation form NOT
+  supported — vgo absence-like at 3× updates; weakest P-B2 reading
+  only; no further extended-fit arms without new theory. Theory
+  ledger row updated. exclusions.csv shows only in-flight
+  volume-replication rows (P-E4a wave already queued by owner).
+  Record: `artifacts/vgo_extended_20260726/`.
 - **2026-07-26 (later) — POST-B REGISTRATION WAVE: 25m point + volume
   replication both registered pre-outcome.** (1)
   `PREREG_compcapacity_confirm_20260726` + `analysis/compcapacity_read.py`

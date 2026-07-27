@@ -1,0 +1,52 @@
+{
+ "primary_diff_in_diff": {
+  "mean": -2.2018249999999995,
+  "ci": [
+   -35.2005125,
+   40.22395187499999
+  ],
+  "n": 8,
+  "perm_p": 0.9296875,
+  "d_z": -0.03711196758127369,
+  "loo_range": [
+   -20.790185714285716,
+   5.431542857142859
+  ]
+ },
+ "vgo_gain": {
+  "mean": 5.841150000000001,
+  "ci": [
+   -15.662750000000003,
+   27.845787812499985
+  ],
+  "n": 8,
+  "perm_p": 0.6015625,
+  "d_z": 0.1749368908789829,
+  "loo_range": [
+   -0.25742857142856934,
+   11.947928571428573
+  ]
+ },
+ "sgb_gain": {
+  "mean": 8.042974999999998,
+  "ci": [
+   -20.254526562500004,
+   28.303387500000003
+  ],
+  "n": 8,
+  "perm_p": 0.59375,
+  "d_z": 0.20581963625667907,
+  "loo_range": [
+   2.8809571428571425,
+   20.632442857142856
+  ]
+ },
+ "levels": {
+  "vgo_x": 87.2838625,
+  "vgo_500k": 81.4427125,
+  "sgb_x": 82.4036625,
+  "sgb_500k": 74.3606875
+ },
+ "fires": false,
+ "verdict": "no differential vgo gain at 3x updates -> P-B2 attenuation form NOT supported in the tested range; vgo stays dead (absence-like); no further extended-fit arms without new theory"
+}
