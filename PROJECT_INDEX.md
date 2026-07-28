@@ -140,6 +140,14 @@ Frozen pre-outcome readers, one per registered experiment; each has a
   `Idea_*.tex` briefs (side-project triage).
 - `Research_Other_Ideas_20260701.tex` — field scans / future
   directions.
+- `Research_Idea_Uncertainty_field_20260727.tex` (external review, 7
+  directions, recommends Belief Hydrodynamics) +
+  `Research_Idea_Uncertainty_field_Fable_20260727.tex` (companion:
+  Riccati/determinism backbone, constitutive-laws program, repo
+  bridges, composition deltas + costed pilot) — Paper-5 seed
+  (physics-prof collaboration, own clock).
+- `Audit_FrozenProtocol_20260726.md` (+ `_claims_*.json`) — 47-claim
+  frozen-vs-unfrozen protocol audit; U1–U4 stress-wave design.
 - `archive/` — superseded docs.
 
 ## Data [gitignored]
