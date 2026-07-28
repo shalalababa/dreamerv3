@@ -275,6 +275,13 @@ orth_spin_frozen:
   agent.frozen_wm: True
   run.from_checkpoint_regex: '^(enc|dyn|dec)/'
 
+orth_spin_unfrozen:
+  # U3 unfrozen stress wave (PREREG_unfrozen_u3_20260727): orth_spin +
+  # unfrozen_readout as one export-safe token.
+  orthreward.task: finger_spin
+  agent.frozen_wm: False
+  run.from_checkpoint_regex: '^(enc|dyn|dec)/'
+
 dmc_vision:
   task: dmc_walker_walk
   env.dmc.proprio: False

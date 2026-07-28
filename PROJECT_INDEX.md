@@ -39,6 +39,7 @@ Frozen pre-outcome readers, one per registered experiment; each has a
 - `pixel_swamping_read.py` — pixel swamping diagnostic read (frozen 25 Jul pre-outcome; task-arm rew-NLL level + trivial two-hot floor guard; awaits the resubmitted E4 csv).
 - `unfrozen_calib_read.py` (read 25 Jul: fires ×4.3 amplified), `vgo_extended_read.py` (running) — Paper-1 band-ledger waves.
 - `scaling_read.py` (read 26 Jul: scale-robust), `compcapacity_read.py` (25m A→B point, frozen pre-outcome), `volume_repl_read.py` (P-E4a, frozen pre-outcome) — capacity axis.
+- `unfrozen_stress_read.py` — U1–U4 unfrozen stress waves (frozen 27 Jul pre-outcome; subcommands u1–u4; reward-free-null / stamping / orthogonal / pixel protocol stress tests from the frozen-protocol audit).
 - `orthogonal_obj_read.py` — orthogonal-objective band leg (read 25 Jul: objective-specific).
 - `buffer_battery.py`, `collate_drivers.py`, `fit_mixed_effects.py` — shared statistics/collation helpers.
 

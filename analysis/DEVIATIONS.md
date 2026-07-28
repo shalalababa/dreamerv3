@@ -6,6 +6,32 @@ immutable dated files; see plan v4.)
 
 ## Deviations
 
+- **2026-07-27 — UNFROZEN STRESS WAVES U1–U4 REGISTERED pre-outcome
+  (audit-driven), with an adversarial pre-freeze review.** Motivation
+  = the frozen-protocol audit (Audit_FrozenProtocol_20260726.md): a
+  frozen null cannot license "useless as initialization."
+  `PREREG_unfrozen_u{1,2,3,4}_20260727` +
+  `analysis/unfrozen_stress_read.py` (four subcommands, one frozen
+  instrument, selfcheck PASS) + `orth_spin_unfrozen` config block.
+  U1 apt+task 2×2 (32; P-U1a interaction persists / P-U1b apt-null
+  stress + absence-vs-illegible discriminator); U2 stamped (48; P-B1
+  / inclusion≠usefulness stress); U3 orthogonal (32; specificity
+  stress, floor gate); U4 pixel 2×2 (32; floor relief + P-SW1-derived
+  no-differential-rescue prediction, censoring guard). 144 adapt-only
+  jobs; decisional statistics live entirely within the unfrozen data;
+  frozen-vs-unfrozen level changes = committed-artifact-baselined
+  descriptors, never decisional. A 3-reviewer adversarial pass ran
+  BEFORE freeze and its findings were fixed in the same session:
+  (major) U4's censoring guard could be silently bypassed by an
+  incomplete baseline csv — now fail-safe (`lifted is not True`
+  censors) + baselines load require=True + repo-root-resolved paths +
+  selfcheck cases; (minor) the CI-entirely-negative branch was
+  unmapped in U1/U2/U3 (the frozen stamping prereg had it) — added to
+  preregs and reader; (minor) U4 walltime 12→24 h so the registered
+  refit contingency is executable; (note) buffer-manifest existence
+  checks added to all four preregs. No unfrozen number of any kind
+  existed at freeze beyond the committed rgo/sgb calibration
+  (disclosed in each file).
 - **2026-07-26 (night) — VGO EXTENDED READ EXECUTED: does not fire ⇒
   PAPER-1 EXPERIMENTAL PROGRAM COMPLETE.** 16 fresh 1.5M fits +
   adapts complete; bundle read code md5-identical to frozen; local
