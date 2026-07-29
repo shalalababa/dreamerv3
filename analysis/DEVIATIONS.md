@@ -6,6 +6,33 @@ immutable dated files; see plan v4.)
 
 ## Deviations
 
+- **2026-07-29 — R3 AMENDMENT 1: frozen reader seed-grid defect found
+  at read time; repaired value-blind BEFORE the one read
+  (`PREREG_r3_amend1_20260729.md`).** The R3 bundle
+  (`local_results/r3_pilot_smoke_labels_20260727_222940/`) landed with
+  all preconditions clean (32/32 two-phase runs with the continuation
+  property verified, realized snapshots in-envelope, smoke gate 4/4 on
+  real dosed envs, 64/64 label passes with exact registered dials and
+  doses, bundle code byte-identical to the freeze commit), but the
+  frozen `analysis/r3_read.py` had `EXPECT_SEEDS = range(1, 9)` while
+  the registration and all real files use seeds 31–38 — `check_grid`
+  trips before touching any label value, and the build-time selfcheck
+  structurally could not catch it (fixture synthesized FROM
+  `EXPECT_SEEDS`; same lesson class as the swamping-E4 obs-key crash:
+  frozen instruments fail on grid constants their selfchecks inherit).
+  A 3-agent value-blind audit (integrity only — no aggregate of any
+  label value; no read output existed anywhere) confirmed the defect
+  is reader-side only and surfaced the full one-shot fix set: seed
+  literals (constant + docstring + 5 selfcheck sites) plus four
+  hardening guards (unregistered-seed, g_all/g_now finiteness — the
+  only reader-detectable oracle_all signature, m_real bounds, and
+  n_states==200), each verified non-tripping on the real bundle.
+  Decision rules verbatim-unchanged; selfcheck PASS with new
+  guard-trip cases. Provenance disclosed in the amendment: labels ran
+  on RCC after a Vast→RCC rsync, labels-stage stdout absent from the
+  bundle, bundle assembly reset mtimes (smoke-before-labels rests on
+  the worker log + SMOKE_OK). Read executes only after the amendment
+  commit (prereg order binds).
 - **2026-07-27 — UNFROZEN STRESS WAVES U1–U4 REGISTERED pre-outcome
   (audit-driven), with an adversarial pre-freeze review.** Motivation
   = the frozen-protocol audit (Audit_FrozenProtocol_20260726.md): a

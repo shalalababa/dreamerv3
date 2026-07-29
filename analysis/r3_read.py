@@ -11,8 +11,15 @@ labeler (d1fix_20260724) with --oracle_all; estimands per labeled state:
 Files: <labels_dir>/r3_{dom}_{dose}_seed{n}_{mat}.npz
   dom in {cup, finger, reacher}, dose in {e1, e4}, mat in {early, late}.
 Cluster = training run (dom, dose, seed); both maturities of a run are
-the same cluster. Registered grid: seeds 1-8 for cup+finger x e1+e4;
+the same cluster. Registered grid: seeds 31-38 for cup+finger x e1+e4;
 reacher cohort is all-or-nothing (conditional GO domain).
+
+Amendment 1 (prereg/PREREG_r3_amend1_20260729.md, committed before the
+one read): the frozen seed constant contradicted the registered grid
+(1-8 vs the prereg's 31-38) and tripped check_grid before any
+computation; seed literals corrected and value-blind integrity guards
+added (unregistered-seed, finiteness, m_real bounds, n_states). No
+decision rule, threshold, estimand, or bootstrap detail changed.
 
 Primaries (run-clustered percentile bootstrap, B=10K, rng 0):
   P-R3a  pooled mean opportunity CI entirely > 0.2   (existence)
@@ -48,7 +55,7 @@ FILE_RE = re.compile(
     r'^r3_(cup|finger|reacher)_(e1|e4)_seed(\d+)_(early|late)\.npz$')
 CORE_DOMAINS = ('cup', 'finger')
 OPTIONAL_DOMAINS = ('reacher',)
-EXPECT_SEEDS = tuple(range(1, 9))
+EXPECT_SEEDS = tuple(range(31, 39))
 DOSES = ('e1', 'e4')
 MATS = ('early', 'late')
 
@@ -65,6 +72,17 @@ def cell_stats(g_all, g_now, m_real):
               n_states=int(len(g_now)))
 
 
+def validate_arrays(name, g_all, g_now, m_real):
+  """Amendment-1 guards: value-blind integrity checks per label file."""
+  assert g_all.ndim == 2 and g_all.shape[0] == len(g_now) == len(m_real), (
+      f'{name}: inconsistent array shapes '
+      f'{g_all.shape}/{g_now.shape}/{m_real.shape}')
+  assert np.isfinite(g_all).all() and np.isfinite(g_now).all(), (
+      f'{name}: non-finite G values (oracle_all pass incomplete?)')
+  assert m_real.min() >= 0 and m_real.max() < g_all.shape[1], (
+      f'{name}: m_real outside candidate range [0,{g_all.shape[1]})')
+
+
 def load_labels(labels_dir):
   cells = {}
   for path in sorted(glob.glob(os.path.join(labels_dir, '*.npz'))):
@@ -79,12 +97,20 @@ def load_labels(labels_dir):
     meta = str(z['meta'])
     assert LABELER_VERSION in meta, (
         f'{name}: labeler_version is not {LABELER_VERSION}')
-    cells[(dom, dose, seed, mat)] = cell_stats(
-        z['g_all'], z['g_now'], z['m_real'])
+    g_all = np.asarray(z['g_all'], float)
+    g_now = np.asarray(z['g_now'], float)
+    m_real = np.asarray(z['m_real'], int)
+    validate_arrays(name, g_all, g_now, m_real)
+    cells[(dom, dose, seed, mat)] = cell_stats(g_all, g_now, m_real)
   return cells
 
 
 def check_grid(cells):
+  bad = sorted({k[2] for k in cells} - set(EXPECT_SEEDS))
+  assert not bad, f'unregistered seeds present: {bad}'
+  n_states = sorted({v['n_states'] for v in cells.values()})
+  assert n_states == [200], (
+      f'n_states differs from the registered 200: {n_states}')
   doms = sorted({k[0] for k in cells})
   for dom in CORE_DOMAINS:
     assert dom in doms, f'core domain {dom} entirely absent'
@@ -246,8 +272,8 @@ def selfcheck(args):
   assert res['verdict'].startswith('OPPORTUNITY HARVESTED'), res['verdict']
 
   # Floor accounting: floors damp the primaries and are counted.
-  floor_runs = {('finger', 'e1', s) for s in (1, 2, 3, 4, 5)} | {
-      ('finger', 'e4', s) for s in (1, 2, 3, 4)}
+  floor_runs = {('finger', 'e1', s) for s in (31, 32, 33, 34, 35)} | {
+      ('finger', 'e4', s) for s in (31, 32, 33, 34)}
   cells = _synth_cells(lambda d, e, s, m: 1.0, lambda d, e, s, m: 0.1,
                        floor_runs=floor_runs)
   res = analyze(cells)
@@ -260,7 +286,7 @@ def selfcheck(args):
   res = analyze(cells)
   assert 'reacher' in res['domains'] and res['n_runs'] == 48
   bad = dict(cells)
-  del bad[('reacher', 'e1', 3, 'late')]
+  del bad[('reacher', 'e1', 33, 'late')]
   try:
     analyze(bad)
     raise SystemExit('selfcheck FAIL: partial reacher cohort not caught')
@@ -270,19 +296,56 @@ def selfcheck(args):
   # Missing core cell and lone-maturity run must trip.
   cells = _synth_cells(lambda d, e, s, m: 1.0, lambda d, e, s, m: 0.1)
   bad = dict(cells)
-  del bad[('cup', 'e1', 2, 'early')], bad[('cup', 'e1', 2, 'late')]
+  del bad[('cup', 'e1', 32, 'early')], bad[('cup', 'e1', 32, 'late')]
   try:
     analyze(bad)
     raise SystemExit('selfcheck FAIL: missing core run not caught')
   except AssertionError:
     pass
   bad = dict(cells)
-  del bad[('cup', 'e1', 2, 'early')]
+  del bad[('cup', 'e1', 32, 'early')]
   try:
     analyze(bad)
     raise SystemExit('selfcheck FAIL: lone maturity not caught')
   except AssertionError:
     pass
+
+  # Amendment-1 guards. Unregistered seed (even a complete run) trips.
+  stray = dict(cells)
+  for mat in MATS:
+    stray[('cup', 'e1', 99, mat)] = dict(opp=1.0, ach=0.1, gap=0.9,
+                                         floor=False, n_states=200)
+  try:
+    analyze(stray)
+    raise SystemExit('selfcheck FAIL: unregistered seed not caught')
+  except AssertionError as e:
+    assert 'unregistered seeds' in str(e), e
+  # Off-registration n_states trips.
+  short = dict(cells)
+  short[('cup', 'e1', 32, 'early')] = dict(
+      short[('cup', 'e1', 32, 'early')], n_states=120)
+  try:
+    analyze(short)
+    raise SystemExit('selfcheck FAIL: off-registration n_states not caught')
+  except AssertionError as e:
+    assert 'n_states' in str(e), e
+  # Array-level guards: non-finite G, out-of-range m_real, shape mismatch.
+  ok_g = np.ones((4, 3))
+  ok_now = np.ones(4)
+  ok_m = np.zeros(4, int)
+  validate_arrays('ok', ok_g, ok_now, ok_m)
+  for bad_args, tag in [
+      ((np.where(np.eye(4, 3) > 0, np.nan, 1.0), ok_now, ok_m), 'nan g_all'),
+      ((ok_g, np.array([1.0, np.inf, 1.0, 1.0]), ok_m), 'inf g_now'),
+      ((ok_g, ok_now, np.array([0, -1, 0, 0])), 'negative m_real'),
+      ((ok_g, ok_now, np.array([0, 3, 0, 0])), 'm_real past candidates'),
+      ((ok_g, ok_now[:3], ok_m), 'shape mismatch'),
+  ]:
+    try:
+      validate_arrays(tag, *bad_args)
+      raise SystemExit(f'selfcheck FAIL: {tag} not caught')
+    except AssertionError:
+      pass
 
   # cell_stats floor detection + estimand identities on a hand case.
   g_all = np.array([[0.0, 2.0, 1.0], [1.0, 1.0, 1.0]])
@@ -296,7 +359,8 @@ def selfcheck(args):
 
   print('selfcheck PASS: three verdict branches, floor accounting + '
         'domain flag, optional-cohort all-or-nothing, core completeness '
-        'and lone-maturity trips, estimand identities')
+        'and lone-maturity trips, estimand identities, amendment-1 guards '
+        '(unregistered seed, n_states, finiteness, m_real bounds, shapes)')
 
 
 def main():
