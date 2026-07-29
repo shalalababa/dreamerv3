@@ -1,0 +1,6 @@
+p_r3a_opportunity: +1.247 [+0.700,+1.908] n=32
+p_r3b_gap: +1.293 [+0.723,+1.987] n=32
+p_r3c_maturity_ach: +0.014 [-0.177,+0.215] n=32
+fires: {'p_r3a': True, 'p_r3b': True, 'p_r3c': False}
+CONSUMER-COMPETENCE FAILURE: opportunity exists (P-R3a) and is not harvested (P-R3b). P-R3c does not fire — competence does not detectably improve with maturity at this range.
+-> /home/rickybao/projects/dreamerv3/artifacts/r3_competence_20260729/r3.json

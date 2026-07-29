@@ -1,0 +1,148 @@
+{
+  "primaries": {
+    "p_r3a_opportunity": {
+      "point": 1.24703125,
+      "ci": [
+        0.7003105468749999,
+        1.907572265624999
+      ],
+      "n_clusters": 32
+    },
+    "p_r3b_gap": {
+      "point": 1.2930468750000002,
+      "ci": [
+        0.7230468750000001,
+        1.9868203124999997
+      ],
+      "n_clusters": 32
+    },
+    "p_r3c_maturity_ach": {
+      "point": 0.01390625,
+      "ci": [
+        -0.17671875,
+        0.21453125
+      ],
+      "n_clusters": 32
+    }
+  },
+  "thresholds": {
+    "opp": 0.2,
+    "floor_limit": 0.5
+  },
+  "fires": {
+    "p_r3a": true,
+    "p_r3b": true,
+    "p_r3c": false
+  },
+  "secondary": {
+    "dose_effect_opp": {
+      "e1": {
+        "point": 1.5103125,
+        "ci": [
+          0.7073203124999999,
+          2.606023437499999
+        ],
+        "n_clusters": 16
+      },
+      "e4": {
+        "point": 0.9837499999999999,
+        "ci": [
+          0.335453125,
+          1.7561289062499994
+        ],
+        "n_clusters": 16
+      }
+    },
+    "maturity_opp": {
+      "early": {
+        "point": 1.1926562500000002,
+        "ci": [
+          0.55436328125,
+          2.0079765624999997
+        ],
+        "n_clusters": 32
+      },
+      "late": {
+        "point": 1.3014062499999999,
+        "ci": [
+          0.625609375,
+          2.149417968749999
+        ],
+        "n_clusters": 32
+      }
+    },
+    "per_domain": {
+      "cup": {
+        "opp": {
+          "point": 0.9821875,
+          "ci": [
+            0.38436718750000004,
+            1.7096953124999996
+          ],
+          "n_clusters": 16
+        },
+        "ach": {
+          "point": 0.06468750000000001,
+          "ci": [
+            -0.0603125,
+            0.20187500000000003
+          ],
+          "n_clusters": 16
+        },
+        "gap": {
+          "point": 0.9175,
+          "ci": [
+            0.3734296875,
+            1.58344140625
+          ],
+          "n_clusters": 16
+        }
+      },
+      "finger": {
+        "opp": {
+          "point": 1.5118749999999999,
+          "ci": [
+            0.6638984374999999,
+            2.61015625
+          ],
+          "n_clusters": 16
+        },
+        "ach": {
+          "point": -0.15671875,
+          "ci": [
+            -0.28859375,
+            -0.05015234375000006
+          ],
+          "n_clusters": 16
+        },
+        "gap": {
+          "point": 1.6685937499999999,
+          "ci": [
+            0.7349921875000001,
+            2.8800156249999995
+          ],
+          "n_clusters": 16
+        }
+      }
+    },
+    "floors": {
+      "cup": {
+        "frac": 0.25,
+        "n_cells": 32,
+        "floor_limited": false
+      },
+      "finger": {
+        "frac": 0.1875,
+        "n_cells": 32,
+        "floor_limited": false
+      }
+    }
+  },
+  "domains": [
+    "cup",
+    "finger"
+  ],
+  "n_runs": 32,
+  "verdict": "CONSUMER-COMPETENCE FAILURE: opportunity exists (P-R3a) and is not harvested (P-R3b). P-R3c does not fire \u2014 competence does not detectably improve with maturity at this range.",
+  "labels_dir": "/scratch/midway3/rickybao/dreamerv3_runs/r3_local/r3_labels"
+}
