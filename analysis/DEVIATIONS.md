@@ -6,6 +6,26 @@ immutable dated files; see plan v4.)
 
 ## Deviations
 
+- **2026-07-29 (night) — VOLUME REPLICATION READ (cluster-side, ONE
+  execution): P-E4a REPLICATES; diversity direction holds.** Bundle
+  `local_results/volume_repl_20260729_204854/` +
+  `local_results/spectral_diversity_pr_20260729_204814/`. Verified:
+  reader/collector/prereg snapshots byte-identical to freeze commit
+  aaa31bc9; selfcheck PASS; local re-execution on the bundled auc.csv
+  bit-identical to the cluster json; original-batch restatement from
+  raw rows +228.6 = the prereg's disclosed value; spectral gate
+  `spectral_v1_1_20260724` in both outputs; occupancies match
+  registered calibrations. Fresh v400s1−v200s1 +331.0 [+169.3,+502.7]
+  fires (> original +228.6); diversity_pr 10.63 > 9.23. Notes: the
+  spectral bundle ships only the v400 stdout log (v200 json metadata
+  complete — non-decisional); v200 `tag` naming drift (cosmetic). The
+  shared collector csv contains partial in-flight U1–U3/25m rows —
+  not read, not computed on (frozen reader filters to volume modes);
+  their reads wait for their bundles. Also visible in this csv: the
+  4 Scaling-B `ax1(f)s12` stragglers disclosed missing on 07-25/26
+  have since completed — the 07-26 Scaling-B read stands as executed
+  (one-read rule; the completion is noted, not re-read). Record:
+  `artifacts/volume_repl_20260729/RESULTS.md`.
 - **2026-07-29 (pm) — R3 READ EXECUTED (ONE execution, user-run on RCC
   after the Amendment-1 commit): CONSUMER-COMPETENCE FAILURE
   registered.** Ordering held: amendment commit bbe86983 10:40:20 →
