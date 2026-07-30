@@ -41,6 +41,7 @@ Frozen pre-outcome readers, one per registered experiment; each has a
 - `scaling_read.py` (read 26 Jul: scale-robust), `compcapacity_read.py` (25m A→B point, frozen pre-outcome), `volume_repl_read.py` (P-E4a; READ 29 Jul: REPLICATES +331*, diversity direction holds — `artifacts/volume_repl_20260729/`) — capacity axis.
 - `unfrozen_stress_read.py` — U1–U4 unfrozen stress waves (frozen 27 Jul pre-outcome; subcommands u1–u4; reward-free-null / stamping / orthogonal / pixel protocol stress tests from the frozen-protocol audit).
 - `orthogonal_obj_read.py` — orthogonal-objective band leg (read 25 Jul: objective-specific).
+- `collusion_confirm_read.py` — Paper-4 confirmatory read (frozen 30 Jul pre-outcome; P-CLB1/2 composition + P-CLA1/2 dissociation primaries, exact-replay/baseline/population/manipulation gates, strict csv hygiene).
 - `buffer_battery.py`, `collate_drivers.py`, `fit_mixed_effects.py` — shared statistics/collation helpers.
 
 ## Instruments
@@ -60,14 +61,19 @@ Frozen pre-outcome readers, one per registered experiment; each has a
   `spectral_measure.py` (24 Jul: λ-spectrum / reward-direction
   variance-rank pass on raw buffers; P-SM1,
   PREREG_spectral_domains_20260724).
-- `collusion/` — Paper 4 CPU harness (24 Jul, v2 25 Jul): `env.py`
+- `collusion/` — Paper 4 CPU harness (24 Jul; v3/v2 30 Jul): `env.py`
   (Calvano logit duopoly, equilibrium anchors), `pilot.py` (coupled
   Q-learning sessions, IR fingerprint, coverage/coverage_late,
-  undercut + distance punishment labels, --alpha/--beta knobs;
+  undercut + terminal/exogenous distance punishment labels,
+  --alpha/--beta knobs, Design-A biased-exploration interventions
+  --explore_mode forbid/force + --explore_mix at matched budget;
   selfcheck PASS), `designb.py` (recorded sessions + float-exact
-  offline stream replay + volume-controlled composition interventions;
-  selfcheck PASS). Pilot records: artifacts/collusion_stage1_20260725
-  + collusion_stage23_20260725.
+  offline stream replay + graded volume-controlled down-weighting w/
+  size-matched random controls + Δ_price columns; selfcheck PASS).
+  Records: artifacts/collusion_stage1_20260725 +
+  collusion_stage23_20260725 + collusion_calib_20260730 (calibration:
+  terminal reference frozen, Design-A dissociation smoke);
+  confirmatory sweep registered `PREREG_collusion_confirm_20260730`.
 - `embodied/envs/distractor.py` — OU distractor wrapper (dose arms;
   restorable via oracle_get/set_state).
 - `embodied/envs/orthreward.py` — orthogonal-objective reward override
@@ -146,7 +152,9 @@ Frozen pre-outcome readers, one per registered experiment; each has a
   `Research_Idea_Uncertainty_field_Fable_20260727.tex` (companion:
   Riccati/determinism backbone, constitutive-laws program, repo
   bridges, composition deltas + costed pilot) — Paper-5 seed
-  (physics-prof collaboration, own clock).
+  (solo project, own clock, finish-early; at most late-stage
+  prof review — the notes' "collaboration" framing is superseded
+  30 Jul).
 - `Audit_FrozenProtocol_20260726.md` (+ `_claims_*.json`) — 47-claim
   frozen-vs-unfrozen protocol audit; U1–U4 stress-wave design.
 - `archive/` — superseded docs.

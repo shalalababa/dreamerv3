@@ -6,6 +6,44 @@ immutable dated files; see plan v4.)
 
 ## Deviations
 
+- **2026-07-30 — PAPER-4 COLLUSION CONFIRMATORY SWEEP REGISTERED
+  pre-outcome, with a calibration read + two adversarial review
+  passes.** `PREREG_collusion_confirm_20260730` +
+  `analysis/collusion_confirm_read.py` (selfcheck PASS) + harness
+  v3/v2 (`collusion_pilot_v3_20260730`: exogenous distance label +
+  Design-A biased-exploration machinery, uniform path RNG-identical to
+  v1 — validated bit-exact vs `baseline_v2_sessions100.csv` on all 15
+  shared columns × 100 seeds; `collusion_designb_v2_20260730`:
+  distance stream mask + weighted replay + graded volume-controlled
+  probe + `dpr_*` columns). Calibration read
+  `artifacts/collusion_calib_20260730/` (pilot seeds only): distance
+  reference frozen = TERMINAL (exo degenerate: mean .981, 96% of
+  sessions > 0.9); ladder d=.25 inert / d=.50 mostly inert / d=1
+  fp-cond increment −0.134 (sd .287); **Design-A smoke found a
+  DISSOCIATION (forbid λ=1: Δ +0.987 vs +0.844 with fingerprint 0/10,
+  occupancy 0.000, degenerate single attractor) ⇒ P-CLA primaries
+  re-specified PRE-FREEZE as a dissociation (fingerprint collapse
+  CI<0 + Δ maintained/raised CI>0)** — smoke→re-spec→freeze ordering
+  disclosed in the prereg. Review pass 1 (3 finders + adversarial
+  verify, all 10 findings confirmed): 2 blocking (reader accepted
+  'nan' cells → demonstrated silently wrong verdict; `_bool` coerced
+  malformed cells to False → demonstrated false-positive P-CLB2) + 8
+  minor (gated fires flags in JSON/stdout, tie-less Spearman,
+  unproducible Δ_price twins, G-CLFP redundancy, calibration-citation
+  gaps) — ALL fixed. Review pass 2 (fix-verification + contract audit
+  + adversarial statistician): calibration §4 smoke table had
+  conflated the force λ=1 seed-batches with the λ=0.5 arm (corrected
+  from the archived csv + disclosed in the artifact), P-CLB2-only
+  consequence-map cell was missing (added; RQ3 still authorized),
+  G-CLA-MANIP archival semantics contradicted the prereg (manip
+  failure now archives `fires=null`, never false), G-CLEX wording
+  scoped, forbid-λ=1 degeneracy disclosed; the P-CLA2
+  ceiling-falsifiability attack was cleared by simulation (null fire
+  rate .027 ≈ nominal .025). One calibration job (graded_terminal seed
+  19) died silently and was re-run before any number was finalized
+  (seed-deterministic, disclosed in the artifact). Zero
+  confirmatory-seed sessions exist at freeze (cohorts 1000–1099 /
+  2000–2099 / 3000–3399, disjoint from all pilot + calibration seeds).
 - **2026-07-30 — PAPER-2 BAND-MOVER WAVE 1 REGISTERED pre-outcome
   (reacher replication + candidate-doubling), with an adversarial
   pre-freeze review.** Context: 29-Jul owner decision = top-conference

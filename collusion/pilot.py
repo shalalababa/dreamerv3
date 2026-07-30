@@ -28,11 +28,20 @@ CONV_WINDOW = 100_000   # greedy profile stable this long => converged
 IR_PRE = 5          # pre-deviation cycle periods recorded
 IR_POST = 15        # post-deviation periods recorded
 PUNISH_W = 5        # punishment-phase window after an undercut event
-HARNESS_VERSION = "collusion_pilot_v2_20260725"
+HARNESS_VERSION = "collusion_pilot_v3_20260730"
 # v2 (stage-2 calibration, Design memo stage 2): adds the
 # distance-from-collusive-path punishment label + --beta/--alpha knobs.
 # Every v1 column is computed identically (validated: seeds 0-4 rows
 # match the cluster stage-1 csv exactly on shared columns).
+# v3 (confirmatory-prereg calibration, 30 Jul): adds (a) the
+# EXOGENOUS-reference distance label (reference = monopoly grid index,
+# the stage-2a registered alternative) and (b) Design-A exploration
+# interventions (--explore_mode forbid/force with --explore_mix dose):
+# the eps schedule is untouched (exploration BUDGET matched); only the
+# distribution of exploratory actions changes, symmetrically for both
+# agents. The default (uniform) path consumes the identical RNG stream
+# as v1/v2 (validated: local v3 rerun of seeds 0-99 vs
+# baseline_v2_sessions100.csv, all shared columns).
 
 
 def init_q(env):
@@ -42,13 +51,28 @@ def init_q(env):
 
 
 class Session:
-  """One coupled online Q-learning session."""
+  """One coupled online Q-learning session.
 
-  def __init__(self, env, seed, alpha=ALPHA, beta=BETA):
+  Design-A knobs (v3): explore_mode 'uniform' (default; v1-identical
+  RNG stream) / 'forbid' (exploratory actions never strictly below both
+  agents' previous prices — no exploration-generated undercuts) /
+  'force' (exploratory actions undercut whenever possible).
+  explore_mix = probability an exploratory draw uses the biased
+  distribution (the Design-A dose; 1.0 = fully biased). The eps
+  schedule is never touched: exploration budget is matched across arms
+  by construction, only the exploratory-action distribution moves.
+  """
+
+  def __init__(self, env, seed, alpha=ALPHA, beta=BETA,
+               explore_mode="uniform", explore_mix=1.0):
     self.env = env
     self.rng = np.random.default_rng(seed)
     self.alpha = alpha
     self.beta = beta
+    assert explore_mode in ("uniform", "forbid", "force"), explore_mode
+    assert 0.0 <= explore_mix <= 1.0, explore_mix
+    self.explore_mode = explore_mode
+    self.explore_mix = explore_mix
     self.q = [init_q(env), init_q(env)]
     self.state = env.state(self.rng.integers(env.n),
                            self.rng.integers(env.n))
@@ -58,13 +82,35 @@ class Session:
   def greedy_profile(self):
     return np.concatenate([np.argmax(q, 1) for q in self.q])
 
+  def _explore_action(self):
+    """One exploratory action draw under the Design-A intervention.
+
+    Uniform mode consumes exactly one rng.integers call (v1-identical).
+    Biased modes with 0 < mix < 1 consume one extra rng.random for the
+    mixture draw; mix >= 1 skips it (fully biased, deterministic arm
+    semantics)."""
+    env, rng = self.env, self.rng
+    if self.explore_mode == "uniform" or self.explore_mix == 0.0:
+      return int(rng.integers(env.n))
+    if self.explore_mix < 1.0 and rng.random() >= self.explore_mix:
+      return int(rng.integers(env.n))
+    prev_min = min(env.unstate(self.state))
+    if self.explore_mode == "forbid":
+      # undercut event = a price strictly below BOTH previous prices;
+      # forbid => draw from [prev_min, n).
+      return int(rng.integers(prev_min, env.n))
+    # force: undercut when one exists; else fall back to uniform.
+    if prev_min == 0:
+      return int(rng.integers(env.n))
+    return int(rng.integers(prev_min))
+
   def step(self):
     env, rng = self.env, self.rng
     eps = np.exp(-self.beta * self.t)
     acts = []
     for i in range(2):
       if rng.random() < eps:
-        acts.append(int(rng.integers(env.n)))
+        acts.append(self._explore_action())
       else:
         acts.append(int(np.argmax(self.q[i][self.state])))
     a0, a1 = acts
@@ -178,7 +224,15 @@ def distance_stats(env, actions_log, qs, state, T=100):
   arr = np.asarray(actions_log, np.int64)
   cur_min = np.minimum(arr[:, 0], arr[:, 1])
   phase = cur_min < ref_min
-  return dict(punish_occ_dist=float(phase.mean()), ref_min_idx=ref_min)
+  # v3: EXOGENOUS-reference variant (stage-2a registered alternative) —
+  # reference = the monopoly grid index, fixed across sessions and
+  # outcome-independent. Both labels always reported; the confirmatory
+  # prereg picks one primary on the calibration comparison.
+  exo_ref = int(np.argmin(np.abs(env.prices - env.p_mono)))
+  phase_exo = cur_min < exo_ref
+  return dict(punish_occ_dist=float(phase.mean()), ref_min_idx=ref_min,
+              punish_occ_dist_exo=float(phase_exo.mean()),
+              exo_ref_idx=exo_ref)
 
 
 def _phase_masks(env, actions_log, qs, state, window=PUNISH_W, T=100):
@@ -198,9 +252,11 @@ def _phase_masks(env, actions_log, qs, state, window=PUNISH_W, T=100):
 
 
 def run_session(seed, max_iters, conv_window=CONV_WINDOW, env=None,
-                alpha=ALPHA, beta=BETA):
+                alpha=ALPHA, beta=BETA,
+                explore_mode="uniform", explore_mix=1.0):
   env = env or Duopoly()
-  sess = Session(env, seed, alpha=alpha, beta=beta)
+  sess = Session(env, seed, alpha=alpha, beta=beta,
+                 explore_mode=explore_mode, explore_mix=explore_mix)
   t_end, converged = sess.run(max_iters, conv_window)
   dpi, dpr = collusion_indices(env, sess.q, sess.state)
   ir = impulse_response(env, sess.q, sess.state)
@@ -214,7 +270,8 @@ def run_session(seed, max_iters, conv_window=CONV_WINDOW, env=None,
       delta_profit=dpi, delta_price=dpr,
       fingerprint=ir["fingerprint"], punish_depth=ir["punish_depth"],
       recovered=ir["recovered"], **stats, **dstats,
-      punish_label_jaccard=overlap)
+      punish_label_jaccard=overlap,
+      explore_mode=explore_mode, explore_mix=explore_mix)
 
 
 # --------------------------------------------------------------------------
@@ -286,12 +343,51 @@ def selfcheck():
   assert ds2["punish_occ_dist"] == 0.0, ds2
   pu, pd = _phase_masks(env, log, qs, env.state(C, C))
   assert pd.sum() == 2 and pu.sum() >= 2
+  # 5c. exogenous distance labeler (v3): reference is the monopoly grid
+  # index regardless of the session's own path — steady NASH play is
+  # fully labeled under exo (all below monopoly) while the terminal
+  # label sees none of it: the two references dissociate by design.
+  assert ds2["exo_ref_idx"] == mono_idx
+  assert ds2["punish_occ_dist_exo"] == 1.0, ds2
+  # forgiving pair at the monopoly cycle: only the two punish periods
+  # sit below the monopoly reference — exo and terminal agree there.
+  assert ds["exo_ref_idx"] == mono_idx and ds["ref_min_idx"] == C
+  assert abs(ds["punish_occ_dist_exo"] - 2 / 22) < 1e-12, ds
+  # 5d. Design-A exploration interventions (v3): draw bounds exact.
+  sA = Session(env, seed=11, explore_mode="forbid", explore_mix=1.0)
+  sA.state = env.state(7, 9)   # prev_min = 7
+  draws = [sA._explore_action() for _ in range(200)]
+  assert min(draws) >= 7 and max(draws) <= env.n - 1, (min(draws),
+                                                       max(draws))
+  sB = Session(env, seed=12, explore_mode="force", explore_mix=1.0)
+  sB.state = env.state(7, 9)
+  draws = [sB._explore_action() for _ in range(200)]
+  assert min(draws) >= 0 and max(draws) < 7, (min(draws), max(draws))
+  sB.state = env.state(0, 3)   # prev_min = 0: no undercut exists
+  draws = [sB._explore_action() for _ in range(200)]
+  assert max(draws) == env.n - 1, "force must fall back to uniform"
+  # mix=0.0 must reproduce the uniform RNG stream exactly.
+  sC = Session(env, seed=13, explore_mode="forbid", explore_mix=0.0)
+  sD = Session(env, seed=13, explore_mode="uniform")
+  for _ in range(500):
+    sC.step(), sD.step()
+  assert sC.actions_log == sD.actions_log, "mix=0 must equal uniform"
+  # a fully-forbidden session generates no exploratory undercuts while
+  # eps ~ 1: every realized undercut count must be far below uniform's.
+  sE = Session(env, seed=14, explore_mode="forbid", explore_mix=1.0)
+  sF = Session(env, seed=14, explore_mode="uniform")
+  for _ in range(3000):
+    sE.step(), sF.step()
+  ue = experience_stats(env, sE.actions_log)["undercut_rate"]
+  uf = experience_stats(env, sF.actions_log)["undercut_rate"]
+  assert ue < uf, (ue, uf)
   # 6. learning machinery end-to-end (tiny run; no convergence claim)
   out = run_session(seed=0, max_iters=3000, conv_window=10 ** 9)
   assert out["iters"] == 3000 and not out["converged"]
   assert 0 < out["coverage"] <= 1.0
   assert np.isfinite(out["delta_profit"])
   assert 0.0 <= out["punish_occ_dist"] <= 1.0
+  assert 0.0 <= out["punish_occ_dist_exo"] <= 1.0
   assert 0.0 <= out["punish_label_jaccard"] <= 1.0
   # 7. determinism: same seed => same outcome
   out2 = run_session(seed=0, max_iters=3000, conv_window=10 ** 9)
@@ -311,6 +407,9 @@ def main():
   ap.add_argument("--conv_window", type=int, default=CONV_WINDOW)
   ap.add_argument("--alpha", type=float, default=ALPHA)
   ap.add_argument("--beta", type=float, default=BETA)
+  ap.add_argument("--explore_mode", default="uniform",
+                  choices=("uniform", "forbid", "force"))
+  ap.add_argument("--explore_mix", type=float, default=1.0)
   ap.add_argument("--output", default="")
   ap.add_argument("--selfcheck", action="store_true")
   args = ap.parse_args()
@@ -322,7 +421,9 @@ def main():
   rows = []
   for s in range(args.seed0, args.seed0 + args.sessions):
     row = run_session(s, args.max_iters, args.conv_window, env=env,
-                      alpha=args.alpha, beta=args.beta)
+                      alpha=args.alpha, beta=args.beta,
+                      explore_mode=args.explore_mode,
+                      explore_mix=args.explore_mix)
     rows.append(row)
     print(f"seed {s}: iters={row['iters']} conv={row['converged']} "
           f"dP={row['delta_profit']:+.3f} "
