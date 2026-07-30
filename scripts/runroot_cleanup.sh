@@ -76,7 +76,8 @@ DELETE_SAFE=(
   # (artifacts/unfrozen_stress_u234_20260730 — scores bundled + hash-pinned)
   ax1wm_finger_srd0q1s*_seed[1-8] ax1wm_finger_srd1q1s*_seed[1-8] ax1wm_finger_sidq1s*_seed[1-8]
   ax1wm_finger_rgoq1s*_seed[1-8] ax1wm_finger_sgbq1s*_seed[1-8]
-  ax1wm_finger_pxpxq1ms*_seed[1-8] ax1wm_finger_fpxpxq1ms*_seed[1-8]
+  ax1wm_finger_pxpxq1ms*_seed[1-8]
+  # NOTE: fpxpx fits NOT here — they are pretrained-encoder DONORS (see KEEP_PENDING)
   adapt_ax1uzsrd0q1s* adapt_ax1uzsrd1q1s* adapt_ax1uzsidq1s*
   adapt_ax1uzog* adapt_ax1uzpxpxq1ms* adapt_ax1uzfpxpxq1ms*
 )
@@ -98,6 +99,9 @@ KEEP_PENDING=(
   adapt_ax1s25q1s* adapt_ax1fs25q1s*
   r3_local/r3_cup_e*_seed3? r3_local/r3_finger_e*_seed3?
   r3_local/r3dbl_labels r3_local/r3_reacher_*
+  # pretrained-encoder pixel wave (registered 30 Jul): fpxpx fits are the
+  # seed/side-matched ENCODER DONORS — keep until the pe wave's read verifies
+  ax1wm_finger_fpxpxq1ms*_seed[1-8]
 )
 
 KEEP_SUBSTRATE=(

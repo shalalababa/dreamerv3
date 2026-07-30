@@ -117,7 +117,11 @@ class Agent(embodied.jax.Agent):
           units=config.expl.disag_units, layers=config.expl.disag_layers,
           name='disag')
 
-    wm = [self.dyn, self.enc, self.dec]
+    # frozen_enc drops enc from the optimizer's module list (same mechanism
+    # as frozen_wm, one level finer): enc params become constants in
+    # nj.grad, so no gradient — reconstruction or otherwise — updates them.
+    wm = ([self.dyn, self.dec] if config.frozen_enc else
+          [self.dyn, self.enc, self.dec])
     head = [self.rew, self.con, self.pol, self.val]
     probes = self.valens + ([self.disag] if config.expl.disag_task else [])
     if self.expl_mode == 'random':

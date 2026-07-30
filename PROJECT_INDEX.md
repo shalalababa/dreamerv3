@@ -42,6 +42,7 @@ Frozen pre-outcome readers, one per registered experiment; each has a
 - `unfrozen_stress_read.py` — U1–U4 unfrozen stress waves (frozen 27 Jul pre-outcome; subcommands u1–u4; reward-free-null / stamping / orthogonal / pixel protocol stress tests from the frozen-protocol audit; READ u2/u3/u4 30 Jul: robust/robust/floor-censored, no flips — `artifacts/unfrozen_stress_u234_20260730/`; u1 pending).
 - `orthogonal_obj_read.py` — orthogonal-objective band leg (read 25 Jul: objective-specific).
 - `collusion_confirm_read.py` — Paper-4 confirmatory read (frozen 30 Jul pre-outcome; P-CLB1/2 composition + P-CLA1/2 dissociation primaries, exact-replay/baseline/population/manipulation gates, strict csv hygiene).
+- `pe_pixel_read.py` — pretrained-encoder pixel arm read (frozen 30 Jul pre-outcome; P-PE1 graded inclusion-restoration vs pinned swamping baseline + P-PE2 lift vs committed X2 cells + conditional P-PE3; companion gate `scripts/check_frozen_enc.py`).
 - `buffer_battery.py`, `collate_drivers.py`, `fit_mixed_effects.py` — shared statistics/collation helpers.
 
 ## Instruments

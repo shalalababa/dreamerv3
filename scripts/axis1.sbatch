@@ -143,6 +143,16 @@ else
   if [ "${AXIS1_ARM:-full}" != full ] && [ "$AXIS1_EXPL_MODE" != task ]; then
     echo "ERROR: factorial arm ${AXIS1_ARM} requires AXIS1_EXPL_MODE=task"; exit 2
   fi
+  # Pretrained-encoder arm (PREREG_pe_pixel_20260730): AXIS1_INIT_WM names a
+  # donor fit run; the fit loads ONLY '^enc/' from its latest ckpt and
+  # freezes the encoder (agent.frozen_enc). Coupled by design — a frozen
+  # RANDOM encoder control would pass the flags explicitly instead.
+  if [ -n "${AXIS1_INIT_WM:-}" ]; then
+    INIT_CKPT="$(latest_ckpt "$RUNROOT/$AXIS1_INIT_WM" || true)"
+    [ -n "$INIT_CKPT" ] || { echo "ERROR: no done ckpt under $RUNROOT/$AXIS1_INIT_WM/ckpt"; exit 2; }
+    AXIS1_FIT_FLAGS="${AXIS1_FIT_FLAGS:-} --run.from_checkpoint $INIT_CKPT --run.from_checkpoint_regex ${AXIS1_INIT_REGEX:-^enc/} --agent.frozen_enc True"
+    echo "[$(date)] partial-init: enc from $INIT_CKPT (regex ${AXIS1_INIT_REGEX:-^enc/}), frozen_enc True"
+  fi
   echo "[$(date)] fit flags: --agent.expl.mode $AXIS1_EXPL_MODE ${AXIS1_FIT_FLAGS:-} (arm=${AXIS1_ARM:-full} size=${AXIS1_SIZE:-default} base=${AXIS1_BASE_CONFIG:-dmc_proprio})"
   "$PYTHON" -u -m probing.offline_fit \
     --static_replay "$REPLAY" --updates "$UPDATES" \

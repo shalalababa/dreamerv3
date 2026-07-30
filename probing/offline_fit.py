@@ -32,6 +32,7 @@ preset), because the replay stores latent-context keys (``dyn/deter`` etc.).
 """
 
 import argparse
+import functools
 import pathlib
 import sys
 import time
@@ -122,14 +123,34 @@ def main(argv=None):
   replay = dv3_main.make_replay(config, 'replay')
   step = elements.Counter()
   cp = None
+  resumed = False
   if args.save:
     cp = elements.Checkpoint(logdir / 'ckpt', keep=args.keep, step=step)
     cp.step = step
     cp.agent = agent
     if args.resume and cp.exists():
       cp.load()
+      resumed = True
       print(f'Resumed offline-fit checkpoint at update {int(agent.n_updates)}',
             flush=True)
+
+  # Partial init from a donor checkpoint (mirrors embodied/run/train.py's
+  # from_checkpoint handling for the adapt stage). Regex-loads only matching
+  # params; everything else keeps its fresh init. agent.load restores the
+  # donor's update counters even in regex mode, which would make the loop
+  # below start at the donor's n_updates and silently skip the entire fit —
+  # reset them to 0. Skipped on resume: a resumed partial-fit ckpt already
+  # contains the donor params.
+  if config.run.from_checkpoint and not resumed:
+    elements.checkpoint.load(config.run.from_checkpoint, dict(
+        agent=functools.partial(
+            agent.load, regex=config.run.from_checkpoint_regex)))
+    agent.n_updates.value = 0
+    agent.n_batches.value = 0
+    agent.n_actions.value = 0
+    print(f'PARTIAL_INIT from={config.run.from_checkpoint} '
+          f'regex={config.run.from_checkpoint_regex} counters_reset=0',
+          flush=True)
 
   # The real Phase-6 ingestion path: pull in externally-authored chunks.
   replay.load(directory=args.static_replay)

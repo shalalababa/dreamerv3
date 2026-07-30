@@ -134,6 +134,7 @@ defaults:
     report: True
     report_gradnorms: False
     frozen_wm: False
+    frozen_enc: False
     expl: {
       mode: task,
       disag_ens: 8,

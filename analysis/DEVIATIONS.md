@@ -597,6 +597,41 @@ immutable dated files; see plan v4.)
 
 ## Code notes and registrations (non-deviations)
 
+- **2026-07-30 (night) — TWO PAPER-1 WAVES REGISTERED pre-outcome.**
+  (1) **Pretrained-encoder pixel arm** `PREREG_pe_pixel_20260730`:
+  staged design — existing reward-free pixel fits donate a frozen
+  encoder ('^enc/' partial load) to task-mode full refits on the same
+  buffer, removing reconstruction from the encoder's gradient
+  competition (the swamping lever). Code registered: `agent.frozen_enc`
+  (module-list filtering, forward pass unchanged), `offline_fit`
+  partial-init with COUNTER RESET (donor counters would otherwise make
+  the fit loop skip all training silently), `AXIS1_INIT_WM` driver
+  plumbing, `check_frozen_enc.py` gate (enc byte-identity + a
+  TRAINING WITNESS via OFFLINE_FIT_PROGRESS — param diffs alone cannot
+  distinguish trained from never-trained; committed --selfcheck).
+  Local mechanics verified at freeze (CPU pixel debug config): module
+  filtering; '^enc/' loads exactly the 12 CNN keys, 216 non-enc fresh;
+  counter reset. Reader `pe_pixel_read.py` frozen (selfcheck PASS:
+  4 verdict branches + 6 guard trips; sha256 34380e0f…;
+  check_frozen_enc 00acbdff…). Pinned anchors: swamping 23.34
+  [19.41,27.29], bars 2.0/1.5, floor 0.6713, X2 cells. Two adversarial
+  reviews: 0 blocking; applied M1 training witness, M2 subshell-safe
+  aggregate sweep gate + persisted log, M3 persisted smoke log, M4
+  auc-side duplicate guard, N1 explicit estimator args, N3 fail-loud
+  donor resolution. fpxpx donors moved back DELETE-SAFE→KEEP-PENDING
+  in runroot_cleanup.sh (they had been promoted this morning after the
+  U4 read — the promotion predated this wave's design).
+  (2) **From-scratch baseline anchor** `PREREG_scratch_anchor_20260730`
+  (descriptive class, no decision rules): 8 plain `dmc_proprio` runs
+  at the adapt budget via `pilot.sbatch MODE=goal`, RUN_ID
+  `adapt_scratch_finger_seed<k>_ckpt0` → mode `scratch` (verified: no
+  frozen reader consumes it; cadence byte-compatible with the adapt
+  protocol incl. SAVE_EVERY=900). Purpose: absolute-scale anchoring
+  for Fig 2a; %-of-anchor never load-bearing. Review: 0 blocking;
+  env.sh sourcing + elapsed-time staging + manifest-row handling added.
+  Ordering: both files + code + readers committed BEFORE any run of
+  either wave exists.
+
 - **2026-07-30 — HIGH-f_R FALLING-LIMB THEORY PREDICTIONS FROZEN
   (pre-buffer).** `prereg/PREREG_highfr_theory_20260730.md` freezes
   P-HF1 (falling limb: curated f∈[0.60,0.80] at matched 200-episode
