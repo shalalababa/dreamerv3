@@ -6,6 +6,32 @@ immutable dated files; see plan v4.)
 
 ## Deviations
 
+- **2026-07-30 (pm) — U2/U3/U4 READS EXECUTED (ONE execution each,
+  cluster-side; U1 untouched).** Frozen reads
+  (`analysis/unfrozen_stress_read.py u2/u3/u4`, registered
+  `PREREG_unfrozen_u{2,3,4}_20260727`) executed cluster-side against
+  the canonical collated csv; bundles
+  `local_results/unfrozen_u{2,3,4}_2026073*` are the first under
+  results-sync policy v2 (manifest verify PASS 3/3; committed pins in
+  `manifests/`). Verdicts: **U2 PROTOCOL-ROBUST** (srd−sid −1.3
+  [−25.5,+21.0] — stamp inert unfrozen; inclusion≠usefulness =
+  two-protocol fact), **U3 PROTOCOL-ROBUST** (rgo−sgb on spin +5.3
+  [−13.6,+23.6], level 67.9 above gate — objective-specificity = an
+  initialization fact), **U4 FLOOR-CENSORED** (relief +1.7
+  [−10.6,+13.4] does not fire; interaction unadjudicable per the
+  registered guard; frozen pixel floor binds). Verification: code
+  snapshots byte-identical to frozen readers; one byte-identical csv
+  across bundles; local re-execution reproduces every statistic
+  exactly; 3 independent config audits 48/48+32/32+32/32 zero
+  mismatches, no refits triggered (disclosure clean); parent-export
+  strings (REPLAY/ARM/EXPL_MODE) not byte-recorded in light bundles —
+  established indirectly via WM checkpoint paths + WM fit flags
+  (disclosed in the artifact). One-read discipline: the shared csv
+  carries in-flight U1 (8 rows outstanding) and 25m partials; not
+  consumed decisionally (each subcommand loads only its own modes);
+  U1's registration remains unexecuted. Record:
+  `artifacts/unfrozen_stress_u234_20260730/`.
+
 - **2026-07-30 — PAPER-4 COLLUSION CONFIRMATORY SWEEP REGISTERED
   pre-outcome, with a calibration read + two adversarial review
   passes.** `PREREG_collusion_confirm_20260730` +

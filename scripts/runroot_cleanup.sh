@@ -72,13 +72,19 @@ DELETE_SAFE=(
   pilot_p2e_*_seed1 pilot_apt_*_seed1 pilot_random_*_seed1
   # smokes + timing junk (scoped prefixes — never touches pretrain_*)
   speedtest_* ax1wm_*seed99* adapt_*seed99*
+  # U2/U3/U4 unfrozen stress: reads verified 07-30
+  # (artifacts/unfrozen_stress_u234_20260730 — scores bundled + hash-pinned)
+  ax1wm_finger_srd0q1s*_seed[1-8] ax1wm_finger_srd1q1s*_seed[1-8] ax1wm_finger_sidq1s*_seed[1-8]
+  ax1wm_finger_rgoq1s*_seed[1-8] ax1wm_finger_sgbq1s*_seed[1-8]
+  ax1wm_finger_pxpxq1ms*_seed[1-8] ax1wm_finger_fpxpxq1ms*_seed[1-8]
+  adapt_ax1uzsrd0q1s* adapt_ax1uzsrd1q1s* adapt_ax1uzsidq1s*
+  adapt_ax1uzog* adapt_ax1uzpxpxq1ms* adapt_ax1uzfpxpxq1ms*
 )
 
 DELETE_AFTER=(  # "glob :: unblocking event"
+  # (U2/U3/U4 entries promoted to DELETE_SAFE 07-30 — reads verified)
   "ax1wm_finger_q1s0_seed[1-8] ax1wm_finger_q1s1_seed[1-8] ax1wm_finger_fq1s0_seed[1-8] ax1wm_finger_fq1s1_seed[1-8] :: U1 read verified"
-  "ax1wm_finger_srd0q1s*_seed[1-8] ax1wm_finger_srd1q1s*_seed[1-8] ax1wm_finger_sidq1s*_seed[1-8] :: U2 read verified"
-  "ax1wm_finger_rgoq1s*_seed[1-8] ax1wm_finger_sgbq1s*_seed[1-8] :: U3 read verified"
-  "ax1wm_finger_pxpxq1ms*_seed[1-8] ax1wm_finger_fpxpxq1ms*_seed[1-8] :: U4 read verified"
+  "adapt_ax1uztq1s* adapt_ax1uzfq1s* :: U1 read verified (only copy of undecided U1 scores until bundled)"
   "ax1wm_finger_s12q1s*_seed* ax1wm_finger_fs12q1s*_seed* adapt_ax1s12q1s* adapt_ax1fs12q1s* :: 25m read verified (its reader asserts 12m rows)"
   "tm2wm_* adapt_tm2* tm2_data :: TD-MPC2 replication registration names its substrate"
   "r3_local/r3_labels :: doubling read verified (M=8 side option)"
@@ -86,7 +92,8 @@ DELETE_AFTER=(  # "glob :: unblocking event"
 )
 
 KEEP_PENDING=(
-  adapt_ax1uz*                                # U1-U4 unfrozen adapts (only copy!)
+  # (u2/u3/u4 uz adapts promoted to DELETE_SAFE 07-30 after read verification;
+  #  U1's remain the only copy of undecided scores and moved to DELETE_AFTER)
   ax1wm_finger_s25q1s*_seed* ax1wm_finger_fs25q1s*_seed*
   adapt_ax1s25q1s* adapt_ax1fs25q1s*
   r3_local/r3_cup_e*_seed3? r3_local/r3_finger_e*_seed3?

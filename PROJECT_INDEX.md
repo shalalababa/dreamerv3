@@ -39,7 +39,7 @@ Frozen pre-outcome readers, one per registered experiment; each has a
 - `pixel_swamping_read.py` — pixel swamping diagnostic read (frozen 25 Jul pre-outcome; task-arm rew-NLL level + trivial two-hot floor guard; awaits the resubmitted E4 csv).
 - `unfrozen_calib_read.py` (read 25 Jul: fires ×4.3 amplified), `vgo_extended_read.py` (running) — Paper-1 band-ledger waves.
 - `scaling_read.py` (read 26 Jul: scale-robust), `compcapacity_read.py` (25m A→B point, frozen pre-outcome), `volume_repl_read.py` (P-E4a; READ 29 Jul: REPLICATES +331*, diversity direction holds — `artifacts/volume_repl_20260729/`) — capacity axis.
-- `unfrozen_stress_read.py` — U1–U4 unfrozen stress waves (frozen 27 Jul pre-outcome; subcommands u1–u4; reward-free-null / stamping / orthogonal / pixel protocol stress tests from the frozen-protocol audit).
+- `unfrozen_stress_read.py` — U1–U4 unfrozen stress waves (frozen 27 Jul pre-outcome; subcommands u1–u4; reward-free-null / stamping / orthogonal / pixel protocol stress tests from the frozen-protocol audit; READ u2/u3/u4 30 Jul: robust/robust/floor-censored, no flips — `artifacts/unfrozen_stress_u234_20260730/`; u1 pending).
 - `orthogonal_obj_read.py` — orthogonal-objective band leg (read 25 Jul: objective-specific).
 - `collusion_confirm_read.py` — Paper-4 confirmatory read (frozen 30 Jul pre-outcome; P-CLB1/2 composition + P-CLA1/2 dissociation primaries, exact-replay/baseline/population/manipulation gates, strict csv hygiene).
 - `buffer_battery.py`, `collate_drivers.py`, `fit_mixed_effects.py` — shared statistics/collation helpers.

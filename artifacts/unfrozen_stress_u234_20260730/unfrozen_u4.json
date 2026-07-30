@@ -1,0 +1,52 @@
+{
+  "p_u4a_floor_relief": {
+    "point": 1.6562468750000003,
+    "ci": [
+      -10.611320625,
+      13.439735078124997
+    ],
+    "n": 8,
+    "pos": 5,
+    "per_seed": [
+      29.257800000000003,
+      -6.770875000000007,
+      14.408825000000004,
+      -17.023425000000007,
+      -27.007799999999996,
+      3.3151000000000046,
+      0.8776249999999983,
+      16.192725000000003
+    ]
+  },
+  "lifted": false,
+  "p_u4b_interaction": {
+    "point": 6.3554875000000015,
+    "ci": [
+      -26.853226875,
+      41.944025
+    ],
+    "n": 8,
+    "pos": 5,
+    "per_seed": [
+      105.03120000000001,
+      30.072900000000004,
+      11.38539999999999,
+      -51.302099999999996,
+      9.854299999999995,
+      -57.427,
+      -24.874899999999997,
+      28.104100000000003
+    ]
+  },
+  "censored": true,
+  "fires_b": false,
+  "cell_means": {
+    "t0": 85.7617125,
+    "t1": 80.5612125,
+    "f0": 87.8242125,
+    "f1": 76.268225
+  },
+  "verdict": "FLOOR-CENSORED \u2014 uninformative: unfrozen adaptation did not lift the pixel cells off the frozen floor (P-U4a does not fire), so the interaction read cannot express; reported, no adjudication (registered guard).",
+  "auc_csv": "/scratch/midway3/rickybao/dreamerv3_runs/analysis_unfrozen_u4_auc/auc.csv",
+  "baseline_csv": "/home/rickybao/projects/dreamerv3/artifacts/pixel_x2_20260724/auc.csv"
+}
