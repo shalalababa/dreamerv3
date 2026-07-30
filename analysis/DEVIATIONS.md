@@ -6,6 +6,24 @@ immutable dated files; see plan v4.)
 
 ## Deviations
 
+- **2026-07-29 (pm) — R3 READ EXECUTED (ONE execution, user-run on RCC
+  after the Amendment-1 commit): CONSUMER-COMPETENCE FAILURE
+  registered.** Ordering held: amendment commit bbe86983 10:40:20 →
+  read (RCC slurm 52773785, ~10:53) → results commit 4f74b187
+  10:53:56. Verification this session: bundle
+  (`local_results/r3_competence_20260729_105146/`) labels bitwise
+  identical to the audited 27-Jul bundle (68/68 md5); code snapshots
+  byte-identical to repo HEAD; committed `r3.json` ≡ bundle copy;
+  local re-execution of the amended reader bit-identical on every
+  primary/secondary/flag/verdict (only `labels_dir` differs — zero
+  float noise). P-R3a +1.247 [+0.700,+1.908] fires, P-R3b +1.293
+  [+0.723,+1.987] fires (≈3× the pre-sized detection bar), P-R3c
+  +0.014 [−0.177,+0.215] null. Frozen consequences applied:
+  opportunity/competence decomposition becomes Paper-2's headline;
+  the 25-Jul shift-consequence negative re-reads as a competence
+  ceiling; 24+24 frozen, Route A closed, imag retired all stand.
+  Record: `artifacts/r3_competence_20260729/RESULTS.md`. Reacher
+  cohort absent (registered conditional, never-partial — valid).
 - **2026-07-29 — R3 AMENDMENT 1: frozen reader seed-grid defect found
   at read time; repaired value-blind BEFORE the one read
   (`PREREG_r3_amend1_20260729.md`).** The R3 bundle
