@@ -597,6 +597,21 @@ immutable dated files; see plan v4.)
 
 ## Code notes and registrations (non-deviations)
 
+- **2026-07-30 — HIGH-f_R FALLING-LIMB THEORY PREDICTIONS FROZEN
+  (pre-buffer).** `prereg/PREREG_highfr_theory_20260730.md` freezes
+  P-HF1 (falling limb: curated f∈[0.60,0.80] at matched 200-episode
+  volume transfers WORSE than the natural f≈0.32 buffer), P-HF2
+  (mechanism dissociation: deficit with membership intact + lower
+  diversity_pr — support starvation, not exclusion), P-HF3 (interior
+  maximum over matched-volume f cells), plus registered failure modes
+  (monotone rise ⇒ breadth-patch trade-off form refuted; flat +
+  no diversity separation ⇒ saturation, uninformative). Derivation:
+  `research_notes/Theory_HighFR_Prediction_20260730.md` (dated,
+  disk-only). Ordering: committed BEFORE any high-f_R buffer, fit, or
+  adaptation exists (none does); the future wave registration will
+  cite this file and set n/estimators/gates. Known at freeze: all
+  reads through 30 Jul; 25m and U1 pending and NOT consulted.
+
 - **2026-07-30 — RESULTS-SYNC POLICY v2 (provenance-chain process
   change).** Trigger: RCC home fileset over quota in both blocks
   (34.99G/30G soft/35G hard) and inodes (314K/300K soft) — 40,861 of

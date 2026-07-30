@@ -138,6 +138,14 @@ Frozen pre-outcome readers, one per registered experiment; each has a
   `Design_Collusion_Pilot_20260724.md` (pilot design of record).
 - `Research_Branch_Ideas_Triage_20260717.tex` — branch-idea scoring;
   band definitions for the 40–55% claim strength.
+- Paper-1 writing pack (30 Jul, adversarially reviewed):
+  `Paper1_Distillation_20260730.md` (prof deliverable),
+  `Paper1_ResponseCurves_20260730.md` (+`figures_paper1_20260730/`),
+  `Paper1_TheoryAssumptions_20260730.md`,
+  `Paper1_ProseHygiene_20260730.md`,
+  `Paper1_PracticalCorollary_20260730.md`,
+  `Theory_HighFR_Prediction_20260730.md` (companion to the committed
+  `prereg/PREREG_highfr_theory_20260730.md` freeze).
 - Exec plans: `Plan_Stamping_20260717.md`,
   `Plan_ScalingPilot_Exec_20260717.md`,
   `Plan_PixelReplication_Exec_20260718.md`,
