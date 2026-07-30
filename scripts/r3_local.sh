@@ -106,20 +106,33 @@ elif [ "$STAGE" = smoke ]; then
   # Registered requirement (24-Jul audit): dosed labeling must smoke ON a
   # dosed env before labels — the OU/calibration snapshot path has never
   # touched a real dosed agent. Both doses, both maturities, 5 states.
+  # SMOKE_DOM (default cup) selects the smoke domain: a NEW domain must
+  # smoke on itself before its labels (reacher wave: SMOKE_DOM=reacher,
+  # PREREG_r3_reacher_20260729.md; the reacher reader asserts the four
+  # reacher smoke files exist).
+  SMOKE_DOM="${SMOKE_DOM:-cup}"
   for dose in $DOSES; do for mat in early late; do
-    LOG="$ROOT/r3_cup_${dose}_seed31"
-    [ -f "$LOG/TRAINING_DONE" ] || { echo "train r3_cup_${dose}_seed31 first"; exit 1; }
+    LOG="$ROOT/r3_${SMOKE_DOM}_${dose}_seed31"
+    [ -f "$LOG/TRAINING_DONE" ] || { echo "train r3_${SMOKE_DOM}_${dose}_seed31 first"; exit 1; }
     CKPT=""; [ "$mat" = early ] && CKPT="--checkpoint $LOG/ckpt_early"
     python -m d0.oracle_labels --run_logdir "$LOG" $CKPT \
-        --output "$LABELS/r3_cup_${dose}_seed31_${mat}_smoke.npz" \
+        --output "$LABELS/r3_${SMOKE_DOM}_${dose}_seed31_${mat}_smoke.npz" \
         --states 5 --horizon 100 --label_every 25 --actions 8 \
         --rollouts 16 --seed 0 --ref_stride 5 --oracle_all
   done; done
   touch "$LABELS/SMOKE_OK"
-  echo "[$(date)] smoke OK (e1+e4 x early+late; inspect stdout before labels)"
+  echo "[$(date)] smoke OK ($SMOKE_DOM e1+e4 x early+late; inspect stdout before labels)"
 
 elif [ "$STAGE" = labels ]; then
   [ -f "$LABELS/SMOKE_OK" ] || { echo "run smoke first"; exit 1; }
+  # Per-domain smoke guard (PREREG_r3_reacher_20260729): a stale SMOKE_OK
+  # from the executed cup wave must not authorize labels for a NEW domain
+  # — any domain beyond cup/finger needs its own four smoke files first.
+  for dom in $DOMS; do case "$dom" in cup|finger) ;; *)
+    for dose in $DOSES; do for mat in early late; do
+      [ -f "$LABELS/r3_${dom}_${dose}_seed31_${mat}_smoke.npz" ] || {
+        echo "run SMOKE_DOM=$dom smoke first"; exit 1; }
+    done; done ;; esac; done
   for dom in $DOMS; do for dose in $DOSES; do for seed in $SEEDS; do
     for mat in early late; do
       label_run "$dom" "$dose" "$seed" "$mat"

@@ -94,6 +94,31 @@ re-test, not results. 24+24 permanently frozen; imag op retired.
 
 ## Registered / running, no read yet
 
+- **R3 reacher third-domain replication** (REGISTERED 07-29, to submit
+  after freeze-commit; Paper-2 conference-band task axis):
+  `PREREG_r3_reacher_20260729` → `analysis/r3_reacher_read.py`
+  (selfcheck PASS; imports the frozen r3_read machinery, import surface
+  pinned). 16 fresh two-phase runs + 32 oracle_all passes on the idle
+  instance (`DOMS=reacher` pilots → `SMOKE_DOM=reacher` smoke →
+  labels); machine-checked reacher smoke gate at driver AND reader;
+  registered FLOOR gate (>50% all-zero-G ⇒ inconclusive, not failure);
+  P-RRa opp>0.2 / P-RRb gap>0 / P-RRc maturity; verdicts REPLICATES /
+  NO-OPPORTUNITY / HARVESTED / FLOOR-LIMITED; n=16 detects gap ≈0.59
+  vs observed cup/finger +1.29. Supersedes the executed R3 prereg's
+  conditional-GO clause; cup/finger primaries never recomputed.
+- **R3 candidate-count doubling test M=8→16** (REGISTERED 07-29, to
+  submit after freeze-commit; closes editorial objection-6 residue):
+  `PREREG_r3_doubling_20260729` → `analysis/r3_doubling_read.py`
+  (selfcheck PASS incl. _load fixture leg + dial-identity guards from
+  meta on both sides). 1 smoke + 32 late-cell M=16 passes on the
+  existing R3 checkpoints (`--actions 16`, all other dials pinned);
+  CELL-level pairing only (candidate sampler shares the agent RNG ⇒
+  trajectories diverge — disclosed by design); P-DBLa monotone
+  consistency (CI entirely <0 ⇒ ANOMALY, quarantine) / P-DBLb
+  materiality vs 0.6465 (= 50% of the committed gap 1.29304688,
+  truncated conservatively); T4 signed-bias theory anchor verified
+  (Prop biassign).
+
 - **Unfrozen stress waves U1–U4** (REGISTERED 07-27, to submit after freeze-commit; motivated by the frozen-protocol audit `research_notes/Audit_FrozenProtocol_20260726.md`): `PREREG_unfrozen_u{1,2,3,4}_20260727` → `analysis/unfrozen_stress_read.py` (four subcommands, selfcheck PASS) + `orth_spin_unfrozen` config. U1 = apt+task unfrozen 2×2 (32 jobs; P-U1a interaction persists / P-U1b apt-null stress — the decisive reward-free-null test, absence-vs-illegible discriminator anchored to rgo +235/sgb +30); U2 = stamped unfrozen (48; can fine-tuning repurpose an installed stamp? P-B1/inclusion≠usefulness stress); U3 = orthogonal unfrozen (32; objective-specificity stress, floor gate mirrored); U4 = pixel unfrozen 2×2 (32; floor relief + P-SW1-derived no-differential-rescue prediction, censoring guard). 144 adapt-only jobs total; frozen registrations untouched under every branch — flips change generality language only.
 - **Paper-3 confirmatory 25m point** (REGISTERED 07-26, to submit after freeze-commit): `PREREG_compcapacity_confirm_20260726` → `analysis/compcapacity_read.py` (selfcheck PASS). Primary = task-lo rise (25m−12m, s0 task cells, two-sample seed bootstrap, CI>0 fires); GUARD = forbidden pattern (apt rises while task-lo floored ⇒ P-E1 refuted); 32 jobs at `size25m` (existing config block) on `q1_ctx25` (build via resize tool, deter 3072 stoch 32×24) + E4 pass `ax1wm_finger_*s25*`; power: detects rise ≈33 vs full transition 139; no blank slots — realized values go in the artifact.
 - ~~Volume-anomaly replication P-E4a~~ → READ 07-29 (see Paper 3 table).

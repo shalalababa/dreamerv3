@@ -6,6 +6,36 @@ immutable dated files; see plan v4.)
 
 ## Deviations
 
+- **2026-07-30 — PAPER-2 BAND-MOVER WAVE 1 REGISTERED pre-outcome
+  (reacher replication + candidate-doubling), with an adversarial
+  pre-freeze review.** Context: 29-Jul owner decision = top-conference
+  track; these are the task-axis and objection-6 legs.
+  `PREREG_r3_reacher_20260729` + `analysis/r3_reacher_read.py` and
+  `PREREG_r3_doubling_20260729` + `analysis/r3_doubling_read.py`
+  (both selfcheck PASS), plus two `scripts/r3_local.sh` edits
+  (SMOKE_DOM parameterization; per-domain smoke guard in the labels
+  stage). A 2-reviewer adversarial pass ran BEFORE freeze; all
+  findings fixed same session: (minor) stale cup-era `SMOKE_OK` would
+  have let `DOMS=reacher labels` run 32 never-smoked passes
+  (demonstrated live) — labels stage now requires the four per-domain
+  smoke files for any non-cup/finger domain; (minor) doubling
+  materiality constant 0.65 was anti-conservatively rounded — reset to
+  0.6465 (= 50% of the committed gap 1.29304688, truncated toward
+  harder-to-declare-immaterial); (minor) `immaterial` co-fired in the
+  ANOMALY branch — now excluded (P-DBLb adjudicated only on the
+  consistent branch) with a selfcheck assert; (minor, R3-lesson class)
+  the doubling `_load` integrity asserts were unreachable by the
+  file's own selfcheck — fixture leg added, plus NEW dial-identity
+  guards asserting registered dials/actions/train_seed/late-ckpt from
+  every file's meta on both sides; (notes) duplicate-cell assert +
+  smoke labeler-version check + clean CLI errors + import-surface pins
+  (`EXPECT_SEEDS == 31..38`) added to both readers. Reviewers also
+  verified: FILE8_RE matches exactly the 32 committed late files
+  (names only), r3dbl_ collides with no existing reader regex, the
+  labeler accepts `--actions 16` and oracle_all fills all 16 columns,
+  and the trajectory-divergence claim (candidate seeds from the shared
+  n_actions counter) — hence CELL-level pairing is registered. Zero
+  reacher or M=16 files exist anywhere at freeze.
 - **2026-07-29 (night) — VOLUME REPLICATION READ (cluster-side, ONE
   execution): P-E4a REPLICATES; diversity direction holds.** Bundle
   `local_results/volume_repl_20260729_204854/` +
