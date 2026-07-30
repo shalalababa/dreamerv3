@@ -1,8 +1,0 @@
-selfcheck PASS: planted high-variance reward dim outranks low-variance one (rank + ratio), f recovered, OOF R2 positive, all-first buffer trips, diversity separates broad from narrow support, compare confirms/refutes correctly; amend 1: zero-reward buffer yields spectrum-only record, cross-buffer theta restores rank (cross-domain trips), compare drops+discloses inestimable sides
-cup/lo: rank=582 lambda_need=0.0027 f=0.2219 r2_oof=0.728 diversity_pr=9.82 theta_source=own
-cup/hi: rank=492 lambda_need=0.0094 f=0.1722 r2_oof=0.640 diversity_pr=7.68 theta_source=own
-finger/lo: rank=640 lambda_need=0.0028 f=0.0536 r2_oof=0.252 diversity_pr=8.07 theta_source=own
-finger/hi: rank=455 lambda_need=0.0111 f=0.3232 r2_oof=0.399 diversity_pr=9.23 theta_source=own
-side hi: rank cup=492 vs finger=455 holds=False
-side lo: rank cup=582 vs finger=640 holds=True
-P-SM1 NOT confirmed: the reward-direction variance-rank ordering does not hold in every evaluable matched side — the spectral account of the cup/finger boundary fails as registered.

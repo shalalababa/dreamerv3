@@ -113,6 +113,11 @@ Frozen pre-outcome readers, one per registered experiment; each has a
 - `submit_all.sh`, `run_status.py`, `env.sh` — submission wrapper
   (clean-shell rule: --export=ALL module-leakage gotcha), status,
   environment.
+- `bundle_manifest.sh` — bundle sha256 manifests (generate at source /
+  verify before reads; see `manifests/README.md`).
+- `runroot_cleanup.sh` — $RUNROOT dry-run classifier (KEEP/DELETE
+  tiers from the 30-Jul record sweep; `CONFIRM=DELETE` removes
+  DELETE-SAFE only).
 
 ## Plans, theory, reviews — `research_notes/` [gitignored]
 
@@ -161,8 +166,13 @@ Frozen pre-outcome readers, one per registered experiment; each has a
 
 ## Data [gitignored]
 
-- `local_results/` — pulled result bundles from cluster/local boxes
+- `local_results/` — result bundles rsync'd from cluster/local boxes
   (each with `code/` snapshot + `logs/` + csvs/npz; the artifacts/
-  records cite these as provenance).
+  records cite these as provenance). Untracked + gitignored since
+  30 Jul (bundles committed before then remain in git history): bundles
+  move by direct rsync, and each registered bundle's bytes are pinned
+  by a tracked `manifests/<bundle>.sha256` (generated at the source via
+  `scripts/bundle_manifest.sh generate`, verified before any frozen
+  read via `... verify <bundle> manifests/<bundle>.sha256`).
 - Cluster runroot (not in repo): see the DreamerV3-cluster-layout
   memory / `scripts/env.sh` for paths.

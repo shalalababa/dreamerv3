@@ -571,6 +571,25 @@ immutable dated files; see plan v4.)
 
 ## Code notes and registrations (non-deviations)
 
+- **2026-07-30 — RESULTS-SYNC POLICY v2 (provenance-chain process
+  change).** Trigger: RCC home fileset over quota in both blocks
+  (34.99G/30G soft/35G hard) and inodes (314K/300K soft) — 40,861 of
+  those files were the git-tracked `local_results/` working tree
+  (~15G). Change: `local_results/` untracked + gitignored; result
+  bundles now move cluster→analysis machine by direct rsync and are
+  never committed; each registered bundle's bytes are pinned instead
+  by a tracked `manifests/<bundle_name>.sha256`, generated AT THE
+  SOURCE with `scripts/bundle_manifest.sh generate` and verified on
+  the analysis machine (`verify <bundle> manifests/<bundle>.sha256` —
+  fails on hash mismatch, missing files, extra files, or manifest ≠
+  committed copy; 4 failure legs tested) BEFORE any frozen read
+  executes. Provenance statements in artifacts/ cite the manifest
+  hash file from this date forward. Bundles committed before 30 Jul
+  remain in git history unchanged; nothing is rewritten. Small
+  decisional payloads (jsons/csvs under artifacts/) are still
+  committed directly. First bundles under the new flow: U2/U3/U4
+  unfrozen-stress waves.
+
 - **2026-07-24 (night) — PIXEL X2 READ EXECUTED: NULL; G-X3 NO-GO;
   swamping diagnostic registered.** Frozen read
   (`analysis/pixel_repl_read.py`, selfcheck PASS) on

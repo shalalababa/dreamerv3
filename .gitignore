@@ -13,6 +13,11 @@ academic-research-skills-3.9.2
 research_notes/
 temp_files/
 
+# Result bundles move by direct rsync, never by git (policy 2026-07-30).
+# Bytes are pinned by tracked manifests/<bundle>.sha256 instead
+# (scripts/bundle_manifest.sh). Pre-30-Jul bundles remain in git history.
+local_results/
+
 report/*.aux
 report/*.log
 report/*.out

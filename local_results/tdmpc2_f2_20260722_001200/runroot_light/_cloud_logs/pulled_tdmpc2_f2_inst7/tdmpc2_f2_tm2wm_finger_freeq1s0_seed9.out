@@ -1,5 +1,0 @@
-/workspace/conda_envs/tdmpc2/lib/python3.11/site-packages/tensordict/_td.py:612: FutureWarning: TensorDict.to_module() is replacing an existing nn.Parameter in the destination module with a tensor leaf that is not an nn.Parameter. This historical behavior can remove the key from module.state_dict(). In tensordict v0.14, to_module() will preserve existing module parameter and buffer registrations by default. Pass preserve_module_state=False to keep the current replacement behavior, or preserve_module_state=True to opt in to the v0.14 behavior now.
-  local_out = _set_tensor_dict(
-Episode length: 1000
-Discount factor: 0.995
-tm2wm_finger_freeq1s0_seed9: probe_mse in=0.38987 out=0.05035 r2=-0.14223015517619908 cons_in=0.00012  -> /workspace/dreamerv3_runs/tm2_e4/tm2e4_tm2wm_finger_freeq1s0_seed9.json
