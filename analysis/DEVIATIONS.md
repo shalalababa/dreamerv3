@@ -6,6 +6,67 @@ immutable dated files; see plan v4.)
 
 ## Deviations
 
+- **2026-07-31 — PAPER-2 BUILD WAVE REGISTERED pre-outcome (five
+  bundles: candidate-aware ladder, Stage-0 second-k, TM2-R3 TD-MPC2
+  replication, R3 Amendment 2 cross-checkpoint consumer, competence
+  repair) — with a DISRUPTED adversarial review completed by hand.**
+  Built 30 Jul night by a 7-agent wave (all selfchecks PASS); the
+  16-agent review wave was interrupted TWICE (session limit, then
+  usage credits): 15 reviewer reports completed across two runs, but
+  ALL fixer agents died. Forensics: two fixers had partially executed
+  before dying — `analysis/stage0_secondk_read.py` had been redesigned
+  (calibration-ladder integrity guard) with its selfcheck left BROKEN
+  (float-equality rank_corr asserts — reproduced failing), and the tm2
+  labeler/reader had received completed hardening (smoke stdout
+  redaction, dosed-smoke authenticity + task pins, steps echo) with
+  selfchecks passing. All remaining fixes were then applied INLINE
+  (main loop, no subagents) and every selfcheck re-run to PASS.
+  Distinct BLOCKINGs fixed pre-freeze: (1) `save_rows` printed mean
+  delta_real (= the registered achieved estimand) on every
+  consumer-arm pass — wave logs would have contained both xc primaries
+  by subtraction before the ONE read; consumer-arm stdout now REDACTED
+  (`_xc1`/`_cm1`), default path byte-identical; (2) Amendment 2's
+  disclosure claimed the reacher read unexecuted after it had
+  EXECUTED — all five preregs' disclosures now name the 31-Jul reacher
+  read as known-at-freeze (predictions/decision rules unchanged, all
+  written 30 Jul); (3) second-k prereg/reader divergence + broken
+  selfcheck (above) — the reader's two-mode calibrated guard is the
+  better design; the prereg was rewritten to match it (k10cal smoke,
+  fallback rank floor 0.9, --platform cuda with the corrected
+  bf16/categorical-sampling rationale replacing the wrong
+  "drift is numeric only" claim, gate JSON, 102 passes); (4) repair
+  trainer selfcheck was keyed by process-salted hash() — PASS was
+  irreproducible across shells (verified failing under
+  PYTHONHASHSEED=99); now hashlib-keyed, verified under two hash
+  seeds. Principal MINOR/NOTE hardening applied: no-op/partial-overlay
+  guard (a silent no-op overlay would have FABRICATED the registered
+  HEADS-IRRELEVANT null); m_now added to the repair determinism gate
+  (g_now = g_all[m_now] enters the primary); frozen
+  COMMITTED_LABELS_DIGEST (02efe6c5…) pins the committed R3 label
+  bundle in BOTH the ladder and repair readers; trainer-source sha
+  stamped into the repair model manifest and asserted by the reader;
+  tie-tolerant chooser identity (f32 cast-first); xc smoke
+  authenticity (ckpt suffixes + states=5); SUBSTRATE_GONE marker never
+  auto-erased; rep_labels/rep_model added to runroot_cleanup
+  KEEP_PENDING; live ALLOWED_KEYS whitelist; ep_batch recorded by the
+  dumper + required on new dumps; MATERIALITY machine-tied to r3.json;
+  tm2 grid validation + horizon wording + interleave note. Registered
+  process deviations, stated honestly: (a) the LADDER bundle received
+  NO completed independent reviewer (one stub + limit failures) — its
+  pre-freeze review was performed SOLO by the orchestrator (found and
+  fixed: substring version pin → exact; nonexistent "committed sha256
+  manifest" claim → git pin + digest gate); an independent reviewer
+  pass can be re-run before its read if desired, and the bundle is
+  registered-descriptive/non-decisional; (b) the DRAFT verifier never
+  ran — the draft (gitignored, pre-submission) stands on its build-time
+  machine checks plus an inline hygiene scan; sec7's reacher slot was
+  filled from the executed read's artifact. Zero label/dump/model
+  outputs of any of the five waves exist anywhere at freeze (the
+  known-at-freeze statements in each prereg enumerate what does).
+  Registration bullets with sha256 pins: STUDY_LEDGER "Registered /
+  running". Freeze-commit ordering: every wave's first
+  gate/smoke/training job requires the freeze commit FIRST.
+
 - **2026-07-31 — R3 REACHER READ EXECUTED (ONE execution, local):
   REPLICATES.** Bundle `local_results/r3_reacher_20260731_100509/`
   (results-sync policy v2: `scripts/bundle_manifest.sh verify` OK,

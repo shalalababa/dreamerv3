@@ -32,6 +32,11 @@ Frozen pre-outcome readers, one per registered experiment; each has a
 - `gate_d1_read.py`, `gate_d1_r2_read.py`, `d1_ladder_read.py`, `d1_shift_read.py` — Paper-2 D1 series (shift read = the relabel re-reader, version `d1fix_20260724`; read 25 Jul: corrected negative).
 - `r3_read.py` — R3 consumer-competence factorial read (frozen 25 Jul pre-outcome; Amendment 1 29 Jul: seed-grid repair + value-blind guards, committed pre-read; READ 29 Jul: P-R3a+P-R3b fire, P-R3c null ⇒ consumer-competence failure, `artifacts/r3_competence_20260729/`).
 - `r3_reacher_read.py`, `r3_doubling_read.py` — R3 band-mover wave 1 (frozen 30 Jul pre-outcome, freeze 596a7f93). Reacher READ 31 Jul: REPLICATES (P-RRa opp +0.828\* + P-RRb gap +0.813\* fire, P-RRc null ⇒ three-domain fact; floors 3.1%), `artifacts/r3_reacher_20260731/`. Doubling: awaiting bundle.
+- `r3_ladder_read.py` — candidate-aware ladder L0–L4 on the committed R3 labels (registered-descriptive; frozen 31 Jul pre-outcome, `PREREG_r3_ladder_20260730`; substrate digest-gated; awaiting freeze-commit → ONE local read).
+- `stage0_secondk_read.py` — Stage-0 second-k density-proxy robustness (frozen 31 Jul pre-outcome, `PREREG_stage0_secondk_20260730`; existence-gated re-dump k∈{5,20}, calibrated two-mode integrity guard; SUBSTRATE-GONE = valid outcome).
+- `tm2_r3_read.py` — TM2-R3 TD-MPC2 cross-family replication read (frozen 31 Jul pre-outcome, `PREREG_tm2_competence_20260730`; with `probing/tdmpc2_oracle_labels.py` labeler port + `tdmpc2_r3_train.py` + `scripts/tm2r3.sbatch`).
+- `r3_xconsumer_read.py` — cross-checkpoint consumer read (frozen 31 Jul pre-outcome, `PREREG_r3_amend2_20260730`; per-state-paired via counter-restored overlay; pairing QUARANTINE gate).
+- `repair_read.py` — competence-repair read (frozen 31 Jul pre-outcome, `PREREG_competence_repair_20260730`; with `d0/train_consumer_model.py` LORO trainer; committed labels = per-state control via determinism gate).
 - `p3_factorial_read.py` — P3 gradient-path factorial + Amendment 1.
 - `stamping_read.py`, `scaling_read.py`, `optc_amend_read.py` — stamping + scaling pilot + Option-C corrective.
 - `synth_phaseb_read.py`, `synth_diagnosis_read.py`, `synth_rediag_read.py`, `synth_phasebpp_read.py` — synth series.

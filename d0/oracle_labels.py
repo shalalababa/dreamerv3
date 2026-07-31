@@ -46,6 +46,42 @@ Vhat(s_h) from the agent's own ensemble at the truncation state; plain
 undiscounted G stays the primary label). The Gate-D1-era columns are
 unchanged bit-for-bit in semantics.
 
+Cross-checkpoint consumer extension (2026-07-30,
+PREREG_r3_amend2_20260730.md): --consumer_checkpoint performs a SECOND,
+regex-scoped load ('^(rew|con|valens\\d+)/') AFTER the main
+eval-checkpoint load, replacing only the reward/continuation/valens
+value heads with the consumer checkpoint's parameters. qfull — hence
+m_now, op_imag, and the op_real chooser — then reads the EVAL agent's
+features through the CONSUMER's heads, while the follower policy, the
+WM (enc/dyn/dec), and disag stay the eval agent's. The RNG counters
+the second load would clobber are snapshotted and restored (see
+overlay_consumer), so a control pass (consumer = the eval checkpoint
+itself, still through the overlay code path) and a swapped pass walk
+IDENTICAL base trajectories and produce identical g_all under
+--oracle_all: per-state paired contrasts. With the flag empty the
+labeler is byte-identical to the d1fix_20260724 path (no meta keys
+added, version unchanged); with an overlay active the meta version
+becomes d1fix_20260724_xc1 and records consumer_checkpoint +
+consumer_regex.
+
+Competence-repair consumer-model extension (2026-07-30,
+PREREG_competence_repair_20260730.md): --consumer_model <npz> loads a
+LORO ridge model (d0/train_consumer_model.py, frozen feature map
+'cmfeat1') and deploys it as an EXTERNAL chooser: at each labeled state
+the labeler computes the frozen per-candidate features from quantities
+d0_eval already returned (qfull, cands, deter, udyn) and overrides the
+realized choice with argmax ghat. Everything else runs UNCHANGED —
+op_real still probes every candidate (its own argmax is kept as
+m_real_probe, its scores as real_scores), op_imag still runs, and with
+--oracle_all (required) the rollout target set is all-M — so the base
+trajectory, the policy-RNG schedule, and g_all are bit-identical to a
+pass without the flag: the committed R3 labels themselves are the
+paired control (the repair reader's determinism gate asserts it; the
+chooser is pure numpy — no env step, no policy call, no RNG use).
+Meta version becomes d1fix_20260724_cm1 and records the model path,
+its sha256, the deployed run key, and the feature-map version; flag
+empty = byte-identical default path.
+
 Usage (cluster, dv3 env, run trained with the d0_probe config):
   python -m d0.oracle_labels --run_logdir <dir> --output <run>.npz \
       --states 200 [--horizon 100] [--label_every 25] [--platform cpu]
@@ -59,6 +95,7 @@ import argparse
 import json
 import os
 import pathlib
+import re
 import sys
 
 REPO = pathlib.Path(__file__).resolve().parent.parent
@@ -317,12 +354,20 @@ def op_real(env, oracle, carry_post, obs, qfull, cands, snap,
 
 def label_run(env, oracle, n_states, horizon, label_every, max_steps,
               rng, run_id, oracle_all=False, ref_stride=5,
-              behavior=None):
+              behavior=None, consumer=None):
   """behavior: optional second AgentOracle that DRIVES the base
   trajectory (state visitation) while `oracle` remains the evaluation
   agent for beliefs, d0 evals, operations, and rollouts — the
   cross-policy shift arm. With behavior=None this is bit-identical to
-  the r2_ext labeler path."""
+  the r2_ext labeler path.
+
+  consumer: optional external chooser (competence repair,
+  d0/train_consumer_model.make_chooser): (qfull, cands, deter, udyn)
+  -> (m_hat, ghat). When set, the realized choice becomes argmax ghat;
+  op_real still runs unchanged (its argmax is kept as m_real_probe).
+  The chooser is pure numpy — no env step, no policy call, no RNG use
+  — so the base trajectory and g_all are bit-identical to a
+  consumer=None pass; only the saved row changes."""
   rows = []
   ref = dict(deter=[], episode=[], step=[])
   zero_act = oracle.vec2act(np.zeros(int(np.prod(oracle.act_shape))))
@@ -363,8 +408,18 @@ def label_run(env, oracle, n_states, horizon, label_every, max_steps,
       m_real, cost_real, real_scores = op_real(
           env, oracle, carry_post, obs, qfull, cands, snap,
           rng_mark=rmark)
+      m_probe, ghat = m_real, None
+      if consumer is not None:
+        # External chooser override AFTER all env/policy work of this
+        # state: influences nothing downstream except the saved row
+        # (with oracle_all the rollout target set is all-M regardless).
+        m_hat, ghat = consumer(qfull, cands, extras['deter'],
+                               float(extras['udyn']))
+        m_real = int(m_hat)
 
       targets = {m_now, m_imag, m_real}
+      if consumer is not None:
+        targets.add(m_probe)
       if oracle_all:
         targets = set(range(cands.shape[0]))
       G = {m: rollout_return(env, oracle,
@@ -376,7 +431,7 @@ def label_run(env, oracle, n_states, horizon, label_every, max_steps,
       for m, (gv, gb) in G.items():
         g_all[m] = gv
         g_all_boot[m] = gb
-      rows.append(dict(
+      row = dict(
           run_id=run_id, episode=ep, step=t,
           qfull=qfull, cands=cands,
           g_all=g_all, g_all_boot=g_all_boot,
@@ -395,7 +450,11 @@ def label_run(env, oracle, n_states, horizon, label_every, max_steps,
           cost_imag_calls=cost_imag['policy_calls'],
           cost_real_env=cost_real['env_steps'],
           cost_real_calls=cost_real['policy_calls'],
-      ))
+      )
+      if consumer is not None:
+        row.update(m_real_probe=m_probe,
+                   ghat=np.asarray(ghat, np.float32))
+      rows.append(row)
       restore_env(env, snap)  # resume the base trajectory untouched
     # the evaluation agent's belief always tracks the observed stream
     carry, acts, _ = oracle.policy(carry, obs)
@@ -433,9 +492,227 @@ def save_rows(rows, output, meta, extra_arrays=None):
     cols[key] = arr
   os.makedirs(os.path.dirname(output) or '.', exist_ok=True)
   np.savez_compressed(output, meta=json.dumps(meta), **cols)
-  print(f'wrote {output}: {len(rows)} labeled states; '
-        f'mean delta_real {cols["delta_real"].mean():+.3f}, '
-        f'mean delta_imag {cols["delta_imag"].mean():+.3f}')
+  # Value-blindness: consumer-arm passes (overlay '_xc1' / external
+  # chooser '_cm1') must not print estimand means — delta_real IS the
+  # registered per-state achieved, and paired stdout means would reveal
+  # the primaries before the ONE read. Default path byte-identical.
+  version = str(meta.get('labeler_version', ''))
+  if version.endswith('_xc1') or version.endswith('_cm1'):
+    print(f'wrote {output}: {len(rows)} labeled states '
+          f'(estimand summary redacted: consumer arm)')
+  else:
+    print(f'wrote {output}: {len(rows)} labeled states; '
+          f'mean delta_real {cols["delta_real"].mean():+.3f}, '
+          f'mean delta_imag {cols["delta_imag"].mean():+.3f}')
+
+
+# --------------------------------------------------------------------------
+# Cross-checkpoint consumer overlay (PREREG_r3_amend2_20260730.md)
+# --------------------------------------------------------------------------
+
+# Exactly the heads _d0_signals consults for qfull (dreamerv3/agent.py:
+# rew + con + the valens ensemble). Deliberately EXCLUDES pol, enc, dyn,
+# dec, disag (trajectories, beliefs, and udyn stay the eval agent's),
+# the main critic 'val', the slowvalens targets, and any normalizer.
+CONSUMER_REGEX = r'^(rew|con|valens\d+)/'
+
+
+def stamp_consumer(meta, consumer_checkpoint, max_steps=None):
+  """Version/provenance stamping for the overlay. The default path is
+  byte-identical (same dict back: no new keys, version unchanged, so
+  every existing frozen reader keeps matching); an active overlay —
+  including the control arm, which passes the eval checkpoint itself —
+  suffixes the version with '_xc1' and records the consumer checkpoint,
+  regex, and max_steps (max_steps gates the labeled-state window, so a
+  pass re-run with a different value would label a different window
+  while staying internally consistent — the xc reader pins it). The xc
+  reader pins the exact suffixed version string."""
+  if not consumer_checkpoint:
+    return meta
+  stamped = dict(
+      meta,
+      labeler_version=meta['labeler_version'] + '_xc1',
+      consumer_checkpoint=str(consumer_checkpoint),
+      consumer_regex=CONSUMER_REGEX)
+  if max_steps is not None:
+    stamped['max_steps'] = int(max_steps)
+  return stamped
+
+
+def _flat_cfg(d, prefix=''):
+  """Flatten a nested config dict to dotted keys (local, jax-free
+  equivalent of d0.sweep._flat for the selfcheck)."""
+  out = {}
+  for k, v in d.items():
+    key = f'{prefix}{k}'
+    if isinstance(v, dict):
+      out.update(_flat_cfg(v, key + '.'))
+    else:
+      out[key] = v
+  return out
+
+
+def consumer_config_mismatches(eval_flat, cons_flat):
+  """Arch-relevant mismatches between the eval and consumer runs' saved
+  configs (flattened). The regex load path (embodied/jax/agent.py)
+  skips the full-tree shape asserts, so head-architecture agreement is
+  enforced HERE, manually and loudly: task (obs/act spaces) plus the
+  entire agent.* subtree (sizes, head layouts, valens.k) must agree;
+  run-identity keys (seed, logdir, ...) are irrelevant and ignored.
+  Additionally both sides must have agent.valnorm.impl == 'none' — the
+  overlay moves heads WITHOUT any value-normalizer state, which is only
+  sound while the normalizer is the identity. Returns a list of
+  human-readable mismatch strings (empty = compatible)."""
+  keys = {k for k in list(eval_flat) + list(cons_flat)
+          if k == 'task' or k.startswith('agent.')}
+  out = []
+  for k in sorted(keys):
+    a = eval_flat.get(k, '<absent>')
+    b = cons_flat.get(k, '<absent>')
+    if a != b:
+      out.append(f'{k}: eval={a!r} consumer={b!r}')
+  for tag, flat in (('eval', eval_flat), ('consumer', cons_flat)):
+    impl = flat.get('agent.valnorm.impl')
+    if impl != 'none':
+      out.append(
+          f"{tag}: agent.valnorm.impl={impl!r} != 'none' (overlaid heads "
+          'would detach from a learned value normalizer)')
+  return out
+
+
+def check_consumer_config(eval_run_logdir, consumer_ckpt):
+  """File-level guard: the consumer checkpoint must sit inside a run dir
+  whose config.yaml exists and is arch-compatible with the eval run's.
+  Errors loudly on any mismatch; never labels on unverified heads."""
+  cons_run = os.path.dirname(os.path.abspath(str(consumer_ckpt)).rstrip('/'))
+  cons_cfg = os.path.join(cons_run, 'config.yaml')
+  eval_cfg = os.path.join(eval_run_logdir, 'config.yaml')
+  if not os.path.exists(cons_cfg):
+    raise SystemExit(
+        f'--consumer_checkpoint: no config.yaml next to it ({cons_cfg}); '
+        'refusing to overlay unverified heads')
+  if not os.path.exists(eval_cfg):
+    raise SystemExit(f'eval run has no config.yaml ({eval_cfg})')
+  import ruamel.yaml as yaml
+  from d0.sweep import _backfill_defaults
+  with open(eval_cfg) as f:
+    ev = _backfill_defaults(yaml.YAML(typ='safe').load(f))
+  with open(cons_cfg) as f:
+    cn = _backfill_defaults(yaml.YAML(typ='safe').load(f))
+  mism = consumer_config_mismatches(_flat_cfg(ev), _flat_cfg(cn))
+  if mism:
+    raise SystemExit(
+        '--consumer_checkpoint: arch-relevant config mismatch between '
+        f'{eval_run_logdir} and {cons_run}:\n  ' + '\n  '.join(mism))
+
+
+def overlay_consumer(agent, consumer_ckpt, load_fn=None):
+  """Second, regex-scoped load AFTER the main eval-checkpoint load.
+
+  JAXAgent.load overwrites n_updates/n_batches/n_actions UNCONDITIONALLY
+  from whichever checkpoint it loads (embodied/jax/agent.py:364-371),
+  and every policy call's seed derives from (config.seed, n_actions)
+  (agent.py:231-233, 405-408) — so without repair a control pass
+  (consumer = eval ckpt) and a swapped pass (consumer = the other
+  maturity) would start from DIFFERENT counter values and walk different
+  base trajectories. The counters are therefore snapshotted after the
+  main load and restored after the overlay: base trajectories and
+  oracle rollouts depend only on pol + counters + env RNG, none of
+  which the overlaid heads touch, which is what makes paired passes
+  state-identical (asserted by the reader's pairing guard).
+
+  load_fn is an injection point for the selfcheck; the default performs
+  the elements checkpoint load of key 'agent' with regex=CONSUMER_REGEX
+  (the embodied/run/train.py from_checkpoint bind pattern), resolving a
+  latest-file checkpoint dir the same way d0.sweep.load_frozen_agent
+  does. Returns the restored counter marks (for logging)."""
+  names = ('n_updates', 'n_batches', 'n_actions')
+  marks = {}
+  for name in names:
+    ctr = getattr(agent, name)
+    with ctr.lock:
+      marks[name] = int(ctr.value)
+  if load_fn is None:
+    def load_fn(path):
+      import elements
+      from functools import partial as bind
+      if not os.path.exists(os.path.join(path, 'done')):
+        latest = os.path.join(path, 'latest')
+        if not os.path.exists(latest):
+          raise SystemExit(
+              f'--consumer_checkpoint: {path} is neither a completed save '
+              'folder (no done file) nor a checkpoint dir (no latest file)')
+        with open(latest) as f:
+          path = os.path.join(path, f.read().strip())
+      elements.checkpoint.load(
+          path, dict(agent=bind(agent.load, regex=CONSUMER_REGEX)))
+  load_fn(consumer_ckpt)
+  # No-op-overlay guard: JAXAgent.load's regex path silently updates
+  # nothing when zero keys match (the non-empty assert runs BEFORE
+  # filtering), and a silent no-op would make control and swapped
+  # passes byte-identical — fabricating the registered HEADS-IRRELEVANT
+  # prediction with every guard green. Refuse unless the live param set
+  # contains matched keys covering every consulted head family.
+  params = getattr(agent, 'params', None)
+  if params is not None:
+    keys = list(params.keys())
+    matched = [k for k in keys if re.match(CONSUMER_REGEX, k)]
+    assert matched, (
+        '--consumer_checkpoint: overlay regex matched ZERO live param '
+        f'keys (regex {CONSUMER_REGEX}); param-layout drift — refusing '
+        'rather than run a silent no-op overlay')
+    for prefix in ('rew/', 'con/', 'valens0'):
+      assert any(k.startswith(prefix) for k in matched), (
+          f'--consumer_checkpoint: overlay covers no {prefix!r} key '
+          f'(matched {sorted(matched)[:6]}...); param-layout drift — '
+          'refusing rather than run a partial overlay')
+  for name in names:
+    ctr = getattr(agent, name)
+    with ctr.lock:
+      ctr.value = marks[name]
+  print(f'Consumer overlay loaded from {consumer_ckpt} '
+        f'(regex {CONSUMER_REGEX}); counters restored to {marks}.')
+  return marks
+
+
+# --------------------------------------------------------------------------
+# External consumer-model chooser (PREREG_competence_repair_20260730.md)
+# --------------------------------------------------------------------------
+
+def check_consumer_model_flags(consumer_model, consumer_checkpoint,
+                               behavior_checkpoint, oracle_all):
+  """Registered flag discipline for --consumer_model: it composes with
+  nothing (each combination would be an unregistered instrument) and
+  requires --oracle_all (the determinism-gate pairing needs the all-M
+  ground truth realized in every pass). No-op when the flag is empty."""
+  if not consumer_model:
+    return
+  assert not consumer_checkpoint, (
+      '--consumer_model combined with --consumer_checkpoint is '
+      'unregistered; refusing')
+  assert not behavior_checkpoint, (
+      '--consumer_model combined with --behavior_checkpoint is '
+      'unregistered; refusing')
+  assert oracle_all, (
+      '--consumer_model requires --oracle_all (registered pairing '
+      'invariant: g_all fully realized in every pass)')
+
+
+def stamp_consumer_model(meta, consumer_model, info):
+  """Version/provenance stamping for the external chooser. Empty flag =
+  the SAME dict back (byte-identical default path, mirrors
+  stamp_consumer); active = exact '_cm1' version suffix + model
+  provenance (path, sha256, deployed run key, feature-map version).
+  The repair reader pins the suffixed string by EXACT equality."""
+  if not consumer_model:
+    return meta
+  return dict(
+      meta,
+      labeler_version=meta['labeler_version'] + '_cm1',
+      consumer_model=str(consumer_model),
+      consumer_model_sha256=info['sha256'],
+      consumer_model_run=info['run'],
+      consumer_feature_map=info['feature_map_version'])
 
 
 # --------------------------------------------------------------------------
@@ -449,6 +726,14 @@ def main_real(args):
   from dreamerv3.main import make_agent, make_env
   from d0.sweep import load_config, load_frozen_agent
 
+  check_consumer_model_flags(args.consumer_model, args.consumer_checkpoint,
+                             args.behavior_checkpoint, args.oracle_all)
+  consumer, cm_info = None, None
+  if args.consumer_model:
+    from d0.train_consumer_model import make_chooser
+    consumer, cm_info = make_chooser(
+        args.consumer_model,
+        os.path.basename(args.run_logdir.rstrip('/')))
   out_dir = pathlib.Path(args.output).parent
   config, train_seed = load_config(args, out_dir)
   env = make_env(config, 0)
@@ -456,6 +741,18 @@ def main_real(args):
   agent = make_agent(config)
   ckpt = args.checkpoint or os.path.join(args.run_logdir, 'ckpt')
   agent = load_frozen_agent(agent, ckpt)
+  if args.consumer_checkpoint:
+    assert not args.behavior_checkpoint, (
+        'consumer overlay combined with a behavior checkpoint is '
+        'unregistered; refusing')
+    assert args.oracle_all, (
+        '--consumer_checkpoint requires --oracle_all (the pairing guard '
+        'needs the all-M ground truth realized in every pass; a targeted '
+        'pass would NaN g_all and waste the run)')
+    # Both loads happen HERE, before any labeling; every RNG mark is
+    # taken afterwards. The control arm passes the eval ckpt itself.
+    check_consumer_config(args.run_logdir, args.consumer_checkpoint)
+    overlay_consumer(agent, args.consumer_checkpoint)
   disc = (1.0 if config.agent.contdisc else
           1 - 1 / config.agent.horizon)
   oracle = AgentOracle(agent, env.act_space, disc)
@@ -476,8 +773,8 @@ def main_real(args):
       args.label_every, args.max_steps, rng,
       run_id=os.path.basename(args.run_logdir.rstrip('/')),
       oracle_all=args.oracle_all, ref_stride=args.ref_stride,
-      behavior=behavior)
-  save_rows(rows, args.output, meta=dict(
+      behavior=behavior, consumer=consumer)
+  meta = dict(
       run_logdir=args.run_logdir, checkpoint=str(ckpt),
       states=args.states, horizon=args.horizon,
       label_every=args.label_every, seed=args.seed,
@@ -486,8 +783,11 @@ def main_real(args):
       dose=dict(config.distractor),
       behavior_checkpoint=str(args.behavior_checkpoint or ''),
       mass_scale=float(args.mass_scale),
-      operation_pair='real_vs_imag_matched_candidate_budget'),
-      extra_arrays=ref_arrays)
+      operation_pair='real_vs_imag_matched_candidate_budget')
+  meta = stamp_consumer(meta, args.consumer_checkpoint,
+                        max_steps=args.max_steps)
+  meta = stamp_consumer_model(meta, args.consumer_model, cm_info)
+  save_rows(rows, args.output, meta=meta, extra_arrays=ref_arrays)
 
 
 # --------------------------------------------------------------------------
@@ -835,9 +1135,309 @@ def selfcheck():
   assert bc[3]['action'].shape == (1, 1)
   assert float(bc[3]['action'].reshape(())) == 0.5
 
+  # --- xc1: consumer-swap on the synthetic oracle. Same env class, same
+  # pol (both play cand 1), different value heads: the swapped heads
+  # rank candidate 2 first and score probe next-states by -10 x reward,
+  # so every chooser flips while trajectories, labeled states, and (with
+  # oracle_all) g_all are provably invariant — the pairing fact the xc
+  # wave registers as a guard. Closed forms, horizon 10:
+  # g_all = [2.8, 2.0, 1.8] at every labeled state. ---
+  class _XcHeadsOracle(_SynthOracle):
+    def __init__(self):
+      super().__init__()
+      self.discount = 1.0
+
+    def policy(self, carry, obs, mode='eval'):
+      carry, acts, out = super().policy(carry, obs, mode)
+      base = -10.0 * float(obs['reward'])
+      q = np.array([[base, base + 0.05, base + 0.1]] * 2, np.float32)
+      return carry, acts, dict(out, **{'d0/qfull': q[None]})
+
+  ctrl_oracle = _SynthOracle()
+  ctrl_oracle.discount = 1.0  # matched op_real discount across the pair
+  rows_c, _ = label_run(_SynthEnv(), ctrl_oracle, n_states=4, horizon=10,
+                        label_every=7, max_steps=200,
+                        rng=np.random.default_rng(0), run_id='xc',
+                        oracle_all=True)
+  rows_s, _ = label_run(_SynthEnv(), _XcHeadsOracle(), n_states=4,
+                        horizon=10, label_every=7, max_steps=200,
+                        rng=np.random.default_rng(0), run_id='xc',
+                        oracle_all=True)
+  for rc, rs in zip(rows_c, rows_s):
+    # pairing invariants: identical labeled states, identical g_all
+    assert rc['episode'] == rs['episode'] and rc['step'] == rs['step']
+    assert np.allclose(rc['g_all'], rs['g_all'], atol=1e-6)
+    assert np.allclose(rc['g_all'], [2.8, 2.0, 1.8], atol=1e-5), rc['g_all']
+    # chooser difference: control keeps the miscalibrated middle + true
+    # best; swapped heads pick candidate 2 everywhere
+    assert rc['m_now'] == 1 and rc['m_real'] == 0, rc
+    assert rs['m_now'] == 2 and rs['m_real'] == 2, rs
+    # closed-form achieved (= g_all[m_real] - g_now): 0.8 vs 0.0
+    ach_c = rc['g_all'][rc['m_real']] - rc['g_now']
+    ach_s = rs['g_all'][rs['m_real']] - rs['g_now']
+    assert abs(ach_c - 0.8) < 1e-5 and abs(ach_s - 0.0) < 1e-5, (ach_c, ach_s)
+
+  # --- xc2: CONSUMER_REGEX scope (param-key classification) ---
+  import re as _re
+  for key, want in [
+      ('rew/w', True), ('con/b', True), ('valens0/x', True),
+      ('valens12/x', True), ('val/w', False), ('valnorm/x', False),
+      ('slowvalens0/w', False), ('pol/w', False), ('enc/w', False),
+      ('dyn/w', False), ('dec/w', False), ('disag/w', False),
+      ('rewnorm/w', False)]:
+    assert bool(_re.match(CONSUMER_REGEX, key)) == want, (key, want)
+
+  # --- xc3: overlay_consumer counter snapshot/restore + regex-scoped
+  # param surgery on a mock agent mirroring JAXAgent.load semantics
+  # (counters overwritten unconditionally by whichever load runs) ---
+  class _Ctr2:
+    def __init__(self, v):
+      self.lock = threading.Lock()
+      self.value = v
+
+  class _MockLoadAgent:
+    def __init__(self):
+      self.n_updates = _Ctr2(3)
+      self.n_batches = _Ctr2(3)
+      self.n_actions = _Ctr2(1234)
+      self.params = {
+          'enc/w': 'E0', 'dyn/w': 'Y0', 'dec/w': 'X0', 'pol/w': 'P0',
+          'rew/w': 'R0', 'con/w': 'C0', 'valens0/w': 'V0',
+          'valens1/w': 'V1', 'val/w': 'VAL0', 'slowvalens0/w': 'SV0',
+          'disag/w': 'D0'}
+
+    def load(self, data, regex=None):
+      self.n_updates.value = data['counters']['updates']
+      self.n_batches.value = data['counters']['updates']
+      self.n_actions.value = data['counters']['actions']
+      params = data['params']
+      if regex:
+        params = {k: v for k, v in params.items() if _re.match(regex, k)}
+      self.params.update(params)
+
+  mag = _MockLoadAgent()
+  cons_data = {'params': {k: k + '_CONS' for k in mag.params},
+               'counters': {'updates': 99, 'actions': 777}}
+  calls = []
+
+  def _mock_load(path):
+    calls.append(path)
+    mag.load(cons_data, regex=CONSUMER_REGEX)
+
+  marks = overlay_consumer(mag, 'ckptB', load_fn=_mock_load)
+  assert calls == ['ckptB']
+  assert marks == dict(n_updates=3, n_batches=3, n_actions=1234), marks
+  # counters restored despite the load's unconditional overwrite
+  assert (mag.n_updates.value, mag.n_batches.value,
+          mag.n_actions.value) == (3, 3, 1234)
+  # only the head params were replaced
+  for k in ('rew/w', 'con/w', 'valens0/w', 'valens1/w'):
+    assert mag.params[k] == k + '_CONS', (k, mag.params[k])
+  for k in ('enc/w', 'dyn/w', 'dec/w', 'pol/w', 'val/w',
+            'slowvalens0/w', 'disag/w'):
+    assert not mag.params[k].endswith('_CONS'), (k, mag.params[k])
+
+  # control-equivalence: overlay-with-self leaves the ENTIRE mock state
+  # byte-for-byte unchanged (params + counters)
+  mag2 = _MockLoadAgent()
+  before = (dict(mag2.params), mag2.n_updates.value,
+            mag2.n_batches.value, mag2.n_actions.value)
+  self_data = {'params': dict(mag2.params),
+               'counters': {'updates': 99, 'actions': 777}}
+  overlay_consumer(mag2, 'ckptSelf',
+                   load_fn=lambda p: mag2.load(self_data,
+                                               regex=CONSUMER_REGEX))
+  after = (dict(mag2.params), mag2.n_updates.value,
+           mag2.n_batches.value, mag2.n_actions.value)
+  assert before == after, (before, after)
+
+  # --- xc4: meta/version stamping. Empty flag = the SAME dict back
+  # (byte-identical default path); active overlay = exact _xc1 version
+  # + consumer keys, original dict never mutated. ---
+  base_meta = dict(labeler_version='d1fix_20260724', seed=1)
+  assert stamp_consumer(base_meta, '') is base_meta
+  stamped = stamp_consumer(base_meta, '/x/r3_cup_e1_seed31/ckpt_early')
+  assert stamped['labeler_version'] == 'd1fix_20260724_xc1'
+  assert stamped['consumer_checkpoint'] == '/x/r3_cup_e1_seed31/ckpt_early'
+  assert stamped['consumer_regex'] == CONSUMER_REGEX
+  assert base_meta == dict(labeler_version='d1fix_20260724', seed=1)
+  # max_steps is overlay-only meta (state-window dial; xc reader pins it)
+  stamped_ms = stamp_consumer(base_meta, '/x/ckpt_early', max_steps=1000)
+  assert stamped_ms['max_steps'] == 1000
+  assert 'max_steps' not in stamped
+
+  # --- xc6: no-op-overlay guard — zero-match and partial-coverage
+  # overlays must REFUSE (a silent no-op would fabricate the registered
+  # HEADS-IRRELEVANT null); the mock layouts here are deliberately NOT
+  # synthesized from CONSUMER_REGEX. ---
+  for layout, needle in (
+      ({'pol/w': 1, 'enc/w': 2}, 'ZERO live param'),
+      ({'rew/w': 1, 'pol/w': 2}, "no 'con/'"),
+      ({'rew/w': 1, 'con/w': 2, 'pol/w': 3}, "no 'valens0'")):
+    magn = _MockLoadAgent()
+    magn.params = dict(layout)
+    try:
+      overlay_consumer(magn, 'ckptN', load_fn=lambda p: None)
+      raise SystemExit(f'selfcheck FAIL: no-op overlay not caught: {layout}')
+    except AssertionError as e:
+      assert needle in str(e), (needle, e)
+
+  # --- xc7: consumer-arm stdout redaction — save_rows must not print
+  # estimand means for _xc1/_cm1 passes (delta_real IS achieved; paired
+  # stdout means would reveal the primaries pre-read); the default path
+  # keeps the original line. ---
+  import contextlib
+  import io
+  import tempfile
+  with tempfile.TemporaryDirectory() as d:
+    r = dict(episode=0, step=0, delta_real=0.5, delta_imag=0.1)
+    for ver, redacted in (('d1fix_20260724', False),
+                          ('d1fix_20260724_xc1', True),
+                          ('d1fix_20260724_cm1', True)):
+      buf = io.StringIO()
+      with contextlib.redirect_stdout(buf):
+        save_rows([r], os.path.join(d, f'x_{ver}.npz'),
+                  meta=dict(labeler_version=ver))
+      out = buf.getvalue()
+      if redacted:
+        assert 'redacted' in out and 'delta_real' not in out, out
+      else:
+        assert 'mean delta_real' in out, out
+
+  # --- xc5: config-safety comparer (the regex load path skips shape
+  # asserts, so this is the manual arch check) + missing-config trip ---
+  assert _flat_cfg({'a': {'b': 1, 'c': {'d': 2}}, 'e': 3}) == {
+      'a.b': 1, 'a.c.d': 2, 'e': 3}
+  ev_flat = {'task': 'dmc_cup_catch', 'agent.valens.k': 5,
+             'agent.dyn.deter': 512, 'agent.valnorm.impl': 'none',
+             'seed': 31, 'logdir': '/a'}
+  cn_flat = dict(ev_flat, seed=99, logdir='/b')  # run-identity diffs ok
+  assert consumer_config_mismatches(ev_flat, cn_flat) == []
+  bad = dict(ev_flat, **{'agent.valens.k': 3})
+  msgs = consumer_config_mismatches(ev_flat, bad)
+  assert msgs and 'agent.valens.k' in msgs[0], msgs
+  bad = dict(ev_flat, task='dmc_finger_turn_hard')
+  assert any('task' in m for m in consumer_config_mismatches(ev_flat, bad))
+  bad = dict(ev_flat)
+  del bad['agent.dyn.deter']
+  assert any('<absent>' in m
+             for m in consumer_config_mismatches(ev_flat, bad))
+  ema = dict(ev_flat, **{'agent.valnorm.impl': 'ema'})
+  msgs = consumer_config_mismatches(ema, ema)
+  assert msgs and all('valnorm' in m for m in msgs), msgs
+  import tempfile
+  with tempfile.TemporaryDirectory() as d:
+    os.makedirs(os.path.join(d, 'runX', 'ckpt'))
+    try:
+      check_consumer_config(d, os.path.join(d, 'runX', 'ckpt'))
+      raise AssertionError('missing consumer config.yaml must trip')
+    except SystemExit as e:
+      assert 'config.yaml' in str(e), e
+
+  # --- cm1: external consumer-model chooser (competence repair). A
+  # ridge model whose only weight is -1 on the action column ranks the
+  # a=-0.5 candidate first; the chooser must override ONLY the
+  # realized-choice row fields while trajectory, labeled states, g_all,
+  # the plug-in/imag picks, and the probe scores stay provably
+  # invariant vs the consumer=None run (closed forms as xc1). ---
+  from d0.train_consumer_model import (
+      FEATURE_MAP_VERSION, make_chooser)
+  with tempfile.TemporaryDirectory() as d:
+    w = np.zeros(11)  # F = 8 + A(1) + D(2) for the synthetic oracle
+    w[8] = -1.0       # candidate action column
+    mpath = os.path.join(d, 'model.npz')
+    np.savez(mpath,
+             feature_map_version=FEATURE_MAP_VERSION,
+             trainer_version='cm1',
+             lambda_grid=np.array([1.0]),
+             runs=np.array(['synth']),
+             manifest=json.dumps(dict(files={}, per_model={'synth': []})),
+             w_synth=w, b_synth=np.float64(0.0), mu_synth=np.zeros(11),
+             sd_synth=np.ones(11), lambda_synth=np.float64(1.0))
+    chooser, cm_info = make_chooser(mpath, 'synth')
+    assert cm_info['run'] == 'synth' and len(cm_info['sha256']) == 64
+    assert cm_info['feature_map_version'] == FEATURE_MAP_VERSION
+    rows_p, _ = label_run(_SynthEnv(), _SynthOracle(), n_states=4,
+                          horizon=10, label_every=7, max_steps=200,
+                          rng=np.random.default_rng(0), run_id='synth',
+                          oracle_all=True)
+    rows_m, _ = label_run(_SynthEnv(), _SynthOracle(), n_states=4,
+                          horizon=10, label_every=7, max_steps=200,
+                          rng=np.random.default_rng(0), run_id='synth',
+                          oracle_all=True, consumer=chooser)
+    for rp, rm in zip(rows_p, rows_m):
+      # pairing invariants: identical labeled states, identical g_all
+      assert rp['episode'] == rm['episode'] and rp['step'] == rm['step']
+      assert np.allclose(rp['g_all'], rm['g_all'], atol=1e-6)
+      assert np.allclose(rm['g_all'], [2.8, 2.0, 1.8], atol=1e-5)
+      # untouched decisions and probe machinery
+      assert rm['m_now'] == 1 and rm['m_imag'] == 1, rm
+      assert np.allclose(rm['real_scores'], rp['real_scores'])
+      # the override: realized choice = argmax ghat; probe pick kept
+      assert rp['m_real'] == 0 and rm['m_real'] == 2, (rp, rm)
+      assert rm['m_real_probe'] == 0, rm['m_real_probe']
+      assert np.allclose(rm['ghat'], [-0.9, -0.3, 0.5], atol=1e-6)
+      assert rm['m_real'] == int(np.argmax(rm['ghat']))
+      assert abs(rm['g_real'] - rm['g_all'][2]) < 1e-5, rm
+      assert abs(rm['delta_real'] - (1.8 - 2.0)) < 1e-5, rm['delta_real']
+      # consumer=None rows carry NO new fields (byte-identical schema)
+      assert 'ghat' not in rp and 'm_real_probe' not in rp
+    # save/reload: new columns round-trip with shapes and dtypes
+    out_m = os.path.join(d, 'cm_rows.npz')
+    save_rows(rows_m, out_m, meta=dict(selfcheck=True))
+    data = np.load(out_m, allow_pickle=False)
+    assert data['ghat'].shape == (4, 3) and data['ghat'].dtype == np.float32
+    assert data['m_real_probe'].shape == (4,)
+    assert np.array_equal(data['m_real'], np.argmax(data['ghat'], 1))
+
+    # cm2: registered flag discipline — the chooser composes with
+    # nothing and requires oracle_all; empty flag is a no-op.
+    for bad in (dict(consumer_checkpoint='x'),
+                dict(behavior_checkpoint='x'),
+                dict(oracle_all=False)):
+      kw = dict(consumer_checkpoint='', behavior_checkpoint='',
+                oracle_all=True)
+      kw.update(bad)
+      try:
+        check_consumer_model_flags('m.npz', **kw)
+        raise SystemExit(f'selfcheck FAIL: flag combo not caught: {bad}')
+      except AssertionError as e:
+        assert 'unregistered' in str(e) or 'oracle_all' in str(e), e
+    check_consumer_model_flags('', 'ck', 'bk', False)
+
+    # cm3: meta/version stamping — empty flag returns the SAME dict
+    # (byte-identical default path); active = exact _cm1 version + model
+    # provenance; the original dict is never mutated.
+    bm = dict(labeler_version='d1fix_20260724', seed=0)
+    assert stamp_consumer_model(bm, '', None) is bm
+    st = stamp_consumer_model(bm, mpath, cm_info)
+    assert st['labeler_version'] == 'd1fix_20260724_cm1'
+    assert st['consumer_model'] == mpath
+    assert st['consumer_model_sha256'] == cm_info['sha256']
+    assert st['consumer_model_run'] == 'synth'
+    assert st['consumer_feature_map'] == FEATURE_MAP_VERSION
+    assert bm == dict(labeler_version='d1fix_20260724', seed=0)
+
+    # cm4: deploy guards — unknown run key trips at load.
+    try:
+      make_chooser(mpath, 'r3_cup_e1_seed31')
+      raise SystemExit('selfcheck FAIL: unknown model run not caught')
+    except AssertionError as e:
+      assert 'no weights' in str(e), e
+
   print('SELFCHECK PASS (incl. R2 extension: udyn/deter/boot/ref; '
         'shift extension: behavior-driven trajectory + mass-scale; '
-        'd1fix: candidate-conditioned branch carries + policy-RNG CRN)')
+        'd1fix: candidate-conditioned branch carries + policy-RNG CRN; '
+        'xc extension: head-swap trajectory/g_all invariance closed-form, '
+        'CONSUMER_REGEX scope, counter snapshot/restore + regex surgery + '
+        'control self-equivalence, meta stamping byte-identical default '
+        '+ max_steps overlay stamp, no-op/partial-overlay guard trips, '
+        'consumer-arm stdout redaction (_xc1/_cm1), '
+        'config-safety comparer + missing-config trip; cm extension: '
+        'external ridge chooser trajectory/g_all invariance closed-form '
+        'with probe fields preserved + row schema round-trip, flag '
+        'discipline (no composition, oracle_all required), _cm1 stamping '
+        'byte-identical default, unknown-run guard)')
 
 
 def main():
@@ -862,6 +1462,22 @@ def main():
                  help='optional second ckpt whose policy DRIVES the '
                       'base trajectory (cross-policy shift arm); the '
                       'main checkpoint stays the evaluation agent')
+  p.add_argument('--consumer_checkpoint', default='',
+                 help='optional second ckpt whose rew/con/valens value '
+                      'heads OVERLAY the eval agent after the main load '
+                      '(cross-checkpoint consumer, '
+                      'PREREG_r3_amend2_20260730); pol, WM, and disag '
+                      'stay the eval checkpoint\'s; pass the eval ckpt '
+                      'itself for the control arm')
+  p.add_argument('--consumer_model', default='',
+                 help='optional LORO ridge-model npz '
+                      '(d0/train_consumer_model.py) deployed as an '
+                      'EXTERNAL chooser for the realized choice '
+                      '(competence repair, '
+                      'PREREG_competence_repair_20260730); requires '
+                      '--oracle_all and composes with no other second-'
+                      'checkpoint flag; base trajectory and g_all are '
+                      'unaffected by construction')
   p.add_argument('--mass_scale', type=float, default=1.0,
                  help='scale all dm_control body masses at setup '
                       '(physics shift arm); 1.0 = unshifted')

@@ -131,6 +131,79 @@ re-test, not results. 24+24 permanently frozen; imag op retired.
   materiality vs 0.6465 (= 50% of the committed gap 1.29304688,
   truncated conservatively); T4 signed-bias theory anchor verified
   (Prop biassign).
+- **R3 candidate-aware ladder REGISTERED 07-30/31** (Paper-2
+  objection-4 residue; registered-DESCRIPTIVE, never decisional):
+  `PREREG_r3_ladder_20260730` → `analysis/r3_ladder_read.py` (selfcheck
+  PASS; sha256 ea4271d5…). L0–L4 on the committed R3 labels (substrate
+  byte-gated by frozen `COMMITTED_LABELS_DIGEST` 02efe6c5…); NEW L4 =
+  frozen 7-feature candidate-geometry/Q-dispersion set (old ladder's
+  candidate-geometry exclusion LIFTED as an explicit registered scope
+  change); nested-LORO ridge, 16 clusters/cell, 48 looks counted;
+  heuristics: compression signature (carried) + candidate signature
+  (new) — consequence resource-only (repair targeting). ONE local CPU
+  read after freeze-commit. Solo pre-freeze review (reviewer wave lost
+  to session limits — see DEVIATIONS): exact version pin + digest gate
+  added.
+- **Stage-0 second-k robustness REGISTERED 07-30/31** (the Stage-0
+  memos' own unexecuted caveat; gates externalizing TRACKS_DENSITY):
+  `PREREG_stage0_secondk_20260730` → `analysis/stage0_secondk_read.py`
+  (selfcheck PASS; sha256 3c297e18…) + one-line dumper patch
+  (`probing/latent_uq.py` meta gains ep_batch). k2 ∈ {5,20}, 10 p2e
+  cells all-or-nothing; substrate NOT on disk (anchors discarded at
+  dump time) ⇒ registered EXISTENCE GATE (gate JSON w/ replay chunk
+  counts) + SUBSTRATE-GONE branch; two-mode integrity-guard ladder
+  (tolerance / fallback rank-floor 0.9) selected by a k=10 CALIBRATION
+  dump (bf16 + categorical sampling ⇒ cross-backend drift is real;
+  --platform cuda pinned); P-K1 robust iff 20/20 TRACKS_DENSITY,
+  AMBIGUOUS counts as flip. 2 reviewer passes (2 BLOCKING: broken
+  selfcheck float-equality asserts; prereg/reader design divergence
+  from an interrupted fixer — reader design adopted, prereg rewritten
+  to match).
+- **TM2-R3 TD-MPC2 cross-family replication REGISTERED 07-30/31**
+  (Paper-2 LONG POLE; the ICML band-mover):
+  `PREREG_tm2_competence_20260730` → labeler port
+  `probing/tdmpc2_oracle_labels.py` (selfcheck PASS; 8eeb5949…; planner
+  warm-start snapshot + torch-RNG CRN replace belief carries; smoke
+  stdout estimand redaction) + `probing/tdmpc2_r3_train.py` (official
+  OnlineTrainer subclass, early ckpt at 2.5e4) + compat dose patch
+  (exact main.py distractor mirror; byte-identical for existing
+  callers) + `scripts/tm2r3.sbatch` (4 stages, checkout pin, grid
+  validation) + `analysis/tm2_r3_read.py` (selfcheck PASS; 00e83fc4…;
+  r3_read import pins, FLOOR gate, dosed-smoke authenticity + task
+  pins). Grid: {cup,finger}×{e1,e4}×seeds 51–58×{2.5e4,1e5} = 32 online
+  runs + 64 oracle_all passes ≈ 130–230 GPU·h. P-TM2a/b/c mirror
+  P-R3a/b/c; HARVESTED-BY-PLANNER = registered family-boundary branch.
+  2 reviewer passes 0-blocking; all MINOR/NOTE hardening applied.
+- **R3 Amendment 2 — cross-checkpoint consumer REGISTERED 07-30/31**
+  (parent 8b3380ce re-entry clause): `PREREG_r3_amend2_20260730` →
+  `--consumer_checkpoint` overlay in `d0/oracle_labels.py` (full
+  selfcheck PASS; 3613f488…; counter snapshot/restore ⇒ control and
+  swapped passes state-identical — per-state pairing; regex
+  '^(rew|con|valens\d+)/'; no-op/partial-overlay guard; consumer-arm
+  stdout REDACTION (value-blindness leak fixed pre-freeze); config
+  comparer) + `analysis/r3_xconsumer_read.py` (selfcheck PASS;
+  b4952946…; pairing QUARANTINE gate, smoke authenticity, max_steps
+  pin) + `scripts/r3_xc_local.sh` (existence gate refuses to erase a
+  prior SUBSTRATE_GONE marker). 128 passes on the R3 run dirs (kept in
+  runroot_cleanup KEEP_PENDING); P-XC1 head-harm / P-XC2 head-deficit,
+  prediction HEADS-IRRELEVANT (per P-R3c + reacher). 2 reviewer passes
+  ×2 rounds (2 BLOCKING fixed: stdout estimand leak; stale disclosure —
+  reacher read now named known-at-freeze).
+- **Competence-repair intervention REGISTERED 07-30/31** (the R3
+  consequence map's mandated NEW registration; the headline follow-up):
+  `PREREG_competence_repair_20260730` → `d0/train_consumer_model.py`
+  (LORO per-run ridge on cmfeat1 observables; selfcheck PASS
+  deterministic across PYTHONHASHSEED; 2405c44e…; live ALLOWED_KEYS
+  whitelist + source-scan) + `--consumer_model` chooser (cast-first f32)
+  + `analysis/repair_read.py` (selfcheck PASS; bec84fc6…; determinism
+  gate episode/step/m_now/g_all vs the COMMITTED labels as per-state
+  control — zero control passes; frozen COMMITTED_LABELS_DIGEST +
+  trainer-source sha + 3-way model-sha protocol) +
+  `scripts/r3_rep_local.sh`. 32 repaired passes (~32–64 GPU·h);
+  P-REP1 paired achieved CI>0, P-REP2 materiality 0.6465 (point label);
+  verdicts REPAIRED / PARTIAL / NOT-REPAIRABLE-FROM-OBSERVABLES /
+  HARMFUL. 2 reviewer passes ×2 rounds (1 BLOCKING fixed: salted-hash
+  selfcheck nondeterminism).
 
 - **Unfrozen stress waves U1–U4** (REGISTERED 07-27; motivated by the frozen-protocol audit `research_notes/Audit_FrozenProtocol_20260726.md`): `PREREG_unfrozen_u{1,2,3,4}_20260727` → `analysis/unfrozen_stress_read.py` (four subcommands, selfcheck PASS) + `orth_spin_unfrozen` config. **U2/U3/U4 READ 07-30** (see Paper-1 table: robust / robust / floor-censored — no flips anywhere; `artifacts/unfrozen_stress_u234_20260730/`). **U1 still draining** (apt+task unfrozen 2×2, 32 jobs; P-U1a interaction persists / P-U1b apt-null stress — the decisive reward-free-null test, absence-vs-illegible discriminator anchored to rgo +235/sgb +30; 8 rows outstanding at the 07-30 csv: uzt s0 seeds 7–8 + uzf seeds 6–8 both sides). Frozen registrations untouched under every branch — flips would have changed generality language only.
 - **Pretrained-encoder pixel arm REGISTERED 07-30** (GO'd; the swamping account's lever prediction): `PREREG_pe_pixel_20260730` → `analysis/pe_pixel_read.py` (selfcheck PASS; sha256 34380e0f…) + code: `agent.frozen_enc` (optimizer module filtering), `offline_fit` partial-init w/ counter reset (the skip trap), `AXIS1_INIT_WM` plumbing, `scripts/check_frozen_enc.py` integrity gate (training witness via OFFLINE_FIT_PROGRESS; committed selfcheck; sha256 00acbdff…). Design: 16 stage-2 pixel fits (task-mode full, enc loaded '^enc/' from seed/side-matched fpxpx donors + frozen) + 16 frozen-readout adapts + E4 pass (COLLATE to a NEW csv). P-PE1 graded (CI<2.0 INCLUSION-RESTORED / <19.41 PARTIAL / else NO-RELIEF vs pinned 23.34 baseline); P-PE2 lift vs committed X2 cells; P-PE3 conditional occupancy split. Smoke gate + 16-run integrity sweep with persisted log. 2 adversarial reviews (0 blocking; all 4 MINOR hardening items applied incl. the counter-skip witness + subshell-safe sweep gate). Donors protected in runroot_cleanup (KEEP-PENDING).

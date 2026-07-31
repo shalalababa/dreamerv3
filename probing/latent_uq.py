@@ -355,6 +355,7 @@ def main():
         eval_steps=eval_steps, ref_replay=os.path.abspath(ref_replay),
         ref_windows=n_ref, knn=args.knn, dec_symlog=dec_symlog,
         has_disag=has_disag, seed=args.seed,
+        ep_batch=args.ep_batch,
         disag_ens=int(config.agent.expl.disag_ens) if has_disag else 0,
         shapes={k: list(v.shape) for k, v in feats.items()})
     with open(os.path.join(step_dir, 'meta.json'), 'w') as f:

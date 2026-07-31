@@ -13,6 +13,15 @@ online adapt environment lives here, so agreement holds by construction:
 - ``Dv3TaskEnv``: the DreamerV3 embodied DMC env (SAME wrapper family and
   action-repeat=1 semantics that produced every study buffer) behind the
   env API the TD-MPC2 trainer expects.
+- Distractor-dose composition (TM2-R3 wave, 2026-07-30): ``dose`` in
+  {e1, e4} mirrors EXACTLY how DreamerV3 applies the OU distractor
+  (dreamerv3/main.py make_env: the ``Distractor`` wrapper is attached
+  directly around the DMC env, seed derived via
+  ``np.random.SeedSequence([run_seed, env_index, 0xD0])``, and the dose
+  constants come from configs.yaml — e1 = no wrapper, e4 = ``d0_dose3``
+  = dim 32, scale 3.0, with the shared defaults theta 0.1, basesd 0.0,
+  calib 1000). The distractor observation key is appended LAST to the
+  canonical concatenation order.
 
 The official repo is used at a pinned commit (see PREREG); set
 ``TDMPC2_ROOT`` to its ``tdmpc2/`` package directory.
@@ -31,6 +40,29 @@ OBS_ORDER = {
 }
 META_KEYS = ('reward', 'is_first', 'is_last', 'is_terminal', 'action',
              'consec', 'stepid', 'regime', 'in_regime')
+
+# Distractor doses (TM2-R3): value-for-value from dreamerv3/configs.yaml
+# (`distractor:` defaults line + `d0_dose3`). e1 = wrapper not applied.
+DISTRACTOR_KEY = 'distractor'
+DOSE_TABLE = {
+    'e1': dict(dim=0, scale=1.0, theta=0.1, basesd=0.0, calib=1000),
+    'e4': dict(dim=32, scale=3.0, theta=0.1, basesd=0.0, calib=1000),
+}
+
+
+def dose_config(dose):
+  if dose not in DOSE_TABLE:
+    raise SystemExit(
+        f'unknown distractor dose {dose!r}; registered: {sorted(DOSE_TABLE)}')
+  return dict(DOSE_TABLE[dose])
+
+
+def distractor_seed(run_seed, index=0):
+  """Mirror of dreamerv3/main.py make_env: SeedSequence, not hash()
+  (tuples containing strings hash differently per process, which would
+  make the distractor stream irreproducible)."""
+  return int(np.random.SeedSequence(
+      [int(run_seed), int(index), 0xD0]).generate_state(1)[0])
 
 
 def add_tdmpc2_path(root=None):
@@ -51,10 +83,13 @@ def obs_keys(task):
   return OBS_ORDER[task]
 
 
-def flatten_obs(obs, task):
-  """Single-step obs dict -> 1-D float32 vector in canonical order."""
+def flatten_obs(obs, task, extra=()):
+  """Single-step obs dict -> 1-D float32 vector in canonical order.
+  ``extra`` appends further keys (e.g. the distractor) AFTER the
+  canonical task keys; default () keeps the historical behavior
+  bit-for-bit for every existing caller."""
   parts = []
-  for k in obs_keys(task):
+  for k in obs_keys(task) + tuple(extra):
     v = np.asarray(obs[k], np.float32).reshape(-1)
     parts.append(v)
   return np.concatenate(parts, 0)
@@ -124,24 +159,34 @@ class Dv3TaskEnv:
   1000-step episodes, and the canonical obs concatenation above.
   """
 
-  def __init__(self, task, seed=0):
+  def __init__(self, task, seed=0, dose='e1'):
     import torch  # deferred: torch lives in the tdmpc2 env
     import gymnasium as gym
     from embodied.envs import dmc
     self._torch = torch
     self.task = task
+    self.dose = dose
+    dcfg = dose_config(dose)
     name = task.removeprefix('dmc_')
     # DMC ctor takes no seed; episode randomness comes from dm_control's
     # per-reset seeding. Sampling seeds (rand_act) use self._rng below.
     self._env = dmc.DMC(name, repeat=1, proprio=True, image=False,
                         render=False)
+    self._extra_keys = ()
+    if dcfg['dim']:
+      # EXACT mirror of dreamerv3/main.py make_env: Distractor wraps the
+      # DMC env directly; seed from SeedSequence([seed, index=0, 0xD0]).
+      from embodied.envs.distractor import Distractor
+      self._env = Distractor(self._env, **dcfg,
+                             seed=distractor_seed(seed, 0))
+      self._extra_keys = (DISTRACTOR_KEY,)
     aspace = self._env.act_space['action']
     self._action_shape = aspace.shape
     self.action_space = gym.spaces.Box(
         low=np.asarray(aspace.low, np.float32),
         high=np.asarray(aspace.high, np.float32), dtype=np.float32)
     d = int(sum(np.prod(self._env.obs_space[k].shape) or 1
-                for k in obs_keys(task)))
+                for k in obs_keys(task) + self._extra_keys))
     self.observation_space = gym.spaces.Box(
         low=np.full((d,), -np.inf, np.float32),
         high=np.full((d,), np.inf, np.float32), dtype=np.float32)
@@ -149,7 +194,8 @@ class Dv3TaskEnv:
     self._rng = np.random.default_rng(seed)
 
   def _flat(self, obs):
-    return self._torch.from_numpy(flatten_obs(obs, self.task))
+    return self._torch.from_numpy(
+        flatten_obs(obs, self.task, extra=self._extra_keys))
 
   def rand_act(self):
     a = self._rng.uniform(self.action_space.low, self.action_space.high)

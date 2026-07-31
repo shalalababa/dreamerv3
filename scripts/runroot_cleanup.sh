@@ -88,7 +88,8 @@ DELETE_AFTER=(  # "glob :: unblocking event"
   "adapt_ax1uztq1s* adapt_ax1uzfq1s* :: U1 read verified (only copy of undecided U1 scores until bundled)"
   "ax1wm_finger_s12q1s*_seed* ax1wm_finger_fs12q1s*_seed* adapt_ax1s12q1s* adapt_ax1fs12q1s* :: 25m read verified (its reader asserts 12m rows)"
   "tm2wm_* adapt_tm2* tm2_data :: TD-MPC2 replication registration names its substrate"
-  "r3_local/r3_labels :: doubling read verified (M=8 side option)"
+  # (r3_local/r3_labels moved to KEEP_PENDING 30 Jul — R3 substrate gained
+  #  new registered consumers; see the r3 block in KEEP_PENDING)
   "runs.csv _submit_runlists _bundles :: all pending reads done (bookkeeping)"
 )
 
@@ -97,7 +98,20 @@ KEEP_PENDING=(
   #  U1's remain the only copy of undecided scores and moved to DELETE_AFTER)
   ax1wm_finger_s25q1s*_seed* ax1wm_finger_fs25q1s*_seed*
   adapt_ax1s25q1s* adapt_ax1fs25q1s*
+  # R3 run dirs (ckpt_early + ckpt) are the SUBSTRATE of two registered
+  # not-yet-executed waves (donor-dependency lesson, fpxpx incident):
+  #   * PREREG_r3_amend2_20260730 (cross-checkpoint consumer: 128 label
+  #     passes need BOTH checkpoints of all 32 runs, all-or-nothing)
+  #   * PREREG_competence_repair_20260730
+  # r3_labels moved here from DELETE-AFTER 30 Jul: consumed by the
+  # doubling read (M=8 side) and the repair wave (paired per-state
+  # control + trainer input); the xc wave never re-reads it.
+  # rep_labels/rep_model are the repair wave's ONLY outputs (repaired
+  # npz + sha-pinned model + gate markers) — inputs to its unexecuted
+  # ONE read (PREREG_competence_repair_20260730).
   r3_local/r3_cup_e*_seed3? r3_local/r3_finger_e*_seed3?
+  r3_local/r3_labels r3_local/xc_labels
+  r3_local/rep_labels r3_local/rep_model
   r3_local/r3dbl_labels r3_local/r3_reacher_*
   # pretrained-encoder pixel wave (registered 30 Jul): fpxpx fits are the
   # seed/side-matched ENCODER DONORS — keep until the pe wave's read verifies
