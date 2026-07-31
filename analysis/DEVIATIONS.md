@@ -6,6 +6,25 @@ immutable dated files; see plan v4.)
 
 ## Deviations
 
+- **2026-07-30 (night) — PAPER-4 CONFIRMATORY READ EXECUTED (ONE
+  execution, Paper-4 owning chat): ALL FOUR PRIMARIES FIRE.** Bundle
+  `local_results/collusion_confirm_20260730_200834/` (slurm 52831447;
+  user-committed `74ca4c47`). Pre-read verification: MANIFEST.sha256
+  verify OK 16/16 (`scripts/bundle_manifest.sh`); bundled
+  pilot/designb/reader/prereg snapshots byte-identical to freeze
+  commit `42bbe487`; worktree copies unmodified since freeze; reader
+  selfcheck PASS immediately before the read; all six cohorts complete
+  (loader-enforced seed grids). No deviation: the read ran the
+  registered command form once; the json is archived unmodified in
+  `artifacts/collusion_confirm_20260730/`. Verdicts: P-CLB1 −0.104* +
+  P-CLB2 −0.592* (composition drives both outcomes at matched update
+  mass; ladder monotone, mid-dose also fires at confirmatory power) +
+  P-CLA1 −0.650* + P-CLA2 +0.135* (the pre-registered dissociation:
+  fingerprint 0.65→0.00 while Δ 0.852→0.987) — all gates pass (exact
+  100/100, n_fp=76, manip −0.485*). Registered consequences engaged:
+  RQ2 composition leg lands; RQ3 coupling wave AUTHORIZED (next
+  registration); forbid-arm degeneracy materialized as disclosed
+  (converged 100/100 at window minimum, Δ spread ≈ 0).
 - **2026-07-30 (pm) — U2/U3/U4 READS EXECUTED (ONE execution each,
   cluster-side; U1 untouched).** Frozen reads
   (`analysis/unfrozen_stress_read.py u2/u3/u4`, registered
