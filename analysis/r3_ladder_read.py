@@ -2,7 +2,9 @@
 
 Registered in prereg/PREREG_r3_ladder_20260730.md and committed BEFORE
 any per-state feature->target statistic on the corrected R3 labels
-exists anywhere. Successor of the instrument-invalidated D1 ladder
+exists anywhere; metric amended pre-read by
+prereg/PREREG_r3_ladder_amend1_20260731.md (within-run Spearman — see
+the metric section below), also committed before the read. Successor of the instrument-invalidated D1 ladder
 (PREREG_d1_ladder_20260723.md): that invalidation was entirely in the
 LABELS (stale-carry + policy-RNG labeler defects, repaired
 d1fix_20260724), not in the ladder machinery, so the machinery carries
@@ -29,10 +31,19 @@ Rungs per cell x target:
   L4  nested-LORO ridge on [deter + F1 + G], G = the 7 frozen
       candidate-geometry / Q-dispersion features (the NEW rung)
 
-Metric per rung: held-out pooled Spearman + run-clustered percentile
-bootstrap CI (B=10K, default_rng(0)). The [L4 - L3] contrast is
-bootstrap-PAIRED: one joint pass resamples clusters once per replicate
-and scores both rungs on the same draw.
+Metric per rung (AMENDED 31 Jul by PREREG_r3_ladder_amend1_20260731,
+committed before the read): mean per-run held-out Spearman +
+run-resampled percentile bootstrap CI (B=10K, default_rng(0)). Ranking
+WITHIN runs removes run-/domain-level target structure and the LORO
+intercept artifact, which the independent post-freeze review showed
+make the parent's pooled Spearman a biased estimate of per-state
+legibility under the between-run heterogeneity committed as true of
+this data; the pooled statistic is carried point-only as a
+non-evidential pooled_diagnostic. Runs with rank-constant targets
+(all-floor label files) are excluded from the mean and counted in
+n_nan_runs. The [L4 - L3] contrast is bootstrap-PAIRED: one joint pass
+resamples clusters once per replicate and scores both rungs' per-run
+rho means on the same draw.
 
 Registered NON-decisional heuristics (resource consequence only: they
 inform TARGETING of the competence-repair intervention, sibling
@@ -49,8 +60,9 @@ verdict):
 Usage:
   python -m analysis.r3_ladder_read --labels <dir> --output <dir>
   python -m analysis.r3_ladder_read --selfcheck
-      (~10-15 min: three full-grid legs run the untrimmed B=10K
-      bootstrap code path, nothing patched)
+      (five full-grid legs at the untrimmed B=10K code path plus the
+      amend1 p=512 ridge leg, nothing patched; the amended bootstrap is
+      far cheaper than the parent's pooled one, so this stays ~5-15 min)
 """
 
 import argparse
@@ -104,6 +116,12 @@ DIALS = dict(states=200, horizon=100, label_every=25, seed=0, rollouts=16,
 # committed labels" is a machine claim, not operator trust.
 COMMITTED_LABELS_DIGEST = (
     '02efe6c5bae641c1f24055ffb4791e37d1b636bb7304f833777c5bf017f2798d')
+
+# 31-Jul amendment, registered BEFORE the one read (trigger: independent
+# post-freeze adversarial review; see the amendment file). The rung
+# metric is the mean per-run held-out Spearman; the parent's pooled
+# Spearman is carried point-only as a non-evidential diagnostic.
+AMENDMENT_ID = 'PREREG_r3_ladder_amend1_20260731'
 
 
 def labels_digest(labels_dir):
@@ -287,56 +305,87 @@ def _rho(p, y):
   return float((rp @ ry) / den)
 
 
-def rho_boot(preds, y, b=B_BOOT, seed=RNG_SEED):
-  """Pooled held-out Spearman with run-resampled percentile CI."""
+def _run_rhos(preds, y):
+  """Held-out Spearman computed WITHIN each run (nan when a run's
+  targets are rank-constant, i.e. an all-floor label file)."""
+  return {k: _rho(np.asarray(preds[k], np.float64),
+                  np.asarray(y[k], np.float64)) for k in sorted(y)}
+
+
+def _nanmean(a):
+  a = a[~np.isnan(a)]
+  return float(a.mean()) if len(a) else float('nan')
+
+
+def _pooled_rho(preds, y):
   keys = sorted(y)
-  P = {k: np.asarray(preds[k], np.float64) for k in keys}
-  Y = {k: np.asarray(y[k], np.float64) for k in keys}
-  point = _rho(np.concatenate([P[k] for k in keys]),
-               np.concatenate([Y[k] for k in keys]))
+  return _rho(
+      np.concatenate([np.asarray(preds[k], np.float64) for k in keys]),
+      np.concatenate([np.asarray(y[k], np.float64) for k in keys]))
+
+
+def rho_boot(preds, y, b=B_BOOT, seed=RNG_SEED):
+  """AMENDED metric (PREREG_r3_ladder_amend1_20260731): mean per-run
+  held-out Spearman with run-resampled percentile CI. Ranking WITHIN
+  runs removes run-/domain-level target structure and the LORO
+  intercept artifact (each fold's intercept is the training runs' mean,
+  so POOLED ranks anti-order with held-run means; with pooled domains a
+  domain-separable deter plus a domain-level target offset yields
+  positive pooled rho with zero per-state signal — both demonstrated in
+  the 31-Jul independent review). The parent registration's pooled
+  Spearman is carried point-only as pooled_diagnostic, non-evidential
+  (its cluster CI has no nominal meaning under run heterogeneity, so no
+  CI is reported for it). nan runs are excluded from the mean and
+  counted in n_nan_runs; a draw with no live run gives a nan replicate,
+  dropped by nanpercentile (fail-safe: a nan CI never passes ci > 0)."""
+  keys = sorted(y)
+  rr = _run_rhos(preds, y)
+  v = np.array([rr[k] for k in keys], np.float64)
   rng = np.random.default_rng(seed)
   n = len(keys)
   vals = np.empty(b)
   for i in range(b):
-    pick = rng.integers(0, n, n)
-    vals[i] = _rho(np.concatenate([P[keys[j]] for j in pick]),
-                   np.concatenate([Y[keys[j]] for j in pick]))
+    vals[i] = _nanmean(v[rng.integers(0, n, n)])
   lo, hi = np.nanpercentile(vals, [2.5, 97.5])
-  return dict(spearman=point, ci=[float(lo), float(hi)], n_clusters=n)
+  return dict(spearman=_nanmean(v), ci=[float(lo), float(hi)],
+              n_clusters=n, n_nan_runs=int(np.isnan(v).sum()),
+              pooled_diagnostic=_pooled_rho(preds, y))
 
 
 def rho_pair_boot(preds_lo, preds_hi, y, b=B_BOOT, seed=RNG_SEED):
-  """Joint bootstrap of two rungs on the SAME cluster draws: returns
-  (blk_lo, blk_hi, blk_diff) where blk_diff is the paired [hi - lo]
-  contrast. With fresh default_rng(seed) and the same cluster count,
-  blk_lo/blk_hi are identical to what rho_boot would return."""
+  """Joint bootstrap of two rungs on the SAME cluster draws (amended
+  within-run metric): returns (blk_lo, blk_hi, blk_diff) where blk_diff
+  bootstraps the run-paired mean of [rho_hi_r - rho_lo_r]. With fresh
+  default_rng(seed) and one integers(0, n, n) draw per replicate,
+  blk_lo/blk_hi are identical to what rho_boot would return; the
+  degenerate same-predictions case gives an exactly-zero contrast with
+  zero-width CI (selfcheck leg)."""
   keys = sorted(y)
-  Plo = {k: np.asarray(preds_lo[k], np.float64) for k in keys}
-  Phi = {k: np.asarray(preds_hi[k], np.float64) for k in keys}
-  Y = {k: np.asarray(y[k], np.float64) for k in keys}
-
-  def _cat(D, idx):
-    return np.concatenate([D[keys[j]] for j in idx])
-
-  full = range(len(keys))
-  pt_lo = _rho(_cat(Plo, full), _cat(Y, full))
-  pt_hi = _rho(_cat(Phi, full), _cat(Y, full))
+  vlo = np.array([_run_rhos(preds_lo, y)[k] for k in keys], np.float64)
+  vhi = np.array([_run_rhos(preds_hi, y)[k] for k in keys], np.float64)
+  vd = vhi - vlo
   rng = np.random.default_rng(seed)
   n = len(keys)
-  vlo, vhi = np.empty(b), np.empty(b)
+  blo, bhi, bd = np.empty(b), np.empty(b), np.empty(b)
   for i in range(b):
     pick = rng.integers(0, n, n)
-    yb = _cat(Y, pick)
-    vlo[i] = _rho(_cat(Plo, pick), yb)
-    vhi[i] = _rho(_cat(Phi, pick), yb)
+    blo[i] = _nanmean(vlo[pick])
+    bhi[i] = _nanmean(vhi[pick])
+    bd[i] = _nanmean(vd[pick])
+  plo = _pooled_rho(preds_lo, y)
+  phi = _pooled_rho(preds_hi, y)
 
-  def _blk(point, vals):
-    lo, hi = np.nanpercentile(vals, [2.5, 97.5])
-    return dict(spearman=point, ci=[float(lo), float(hi)], n_clusters=n)
+  def _blk(point, vals, pooled, n_nan):
+    lo_, hi_ = np.nanpercentile(vals, [2.5, 97.5])
+    return dict(spearman=point, ci=[float(lo_), float(hi_)],
+                n_clusters=n, n_nan_runs=n_nan, pooled_diagnostic=pooled)
 
-  diff = _blk(pt_hi - pt_lo, vhi - vlo)
+  diff = _blk(_nanmean(vd), bd, phi - plo, int(np.isnan(vd).sum()))
   diff['spearman_diff'] = diff.pop('spearman')
-  return _blk(pt_lo, vlo), _blk(pt_hi, vhi), diff
+  diff['pooled_diagnostic_diff'] = diff.pop('pooled_diagnostic')
+  return (_blk(_nanmean(vlo), blo, plo, int(np.isnan(vlo).sum())),
+          _blk(_nanmean(vhi), bhi, phi, int(np.isnan(vhi).sum())),
+          diff)
 
 
 def l0_constants(y):
@@ -478,8 +527,12 @@ def analyze(runs):
            for k, v in runs.items()}
   result = dict(
       cells={}, compression_signature=[], candidate_signature=[],
-      # Registered look count (disclosed in the prereg):
-      looks=dict(rung_spearman=32, paired_contrasts=8, l0_means=8),
+      amendment=AMENDMENT_ID,
+      # Registered look count (disclosed in the prereg + amendment);
+      # pooled_diagnostics = the 32 rung + 8 contrast pooled points,
+      # carried non-evidential (no CI — see amendment):
+      looks=dict(rung_spearman=32, paired_contrasts=8, l0_means=8,
+                 pooled_diagnostics=40),
       thresholds=dict(sig_l3_min=SIG_L3_MIN, sig_l2_max=SIG_L2_MAX,
                       cand_delta_min=CAND_DELTA_MIN,
                       cand_l4_min=CAND_L4_MIN))
@@ -552,6 +605,8 @@ def read(args):
   out = os.path.join(args.output, 'r3_ladder.json')
   with open(out, 'w') as f:
     json.dump(res, f, indent=1, default=float)
+  print(f'metric: mean per-run held-out Spearman ({AMENDMENT_ID}); '
+        'pooled points carried non-evidential')
   for cname, cblk in res['cells'].items():
     for tgt in TARGETS:
       cell = cblk[tgt]
@@ -563,6 +618,7 @@ def read(args):
       print(f"{cname:9s} {tgt:4s} alw={cell['L0']['always_mean']:+.3f}  "
             f"{row}  d43={d['spearman_diff']:+.3f}"
             f"[{d['ci'][0]:+.3f},{d['ci'][1]:+.3f}]  "
+            f"nanruns={cell['L3']['n_nan_runs']}  "
             f"comp={cell['compression_signature']} "
             f"cand={cell['candidate_signature']}")
   print()
@@ -688,6 +744,9 @@ def selfcheck(args):
     assert c['compression_signature'] and not c['candidate_signature'], c
     assert c['L2']['spearman'] < SIG_L2_MAX, c['L2']
     assert c['L3']['spearman'] >= SIG_L3_MIN and c['L3']['ci'][0] > 0
+    # amend1: deter is in L4's stack too — the parent asserted only L3
+    assert c['L4']['spearman'] >= CAND_L4_MIN and c['L4']['ci'][0] > 0, (
+        c['L4'])
     s = res['cells']['late_e4'][tgt]
     assert s['L1']['spearman'] >= 0.2 and s['L2']['spearman'] >= 0.2, s
     assert not s['compression_signature'] and not s['candidate_signature']
@@ -698,8 +757,17 @@ def selfcheck(args):
     assert g['contrast_l4_minus_l3']['spearman_diff'] >= CAND_DELTA_MIN
     nn = res['cells']['late_e1'][tgt]
     assert not nn['compression_signature'] and not nn['candidate_signature']
+    # amend1: null cell bounded at EVERY rung (the parent skipped L1/L2)
+    assert abs(nn['L1']['spearman']) < SIG_L2_MAX, nn['L1']
+    assert abs(nn['L2']['spearman']) < SIG_L2_MAX, nn['L2']
     assert abs(nn['L3']['spearman']) < SIG_L3_MIN
     assert abs(nn['L4']['spearman']) < SIG_L3_MIN
+    # amend1 nan policy: the all-floor file is rank-constant -> nan run,
+    # excluded and counted, at every rung and in the paired contrast
+    for lv in ('L1', 'L2', 'L3', 'L4'):
+      assert nn[lv]['n_nan_runs'] == 1, (lv, nn[lv])
+    assert nn['contrast_l4_minus_l3']['n_nan_runs'] == 1
+    assert c['L3']['n_nan_runs'] == 0, c['L3']
   assert abs(res['cells']['late_e1']['floor_frac'] - 1 / 16) < 1e-12
   assert res['verdict'].startswith('CANDIDATE SIGNATURE'), res['verdict']
   assert 'COMPRESSION SIGNATURE also present' in res['verdict']
@@ -712,13 +780,79 @@ def selfcheck(args):
   assert set(res_c['compression_signature']) == {'late_e4:opp',
                                                  'late_e4:gap'}
 
-  # --- all-null grid stays clean (leg 10) --------------------------------
+  # --- all-null grid stays clean (leg 10; amend1: every rung bounded) ----
   null_grid = _synth_grid({}, seed=5)
   res_n = analyze(null_grid)
   assert not res_n['compression_signature']
   assert not res_n['candidate_signature']
   assert res_n['verdict'].startswith('NO PER-STATE SIGNATURE'), (
       res_n['verdict'])
+  for cname, cblk in res_n['cells'].items():
+    for tgt in TARGETS:
+      c = cblk[tgt]
+      assert abs(c['L1']['spearman']) < SIG_L2_MAX, (cname, tgt, c['L1'])
+      assert abs(c['L2']['spearman']) < SIG_L2_MAX, (cname, tgt, c['L2'])
+      assert abs(c['L3']['spearman']) < SIG_L3_MIN, (cname, tgt, c['L3'])
+      assert abs(c['L4']['spearman']) < SIG_L3_MIN, (cname, tgt, c['L4'])
+
+  # --- amend1 heterogeneity legs: the within-run metric stays null under
+  # run-/domain-level target structure; the pooled diagnostics document
+  # the parent metric's bias on the SAME grids (the 31-Jul review's
+  # blocking finding, machine-checked here) ------------------------------
+  het = _synth_grid({}, seed=6)
+  hrng = np.random.default_rng(7)
+  for key, run in het.items():
+    off = hrng.normal(0.0, 1.5 * 0.05)   # run effect, 1.5x within-run sd
+    g = np.zeros_like(run['g_all'])
+    g[:, 1] = run['g_all'][:, 1] + off
+    run['g_all'] = g
+  res_h = analyze(het)
+  assert not res_h['compression_signature'], res_h['compression_signature']
+  assert not res_h['candidate_signature'], res_h['candidate_signature']
+  for cname, cblk in res_h['cells'].items():
+    for tgt in TARGETS:
+      c = cblk[tgt]
+      assert abs(c['L1']['spearman']) < SIG_L2_MAX, (cname, tgt, c['L1'])
+      assert abs(c['L2']['spearman']) < SIG_L2_MAX, (cname, tgt, c['L2'])
+      assert abs(c['L3']['spearman']) < SIG_L3_MIN, (cname, tgt, c['L3'])
+      assert abs(c['L4']['spearman']) < SIG_L3_MIN, (cname, tgt, c['L4'])
+  pooled_h = [cblk[tgt][lv]['pooled_diagnostic']
+              for cblk in res_h['cells'].values() for tgt in TARGETS
+              for lv in ('L2', 'L3')]
+  assert min(pooled_h) <= -0.15, min(pooled_h)  # mean-reversal bias
+
+  dom = _synth_grid({}, seed=8)
+  for key, run in dom.items():
+    if key[0] == 'finger':
+      g = np.zeros_like(run['g_all'])
+      g[:, 1] = run['g_all'][:, 1] + 0.9 * 0.05  # domain-level offset
+      run['g_all'] = g
+      run['deter'] = run['deter'].copy()
+      run['deter'][:, 0] += 3.0                  # domain-separable belief
+  res_d = analyze(dom)
+  assert not res_d['compression_signature'], res_d['compression_signature']
+  assert not res_d['candidate_signature'], res_d['candidate_signature']
+  for cname, cblk in res_d['cells'].items():
+    for tgt in TARGETS:
+      c = cblk[tgt]
+      assert abs(c['L3']['spearman']) < SIG_L3_MIN, (cname, tgt, c['L3'])
+      assert abs(c['L4']['spearman']) < SIG_L3_MIN, (cname, tgt, c['L4'])
+  pooled_d = [cblk[tgt]['L3']['pooled_diagnostic']
+              for cblk in res_d['cells'].values() for tgt in TARGETS]
+  assert max(pooled_d) >= 0.15, max(pooled_d)  # domain-shortcut bias
+
+  # --- amend1 registered-dimension leg: nested ridge at p = DETER_DIM on
+  # a 16-run run-heterogeneous null (single rung-cell scale) -------------
+  drng = np.random.default_rng(9)
+  X512 = {i: drng.normal(0, 1, (N_STATES, DETER_DIM)) for i in range(16)}
+  y512 = {i: 8.0 + 0.05 * drng.normal(size=N_STATES)
+          + drng.normal(0, 1.5 * 0.05) for i in range(16)}
+  p512, _ = crossfit_ridge(X512, y512)
+  blk512 = rho_boot(p512, y512)
+  assert abs(blk512['spearman']) < SIG_L3_MIN, blk512
+  assert blk512['n_nan_runs'] == 0, blk512
+  # measured -0.16 at build; bound left slack for cross-BLAS drift
+  assert blk512['pooled_diagnostic'] <= -0.10, blk512  # bias at full width
 
   # --- grid guards tripped (leg 11) --------------------------------------
   bad = dict(null_grid)
@@ -819,9 +953,13 @@ def selfcheck(args):
         'contrast, deter-planted fires L3+L4 (compression signature) not '
         'L1/L2, scalar-planted caught by L1/L2 without signatures, '
         'candidate-planted fires L4 not L3 (candidate signature), null '
-        'cells + floor accounting clean, compression-only and '
-        'no-signature verdict branches, grid guards (unregistered seed, '
-        'grid incomplete, n_states), file fixture guards (duplicate, '
+        'cells bounded at every rung + floor nan accounting, '
+        'compression-only and no-signature verdict branches, amend1 '
+        'heterogeneity legs (run-effect null + domain-offset null: '
+        'within-run metric bounded, no signatures, pooled diagnostics '
+        'reproduce the mean-reversal and domain-shortcut biases), amend1 '
+        'p=512 ridge leg, grid guards (unregistered seed, grid '
+        'incomplete, n_states), file fixture guards (duplicate, '
         'labeler_version wrong + base+suffix exact-pin trip, dials, '
         'train_seed, checkpoint maturity, dose identity, qfull shape, '
         'finiteness, m_now bounds, reacher out-of-scope skip), '

@@ -6,6 +6,52 @@ immutable dated files; see plan v4.)
 
 ## Deviations
 
+- **2026-07-31 (late) — LADDER AMENDMENT 1: independent post-freeze
+  review CONFIRMED a blocking metric confound; rung metric amended to
+  within-run Spearman BEFORE the one read
+  (`prereg/PREREG_r3_ladder_amend1_20260731.md`).** The independent
+  reviewer pass anticipated by the entry below was run after the
+  freeze-commit `6271c770` and before the read: 2 adversarial
+  reviewers (alignment; stats/leakage) + 1 refuter per finding, 12
+  agents, barred from real-label contents (hash/list only) and from
+  this file (independence). 10 raw findings → 2 refuted, 8 confirmed
+  (1 BLOCKING, 3 MINOR, 4 NOTE). The BLOCKING
+  (`r3_ladder_read.py` pooled `rho_boot`): pooled cross-run Spearman
+  on LORO predictions confounds between-run/domain target structure
+  with per-state legibility — the LORO intercept makes held-out
+  predictions ANTI-order with held-run means (pooled ρ −0.24…−0.65 on
+  pure within-run null with run effects, CIs entirely below zero), and
+  with pooled domains a domain-separable deter + domain-level offset
+  yields pooled L3 ≈ +0.30 with ZERO per-state signal — firing the
+  compression signature on nothing. The heterogeneity regime is
+  committed as TRUE of this data (R3 gap CI [+0.723,+1.987]; finger
+  vs cup means), so the read as-frozen would have burned the ONE
+  execution on an instrument that cannot separate its own registered
+  branches (per-state legibility vs "noise around a run-level
+  constant"). Resolution per 24-Jul precedent (amend instrument
+  pre-read, registration before outcome): mean per-run held-out
+  Spearman becomes the rung metric (invariant to run/domain-level
+  structure; unit-verified exactly invariant to per-run target
+  offsets), pooled carried point-only as non-evidential
+  `pooled_diagnostic`; explicit nan policy (all-floor runs excluded +
+  counted, `n_nan_runs`); everything else unchanged (fits, features,
+  cells, bars, signatures, B=10K/rng 0, digest gate, 48 looks). New
+  machine-checked legs close the review's coverage findings:
+  run-heterogeneous null + domain-offset null (within-run bounded at
+  EVERY rung incl. L1/L2, no signatures; pooled diagnostics reproduce
+  the biases: −0.57 mean-reversal, +0.32 domain shortcut), p=512 ridge
+  leg (within +0.005, pooled −0.16), deter-plant now asserts L4,
+  floor-run nan accounting. Confirmed non-blocking findings registered
+  as disclosures in the amendment: parent Power-section selfcheck
+  overstatement (erratum), `act_greedy_dist` ≡ 0 by construction
+  (m_now = the same head-mean argmax; L4 has 6 live G features),
+  `lambda_per_fold` = non-evidential diagnostics, nanpercentile
+  nan-drop policy, digest-gate any-extra-file strictness. Selfcheck
+  PASS on final bytes (7m08s, EXIT=0); amended reader sha
+  `aa776f1c58a813801f0451f1295a9b1110eb4bbcd8b58b353fbf0c2f36701791`.
+  Value-blindness intact: no per-state feature→target statistic on
+  real labels exists at the amendment; the read executes only after
+  the amendment commit.
 - **2026-07-31 — PAPER-2 BUILD WAVE REGISTERED pre-outcome (five
   bundles: candidate-aware ladder, Stage-0 second-k, TM2-R3 TD-MPC2
   replication, R3 Amendment 2 cross-checkpoint consumer, competence

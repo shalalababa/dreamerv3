@@ -143,7 +143,20 @@ re-test, not results. 24+24 permanently frozen; imag op retired.
   (new) — consequence resource-only (repair targeting). ONE local CPU
   read after freeze-commit. Solo pre-freeze review (reviewer wave lost
   to session limits — see DEVIATIONS): exact version pin + digest gate
-  added.
+  added. **AMENDED 07-31 pre-read** (`PREREG_r3_ladder_amend1_20260731`
+  → reader sha aa776f1c…, selfcheck PASS 7m08s): the deferred
+  independent review (2 reviewers + refuters, 12 agents, value-blind)
+  CONFIRMED the pooled rung metric confounds between-run/domain
+  structure with per-state legibility (LORO mean-reversal −0.24…−0.65
+  on null w/ CIs<0; domain shortcut +0.30 on zero signal) ⇒ metric =
+  mean per-run held-out Spearman (pooled demoted to point-only
+  diagnostics; explicit all-floor nan policy, ~3–4 nan runs/cell
+  expected); new machine-checked heterogeneity + p=512 legs; +4
+  registered disclosures (act_greedy_dist ≡ 0 by construction — L4 has
+  6 live G features; Power-section erratum; lambda_per_fold
+  diagnostics; nanpercentile policy). Read still unexecuted at
+  amendment (value-blindness intact); executes after the amendment
+  commit.
 - **Stage-0 second-k robustness REGISTERED 07-30/31** (the Stage-0
   memos' own unexecuted caveat; gates externalizing TRACKS_DENSITY):
   `PREREG_stage0_secondk_20260730` → `analysis/stage0_secondk_read.py`
