@@ -31,6 +31,7 @@ Frozen pre-outcome readers, one per registered experiment; each has a
 - `adaptation_auc.py` — collector: adapt-run scores → AUC csv (all waves consume this).
 - `gate_d1_read.py`, `gate_d1_r2_read.py`, `d1_ladder_read.py`, `d1_shift_read.py` — Paper-2 D1 series (shift read = the relabel re-reader, version `d1fix_20260724`; read 25 Jul: corrected negative).
 - `r3_read.py` — R3 consumer-competence factorial read (frozen 25 Jul pre-outcome; Amendment 1 29 Jul: seed-grid repair + value-blind guards, committed pre-read; READ 29 Jul: P-R3a+P-R3b fire, P-R3c null ⇒ consumer-competence failure, `artifacts/r3_competence_20260729/`).
+- `r3_reacher_read.py`, `r3_doubling_read.py` — R3 band-mover wave 1 (frozen 30 Jul pre-outcome, freeze 596a7f93). Reacher READ 31 Jul: REPLICATES (P-RRa opp +0.828\* + P-RRb gap +0.813\* fire, P-RRc null ⇒ three-domain fact; floors 3.1%), `artifacts/r3_reacher_20260731/`. Doubling: awaiting bundle.
 - `p3_factorial_read.py` — P3 gradient-path factorial + Amendment 1.
 - `stamping_read.py`, `scaling_read.py`, `optc_amend_read.py` — stamping + scaling pilot + Option-C corrective.
 - `synth_phaseb_read.py`, `synth_diagnosis_read.py`, `synth_rediag_read.py`, `synth_phasebpp_read.py` — synth series.

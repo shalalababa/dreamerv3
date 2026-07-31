@@ -84,6 +84,7 @@ RESOURCE decisions stand. DEVIATIONS 07-24 entries = tracked record.
 | 07-25 | **Corrected-instrument relabel READ** (both cohorts, ONE execution) | relabel prereg + Amend 1 + Amend 2 | `artifacts/d1_relabel_20260725/` | **neither arm fires in ANY family** (d1s: xpol +0.24 [−0.33,+0.77]; phys −0.19 [−0.34,−0.06] — negative, no fire under one-sided rule, sign flips in replication; pooled-12 both null) ⇒ **corrected negative at 12 clusters — the consequence leg fails ON THE CORRECTED INSTRUMENT**; attenuation objection discharged up to power (t-intervals disclosed); defect-impact: old labels inflated base/phys (+0.20/+0.15 → −0.01/−0.20); **opportunity/achieved: opportunity large everywhere (xpol finger +6.3), achieved ≈ 0 ⇒ implementation gap = R3's target, parameterized**; next = R3 registration |
 | 07-29 | R3 Amendment 1 — reader seed-grid repair | `PREREG_r3_amend1_20260729` | commit bbe86983 (pre-read) | frozen reader had `EXPECT_SEEDS`=1–8 vs registered 31–38 (crash before any value touched; selfcheck structurally blind — fixture built FROM the constant); value-blind repair + 4 integrity guards (unregistered-seed, finiteness = oracle_all signature, m_real bounds, n_states=200), decision rules verbatim-unchanged; 3-agent value-blind bundle audit clean (64/64 labels exact dials/doses, smoke gate 4/4 dosed, 32/32 two-phase continuation verified) |
 | 07-29 | **R3 consumer-competence READ** (ONE execution, RCC) | `PREREG_r3_competence_20260725` + Amend 1 | `artifacts/r3_competence_20260729/` | **P-R3a FIRES** (opp +1.247 [+0.700,+1.908] > 0.2) **+ P-R3b FIRES** (gap +1.293 [+0.723,+1.987] ≈ 3× the pre-sized detection bar); **P-R3c null** (+0.014 [−0.177,+0.215]) ⇒ **CONSUMER-COMPETENCE FAILURE registered: opportunity exists, is not harvested, and maturity does not close the gap** — 25-Jul shift negative = competence ceiling, NOT information ceiling; Paper-2 headline = opportunity/competence decomposition; domain-robust (cup gap +0.917\*, finger +1.669\*; finger achieved −0.157 CI<0 = harvest slightly counterproductive); opportunity survives dose (e4 +0.98\*) and maturity (late +1.30\*); floors 25%/19% not limiting; local verification re-execution bit-identical; 24+24 frozen / Route A closed / imag retired reaffirmed |
+| 07-31 | **R3 reacher third-domain READ** (ONE execution, local; manifest verify OK 14,554 files == committed pin; code snapshots ≡ frozen; selfcheck PASS pre-read) | `PREREG_r3_reacher_20260729` (freeze 596a7f93) | `artifacts/r3_reacher_20260731/` | **REPLICATES — P-RRa FIRES** (opp +0.828 [+0.565,+1.114] > 0.2) **+ P-RRb FIRES** (gap +0.813 [+0.554,+1.097]); **P-RRc null** (+0.047 [−0.023,+0.121]) ⇒ **the opportunity/competence decomposition is a THREE-DOMAIN fact (cup, finger, reacher); the conference-band task axis LANDS**; maturity-does-not-buy-competence replicates per domain; opportunity survives dose (e1 +0.99\*, e4 +0.66\*) and maturity (early +0.68\*, late +0.97\*); pooled achieved +0.015 [−0.038,+0.071] tight null; **floors 1/32 (3.1%) — the registered sparse-floor risk did NOT materialize** (gate bar 50%); 24+24 / Route A / imag invariants reaffirmed |
 
 Paper-2 plan: `research_notes/other research/EVPI_Plan_Revision_20260724.md`
 (v4). Constants (early −0.208\*/late×e4 +0.313\*) = hypotheses to
@@ -105,8 +106,9 @@ re-test, not results. 24+24 permanently frozen; imag op retired.
 
 ## Registered / running, no read yet
 
-- **R3 reacher third-domain replication** (REGISTERED 07-29, to submit
-  after freeze-commit; Paper-2 conference-band task axis):
+- **R3 reacher third-domain replication** (REGISTERED 07-29; **READ
+  07-31: REPLICATES — see the Paper-2 table;
+  `artifacts/r3_reacher_20260731/`**):
   `PREREG_r3_reacher_20260729` → `analysis/r3_reacher_read.py`
   (selfcheck PASS; imports the frozen r3_read machinery, import surface
   pinned). 16 fresh two-phase runs + 32 oracle_all passes on the idle

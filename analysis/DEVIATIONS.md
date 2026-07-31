@@ -6,6 +6,29 @@ immutable dated files; see plan v4.)
 
 ## Deviations
 
+- **2026-07-31 — R3 REACHER READ EXECUTED (ONE execution, local):
+  REPLICATES.** Bundle `local_results/r3_reacher_20260731_100509/`
+  (results-sync policy v2: `scripts/bundle_manifest.sh verify` OK,
+  14,554 files, bundle manifest == committed pin
+  `manifests/r3_reacher_20260731_100509.sha256`). Pre-read
+  verification: bundled reader/prereg/driver snapshots byte-identical
+  to the frozen files (bundle `code/COMMIT` 9e9402dd postdates freeze
+  596a7f93 but the executed files are byte-identical to the
+  registered versions); grid complete (32 passes + 4 dosed smokes +
+  SMOKE_OK, smoke gate + `d1fix_20260724` pin machine-checked by the
+  reader); reader selfcheck PASS immediately before the read. No
+  deviation: the registered read ran once; output json archived
+  unmodified in `artifacts/r3_reacher_20260731/` (one file-location
+  note there: `--output` is treated as a directory by the reader, so
+  the json was MOVED, not modified, to the artifact root). Verdicts:
+  **P-RRa +0.828 [+0.565,+1.114] FIRES + P-RRb +0.813
+  [+0.554,+1.097] FIRES, P-RRc +0.047 [−0.023,+0.121] null ⇒
+  REPLICATES: the opportunity/competence decomposition is a
+  three-domain fact; the conference-band task axis lands; floors
+  1/32 (3.1%) — the registered sparse-floor risk did not
+  materialize.** Registered consequences engaged; regardless-
+  invariants (24+24, Route A, imag) reaffirmed.
+
 - **2026-07-30 (night) — PAPER-4 CONFIRMATORY READ EXECUTED (ONE
   execution, Paper-4 owning chat): ALL FOUR PRIMARIES FIRE.** Bundle
   `local_results/collusion_confirm_20260730_200834/` (slurm 52831447;

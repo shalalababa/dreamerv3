@@ -1,0 +1,91 @@
+{
+  "primaries": {
+    "p_rra_opportunity": {
+      "point": 0.8279687500000001,
+      "ci": [
+        0.5649960937499999,
+        1.11422265625
+      ],
+      "n_clusters": 16
+    },
+    "p_rrb_gap": {
+      "point": 0.813125,
+      "ci": [
+        0.5540546875,
+        1.09719140625
+      ],
+      "n_clusters": 16
+    },
+    "p_rrc_maturity_ach": {
+      "point": 0.0471875,
+      "ci": [
+        -0.023437500000000007,
+        0.1209453124999999
+      ],
+      "n_clusters": 16
+    }
+  },
+  "thresholds": {
+    "opp": 0.2,
+    "floor_limit": 0.5
+  },
+  "fires": {
+    "p_rra": true,
+    "p_rrb": true,
+    "p_rrc": false
+  },
+  "secondary": {
+    "dose_opp": {
+      "e1": {
+        "point": 0.9946875,
+        "ci": [
+          0.5225,
+          1.48625
+        ],
+        "n_clusters": 8
+      },
+      "e4": {
+        "point": 0.66125,
+        "ci": [
+          0.4546875,
+          0.8740625000000001
+        ],
+        "n_clusters": 8
+      }
+    },
+    "maturity_opp": {
+      "early": {
+        "point": 0.683125,
+        "ci": [
+          0.25967968750000003,
+          1.260640625
+        ],
+        "n_clusters": 16
+      },
+      "late": {
+        "point": 0.9728125,
+        "ci": [
+          0.6599921874999999,
+          1.316875
+        ],
+        "n_clusters": 16
+      }
+    },
+    "ach": {
+      "point": 0.014843749999999996,
+      "ci": [
+        -0.038125,
+        0.07125390624999996
+      ],
+      "n_clusters": 16
+    },
+    "floors": {
+      "frac": 0.03125,
+      "n_cells": 32,
+      "floor_limited": false
+    }
+  },
+  "n_runs": 16,
+  "verdict": "REPLICATES: the opportunity/competence decomposition holds in a third domain \u2014 opportunity exists (P-RRa) and is not harvested (P-RRb). P-RRc does not fire \u2014 maturity does not close the gap in reacher either.",
+  "labels_dir": "/home/rickybao/projects/dreamerv3/local_results/r3_reacher_20260731_100509/runroot_light/r3_reacher/r3_labels"
+}
