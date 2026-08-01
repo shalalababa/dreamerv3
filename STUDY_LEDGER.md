@@ -174,7 +174,21 @@ re-test, not results. 24+24 permanently frozen; imag op retired.
   AMBIGUOUS counts as flip. 2 reviewer passes (2 BLOCKING: broken
   selfcheck float-equality asserts; prereg/reader design divergence
   from an interrupted fixer — reader design adopted, prereg rewritten
-  to match).
+  to match). **31 Jul EXECUTION: existence gate PASSED (SUBSTRATE OK,
+  10/10 runs, replay chunks 1520–1760) but the k=10 calibration hit the
+  registered QUARANTINE branch (guard_mode=invalid: 7 tolerance
+  failures AND err_position/err_steps/err_velocity rank corr
+  0.74/0.84/0.81 < floor 0.9) ⇒ full passes correctly refused, no
+  verdict. AUDIT
+  (`artifacts/stage0_secondk_quarantine_20260731/AUDIT.md`): committed
+  dumps were computed on Vast (/workspace); re-dump ran on RCC — dials
+  and probeset sha identical, true_* arrays matched (pipeline
+  faithful), only model-path arrays diverged ⇒ cross-MACHINE
+  backend/env change, the registered drift mechanism beyond the rank
+  floor. NOT evidence against TRACKS_DENSITY (frozen consequence map).
+  Next: Vast-matched smoke retry (gate retry, no amendment needed) or,
+  if the env is unreconstructable, quarantine-terminal ⇒ permanent
+  single-k qualifier.**
 - **TM2-R3 TD-MPC2 cross-family replication REGISTERED 07-30/31**
   (Paper-2 LONG POLE; the ICML band-mover):
   `PREREG_tm2_competence_20260730` → labeler port
@@ -223,7 +237,7 @@ re-test, not results. 24+24 permanently frozen; imag op retired.
 
 - **Unfrozen stress waves U1–U4** (REGISTERED 07-27; motivated by the frozen-protocol audit `research_notes/Audit_FrozenProtocol_20260726.md`): `PREREG_unfrozen_u{1,2,3,4}_20260727` → `analysis/unfrozen_stress_read.py` (four subcommands, selfcheck PASS) + `orth_spin_unfrozen` config. **U2/U3/U4 READ 07-30** (see Paper-1 table: robust / robust / floor-censored — no flips anywhere; `artifacts/unfrozen_stress_u234_20260730/`). **U1 still draining** (apt+task unfrozen 2×2, 32 jobs; P-U1a interaction persists / P-U1b apt-null stress — the decisive reward-free-null test, absence-vs-illegible discriminator anchored to rgo +235/sgb +30; 8 rows outstanding at the 07-30 csv: uzt s0 seeds 7–8 + uzf seeds 6–8 both sides). Frozen registrations untouched under every branch — flips would have changed generality language only.
 - **Pretrained-encoder pixel arm REGISTERED 07-30** (GO'd; the swamping account's lever prediction): `PREREG_pe_pixel_20260730` → `analysis/pe_pixel_read.py` (selfcheck PASS; sha256 34380e0f…) + code: `agent.frozen_enc` (optimizer module filtering), `offline_fit` partial-init w/ counter reset (the skip trap), `AXIS1_INIT_WM` plumbing, `scripts/check_frozen_enc.py` integrity gate (training witness via OFFLINE_FIT_PROGRESS; committed selfcheck; sha256 00acbdff…). Design: 16 stage-2 pixel fits (task-mode full, enc loaded '^enc/' from seed/side-matched fpxpx donors + frozen) + 16 frozen-readout adapts + E4 pass (COLLATE to a NEW csv). P-PE1 graded (CI<2.0 INCLUSION-RESTORED / <19.41 PARTIAL / else NO-RELIEF vs pinned 23.34 baseline); P-PE2 lift vs committed X2 cells; P-PE3 conditional occupancy split. Smoke gate + 16-run integrity sweep with persisted log. 2 adversarial reviews (0 blocking; all 4 MINOR hardening items applied incl. the counter-skip witness + subshell-safe sweep gate). Donors protected in runroot_cleanup (KEEP-PENDING).
-- **From-scratch baseline anchor REGISTERED 07-30** (GO'd; descriptive class — no decision rules): `PREREG_scratch_anchor_20260730`. 8 jobs, `pilot.sbatch MODE=goal` (plain dmc_proprio, zero code change), RUN_ID `adapt_scratch_finger_seed<k>_ckpt0` → collates as mode `scratch` (no frozen reader consumes it; 10 readers verified mode-pinned). Purpose: absolute-scale anchor for Fig 2a; %-of-anchor reporting never load-bearing. Reviewed (0 blocking; env.sh sourcing + staging checks added).
+- **From-scratch baseline anchor REGISTERED 07-30** (GO'd; descriptive class — no decision rules): `PREREG_scratch_anchor_20260730`. 8 jobs, `pilot.sbatch MODE=goal` (plain dmc_proprio, zero code change), RUN_ID `adapt_scratch_finger_seed<k>_ckpt0` → collates as mode `scratch` (no frozen reader consumes it; 10 readers verified mode-pinned). Purpose: absolute-scale anchor for Fig 2a; %-of-anchor reporting never load-bearing. Reviewed (0 blocking; env.sh sourcing + staging checks added). **31 Jul LANDED: 8/8 complete + QC-pass (112 episodes each; config audit 8× from_checkpoint ''/frozen_wm false; bundle `local_results/scratch_anchor_20260731_170618/` manifest-verified). Anchor: AUC50k 113.2 (sd 42.0), AUC100k 147.7 (33.2), AUC125k 174.0 (39.2), final10 319.9 (151.7; seed-8 late collapse to 0.0, descriptive). % anchoring entered `Paper1_ResponseCurves`: W1 +84.0 = 57% of anchor AUC100k, Amend-1 +51.5 = 35%; task_s1 267.9 = 1.81×; reward-free plateau 0.53–0.68× (denominators only, protocols differ — no claim licensed). Fig 2a build blocked on a scores-only pull of per-arm adapt scores.jsonl (none local).**
 - **High-f_R falling-limb theory predictions FROZEN 07-30** (pre-buffer; GO'd wave, registration to follow): `PREREG_highfr_theory_20260730` — P-HF1 falling limb / P-HF2 support-starvation dissociation (membership intact + diversity_pr lower) / P-HF3 interior maximum, + registered failure modes (monotone rise refutes the breadth-patch trade-off form). Derivation note `Theory_HighFR_Prediction_20260730.md` (disk-only). No high-f_R buffer exists; 25m + U1 not consulted.
 - **Paper-3 confirmatory 25m point** (REGISTERED 07-26, to submit after freeze-commit): `PREREG_compcapacity_confirm_20260726` → `analysis/compcapacity_read.py` (selfcheck PASS). Primary = task-lo rise (25m−12m, s0 task cells, two-sample seed bootstrap, CI>0 fires); GUARD = forbidden pattern (apt rises while task-lo floored ⇒ P-E1 refuted); 32 jobs at `size25m` (existing config block) on `q1_ctx25` (build via resize tool, deter 3072 stoch 32×24) + E4 pass `ax1wm_finger_*s25*`; power: detects rise ≈33 vs full transition 139; no blank slots — realized values go in the artifact.
 - ~~Volume-anomaly replication P-E4a~~ → READ 07-29 (see Paper 3 table).
