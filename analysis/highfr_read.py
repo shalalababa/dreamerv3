@@ -7,8 +7,13 @@ maximum, monotone-rise refutation). Committed BEFORE any curated
 high-f_R buffer, fit, or adaptation exists.
 
 Cells (canonical AUC csv modes, task arm, finger):
-  hi-f side1  ax1hfq1fs1  seeds 1-8   (curated f_R target 0.80; PRIMARY)
-  hi-f side0  ax1hfq1fs0  seeds 1-8   (curated f_R target 0.60)
+  hi-f side1  ax1hfq1fs1  seeds 1-8   (curated f_R target 0.80,
+                                       realized ~0.729 via registered
+                                       fallback; PRIMARY)
+  mid  side0  ax1hfq1fs0  seeds 1-8   (curated f_R target 0.41 —
+                                       Amendment 1 mid-grid point;
+                                       originally 0.60, unreachable
+                                       disjointly in this pool)
   comparator  ax1v2q1v200s1 seeds 1-12 (natural f=0.3232, matched volume;
                                         frozen rows, volume_repl bundle)
   grid low    ax1v2q1v200s0 seeds 7-12 (f=0.054, matched volume; frozen)
@@ -35,9 +40,10 @@ is NOT at the highest-f cell.
 
 Validity gates: spectral_v1_1_20260724 on both curated-side jsons;
 side1 f_rewarded in [0.60, 0.85] (else the read REFUSES — the wave
-should have halted pre-fit); side0 f_rewarded in [0.55, 0.65] AND
-side1-side0 separation >= 0.08, else side0 is EXCLUDED (disclosed,
-never fatal); all-or-nothing 8-seed cohorts on included hi-f cells;
+should have halted pre-fit); side0 f_rewarded in [0.36, 0.46]
+(Amendment 1) AND side1-side0 separation >= 0.08 (vacuous under the
+amended ranges; belt), else side0 is EXCLUDED (disclosed, never
+fatal); all-or-nothing 8-seed cohorts on included hi-f cells;
 qc_pass on every consumed row; comparator cohorts exactly 12 / 6.
 
 Usage:
@@ -72,7 +78,12 @@ SEEDS_V200S0 = tuple(range(7, 13))
 
 MEASURE_VERSION = 'spectral_v1_1_20260724'
 F_HI_RANGE = (0.60, 0.85)
-F_LO_RANGE = (0.55, 0.65)
+# Amendment 1 (PREREG_highfr_wave_amend1_20260802): side0 re-targeted
+# 0.60 -> 0.41 after the registered curation SHORT (the pool's high-occ
+# tail is ~200 episodes deep; artifacts/highfr_short_20260802/).
+F_LO_RANGE = (0.36, 0.46)
+# Vacuously satisfied under the amended ranges (min gap 0.14); retained
+# as a belt against future range edits.
 MIN_SEP = 0.08
 REF_F = 0.32317182817182816       # v200s1, frozen instrument value
 REF_DIV = 9.230033291492585       # v200s1 diversity_pr, frozen
@@ -340,8 +351,8 @@ def read(args):
 # Selfcheck
 # --------------------------------------------------------------------------
 
-def _mk(hi=100.0, lo=150.0, v1=204.0, v0=120.0, sd=25.0, f_hi=0.79,
-        f_lo=0.61, div_hi=7.0, div_lo=8.2, nll=1.2, nll_sd=0.05, seed=5):
+def _mk(hi=100.0, lo=150.0, v1=204.0, v0=120.0, sd=25.0, f_hi=0.73,
+        f_lo=0.41, div_hi=7.0, div_lo=8.2, nll=1.2, nll_sd=0.05, seed=5):
   rng = np.random.default_rng(seed)
   cells = {MODE_HI: {}, MODE_LO: {}, MODE_V200S1: {}, MODE_V200S0: {}}
   for s in SEEDS_HF:
@@ -490,8 +501,10 @@ def selfcheck(args):
   cells, sl, sh, nh, nl = _mk(f_hi=0.90)
   assert _trip(lambda: analyze(cells, sl, sh, nh, nl))
 
-  # Gate: side0 out of range or under-separated => excluded, not fatal
-  for kw in (dict(f_lo=0.70), dict(f_lo=0.62, f_hi=0.65)):
+  # Gate: side0 out of the amended range on either side => excluded,
+  # not fatal (the separation gate is vacuous under the amended ranges
+  # — min gap 0.60-0.46=0.14 > 0.08 — so range legs replace its leg)
+  for kw in (dict(f_lo=0.55), dict(f_lo=0.30)):
     cells, sl, sh, nh, nl = _mk(**kw)
     res = analyze(cells, sl, sh, nh, nl)
     assert not res['gates']['lo_included']
