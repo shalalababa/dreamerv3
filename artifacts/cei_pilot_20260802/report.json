@@ -1,0 +1,36 @@
+{
+ "selfcheck": {
+  "equivalence_episodes": 5,
+  "psi_true": 0.0,
+  "psi_false": 1.0,
+  "sep_eps0.2_mean": 87.05,
+  "sep_eps0_mean": 800.0,
+  "targeted_cost": 4
+ },
+ "random_separation_curve": {
+  "0.3": {
+   "mean": 69.25,
+   "median": 45.5
+  },
+  "0.1": {
+   "mean": 194.43,
+   "median": 126.0
+  },
+  "0.05": {
+   "mean": 344.22,
+   "median": 226.5
+  },
+  "0.02": {
+   "mean": 933.605,
+   "median": 698.0
+  },
+  "0.01": {
+   "mean": 1768.225,
+   "median": 1526.5
+  }
+ },
+ "targeted_audit_cost_steps": 4,
+ "ratio_random_over_targeted_at_eps0.1": 48.6075,
+ "inverse_opt_flat_on_policy": true,
+ "ope_support_for_psi": 0
+}

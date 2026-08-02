@@ -43,19 +43,19 @@ def _glorot(key, shape):
     return jax.random.uniform(key, shape, minval=-fan, maxval=fan)
 
 
-def init_params(seed):
+def init_params(seed, hid=HID):
     key = jax.random.PRNGKey(seed)
     ks = jax.random.split(key, 12)
     p = {}
     for i, g in enumerate(("z", "r", "h")):
-        p[f"W{g}"] = _glorot(ks[3 * i], (D_IN, HID))
-        p[f"U{g}"] = _glorot(ks[3 * i + 1], (HID, HID))
-        p[f"b{g}"] = jnp.zeros(HID)
-    p["zh_W1"] = _glorot(ks[9], (HID, 64))
+        p[f"W{g}"] = _glorot(ks[3 * i], (D_IN, hid))
+        p[f"U{g}"] = _glorot(ks[3 * i + 1], (hid, hid))
+        p[f"b{g}"] = jnp.zeros(hid)
+    p["zh_W1"] = _glorot(ks[9], (hid, 64))
     p["zh_b1"] = jnp.zeros(64)
     p["zh_W2"] = _glorot(ks[10], (64, 2 * lg.DZ))
     p["zh_b2"] = jnp.zeros(2 * lg.DZ)
-    p["oh_W1"] = _glorot(ks[11], (HID + lg.N_ACTIONS, 64))
+    p["oh_W1"] = _glorot(ks[11], (hid + lg.N_ACTIONS, 64))
     p["oh_b1"] = jnp.zeros(64)
     p["oh_W2"] = _glorot(jax.random.PRNGKey(seed + 999), (64, 2))
     p["oh_b2"] = jnp.zeros(2)
@@ -101,7 +101,7 @@ def _gauss_nll(target, mu, logvar):
 
 def seq_loss(p, xs, a1h, zt, ymask, ytrue):
     """xs (T,D_IN); a1h (T,n_act); zt (T,DZ); ymask/ytrue (T,)."""
-    b0 = jnp.zeros(HID)
+    b0 = jnp.zeros(p["bz"].shape[0])
 
     def step(b, inp):
         x, a, z, m, y = inp
@@ -145,10 +145,11 @@ def episodes_to_arrays(episodes):
     return tuple(jnp.asarray(np.array(v, np.float32)) for v in (xs, a1h, zt, ym, yt))
 
 
-def train_model(episodes, seed, steps=3000, batch=64, lr=1e-3, verbose=False):
+def train_model(episodes, seed, steps=3000, batch=64, lr=1e-3, hid=HID,
+                verbose=False):
     data = episodes_to_arrays(episodes)
     n = data[0].shape[0]
-    params = init_params(seed)
+    params = init_params(seed, hid=hid)
     opt = optax.adam(lr)
     opt_state = opt.init(params)
 
@@ -191,7 +192,7 @@ class LearnedModel:
         self._oh = jax.jit(lambda p, b, a: obs_head(p, b, a))
 
     def init_belief(self):
-        return np.zeros(HID, np.float32)
+        return np.zeros(self.p["bz"].shape[0], np.float32)
 
     def step(self, b, action, node, y):
         x = make_input(action, node, y)
