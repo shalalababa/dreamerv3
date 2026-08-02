@@ -1,0 +1,70 @@
+{
+  "p_pe1": {
+    "point": 23.032351416154537,
+    "ci": [
+      20.142859778988182,
+      25.676290912420605
+    ],
+    "verdict": "NO-RELIEF",
+    "baseline": {
+      "point": 23.34,
+      "lo": 19.41,
+      "hi": 27.29
+    },
+    "thresh_swamp": 2.0,
+    "member_band": false,
+    "trivial_floor": 0.671345852414428
+  },
+  "p_pe2": {
+    "point": -8.541818750000004,
+    "ci": [
+      -25.96698234375,
+      9.620574843749994
+    ],
+    "n": 8,
+    "pos": 3,
+    "per_seed": [
+      9.972900000000003,
+      -17.541700000000006,
+      -20.203200000000002,
+      -47.2552,
+      -20.020799999999998,
+      7.864549999999994,
+      39.744749999999996,
+      -20.89585
+    ],
+    "fires": false
+  },
+  "p_pe3": {
+    "point": -7.879937499999998,
+    "ci": [
+      -27.376025,
+      10.074487500000002
+    ],
+    "n": 8,
+    "pos": 4,
+    "per_seed": [
+      -24.997899999999994,
+      -61.020799999999994,
+      -10.5,
+      10.5729,
+      6.302100000000003,
+      26.989600000000003,
+      18.25,
+      -28.635399999999997
+    ],
+    "verdict": "premise-idle"
+  },
+  "cell_means": {
+    "s0": 75.284875,
+    "s1": 67.4049375
+  },
+  "baseline_cell_means": {
+    "s0": 77.2070375,
+    "s1": 82.5664125
+  },
+  "verdict": "NO-RELIEF: the encoder-competition lever fails its first intervention \u2014 registered honest negative; the swamping account needs revision before further pixel arms.",
+  "auc_csv": "/home/rickybao/projects/dreamerv3/local_results/pe_pixel_20260802_165601/analysis/analysis_pe_pixel_auc/auc.csv",
+  "e4_csv": "/home/rickybao/projects/dreamerv3/local_results/pe_pixel_20260802_165601/e4_fingerpx_v1_pe.csv",
+  "baseline_csv": "/home/rickybao/projects/dreamerv3/artifacts/pixel_x2_20260724/auc.csv"
+}
