@@ -35,7 +35,7 @@ Frozen pre-outcome readers, one per registered experiment; each has a
 - `r3_ladder_read.py` — candidate-aware ladder L0–L4 on the committed R3 labels (registered-descriptive; `PREREG_r3_ladder_20260730` + pre-read metric amendment `PREREG_r3_ladder_amend1_20260731` after the independent review caught the pooled-metric confound; READ EXECUTED 31 Jul: **NO PER-STATE SIGNATURE** — gap not state-legible, repair default targeting stands; `artifacts/r3_ladder_20260730/`).
 - `stage0_secondk_read.py` — Stage-0 second-k density-proxy robustness (frozen 31 Jul pre-outcome, `PREREG_stage0_secondk_20260730`; existence-gated re-dump k∈{5,20}, calibrated two-mode integrity guard; SUBSTRATE-GONE = valid outcome).
 - `tm2_r3_read.py` — TM2-R3 TD-MPC2 cross-family replication read (frozen 31 Jul pre-outcome, `PREREG_tm2_competence_20260730`; with `probing/tdmpc2_oracle_labels.py` labeler port + `tdmpc2_r3_train.py` + `scripts/tm2r3.sbatch`).
-- `r3_xconsumer_read.py` — cross-checkpoint consumer read (frozen 31 Jul pre-outcome, `PREREG_r3_amend2_20260730`; per-state-paired via counter-restored overlay; pairing QUARANTINE gate).
+- `r3_xconsumer_read.py` — cross-checkpoint consumer read (parent `PREREG_r3_amend2_20260730` frozen 31 Jul, two-pass form RETIRED UNEXECUTED after the 2-Aug detprobe FAIL; AMENDED 2 Aug by `PREREG_r3_xc_amend1_20260802`: 64 `_dual` passes, within-pass d_pair estimand from `--dual_chooser` labels (`_xc2` exact pin), QUARANTINE = within-pass integrity, value-blind `--dualgate`).
 - `repair_read.py` — competence-repair read (frozen 31 Jul pre-outcome, `PREREG_competence_repair_20260730`; with `d0/train_consumer_model.py` LORO trainer; AMENDED 1 Aug by `PREREG_competence_repair_amend1_20260801` after the registered QUARANTINE: primary = within-pass shadow pairing `g_all[m_real] − g_all[m_real_probe]`, committed labels demoted to state-identity reference + provenance digest — no cross-job float comparison anywhere).
 - `p3_factorial_read.py` — P3 gradient-path factorial + Amendment 1.
 - `stamping_read.py`, `scaling_read.py`, `optc_amend_read.py` — stamping + scaling pilot + Option-C corrective.
@@ -49,6 +49,7 @@ Frozen pre-outcome readers, one per registered experiment; each has a
 - `orthogonal_obj_read.py` — orthogonal-objective band leg (read 25 Jul: objective-specific).
 - `collusion_confirm_read.py` — Paper-4 confirmatory read (frozen 30 Jul pre-outcome; P-CLB1/2 composition + P-CLA1/2 dissociation primaries, exact-replay/baseline/population/manipulation gates, strict csv hygiene).
 - `pe_pixel_read.py` — pretrained-encoder pixel arm read (frozen 30 Jul pre-outcome; P-PE1 graded inclusion-restoration vs pinned swamping baseline + P-PE2 lift vs committed X2 cells + conditional P-PE3; companion gate `scripts/check_frozen_enc.py`).
+- `highfr_read.py` — high-f_R falling-limb read (frozen 2 Aug pre-buffer, `PREREG_highfr_wave_20260802` adjudicating `PREREG_highfr_theory_20260730`; P-HF1 falling limb vs archived v200s1 rows + monotone-rise-refutation / saturation branches + P-HF2 membership×diversity dissociation + P-HF3 interior max; instrument gates on `spectral_v1_1` f_rewarded).
 - `buffer_battery.py`, `collate_drivers.py`, `fit_mixed_effects.py` — shared statistics/collation helpers.
 
 ## Instruments
@@ -60,6 +61,8 @@ Frozen pre-outcome readers, one per registered experiment; each has a
 - `probing/` — training-adjacent instruments:
   `offline_fit.py` (static-replay WM fits — read-only on buffers),
   `build_controlled_replay.py` (occupancy-controlled buffer builder),
+  `curate_frew.py` (2 Aug: deterministic high-f_R window curation →
+  pairs json for the frozen builder; falling-limb wave),
   `stratified_error.py` (E4 NLL panels; err_diff = out−in),
   `latent_uq.py` + `latent_uq_analysis.py` (Stage 0/1A; the
   density-deconfounded residual), `wm_evaluator.py` (Goodhart, demoted),
