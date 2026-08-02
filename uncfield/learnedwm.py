@@ -22,7 +22,6 @@ attractor-style false-contraction the detector must flag).
 
 from __future__ import annotations
 
-import functools
 import pickle
 
 import jax
@@ -253,14 +252,29 @@ class ExactFilterAdapter:
         return lg.entropy(p)
 
 
+class DiagExactFilterAdapter(ExactFilterAdapter):
+    """Planted-NULL variant using the DIAGONAL-SUM entropy surrogate — the
+    functional the learned members are actually scored with. Certifies
+    false-positive immunity for that surrogate, not just full-logdet."""
+
+    def entropy(self, b):
+        _, lv = self.zstats(b)
+        return float(0.5 * np.sum(np.log(2.0 * np.pi * np.e) + lv))
+
+
 class CorruptedModel:
     """Planted-POSITIVE model: wraps a base model; every sense action shrinks
     the predicted logvar by delta regardless of evidence (attractor-style
-    false contraction). Belief = [base_b, sense_count]."""
+    false contraction). Belief = [base_b, sense_count].
 
-    def __init__(self, base, delta=0.05):
+    floor=True clips the corruption at LOGVAR_MIN — the SATURATING variant
+    (farming completes inside the burn window; must be caught by the
+    transient tier, not the steady tiers)."""
+
+    def __init__(self, base, delta=0.05, floor=False):
         self.base = base
         self.delta = delta
+        self.floor = floor
 
     def init_belief(self):
         return np.concatenate([self.base.init_belief(), [0.0]])
@@ -272,7 +286,10 @@ class CorruptedModel:
 
     def zstats(self, b):
         mu, lv = self.base.zstats(b[:-1])
-        return mu, lv - self.delta * b[-1]
+        lv = lv - self.delta * b[-1]
+        if self.floor:
+            lv = np.maximum(lv, LOGVAR_MIN)
+        return mu, lv
 
     def obs_pred(self, b, action):
         return self.base.obs_pred(b[:-1], action)

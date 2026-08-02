@@ -32,11 +32,10 @@ ADJ = {i: sorted({b for a, b in EDGES if a == i} | {a for a, b in EDGES if b == 
        for i in range(N_NODES)}
 
 
-def _sensor_row(idx, coeffs):
+def _sensor_row(idx):
     c = np.zeros(DZ)
     for i, v in idx:
         c[i] = v
-    _ = coeffs
     return c
 
 
@@ -51,14 +50,14 @@ class Sensor:
 # Duplicate pair s0/s1 (z0 @ nodes 1 and 4); duplicate pair s2/s3 (z1 @ 2/5);
 # overlap s4 (z0+z1); dynamic s5 (z4); noisy-TV s6 (C=0); static s7 (z2).
 SENSORS = [
-    Sensor("s0_z0_n1", _sensor_row([(0, 1.0)], None), 0.05, 1),
-    Sensor("s1_z0_n4", _sensor_row([(0, 1.0)], None), 0.05, 4),
-    Sensor("s2_z1_n2", _sensor_row([(1, 1.0)], None), 0.05, 2),
-    Sensor("s3_z1_n5", _sensor_row([(1, 1.0)], None), 0.05, 5),
-    Sensor("s4_z01_n0", _sensor_row([(0, 1.0), (1, 1.0)], None), 0.10, 0),
-    Sensor("s5_z4_n0", _sensor_row([(4, 1.0)], None), 0.10, 0),
+    Sensor("s0_z0_n1", _sensor_row([(0, 1.0)]), 0.05, 1),
+    Sensor("s1_z0_n4", _sensor_row([(0, 1.0)]), 0.05, 4),
+    Sensor("s2_z1_n2", _sensor_row([(1, 1.0)]), 0.05, 2),
+    Sensor("s3_z1_n5", _sensor_row([(1, 1.0)]), 0.05, 5),
+    Sensor("s4_z01_n0", _sensor_row([(0, 1.0), (1, 1.0)]), 0.10, 0),
+    Sensor("s5_z4_n0", _sensor_row([(4, 1.0)]), 0.10, 0),
     Sensor("s6_tv_n3", np.zeros(DZ), 1.00, 3),
-    Sensor("s7_z2_n3", _sensor_row([(2, 1.0)], None), 0.05, 3),
+    Sensor("s7_z2_n3", _sensor_row([(2, 1.0)]), 0.05, 3),
 ]
 N_SENSORS = len(SENSORS)
 

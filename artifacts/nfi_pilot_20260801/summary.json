@@ -1,0 +1,122 @@
+{
+ "members": [
+  {
+   "member": 0,
+   "verdict": "EXPLOIT-SURVIVES-CIG+PBIM",
+   "n_cycles": 626,
+   "n_neutral": 484,
+   "n_exploit_naive": 81,
+   "n_exploit_cig": 81,
+   "n_exploit_pbim": 46,
+   "n_exploit_both": 13,
+   "n_exploit_transient": 151,
+   "drift_per_action": -0.007775654395421346,
+   "holonomy": {
+    "corr_holonomy_carried_eig": 0.09555996498571336,
+    "corr_holonomy_carried_dh": -0.022841307691403676,
+    "n_neutral_cycles": 484
+   },
+   "tv_max_pred_rate": 0.3240739703178406,
+   "top_cycle": "c548_2-3-2-3-2_only_s6_tv_n3",
+   "top_true_rate": 0.0,
+   "top_dh_rate": 0.2774200439453125,
+   "top_dh_adj": 0.3240739703178406,
+   "top_eig_rate": -0.8887095451354976,
+   "top_transient": -0.2485000292460124,
+   "adaptivity_residue": null,
+   "elapsed_s": 504.5
+  },
+  {
+   "member": 1,
+   "verdict": "EXPLOIT-SURVIVES-CIG+PBIM",
+   "n_cycles": 626,
+   "n_neutral": 484,
+   "n_exploit_naive": 260,
+   "n_exploit_cig": 253,
+   "n_exploit_pbim": 127,
+   "n_exploit_both": 61,
+   "n_exploit_transient": 292,
+   "drift_per_action": -0.0067539215087890625,
+   "holonomy": {
+    "corr_holonomy_carried_eig": -0.030244787307503386,
+    "corr_holonomy_carried_dh": 0.024660064187733977,
+    "n_neutral_cycles": 484
+   },
+   "tv_max_pred_rate": 0.8657490015029912,
+   "top_cycle": "c46_0-1-0-5-0-5-0_all",
+   "top_true_rate": 1.0541117008753487,
+   "top_dh_rate": 0.021915316581726074,
+   "top_dh_adj": 0.12322413921356201,
+   "top_eig_rate": -0.056127876043321034,
+   "top_transient": -0.8751390579737868,
+   "adaptivity_residue": null,
+   "elapsed_s": 477.4
+  },
+  {
+   "member": 2,
+   "verdict": "EXPLOIT-SURVIVES-CIG-ONLY",
+   "n_cycles": 626,
+   "n_neutral": 484,
+   "n_exploit_naive": 153,
+   "n_exploit_cig": 145,
+   "n_exploit_pbim": 0,
+   "n_exploit_both": 0,
+   "n_exploit_transient": 0,
+   "drift_per_action": -0.0017755627632141113,
+   "holonomy": {
+    "corr_holonomy_carried_eig": -0.547813086138317,
+    "corr_holonomy_carried_dh": -0.6052087332197935,
+    "n_neutral_cycles": 484
+   },
+   "tv_max_pred_rate": -0.0005977104107538489,
+   "top_cycle": "c15_0-1-0-1-0-5-0_all",
+   "top_true_rate": 1.054067144328139,
+   "top_dh_rate": 0.018325328826904297,
+   "top_dh_adj": 0.04495877027511597,
+   "top_eig_rate": 0.07490333914756664,
+   "top_transient": -0.9902280609008267,
+   "adaptivity_residue": null,
+   "elapsed_s": 497.7
+  },
+  {
+   "member": 3,
+   "verdict": "EXPLOIT-SURVIVES-CIG+PBIM",
+   "n_cycles": 626,
+   "n_neutral": 484,
+   "n_exploit_naive": 102,
+   "n_exploit_cig": 100,
+   "n_exploit_pbim": 331,
+   "n_exploit_both": 61,
+   "n_exploit_transient": 294,
+   "drift_per_action": -0.02008374532063802,
+   "holonomy": {
+    "corr_holonomy_carried_eig": -0.12783798454041648,
+    "corr_holonomy_carried_dh": -0.20683135524958665,
+    "n_neutral_cycles": 484
+   },
+   "tv_max_pred_rate": 0.9601535797119163,
+   "top_cycle": "c553_2-3-2-3-2-3-2_only_s6_tv_n3",
+   "top_true_rate": 0.0,
+   "top_dh_rate": 0.20957040786743164,
+   "top_dh_adj": 0.39032411575317383,
+   "top_eig_rate": -0.605545024077097,
+   "top_transient": -0.12627588510513305,
+   "adaptivity_residue": null,
+   "elapsed_s": 475.7
+  }
+ ],
+ "thresholds": {
+  "eps_true": 0.02,
+  "eps_pred": 0.08,
+  "n_loops": 8,
+  "n_burn": 30,
+  "max_len": 6
+ },
+ "ensemble_verdict": "EXPLOIT-SURVIVES-CIG+PBIM",
+ "member_verdicts": [
+  "EXPLOIT-SURVIVES-CIG+PBIM",
+  "EXPLOIT-SURVIVES-CIG+PBIM",
+  "EXPLOIT-SURVIVES-CIG-ONLY",
+  "EXPLOIT-SURVIVES-CIG+PBIM"
+ ]
+}

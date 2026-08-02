@@ -10,9 +10,11 @@ R1  Commutator / loop-holonomy instrument (reopened commutator branch):
 
 R2  Synergy-horizon environments (higher-order synergy residue): a discrete
     XOR world with an exact enumeration referee where marginal observations
-    carry zero information about the target but pairs carry one bit.
-    Pilot role: adversarial benchmark — does the learned/predicted gain
-    respect I(Z;Y_A)=0 while I(Z;Y_A,Y_B)=1 bit?
+    carry EXACTLY zero information about the target (any flip noise) while
+    pairs carry substantial information (0.32 bits at flip 0.1; 1 bit
+    noiseless). Pilot scope (disclosed): the REFEREE is validated here; the
+    learned-model confrontation in this world is deferred to a follow-up —
+    R2 currently certifies the benchmark, not a learned-model result.
 
 R3  H* residue (adaptivity value): closed-loop vs open-loop predicted value
     under the learned model, before and after cycle-free (potential-based)
@@ -161,19 +163,22 @@ def synergy_selfcheck():
 
 def adaptivity_residue(model, b0, node0, cycle, n_branches=8, horizon=None,
                        seed=0):
-    """Closed-loop vs open-loop predicted value of one cycle pass under the
-    learned model, in raw carried-EIG accounting and in cycle-free
-    (potential/dH) accounting. In the exact LG referee both are equal for
-    covariance objectives (the determinism fact); a learned-model gap is a
-    model artifact, and the residue asks whether repaired accounting
-    shrinks it."""
+    """Observation-sampling sensitivity of one cycle pass under the learned
+    model (honest labels per review: this compares ML-observation vs
+    sampled-observation rollouts of the SAME action sequence — a necessary
+    precursor to adaptivity value, not adaptivity value itself). Both
+    channels are realized-dH accountings: `dh_senseonly` sums entropy drops
+    across sense steps only; `dh_total` includes move-step drift. In the
+    exact LG referee both are observation-independent (determinism fact);
+    a learned-model gap is a model artifact, and the residue asks whether
+    it shrinks under drift-corrected accounting."""
     rng = np.random.default_rng(seed)
     horizon = horizon or len(cycle["actions"])
     actions = list(cycle["actions"])[:horizon]
 
     def rollout(sample):
         b, node = b0.copy(), node0
-        g_eig = 0.0
+        g_sense = 0.0
         h_in = model.entropy(b)
         for a in actions:
             if a >= lg.N_NODES:
@@ -181,19 +186,21 @@ def adaptivity_residue(model, b0, node0, cycle, n_branches=8, horizon=None,
                 if sample:
                     y = mu + np.exp(0.5 * lv) * rng.standard_normal()
                 else:
-                    y = mu                     # ML-observation = open-loop-ish
+                    y = mu                     # ML-observation reference path
                 g_here = model.entropy(b)
                 b = model.step(b, a, node, y)
-                g_eig += g_here - model.entropy(b)
+                g_sense += g_here - model.entropy(b)
             else:
                 b = model.step(b, a, node, None)
                 node = a
-        return g_eig, h_in - model.entropy(b)
+        return g_sense, h_in - model.entropy(b)
 
-    open_eig, open_dh = rollout(sample=False)
-    cl_eig, cl_dh = np.mean([rollout(sample=True) for _ in range(n_branches)],
-                            axis=0)
-    return dict(open_eig=float(open_eig), closed_eig=float(cl_eig),
-                gap_eig=float(cl_eig - open_eig),
-                open_dh=float(open_dh), closed_dh=float(cl_dh),
-                gap_dh=float(cl_dh - open_dh))
+    ml_sense, ml_total = rollout(sample=False)
+    s_sense, s_total = np.mean([rollout(sample=True)
+                                for _ in range(n_branches)], axis=0)
+    return dict(ml_dh_senseonly=float(ml_sense),
+                sampled_dh_senseonly=float(s_sense),
+                gap_dh_senseonly=float(s_sense - ml_sense),
+                ml_dh_total=float(ml_total),
+                sampled_dh_total=float(s_total),
+                gap_dh_total=float(s_total - ml_total))
