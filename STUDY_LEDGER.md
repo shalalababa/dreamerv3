@@ -247,10 +247,40 @@ re-test, not results. 24+24 permanently frozen; imag op retired.
   `artifacts/r3_repair_quarantine_20260801/AUDIT.md`. Recommended
   path: within-pass shadow-pairing amendment
   (`g_all[m_real] − g_all[m_real_probe]` inside each rep pass; model
-  reusable; zero extra compute) — decision pending. **xc wave EXPOSED
+  reusable; zero extra compute). **xc wave EXPOSED
   to the same hazard (pairing gate atol 1e-5 vs measured cross-job
   drift ~30–46) — one-cell same-job reproducibility probe required
   before submitting; TM2 not exposed (within-pass asserts).**
+  **08-01 late AMENDMENT 1 REGISTERED (user GO):**
+  `PREREG_competence_repair_amend1_20260801` (aefe13da…) — parent
+  committed-paired primary RETIRED unmeasurable-on-substrate; amended
+  primary = per-state within-pass [`g_all[m_real] −
+  g_all[m_real_probe]`] (g_now cancels; both choosers already stored
+  by the frozen labeler), same P-REP1/P-REP2 (bar 0.6465, bridge
+  disclosure) + verdict map; gates: episode/step state identity vs
+  committed ⇒ QUARANTINE, within-pass identities (oracle_all, m_real
+  max ghat, NEW m_real_probe max real_scores + finiteness), NO
+  cross-job float gate anywhere; sensitivity leg excl. the
+  pre-amendment smoke cell + registered FRAGILITY DISCLOSURE
+  (materiality is a point threshold — deterministic flip leg in
+  selfcheck); driver byte-unchanged (comments stale by design; smoke
+  stage re-mints the detgate marker); model-restore rule (never
+  retrain — sha mismatch would crash the read). Reader amended
+  (selfcheck PASS; c92b2fd7…). ONE reviewer (Opus 5): 0 BLOCKING /
+  4 MAJOR / 7 MINOR / 4 NIT; all MAJORs fixed pre-commit — drift
+  figure corrected to ≈50% (`m_real` 101/200; 25% was `m_now`), the
+  three audit scripts ARCHIVED VERBATIM
+  (`artifacts/r3_repair_quarantine_20260801/audit_scripts/`; none
+  loads chooser fields from the rep file; smoke npz git-pinned
+  dd3138e7 sha 0d549b6b…), selfcheck source-pinning e2e numerics +
+  episode-half legs (d_pair-from-ghat and episode-drop mutations both
+  verified CAUGHT on a mirror); MINORs applied (scoped
+  no-cross-job-float wording, ghat/real_scores finiteness guards,
+  non-read precedent clause for within-pass gate aborts, audit_nocm
+  file disclosure, model-restore rule); skipped by design:
+  branch-varying JSON schema NIT, mechanical one-read guard
+  (procedural, parent-inherited). Remaining: smoke detgate re-run →
+  31 passes → ONE read.
 
 - **Unfrozen stress waves U1–U4** (REGISTERED 07-27; motivated by the frozen-protocol audit `research_notes/Audit_FrozenProtocol_20260726.md`): `PREREG_unfrozen_u{1,2,3,4}_20260727` → `analysis/unfrozen_stress_read.py` (four subcommands, selfcheck PASS) + `orth_spin_unfrozen` config. **U2/U3/U4 READ 07-30** (see Paper-1 table: robust / robust / floor-censored — no flips anywhere; `artifacts/unfrozen_stress_u234_20260730/`). **U1 still draining** (apt+task unfrozen 2×2, 32 jobs; P-U1a interaction persists / P-U1b apt-null stress — the decisive reward-free-null test, absence-vs-illegible discriminator anchored to rgo +235/sgb +30; 8 rows outstanding at the 07-30 csv: uzt s0 seeds 7–8 + uzf seeds 6–8 both sides). Frozen registrations untouched under every branch — flips would have changed generality language only.
 - **Pretrained-encoder pixel arm REGISTERED 07-30** (GO'd; the swamping account's lever prediction): `PREREG_pe_pixel_20260730` → `analysis/pe_pixel_read.py` (selfcheck PASS; sha256 34380e0f…) + code: `agent.frozen_enc` (optimizer module filtering), `offline_fit` partial-init w/ counter reset (the skip trap), `AXIS1_INIT_WM` plumbing, `scripts/check_frozen_enc.py` integrity gate (training witness via OFFLINE_FIT_PROGRESS; committed selfcheck; sha256 00acbdff…). Design: 16 stage-2 pixel fits (task-mode full, enc loaded '^enc/' from seed/side-matched fpxpx donors + frozen) + 16 frozen-readout adapts + E4 pass (COLLATE to a NEW csv). P-PE1 graded (CI<2.0 INCLUSION-RESTORED / <19.41 PARTIAL / else NO-RELIEF vs pinned 23.34 baseline); P-PE2 lift vs committed X2 cells; P-PE3 conditional occupancy split. Smoke gate + 16-run integrity sweep with persisted log. 2 adversarial reviews (0 blocking; all 4 MINOR hardening items applied incl. the counter-skip witness + subshell-safe sweep gate). Donors protected in runroot_cleanup (KEEP-PENDING).

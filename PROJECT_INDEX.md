@@ -36,7 +36,7 @@ Frozen pre-outcome readers, one per registered experiment; each has a
 - `stage0_secondk_read.py` — Stage-0 second-k density-proxy robustness (frozen 31 Jul pre-outcome, `PREREG_stage0_secondk_20260730`; existence-gated re-dump k∈{5,20}, calibrated two-mode integrity guard; SUBSTRATE-GONE = valid outcome).
 - `tm2_r3_read.py` — TM2-R3 TD-MPC2 cross-family replication read (frozen 31 Jul pre-outcome, `PREREG_tm2_competence_20260730`; with `probing/tdmpc2_oracle_labels.py` labeler port + `tdmpc2_r3_train.py` + `scripts/tm2r3.sbatch`).
 - `r3_xconsumer_read.py` — cross-checkpoint consumer read (frozen 31 Jul pre-outcome, `PREREG_r3_amend2_20260730`; per-state-paired via counter-restored overlay; pairing QUARANTINE gate).
-- `repair_read.py` — competence-repair read (frozen 31 Jul pre-outcome, `PREREG_competence_repair_20260730`; with `d0/train_consumer_model.py` LORO trainer; committed labels = per-state control via determinism gate).
+- `repair_read.py` — competence-repair read (frozen 31 Jul pre-outcome, `PREREG_competence_repair_20260730`; with `d0/train_consumer_model.py` LORO trainer; AMENDED 1 Aug by `PREREG_competence_repair_amend1_20260801` after the registered QUARANTINE: primary = within-pass shadow pairing `g_all[m_real] − g_all[m_real_probe]`, committed labels demoted to state-identity reference + provenance digest — no cross-job float comparison anywhere).
 - `p3_factorial_read.py` — P3 gradient-path factorial + Amendment 1.
 - `stamping_read.py`, `scaling_read.py`, `optc_amend_read.py` — stamping + scaling pilot + Option-C corrective.
 - `synth_phaseb_read.py`, `synth_diagnosis_read.py`, `synth_rediag_read.py`, `synth_phasebpp_read.py` — synth series.

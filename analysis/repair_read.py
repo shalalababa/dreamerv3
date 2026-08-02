@@ -1,43 +1,59 @@
 """Frozen read for the competence-repair intervention (Paper 2).
 
-Registered in prereg/PREREG_competence_repair_20260730.md and committed
-BEFORE the consumer-model trainer has ever run on real labels and
-before any repaired label exists — --consumer_model has never been
-executed anywhere. The repaired side comes from the cm-extended labeler
-(version d1fix_20260724_cm1, EXACT pin) deploying the LORO ridge model
-of d0/train_consumer_model.py; the control side is the COMMITTED R3
-late label set itself: repaired passes reuse the committed wave's
-labeler seed 0 and dials, and the external chooser influences nothing
-upstream of the saved row, so both passes walk bit-identical base
-trajectories (DETERMINISM GATE below).
+Registered in prereg/PREREG_competence_repair_20260730.md, AMENDED by
+prereg/PREREG_competence_repair_amend1_20260801.md after the parent's
+QUARANTINE branch fired at smoke and the mandated instrument audit
+(artifacts/r3_repair_quarantine_20260801/AUDIT.md) found the labeling
+stack is not job-to-job deterministic on the cluster — the parent's
+pair-against-committed estimand is RETIRED as unmeasurable-on-substrate
+(an instrument fact, not an outcome). The repaired side comes from the
+cm-extended labeler (version d1fix_20260724_cm1, EXACT pin) deploying
+the LORO ridge model of d0/train_consumer_model.py; the CONTROL is the
+IN-PASS shadow chooser: every repaired pass stores both m_real
+(consumer argmax of ghat) and m_real_probe + real_scores (the unchanged
+op_real probe) evaluated on the same states, trajectories, and g_all.
 
 Files:
   repaired  <labels_dir>/rep_{dom}_{dose}_seed{s}_late.npz   (32 cells)
-  committed <committed_dir>/r3_{dom}_{dose}_seed{s}_late.npz (32 cells)
-  model     the single trainer output npz (sha-pinned three ways)
+  committed <committed_dir>/r3_{dom}_{dose}_seed{s}_late.npz (32 cells;
+            state-identity reference + provenance digest + descriptive
+            cross-era context — NEVER a paired side)
+  model     the single trainer output npz (sha-pinned four ways)
 
-Determinism gate (registered): per cell, episode/step must match
-EXACTLY and g_all must match exactly (registered fallback: atol
-PAIR_ATOL = 1e-5, disclosed as pair_tolerance_used); ANY violation
-QUARANTINES the read — env/library drift or a chooser side-channel
-would surface here, and the smoke stage checks one cell via --detgate
-before the wave.
+Gates (amended): per cell, episode/step must match the committed npz
+EXACTLY (state identity — the component that held in the audit); ANY
+violation QUARANTINES the read. Within each repaired pass:
+g_now == g_all[m_now] (oracle_all identity), m_real is a maximizer of
+ghat, and m_real_probe is a maximizer of real_scores (tie-tolerant) —
+a coherent shadow pair. The parent's cross-pass m_now/g_all bitwise
+comparisons are REMOVED (registered-unpassable per the audit): no
+cross-job float comparison GATES anything — the one cross-era float
+quantity, the descriptive opportunity_max_cell_absdiff secondary, is
+registered as drift context and gates nothing.
 
-Estimand per state: achieved = g_all[arange, m_real] - g_now, on each
-side; the primary target is the per-state PAIRED difference
-[achieved_rep - achieved_orig], per-run mean, run-clustered percentile
-bootstrap (32 clusters, B=10K, rng 0).
+Estimand per state, WITHIN each repaired pass:
+  achieved_rep   = g_all[arange, m_real] - g_now
+  achieved_probe = g_all[arange, m_real_probe] - g_now
+  primary target = paired [achieved_rep - achieved_probe]
+                 = g_all[arange, m_real] - g_all[arange, m_real_probe]
+(g_now cancels), per-run mean, run-clustered percentile bootstrap
+(32 clusters, B=10K, rng 0).
   P-REP1  CI entirely > 0  (the repair helps at all)
   P-REP2  point >= MATERIALITY = 0.6465 (adjudicated only when P-REP1
           fires): 50% of the committed R3 pooled gap point 1.29304688
           (artifacts/r3_competence_20260729/r3.json) — the SAME
-          registered constant as PREREG_r3_doubling_20260729.md (see
-          the prereg for the truncation-direction disclosure).
+          registered constant as PREREG_r3_doubling_20260729.md
+          (truncation note in the parent; baseline-bridge disclosure
+          in the amendment).
+Sensitivity leg (disclosure-only): the primary excluding the smoke
+cell (cup/e1/31, whose label file predates the amendment);
+adjudication is on all 32; any fire-status difference appends a
+registered FRAGILITY DISCLOSURE to the verdict, never changes it.
 
 Verdicts: REPAIRED (both) / PARTIAL (P-REP1 only) /
 NOT-REPAIRABLE-FROM-OBSERVABLES (CI straddles 0; scope-limited: a
 LINEAR probe on stored observables — NOT "no repair possible") /
-HARMFUL (CI entirely < 0) / QUARANTINE (determinism gate) /
+HARMFUL (CI entirely < 0) / QUARANTINE (state-identity gate) /
 SUBSTRATE-GONE (existence gate marker; no adjudication).
 
 Usage:
@@ -45,8 +61,10 @@ Usage:
       --committed <committed late-label dir> --model <model.npz> \
       --output <dir>
   python -m analysis.repair_read --detgate <rep dir> --committed <dir>
-      (value-blind smoke gate on the ONE registered cell: touches ONLY
-       meta version + episode/step/g_all; no estimand is ever computed)
+      (value-blind smoke gate on the ONE registered cell: meta version
+       pins, episode/step identity vs committed, g_all finiteness, and
+       the within-pass identity gates; value arrays are touched only
+       inside identity/argmax assertions; no estimand is ever computed)
   python -m analysis.repair_read --selfcheck
 """
 
@@ -81,7 +99,6 @@ assert CM_VERSION == LABELER_VERSION + '_cm1', CM_VERSION
 CORE_DOMAINS = ('cup', 'finger')
 N_STATES = 200
 N_CANDS = 8
-PAIR_ATOL = 1e-5
 # 50% of the committed R3 pooled gap point 1.29304688
 # (artifacts/r3_competence_20260729/r3.json p_r3b_gap.point), truncated
 # to 4 dp — the SAME constant registered in PREREG_r3_doubling_20260729
@@ -100,8 +117,9 @@ COMMITTED_LABELS_DIGEST = (
     '02efe6c5bae641c1f24055ffb4791e37d1b636bb7304f833777c5bf017f2798d')
 FILE_REP = re.compile(r'^rep_(cup|finger)_(e1|e4)_seed(\d+)_late\.npz$')
 FILE_ORIG = re.compile(r'^r3_(cup|finger)_(e1|e4)_seed(\d+)_late\.npz$')
-# Registered smoke cell: ONE full-dial repaired pass, determinism-gated
-# via --detgate BEFORE the remaining 31 passes.
+# Registered smoke cell: ONE full-dial repaired pass, gated via
+# --detgate BEFORE the remaining 31 passes. Its label file predates
+# Amendment 1, so the read reports a sensitivity leg excluding it.
 DETGATE_CELL = ('cup', 'e1', 31)
 DETGATE_MARKER = 'REP_DETGATE_OK'
 SUBSTRATE_MARKER = 'SUBSTRATE_GONE'
@@ -182,9 +200,16 @@ def load_side(labels_dir, repaired):
       assert len(sha) == 64, f'{name}: consumer_model_sha256 missing'
       ghat = np.asarray(z['ghat'], float)
       probe = np.asarray(z['m_real_probe'], int)
+      scores = np.asarray(z['real_scores'], float)
       assert ghat.shape == (N_STATES, N_CANDS), f'{name}: ghat shape'
+      assert scores.shape == (N_STATES, N_CANDS), (
+          f'{name}: real_scores shape')
       assert probe.min() >= 0 and probe.max() < N_CANDS, (
           f'{name}: m_real_probe range')
+      # Finiteness before the maximizer identities: a NaN would make
+      # np.argmax/array_equal fail with a misleading identity message.
+      assert np.isfinite(ghat).all() and np.isfinite(scores).all(), (
+          f'{name}: non-finite ghat/real_scores')
       # Tie-tolerant chooser identity: m_real must BE a maximizer of the
       # stored f32 ghat (first-index argmax equality would crash the ONE
       # read on an honest pass whenever f32 rounding creates a tie).
@@ -193,7 +218,19 @@ def load_side(labels_dir, repaired):
           f'{name}: m_real is not a maximizer of ghat (chooser identity '
           'violated — the pass did not deploy the external chooser it '
           'stamps)')
-      blk.update(model_sha=sha, m_real_probe=probe)
+      # Amendment-1 shadow-pair identity (same tie-tolerant form):
+      # m_real_probe must BE a maximizer of the stored op_real scores —
+      # the pass provably contains a coherent in-pass control chooser.
+      picked_p = scores[np.arange(N_STATES), probe]
+      assert np.array_equal(picked_p, scores.max(1)), (
+          f'{name}: m_real_probe is not a maximizer of real_scores '
+          '(shadow-pair identity violated — the in-pass control chooser '
+          'is incoherent)')
+      # Amended primary lives entirely within this pass: g_now cancels.
+      d_pair = (blk['g_all'][np.arange(N_STATES), blk['m_real']]
+                - blk['g_all'][np.arange(N_STATES), probe])
+      blk.update(model_sha=sha, m_real_probe=probe, d_pair=d_pair,
+                 ach_probe=blk['ach'] - d_pair)
     key = (dom, dose, seed)
     assert key not in cells, f'duplicate cell from {name}'
     cells[key] = blk
@@ -226,32 +263,20 @@ def check_grid(rep, orig):
   return sorted(rep)
 
 
-def pair_violations(rep, orig):
-  """Registered determinism gate, value-blind by construction: only
-  episode/step/m_now/g_all are compared (all index/oracle arrays); no
-  achieved value is computed here."""
-  viols, tol_used = [], []
+def state_identity_violations(rep, orig):
+  """Amendment-1 state-identity gate, value-blind by construction: only
+  episode/step are compared (index arrays). The parent's cross-pass
+  m_now/g_all comparisons are REMOVED — the quarantine audit showed the
+  stack is not job-to-job deterministic, so no cross-job float
+  comparison GATES anything in this read (the descriptive
+  opportunity_max_cell_absdiff secondary gates nothing)."""
+  viols = []
   for r in sorted(rep):
     a, b = rep[r], orig[r]
-    tag = '/'.join(map(str, r))
     if not (np.array_equal(a['episode'], b['episode'])
             and np.array_equal(a['step'], b['step'])):
-      viols.append(tag + ': episode/step mismatch')
-      continue
-    # m_now enters the primary through g_now = g_all[m_now]; drift
-    # confined to the value-head path could flip a near-tie plugin
-    # argmax while g_all stays bitwise — the gate must see it (m_now is
-    # an index array, as value-blind as episode/step).
-    if not np.array_equal(a['m_now'], b['m_now']):
-      viols.append(tag + ': m_now mismatch (plugin choice drifted)')
-      continue
-    if np.array_equal(a['g_all'], b['g_all']):
-      continue
-    if np.allclose(a['g_all'], b['g_all'], rtol=0, atol=PAIR_ATOL):
-      tol_used.append(tag)
-    else:
-      viols.append(tag + f': g_all mismatch beyond PAIR_ATOL={PAIR_ATOL}')
-  return viols, tol_used
+      viols.append('/'.join(map(str, r)) + ': episode/step mismatch')
+  return viols
 
 
 def check_model(model_path, labels_dir, committed_dir, rep,
@@ -320,30 +345,47 @@ def check_model(model_path, labels_dir, committed_dir, rep,
   return msha
 
 
+def _fires(boot):
+  """Registered fire statuses from one bootstrap block (shared by the
+  32-cell primary and the 31-cell sensitivity leg)."""
+  rep1 = bool(boot['ci'][0] > 0)
+  return dict(p_rep1=rep1,
+              p_rep2_material=bool(rep1 and boot['point'] >= MATERIALITY),
+              harmful=bool(boot['ci'][1] < 0))
+
+
 def analyze(rep, orig):
   runs = check_grid(rep, orig)
-  viols, tol_used = pair_violations(rep, orig)
+  viols = state_identity_violations(rep, orig)
   if viols:
     return dict(
         primaries=None,
         fires=dict(p_rep1=None, p_rep2_material=None, harmful=None),
-        pair_violations=viols, pair_tolerance_used=tol_used,
+        state_identity_violations=viols,
         n_runs=len(runs),
-        verdict=('QUARANTINE: determinism gate violated — repaired '
-                 'passes are not state-identical to the committed '
-                 'labels for: ' + '; '.join(viols[:6])
+        verdict=('QUARANTINE: state-identity gate violated — repaired '
+                 'passes do not label the registered committed states '
+                 'for: ' + '; '.join(viols[:6])
                  + (' ...' if len(viols) > 6 else '')
                  + '. No adjudication; audit the labeler/env stack '
-                 '(library drift, chooser side-channel) before ANY use.'))
+                 'before ANY use.'))
 
-  diffs = {r: [float(np.mean(rep[r]['ach'] - orig[r]['ach']))]
-           for r in runs}
+  # Amended primary: per-state paired [achieved_rep - achieved_probe],
+  # entirely within each repaired pass (Amendment 1).
+  diffs = {r: [float(np.mean(rep[r]['d_pair']))] for r in runs}
   p1 = _cluster_boot(diffs)
-  rep1 = bool(p1['ci'][0] > 0)
-  harmful = bool(p1['ci'][1] < 0)
-  material = bool(rep1 and p1['point'] >= MATERIALITY)
+  fires = _fires(p1)
+  rep1, material = fires['p_rep1'], fires['p_rep2_material']
+  harmful = fires['harmful']
+  # Sensitivity leg (disclosure-only): exclude the smoke cell, whose
+  # label file predates Amendment 1. Adjudication stays on all 32.
+  sens_boot = _cluster_boot(
+      {r: v for r, v in diffs.items() if r != DETGATE_CELL})
+  sens_fires = _fires(sens_boot)
+  fragile = sens_fires != fires
 
-  mean_opp = float(np.mean([np.mean(orig[r]['opp']) for r in runs]))
+  mean_opp_rep = float(np.mean([np.mean(rep[r]['opp']) for r in runs]))
+  mean_opp_orig = float(np.mean([np.mean(orig[r]['opp']) for r in runs]))
   mean_ach_rep = float(np.mean([np.mean(rep[r]['ach']) for r in runs]))
   secondary = dict(
       per_domain={dom: _cluster_boot(
@@ -354,34 +396,43 @@ def analyze(rep, orig):
           for dose in DOSES},
       achieved_rep=_cluster_boot(
           {r: [float(np.mean(rep[r]['ach']))] for r in runs}),
+      achieved_probe=_cluster_boot(
+          {r: [float(np.mean(rep[r]['ach_probe']))] for r in runs}),
+      # cross-era descriptive context ONLY — never a paired side
       achieved_orig=_cluster_boot(
           {r: [float(np.mean(orig[r]['ach']))] for r in runs}),
       oracle_agreement_rep=float(np.mean(
           [np.mean(rep[r]['m_real'] == np.argmax(rep[r]['g_all'], 1))
            for r in runs])),
+      oracle_agreement_probe=float(np.mean(
+          [np.mean(rep[r]['m_real_probe']
+                   == np.argmax(rep[r]['g_all'], 1)) for r in runs])),
       oracle_agreement_orig=float(np.mean(
           [np.mean(orig[r]['m_real'] == np.argmax(orig[r]['g_all'], 1))
            for r in runs])),
+      # in-pass chooser change: consumer pick vs shadow probe pick
       chooser_change_rate=float(np.mean(
-          [np.mean(rep[r]['m_real'] != orig[r]['m_real'])
-           for r in runs])),
-      # redundant instrument sanity: on identical trajectories the
-      # repaired pass's own op_real argmax must reproduce the committed
-      # realized choice (descriptive, never a gate)
-      probe_agreement=float(np.mean(
-          [np.mean(rep[r]['m_real_probe'] == orig[r]['m_real'])
+          [np.mean(rep[r]['m_real'] != rep[r]['m_real_probe'])
            for r in runs])),
       residual_gap_fraction=(
-          float(1.0 - mean_ach_rep / mean_opp) if mean_opp > 0 else None),
-      opportunity_sanity=dict(
-          pooled_late_opp=mean_opp,
-          max_cell_absdiff=float(max(
+          float(1.0 - mean_ach_rep / mean_opp_rep)
+          if mean_opp_rep > 0 else None),
+      cross_era_drift=dict(
+          probe_vs_committed_realized_agreement=float(np.mean(
+              [np.mean(rep[r]['m_real_probe'] == orig[r]['m_real'])
+               for r in runs])),
+          opportunity_max_cell_absdiff=float(max(
               np.max(np.abs(rep[r]['opp'] - orig[r]['opp']))
               for r in runs)),
-          note=('pairing sanity ONLY: states are identical by the '
-                'determinism gate, so per-state opportunity IS the '
-                'committed quantity; recomputed solely to confirm the '
-                'pairing, never as a new estimand')))
+          pooled_late_opp_inpass=mean_opp_rep,
+          pooled_late_opp_committed=mean_opp_orig,
+          note=('descriptive drift context ONLY (Amendment 1): the '
+                'quarantine audit showed job-to-job nondeterminism, so '
+                'cross-era per-state quantities are expected to drift '
+                '(~50% probe-choice flips — m_real 101/200 '
+                'committed<->audit_nocm; plugin m_now flips ~25%; O(1) '
+                'float drift); these are NOT sanity expectations and '
+                'NOT paired estimands')))
 
   if harmful:
     verdict = ('HARMFUL: the paired achieved contrast is entirely '
@@ -410,11 +461,22 @@ def analyze(rep, orig):
                'by registration: NOT a claim that no repair is '
                'possible; the representational account is strengthened '
                '(support must be legible cross-link).')
+  if fragile:
+    verdict += (
+        ' FRAGILITY DISCLOSURE (registered, Amendment 1): the '
+        'sensitivity leg excluding the pre-amendment smoke cell '
+        'changes at least one fire status (see '
+        'sensitivity_excl_smoke); adjudication remains on all 32 by '
+        'registration and this disclosure is mandatory in any '
+        'reporting of the verdict.')
   return dict(
       primaries=dict(p_rep1_paired_achieved=p1),
-      fires=dict(p_rep1=rep1, p_rep2_material=material, harmful=harmful),
-      thresholds=dict(materiality=MATERIALITY, pair_atol=PAIR_ATOL),
-      pair_violations=[], pair_tolerance_used=tol_used,
+      fires=fires,
+      sensitivity_excl_smoke=dict(
+          boot=sens_boot, fires=sens_fires, fragile=fragile,
+          excluded_cell='/'.join(map(str, DETGATE_CELL))),
+      thresholds=dict(materiality=MATERIALITY),
+      state_identity_violations=[],
       secondary=secondary, n_runs=len(runs), verdict=verdict)
 
 
@@ -476,49 +538,69 @@ def read(args):
 
 
 def detgate(labels_dir, committed_dir):
-  """Registered smoke gate on the ONE registered cell (DETGATE_CELL).
-  VALUE-BLIND by construction: only the meta version and the
-  episode/step/g_all arrays are ever read — the realized-choice
-  columns, ghat, and g_now are never loaded and no achieved value,
-  mean, or any other estimand is computed here."""
+  """Amended smoke gate (PREREG_competence_repair_amend1_20260801) on
+  the ONE registered cell (DETGATE_CELL): meta version pins both sides,
+  episode/step identity vs the committed label, g_all finiteness, and
+  the within-pass shadow-pair identities. VALUE-BLIND: value arrays
+  (g_all/g_now/ghat/real_scores) are touched only inside
+  identity/argmax assertions — no achieved value, mean, or any other
+  estimand is computed. The parent's cross-pass m_now/g_all comparison
+  is REMOVED (registered-unpassable: the quarantine audit showed the
+  stack is not job-to-job deterministic)."""
   dom, dose, seed = DETGATE_CELL
-  pairs = [(os.path.join(labels_dir, f'rep_{dom}_{dose}_seed{seed}_late.npz'),
-            CM_VERSION),
-           (os.path.join(committed_dir,
-                         f'r3_{dom}_{dose}_seed{seed}_late.npz'),
-            LABELER_VERSION)]
-  arrs = []
-  for path, version in pairs:
+  rep_path = os.path.join(labels_dir,
+                          f'rep_{dom}_{dose}_seed{seed}_late.npz')
+  com_path = os.path.join(committed_dir,
+                          f'r3_{dom}_{dose}_seed{seed}_late.npz')
+  for path, version in ((rep_path, CM_VERSION),
+                        (com_path, LABELER_VERSION)):
     assert os.path.exists(path), f'detgate file missing: {path}'
-    z = np.load(path, allow_pickle=True)
-    md = json.loads(str(z['meta']))
-    assert md.get('labeler_version') == version, (
-        f'{os.path.basename(path)}: labeler_version '
-        f'{md.get("labeler_version")!r} != {version!r}')
-    arrs.append((np.asarray(z['episode']), np.asarray(z['step']),
-                 np.asarray(z['m_now'], int),
-                 np.asarray(z['g_all'], float)))
-  (e1, s1, n1, g1), (e2, s2, n2, g2) = arrs
-  assert np.isfinite(g1).all() and np.isfinite(g2).all(), (
-      'detgate: non-finite g_all (oracle_all pass incomplete?)')
-  ok_idx = np.array_equal(e1, e2) and np.array_equal(s1, s2)
-  # m_now is an index array (as value-blind as episode/step); it enters
-  # the primary through g_now = g_all[m_now], so plugin-choice drift
-  # must gate here too.
-  ok_now = np.array_equal(n1, n2)
-  exact = np.array_equal(g1, g2)
-  ok_g = exact or np.allclose(g1, g2, rtol=0, atol=PAIR_ATOL)
-  if not (ok_idx and ok_now and ok_g):
+  zr = np.load(rep_path, allow_pickle=True)
+  mdr = json.loads(str(zr['meta']))
+  assert mdr.get('labeler_version') == CM_VERSION, (
+      f'{os.path.basename(rep_path)}: labeler_version '
+      f'{mdr.get("labeler_version")!r} != {CM_VERSION!r}')
+  zc = np.load(com_path, allow_pickle=True)
+  mdc = json.loads(str(zc['meta']))
+  assert mdc.get('labeler_version') == LABELER_VERSION, (
+      f'{os.path.basename(com_path)}: labeler_version '
+      f'{mdc.get("labeler_version")!r} != {LABELER_VERSION!r}')
+  # committed side: episode/step ONLY (state identity); no committed
+  # value array is loaded here.
+  ok_idx = (np.array_equal(np.asarray(zr['episode']),
+                           np.asarray(zc['episode']))
+            and np.array_equal(np.asarray(zr['step']),
+                               np.asarray(zc['step'])))
+  g_all = np.asarray(zr['g_all'], float)
+  g_now = np.asarray(zr['g_now'], float)
+  m_now = np.asarray(zr['m_now'], int)
+  m_real = np.asarray(zr['m_real'], int)
+  probe = np.asarray(zr['m_real_probe'], int)
+  ghat = np.asarray(zr['ghat'], float)
+  scores = np.asarray(zr['real_scores'], float)
+  n = len(m_real)
+  ok_fin = bool(np.isfinite(g_all).all() and np.isfinite(ghat).all()
+                and np.isfinite(scores).all())
+  ok_now = ok_fin and bool(
+      np.allclose(g_now, g_all[np.arange(n), m_now], atol=1e-5))
+  ok_cm = ok_fin and bool(
+      np.array_equal(ghat[np.arange(n), m_real], ghat.max(1)))
+  ok_probe = ok_fin and bool(
+      np.array_equal(scores[np.arange(n), probe], scores.max(1)))
+  if not (ok_idx and ok_fin and ok_now and ok_cm and ok_probe):
     print('DETGATE QUARANTINE: the repaired pass of '
-          f'{DETGATE_CELL} is not state-identical to the committed '
-          f'label (episode/step ok={ok_idx}, m_now ok={ok_now}, '
-          f'g_all ok={ok_g}). Do NOT run the wave; audit the '
+          f'{DETGATE_CELL} fails the amended gate (episode/step '
+          f'ok={ok_idx}, g_all/ghat/real_scores finite={ok_fin}, '
+          f'g_now==g_all[m_now] ok={ok_now}, m_real maximizes ghat '
+          f'ok={ok_cm}, m_real_probe maximizes real_scores '
+          f'ok={ok_probe}). Do NOT run the wave; audit the '
           'labeler/env stack first.')
     raise SystemExit(1)
-  print('DETGATE OK: episode/step exact, m_now exact, g_all '
-        + ('exact' if exact else f'within registered atol {PAIR_ATOL}')
-        + ' (value-blind: only episode/step/m_now/g_all touched, no '
-        'estimand computed)')
+  print('DETGATE OK (Amendment 1): episode/step exact vs committed, '
+        'g_all finite, within-pass identities hold (g_now==g_all[m_now]'
+        ', m_real maximizes ghat, m_real_probe maximizes real_scores) '
+        '(value-blind: value arrays touched only inside identity '
+        'assertions, no estimand computed)')
 
 
 # --------------------------------------------------------------------------
@@ -529,11 +611,12 @@ G_ROW = np.round(np.arange(N_CANDS) * 0.1, 6)  # G[m] = 0.1*m
 
 
 def _mk_cell(m_real_val, m_now_val=0, g_bump=0.0, episode=None, step=None,
-             probe=None):
-  g_all = np.tile(G_ROW, (N_STATES, 1)) + g_bump
+             probe=None, g_scale=1.0):
+  g_all = np.tile(G_ROW, (N_STATES, 1)) * g_scale + g_bump
   m_real = np.full(N_STATES, m_real_val, int)
   m_now = np.full(N_STATES, m_now_val, int)
-  g_now = g_all[np.arange(N_STATES), m_now]
+  idx = np.arange(N_STATES)
+  g_now = g_all[idx, m_now]
   episode = np.zeros(N_STATES, int) if episode is None else episode
   step = (np.arange(N_STATES) * 25 + 25) if step is None else step
   blk = dict(g_all=g_all, m_real=m_real, m_now=m_now,
@@ -541,15 +624,22 @@ def _mk_cell(m_real_val, m_now_val=0, g_bump=0.0, episode=None, step=None,
              ach=per_state_achieved(g_all, g_now, m_real),
              opp=np.max(g_all, 1) - g_now)
   if probe is not None:
-    blk.update(model_sha='f' * 64,
-               m_real_probe=np.full(N_STATES, probe, int))
+    m_probe = np.full(N_STATES, probe, int)
+    scores = np.zeros((N_STATES, N_CANDS), np.float32)
+    scores[idx, m_probe] = 1.0
+    d_pair = g_all[idx, m_real] - g_all[idx, m_probe]
+    blk.update(model_sha='f' * 64, m_real_probe=m_probe,
+               real_scores=scores, d_pair=d_pair,
+               ach_probe=blk['ach'] - d_pair)
   return blk
 
 
 def _synth_sides(rep_m=3, orig_m=0):
-  """achieved = 0.1*m (m_now=0), so the paired per-state diff is
-  0.1*(rep_m - orig_m) exactly; the repaired probe pick reproduces the
-  committed realized choice (probe_agreement = 1)."""
+  """achieved = 0.1*m (m_now=0). The repaired cells carry the in-pass
+  shadow pair (m_real=rep_m, m_real_probe=orig_m), so the amended
+  within-pass paired diff is 0.1*(rep_m - orig_m) exactly; the
+  committed cells realize orig_m, so the descriptive
+  probe-vs-committed agreement is 1."""
   rep, orig = {}, {}
   for dom in CORE_DOMAINS:
     for dose in DOSES:
@@ -576,10 +666,16 @@ def _write_npz(path, blk, version, run, fseed, repaired, **meta_over):
                 m_real=blk['m_real'], m_now=blk['m_now'],
                 episode=blk['episode'], step=blk['step'])
   if repaired:
-    ghat = np.zeros((len(blk['m_real']), N_CANDS), np.float32)
-    ghat[np.arange(len(blk['m_real'])), blk['m_real']] = 1.0
+    n = len(blk['m_real'])
+    ghat = np.zeros((n, N_CANDS), np.float32)
+    ghat[np.arange(n), blk['m_real']] = 1.0
+    scores = blk.get('real_scores')
+    if scores is None:
+      scores = np.zeros((n, N_CANDS), np.float32)
+      scores[np.arange(n), blk['m_real_probe']] = 1.0
     arrays.update(ghat=blk.get('ghat', ghat),
-                  m_real_probe=blk['m_real_probe'])
+                  m_real_probe=blk['m_real_probe'],
+                  real_scores=scores)
   np.savez(path, **arrays)
 
 
@@ -662,18 +758,42 @@ def selfcheck(args):
   ach = per_state_achieved(g, np.array([0.0, 1.0]), np.array([2, 0]))
   assert np.allclose(ach, [1.0, 0.0]), ach
 
-  # Branch 1: REPAIRED (diff = 0.7 >= 0.6465, CI > 0).
+  # Branch 1: REPAIRED (in-pass paired diff = 0.7 >= 0.6465, CI > 0).
   res = analyze(*_synth_sides(rep_m=7, orig_m=0))
   assert res['fires'] == dict(p_rep1=True, p_rep2_material=True,
                               harmful=False), res['fires']
   assert res['verdict'].startswith('REPAIRED'), res['verdict']
+  assert 'FRAGILITY' not in res['verdict']
   blk = res['primaries']['p_rep1_paired_achieved']
   assert abs(blk['point'] - 0.7) < 1e-9 and blk['n_clusters'] == 32
-  assert res['secondary']['probe_agreement'] == 1.0
-  assert res['secondary']['oracle_agreement_rep'] == 1.0  # m=7 is argmax
-  assert res['secondary']['chooser_change_rate'] == 1.0
-  assert abs(res['secondary']['residual_gap_fraction'] - 0.0) < 1e-9
-  assert res['secondary']['opportunity_sanity']['max_cell_absdiff'] == 0.0
+  sec = res['secondary']
+  assert sec['cross_era_drift'][
+      'probe_vs_committed_realized_agreement'] == 1.0
+  assert sec['cross_era_drift']['opportunity_max_cell_absdiff'] == 0.0
+  assert sec['oracle_agreement_rep'] == 1.0   # m=7 is argmax
+  assert sec['oracle_agreement_probe'] == 0.0  # probe=0 is not
+  assert sec['chooser_change_rate'] == 1.0     # in-pass 7 vs 0
+  assert abs(sec['residual_gap_fraction'] - 0.0) < 1e-9
+  assert abs(sec['achieved_probe']['point'] - 0.0) < 1e-9
+  sens = res['sensitivity_excl_smoke']
+  assert sens['excluded_cell'] == 'cup/e1/31'
+  assert sens['boot']['n_clusters'] == 31
+  assert abs(sens['boot']['point'] - 0.7) < 1e-9
+  assert sens['fragile'] is False
+
+  # Amended decisive leg: cross-era drift on the committed side (float
+  # drift AND plugin-choice drift on identical states) must ADJUDICATE
+  # — the parent's cross-pass gate is removed — and must not move the
+  # in-pass primary at all.
+  rep, orig = _synth_sides(rep_m=7, orig_m=0)
+  orig[('cup', 'e1', 31)] = _mk_cell(2, m_now_val=1, g_bump=1.0)
+  res = analyze(rep, orig)
+  assert res['verdict'].startswith('REPAIRED'), res['verdict']
+  blk = res['primaries']['p_rep1_paired_achieved']
+  assert abs(blk['point'] - 0.7) < 1e-9
+  assert res['secondary']['cross_era_drift'][
+      'opportunity_max_cell_absdiff'] > 0.0
+  assert res['state_identity_violations'] == []
 
   # Branch 2: PARTIAL (diff = 0.3 fires but below materiality).
   res = analyze(*_synth_sides(rep_m=3, orig_m=0))
@@ -695,33 +815,68 @@ def selfcheck(args):
                               harmful=True)
   assert res['verdict'].startswith('HARMFUL'), res['verdict']
 
-  # Branch 5: QUARANTINE on g_all mismatch beyond tolerance ...
+  # Branch 5: QUARANTINE on episode/step mismatch (the amended
+  # state-identity gate — the only remaining cross-file gate). Both
+  # halves are exercised: step-only drift AND episode-only drift
+  # (mutation review: every other fixture has constant episode=0, so
+  # a reader that silently dropped the episode comparison would
+  # otherwise pass the whole selfcheck).
   rep, orig = _synth_sides()
-  rep[('cup', 'e1', 31)] = _mk_cell(3, g_bump=1.0, probe=0)
+  rep[('cup', 'e1', 31)] = _mk_cell(3, step=np.arange(N_STATES) * 25 + 26,
+                                    probe=0)
   res = analyze(rep, orig)
   assert res['verdict'].startswith('QUARANTINE'), res['verdict']
   assert res['fires'] == dict(p_rep1=None, p_rep2_material=None,
                               harmful=None)
-  assert any('cup/e1/31' in v for v in res['pair_violations'])
-  # ... and on episode/step mismatch ...
+  assert any('cup/e1/31' in v and 'episode/step' in v
+             for v in res['state_identity_violations'])
   rep, orig = _synth_sides()
-  rep[('cup', 'e1', 31)] = _mk_cell(3, step=np.arange(N_STATES) * 25 + 26,
-                                    probe=0)
-  assert analyze(rep, orig)['verdict'].startswith('QUARANTINE')
-  # ... and on m_now drift (plugin choice enters via g_now even when
-  # g_all is bitwise identical) ...
-  rep, orig = _synth_sides()
-  rep[('cup', 'e1', 31)] = _mk_cell(3, m_now_val=1, probe=0)
+  rep[('cup', 'e1', 31)] = _mk_cell(3, probe=0,
+                                    episode=np.ones(N_STATES, int))
   res = analyze(rep, orig)
   assert res['verdict'].startswith('QUARANTINE'), res['verdict']
-  assert any('m_now mismatch' in v for v in res['pair_violations'])
-  # ... while sub-atol wobble adjudicates and is disclosed.
+  assert any('cup/e1/31' in v for v in res['state_identity_violations'])
+
+  # Sensitivity-leg numerics: a smoke cell that differs from the rest
+  # shifts the pooled point but (here) flips no fire status.
   rep, orig = _synth_sides(rep_m=3, orig_m=0)
-  rep[('cup', 'e1', 31)] = _mk_cell(3, g_bump=1e-6, probe=0)
+  rep[('cup', 'e1', 31)] = _mk_cell(7, probe=0)
+  orig[('cup', 'e1', 31)] = _mk_cell(0)
   res = analyze(rep, orig)
-  assert res['verdict'].startswith('PARTIAL')
-  assert res['pair_tolerance_used'] == ['cup/e1/31'], (
-      res['pair_tolerance_used'])
+  blk = res['primaries']['p_rep1_paired_achieved']
+  assert abs(blk['point'] - (31 * 0.3 + 0.7) / 32) < 1e-9
+  sens = res['sensitivity_excl_smoke']
+  assert abs(sens['boot']['point'] - 0.3) < 1e-9
+  assert sens['fragile'] is False and 'FRAGILITY' not in res['verdict']
+
+  # Genuine FRAGILITY: the materiality fire is a point threshold, so a
+  # single high-magnitude smoke cell flips it deterministically —
+  # 31 cells at d=0.6 (below bar) + smoke at d=7.0 => pooled 0.8 (>=
+  # bar, material on 32) while the sensitivity leg sits at 0.6 (not
+  # material). Every cluster value is positive, so P-REP1 fires on
+  # both sides regardless of resampling.
+  rep, orig = _synth_sides(rep_m=6, orig_m=0)
+  rep[('cup', 'e1', 31)] = _mk_cell(7, probe=0, g_scale=10.0)
+  res = analyze(rep, orig)
+  blk = res['primaries']['p_rep1_paired_achieved']
+  assert abs(blk['point'] - (31 * 0.6 + 7.0) / 32) < 1e-9
+  assert res['fires'] == dict(p_rep1=True, p_rep2_material=True,
+                              harmful=False), res['fires']
+  sens = res['sensitivity_excl_smoke']
+  assert abs(sens['boot']['point'] - 0.6) < 1e-9
+  assert sens['fires']['p_rep2_material'] is False
+  assert sens['fragile'] is True
+  assert res['verdict'].startswith('REPAIRED'), res['verdict']
+  assert 'FRAGILITY DISCLOSURE' in res['verdict']
+
+  # Fire-status extractor combinatorics.
+  f_a = _fires(dict(ci=(0.1, 0.5), point=0.7))
+  assert f_a == dict(p_rep1=True, p_rep2_material=True, harmful=False)
+  f_b = _fires(dict(ci=(-0.1, 0.5), point=0.7))
+  assert f_b == dict(p_rep1=False, p_rep2_material=False, harmful=False)
+  f_c = _fires(dict(ci=(-0.5, -0.1), point=-0.3))
+  assert f_c == dict(p_rep1=False, p_rep2_material=False, harmful=True)
+  assert (f_a != f_b) and (f_b != f_c)
 
   # Grid trips: missing cell each side, unregistered seed.
   rep, orig = _synth_sides()
@@ -768,7 +923,19 @@ def selfcheck(args):
     assert res['verdict'].startswith('REPAIRED'), res['verdict']
     assert res['fires'] == dict(p_rep1=True, p_rep2_material=True,
                                 harmful=False)
+    assert res['sensitivity_excl_smoke']['fragile'] is False
+    assert res['sensitivity_excl_smoke']['boot']['n_clusters'] == 31
     assert res['model']['sha256'] == msha
+    # Source-pinning numerics THROUGH load_side (mutation review): the
+    # wave fixtures store one-hot ghat (values 0/1), so a d_pair
+    # wrongly computed from ghat would give 1.0 here, not 0.7, and a
+    # sign-flipped ach_probe would give 1.4, not 0.0 — the primary
+    # must come from g_all. Tolerance 1e-6: g_all round-trips float32.
+    blk_p = res['primaries']['p_rep1_paired_achieved']
+    assert abs(blk_p['point'] - 0.7) < 1e-6, blk_p['point']
+    assert abs(res['secondary']['achieved_rep']['point'] - 0.7) < 1e-6
+    assert abs(res['secondary']['achieved_probe']['point'] - 0.0) < 1e-6
+    assert abs(res['secondary']['achieved_orig']['point'] - 0.0) < 1e-6
     # detgate marker is a registered precondition of the read
     os.remove(os.path.join(d_rep, DETGATE_MARKER))
     try:
@@ -981,6 +1148,26 @@ def selfcheck(args):
                CM_VERSION, run31, 31, repaired=True)
     _expect_load_trip(d, True, 'chooser identity')
   with tempfile.TemporaryDirectory() as d:
+    # shadow-pair identity (Amendment 1): stored real_scores must
+    # argmax to m_real_probe
+    blk = _mk_cell(3, probe=0)
+    scores = np.zeros((N_STATES, N_CANDS), np.float32)
+    scores[:, 5] = 1.0  # argmax 5 != m_real_probe 0
+    blk['real_scores'] = scores
+    _write_npz(os.path.join(d, 'rep_cup_e1_seed31_late.npz'), blk,
+               CM_VERSION, run31, 31, repaired=True)
+    _expect_load_trip(d, True, 'shadow-pair identity')
+  with tempfile.TemporaryDirectory() as d:
+    # non-finite real_scores must trip the dedicated finiteness guard,
+    # not fail the maximizer identity with a misleading message
+    blk = _mk_cell(3, probe=0)
+    scores = blk['real_scores'].copy()
+    scores[0, 0] = np.nan
+    blk['real_scores'] = scores
+    _write_npz(os.path.join(d, 'rep_cup_e1_seed31_late.npz'), blk,
+               CM_VERSION, run31, 31, repaired=True)
+    _expect_load_trip(d, True, 'non-finite ghat/real_scores')
+  with tempfile.TemporaryDirectory() as d:
     blk = _mk_cell(3, probe=0)
     blk = dict(blk, g_all=blk['g_all'].copy())
     blk['g_all'][0, 0] = np.nan
@@ -997,7 +1184,9 @@ def selfcheck(args):
     np.savez(path, **z)
     _expect_load_trip(d, False, 'oracle_all identity')
 
-  # detgate trips: missing file, then beyond-tolerance mismatch.
+  # detgate trips (amended): missing file; cross-era VALUE drift on the
+  # committed side must now PASS (no cross-job float comparison);
+  # episode/step mismatch fails; broken shadow-pair identity fails.
   with tempfile.TemporaryDirectory() as d:
     d_rep, d_com = os.path.join(d, 'rep'), os.path.join(d, 'com')
     os.makedirs(d_rep)
@@ -1009,27 +1198,69 @@ def selfcheck(args):
       assert 'detgate file missing' in str(e), e
     _write_npz(os.path.join(d_rep, 'rep_cup_e1_seed31_late.npz'),
                _mk_cell(3, probe=0), CM_VERSION, run31, 31, repaired=True)
+    # committed side with float drift AND a different plugin choice on
+    # identical states: the amended gate must pass (decisive leg — the
+    # parent gate quarantined exactly this).
     _write_npz(os.path.join(d_com, 'r3_cup_e1_seed31_late.npz'),
-               _mk_cell(0, g_bump=1.0), LABELER_VERSION, run31, 31,
-               repaired=False)
+               _mk_cell(0, m_now_val=1, g_bump=1.0), LABELER_VERSION,
+               run31, 31, repaired=False)
+    detgate(d_rep, d_com)
+    # episode/step mismatch still fails — both halves separately
+    _write_npz(os.path.join(d_com, 'r3_cup_e1_seed31_late.npz'),
+               _mk_cell(0, step=np.arange(N_STATES) * 25 + 26),
+               LABELER_VERSION, run31, 31, repaired=False)
     try:
       detgate(d_rep, d_com)
-      raise SystemExit('selfcheck FAIL: detgate mismatch not caught')
+      raise SystemExit('selfcheck FAIL: detgate step mismatch '
+                       'not caught')
+    except SystemExit as e:
+      assert e.code == 1, e
+    _write_npz(os.path.join(d_com, 'r3_cup_e1_seed31_late.npz'),
+               _mk_cell(0, episode=np.ones(N_STATES, int)),
+               LABELER_VERSION, run31, 31, repaired=False)
+    try:
+      detgate(d_rep, d_com)
+      raise SystemExit('selfcheck FAIL: detgate episode mismatch '
+                       'not caught')
+    except SystemExit as e:
+      assert e.code == 1, e
+    _write_npz(os.path.join(d_com, 'r3_cup_e1_seed31_late.npz'),
+               _mk_cell(0), LABELER_VERSION, run31, 31, repaired=False)
+    detgate(d_rep, d_com)  # aligned again: passes
+    # broken in-pass shadow-pair identity fails the amended gate
+    blk = _mk_cell(3, probe=0)
+    scores = np.zeros((N_STATES, N_CANDS), np.float32)
+    scores[:, 5] = 1.0
+    blk['real_scores'] = scores
+    _write_npz(os.path.join(d_rep, 'rep_cup_e1_seed31_late.npz'), blk,
+               CM_VERSION, run31, 31, repaired=True)
+    try:
+      detgate(d_rep, d_com)
+      raise SystemExit('selfcheck FAIL: detgate shadow-pair identity '
+                       'not caught')
     except SystemExit as e:
       assert e.code == 1, e
 
-  print('selfcheck PASS: estimand identity, six verdict branches '
-        '(repaired, partial, not-repairable, harmful, quarantine x3 '
-        'incl. m_now drift + tolerance fallback, substrate-gone), grid '
-        'trips (missing cell both sides, unregistered seed, stray rep_ '
-        'file), end-to-end tempdir wave read + detgate-marker gate, '
-        'model-protocol trips (sha record missing/mismatch, per-pass '
-        'sha, manifest drift, LORO leakage, frozen committed-bundle '
-        'digest, trainer-source sha), load guards (exact version pins '
-        'both directions, dials incl. seed-0 + feature map, late-ckpt '
-        'suffix, train_seed, LORO deployment, tie-tolerant chooser '
-        'identity, finiteness, oracle_all identity), detgate '
-        'ok/missing/mismatch')
+  print('selfcheck PASS (Amendment 1): estimand identity, six verdict '
+        'branches (repaired incl. cross-era-drift-adjudicates decisive '
+        'leg, partial, not-repairable, harmful, quarantine on step AND '
+        'on episode separately, substrate-gone), within-pass primary '
+        'numerics + e2e source-pinning through load_side (g_all-vs-'
+        'ghat discriminating fixtures, ach_probe sign), '
+        'sensitivity leg (n=31, point, genuine materiality-fragility '
+        'flip + FRAGILITY DISCLOSURE append, fire-extractor '
+        'combinatorics), grid trips (missing cell both sides, '
+        'unregistered seed, stray rep_ file), end-to-end tempdir wave '
+        'read + detgate-marker gate, model-protocol trips (sha record '
+        'missing/mismatch, per-pass sha, manifest drift, LORO leakage, '
+        'frozen committed-bundle digest, trainer-source sha), load '
+        'guards (exact version pins both directions, dials incl. '
+        'seed-0 + feature map, late-ckpt suffix, train_seed, LORO '
+        'deployment, tie-tolerant chooser + shadow-pair identities, '
+        'finiteness incl. dedicated ghat/real_scores guard, oracle_all '
+        'identity), amended detgate (ok, missing file, cross-era value '
+        'drift PASSES, step mismatch fails, episode mismatch fails, '
+        'broken shadow pair fails)')
 
 
 def main():

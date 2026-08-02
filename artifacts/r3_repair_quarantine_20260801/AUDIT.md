@@ -124,6 +124,24 @@ touched.
   retry recommended there should include the same one-cell twice-run
   probe before committing to the 102 passes.
 
+## Audit-script archive (added 2026-08-01, pre-amendment-commit, on
+## independent review)
+
+The three audit scripts are archived verbatim in `audit_scripts/`
+(01 = committed↔audit_nocm drift, from the session scratchpad; 02 =
+audit_nocm↔rep bit-identity, 03 = the triangle table, both recovered
+verbatim from the session transcript's tool-call log). What they load
+is machine-checkable there; in particular **no script ever loads
+`m_real`, `m_real_probe`, `real_scores`, or `ghat` from the rep smoke
+file** (01 never opens the rep file; 02/03 load base-path arrays +
+`m_now` only), so no functional of the Amendment-1 within-pass pairing
+has ever been computed. The rep smoke file's bytes as of this audit
+are git-pinned by the committed bundle manifest
+(`manifests/r3_repair_quarantine_20260801_210414.sha256`, commit
+dd3138e7): `rep_labels/rep_cup_e1_seed31_late.npz` sha256
+`0d549b6b0553c1cd2ef169ef0ca2c217aa4a66482a47ad51077461c24601b0c8`,
+matching the on-disk file at amendment time.
+
 ## Disclosure
 
 The no-consumer audit pass printed the labeler's standard per-pass
