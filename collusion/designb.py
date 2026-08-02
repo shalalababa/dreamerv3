@@ -31,7 +31,7 @@ from collusion.pilot import (ALPHA, BETA, CONV_WINDOW, PUNISH_W, Session,
                              collusion_indices, greedy_path,
                              impulse_response, init_q)
 
-PROBE_VERSION = "collusion_designb_v2_20260730"
+PROBE_VERSION = "collusion_designb_v3_20260730"
 # v2 (confirmatory-prereg calibration, 30 Jul): adds the DISTANCE-label
 # stream mask (terminal or exogenous reference), weighted replay
 # (graded per-transition down-weighting), and the `graded`
@@ -40,6 +40,15 @@ PROBE_VERSION = "collusion_designb_v2_20260730"
 # at the same weight, so effective update mass is identical by
 # construction). The v1 `probe` subcommand is computed identically
 # (validated: seeds 0-4 rerun matches designb_probe20.csv exactly).
+# v3 (RQ3 desynchronization, 30 Jul, post-confirmatory-read): adds
+# block-permuted replay (`permute_stream`) and the `desync` probe -
+# retrain on the IDENTICAL transition multiset with only the ORDER
+# scrambled at block granularity B (B>=len = identity, B=1 = full
+# shuffle), so coverage/occupancy/volume are fixed EXACTLY, not
+# matched. Arms: one-sided (agent-0 scrambled vs online partner),
+# two-sided-independent, two-sided-ALIGNED (same block permutation for
+# both agents - preserves cross-agent event alignment while breaking
+# temporal order: the coupling discriminator). v1/v2 paths untouched.
 
 
 class RecordedSession(Session):
@@ -170,6 +179,77 @@ def probe_session(seed, max_iters, conv_window=CONV_WINDOW, env=None):
       dp_randdrop=rnd["delta_profit"], fp_randdrop=rnd["fingerprint"])
 
 
+def permute_stream(stream, rng, block):
+  """Block-permuted copy: consecutive blocks of size `block`, block
+  ORDER drawn uniformly by `rng`, within-block order preserved.
+  block >= len(stream) => identity copy. The output is a permutation
+  of the input (identical transition multiset by construction)."""
+  n = len(stream)
+  assert block >= 1
+  if block >= n:
+    return list(stream)
+  nblocks = (n + block - 1) // block
+  perm = rng.permutation(nblocks)
+  out = []
+  for b in perm:
+    out.extend(stream[b * block:(b + 1) * block])
+  assert len(out) == n
+  return out
+
+
+def desync_session(seed, blocks, max_iters, conv_window=CONV_WINDOW,
+                   env=None):
+  """RQ3 probe: replay-order desynchronization at exactly fixed
+  composition. Per block size B (the desync dose; smaller = harsher):
+  one-sided = agent-0 stream scrambled, retrained, evaluated vs the
+  partner's ONLINE final Q; two-sided-independent = both streams
+  scrambled with independent permutations, retrained pair evaluated;
+  two-sided-aligned = both streams scrambled with the SAME permutation
+  (cross-agent event alignment preserved). RNG per (seed, B, arm) via
+  SeedSequence lists - deterministic and collision-free."""
+  env = env or Duopoly()
+  sess = RecordedSession(env, seed)
+  t_end, converged = sess.run(max_iters, conv_window)
+  online = evaluate_pair(env, sess.q[0], sess.q[1], sess.state)
+  exact = bool(np.array_equal(replay_stream(env, sess.streams[0]),
+                              sess.q[0]))
+  row = dict(seed=seed, iters=t_end, converged=converged,
+             exact_replay=exact, stream_len=len(sess.streams[0]),
+             dp_online=online["delta_profit"],
+             fp_online=online["fingerprint"])
+  for B in blocks:
+    tag = f"b{B}"
+    # one-sided
+    p0 = permute_stream(sess.streams[0],
+                        np.random.default_rng([40_000_000, seed, B, 0]),
+                        B)
+    q0 = replay_stream(env, p0)
+    one = evaluate_pair(env, q0, sess.q[1], sess.state)
+    # two-sided independent
+    q0i = replay_stream(env, permute_stream(
+        sess.streams[0], np.random.default_rng([40_000_000, seed, B, 1]),
+        B))
+    q1i = replay_stream(env, permute_stream(
+        sess.streams[1], np.random.default_rng([40_000_000, seed, B, 2]),
+        B))
+    two = evaluate_pair(env, q0i, q1i, sess.state)
+    # two-sided aligned: SAME permutation for both streams
+    q0a = replay_stream(env, permute_stream(
+        sess.streams[0], np.random.default_rng([40_000_000, seed, B, 3]),
+        B))
+    q1a = replay_stream(env, permute_stream(
+        sess.streams[1], np.random.default_rng([40_000_000, seed, B, 3]),
+        B))
+    ali = evaluate_pair(env, q0a, q1a, sess.state)
+    row[f"dp_oneside_{tag}"] = one["delta_profit"]
+    row[f"fp_oneside_{tag}"] = one["fingerprint"]
+    row[f"dp_twoind_{tag}"] = two["delta_profit"]
+    row[f"fp_twoind_{tag}"] = two["fingerprint"]
+    row[f"dp_twoal_{tag}"] = ali["delta_profit"]
+    row[f"fp_twoal_{tag}"] = ali["fingerprint"]
+  return row
+
+
 def graded_session(seed, doses, max_iters, conv_window=CONV_WINDOW,
                    env=None, reference="terminal"):
   """Graded volume-controlled composition intervention (v2).
@@ -290,16 +370,46 @@ def selfcheck():
   del_eval = evaluate_pair(env, replay_stream(env, kept_d), sess.q[1],
                            sess.state)
   assert g["dp_punish_d100"] == del_eval["delta_profit"], g
+  # ---- v3 additions (RQ3 desync) ----
+  st = sess.streams[0]
+  # identity: block >= len is an exact copy => replay == online Q.
+  ident = permute_stream(st, np.random.default_rng(1), len(st) + 5)
+  assert ident == st
+  # multiset preservation at a scrambling block size.
+  p7 = permute_stream(st, np.random.default_rng(2), 7)
+  assert p7 != st and sorted(p7) == sorted(st), "multiset not preserved"
+  # determinism: same rng seed => same permutation.
+  p7b = permute_stream(st, np.random.default_rng(2), 7)
+  assert p7 == p7b
+  # full shuffle bites at the Q level.
+  q_sh = replay_stream(env, permute_stream(st, np.random.default_rng(3), 1))
+  assert not np.array_equal(q_sh, sess.q[0])
+  # aligned two-sided: same seed-list => the two permuted streams stay
+  # event-aligned (shared s-sequence position by position).
+  a0 = permute_stream(sess.streams[0],
+                      np.random.default_rng([9, 9, 9, 3]), 11)
+  a1 = permute_stream(sess.streams[1],
+                      np.random.default_rng([9, 9, 9, 3]), 11)
+  assert all(x[0] == y[0] and x[3] == y[3] for x, y in zip(a0, a1)), (
+      "aligned permutation must preserve cross-agent event alignment")
+  # desync_session end-to-end shape.
+  ds = desync_session(seed=3, blocks=(1000, 1), max_iters=20_000,
+                      conv_window=10 ** 9, env=env)
+  assert ds["exact_replay"]
+  for k in ("dp_oneside_b1000", "dp_twoind_b1", "dp_twoal_b1"):
+    assert np.isfinite(ds[k]), (k, ds)
   print("selfcheck PASS: float-exact stream replay (both agents), "
         "deterministic recording, intervention bites / identity holds, "
         "mask matches labeler on a hand path, probe runs end-to-end; "
         "v2: weighted-replay identity + w0==deletion, dist_mask == "
-        "pilot label, graded dose-0 identity / dose-1 == deletion")
+        "pilot label, graded dose-0 identity / dose-1 == deletion; "
+        "v3: permute identity/multiset/determinism, full shuffle "
+        "bites, aligned arms stay event-aligned, desync end-to-end")
 
 
 def main():
   ap = argparse.ArgumentParser()
-  ap.add_argument("cmd", nargs="?", choices=("probe", "graded"))
+  ap.add_argument("cmd", nargs="?", choices=("probe", "graded", "desync"))
   ap.add_argument("--sessions", type=int, default=20)
   ap.add_argument("--seed0", type=int, default=0)
   ap.add_argument("--max_iters", type=int, default=2_000_000)
@@ -307,13 +417,14 @@ def main():
   ap.add_argument("--doses", default="0.25,0.5,1.0")
   ap.add_argument("--reference", default="terminal",
                   choices=("terminal", "exo"))
+  ap.add_argument("--blocks", default="100000,10000,1000,1")
   ap.add_argument("--output", default="")
   ap.add_argument("--selfcheck", action="store_true")
   args = ap.parse_args()
   if args.selfcheck:
     selfcheck()
     return
-  assert args.cmd in ("probe", "graded") and args.output
+  assert args.cmd in ("probe", "graded", "desync") and args.output
   env = Duopoly()
   rows = []
   for s in range(args.seed0, args.seed0 + args.sessions):

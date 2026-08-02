@@ -233,7 +233,24 @@ re-test, not results. 24+24 permanently frozen; imag op retired.
   P-REP1 paired achieved CI>0, P-REP2 materiality 0.6465 (point label);
   verdicts REPAIRED / PARTIAL / NOT-REPAIRABLE-FROM-OBSERVABLES /
   HARMFUL. 2 reviewer passes ×2 rounds (1 BLOCKING fixed: salted-hash
-  selfcheck nondeterminism).
+  selfcheck nondeterminism). **08-01 EXECUTED → registered QUARANTINE
+  (determinism gate; instrument outcome, no verdict computed, 31/32
+  passes never run, no read executed).** Existence gate + trainer
+  PASSED (32 LORO models, sha `be802f1e…` recorded pre-labeling);
+  smoke detgate tripped (episode/step ok, m_now/g_all drift); audit:
+  chooser EXONERATED (no-consumer re-pass drifts identically) — root
+  cause = **labeling stack is not job-to-job deterministic on midway3**
+  (same-day same-code pair: deter max 1.36, g_all per-state rank ρ
+  0.02, m_now flips 48/200; committed-pass bitwise reproduction was
+  never a property this substrate had). Bundle
+  `local_results/r3_repair_quarantine_20260801_210414/`; audit record
+  `artifacts/r3_repair_quarantine_20260801/AUDIT.md`. Recommended
+  path: within-pass shadow-pairing amendment
+  (`g_all[m_real] − g_all[m_real_probe]` inside each rep pass; model
+  reusable; zero extra compute) — decision pending. **xc wave EXPOSED
+  to the same hazard (pairing gate atol 1e-5 vs measured cross-job
+  drift ~30–46) — one-cell same-job reproducibility probe required
+  before submitting; TM2 not exposed (within-pass asserts).**
 
 - **Unfrozen stress waves U1–U4** (REGISTERED 07-27; motivated by the frozen-protocol audit `research_notes/Audit_FrozenProtocol_20260726.md`): `PREREG_unfrozen_u{1,2,3,4}_20260727` → `analysis/unfrozen_stress_read.py` (four subcommands, selfcheck PASS) + `orth_spin_unfrozen` config. **U2/U3/U4 READ 07-30** (see Paper-1 table: robust / robust / floor-censored — no flips anywhere; `artifacts/unfrozen_stress_u234_20260730/`). **U1 still draining** (apt+task unfrozen 2×2, 32 jobs; P-U1a interaction persists / P-U1b apt-null stress — the decisive reward-free-null test, absence-vs-illegible discriminator anchored to rgo +235/sgb +30; 8 rows outstanding at the 07-30 csv: uzt s0 seeds 7–8 + uzf seeds 6–8 both sides). Frozen registrations untouched under every branch — flips would have changed generality language only.
 - **Pretrained-encoder pixel arm REGISTERED 07-30** (GO'd; the swamping account's lever prediction): `PREREG_pe_pixel_20260730` → `analysis/pe_pixel_read.py` (selfcheck PASS; sha256 34380e0f…) + code: `agent.frozen_enc` (optimizer module filtering), `offline_fit` partial-init w/ counter reset (the skip trap), `AXIS1_INIT_WM` plumbing, `scripts/check_frozen_enc.py` integrity gate (training witness via OFFLINE_FIT_PROGRESS; committed selfcheck; sha256 00acbdff…). Design: 16 stage-2 pixel fits (task-mode full, enc loaded '^enc/' from seed/side-matched fpxpx donors + frozen) + 16 frozen-readout adapts + E4 pass (COLLATE to a NEW csv). P-PE1 graded (CI<2.0 INCLUSION-RESTORED / <19.41 PARTIAL / else NO-RELIEF vs pinned 23.34 baseline); P-PE2 lift vs committed X2 cells; P-PE3 conditional occupancy split. Smoke gate + 16-run integrity sweep with persisted log. 2 adversarial reviews (0 blocking; all 4 MINOR hardening items applied incl. the counter-skip witness + subshell-safe sweep gate). Donors protected in runroot_cleanup (KEEP-PENDING).
