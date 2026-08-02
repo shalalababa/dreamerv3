@@ -54,7 +54,14 @@ def _anchor_episodes():
 
 def _search_ensemble(outdir, ensemble, y_mode="ml", seed=0, label=""):
     """pilot.search() equivalent with y_mode control + top-cycle
-    self-consistency ratio."""
+    self-consistency ratio. Idempotent: a completed job is skipped on
+    resume (crash-restart safe)."""
+    if (outdir / "summary.json").exists():
+        with open(outdir / "summary.json") as f:
+            summary = json.load(f)
+        print(f"  {label}: SKIP (summary exists, "
+              f"ensemble {summary['ensemble_verdict']})", flush=True)
+        return summary
     summary = {"label": label, "y_mode": y_mode, "seed": seed, "members": []}
     for m, params in enumerate(ensemble):
         model = lw.LearnedModel(params)
@@ -106,6 +113,8 @@ def _self_consistency(model, b0, node0, res):
 def _train_and_search(job, steps=3000, hid=64, episodes=None, seed=0):
     outdir = OUT / "sweeps" / job
     outdir.mkdir(parents=True, exist_ok=True)
+    if (outdir / "summary.json").exists():
+        return _search_ensemble(outdir, [], label=job)   # skip via guard
     episodes = episodes or _anchor_episodes()
     ensemble = []
     for m in range(4):
