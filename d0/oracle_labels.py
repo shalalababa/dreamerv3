@@ -327,13 +327,19 @@ def op_imag(oracle, carry, obs, qfull, budget):
 
 
 def op_real(env, oracle, carry_post, obs, qfull, cands, snap,
-            rng_mark=None):
+            rng_mark=None, return_rewards=False):
   """Real purchase: one real probe step per candidate, re-rank by
   r_real + disc * Vhat(s'_real). Each candidate's next-state value is
   evaluated from that candidate's branch carry (posterior through
-  obs_t, prevact = the candidate), under a common policy-RNG mark."""
+  obs_t, prevact = the candidate), under a common policy-RNG mark.
+
+  return_rewards (xc Amendment 1): additionally return the raw
+  per-candidate env rewards — the head-INDEPENDENT part of the score —
+  so a dual-chooser replay can machine-check that its env work is
+  identical to the control's. Default path byte-identical."""
   m_count = cands.shape[0]
   scores = np.zeros(m_count, np.float32)
+  rewards = np.zeros(m_count, np.float32)
   for m in range(m_count):
     if rng_mark is not None:
       oracle.rng_reset(rng_mark)
@@ -341,20 +347,28 @@ def op_real(env, oracle, carry_post, obs, qfull, cands, snap,
     bcarry = oracle.branch_carry(carry_post, cands[m])
     nobs = env.step({**oracle.vec2act(cands[m]), 'reset': np.array(False)})
     r = float(nobs['reward'])
+    rewards[m] = r
     _, qn, _, _, _ = oracle.d0_eval(bcarry, nobs)
     vhat = float(qn.mean(0).max())
     scores[m] = r + oracle.discount * vhat
-  return int(np.argmax(scores)), dict(env_steps=m_count,
-                                      policy_calls=m_count), scores
+  cost = dict(env_steps=m_count, policy_calls=m_count)
+  if return_rewards:
+    return int(np.argmax(scores)), cost, scores, rewards
+  return int(np.argmax(scores)), cost, scores
 
 
 # --------------------------------------------------------------------------
 # Labeling sweep
 # --------------------------------------------------------------------------
 
+DUAL_CANDS_ATOL = 1e-4   # xc Amendment 1: max |cands_shadow - cands|
+                         # (action units) — the shadow chooser must rank
+                         # the SAME candidate set g_all was realized for
+
+
 def label_run(env, oracle, n_states, horizon, label_every, max_steps,
               rng, run_id, oracle_all=False, ref_stride=5,
-              behavior=None, consumer=None):
+              behavior=None, consumer=None, dual=None):
   """behavior: optional second AgentOracle that DRIVES the base
   trajectory (state visitation) while `oracle` remains the evaluation
   agent for beliefs, d0 evals, operations, and rollouts — the
@@ -367,7 +381,20 @@ def label_run(env, oracle, n_states, horizon, label_every, max_steps,
   op_real still runs unchanged (its argmax is kept as m_real_probe).
   The chooser is pure numpy — no env step, no policy call, no RNG use
   — so the base trajectory and g_all are bit-identical to a
-  consumer=None pass; only the saved row changes."""
+  consumer=None pass; only the saved row changes.
+
+  dual (xc Amendment 1, PREREG_r3_xc_amend1_20260802): an object with
+  .to_consumer()/.to_control() head-swap methods. Per labeled state
+  the choosers are evaluated TWICE — once under the eval agent's own
+  heads (control: m_now, m_real) and once under the overlaid consumer
+  heads (shadow: m_now_x, m_real_x) — on the SAME states, the SAME
+  candidate set, and the SAME g_all, entirely within this invocation:
+  the shadow d0_eval replays the control's RNG counter window (candidate
+  identity gated at DUAL_CANDS_ATOL, counter-consumption asserted) and
+  the shadow op_real replays the control's rng_mark (per-candidate env
+  rewards gated at 1e-6). The RNG schedule seen by the base trajectory
+  and the G rollouts is IDENTICAL to a dual=None pass, and g_all is
+  computed once, from the control pass, for the control candidates."""
   rows = []
   ref = dict(deter=[], episode=[], step=[])
   zero_act = oracle.vec2act(np.zeros(int(np.prod(oracle.act_shape))))
@@ -389,6 +416,7 @@ def label_run(env, oracle, n_states, horizon, label_every, max_steps,
     if label_here:
       snap = snapshot_env(env)
       carry_s = carry  # jax pytrees are immutable: safe belief snapshot
+      c0 = oracle.rng_mark() if dual is not None else None
       carry_post, qfull, cands, _, extras = oracle.d0_eval(carry_s, obs)
       # determinism assert: restore must reproduce the same next obs
       restore_env(env, snap)
@@ -400,14 +428,57 @@ def label_run(env, oracle, n_states, horizon, label_every, max_steps,
       restore_env(env, snap)
 
       m_now = plugin_choice(qfull)
+      if dual is not None:
+        # Shadow plugin chooser: replay the control d0_eval's RNG
+        # window under the consumer heads. The policy net is outside
+        # the overlay regex, so the candidate DRAWS repeat (same seeds)
+        # up to float jitter — gated below; the Q values differ only
+        # through the swapped heads (+ the same sample-noise class the
+        # registered two-pass design had per pass).
+        c1 = oracle.rng_mark()
+        oracle.rng_reset(c0)
+        dual.to_consumer()
+        _, qfull_x, cands_x, _, _ = oracle.d0_eval(carry_s, obs)
+        dual.to_control()
+        if oracle.rng_mark() != c1:
+          raise SystemExit(
+              'dual shadow d0_eval consumed a different RNG count '
+              f'({oracle.rng_mark()} != {c1}) — replay schedule broken')
+        cdiff = float(np.max(np.abs(
+            np.asarray(cands_x, np.float64) - np.asarray(cands,
+                                                         np.float64))))
+        if cdiff > DUAL_CANDS_ATOL:
+          raise SystemExit(
+              f'dual-chooser candidate drift {cdiff:.3e} > '
+              f'{DUAL_CANDS_ATOL} at episode {ep} step {t}: the shadow '
+              'chooser is not ranking the g_all candidate set — '
+              'instrument invalid on this substrate')
+        m_now_x = plugin_choice(qfull_x)
       # op_imag re-assimilates obs_t from carry_s each sample (fresh
       # candidate draws are the point there — no RNG reset).
       m_imag, cost_imag = op_imag(oracle, carry_s, obs, qfull,
                                   budget=cands.shape[0])
       rmark = oracle.rng_mark()
-      m_real, cost_real, real_scores = op_real(
-          env, oracle, carry_post, obs, qfull, cands, snap,
-          rng_mark=rmark)
+      if dual is not None:
+        m_real, cost_real, real_scores, r_ctl = op_real(
+            env, oracle, carry_post, obs, qfull, cands, snap,
+            rng_mark=rmark, return_rewards=True)
+        # Shadow op_real: SAME candidates, same env snapshot, same
+        # rng_mark — only the value bootstrap reads the consumer heads.
+        dual.to_consumer()
+        m_real_x, _, real_scores_x, r_x = op_real(
+            env, oracle, carry_post, obs, qfull_x, cands, snap,
+            rng_mark=rmark, return_rewards=True)
+        dual.to_control()
+        if not np.allclose(r_ctl, r_x, atol=1e-6):
+          raise SystemExit(
+              f'dual-chooser env-reward drift across the op_real '
+              f'replays at episode {ep} step {t}: '
+              f'{np.max(np.abs(r_ctl - r_x)):.3e} > 1e-6 — CRN broken')
+      else:
+        m_real, cost_real, real_scores = op_real(
+            env, oracle, carry_post, obs, qfull, cands, snap,
+            rng_mark=rmark)
       m_probe, ghat = m_real, None
       if consumer is not None:
         # External chooser override AFTER all env/policy work of this
@@ -454,6 +525,11 @@ def label_run(env, oracle, n_states, horizon, label_every, max_steps,
       if consumer is not None:
         row.update(m_real_probe=m_probe,
                    ghat=np.asarray(ghat, np.float32))
+      if dual is not None:
+        row.update(m_now_x=m_now_x, m_real_x=m_real_x,
+                   qfull_x=qfull_x,
+                   real_scores_x=real_scores_x,
+                   cands_max_absdiff=np.float32(cdiff))
       rows.append(row)
       restore_env(env, snap)  # resume the base trajectory untouched
     # the evaluation agent's belief always tracks the observed stream
@@ -497,7 +573,7 @@ def save_rows(rows, output, meta, extra_arrays=None):
   # registered per-state achieved, and paired stdout means would reveal
   # the primaries before the ONE read. Default path byte-identical.
   version = str(meta.get('labeler_version', ''))
-  if version.endswith('_xc1') or version.endswith('_cm1'):
+  if version.endswith(('_xc1', '_xc2', '_cm1')):
     print(f'wrote {output}: {len(rows)} labeled states '
           f'(estimand summary redacted: consumer arm)')
   else:
@@ -517,7 +593,8 @@ def save_rows(rows, output, meta, extra_arrays=None):
 CONSUMER_REGEX = r'^(rew|con|valens\d+)/'
 
 
-def stamp_consumer(meta, consumer_checkpoint, max_steps=None):
+def stamp_consumer(meta, consumer_checkpoint, max_steps=None, dual=False,
+                   dual_allow_identical=False):
   """Version/provenance stamping for the overlay. The default path is
   byte-identical (same dict back: no new keys, version unchanged, so
   every existing frozen reader keeps matching); an active overlay —
@@ -526,14 +603,22 @@ def stamp_consumer(meta, consumer_checkpoint, max_steps=None):
   regex, and max_steps (max_steps gates the labeled-state window, so a
   pass re-run with a different value would label a different window
   while staying internally consistent — the xc reader pins it). The xc
-  reader pins the exact suffixed version string."""
+  reader pins the exact suffixed version string. dual (xc Amendment 1)
+  stamps '_xc2' instead plus the dual fields; the amended reader pins
+  '_xc2' exactly, so plain '_xc1' two-pass files can never enter the
+  amended wave."""
   if not consumer_checkpoint:
     return meta
   stamped = dict(
       meta,
-      labeler_version=meta['labeler_version'] + '_xc1',
+      labeler_version=meta['labeler_version'] + ('_xc2' if dual
+                                                 else '_xc1'),
       consumer_checkpoint=str(consumer_checkpoint),
       consumer_regex=CONSUMER_REGEX)
+  if dual:
+    stamped['dual_chooser'] = True
+    stamped['dual_cands_atol'] = DUAL_CANDS_ATOL
+    stamped['dual_allow_identical'] = bool(dual_allow_identical)
   if max_steps is not None:
     stamped['max_steps'] = int(max_steps)
   return stamped
@@ -675,6 +760,81 @@ def overlay_consumer(agent, consumer_ckpt, load_fn=None):
   return marks
 
 
+class DualHeads:
+  """xc Amendment 1 (PREREG_r3_xc_amend1_20260802): cached control and
+  consumer head-param sets with a per-state swap into the LIVE policy
+  store, so BOTH choosers are evaluated inside one invocation (the
+  detprobe killed cross-invocation pairing: g_all max|drift| 95 on
+  identical states, artifacts/r3_xc_detprobe_20260801/).
+
+  Built BEFORE overlay_consumer runs (captures the eval agent's own
+  heads), completed after it (captures the overlaid consumer heads),
+  then reset to control — the pass runs under the eval agent's heads
+  and swaps only around the shadow chooser evaluations. Swaps write
+  into agent.policy_params — the store every policy/d0_eval call
+  consults (embodied/jax/agent.py policy()) — AND agent.params for
+  coherence, with a read-back assert on a witness key: a swap that
+  silently fails to reach the consulted store would fabricate chooser
+  agreement (the registered HEADS-IRRELEVANT prediction), so it
+  refuses instead. Two cached head sets at MLP-head size are trivial.
+  """
+
+  def __init__(self, agent):
+    import jax
+    if jax.process_count() != 1:
+      raise SystemExit('dual-chooser head swap is single-process only '
+                       '(device_get/put on globally sharded params '
+                       'would silently truncate)')
+    self.agent = agent
+    self.matched = sorted(
+        k for k in agent.params if re.match(CONSUMER_REGEX, k))
+    if not self.matched:
+      raise SystemExit('dual-chooser: overlay regex matched no keys')
+    self.ctl = self._snapshot()
+    self.sw = None
+
+  def _store(self):
+    pp = getattr(self.agent, 'policy_params', None)
+    return pp if pp is not None else self.agent.params
+
+  def _snapshot(self):
+    import jax
+    with jax._src.config.explicit_device_get_scope():
+      return {k: np.asarray(jax.device_get(self._store()[k]))
+              for k in self.matched}
+
+  def capture_consumer(self, allow_identical=False):
+    self.sw = self._snapshot()
+    differs = any(not np.array_equal(self.ctl[k], self.sw[k])
+                  for k in self.matched)
+    if not differs and not allow_identical:
+      raise SystemExit(
+          'dual-chooser: consumer and control head params are '
+          'byte-identical — a shadow chooser cannot differ (consumer '
+          'checkpoint == eval checkpoint?); refusing to fabricate '
+          'chooser agreement. --dual_allow_identical is reserved for '
+          'the registered identical-heads smoke.')
+
+  def _apply(self, host):
+    import jax
+    for store in (self._store(), self.agent.params):
+      for k in self.matched:
+        store[k] = jax.device_put(host[k], store[k].sharding)
+    witness = self.matched[0]
+    with jax._src.config.explicit_device_get_scope():
+      back = np.asarray(jax.device_get(self._store()[witness]))
+    if not np.array_equal(back, host[witness]):
+      raise SystemExit(
+          'dual-chooser: head swap did not reach the live policy store')
+
+  def to_consumer(self):
+    assert self.sw is not None, 'capture_consumer() has not run'
+    self._apply(self.sw)
+
+  def to_control(self):
+    self._apply(self.ctl)
+
+
 # --------------------------------------------------------------------------
 # External consumer-model chooser (PREREG_competence_repair_20260730.md)
 # --------------------------------------------------------------------------
@@ -741,6 +901,7 @@ def main_real(args):
   agent = make_agent(config)
   ckpt = args.checkpoint or os.path.join(args.run_logdir, 'ckpt')
   agent = load_frozen_agent(agent, ckpt)
+  dual = None
   if args.consumer_checkpoint:
     assert not args.behavior_checkpoint, (
         'consumer overlay combined with a behavior checkpoint is '
@@ -752,7 +913,21 @@ def main_real(args):
     # Both loads happen HERE, before any labeling; every RNG mark is
     # taken afterwards. The control arm passes the eval ckpt itself.
     check_consumer_config(args.run_logdir, args.consumer_checkpoint)
-    overlay_consumer(agent, args.consumer_checkpoint)
+    if args.dual_chooser:
+      # xc Amendment 1: snapshot the eval agent's own heads, overlay
+      # the consumer's, snapshot those too, then run the pass under
+      # CONTROL heads, swapping only around the shadow choosers.
+      dual = DualHeads(agent)
+      overlay_consumer(agent, args.consumer_checkpoint)
+      dual.capture_consumer(allow_identical=args.dual_allow_identical)
+      dual.to_control()
+    else:
+      overlay_consumer(agent, args.consumer_checkpoint)
+  else:
+    assert not args.dual_chooser, (
+        '--dual_chooser requires --consumer_checkpoint')
+  assert not args.dual_allow_identical or args.dual_chooser, (
+      '--dual_allow_identical requires --dual_chooser')
   disc = (1.0 if config.agent.contdisc else
           1 - 1 / config.agent.horizon)
   oracle = AgentOracle(agent, env.act_space, disc)
@@ -773,7 +948,7 @@ def main_real(args):
       args.label_every, args.max_steps, rng,
       run_id=os.path.basename(args.run_logdir.rstrip('/')),
       oracle_all=args.oracle_all, ref_stride=args.ref_stride,
-      behavior=behavior, consumer=consumer)
+      behavior=behavior, consumer=consumer, dual=dual)
   meta = dict(
       run_logdir=args.run_logdir, checkpoint=str(ckpt),
       states=args.states, horizon=args.horizon,
@@ -785,7 +960,10 @@ def main_real(args):
       mass_scale=float(args.mass_scale),
       operation_pair='real_vs_imag_matched_candidate_budget')
   meta = stamp_consumer(meta, args.consumer_checkpoint,
-                        max_steps=args.max_steps)
+                        max_steps=args.max_steps,
+                        dual=bool(args.dual_chooser),
+                        dual_allow_identical=bool(
+                            args.dual_allow_identical))
   meta = stamp_consumer_model(meta, args.consumer_model, cm_info)
   save_rows(rows, args.output, meta=meta, extra_arrays=ref_arrays)
 
@@ -1262,6 +1440,17 @@ def selfcheck():
   assert stamped['consumer_regex'] == CONSUMER_REGEX
   assert base_meta == dict(labeler_version='d1fix_20260724', seed=1)
   # max_steps is overlay-only meta (state-window dial; xc reader pins it)
+  # Amendment 1: dual=True stamps _xc2 + the dual fields; dual=False
+  # unchanged _xc1 (existing two-pass files can never enter the wave)
+  stamped_d = stamp_consumer(base_meta, '/x/ckpt_early', dual=True)
+  assert stamped_d['labeler_version'] == 'd1fix_20260724_xc2'
+  assert stamped_d['dual_chooser'] is True
+  assert stamped_d['dual_cands_atol'] == DUAL_CANDS_ATOL
+  assert stamped_d['dual_allow_identical'] is False
+  assert stamp_consumer(base_meta, '/x/ckpt_early', dual=True,
+                        dual_allow_identical=True)[
+                            'dual_allow_identical'] is True
+  assert 'dual_chooser' not in stamp_consumer(base_meta, '/x/ckpt_early')
   stamped_ms = stamp_consumer(base_meta, '/x/ckpt_early', max_steps=1000)
   assert stamped_ms['max_steps'] == 1000
   assert 'max_steps' not in stamped
@@ -1293,6 +1482,7 @@ def selfcheck():
     r = dict(episode=0, step=0, delta_real=0.5, delta_imag=0.1)
     for ver, redacted in (('d1fix_20260724', False),
                           ('d1fix_20260724_xc1', True),
+                          ('d1fix_20260724_xc2', True),
                           ('d1fix_20260724_cm1', True)):
       buf = io.StringIO()
       with contextlib.redirect_stdout(buf):
@@ -1333,6 +1523,258 @@ def selfcheck():
       raise AssertionError('missing consumer config.yaml must trip')
     except SystemExit as e:
       assert 'config.yaml' in str(e), e
+
+  # --- xc8 (Amendment 1): dual-chooser within-pass pairing. The same
+  # planted head difference as xc1, but evaluated as control + shadow
+  # inside ONE pass: g_all computed once, both chooser index sets
+  # recorded, closed-form within-pass paired delta
+  # [g_all[m_real_x]-g_all[m_now_x]] - [g_all[m_real]-g_all[m_now]]
+  # = (1.8-1.8) - (2.8-2.0) = -0.8. ---
+  class _DualSynthOracle(_SynthOracle):
+    """xc1's planted head difference, plus a REAL policy-RNG counter
+    (reviewer M2): every policy call consumes one tick and
+    rng_mark/rng_reset are genuine — so the replay bookkeeping and the
+    RNG-count guard are exercised for real, not via no-ops."""
+
+    def __init__(self):
+      super().__init__()
+      self.discount = 1.0
+      self.consumer_active = False
+      self._rng_ctr = 100
+
+    def policy(self, carry, obs, mode='eval'):
+      self._rng_ctr += 1
+      carry, acts, out = super().policy(carry, obs, mode)
+      if self.consumer_active:
+        base = -10.0 * float(obs['reward'])
+        q = np.array([[base, base + 0.05, base + 0.1]] * 2, np.float32)
+        out = dict(out, **{'d0/qfull': q[None]})
+      return carry, acts, out
+
+    def rng_mark(self):
+      return self._rng_ctr
+
+    def rng_reset(self, mark):
+      self._rng_ctr = mark
+
+  class _SynthDual:
+    def __init__(self, oracle):
+      self.oracle = oracle
+      self.swaps = 0
+
+    def to_consumer(self):
+      self.oracle.consumer_active = True
+      self.swaps += 1
+
+    def to_control(self):
+      self.oracle.consumer_active = False
+
+  d_oracle = _DualSynthOracle()
+  d_swap = _SynthDual(d_oracle)
+  rows_d, _ = label_run(_SynthEnv(), d_oracle, n_states=4, horizon=10,
+                        label_every=7, max_steps=200,
+                        rng=np.random.default_rng(0), run_id='xcd',
+                        oracle_all=True, dual=d_swap)
+  assert d_swap.swaps == 2 * len(rows_d), d_swap.swaps
+  assert not d_oracle.consumer_active   # pass ends under control heads
+  for rc, rd in zip(rows_c, rows_d):
+    # base trajectory + g_all identical to the plain control pass
+    assert rc['episode'] == rd['episode'] and rc['step'] == rd['step']
+    assert np.allclose(rc['g_all'], rd['g_all'], atol=1e-6)
+    # control choosers unchanged; shadow choosers = the planted flips
+    assert rd['m_now'] == 1 and rd['m_real'] == 0, rd
+    assert rd['m_now_x'] == 2 and rd['m_real_x'] == 2, rd
+    assert float(rd['cands_max_absdiff']) == 0.0
+    assert rd['qfull_x'].shape == rd['qfull'].shape
+    assert rd['real_scores_x'].shape == rd['real_scores'].shape
+    d_pair = ((rd['g_all'][rd['m_real_x']] - rd['g_all'][rd['m_now_x']])
+              - (rd['g_all'][rd['m_real']] - rd['g_all'][rd['m_now']]))
+    assert abs(d_pair - (-0.8)) < 1e-5, d_pair
+
+  # RNG-schedule invariance for real (reviewer M2): a plain pass with
+  # the SAME counting oracle class ends at the SAME counter value —
+  # the dual pass's resets net out exactly.
+  p_oracle = _DualSynthOracle()
+  rows_p, _ = label_run(_SynthEnv(), p_oracle, n_states=4, horizon=10,
+                        label_every=7, max_steps=200,
+                        rng=np.random.default_rng(0), run_id='xcd',
+                        oracle_all=True)
+  assert p_oracle._rng_ctr == d_oracle._rng_ctr, (
+      p_oracle._rng_ctr, d_oracle._rng_ctr)
+  for rp, rd in zip(rows_p, rows_d):
+    assert rp['episode'] == rd['episode'] and rp['step'] == rd['step']
+    assert np.allclose(rp['g_all'], rd['g_all'], atol=1e-6)
+
+  # ... and a shadow that over-consumes the replay window must trip
+  # the RNG-count guard.
+  class _GreedyShadow(_DualSynthOracle):
+    def policy(self, carry, obs, mode='eval'):
+      if self.consumer_active:
+        self._rng_ctr += 1          # one extra tick under the shadow
+      return super().policy(carry, obs, mode)
+
+  go = _GreedyShadow()
+  try:
+    label_run(_SynthEnv(), go, n_states=1, horizon=10, label_every=7,
+              max_steps=200, rng=np.random.default_rng(0), run_id='xcd',
+              oracle_all=True, dual=_SynthDual(go))
+    raise AssertionError('shadow RNG over-consumption must trip')
+  except SystemExit as e:
+    assert 'RNG count' in str(e), e
+
+  # sub-atol candidate drift (reviewer m4): the shadow op_real must
+  # execute the CONTROL candidate set. Candidate 1 sits exactly on the
+  # synth reward threshold (a=0.5 -> 0.2); the shadow's drifted copy
+  # (+5e-5, under the gate) would cross it (-> 1.0). Executing control
+  # cands keeps both op_real reward sweeps identical, so the pass
+  # completes; a shadow that executed its own cands would trip the
+  # env-reward CRN gate.
+  class _SubAtolOracle(_DualSynthOracle):
+    CANDS = np.array([[0.9], [0.5], [-0.5]], np.float32)
+
+    def policy(self, carry, obs, mode='eval'):
+      carry, acts, out = super().policy(carry, obs, mode)
+      if self.consumer_active:
+        out = dict(out, **{'d0/cands': (self.CANDS + 5e-5)[None]})
+      return carry, acts, out
+
+  so = _SubAtolOracle()
+  rows_sa, _ = label_run(_SynthEnv(), so, n_states=2, horizon=10,
+                         label_every=7, max_steps=200,
+                         rng=np.random.default_rng(0), run_id='xcd',
+                         oracle_all=True, dual=_SynthDual(so))
+  for r in rows_sa:
+    assert 0 < float(r['cands_max_absdiff']) <= DUAL_CANDS_ATOL, r
+
+  # candidate-drift gate: a shadow whose candidate draws move beyond
+  # DUAL_CANDS_ATOL must refuse (the shadow would rank actions g_all
+  # was never realized for)
+  class _DriftCandsOracle(_DualSynthOracle):
+    def policy(self, carry, obs, mode='eval'):
+      carry, acts, out = super().policy(carry, obs, mode)
+      if self.consumer_active:
+        out = dict(out, **{'d0/cands': (self.CANDS + 0.01)[None]})
+      return carry, acts, out
+
+  dr_oracle = _DriftCandsOracle()
+  try:
+    label_run(_SynthEnv(), dr_oracle, n_states=1, horizon=10,
+              label_every=7, max_steps=200, rng=np.random.default_rng(0),
+              run_id='xcd', oracle_all=True, dual=_SynthDual(dr_oracle))
+    raise AssertionError('candidate drift beyond atol must trip')
+  except SystemExit as e:
+    assert 'candidate drift' in str(e), e
+
+  # env-reward drift gate: if the env stops replaying identical rewards
+  # between the control and shadow op_real sweeps, CRN is broken and
+  # the pass must refuse
+  class _DriftEnv(_SynthEnv):
+    drift = False
+
+    def step(self, act):
+      obs = super().step(act)
+      if self.drift and not act.get('reset'):
+        obs = dict(obs, reward=np.float32(float(obs['reward']) + 0.01))
+      return obs
+
+  class _EnvDriftDual(_SynthDual):
+    def __init__(self, oracle, env):
+      super().__init__(oracle)
+      self.env = env
+
+    def to_consumer(self):
+      super().to_consumer()
+      self.env.drift = True
+
+    def to_control(self):
+      super().to_control()
+      self.env.drift = False
+
+  de_env = _DriftEnv()
+  de_oracle = _DualSynthOracle()
+  try:
+    label_run(de_env, de_oracle, n_states=1, horizon=10, label_every=7,
+              max_steps=200, rng=np.random.default_rng(0), run_id='xcd',
+              oracle_all=True, dual=_EnvDriftDual(de_oracle, de_env))
+    raise AssertionError('env-reward drift across dual op_real must trip')
+  except SystemExit as e:
+    assert 'env-reward drift' in str(e), e
+
+  # DualHeads guard logic (reviewer M3), jax-free half: the
+  # identical-heads refusal is REAL code, exercised here via a
+  # snapshot-injection subclass.
+  class _FakeDual(DualHeads):
+    def __init__(self, ctl, nxt):
+      self.matched = sorted(ctl)
+      self.ctl = {k: np.asarray(v) for k, v in ctl.items()}
+      self._next = nxt
+      self.sw = None
+
+    def _snapshot(self):
+      return {k: np.asarray(v) for k, v in self._next.items()}
+
+  same = {'rew/w': np.ones(3)}
+  try:
+    _FakeDual(same, same).capture_consumer()
+    raise AssertionError('identical-heads capture must refuse')
+  except SystemExit as e:
+    assert 'byte-identical' in str(e), e
+  _FakeDual(same, {'rew/w': np.zeros(3)}).capture_consumer()
+  _FakeDual(same, same).capture_consumer(allow_identical=True)
+
+  # ... jax-backed half: the swap must land in the LIVE policy store
+  # (the dict policy calls consult) and the witness read-back must
+  # catch a store that swallows writes.
+  import jax
+
+  class _FakeAgent:
+    pass
+
+  ag = _FakeAgent()
+  ag.params = {'rew/w': jax.device_put(np.full(3, 1.0)),
+               'con/w': jax.device_put(np.full(2, 1.0)),
+               'valens0/w': jax.device_put(np.full(2, 1.0)),
+               'pol/w': jax.device_put(np.full(2, 9.0))}
+  ag.policy_params = {k: jax.device_put(np.asarray(v) * 2)
+                      for k, v in ag.params.items()}
+  dh = DualHeads(ag)
+  assert dh.matched == ['con/w', 'rew/w', 'valens0/w'], dh.matched
+  for store in (ag.params, ag.policy_params):    # simulate the overlay
+    for k in dh.matched:
+      store[k] = jax.device_put(np.full_like(np.asarray(store[k]), 5.0))
+  dh.capture_consumer()
+  dh.to_control()
+  assert float(np.asarray(jax.device_get(
+      ag.policy_params['rew/w']))[0]) == 2.0
+  assert float(np.asarray(jax.device_get(ag.params['rew/w']))[0]) == 2.0
+  dh.to_consumer()
+  assert float(np.asarray(jax.device_get(
+      ag.policy_params['rew/w']))[0]) == 5.0
+  assert float(np.asarray(jax.device_get(
+      ag.policy_params['pol/w']))[0]) == 18.0    # non-head keys untouched
+
+  class _LossyDual(DualHeads):
+    def _store(self):
+      return dict(self.agent.policy_params)      # writes vanish
+
+  ld = _LossyDual(ag)
+  ld.ctl = {k: np.zeros_like(v) for k, v in ld.ctl.items()}
+  try:
+    ld.to_control()
+    raise AssertionError('lossy store must trip the witness read-back')
+  except SystemExit as e:
+    assert 'live policy store' in str(e), e
+
+  # dual row schema round-trip
+  out_d = pathlib.Path(os.environ.get('TMPDIR', '/tmp')) / 'oracle_xcd.npz'
+  save_rows(rows_d, str(out_d),
+            meta=dict(labeler_version='d1fix_20260724_xc2'))
+  data_d = np.load(out_d, allow_pickle=False)
+  assert data_d['m_now_x'].shape == (4,)
+  assert data_d['m_real_x'].shape == (4,)
+  assert data_d['qfull_x'].shape == data_d['qfull'].shape
+  assert data_d['real_scores_x'].shape == (4, 3)
+  assert data_d['cands_max_absdiff'].shape == (4,)
 
   # --- cm1: external consumer-model chooser (competence repair). A
   # ridge model whose only weight is -1 on the action column ranks the
@@ -1432,8 +1874,12 @@ def selfcheck():
         'CONSUMER_REGEX scope, counter snapshot/restore + regex surgery + '
         'control self-equivalence, meta stamping byte-identical default '
         '+ max_steps overlay stamp, no-op/partial-overlay guard trips, '
-        'consumer-arm stdout redaction (_xc1/_cm1), '
-        'config-safety comparer + missing-config trip; cm extension: '
+        'consumer-arm stdout redaction (_xc1/_xc2/_cm1), '
+        'config-safety comparer + missing-config trip; xc Amendment 1 '
+        '(dual chooser): within-pass control+shadow pairing closed-form '
+        '(d_pair -0.8, g_all/base-trajectory invariance vs plain pass), '
+        'candidate-drift + env-reward-drift gates trip, _xc2 stamping + '
+        'dual fields + row schema round-trip; cm extension: '
         'external ridge chooser trajectory/g_all invariance closed-form '
         'with probe fields preserved + row schema round-trip, flag '
         'discipline (no composition, oracle_all required), _cm1 stamping '
@@ -1469,6 +1915,19 @@ def main():
                       'PREREG_r3_amend2_20260730); pol, WM, and disag '
                       'stay the eval checkpoint\'s; pass the eval ckpt '
                       'itself for the control arm')
+  p.add_argument('--dual_chooser', action='store_true',
+                 help='xc Amendment 1 (PREREG_r3_xc_amend1_20260802): '
+                      'evaluate BOTH choosers within one pass — control '
+                      '(eval-own heads: m_now/m_real) and shadow '
+                      '(consumer heads: m_now_x/m_real_x) on the same '
+                      'states, candidates, and g_all; requires '
+                      '--consumer_checkpoint (the OTHER maturity) and '
+                      '--oracle_all; stamps _xc2')
+  p.add_argument('--dual_allow_identical', action='store_true',
+                 help='permit byte-identical consumer/control heads in '
+                      '--dual_chooser (the registered identical-heads '
+                      'smoke ONLY — normally refused as a fabrication '
+                      'guard)')
   p.add_argument('--consumer_model', default='',
                  help='optional LORO ridge-model npz '
                       '(d0/train_consumer_model.py) deployed as an '
