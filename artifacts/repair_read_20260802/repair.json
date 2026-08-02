@@ -1,0 +1,120 @@
+{
+  "primaries": {
+    "p_rep1_paired_achieved": {
+      "point": 0.07046875000000002,
+      "ci": [
+        -0.09187499999999998,
+        0.24485156249999993
+      ],
+      "n_clusters": 32
+    }
+  },
+  "fires": {
+    "p_rep1": false,
+    "p_rep2_material": false,
+    "harmful": false
+  },
+  "sensitivity_excl_smoke": {
+    "boot": {
+      "point": 0.0741935483870968,
+      "ci": [
+        -0.09580645161290322,
+        0.2571048387096773
+      ],
+      "n_clusters": 31
+    },
+    "fires": {
+      "p_rep1": false,
+      "p_rep2_material": false,
+      "harmful": false
+    },
+    "fragile": false,
+    "excluded_cell": "cup/e1/31"
+  },
+  "thresholds": {
+    "materiality": 0.6465
+  },
+  "state_identity_violations": [],
+  "secondary": {
+    "per_domain": {
+      "cup": {
+        "point": 0.03156249999999999,
+        "ci": [
+          -0.10875781250000001,
+          0.21532031249999992
+        ],
+        "n_clusters": 16
+      },
+      "finger": {
+        "point": 0.109375,
+        "ci": [
+          -0.17752343749999996,
+          0.41812499999999997
+        ],
+        "n_clusters": 16
+      }
+    },
+    "per_dose": {
+      "e1": {
+        "point": 0.081875,
+        "ci": [
+          -0.17719531249999998,
+          0.3634453124999999
+        ],
+        "n_clusters": 16
+      },
+      "e4": {
+        "point": 0.059062500000000004,
+        "ci": [
+          -0.1353125,
+          0.2771953124999999
+        ],
+        "n_clusters": 16
+      }
+    },
+    "achieved_rep": {
+      "point": 0.010625000000000002,
+      "ci": [
+        -0.15891796874999997,
+        0.1704726562499999
+      ],
+      "n_clusters": 32
+    },
+    "achieved_probe": {
+      "point": -0.05984374999999999,
+      "ci": [
+        -0.2456328125,
+        0.12281640624999995
+      ],
+      "n_clusters": 32
+    },
+    "achieved_orig": {
+      "point": -0.039062499999999986,
+      "ci": [
+        -0.1793828125,
+        0.11328906249999988
+      ],
+      "n_clusters": 32
+    },
+    "oracle_agreement_rep": 0.039531250000000004,
+    "oracle_agreement_probe": 0.110625,
+    "oracle_agreement_orig": 0.11859375,
+    "chooser_change_rate": 0.83265625,
+    "residual_gap_fraction": 0.9928496319663512,
+    "cross_era_drift": {
+      "probe_vs_committed_realized_agreement": 0.325625,
+      "opportunity_max_cell_absdiff": 97.0,
+      "pooled_late_opp_inpass": 1.4859375,
+      "pooled_late_opp_committed": 1.3014062499999999,
+      "note": "descriptive drift context ONLY (Amendment 1): the quarantine audit showed job-to-job nondeterminism, so cross-era per-state quantities are expected to drift (~50% probe-choice flips \u2014 m_real 101/200 committed<->audit_nocm; plugin m_now flips ~25%; O(1) float drift); these are NOT sanity expectations and NOT paired estimands"
+    }
+  },
+  "n_runs": 32,
+  "verdict": "NOT-REPAIRABLE-FROM-OBSERVABLES: the paired achieved contrast straddles 0 \u2014 a LINEAR probe on stored observables (deter, candidate action, qfull summaries, udyn), trained on oracle returns from sibling runs, does not detectably repair the consumer. Scope-limited by registration: NOT a claim that no repair is possible; the representational account is strengthened (support must be legible cross-link).",
+  "labels_dir": "/home/rickybao/projects/dreamerv3/local_results/r3_repair_20260802_143054/r3_local/rep_labels",
+  "committed_dir": "/home/rickybao/projects/dreamerv3/local_results/r3_repair_20260802_143054/r3_local/r3_labels",
+  "model": {
+    "path": "/home/rickybao/projects/dreamerv3/local_results/r3_repair_20260802_143054/r3_local/rep_model/consumer_model.npz",
+    "sha256": "be802f1e0848849255e2505945565a960c05916c5cfd8e8e8cf571e8075d856f"
+  }
+}

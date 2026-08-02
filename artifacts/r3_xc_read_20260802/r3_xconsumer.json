@@ -1,0 +1,100 @@
+{
+  "primaries": {
+    "p_xc1_late_eval": {
+      "point": 0.027656249999999997,
+      "ci": [
+        -0.21594140625000002,
+        0.24376171874999986
+      ],
+      "n_clusters": 32
+    },
+    "p_xc2_early_eval": {
+      "point": -0.15515625,
+      "ci": [
+        -0.31140625,
+        -0.03171484375000006
+      ],
+      "n_clusters": 32
+    }
+  },
+  "fires": {
+    "p_xc1_harm": false,
+    "p_xc2_deficit": false
+  },
+  "off_direction": {
+    "xc1_pos": false,
+    "xc2_neg": true
+  },
+  "integrity_violations": [],
+  "thresholds": {
+    "dual_cands_atol": 0.0001
+  },
+  "secondary": {
+    "per_domain": {
+      "cup": {
+        "xc1": {
+          "point": 0.1334375,
+          "ci": [
+            -0.0625078125,
+            0.3650078124999999
+          ],
+          "n_clusters": 16
+        },
+        "xc2": {
+          "point": -0.1459375,
+          "ci": [
+            -0.3134375,
+            -0.021562500000000002
+          ],
+          "n_clusters": 16
+        }
+      },
+      "finger": {
+        "xc1": {
+          "point": -0.078125,
+          "ci": [
+            -0.5096953125000001,
+            0.2909609374999997
+          ],
+          "n_clusters": 16
+        },
+        "xc2": {
+          "point": -0.16437500000000002,
+          "ci": [
+            -0.4228125,
+            0.0309375
+          ],
+          "n_clusters": 16
+        }
+      }
+    },
+    "chooser_disagreement": {
+      "early_m_real": 0.74671875,
+      "early_m_now": 0.76109375,
+      "late_m_real": 0.8082812500000001,
+      "late_m_now": 0.85453125
+    },
+    "opportunity_level": {
+      "early": {
+        "point": 1.37265625,
+        "ci": [
+          0.6638867187499999,
+          2.2581289062499996
+        ],
+        "n_clusters": 32
+      },
+      "late": {
+        "point": 1.36375,
+        "ci": [
+          0.7974921874999998,
+          1.9943984375
+        ],
+        "n_clusters": 32
+      }
+    },
+    "cands_max_absdiff_max": 0.0
+  },
+  "n_runs": 32,
+  "verdict": "MIXED: a CI excursion in an unregistered direction (XC2 entirely negative) \u2014 off the registered map; disclosed, no headline claim, interpretation deferred.",
+  "labels_dir": "/home/rickybao/projects/dreamerv3/local_results/r3_xc_20260802_135102/r3_local/xc_labels"
+}
