@@ -1,0 +1,36 @@
+{
+  "kind": "frew",
+  "task": "dmc_finger_turn_hard",
+  "n_episodes": 200,
+  "ep_len": 1001,
+  "criteria": {
+    "targets": [
+      0.6,
+      0.8
+    ],
+    "tol": 0.05,
+    "fallback_min": 0.6,
+    "seed": 0,
+    "boot": 200,
+    "objective": "contiguous K-window of the occupancy-desc pool closest to each target, targets descending, sides disjoint by removal; selection is fully deterministic \u2014 seed/boot feed only the descriptive occ_noise bootstrap"
+  },
+  "cells": [
+    {
+      "target": 0.8,
+      "status": "OK",
+      "fallback": true,
+      "mean": 0.729321
+    },
+    {
+      "target": 0.6,
+      "status": "SHORT",
+      "fallback": false,
+      "reason": "no K-window within tol 0.05 of 0.6 (best mean 0.4130); top-K mean 0.4130"
+    }
+  ],
+  "decision": "SHORT",
+  "pairs": {
+    "q1": null
+  },
+  "index": "/scratch/midway3/rickybao/dreamerv3_runs/axis1_finger/episodes.json"
+}
