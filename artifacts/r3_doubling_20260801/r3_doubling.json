@@ -1,0 +1,76 @@
+{
+  "primary": {
+    "inc_opp": {
+      "point": 0.6343750000000001,
+      "ci": [
+        -0.21048046874999987,
+        1.439375
+      ],
+      "n_clusters": 32
+    }
+  },
+  "flags": {
+    "anomaly": false,
+    "immaterial": false
+  },
+  "thresholds": {
+    "materiality": 0.6465
+  },
+  "secondary": {
+    "gap16": {
+      "point": 1.8934375,
+      "ci": [
+        1.14061328125,
+        2.7147031249999993
+      ],
+      "n_clusters": 32
+    },
+    "gap16_refires": true,
+    "inc_ach": {
+      "point": 0.08140624999999999,
+      "ci": [
+        -0.11673046874999997,
+        0.25532031249999987
+      ],
+      "n_clusters": 32
+    },
+    "per_domain_inc": {
+      "cup": {
+        "point": 0.24687500000000004,
+        "ci": [
+          -0.109078125,
+          0.6393828125
+        ],
+        "n_clusters": 16
+      },
+      "finger": {
+        "point": 1.021875,
+        "ci": [
+          -0.6176093749999999,
+          2.545625
+        ],
+        "n_clusters": 16
+      }
+    },
+    "opp8": {
+      "point": 1.3014062499999999,
+      "ci": [
+        0.625609375,
+        2.149417968749999
+      ],
+      "n_clusters": 32
+    },
+    "opp16": {
+      "point": 1.93578125,
+      "ci": [
+        1.1728007812499999,
+        2.7596953125
+      ],
+      "n_clusters": 32
+    }
+  },
+  "n_runs": 32,
+  "verdict": "CONSISTENT + MATERIAL TRUNCATION DISCLOSED: the M=16 increment can exceed half the R3 gap \u2014 opportunity remains a lower bound (conservative direction unaffected), but the paper quantifies the truncation.",
+  "labels8": "/home/rickybao/projects/dreamerv3/local_results/r3_competence_20260729_105146/labels",
+  "labels16": "/home/rickybao/projects/dreamerv3/local_results/r3_doubling_20260801_212204/labels16"
+}

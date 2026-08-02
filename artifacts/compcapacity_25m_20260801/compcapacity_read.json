@@ -1,0 +1,134 @@
+{
+  "primary_task_lo_rise": {
+    "point": -12.208337499999999,
+    "ci": [
+      -45.6814246875,
+      17.685574999999982
+    ],
+    "n": [
+      8,
+      8
+    ],
+    "sensitivity": {
+      "t_p": 0.4970835081938706,
+      "t_ci": [
+        -49.77326478310094,
+        25.356589783100944
+      ]
+    }
+  },
+  "fires": false,
+  "guard_apt_rise": {
+    "point": 6.96027500000001,
+    "ci": [
+      -10.75196249999999,
+      25.345069843750004
+    ],
+    "n": [
+      16,
+      16
+    ],
+    "sensitivity": {
+      "t_p": 0.47102582698687256,
+      "t_ci": [
+        -12.511599595057984,
+        26.432149595058004
+      ]
+    }
+  },
+  "forbidden_pattern": false,
+  "interaction_at_25m": {
+    "point": 113.761675,
+    "ci": [
+      68.8632625,
+      155.43225
+    ],
+    "n": 8,
+    "pos": 8
+  },
+  "b_task_25m": {
+    "point": 119.1562375,
+    "ci": [
+      85.7487,
+      147.273456875
+    ],
+    "n": 8,
+    "pos": 8
+  },
+  "b_task_12m": {
+    "point": 139.1914,
+    "ci": [
+      86.2538875,
+      189.237
+    ],
+    "n": 8,
+    "pos": 7
+  },
+  "b_task_change": {
+    "point": -20.035162499999984,
+    "ci": [
+      -78.12027812500001,
+      39.855625625000016
+    ],
+    "n": [
+      8,
+      8
+    ],
+    "sensitivity": {
+      "t_p": 0.551855372905926,
+      "t_ci": [
+        -91.53064808916595,
+        51.46032308916598
+      ]
+    }
+  },
+  "task_hi_change": {
+    "point": -32.24350000000001,
+    "ci": [
+      -85.705803125,
+      18.729197187499967
+    ],
+    "n": [
+      8,
+      8
+    ],
+    "sensitivity": {
+      "t_p": 0.2793579213148691,
+      "t_ci": [
+        -93.69822807092356,
+        29.211228070923532
+      ]
+    }
+  },
+  "apt_simple_25m": {
+    "point": 5.394562500000003,
+    "ci": [
+      -16.889082499999997,
+      29.2591375
+    ],
+    "n": 8,
+    "pos": 4
+  },
+  "cell_means": {
+    "task25s0": 84.7474,
+    "task25s1": 203.9036375,
+    "apt25s0": 98.059875,
+    "apt25s1": 103.4544375,
+    "task12s0": 96.9557375,
+    "task12s1": 236.1471375,
+    "apt12s0": 87.450525,
+    "apt12s1": 100.1432375
+  },
+  "seeds": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8
+  ],
+  "verdict": "PRIMARY does not fire: regime A persists through 25m \u2014 the transition bracket widens (G1 crossing above 25m); reported as a bounded null with the E4 membership counterpart; no ordering violation.",
+  "auc_csv": "/scratch/midway3/rickybao/dreamerv3_runs/analysis_compcapacity_25m_auc/auc.csv"
+}

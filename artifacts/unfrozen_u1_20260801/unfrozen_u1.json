@@ -1,0 +1,124 @@
+{
+  "p_u1a_interaction": {
+    "point": 145.007775,
+    "ci": [
+      22.942650000000008,
+      276.535125
+    ],
+    "n": 8,
+    "pos": 5,
+    "per_seed": [
+      316.9063,
+      -47.416700000000006,
+      -62.69799999999999,
+      142.6458,
+      441.9895,
+      137.4583,
+      307.2708,
+      -76.0938
+    ]
+  },
+  "p_u1b_apt_occupancy": {
+    "point": 10.657587500000002,
+    "ci": [
+      -7.126275,
+      26.543655312499954
+    ],
+    "n": 8,
+    "pos": 5,
+    "per_seed": [
+      -39.697900000000004,
+      -2.458299999999994,
+      -2.395799999999994,
+      23.9792,
+      30.114600000000003,
+      44.10419999999999,
+      23.323000000000008,
+      8.291700000000006
+    ]
+  },
+  "fires_a": true,
+  "flips_b": false,
+  "level_changes_vs_frozen": {
+    "t0": {
+      "point": 224.95575,
+      "ci": [
+        130.547355625,
+        316.5627028125
+      ],
+      "n": 8,
+      "pos": 8,
+      "per_seed": [
+        37.14580000000001,
+        422.7188,
+        358.9063,
+        252.3125,
+        107.2709,
+        263.2708,
+        52.95830000000001,
+        305.0626
+      ]
+    },
+    "t1": {
+      "point": 221.2994875,
+      "ci": [
+        127.40495468750001,
+        347.09245
+      ],
+      "n": 8,
+      "pos": 7,
+      "per_seed": [
+        177.6563,
+        -1.2916000000000167,
+        200.375,
+        160.9792,
+        595.0104,
+        275.0416,
+        201.3021,
+        161.3229
+      ]
+    },
+    "f0": {
+      "point": 0.37757499999999666,
+      "ci": [
+        -20.497425000000007,
+        23.311565624999993
+      ],
+      "n": 8,
+      "pos": 4,
+      "per_seed": [
+        63.2396,
+        -18.14590000000001,
+        14.781199999999998,
+        -47.8958,
+        -22.614600000000003,
+        -12.031300000000002,
+        13.718699999999991,
+        11.968699999999998
+      ]
+    },
+    "f1": {
+      "point": 8.992212499999999,
+      "ci": [
+        -10.7786375,
+        32.5391125
+      ],
+      "n": 8,
+      "pos": 4,
+      "per_seed": [
+        -6.385400000000004,
+        -30.6563,
+        8.458299999999994,
+        18.937600000000003,
+        25.739599999999996,
+        80.2709,
+        -3.9791000000000025,
+        -20.44789999999999
+      ]
+    }
+  },
+  "discriminator_note": "apt level change vs the disclosed proprio anchors (rgo +235.2 / sgb +30.4, unfrozen calibration): sgb-band gain => needed features ABSENT from apt fits (competition/exclusion); rgo-band gain => present-but-illegible. Descriptive only.",
+  "verdict": "PROTOCOL-ROBUST: the interaction persists unfrozen AND the reward-free occupancy null holds under fine-tuning \u2014 the strongest outcome: reward-free hi-occupancy support is not merely frozen-illegible, it is not an initialization advantage either. The headline and the null family generalize beyond the frozen protocol.",
+  "auc_csv": "/home/rickybao/projects/dreamerv3/local_results/unfrozen_u1_20260801_212204/auc/auc.csv",
+  "baseline_csv": "/home/rickybao/projects/dreamerv3/artifacts/scaling_optionb_20260726/auc.csv"
+}
