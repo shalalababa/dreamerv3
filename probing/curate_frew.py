@@ -26,10 +26,22 @@ manipulation is f_R itself; support breadth is MEASURED afterward
 Search touches only index occupancies — no frames, no fits, no transfer
 outcome exists or is revealed at curation time.
 
+Amendment 2 (PREREG_highfr_wave_amend2_20260802): --require_chunks
+excludes from the SEARCH POOL every episode whose span covers a chunk
+file absent on disk (scratch purge ate 26 donor chunks between indexing
+and build). The covering-chunk rule is identical to the builder's
+load_span, so a filtered selection is buildable by construction. The
+index itself is NEVER rewritten — eid numbering (the builder contract)
+is preserved — and excluded eids + missing files are recorded in the
+output json. Availability is a filesystem fact, not an outcome; all
+targets/tol/fallback/SHORT semantics re-arm unchanged on the filtered
+pool.
+
 Usage:
   python -m probing.curate_frew search-frew \
       --index $RUNROOT/axis1_finger/episodes.json \
-      --n_episodes 200 --targets 0.60 0.80 --tol 0.05 \
+      --n_episodes 200 --targets 0.41 0.80 --tol 0.05 \
+      --require_chunks \
       --output $RUNROOT/axis1_finger/frew_pairs.json
   python -m probing.curate_frew --selfcheck
 """
@@ -53,6 +65,32 @@ def _entries(index):
           in sorted(table.items())]
 
 
+def missing_chunk_eids(index):
+  """eid -> [missing chunk files] for episodes touching absent chunks.
+
+  Covering-chunk rule identical to the builder's load_span (searchsorted
+  over cumulative stream lengths), so an episode is flagged iff
+  materializing it would np.load a file that no longer exists.
+  """
+  exists = {}
+  out = {}
+  for eid, (label, e) in sorted(bcr.episode_by_eid(index).items()):
+    stream = index['sources'][label]['streams'][e['stream']]
+    bounds = np.cumsum([0] + stream['lengths'])
+    first = int(np.searchsorted(bounds, e['start'], side='right') - 1)
+    last = int(np.searchsorted(bounds, e['end'] - 1, side='right') - 1)
+    gone = []
+    for ci in range(first, last + 1):
+      f = stream['files'][ci]
+      if f not in exists:
+        exists[f] = os.path.exists(f)
+      if not exists[f]:
+        gone.append(f)
+    if gone:
+      out[eid] = gone
+  return out
+
+
 def best_window(occs, k, target):
   """(start, mean, dev) of the k-window with mean closest to target.
 
@@ -68,10 +106,12 @@ def best_window(occs, k, target):
   return start, float(means[start]), float(devs[start])
 
 
-def search(index, targets, k, tol, seed=0, boot=200):
+def search(index, targets, k, tol, seed=0, boot=200, exclude=frozenset()):
   assert 'ep_len' in index, 'index not restricted to modal episode length'
   assert len(targets) == 2 and targets[0] != targets[1], targets
   entries = sorted(_entries(index), key=lambda t: (-t[2], t[0]))
+  if exclude:
+    entries = [t for t in entries if t[0] not in exclude]
   occ_by_eid = {eid: occ for eid, _, occ in entries}
   label_by_eid = {eid: lab for eid, lab, _ in entries}
   rng = np.random.default_rng(seed)
@@ -111,6 +151,7 @@ def search(index, targets, k, tol, seed=0, boot=200):
              ep_len=index['ep_len'],
              criteria=dict(targets=sorted(targets), tol=tol,
                            fallback_min=FALLBACK_MIN, seed=seed, boot=boot,
+                           n_excluded=len(exclude),
                            objective='contiguous K-window of the '
                                      'occupancy-desc pool closest to each '
                                      'target, targets descending, sides '
@@ -148,9 +189,21 @@ def search(index, targets, k, tol, seed=0, boot=200):
 def cmd_search(args):
   with open(args.index) as f:
     index = json.load(f)
+  exclude, missing = frozenset(), {}
+  if args.require_chunks:
+    missing = missing_chunk_eids(index)
+    exclude = frozenset(missing)
+    files = sorted({f for gone in missing.values() for f in gone})
+    print(f'chunk check: {len(missing)} episode(s) excluded '
+          f'({len(files)} missing chunk file(s))')
   out = search(index, tuple(args.targets), args.n_episodes, args.tol,
-               seed=args.seed, boot=args.boot)
+               seed=args.seed, boot=args.boot, exclude=exclude)
   out['index'] = args.index
+  if args.require_chunks:
+    out['availability'] = dict(
+        require_chunks=True,
+        excluded_eids={int(k): v for k, v in sorted(missing.items())},
+        missing_files=sorted({f for g in missing.values() for f in g}))
   os.makedirs(os.path.dirname(os.path.abspath(args.output)), exist_ok=True)
   with open(args.output, 'w') as f:
     json.dump(out, f, indent=2)
@@ -300,12 +353,72 @@ def selfcheck(args):
     f1 = sm.measure(manifest['sides'][1]['directory'], 'cup', 'hi',
                     'q1f_s1')['f_rewarded']
     assert f1 > f0, (f0, f1)
+
+    # --- Amendment 2: chunk-availability filter ----------------------
+    # All files present -> nothing flagged.
+    assert missing_chunk_eids(index) == {}
+    # Delete the donor chunk covering a picked hi-side member's start:
+    # the field failure (scratch purge between indexing and build).
+    table = bcr.episode_by_eid(index)
+    victim = res['pairs']['q1']['sides'][1]['members'][0]
+    vlabel, ve = table[victim]
+    vstream = index['sources'][vlabel]['streams'][ve['stream']]
+    vbounds = np.cumsum([0] + vstream['lengths'])
+    vci = int(np.searchsorted(vbounds, ve['start'], side='right') - 1)
+    os.remove(vstream['files'][vci])
+    missing = missing_chunk_eids(index)
+    # Flagged set == interval-overlap oracle (independent restatement of
+    # the covering rule): exactly the episodes whose span intersects the
+    # deleted chunk's frame range, and only that file is reported.
+    expected = {eid for eid, (lab, e) in table.items()
+                if lab == vlabel and e['stream'] == ve['stream']
+                and e['start'] < vbounds[vci + 1] and e['end'] > vbounds[vci]}
+    assert victim in expected and set(missing) == expected, \
+        (victim, sorted(missing), sorted(expected))
+    assert {f for g in missing.values() for f in g} \
+        == {vstream['files'][vci]}
+    # The unfiltered pairs must reproduce the failure at build time.
+    try:
+      bcr.cmd_build(argparse.Namespace(
+          index=f'{tmp}/episodes.json', pairs=pairs_path, which='q1',
+          output_root=f'{tmp}/q1f_broken'))
+      raise AssertionError('build must fail on the missing chunk')
+    except FileNotFoundError:
+      pass
+    # Filtered search: picks avoid every flagged episode, is
+    # deterministic, and eid numbering is preserved (the index is never
+    # rewritten) — proven by building the filtered pair through the
+    # frozen builder and matching recomputed occupancies.
+    excl = frozenset(missing)
+    res_f = search(index, (round(t_lo, 4), round(t_hi, 4)), k=k, tol=0.05,
+                   exclude=excl)
+    assert res_f['decision'] == 'OK', res_f
+    assert res_f['criteria']['n_excluded'] == len(excl)
+    for s in res_f['pairs']['q1']['sides']:
+      assert not set(s['members']) & excl
+    assert search(index, (round(t_lo, 4), round(t_hi, 4)), k=k, tol=0.05,
+                  exclude=excl) == res_f
+    res_f['index'] = f'{tmp}/episodes.json'
+    pairs2 = f'{tmp}/frew_pairs2.json'
+    with open(pairs2, 'w') as f:
+      json.dump(res_f, f)
+    bcr.cmd_build(argparse.Namespace(
+        index=f'{tmp}/episodes.json', pairs=pairs2, which='q1',
+        output_root=f'{tmp}/q1f2'))
+    with open(f'{tmp}/q1f2/manifest.json') as f:
+      man2 = json.load(f)
+    for si, rep in enumerate(man2['sides']):
+      assert abs(rep['occ_recomputed']
+                 - res_f['pairs']['q1']['sides'][si]['occ']) < 0.02, rep
   print('selfcheck PASS: window rule optimal + deterministic, sides '
         'disjoint and ordered, fallback/SHORT branches trip (incl. '
         'post-removal starvation and small pool), e2e: frozen builder '
         'materializes the pairs json, recomputed occupancies match the '
         'search, Replay ingests, instrument f_rewarded orders with the '
-        'curated occupancy')
+        'curated occupancy; availability filter: flagged set matches the '
+        'interval-overlap oracle, unfiltered build reproduces '
+        'FileNotFoundError, filtered pair avoids flagged eids, builds '
+        'clean, and preserves eid numbering')
 
 
 def main():
@@ -317,6 +430,7 @@ def main():
   ap.add_argument('--tol', type=float, default=0.05)
   ap.add_argument('--seed', type=int, default=0)
   ap.add_argument('--boot', type=int, default=200)
+  ap.add_argument('--require_chunks', action='store_true')
   ap.add_argument('--output')
   ap.add_argument('--selfcheck', action='store_true')
   args = ap.parse_args()
