@@ -35,3 +35,31 @@ pass (`ax1wm_finger_*s25*`) was still RUNNING at sync — it feeds the
 separate theory adjudication (`PREREG_compcapacity_theory_20260724`
 P-E2/P-E3), not this confirmatory read (which consumes auc.csv only,
 per the frozen CLI).
+
+## E4 membership counterpart (registered DESCRIPTIVE, landed 2 Aug)
+
+Bundle `local_results/e4_25m_20260801_225152/` (csv copied here);
+provenance verified: `scripts/e4_measure.sbatch` + 
+`probing/stratified_error.py` shas match the local checked-out files
+byte-for-byte; RCC git head `782d8ed5` is a committed ancestor on
+`causal-wm-transfer`. 32 runs × 4 horizons = 128 rows, complete;
+frozen `finger_v1` probe set.
+
+Registered descriptive form (prereg §E4: "A→B predicts task@25m,s0
+reward-NLL moves from the 12m value 5.77 toward the membership band"):
+
+- **task@25m,s0 in-regime rew-NLL (h=0): mean ≈ 8.06 nats, per-seed
+  3.77–10.81** (seeds 1–8: 4.64, 10.67, 10.81, 10.19, 6.75, 8.96,
+  3.77, 8.70) vs the 12m reference 5.77
+  (`artifacts/orthogonal_obj_20260725/`). The membership form did NOT
+  move toward the band — descriptively it sits slightly further out.
+  **Coherent corroboration of the bounded null: regime A persists
+  through 25m on BOTH metrics** (AUC flat and membership not
+  approaching) — the two-point capacity result is metric-consistent.
+- Apt rows: `reward_aware=0`, rew-NLL absent-by-design under the
+  reward_aware gate — exactly as disclosed at 12m; the gate behaves
+  as registered.
+- Descriptive only, per registration: no CI, no fire, no decision
+  rule touches these rows. The theory adjudication
+  (`PREREG_compcapacity_theory_20260724` P-E2/P-E3) remains a
+  separate future read (Scaling-B completeness blocker still open).

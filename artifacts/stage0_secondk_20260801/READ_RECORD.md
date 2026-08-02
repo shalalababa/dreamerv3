@@ -35,18 +35,21 @@ cup seeds 1–5 @k5+@k20 all TRACKS_DENSITY; finger seeds 1,3,4 @k5+@k20
 TRACKS_DENSITY; finger seed2 k5 TRACKS / k20 AMBIGUOUS; finger seed5 k5
 TRACKS / k20 AMBIGUOUS.
 
-## Pending sync (URGENT before instance teardown)
+## Provenance — synced and VERIFIED (2 Aug)
 
-`instance_read/` synced EMPTY — the read json and provenance records
-are still only on the instance. Pull before teardown:
+`provenance/` (pulled from the instance before teardown) closes the
+chain, all four legs machine-checked locally:
 
-- `/workspace/dreamerv3/artifacts/stage0_secondk_20260801/stage0_secondk.json`
-- `git -C /workspace/dreamerv3 rev-parse HEAD` + `git status --short`
-  (checkout provenance of the executed reader)
-- `sha256sum /workspace/dreamerv3/analysis/stage0_secondk_read.py`
-
-The verdict itself is recoverable from the synced stdout (above), so
-the outcome is safe; the json + code-sha records complete provenance.
+- `stage0_secondk.json` bytes match the instance-recorded sha256
+  `75ab1bd2…` (recomputed locally, identical).
+- The json's verdict + flip set are IDENTICAL to the synced stdout
+  (`secondk_full.out`): K-SENSITIVE, flips = finger seed2/seed5 @k20.
+- Instance reader sha (`stage0_secondk_read.sha256`) = `3c297e18…` =
+  the registered freeze sha (ledger) = the local checked-out
+  `analysis/stage0_secondk_read.py`, byte-identical.
+- Instance git head (`instance_git_head.txt`) `003d7b82` is an
+  ancestor on the local `causal-wm-transfer` branch — the read ran on
+  a clean committed checkout.
 
 ## Disclosures
 
