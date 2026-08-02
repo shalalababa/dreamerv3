@@ -167,6 +167,11 @@ Frozen pre-outcome readers, one per registered experiment; each has a
   `Idea_*.tex` briefs (side-project triage).
 - `Research_Other_Ideas_20260701.tex` — field scans / future
   directions.
+- `Research_Methodology_Directions_Claims_20260801.tex` — standing
+  methodology note: direction / research-question / claim taxonomy,
+  six-level claim-granularity ladder, and the lit-check placement rule
+  (shallow check to start, exhaustive audit at claim-freeze); governs
+  new-direction selection for Papers 4/5+.
 - `Research_Idea_Uncertainty_field_20260727.tex` (external review, 7
   directions, recommends Belief Hydrodynamics) +
   `Research_Idea_Uncertainty_field_Fable_20260727.tex` (companion:
