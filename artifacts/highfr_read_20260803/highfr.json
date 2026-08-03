@@ -1,0 +1,164 @@
+{
+  "gates": {
+    "f_hi": 0.7248451548451549,
+    "f_lo": 0.40878121878121876,
+    "separation": 0.316064,
+    "lo_included": true,
+    "lo_excluded_reason": null,
+    "f_hi_range": [
+      0.6,
+      0.85
+    ],
+    "f_lo_range": [
+      0.36,
+      0.46
+    ],
+    "min_sep": 0.08
+  },
+  "primary_hi_minus_v200s1": {
+    "point": 49.74436666666671,
+    "ci": [
+      -8.378837500000031,
+      102.82805843749996
+    ],
+    "n": [
+      8,
+      12
+    ]
+  },
+  "fires": false,
+  "secondary_lo_minus_v200s1": {
+    "point": 56.93445416666671,
+    "ci": [
+      -19.651891041666676,
+      132.8591936458333
+    ],
+    "n": [
+      8,
+      12
+    ]
+  },
+  "monotone_refutation": {
+    "chain": [
+      [
+        0.323172,
+        187.7153
+      ],
+      [
+        0.408781,
+        244.6497
+      ],
+      [
+        0.724845,
+        237.4597
+      ]
+    ],
+    "nondecreasing": false,
+    "fires": false
+  },
+  "saturation": true,
+  "phf2": {
+    "nll_hi": {
+      "point": 1.1784887240417754,
+      "ci": [
+        1.1192046963860798,
+        1.2373478545490249
+      ],
+      "n": 8
+    },
+    "membership": "member",
+    "member_max": 1.5,
+    "nonmember_min": 2.0,
+    "diversity_pr_hi": 10.260911184121246,
+    "diversity_pr_lo": 9.64803893649832,
+    "diversity_ref": 9.230033291492585,
+    "diversity_lower": false,
+    "dissociation": false,
+    "inclusion_reading": false,
+    "nll_lo_descriptive": {
+      "point": 0.8089376401034427,
+      "ci": [
+        0.7822516757581045,
+        0.8371039626971462
+      ],
+      "n": 8
+    },
+    "spectrum_pr_hi_descriptive": 31.735334419612013,
+    "spectrum_pr_lo_descriptive": 38.636443253958234
+  },
+  "phf3": {
+    "grid": [
+      [
+        0.054,
+        161.9514
+      ],
+      [
+        0.323172,
+        187.7153
+      ],
+      [
+        0.408781,
+        244.6497
+      ],
+      [
+        0.724845,
+        237.4597
+      ]
+    ],
+    "argmax_f": 0.408781,
+    "holds": true
+  },
+  "cell_means": {
+    "ax1hfq1fs1": {
+      "1": 231.1667,
+      "2": 248.3333,
+      "3": 272.6458,
+      "4": 248.0938,
+      "5": 242.6771,
+      "6": 244.5729,
+      "7": 106.3438,
+      "8": 305.8438
+    },
+    "ax1hfq1fs0": {
+      "1": 122.3958,
+      "2": 144.7188,
+      "3": 280.4271,
+      "4": 352.5521,
+      "5": 377.9375,
+      "6": 148.5833,
+      "7": 258.6979,
+      "8": 271.8854
+    },
+    "ax1v2q1v200s1": {
+      "1": 327.7812,
+      "2": 180.2708,
+      "3": 135.4583,
+      "4": 231.3646,
+      "5": 270.4896,
+      "6": 80.3021,
+      "7": 98.1667,
+      "8": 262.5729,
+      "9": 130.6146,
+      "10": 191.3021,
+      "11": 119.9688,
+      "12": 224.2917
+    },
+    "ax1v2q1v200s0": {
+      "7": 140.3646,
+      "8": 318.1042,
+      "9": 266.4375,
+      "10": 88.4375,
+      "11": 111.375,
+      "12": 46.9896
+    }
+  },
+  "verdict": "P-HF1 does NOT fire: the high-f_R contrast is not entirely negative. Saturation reading (registered): primary straddles 0 and diversity_pr does not separate \u2014 compatible, uninformative. P-HF2 member/diversity_lower=False: dissociation not adjudicated. P-HF3 max-not-at-highest-f (weak form) HOLDS (argmax at f=0.4088).",
+  "inputs": {
+    "auc": "/home/rickybao/projects/dreamerv3/local_results/highfr_20260803_113751/analysis/auc/auc.csv",
+    "auc_frozen": "/home/rickybao/projects/dreamerv3/local_results/volume_repl_20260729_204854/analysis/auc/auc.csv",
+    "spectral_lo": "/home/rickybao/projects/dreamerv3/local_results/highfr_20260803_113751/spectral/spectral_side0.json",
+    "spectral_hi": "/home/rickybao/projects/dreamerv3/local_results/highfr_20260803_113751/spectral/spectral_side1.json",
+    "spectral_ref": "/home/rickybao/projects/dreamerv3/artifacts/volume_repl_20260729/diversity_q1v200_s1.json",
+    "e4": "/home/rickybao/projects/dreamerv3/local_results/highfr_20260803_113751/e4/e4_finger_v1_hf.csv"
+  }
+}
