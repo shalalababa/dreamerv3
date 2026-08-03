@@ -1,0 +1,292 @@
+{
+ "dataseed1": {
+  "ensemble": "EXPLOIT-SURVIVES-CIG+PBIM",
+  "members": [
+   {
+    "verdict": "EXPLOIT-SURVIVES-CIG-ONLY",
+    "n_both": 0,
+    "top": "c543_2-3-2_only_s6_tv_n3",
+    "top_true": 0.0
+   },
+   {
+    "verdict": "EXPLOIT-SURVIVES-CIG+PBIM",
+    "n_both": 132,
+    "top": "c591_3-4-3-4-3-4-3_all",
+    "top_true": 0.02621392280635071
+   },
+   {
+    "verdict": "EXPLOIT-SURVIVES-CIG+PBIM",
+    "n_both": 3,
+    "top": "c550_2-3-2-3-2_move_only",
+    "top_true": 0.0
+   },
+   {
+    "verdict": "EXPLOIT-SURVIVES-CIG-ONLY",
+    "n_both": 0,
+    "top": "c612_3-4-5-4-5-4-3_only_s7_z2_n3",
+    "top_true": 0.01162276751948843
+   }
+  ]
+ },
+ "dataseed2": {
+  "ensemble": "EXPLOIT-SURVIVES-CIG+PBIM",
+  "members": [
+   {
+    "verdict": "EXPLOIT-SURVIVES-CIG+PBIM",
+    "n_both": 242,
+    "top": "c46_0-1-0-5-0-5-0_all",
+    "top_true": 1.0541776714087274
+   },
+   {
+    "verdict": "EXPLOIT-SURVIVES-CIG+PBIM",
+    "n_both": 27,
+    "top": "c345_1-2-1-2-3-4-1_only_s7_z2_n3",
+    "top_true": 0.013508406850637034
+   },
+   {
+    "verdict": "EXPLOIT-SURVIVES-CIG+PBIM",
+    "n_both": 61,
+    "top": "c46_0-1-0-5-0-5-0_all",
+    "top_true": 1.0541776714087274
+   },
+   {
+    "verdict": "EXPLOIT-SURVIVES-CIG+PBIM",
+    "n_both": 7,
+    "top": "c549_2-3-2-3-2_only_s7_z2_n3",
+    "top_true": 0.01370295823885348
+   }
+  ]
+ },
+ "hid128": {
+  "ensemble": "EXPLOIT-SURVIVES-CIG+PBIM",
+  "members": [
+   {
+    "verdict": "EXPLOIT-SURVIVES-CIG+PBIM",
+    "n_both": 5,
+    "top": "c460_1-4-1-4-3-4-1_only_s1_z0_n4",
+    "top_true": 0.013226806042267558
+   },
+   {
+    "verdict": "EXPLOIT-SURVIVES-CIG+PBIM",
+    "n_both": 13,
+    "top": "c15_0-1-0-1-0-5-0_all",
+    "top_true": 1.054067144328139
+   },
+   {
+    "verdict": "EXPLOIT-SURVIVES-CIG+PBIM",
+    "n_both": 11,
+    "top": "c465_1-4-1-4-5-4-1_only_s0_z0_n1",
+    "top_true": 0.012912724835912659
+   },
+   {
+    "verdict": "EXPLOIT-SURVIVES-CIG+PBIM",
+    "n_both": 28,
+    "top": "c480_1-4-3-2-3-2-1_only_s6_tv_n3",
+    "top_true": 0.0
+   }
+  ]
+ },
+ "hid32": {
+  "ensemble": "EXPLOIT-SURVIVES-CIG-ONLY",
+  "members": [
+   {
+    "verdict": "EXPLOIT-SURVIVES-CIG-ONLY",
+    "n_both": 0,
+    "top": "c617_4-5-4_move_only",
+    "top_true": 0.0
+   },
+   {
+    "verdict": "EXPLOIT-SURVIVES-CIG+PBIM",
+    "n_both": 168,
+    "top": "c556_2-3-2-3-4-3-2_all",
+    "top_true": 0.03843036519073939
+   },
+   {
+    "verdict": "NO-EXPLOIT",
+    "n_both": 0,
+    "top": "c319_1-2-1_only_s2_z1_n2",
+    "top_true": 0.011772026385013845
+   },
+   {
+    "verdict": "EXPLOIT-SURVIVES-CIG-ONLY",
+    "n_both": 0,
+    "top": "c617_4-5-4_move_only",
+    "top_true": 0.0
+   }
+  ]
+ },
+ "train10k": {
+  "ensemble": "EXPLOIT-SURVIVES-CIG-ONLY",
+  "members": [
+   {
+    "verdict": "EXPLOIT-SURVIVES-CIG-ONLY",
+    "n_both": 0,
+    "top": "c328_1-2-1-2-1-2-1_move_only",
+    "top_true": 0.0
+   },
+   {
+    "verdict": "EXPLOIT-SURVIVES-CIG-ONLY",
+    "n_both": 0,
+    "top": "c482_1-4-3-2-3-2-1_move_only",
+    "top_true": 0.0
+   },
+   {
+    "verdict": "TRANSIENT-EXPLOIT-ONLY",
+    "n_both": 0,
+    "top": "c218_0-5-0_move_only",
+    "top_true": 0.0
+   },
+   {
+    "verdict": "EXPLOIT-SURVIVES-CIG+PBIM",
+    "n_both": 12,
+    "top": "c367_1-2-1-4-3-4-1_only_s2_z1_n2",
+    "top_true": 0.011772026385013401
+   }
+  ]
+ },
+ "train1k": {
+  "ensemble": "EXPLOIT-SURVIVES-CIG-ONLY",
+  "members": [
+   {
+    "verdict": "EXPLOIT-SURVIVES-CIG-ONLY",
+    "n_both": 0,
+    "top": "c593_3-4-3-4-3-4-3_only_s6_tv_n3",
+    "top_true": 0.0
+   },
+   {
+    "verdict": "EXPLOIT-SURVIVES-CIG-ONLY",
+    "n_both": 0,
+    "top": "c555_2-3-2-3-2-3-2_move_only",
+    "top_true": 0.0
+   },
+   {
+    "verdict": "EXPLOIT-SURVIVES-CIG-ONLY",
+    "n_both": 0,
+    "top": "c441_1-4-1_only_s1_z0_n4",
+    "top_true": 0.01205409020135395
+   },
+   {
+    "verdict": "EXPLOIT-SURVIVES-CIG-ONLY",
+    "n_both": 0,
+    "top": "c320_1-2-1_move_only",
+    "top_true": 0.0
+   }
+  ]
+ },
+ "train30k": {
+  "ensemble": "EXPLOIT-SURVIVES-CIG-ONLY",
+  "members": [
+   {
+    "verdict": "EXPLOIT-SURVIVES-CIG+PBIM",
+    "n_both": 1,
+    "top": "c353_1-2-1-4-1-4-1_only_s0_z0_n1",
+    "top_true": 0.013226806042267558
+   },
+   {
+    "verdict": "EXPLOIT-SURVIVES-CIG-ONLY",
+    "n_both": 0,
+    "top": "c545_2-3-2_move_only",
+    "top_true": 0.0
+   },
+   {
+    "verdict": "TRANSIENT-EXPLOIT-ONLY",
+    "n_both": 0,
+    "top": "c617_4-5-4_move_only",
+    "top_true": 0.0
+   },
+   {
+    "verdict": "EXPLOIT-SURVIVES-CIG-ONLY",
+    "n_both": 0,
+    "top": "c324_1-2-1-2-1_move_only",
+    "top_true": 0.0
+   }
+  ]
+ },
+ "ymode_s0": {
+  "ensemble": "EXPLOIT-SURVIVES-CIG+PBIM",
+  "members": [
+   {
+    "verdict": "EXPLOIT-SURVIVES-CIG+PBIM",
+    "n_both": 13,
+    "top": "c559_2-3-2-3-4-3-2_only_s6_tv_n3",
+    "top_true": 0.0
+   },
+   {
+    "verdict": "EXPLOIT-SURVIVES-CIG+PBIM",
+    "n_both": 47,
+    "top": "c295_0-5-4-3-4-5-0_only_s6_tv_n3",
+    "top_true": 0.0
+   },
+   {
+    "verdict": "EXPLOIT-SURVIVES-CIG-ONLY",
+    "n_both": 0,
+    "top": "c593_3-4-3-4-3-4-3_only_s6_tv_n3",
+    "top_true": 0.0
+   },
+   {
+    "verdict": "EXPLOIT-SURVIVES-CIG+PBIM",
+    "n_both": 65,
+    "top": "c559_2-3-2-3-4-3-2_only_s6_tv_n3",
+    "top_true": 0.0
+   }
+  ]
+ },
+ "ymode_s1": {
+  "ensemble": "EXPLOIT-SURVIVES-CIG+PBIM",
+  "members": [
+   {
+    "verdict": "EXPLOIT-SURVIVES-CIG-ONLY",
+    "n_both": 0,
+    "top": "c543_2-3-2_only_s6_tv_n3",
+    "top_true": 0.0
+   },
+   {
+    "verdict": "EXPLOIT-SURVIVES-CIG+PBIM",
+    "n_both": 35,
+    "top": "c295_0-5-4-3-4-5-0_only_s6_tv_n3",
+    "top_true": 0.0
+   },
+   {
+    "verdict": "EXPLOIT-SURVIVES-CIG+PBIM",
+    "n_both": 17,
+    "top": "c559_2-3-2-3-4-3-2_only_s6_tv_n3",
+    "top_true": 0.0
+   },
+   {
+    "verdict": "EXPLOIT-SURVIVES-CIG+PBIM",
+    "n_both": 24,
+    "top": "c543_2-3-2_only_s6_tv_n3",
+    "top_true": 0.0
+   }
+  ]
+ },
+ "ymode_s2": {
+  "ensemble": "EXPLOIT-SURVIVES-CIG+PBIM",
+  "members": [
+   {
+    "verdict": "EXPLOIT-SURVIVES-CIG+PBIM",
+    "n_both": 34,
+    "top": "c588_3-4-3-4-3_only_s6_tv_n3",
+    "top_true": 0.0
+   },
+   {
+    "verdict": "EXPLOIT-SURVIVES-CIG+PBIM",
+    "n_both": 2,
+    "top": "c19_0-1-0-1-0-5-0_only_s5_z4_n0",
+    "top_true": 0.9341896088772401
+   },
+   {
+    "verdict": "EXPLOIT-SURVIVES-CIG+PBIM",
+    "n_both": 168,
+    "top": "c487_1-4-3-2-3-4-1_only_s6_tv_n3",
+    "top_true": 0.0
+   },
+   {
+    "verdict": "EXPLOIT-SURVIVES-CIG+PBIM",
+    "n_both": 17,
+    "top": "c393_1-2-3-2-3-2-1_only_s6_tv_n3",
+    "top_true": 0.0
+   }
+  ]
+ }
+}

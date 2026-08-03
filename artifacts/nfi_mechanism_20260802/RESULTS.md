@@ -1,5 +1,41 @@
 # NFI Mechanism Analysis — Results Record (EXPLORATORY, not registered)
 
+> **⚠ AMENDMENT — 2 Aug 2026 (same day), adversarial instrument review
+> ("fix before read"; all findings verified by execution).** The record
+> below is amended, not withdrawn: **claims (i) and (ii) SURVIVE attack**
+> — the Bayes-gain formula is exactly the Kalman entropy drop (the
+> plausible alternative 0.5·log(1+t/R) is the wrong one), the coherent
+> DiagExactFilter adapter calibrates the ratio to **exactly 1.000** on
+> every sensed cycle, denominators are non-degenerate everywhere (min
+> R_implied 0.031, ≤0 in 0/32 accounts), TV-licensed-exactly-0 is
+> structural, and mechanism.json bit-reproduces from code + saved
+> ensemble (421/421 fields). **Claim (iii) — the anatomy-3 dichotomy —
+> does NOT survive:** (a) the quoted m0 off-support exhibit INVERTS under
+> the matched-walk baseline (sensed +0.037 vs the SAME walk move-only
+> +0.048 — walk drift, not sensing leakage); leakage is genuinely
+> supported for m1/m3 only (e.g. m3: sensed +0.082 vs matched move-only
+> −0.057, landing on STATIC components — damped-mode relaxation
+> excluded). (b) The "duplicate double-count" anatomy is WITHDRAWN: its
+> exhibit c451 is non-neutral (true +0.038 > EPS_TRUE) and not an exploit
+> for any member, with realized contraction below the referee's true gain
+> (mostly legitimate information); the actually-exploited duplicate loop
+> c447 shows a 50/50 on/off-support split — no clean dichotomy exists.
+> (c) Name conflation corrected: the 11.6× headline is c447
+> (1-4-1-4-1-4-1 all); the "on +0.060 / off −0.006" figures are c451 (the
+> designed chord, actual ratio 5.4×). (d) Wording: TV "+0.84 realized" is
+> the carried EIG PROMISE — the traced belief EXPANDS off-support
+> (−0.15/loop; dh_adj +0.009 = eig-only exploit); m3's TV both-exploit
+> status is created by the registered drift adjustment; TV farming fires
+> 2/4 members (m0/m2 are TV-coherent). (e) No thresholdable cycle-level
+> discriminator: m2's non-dh-exploited cycles score 3.8–4.5 inside the
+> exploited range — the ratio separates exploited MODELS' cycles from
+> planted-coherent models, not exploited cycles from clean ones within a
+> model. (f) m3 caveat: its steady-state z-head re-inflates z2 variance
+> (licensing 0.29–0.42 nats/read on referee-neutral cycles), so m3's
+> dominant incoherence is heads-vs-referee with only 1.4–1.8× update-side
+> excess; "localized to the update operator" is cleanest for m0/m1/m2.
+> Read the anatomy sections below through this amendment.
+
 **Date:** 2 Aug 2026. Follow-up to `artifacts/nfi_pilot_20260801/` (flagship
 signature EXPLOIT-SURVIVES-CIG+PBIM, 3/4 members). Instrument:
 `uncfield/mechanism.py` on the frozen pilot2 ensemble; machine record

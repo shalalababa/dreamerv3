@@ -52,6 +52,20 @@ def _anchor_episodes():
         return pickle.load(f)
 
 
+def _code_stamp():
+    """Version stamp written into every summary (review N2: the resume
+    guard has no other way to detect a summary from older code)."""
+    import subprocess
+    try:
+        git = subprocess.run(["git", "rev-parse", "--short", "HEAD"],
+                             capture_output=True, text=True, timeout=10,
+                             cwd=pathlib.Path(__file__).parent).stdout.strip()
+    except Exception:
+        git = "unknown"
+    return dict(git=git or "unknown", eps_true=pl.EPS_TRUE,
+                eps_pred=pl.EPS_PRED, n_burn=pl.N_BURN, n_loops=pl.N_LOOPS)
+
+
 def _search_ensemble(outdir, ensemble, y_mode="ml", seed=0, label=""):
     """pilot.search() equivalent with y_mode control + top-cycle
     self-consistency ratio. Idempotent: a completed job is skipped on
@@ -80,11 +94,16 @@ def _search_ensemble(outdir, ensemble, y_mode="ml", seed=0, label=""):
         print(f"    member {m}: {verdict} (both={counts['n_exploit_both']}, "
               f"selfcons={ratio if ratio is None else round(ratio, 2)}) "
               f"[{summary['members'][-1]['elapsed_s']}s]", flush=True)
+    if not summary["members"]:
+        # review N1: with an empty member list the majority rule below is
+        # vacuously true at every level and fabricates the flagship verdict
+        raise RuntimeError(f"{label}: empty ensemble — refusing to aggregate")
     levels = [pl.VERDICTS.index(x["verdict"]) for x in summary["members"]]
     n = len(levels)
     lvl = max((L for L in range(len(pl.VERDICTS))
                if sum(x >= L for x in levels) * 2 >= n), default=0)
     summary["ensemble_verdict"] = pl.VERDICTS[lvl]
+    summary["stamp"] = _code_stamp()                     # review N2
     outdir.mkdir(parents=True, exist_ok=True)
     with open(outdir / "summary.json", "w") as f:
         json.dump(pt._sanitize(summary), f, indent=1)
@@ -142,8 +161,11 @@ def run_job(job):
         seed = int(job[-1])
         outdir = OUT / "sweeps" / job
         outdir.mkdir(parents=True, exist_ok=True)
-        episodes = pt.collect(outdir, 300, 600, seed)
-        _train_and_search(job, episodes=episodes, seed=seed)
+        if (outdir / "summary.json").exists():           # review N9: don't
+            _train_and_search(job, seed=seed)            # re-collect on resume
+        else:
+            episodes = pt.collect(outdir, 300, 600, seed)
+            _train_and_search(job, episodes=episodes, seed=seed)
     elif job.startswith("hid"):
         _train_and_search(job, hid=int(job[3:]))
     else:

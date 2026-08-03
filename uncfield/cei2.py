@@ -12,12 +12,23 @@ filters with ASSUMED per-sensor noise rhat:
   U_false: rhat[s7] = R7_FALSE << R7_TRUE          (coherent liar — exact
            Bayes under its own wrong noise model)
 
-Policy (estimator-controlled movement): committed uncertainty-greedy —
-target the sensor with the highest declared score above TAU, walk to it by
-BFS and sense until its score falls below TAU, then re-target (commitment
-prevents myopic dithering; see GreedyPolicy); if none above TAU,
-idle-step to the lowest adjacent node.  Scores are quadratic forms c'P̂c
-with NO fallback for c=0 sensors
+Policy: committed uncertainty-greedy — target the sensor with the highest
+declared score above TAU, walk to it by BFS and sense until its
+POST-UPDATE score falls below TAU, then re-target (commitment prevents
+myopic dithering; post-update release prevents the s5 knife-edge deadlock
+— see GreedyPolicy); if none above TAU, idle-step to the lowest adjacent
+node.  SCOPE (review B1): in this world z2 is fully decoupled (block
+dynamics, s7 the only z2 sensor), so the falseness provably cannot
+re-order the route — both estimators traverse the same node itinerary and
+differ only in DWELL at node 3 (U_true's log minus its extra s7 senses
+reproduces U_false's log exactly).  The instrument therefore demonstrates
+estimator-controlled COLLECTION INTENSITY, not movement: v1's F3
+(selective-labels carve-out) is weakened to its statistical form (the
+audited quantity has support under both hypotheses, the LR is bounded
+rather than zero, IPW is defined), NOT discharged outright.  Genuine
+route control needs a z2-coupled world — prototyped, parked to v2.1 (see
+design note §7c).  Scores are quadratic forms c'P̂c with NO fallback for
+c=0 sensors
 (the v1 F1 bug class): the noisy-TV sensor scores exactly 0 and is never
 targeted.
 
@@ -27,7 +38,8 @@ policy is a deterministic function of the ASSUMED noise model only.  Hence:
     different R7_TRUE give bit-identical action logs under one estimator)
     => psi is provably not L0-deducible (v1's F2 discharged);
   - U_true and U_false produce DIFFERENT logs (falseness causally touches
-    behavior; v1's F3/Failure-C discharged);
+    behavior — v1's Failure-C discharged; F3 only WEAKENED, see the
+    policy-scope paragraph below);
   - all information about the falseness lives in the s7 innovations, and
     U_false's own confidence suppresses exactly those reads
     (confidence-starves-refutation, now real rather than trivial).
@@ -38,8 +50,10 @@ Experiments (run)
      of each estimator's own log — bounded for U_false, diverging for
      U_true — plus psi on the same runs.
   E2 L0-ancillarity: action-log identity across worlds (selfcheck assert).
-  E3 eps-greedy separation cost: steps until cumulative |logLR| crosses
-     LR_CONF, vs the targeted audit (walk to node 3 + m* forced reads).
+  E3 eps-greedy separation, hazard-decomposed (review B3): eps-attributed
+     s7-read hazard + per-read logLR drift => derived crossing time, with
+     direct crossing validation at large eps; vs the targeted audit
+     (walk + m* forced reads, ML and log19 criteria both reported).
   E4 audit power scaling: m*(0.95) vs rhat/r ratio, Monte Carlo vs the
      Gaussian-deviance theory curve.
   E5 L2 blind spot: replay-coherence audit (query access to the declared
@@ -181,6 +195,15 @@ class GreedyPolicy:
     def __init__(self):
         self.target = None
 
+    def notify_update(self, est):
+        """Release check on the POST-UPDATE score (call right after
+        est.update, before predict).  Releasing on the post-predict score
+        deadlocks: s5's post-update score 0.0354 < TAU re-inflates to
+        0.0548 > TAU by predict time, so the target never released and the
+        agent parked on s5 forever, starving s2/s3 (review finding B2)."""
+        if self.target is not None and est.score(self.target) <= TAU:
+            self.target = None
+
     def act(self, est, node):
         if self.target is not None and est.score(self.target) <= TAU:
             self.target = None
@@ -220,6 +243,7 @@ def rollout(est, t_steps, env_seed, eps=0.0, policy_seed=0):
         _, y, sensed = env.step(a)
         if sensed is not None:
             est.update(sensed, y)
+            pol.notify_update(est)
             ref.update(WORLD_SENSORS[sensed], y)
             if sensed == S7:
                 log["s7_ys"].append(y)
@@ -267,8 +291,13 @@ def l2_replay_residual(p_trace, actions):
     """L2 audit (query access to the declared covariance path): fit each
     sensor's implied rhat from its FIRST read, then replay exact Bayes and
     return the worst covariance deviation.  A coherent liar replays to
-    machine precision regardless of how wrong its rhat is; a non-Bayes
-    operator fits no parameterization."""
+    machine precision regardless of how wrong its rhat is.  Scope (review
+    N4): only NON-CONSTANT incoherence is flaggable — an operator that,
+    e.g., always double-contracts is absorbed by the fit as rhat/2 and
+    passes; a coherent liar about KNOWN dynamics (a Q-liar) is flagged but
+    misdiagnosed.  The blind-spot claim is therefore scoped to
+    miscalibration inside the fitted (rhat | known-dynamics) family; the
+    mean channel is entirely outside this audit's view."""
     fitted = {}
     for t, a in enumerate(actions):
         if a < lg.N_NODES:
@@ -305,33 +334,65 @@ def l2_replay_residual(p_trace, actions):
     return worst, fitted
 
 
-def targeted_audit_power(rhat7, m, n_trials, seed):
+def targeted_audit_power(rhat7, m, n_trials, seed, thresh=0.0):
     """P(LR test picks R7_TRUE over rhat7) from m forced s7 reads with
     fresh z2 ~ N(0,1) per trial (the audit walks a fresh region or uses
-    the estimator's own prior — either way exact in LG)."""
+    the estimator's own prior — either way exact in LG).  thresh=0 is the
+    ML pick; pass LR_CONF to match E3's crossing criterion (review N1:
+    the two arms must be compared under the same criterion)."""
     rng = np.random.default_rng(seed)
     hits = 0
     for _ in range(n_trials):
         z2 = rng.normal()
         ys = z2 + rng.normal(0.0, np.sqrt(R7_TRUE), size=m)
-        if s7_loglik(list(ys), R7_TRUE) > s7_loglik(list(ys), rhat7):
+        if s7_loglik(list(ys), R7_TRUE) - s7_loglik(list(ys), rhat7) > thresh:
             hits += 1
     return hits / n_trials
 
 
-def separation_curve(eps_grid, n_trials, t_max, seed=0):
-    """eps-greedy: steps until cumulative |logLR| crosses LR_CONF, run on
-    U_false (the estimator under audit), censored at t_max."""
-    curve = {}
+def single_read_lr_quantiles(n=200000, seed=3):
+    """Distributional facts for the E1 impossibility claim (review N3: the
+    bounded-LR statement is in-probability, not almost-sure — a single
+    lucky |y| partially identifies R7).  Vectorized exact single-read
+    logLR under the true world."""
+    rng = np.random.default_rng(seed)
+    y = rng.normal(size=n) + rng.normal(0.0, np.sqrt(R7_TRUE), size=n)
+    lr = (-0.5 * (np.log(2 * np.pi * (1 + R7_TRUE)) + y**2 / (1 + R7_TRUE))
+          + 0.5 * (np.log(2 * np.pi * (1 + R7_FALSE))
+                   + y**2 / (1 + R7_FALSE)))
+    return dict(p_abs_gt_1p5=float(np.mean(np.abs(lr) > 1.5)),
+                p_abs_gt_conf=float(np.mean(np.abs(lr) > LR_CONF)),
+                q50=float(np.median(np.abs(lr))),
+                q95=float(np.quantile(np.abs(lr), 0.95)))
+
+
+def separation_hazard(eps_grid, n_trials, t_sim, seed=0, t_det=100):
+    """E3 (redesigned after review finding B3: censored means measured the
+    censoring fraction, and the rare small-eps hits were first-read |y|
+    luck, not exploration).  Registered quantities are now the COMPONENTS
+    of the separation time, measured without censoring distortion:
+      h(eps)   eps-attributed s7 read hazard per step, t > t_det (the
+               deterministic greedy phase, incl. its single s7 read at
+               t~5, is excluded from the hazard clock);
+      gbar     mean SIGNED logLR increment per late read (drifts toward
+               the true model under true-world data);
+      derived  expected crossing time ~ LR_CONF / (h * gbar);
+    plus the direct two-sided crossing fraction/times within t_sim (only
+    meaningful at large eps) and the first-read-luck stratum reported
+    separately.  Geometry note: from the node-0 parking state a read needs
+    ~3 eps-moves plus an eps-sense, so h ~ eps^4-flavored, i.e. separation
+    diverges FASTER than the 1/eps originally registered."""
+    out = {}
     for eps in eps_grid:
-        times = []
+        reads_late = steps_late = 0
+        gains, cross_ts, first_luck = [], [], 0
         for tr in range(n_trials):
             est = MisKalman(false_rhat())
             env = CEI2Env(seed=seed * 7919 + tr)
             rng = np.random.default_rng(seed * 104729 + tr)
             pol = GreedyPolicy()
-            ys, t_hit = [], t_max
-            for t in range(t_max):
+            ys, crossed = [], False
+            for t in range(t_sim):
                 node = env.node
                 if rng.random() < eps:
                     cands = list(lg.valid_actions(node)) + [
@@ -343,17 +404,34 @@ def separation_curve(eps_grid, n_trials, t_max, seed=0):
                 _, y, sensed = env.step(a)
                 if sensed is not None:
                     est.update(sensed, y)
+                    pol.notify_update(est)
                     if sensed == S7:
+                        pre = loglr(ys)
                         ys.append(y)
-                        if abs(loglr(ys)) >= LR_CONF:
-                            t_hit = t
-                            break
+                        post = loglr(ys)
+                        if t > t_det:
+                            reads_late += 1
+                            gains.append(post - pre)
+                        if not crossed and abs(post) >= LR_CONF:
+                            crossed = True
+                            cross_ts.append(t)
+                            if t <= t_det:
+                                first_luck += 1
                 est.predict()
-            times.append(t_hit)
-        curve[str(eps)] = dict(mean=float(np.mean(times)),
-                               median=float(np.median(times)),
-                               censored=int(sum(t == t_max for t in times)))
-    return curve
+                if t > t_det:
+                    steps_late += 1
+        h = reads_late / max(steps_late, 1)
+        gbar = float(np.mean(gains)) if gains else None
+        derived = (float(LR_CONF / (h * gbar))
+                   if (h > 0 and gbar and gbar > 0) else None)
+        out[str(eps)] = dict(
+            hazard=h, n_late_reads=reads_late, gbar_per_read=gbar,
+            derived_sep_steps=derived,
+            crossed_frac=len(cross_ts) / n_trials,
+            first_read_luck_crossings=first_luck,
+            median_cross_t=(float(np.median(cross_ts)) if cross_ts
+                            else None))
+    return out
 
 
 def selfcheck():
@@ -393,11 +471,15 @@ def selfcheck():
     assert lt["actions"] != lf["actions"], "falseness must touch behavior"
     out["behavior_differs"] = True
     # (5) E1 asymmetry: read counts, bounded vs diverging logLR, psi gap.
-    #     (U_true's s7 reads trickle in between servicing the re-inflating
-    #     dynamic sensor, so the criterion is the asymmetry, not a count.)
+    #     (U_true's 19 s7 reads are consecutive, t=5..23; review N5: nf is
+    #     deterministic — the policy is observation-blind — so assert the
+    #     exact value the psi threshold arithmetic requires.)
     nf, nt = len(lf["s7_ys"]), len(lt["s7_ys"])
-    assert 1 <= nf <= 3 and nt >= 12 and nt >= 5 * nf, (nf, nt)
+    assert nf == 1 and nt >= 12, (nf, nt)
     lrf, lrt = loglr(lf["s7_ys"]), loglr(lt["s7_ys"])
+    # Seed-pinned bound (review N3): in distribution P(|logLR|>1.5) ~ 5%
+    # on a single read — the impossibility claim is in-probability, and
+    # the quantiles are recorded alongside.
     assert abs(lrf) < 1.5, f"U_false logLR should be bounded, got {lrf}"
     assert lrt > 3.0, f"U_true logLR should identify truth, got {lrt}"
     pf, ptv = psi(lf["est"], lf["ref"]), psi(lt["est"], lt["ref"])
@@ -422,6 +504,7 @@ def selfcheck():
         rollout(MisKalman(false_rhat()), 800, env_seed=2)["s7_ys"]), \
         "logLR must plateau exactly at eps=0"
     out["eps0_plateau"] = True
+    out["single_read_lr"] = single_read_lr_quantiles(n=100000)
     return out
 
 
@@ -430,9 +513,11 @@ def run(light=False):
     report = {"selfcheck": selfcheck(), "config": dict(
         tau=TAU, r7_true=R7_TRUE, r7_false=R7_FALSE, conf_t=CONF_T,
         err_t=ERR_T, lr_conf=float(LR_CONF))}
-    n_tr = 30 if light else 120
-    t_max = 2000 if light else 4000
-    # E1 across env seeds.
+    n_tr = 15 if light else 40
+    t_sim = 6000 if light else 20000
+    # E1 across env seeds.  N2: the policy is observation-blind, so n_s7
+    # and psi are DETERMINISTIC constants across env seeds — only the
+    # logLR column replicates; framed accordingly in the record.
     e1 = []
     for es in range(5):
         lf = rollout(MisKalman(false_rhat()), 2000, env_seed=es)
@@ -447,17 +532,26 @@ def run(light=False):
               f"[{e1[-1]['loglr'][0]:+.2f}, {e1[-1]['loglr'][1]:+.2f}] "
               f"psi {e1[-1]['psi']}", flush=True)
     report["e1_passive_asymmetry"] = e1
-    # E3 separation curve + targeted audit.
-    eps_grid = (0.3, 0.1, 0.05) if light else (0.3, 0.1, 0.05, 0.02)
-    report["e3_eps_separation"] = separation_curve(eps_grid, n_tr, t_max)
-    for k, v in report["e3_eps_separation"].items():
-        print(f"E3 eps={k}: mean {v['mean']:.0f} steps "
-              f"({v['censored']}/{n_tr} censored)", flush=True)
-    m_star = next(m for m in range(1, 40)
-                  if targeted_audit_power(R7_FALSE, m, 2000, seed=1) >= 0.95)
-    report["e3_targeted"] = dict(walk_steps=3, m_star=m_star,
-                                 total=3 + m_star)
-    print(f"E3 targeted audit: 3 + {m_star} steps", flush=True)
+    report["e1_single_read_lr_quantiles"] = single_read_lr_quantiles()
+    # E3 hazard decomposition + targeted audit (matched criteria).
+    eps_grid = (0.5, 0.3) if light else (0.5, 0.35, 0.25, 0.15)
+    report["e3_eps_hazard"] = separation_hazard(eps_grid, n_tr, t_sim)
+    for k, v in report["e3_eps_hazard"].items():
+        print(f"E3 eps={k}: hazard {v['hazard']:.2e}/step "
+              f"({v['n_late_reads']} late reads), gbar "
+              f"{v['gbar_per_read']}, derived sep {v['derived_sep_steps']}, "
+              f"crossed {v['crossed_frac']:.2f} "
+              f"(luck {v['first_read_luck_crossings']})", flush=True)
+    targeted = {}
+    for name, th in (("ml", 0.0), ("log19", float(LR_CONF))):
+        m_star = next((m for m in range(1, 60)
+                       if targeted_audit_power(R7_FALSE, m, 2000, seed=1,
+                                               thresh=th) >= 0.95), None)
+        targeted[name] = dict(m_star=m_star, walk_steps=3,
+                              total=None if m_star is None else 3 + m_star)
+    report["e3_targeted"] = targeted
+    print(f"E3 targeted audit: ml 3+{targeted['ml']['m_star']}, "
+          f"log19 3+{targeted['log19']['m_star']}", flush=True)
     # E4 power scaling over closeness.
     e4 = {}
     for rh in (0.01, 0.1, 0.3, 0.5, 0.7):
