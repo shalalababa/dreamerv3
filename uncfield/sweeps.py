@@ -44,7 +44,10 @@ OUT = pathlib.Path(__file__).resolve().parent.parent / "local_results" / "uncfie
 ANCHOR = OUT / "pilot2"
 
 JOBS = ("ymode", "train10k", "train30k", "train1k",
-        "dataseed1", "dataseed2", "hid32", "hid128")
+        "dataseed1", "dataseed2", "hid32", "hid128",
+        # capacity × training interaction arm (sweep-read follow-up:
+        # does capacity sustain dh-farming under long training?)
+        "hid128t10k", "hid128t30k")
 
 
 def _anchor_episodes():
@@ -166,6 +169,9 @@ def run_job(job):
         else:
             episodes = pt.collect(outdir, 300, 600, seed)
             _train_and_search(job, episodes=episodes, seed=seed)
+    elif job.startswith("hid128t"):
+        steps = {"hid128t10k": 10000, "hid128t30k": 30000}[job]
+        _train_and_search(job, steps=steps, hid=128)
     elif job.startswith("hid"):
         _train_and_search(job, hid=int(job[3:]))
     else:

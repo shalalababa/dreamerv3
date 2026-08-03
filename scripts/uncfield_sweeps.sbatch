@@ -40,7 +40,10 @@ cd "$REPO"
 
 export JAX_PLATFORMS=cpu
 
-JOBS=(ymode train1k train10k train30k dataseed1 dataseed2 hid32 hid128)
+# indices 8-9 = capacity×training interaction arm (submit with --array=8-9;
+# indices 0-7 are complete and skip via the summary.json guard anyway)
+JOBS=(ymode train1k train10k train30k dataseed1 dataseed2 hid32 hid128
+      hid128t10k hid128t30k)
 JOB="${JOBS[$SLURM_ARRAY_TASK_ID]}"
 
 [ -f local_results/uncfield/pilot2/episodes.pkl ] || {
