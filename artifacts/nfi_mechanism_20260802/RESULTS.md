@@ -1,5 +1,17 @@
 # NFI Mechanism Analysis — Results Record (EXPLORATORY, not registered)
 
+> **Naming note (claim-freeze audit, 2 Aug 2026):** the verdict tier
+> "EXPLOIT-SURVIVES-CIG+PBIM" denotes survival of the two TRANSPLANTED
+> PRINCIPLES (prefix-conditioned carried-belief accounting; potential-based
+> realized-dH accounting), not of the published estimators — CIG's
+> estimator scores parameter-information over open-loop rollouts with no
+> belief object, and PBIM's guarantee is a terminal correction this
+> protocol never encounters. Paper-facing labels: "carried" / "potential".
+> Two fidelity arms (gamma-discounted Ng-form recompute; CIG-faithful
+> disagreement-kernel) were mandated by the audit and are recorded
+> separately. See research_notes/NFI_ClaimFreeze_Audit_20260802.md.
+
+
 > **⚠ AMENDMENT — 2 Aug 2026 (same day), adversarial instrument review
 > ("fix before read"; all findings verified by execution).** The record
 > below is amended, not withdrawn: **claims (i) and (ii) SURVIVE attack**

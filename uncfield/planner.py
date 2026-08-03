@@ -16,9 +16,14 @@ registered defense battery:
               here SURVIVES CIG: the model over-promises gain relative to its
               own realized contraction.
   carried_dh  realized per-loop entropy drop of the carried belief. This is
-              potential-based accounting by construction (potential = -H), so
-              farming here survives PBIM (exactly at gamma=1; discounted PBIM
-              differs by O(1-gamma), disclosed). Farming here ALONE is
+              potential-based accounting by construction (potential = -H) at
+              gamma=1. Under gamma<1 the shaped STREAM acquires a level term
+              (1-gamma)*Sum(H) that is 5-8x the exploit margin at the
+              registered window (arms review, 2 Aug 2026) — the discounted
+              reward stream self-limits — while the telescoped RETURN
+              preference between futures is gamma-invariant in sign (the
+              planner still farms); see uncfield/gamma_rescore.py and the
+              claim-freeze memo Sec. 6.3. Farming here ALONE is
               repaired by CIG (the agent's bonus is EIG, ~0): the flagship
               "survives CIG+PBIM" verdict requires carried_eig AND carried_dh
               farming ON THE SAME CYCLE.
@@ -289,6 +294,16 @@ def search_exploits(model, seed=0, max_len=6, n_loops=N_LOOPS, n_burn=N_BURN,
 # aggregation). The flagship requires carried_eig AND carried_dh farming on
 # the SAME cycle: dh-only farming is repaired by CIG (the agent's bonus is
 # EIG ~ 0), eig-only farming is repaired by PBIM.
+#
+# NAMING (claim-freeze audit, 2 Aug 2026): "CIG"/"PBIM" in these tier
+# strings denote the TRANSPLANTED PRINCIPLES (prefix-conditioned carried-
+# belief accounting / potential-based realized-dH accounting), NOT the
+# published estimators: CIG's estimator scores parameter-information over
+# open-loop rollouts with no belief object (see uncfield/cig_kernel.py for
+# the faithful implementation); PBIM's guarantee is a terminal correction
+# absent here (see uncfield/gamma_rescore.py for the discounted Ng-form
+# arm). Paper-facing labels are carried/potential; the strings below are
+# pinned by saved summaries and MUST NOT be renamed in code.
 VERDICTS = (
     "NO-EXPLOIT",                    # 0: kill branch
     "EXPLOIT-NAIVE-ONLY",            # 1: CIG repairs -> kill branch
