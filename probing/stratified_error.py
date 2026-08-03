@@ -255,6 +255,26 @@ def load_e4(probeset_dir, require_frozen=True):
 # measure
 # ---------------------------------------------------------------------------
 
+def _combine_deter_moments(m, n):
+  """Chan parallel combination of per-batch (mean, centered-M2) -> scalar.
+
+  m: (n_batches, 2, D) — per-batch per-dim mean and centered sum of
+  squares; n: (n_batches, 1) per-batch state counts. Returns the
+  across-state per-dim std averaged over dims (the deter_std witness,
+  PREREG_rde_pixel_20260802). float64 combination; centered inputs keep
+  the per-batch f32 sums cancellation-free.
+  """
+  m = np.asarray(m, np.float64)
+  n = np.asarray(n, np.float64).reshape(-1)
+  assert m.ndim == 3 and m.shape[1] == 2 and m.shape[0] == n.shape[0], (
+      m.shape, n.shape)
+  means, m2s = m[:, 0], m[:, 1]
+  ntot = n.sum()
+  mean = (n[:, None] * means).sum(0) / ntot
+  m2 = m2s.sum(0) + (n[:, None] * (means - mean) ** 2).sum(0)
+  return float(np.sqrt(np.maximum(m2 / ntot, 0.0)).mean())
+
+
 def cmd_measure(args):
   import jax
   import jax.numpy as jnp
@@ -340,6 +360,15 @@ def cmd_measure(args):
         out[f'h{k}/_rew'] = f32(model.rew(inp, 2).loss(shift(reward, k)))
 
     decode_nll({'deter': post['deter'], 'stoch': post['stoch']}, 0)
+    # Additive latent-alive witness (PREREG_rde_pixel_20260802): per-batch
+    # CENTERED moments of the h=0 posterior deter features (mean + M2),
+    # combined across batches by _combine_deter_moments after the loop.
+    # Centering avoids the E[x^2]-mean^2 cancellation at large mean/std.
+    # Purely additive — no existing output key or computation is touched.
+    d0 = f32(post['deter']).reshape((-1, post['deter'].shape[-1]))
+    dmu = d0.mean(0)
+    out['_deter_m'] = jnp.stack([dmu, ((d0 - dmu) ** 2).sum(0)])[None]
+    out['_deter_n'] = jnp.full((1, 1), d0.shape[0], jnp.float32)
     for k in horizons:
       carry = {
           'deter': post['deter'].reshape((B * T,) + post['deter'].shape[2:]),
@@ -379,6 +408,12 @@ def cmd_measure(args):
     print(f'  episodes {lo}-{hi - 1}')
   acc = {k: np.concatenate(v, 0) for k, v in acc.items()}
 
+  # Finalize the additive latent-alive witness (see fn above).
+  deter_std = None
+  if '_deter_m' in acc:
+    deter_std = _combine_deter_moments(
+        acc.pop('_deter_m'), acc.pop('_deter_n'))
+
   masks = standard_masks(arrays['in_regime'], arrays['rewarded'])
   sources = np.asarray(arrays['source'])
   summary = dict(
@@ -388,7 +423,7 @@ def cmd_measure(args):
       reward_aware=reward_aware,
       probeset_id=manifest['probeset_id'], probeset_sha256=manifest['sha256'],
       reward_override=override_meta,
-      horizons=[0] + list(horizons), horizon_stats={})
+      horizons=[0] + list(horizons), deter_std=deter_std, horizon_stats={})
   save = {}
   for k in [0] + list(horizons):
     total = sum(to_target_alignment(acc[f'h{k}/{key}'], k)
@@ -453,6 +488,10 @@ def cmd_collate(args):
         row['rew_nll_all'] = stats['reward_head']['all']['mean']
         row['rew_nll_in'] = stats['reward_head']['in_regime']['mean']
         row['rew_nll_out'] = stats['reward_head']['out_regime']['mean']
+      # Additive column (PREREG_rde_pixel_20260802): absent in summaries
+      # written by earlier code, so old bundles collate unchanged.
+      if s.get('deter_std') is not None:
+        row['deter_std'] = s['deter_std']
       rows.append(row)
   if not rows:
     raise SystemExit(f'No e4_{args.probeset_id}/summary.json under '
@@ -527,6 +566,21 @@ def cmd_selfcheck(args):
     except SystemExit:
       pass
   print('stratified_error selfcheck PASS')
+  # deter_std combiner (PREREG_rde_pixel_20260802): uneven batches +
+  # large common offset (the cancellation regime) + constant input.
+  rng = np.random.default_rng(3)
+  states = rng.normal(size=(101, 16)) * rng.uniform(0.5, 2, 16) + 1e3
+  splits = np.split(states, [40, 72])  # uneven: 40 / 32 / 29
+  m = np.stack([np.stack([b.mean(0), ((b - b.mean(0)) ** 2).sum(0)])
+                for b in splits])
+  n = np.array([[len(b)] for b in splits], np.float64)
+  ours = _combine_deter_moments(m, n)
+  ref = float(states.std(0).mean())
+  assert abs(ours - ref) < 1e-9 * max(1.0, ref), (ours, ref)
+  const = np.full((3, 2, 16), 7.0); const[:, 1] = 0.0
+  assert _combine_deter_moments(const, np.full((3, 1), 5.0)) == 0.0
+  print('deter_std combiner: uneven-batch + offset-1e3 matches np.std; '
+        'constant -> 0. PASS')
   print('(measure path is jax; validate e2e on a debug run: '
         'python -m probing.stratified_error measure --probeset <set> '
         '--run_logdir <debug_run> --platform cpu --ep_batch 2)')

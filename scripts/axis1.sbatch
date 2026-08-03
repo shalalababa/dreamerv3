@@ -138,7 +138,11 @@ else
     sgb)  AXIS1_FIT_FLAGS="--agent.reward_grad False --agent.repval_grad False" ;;
     rgo)  AXIS1_FIT_FLAGS="--agent.repval_grad False" ;;
     vgo)  AXIS1_FIT_FLAGS="--agent.reward_grad False" ;;
-    *) echo "ERROR: unknown AXIS1_ARM=${AXIS1_ARM} (full|sgb|rgo|vgo)"; exit 2 ;;
+    # rde (PREREG_rde_pixel_20260802): reconstruction detached from the
+    # trunk — the complement of the pe arm (full head gradients, no recon
+    # bid). The saved config.yaml records recon_grad for the audit sweep.
+    rde)  AXIS1_FIT_FLAGS="--agent.recon_grad False" ;;
+    *) echo "ERROR: unknown AXIS1_ARM=${AXIS1_ARM} (full|sgb|rgo|vgo|rde)"; exit 2 ;;
   esac
   if [ "${AXIS1_ARM:-full}" != full ] && [ "$AXIS1_EXPL_MODE" != task ]; then
     echo "ERROR: factorial arm ${AXIS1_ARM} requires AXIS1_EXPL_MODE=task"; exit 2

@@ -129,6 +129,7 @@ defaults:
     valnorm: {impl: none, rate: 0.01, limit: 1e-8}
     advnorm: {impl: none, rate: 0.01, limit: 1e-8}
     reward_grad: True
+    recon_grad: True
     repval_loss: True
     repval_grad: True
     report: True

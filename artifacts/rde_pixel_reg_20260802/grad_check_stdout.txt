@@ -1,0 +1,12 @@
+loss components: ['con', 'dyn', 'image', 'policy', 'rep', 'repval', 'rew', 'value']
+  con      on={'enc/': 3.770731708624163, 'dyn/': 1549.3840172535126, 'dec/': 0.0}  off={'enc/': 3.770731708624163, 'dyn/': 1549.3840172535126, 'dec/': 0.0}
+  dyn      on={'enc/': 1.7144024092012606, 'dyn/': 116887.69471488948, 'dec/': 0.0}  off={'enc/': 1.7144024092012606, 'dyn/': 116887.69471488948, 'dec/': 0.0}
+  image    on={'enc/': 114.14168881985209, 'dyn/': 7528.428910453412, 'dec/': 3000.6818691287513}  off={'enc/': 0.0, 'dyn/': 0.0, 'dec/': 3000.6818691287513}
+  policy   on={'enc/': 0.0, 'dyn/': 0.0, 'dec/': 0.0}  off={'enc/': 0.0, 'dyn/': 0.0, 'dec/': 0.0}
+  rep      on={'enc/': 24.073065739270085, 'dyn/': 177.74365473442273, 'dec/': 0.0}  off={'enc/': 24.073065739270085, 'dyn/': 177.74365473442273, 'dec/': 0.0}
+  repval   on={'enc/': 8.440997356095096, 'dyn/': 2291.0669341247685, 'dec/': 0.0}  off={'enc/': 8.440997356095096, 'dyn/': 2291.0669341247685, 'dec/': 0.0}
+  rew      on={'enc/': 14.188259675781625, 'dyn/': 3220.852045839352, 'dec/': 0.0}  off={'enc/': 14.188259675781625, 'dyn/': 3220.852045839352, 'dec/': 0.0}
+  value    on={'enc/': 0.0, 'dyn/': 0.0, 'dec/': 0.0}  off={'enc/': 0.0, 'dyn/': 0.0, 'dec/': 0.0}
+image->trunk 0.0 exact under the flag; decoder still trains; ALL other components bit-identical across settings (rew/repval trunk paths verified open).
+shipped _combine_deter_moments: uneven batches + offset 1e3 matches np.std; constant -> 0. PASS
+ALL CHECKS PASS

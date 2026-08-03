@@ -66,8 +66,11 @@ DELETE_SAFE=(
   adapt_ax1v2q1v200s* adapt_ax1v4q1v400s* adapt_ax1fv2q1v200s* adapt_ax1fv4q1v400s*
   # synth (leg closed 07-23; extension dropped 07-29)
   ax1wm_synth_*_seed* adapt_*_synth_seed*
-  # replication/robustness batteries (reads done)
-  adapt_ax1rb* adapt_ax1rbf* adapt_ax1rd* ax1wm_finger_rb* ax1wm_finger_rd*
+  # replication/robustness batteries (reads done). NOTE: rd globs are
+  # digit-anchored (ax1rd<k>q1s<side> per synth_rediag_read.MODE_RE) so
+  # they can never match the rde wave's runs (ax1rdepxq1ms*/rdesmoke —
+  # PREREG_rde_pixel_20260802; a bare rd* here would have deleted them).
+  adapt_ax1rb* adapt_ax1rbf* adapt_ax1rd[0-9]* ax1wm_finger_rb* ax1wm_finger_rd[0-9]*
   # gate-0 probe pilots (decision frozen 07-02; goal pilots are NOT here)
   pilot_p2e_*_seed1 pilot_apt_*_seed1 pilot_random_*_seed1
   # smokes + timing junk (scoped prefixes — never touches pretrain_*)
@@ -114,7 +117,10 @@ KEEP_PENDING=(
   r3_local/rep_labels r3_local/rep_model
   r3_local/r3dbl_labels r3_local/r3_reacher_*
   # pretrained-encoder pixel wave (registered 30 Jul): fpxpx fits are the
-  # seed/side-matched ENCODER DONORS — keep until the pe wave's read verifies
+  # seed/side-matched ENCODER DONORS — pe read verified 2 Aug, but the
+  # hold now transfers to the rde wave (PREREG_rde_pixel_20260802): the
+  # fpxpx fits are its latent-alive CALIBRATION reference; keep until the
+  # rde calibration E4 pass has run and its csv is bundled off-scratch.
   ax1wm_finger_fpxpxq1ms*_seed[1-8]
 )
 

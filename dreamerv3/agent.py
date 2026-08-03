@@ -259,8 +259,13 @@ class Agent(embodied.jax.Agent):
         dyn_carry, tokens, prevact, reset, training)
     losses.update(los)
     metrics.update(mets)
+    # recon_grad False detaches the trunk from the reconstruction loss:
+    # the decoder still trains (on sg'd latents — a live probe of latent
+    # informativeness) but its gradient never reaches dyn/enc, so the
+    # trunk is shaped by rew/con/repval/dyn losses only (the rde arm,
+    # PREREG_rde_pixel_20260802 — same sg idiom as reward_grad above).
     dec_carry, dec_entries, recons = self.dec(
-        dec_carry, repfeat, reset, training)
+        dec_carry, sg(repfeat, skip=self.config.recon_grad), reset, training)
     if not self.reward_free:
       inp = sg(self.feat2tensor(repfeat), skip=self.config.reward_grad)
       losses['rew'] = self.rew(inp, 2).loss(obs['reward'])
