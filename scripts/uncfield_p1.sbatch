@@ -8,6 +8,13 @@
 #SBATCH --array=0-3
 #SBATCH --output=%x_%A_%a.out
 # ---------------------------------------------------------------------------
+# *** DO NOT SUBMIT for the pilot2 baseline (review B1, 2 Aug): pilot2's
+# *** npz was authored on the local GPU; CPU replay deviates ~2e-6 and the
+# *** bitwise validation gate (tol 1e-6) CRASHES all tasks. Run P1 locally
+# *** on the authoring GPU (~6 min/member). This file is kept only for
+# *** future CPU-authored baselines (then also relax tol to a registered
+# *** 1e-5 or re-author the baseline on the target backend).
+#
 # P1: PRIME aleatoric-penalized carried-EIG re-score (uncfield/p1_rescore.py;
 # claim-freeze memo §6.2 spec). One array task per pilot2 member: exact
 # carried replay recording per-sense EIG + both aleatoric estimates over all

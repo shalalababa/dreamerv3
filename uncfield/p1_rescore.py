@@ -130,29 +130,37 @@ def main():
     ap.add_argument("--selfcheck", action="store_true")
     args = ap.parse_args()
     if args.selfcheck:
-        out = run_member(0, subset=40)
-        # penalty unit checks on the recorded table (post-hoc scorer form)
+        # review N1 hardening: subset must include a TV cycle (first is
+        # index 105); hand-value penalty assert; static ale-model band.
+        out = run_member(0, subset=110)
         lam, s0 = 0.5, 0.5
+        pen = lambda ale: lam * np.log1p(max(ale, 0.0) / s0)
+        assert abs(pen(0.5) - 0.5 * np.log(2.0)) < 1e-12, "penalty algebra"
         tv_rows = [r for r in out["rows"] if "tv" in r["name"]
                    and any(lp for lp in r["loops"])]
-        pen = lambda ale: lam * np.log1p(max(ale, 0.0) / s0)
-        for r in out["rows"][:5]:
-            for lp in r["loops"]:
-                for k, e, ale in lp:
-                    assert (e - 0.0 * pen(ale)) == e          # λ=0 identity
-        if tv_rows:
-            k, e, ale = tv_rows[0]["loops"][-1][0]
-            print(f"TV sense: eig={e:+.3f} ale_model={ale:.3f} "
-                  f"penalty@deployed={pen(ale):.3f}")
+        assert tv_rows, "selfcheck subset must contain a TV cycle"
+        k, e, ale = tv_rows[0]["loops"][-1][0]
+        assert k == 6 and ale > 0.5, f"TV ale_model should be ~1, got {ale}"
+        print(f"TV sense: eig={e:+.3f} ale_model={ale:.3f} "
+              f"penalty@deployed={pen(ale):.3f}")
+        static_ales = [ale for r in out["rows"] for lp in r["loops"]
+                       for k, _, ale in lp if k in (0, 1, 2, 3, 7)]
+        med = float(np.median(static_ales)) if static_ales else None
+        assert med is not None and 0.02 < med < 0.15, med
+        print(f"static ale_model median {med:.3f} (true R .05)")
         print(json.dumps({kk: v for kk, v in out.items() if kk != "rows"},
                          indent=1))
         print("p1_rescore selfcheck PASS (worst gate dev "
               f"{out['worst_gate_dev']:.2e})")
         return
     ROOT.mkdir(parents=True, exist_ok=True)
-    if not (ROOT / "ale_data.json").exists():
-        with open(ROOT / "ale_data.json", "w") as f:
+    if args.member == 0 and not (ROOT / "ale_data.json").exists():
+        # review N4: single-writer + atomic (tmp + replace)
+        tmp = ROOT / "ale_data.json.tmp"
+        with open(tmp, "w") as f:
             json.dump(ale_data_table(), f, indent=1)
+        import os
+        os.replace(tmp, ROOT / "ale_data.json")
     out = run_member(args.member)
     with open(ROOT / f"pilot2_m{args.member}.json", "w") as f:
         json.dump(out, f, indent=1)

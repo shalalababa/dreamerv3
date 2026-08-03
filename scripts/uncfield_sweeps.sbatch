@@ -40,10 +40,12 @@ cd "$REPO"
 
 export JAX_PLATFORMS=cpu
 
-# indices 8-9 = capacity×training interaction arm (submit with --array=8-9;
-# indices 0-7 are complete and skip via the summary.json guard anyway)
+# indices 8-9 = capacity×training interaction arm (submit with --array=8-9);
+# indices 10-11 = CONFIRMATORY fresh-data pilots (PREREG_nfi_confirm_20260802,
+# submit with --array=10-11 AFTER the prereg freeze-commit);
+# indices 0-7 are complete and skip via the summary.json guard anyway
 JOBS=(ymode train1k train10k train30k dataseed1 dataseed2 hid32 hid128
-      hid128t10k hid128t30k)
+      hid128t10k hid128t30k dataseed3 dataseed4)
 JOB="${JOBS[$SLURM_ARRAY_TASK_ID]}"
 
 [ -f local_results/uncfield/pilot2/episodes.pkl ] || {
