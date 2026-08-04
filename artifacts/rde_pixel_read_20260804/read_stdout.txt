@@ -1,0 +1,116 @@
+{
+  "p_rd1": {
+    "point": 7.473825117434954,
+    "ci": [
+      5.744930337686557,
+      9.553735100885362
+    ],
+    "verdict": "PARTIAL-RELIEF",
+    "baseline": {
+      "point": 23.338872993169502,
+      "lo": 19.409267325402837,
+      "hi": 27.285688932142705
+    },
+    "thresh_swamp": 2.0,
+    "member_band": false,
+    "trivial_floor": 0.671345852414428
+  },
+  "p_rd2": {
+    "point": -9.576818750000001,
+    "ci": [
+      -22.50519375,
+      3.4858643749999962
+    ],
+    "n": 8,
+    "pos": 3,
+    "per_seed": [
+      9.312500000000004,
+      -38.979150000000004,
+      -34.2917,
+      -14.015600000000003,
+      -10.723950000000002,
+      11.046849999999996,
+      16.8698,
+      -15.833299999999994
+    ],
+    "fires": false,
+    "negative": false
+  },
+  "p_rd3": {
+    "point": -19.169262500000002,
+    "ci": [
+      -38.985675,
+      3.6445374999999975
+    ],
+    "n": 8,
+    "pos": 2,
+    "per_seed": [
+      6.82289999999999,
+      -35.81250000000001,
+      -43.281200000000005,
+      -17.7187,
+      -0.08340000000001169,
+      -56.375,
+      -48.3333,
+      41.4271
+    ],
+    "verdict": "premise-idle"
+  },
+  "alive_witness": {
+    "threshold": 0.016718342059945213,
+    "calib_median": 0.16718342059945213,
+    "alive_frac": 0.1,
+    "dead_fits": [],
+    "alive_all": true,
+    "deter_std": {
+      "s0_seed1": 0.04119330842687842,
+      "s0_seed2": 0.03593102024169929,
+      "s0_seed3": 0.18110256556184712,
+      "s0_seed4": 0.13453638474218427,
+      "s0_seed5": 0.03312963917965314,
+      "s0_seed6": 0.05142695291241369,
+      "s0_seed7": 0.02974193227835598,
+      "s0_seed8": 0.04004829674983219,
+      "s1_seed1": 0.4860994836017127,
+      "s1_seed2": 0.43444332527133384,
+      "s1_seed3": 0.47216004168877346,
+      "s1_seed4": 0.4630869147517807,
+      "s1_seed5": 0.45418791306722817,
+      "s1_seed6": 0.46364513677731745,
+      "s1_seed7": 0.4877593717347892,
+      "s1_seed8": 0.4815583196934138
+    },
+    "calib": {
+      "s0_seed1": 0.17008583666612304,
+      "s0_seed2": 0.1532687280740713,
+      "s0_seed3": 0.17809320486741975,
+      "s0_seed4": 0.16971278289187047,
+      "s0_seed5": 0.15258247305361666,
+      "s0_seed6": 0.16815474822528126,
+      "s0_seed7": 0.1639303934764142,
+      "s0_seed8": 0.16669425511372454,
+      "s1_seed1": 0.17291940072820608,
+      "s1_seed2": 0.1599213431011534,
+      "s1_seed3": 0.1676725860851797,
+      "s1_seed4": 0.15694525700172873,
+      "s1_seed5": 0.15202232457727932,
+      "s1_seed6": 0.16782793708523025,
+      "s1_seed7": 0.14426264539055433,
+      "s1_seed8": 0.1692721759201301
+    }
+  },
+  "cell_means": {
+    "s0": 79.8945375,
+    "s1": 60.725274999999996
+  },
+  "baseline_cell_means": {
+    "s0": 77.2070375,
+    "s1": 82.5664125
+  },
+  "verdict": "PARTIAL-RELIEF: rew-NLL leaves the measured swamping range but not the swamping regime; directional support only, no headline change; behavioral leg reported as measured.",
+  "auc_csv": "/home/rickybao/projects/dreamerv3/local_results/rde_pixel_20260804_180214/analysis/auc/auc.csv",
+  "e4_csv": "/home/rickybao/projects/dreamerv3/local_results/rde_pixel_20260804_180214/e4/e4_fingerpx_v1_rde.csv",
+  "calib_csv": "/home/rickybao/projects/dreamerv3/local_results/rde_pixel_20260804_180214/e4/e4_fingerpx_v1cal_fpxpx.csv",
+  "baseline_csv": "/home/rickybao/projects/dreamerv3/artifacts/pixel_x2_20260724/auc.csv"
+}
+wrote artifacts/rde_pixel_read_20260804/rde_pixel.json
