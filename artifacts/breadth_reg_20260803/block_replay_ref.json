@@ -1,0 +1,20 @@
+{
+  "mode": "replay",
+  "side": "hi",
+  "tag": "q1v200_s1",
+  "replay": "/scratch/midway3/rickybao/dreamerv3_runs/axis1_finger/q1v200/side1",
+  "keys": [
+    "dist_to_target",
+    "dyn/deter",
+    "position",
+    "target_position",
+    "touch",
+    "velocity"
+  ],
+  "n_episodes": 200,
+  "pr_full": 9.230033291492585,
+  "pr_proprio": 3.249974038846484,
+  "pr_latent": 64.85298199478814,
+  "trace_share_latent": 0.42996707429018566,
+  "n_rew": 64699
+}
