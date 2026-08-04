@@ -599,6 +599,160 @@ def search_div(index, moments, meta, k, target, tol=DIV_TOL,
   return out
 
 
+def _key_spans(index):
+  """[(key, lo, hi)] column spans of the diversity feature space, in
+  frames_of order (sorted keys), derived from the first available chunk.
+  This is the layout every scan/moment/PR computation shares."""
+  from probing import spectral_measure as sm
+  for label, src in index['sources'].items():
+    for stream in src['streams']:
+      for path in stream['files']:
+        if not os.path.exists(path):
+          continue
+        with np.load(path) as data:
+          probe = {k: data[k] for k in data.keys()}
+        keys = sm.obs_keys(probe)
+        spans, at = [], 0
+        for k in keys:
+          d = int(np.prod(probe[k].shape[1:])) if probe[k].ndim > 1 else 1
+          spans.append((k, at, at + d))
+          at += d
+        return spans
+  raise AssertionError('no chunk file of this index exists on disk')
+
+
+def _block_cols(spans):
+  """proprio = every non-collector-latent key; latent = dyn/* keys
+  (stored collector recurrent state — never part of obs_space, never
+  modeled by the fitted WM; see the B1 review finding)."""
+  proprio = [c for k, lo, hi in spans if not k.startswith('dyn')
+             for c in range(lo, hi)]
+  latent = [c for k, lo, hi in spans if k.startswith('dyn')
+            for c in range(lo, hi)]
+  return proprio, latent
+
+
+def _block_prs(n, s, m2, spans):
+  """Full / proprio-block / latent-block participation ratios + the
+  latent block's trace share, from pooled rewarded-frame moments."""
+  proprio, latent = _block_cols(spans)
+  full_c = (m2 - np.outer(s, s) / n) / (n - 1)
+  tr_full = float(np.trace(full_c))
+  out = dict(pr_full=cell_pr(n, s, m2),
+             pr_proprio=cell_pr(n, s[proprio],
+                                m2[np.ix_(proprio, proprio)]),
+             pr_latent=(cell_pr(n, s[latent],
+                                m2[np.ix_(latent, latent)])
+                        if latent else None),
+             trace_share_latent=(float(np.trace(
+                 full_c[np.ix_(latent, latent)]) / tr_full)
+                                 if latent and tr_full > 0 else 0.0),
+             n_rew=int(n))
+  return out
+
+
+def cmd_block_pr(args):
+  """Block decomposition of diversity_pr (review B1).
+
+  moments mode (--moments + --pairs): pre-build, from the scan cache —
+  both cells' full/proprio/latent PRs. replay mode (--replay + --side +
+  --tag): instrument-grade, from a BUILT buffer's chunk files — the
+  read consumes these. Both value-blind (pool spectra only)."""
+  with open(args.index) as f:
+    index = json.load(f)
+  spans = _key_spans(index)
+  if args.replay:
+    from probing import spectral_measure as sm
+    chunks = sm.load_chunks(args.replay)
+    keys = sm.obs_keys(chunks[0])
+    assert [k for k, _, _ in spans] == keys, (spans, keys)
+    flat = np.concatenate(
+        [sm.symlog(sm.frames_of(c, keys)) for c in chunks], 0)
+    rew = np.concatenate(
+        [np.asarray(c['reward'], np.float64).reshape(-1) for c in chunks])
+    x = flat[rew > 0]
+    proprio, latent = _block_cols(spans)
+    full_c = np.cov(x.T)
+    out = dict(
+        mode='replay', side=args.side, tag=args.tag, replay=args.replay,
+        keys=keys, n_episodes=int(
+            sum(np.asarray(c['is_first'], bool).sum() for c in chunks)),
+        pr_full=sm.participation_ratio(x),
+        pr_proprio=sm.participation_ratio(x[:, proprio]),
+        pr_latent=(sm.participation_ratio(x[:, latent])
+                   if latent else None),
+        trace_share_latent=(float(np.trace(
+            full_c[np.ix_(latent, latent)]) / np.trace(full_c))
+                            if latent and np.trace(full_c) > 0 else 0.0),
+        n_rew=int((rew > 0).sum()))
+  else:
+    moments, meta = load_moments(args.moments)
+    assert sum(hi - lo for _, lo, hi in spans) == meta['dim']
+    with open(args.pairs) as f:
+      pairs = json.load(f)
+    assert pairs.get('decision') == 'OK', pairs.get('decision')
+    out = dict(mode='moments', pairs=args.pairs, sides=[])
+    for side in pairs['pairs']['q1']['sides']:
+      members = side['members']
+      n = sum(moments[e]['n_rew'] for e in members)
+      s = np.sum([moments[e]['s'] for e in members], 0)
+      m2 = np.sum([moments[e]['S'] for e in members], 0)
+      rec = _block_prs(n, s, m2, spans)
+      rec['occ'] = side['occ']
+      out['sides'].append(rec)
+  os.makedirs(os.path.dirname(os.path.abspath(args.output)), exist_ok=True)
+  with open(args.output, 'w') as f:
+    json.dump(out, f, indent=2)
+  if args.replay:
+    print(f"{args.tag}: pr_full={out['pr_full']:.4f} "
+          f"pr_proprio={out['pr_proprio']:.4f} "
+          f"pr_latent={out['pr_latent'] if out['pr_latent'] is None else round(out['pr_latent'], 4)} "
+          f"latent_trace_share={out['trace_share_latent']:.4f}")
+  else:
+    for i, rec in enumerate(out['sides']):
+      print(f"side{i}: pr_full={rec['pr_full']:.4f} "
+            f"pr_proprio={rec['pr_proprio']:.4f} "
+            f"pr_latent={rec['pr_latent'] if rec['pr_latent'] is None else round(rec['pr_latent'], 4)} "
+            f"latent_trace_share={rec['trace_share_latent']:.4f} "
+            f"n_rew={rec['n_rew']}")
+  print(f'-> {args.output}')
+
+
+def cmd_check_pairs(args):
+  """Pre-build preflight (review B2/M3): the pairs json is the wave's
+  identity — verify it is the committed one (--expect_sha), that its
+  search completed OK, and that every member's covering chunks still
+  exist on disk (scratch purge re-check; availability was only
+  guaranteed at scan time). Exits nonzero on any failure."""
+  import hashlib
+  if args.expect_sha:
+    with open(args.pairs, 'rb') as f:
+      got = hashlib.sha256(f.read()).hexdigest()
+    assert got == args.expect_sha, (
+        f'pairs json sha mismatch: {got} != {args.expect_sha} — this is '
+        'NOT the registered search output; never re-search, restore the '
+        'committed copy')
+  with open(args.pairs) as f:
+    pairs = json.load(f)
+  assert pairs.get('decision') == 'OK', (
+      f"pairs json decision={pairs.get('decision')!r} != 'OK' — not "
+      'buildable as registered')
+  with open(args.index) as f:
+    index = json.load(f)
+  members = {m for side in pairs['pairs']['q1']['sides']
+             for m in side['members']}
+  missing = {eid: files for eid, files in missing_chunk_eids(index).items()
+             if eid in members}
+  assert not missing, (
+      f'{len(missing)} member episode(s) touch purged chunks: '
+      f'{sorted(missing)[:10]}... files '
+      f'{sorted({f for g in missing.values() for f in g})[:5]} — the '
+      'build would crash or (worse) a re-run would duplicate; restore '
+      'the chunks or file a dated amendment')
+  print(f'check-pairs OK: sha verified={bool(args.expect_sha)}, '
+        f'decision OK, all {len(members)} members buildable')
+
+
 def cmd_scan(args):
   with open(args.index) as f:
     index = json.load(f)
@@ -663,12 +817,17 @@ def _write_div_stream(out_dir, episodes, chunk_len=64):
   episodes: list of (pos [T,4], vel [T,4], rew [T]) arrays. Regime for
   dmc_cup_catch is ||position[:2]-position[2:4]|| < 0.05, so callers
   control index occupancy via ball-cup distance and n_rew via reward.
+  A tiny-variance 'dyn/deter' key (8 dims, std 1e-8) mimics the real
+  pool's stored collector latents, so the latent-block machinery is
+  exercised without perturbing the planted proprio PR structure.
   """
   os.makedirs(out_dir, exist_ok=True)
   elements = bcr.elements
   pos = np.concatenate([p for p, _, _ in episodes]).astype(np.float32)
   vel = np.concatenate([v for _, v, _ in episodes]).astype(np.float32)
   rew = np.concatenate([r for _, _, r in episodes]).astype(np.float32)
+  det = np.random.default_rng(99).normal(
+      0, 1e-8, (len(pos), 8)).astype(np.float32)
   first = np.zeros(len(pos), bool)
   t = 0
   for p, _, _ in episodes:
@@ -684,7 +843,8 @@ def _write_div_stream(out_dir, episodes, chunk_len=64):
     np.savez_compressed(os.path.join(out_dir, name),
                         position=pos[start:end], velocity=vel[start:end],
                         reward=rew[start:end], is_first=first[start:end],
-                        action=act[start:end])
+                        action=act[start:end],
+                        **{'dyn/deter': det[start:end]})
 
 
 def _div_episode(ep_len, n_regime, n_rew, cup_fn, vel_fn):
@@ -1013,6 +1173,97 @@ def selfcheck(args):
         (d1['diversity_pr'], res['div']['pr_hi'])
     assert d1['diversity_pr'] - d0['diversity_pr'] > 3.0
 
+    # block decomposition (review B1): spans/blocks correct; moments-
+    # mode block PRs match direct computation on materialized frames;
+    # replay-mode on the BUILT buffer matches both + the frozen
+    # instrument's full PR
+    spans = _key_spans(index)
+    assert [k for k, _, _ in spans] == ['dyn/deter', 'position',
+                                        'velocity'], spans
+    pro_cols, lat_cols = _block_cols(spans)
+    assert pro_cols == list(range(8, 16)) and lat_cols == list(range(8))
+    m0 = [moments[e] for e in s0['members']]
+    n = sum(m['n_rew'] for m in m0)
+    sv = np.sum([m['s'] for m in m0], 0)
+    Sv = np.sum([m['S'] for m in m0], 0)
+    blk = _block_prs(n, sv, Sv, spans)
+    mats0 = []
+    for eid in s0['members']:
+      lab, e = table[eid]
+      stream = index['sources'][lab]['streams'][e['stream']]
+      d = bcr.load_span(stream, e['start'], e['end'],
+                        keys=[k for k, _, _ in spans] + ['reward'])
+      fr = sm.symlog(sm.frames_of({kk: d[kk] for kk, _, _ in spans},
+                                  [k for k, _, _ in spans]))
+      mats0.append(fr[np.asarray(d['reward']).reshape(-1) > 0])
+    x0 = np.concatenate(mats0, 0)
+    assert abs(blk['pr_full'] - sm.participation_ratio(x0)) < 1e-8
+    assert abs(blk['pr_proprio']
+               - sm.participation_ratio(x0[:, pro_cols])) < 1e-8
+    assert abs(blk['pr_latent']
+               - sm.participation_ratio(x0[:, lat_cols])) < 1e-8
+    assert 0.0 <= blk['trace_share_latent'] < 1e-6   # planted tiny latent
+    out_blk = f'{tmp}/block_moments.json'
+    cmd_block_pr(argparse.Namespace(
+        index=f'{tmp}/episodes.json', moments=f'{tmp}/mom.npz',
+        pairs=f'{tmp}/div_pairs.json', replay=None, side=None, tag=None,
+        output=out_blk))
+    with open(out_blk) as f:
+      bm = json.load(f)
+    assert abs(bm['sides'][0]['pr_proprio'] - blk['pr_proprio']) < 1e-12
+    assert bm['sides'][1]['pr_proprio'] > bm['sides'][0]['pr_proprio']
+    out_rblk = f'{tmp}/block_replay.json'
+    cmd_block_pr(argparse.Namespace(
+        index=f'{tmp}/episodes.json', moments=None, pairs=None,
+        replay=f'{tmp}/q1d/side0', side='lo', tag='q1d_s0',
+        output=out_rblk))
+    with open(out_rblk) as f:
+      br = json.load(f)
+    assert br['side'] == 'lo' and br['n_episodes'] == k
+    assert abs(br['pr_full'] - d0['diversity_pr']) < 1e-9
+    assert abs(br['pr_full'] - blk['pr_full']) < 1e-9
+    assert abs(br['pr_proprio'] - blk['pr_proprio']) < 1e-9
+
+    # check-pairs preflight (review B2/M3): OK on the intact emitted
+    # json with the right sha; trips on sha mismatch and on OFF-TARGET
+    import hashlib
+    with open(f'{tmp}/div_pairs.json', 'rb') as f:
+      good_sha = hashlib.sha256(f.read()).hexdigest()
+    cmd_check_pairs(argparse.Namespace(
+        index=f'{tmp}/episodes.json', pairs=f'{tmp}/div_pairs.json',
+        expect_sha=good_sha))
+    try:
+      cmd_check_pairs(argparse.Namespace(
+          index=f'{tmp}/episodes.json', pairs=f'{tmp}/div_pairs.json',
+          expect_sha='0' * 64))
+      raise SystemExit('sha mismatch must trip')
+    except AssertionError:
+      pass
+    bad_pairs = dict(res, decision='OFF-TARGET')
+    with open(f'{tmp}/bad_pairs.json', 'w') as f:
+      json.dump(bad_pairs, f)
+    try:
+      cmd_check_pairs(argparse.Namespace(
+          index=f'{tmp}/episodes.json', pairs=f'{tmp}/bad_pairs.json',
+          expect_sha=None))
+      raise SystemExit('OFF-TARGET must trip')
+    except AssertionError:
+      pass
+
+    # medium-scale moment-exactness (review M5): dim 64, offset-50
+    # frames stress the uncentered-formula cancellation path
+    rng64 = np.random.default_rng(11)
+    eps64 = [rng64.normal(50.0, 1.0, (400, 64)) for _ in range(30)]
+    moms64 = [dict(n_rew=len(x), s=x.sum(0), S=x.T @ x) for x in eps64]
+    pick = list(range(0, 24, 2))
+    n64 = sum(moms64[i]['n_rew'] for i in pick)
+    s64 = np.sum([moms64[i]['s'] for i in pick], 0)
+    S64 = np.sum([moms64[i]['S'] for i in pick], 0)
+    direct64 = sm.participation_ratio(
+        np.concatenate([eps64[i] for i in pick], 0))
+    assert abs(cell_pr(n64, s64, S64) - direct64) / direct64 < 1e-7, \
+        (cell_pr(n64, s64, S64), direct64)
+
     # availability: delete one broad-stream chunk -> its episodes drop
     # from the scan (recorded), the search never touches them
     bstream = index['sources']['brd']['streams'][0]
@@ -1031,6 +1282,23 @@ def selfcheck(args):
     for side_ in res_a['pairs']['q1']['sides']:
       assert not set(side_['members']) & hit
 
+    # check-pairs must trip once a MEMBER's covering chunk is purged
+    # (the build-time re-check the scan-time guarantee cannot give)
+    victim = res['pairs']['q1']['sides'][1]['members'][0]
+    vlab, ve = table[victim]
+    vstream = index['sources'][vlab]['streams'][ve['stream']]
+    vbounds = np.cumsum([0] + vstream['lengths'])
+    vci = int(np.searchsorted(vbounds, ve['start'], side='right') - 1)
+    if os.path.exists(vstream['files'][vci]):
+      os.remove(vstream['files'][vci])
+    try:
+      cmd_check_pairs(argparse.Namespace(
+          index=f'{tmp}/episodes.json', pairs=f'{tmp}/div_pairs.json',
+          expect_sha=None))
+      raise SystemExit('purged member chunk must trip check-pairs')
+    except AssertionError:
+      pass
+
   print('selfcheck PASS: window rule optimal + deterministic, sides '
         'disjoint and ordered, fallback/SHORT branches trip (incl. '
         'post-removal starvation and small pool), e2e: frozen builder '
@@ -1046,13 +1314,20 @@ def selfcheck(args):
         'min_rew drops recorded and honored, deterministic, SHORT '
         'branch trips, frozen builder + frozen spectral instrument '
         'reproduce the searched diversity_pr on the built buffers '
-        '(1e-6), chunk-availability drops recorded and avoided')
+        '(1e-6), chunk-availability drops recorded and avoided; '
+        'block-pr: spans/blocks correct, moments-mode == direct '
+        'materialized per-block (1e-8), replay-mode on the built '
+        'buffer == instrument full PR (1e-9) == moments-mode (1e-9), '
+        'medium-scale (dim-64, offset-50) exactness 1e-7; check-pairs: '
+        'OK on the intact sha-pinned json, trips on sha mismatch, '
+        'OFF-TARGET, and a purged member chunk')
 
 
 def main():
   ap = argparse.ArgumentParser()
   ap.add_argument('cmd', nargs='?',
-                  choices=('search-frew', 'scan-moments', 'search-div'))
+                  choices=('search-frew', 'scan-moments', 'search-div',
+                           'block-pr', 'check-pairs'))
   ap.add_argument('--index')
   ap.add_argument('--n_episodes', type=int, default=200)
   ap.add_argument('--targets', nargs=2, type=float, default=(0.60, 0.80))
@@ -1065,17 +1340,35 @@ def main():
   ap.add_argument('--div_tol', type=float, default=DIV_TOL)
   ap.add_argument('--div_corridor', type=float, default=DIV_CORRIDOR)
   ap.add_argument('--min_rew', type=int, default=MIN_REW_EPISODE)
+  ap.add_argument('--pairs')
+  ap.add_argument('--replay')
+  ap.add_argument('--side')
+  ap.add_argument('--tag')
+  ap.add_argument('--expect_sha')
   ap.add_argument('--output')
   ap.add_argument('--selfcheck', action='store_true')
   args = ap.parse_args()
   if args.selfcheck:
     selfcheck(args)
     return
-  assert args.cmd and args.index and args.output
+  assert args.cmd and args.index
+  if args.cmd == 'check-pairs':
+    assert args.pairs
+    cmd_check_pairs(args)
+    return
+  assert args.output
   if args.cmd == 'search-frew':
     cmd_search(args)
   elif args.cmd == 'scan-moments':
     cmd_scan(args)
+  elif args.cmd == 'block-pr':
+    assert bool(args.replay) != bool(args.moments), \
+        'block-pr wants exactly one of --replay / --moments+--pairs'
+    if args.replay:
+      assert args.side in ('lo', 'hi') and args.tag
+    else:
+      assert args.pairs
+    cmd_block_pr(args)
   else:
     cmd_search_div(args)
 
