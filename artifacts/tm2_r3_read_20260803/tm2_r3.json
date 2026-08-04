@@ -1,0 +1,152 @@
+{
+  "primaries": {
+    "p_tm2a_opportunity": {
+      "point": 0.54640625,
+      "ci": [
+        0.32476367187499994,
+        0.80789453125
+      ],
+      "n_clusters": 32
+    },
+    "p_tm2b_gap": {
+      "point": 0.529921875,
+      "ci": [
+        0.31522460937499996,
+        0.7867246093749998
+      ],
+      "n_clusters": 32
+    },
+    "p_tm2c_maturity_ach": {
+      "point": -0.033593750000000006,
+      "ci": [
+        -0.1584375,
+        0.09812890624999995
+      ],
+      "n_clusters": 32
+    }
+  },
+  "thresholds": {
+    "opp": 0.2,
+    "floor_limit": 0.5
+  },
+  "fires": {
+    "p_tm2a": true,
+    "p_tm2b": true,
+    "p_tm2c": false
+  },
+  "secondary": {
+    "dose_effect_opp": {
+      "e1": {
+        "point": 0.30359375,
+        "ci": [
+          0.11921875000000001,
+          0.5379726562499998
+        ],
+        "n_clusters": 16
+      },
+      "e4": {
+        "point": 0.7892187500000001,
+        "ci": [
+          0.42890234374999997,
+          1.225
+        ],
+        "n_clusters": 16
+      }
+    },
+    "maturity_opp": {
+      "early": {
+        "point": 0.5721875,
+        "ci": [
+          0.2603046875,
+          0.9618945312499998
+        ],
+        "n_clusters": 32
+      },
+      "late": {
+        "point": 0.520625,
+        "ci": [
+          0.28562109375,
+          0.80000390625
+        ],
+        "n_clusters": 32
+      }
+    },
+    "ach": {
+      "point": 0.016484374999999992,
+      "ci": [
+        -0.036171875000000006,
+        0.07445898437499993
+      ],
+      "n_clusters": 32
+    },
+    "per_domain": {
+      "cup": {
+        "opp": {
+          "point": 0.7532812499999999,
+          "ci": [
+            0.36312500000000003,
+            1.2100039062499999
+          ],
+          "n_clusters": 16
+        },
+        "ach": {
+          "point": -0.02375,
+          "ci": [
+            -0.09781640624999999,
+            0.05140625
+          ],
+          "n_clusters": 16
+        },
+        "gap": {
+          "point": 0.7770312500000001,
+          "ci": [
+            0.39890625,
+            1.2021914062499999
+          ],
+          "n_clusters": 16
+        }
+      },
+      "finger": {
+        "opp": {
+          "point": 0.33953125000000006,
+          "ci": [
+            0.1740625,
+            0.51750390625
+          ],
+          "n_clusters": 16
+        },
+        "ach": {
+          "point": 0.05671874999999999,
+          "ci": [
+            -0.011097656249999999,
+            0.14984375
+          ],
+          "n_clusters": 16
+        },
+        "gap": {
+          "point": 0.2828125,
+          "ci": [
+            0.13968750000000002,
+            0.45266015624999995
+          ],
+          "n_clusters": 16
+        }
+      }
+    },
+    "floors": {
+      "cup": {
+        "frac": 0.0,
+        "n_cells": 32,
+        "floor_limited": false
+      },
+      "finger": {
+        "frac": 0.15625,
+        "n_cells": 32,
+        "floor_limited": false
+      }
+    }
+  },
+  "n_runs": 32,
+  "verdict": "CROSS-FAMILY REPLICATION: the opportunity/competence decomposition holds in a second model family \u2014 opportunity exists (P-TM2a) and the TD-MPC2 planner does not harvest it (P-TM2b). P-TM2c does not fire \u2014 maturity does not close the gap in this family either.",
+  "labels_dir": "/home/rickybao/projects/dreamerv3/local_results/tm2_r3_20260803_175551/tm2r3/labels"
+}

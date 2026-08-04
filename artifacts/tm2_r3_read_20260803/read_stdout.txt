@@ -1,0 +1,6 @@
+p_tm2a_opportunity: +0.546 [+0.325,+0.808] n=32
+p_tm2b_gap: +0.530 [+0.315,+0.787] n=32
+p_tm2c_maturity_ach: -0.034 [-0.158,+0.098] n=32
+fires: {'p_tm2a': True, 'p_tm2b': True, 'p_tm2c': False}
+CROSS-FAMILY REPLICATION: the opportunity/competence decomposition holds in a second model family — opportunity exists (P-TM2a) and the TD-MPC2 planner does not harvest it (P-TM2b). P-TM2c does not fire — maturity does not close the gap in this family either.
+-> artifacts/tm2_r3_read_20260803/tm2_r3.json
