@@ -1,0 +1,145 @@
+{
+  "gates": {
+    "f_lo": 0.30357642357642356,
+    "f_hi": 0.3034965034965035,
+    "f_match": 8e-05,
+    "div_lo": 7.495242380673956,
+    "div_hi": 12.335977293622726,
+    "div_separation": 4.840735,
+    "pr_proprio_lo": 3.035897718197782,
+    "pr_proprio_hi": 3.7718178912567883,
+    "proprio_separation": 0.73592,
+    "f_range": [
+      0.27,
+      0.34
+    ],
+    "f_match_max": 0.02,
+    "min_div_sep": 3.0,
+    "min_proprio_sep": 0.5
+  },
+  "primary_hi_minus_lo": {
+    "point": -9.808587499999987,
+    "ci": [
+      -89.94996468749999,
+      72.2358384375
+    ],
+    "n": [
+      8,
+      8
+    ]
+  },
+  "fires": false,
+  "reversed": false,
+  "pbd2": {
+    "lo_mean": 253.7188,
+    "v200s1_mean": 187.7153,
+    "hi_mean": 243.9102,
+    "ordering_holds": false,
+    "hi_vs_v200s1_descriptive": {
+      "point": 56.19487916666671,
+      "ci": [
+        -13.679813645833288,
+        126.12373833333334
+      ],
+      "n": [
+        8,
+        12
+      ]
+    },
+    "lo_vs_v200s1_descriptive": {
+      "point": 66.0034666666667,
+      "ci": [
+        -5.307691666666663,
+        137.33609406249994
+      ],
+      "n": [
+        8,
+        12
+      ]
+    }
+  },
+  "pbd3": {
+    "nll_hi": {
+      "point": 1.0460294239917989,
+      "ci": [
+        0.9229535679474851,
+        1.1753768936085869
+      ],
+      "n": 8
+    },
+    "nll_lo": {
+      "point": 0.9273938386045394,
+      "ci": [
+        0.8488285540847647,
+        1.0190172875618129
+      ],
+      "n": 8
+    },
+    "membership_hi": "member",
+    "membership_lo": "member",
+    "both_member": true,
+    "inclusion_leak": false,
+    "hi_anomaly": false,
+    "member_max": 1.5,
+    "nonmember_min": 2.0,
+    "nll_out_hi_mean": 0.038692,
+    "nll_out_lo_mean": 0.049232
+  },
+  "descriptives": {
+    "spectrum_pr_lo": 36.35577420162967,
+    "spectrum_pr_hi": 39.42074291563002,
+    "diversity_ref": 9.230033291492585,
+    "straddles_ref": true,
+    "pr_latent_lo": 93.41251928631002,
+    "pr_latent_hi": 110.24875884746346,
+    "trace_share_latent_lo": 0.3795175173142032,
+    "trace_share_latent_hi": 0.4665403840011853
+  },
+  "cell_means": {
+    "ax1bdq1ds0": {
+      "1": 332.2083,
+      "2": 227.2396,
+      "3": 369.4375,
+      "4": 229.3438,
+      "5": 120.5625,
+      "6": 262.6562,
+      "7": 141.9167,
+      "8": 346.3854
+    },
+    "ax1bdq1ds1": {
+      "1": 370.0521,
+      "2": 213.0417,
+      "3": 119.6146,
+      "4": 161.9896,
+      "5": 212.7917,
+      "6": 334.6771,
+      "7": 305.4062,
+      "8": 233.7083
+    },
+    "ax1v2q1v200s1": {
+      "1": 327.7812,
+      "2": 180.2708,
+      "3": 135.4583,
+      "4": 231.3646,
+      "5": 270.4896,
+      "6": 80.3021,
+      "7": 98.1667,
+      "8": 262.5729,
+      "9": 130.6146,
+      "10": 191.3021,
+      "11": 119.9688,
+      "12": 224.2917
+    }
+  },
+  "verdict": "P-BD1 INFORMATIVE NULL: no breadth effect detected at an instrument-verified separation of 4.84 PR units \u2014 the lambda-input reading of the volume anomaly loses its principal support (frozen consequence: the anomaly requires a non-breadth account). P-BD2 ordering lo < v200s1 <= hi FAILS (253.7 / 187.7 / 243.9; weak point form, non-confirmatory).",
+  "inputs": {
+    "auc": "/home/rickybao/projects/dreamerv3/local_results/breadth_q1d_20260804_190158/analysis/auc/auc.csv",
+    "auc_frozen": "/home/rickybao/projects/dreamerv3/local_results/volume_repl_20260729_204854/analysis/auc/auc.csv",
+    "spectral_lo": "/home/rickybao/projects/dreamerv3/local_results/breadth_q1d_20260804_190158/q1d/spectral_side0.json",
+    "spectral_hi": "/home/rickybao/projects/dreamerv3/local_results/breadth_q1d_20260804_190158/q1d/spectral_side1.json",
+    "spectral_ref": "/home/rickybao/projects/dreamerv3/artifacts/volume_repl_20260729/diversity_q1v200_s1.json",
+    "block_lo": "/home/rickybao/projects/dreamerv3/local_results/breadth_q1d_20260804_190158/q1d/block_side0.json",
+    "block_hi": "/home/rickybao/projects/dreamerv3/local_results/breadth_q1d_20260804_190158/q1d/block_side1.json",
+    "e4": "/home/rickybao/projects/dreamerv3/local_results/breadth_q1d_20260804_190158/e4/e4_finger_v1_bd.csv"
+  }
+}
