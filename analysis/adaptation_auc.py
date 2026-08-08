@@ -16,6 +16,7 @@ Usage:
 """
 
 import argparse
+import collections
 import csv
 import glob
 import json
@@ -101,6 +102,19 @@ def main():
   n_qc = sum(r['qc_pass'] for r in rows)
   print(f'{len(rows)} adapt runs -> {out_csv} '
         f'({n_qc} pass QC, {len(exclusions)} exclusion entries)')
+  # 2026-08-08 (review D14): the registered QC bar (>=20 eps) admits
+  # in-progress snapshots as qc_pass=1. Warn loudly on sub-modal windows so
+  # incomplete rows are visible at collate time; readers must verify
+  # n_ep_100k against the modal count before consuming (standing rule).
+  n_by_count = collections.Counter(
+      r[f'n_ep_{PRIMARY_W // 1000}k'] for r in rows)
+  modal_ep = n_by_count.most_common(1)[0][0]
+  short = [r for r in rows
+           if r['qc_pass'] and r[f'n_ep_{PRIMARY_W // 1000}k'] < modal_ep]
+  for r in short:
+    print(f"WARNING sub-modal window: {r['run_id']} "
+          f"n_ep_100k={r[f'n_ep_{PRIMARY_W // 1000}k']} < modal {modal_ep} "
+          f"(qc_pass=1 under the registered >=20 bar)")
 
 
 if __name__ == '__main__':

@@ -151,7 +151,14 @@ def cmd_score(args):
     reset = jnp.zeros((nxt['deter'].shape[0], 1), bool)
     _, _, rec = M.dec(M.dec.initial(nxt['deter'].shape[0]), seq, reset,
                       training=False)
-    obs = {k: f32(rec[k].pred()) for k in obs_keys}
+    # 2026-08-08 fix (review D18): symlog_mse decoder heads predict in
+    # SYMLOG space; PI.enc symlogs its inputs again. Undo the decoder's
+    # squash so the policy sees raw-unit observations, matching the real
+    # loop (single symlog at the encoder). Historical Goodhart collates
+    # (pre-fix) fed doubly-symlogged obs — re-collate before any claim.
+    from embodied.jax import nets as _nets
+    undo = _nets.symexp if getattr(M.dec, 'symlog', False) else (lambda x: x)
+    obs = {k: f32(undo(rec[k].pred())) for k in obs_keys}
     inp = M.feat2tensor(seq)
     rew = f32(M.rew(inp, 2).pred())[:, 0]
     con = f32(M.con(inp, 2).prob(1))[:, 0]

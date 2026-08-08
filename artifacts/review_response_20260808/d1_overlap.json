@@ -1,0 +1,186 @@
+{
+ "method": "global-eid mapping: index sources in insertion order, modal-filtered episodes per source; probeset picked ordinals matched within source. Pixel offsets validated against pair mixtures (exact per-source counts).",
+ "finger": {
+  "q1_side0": {
+   "n_members": 200,
+   "overlap": 0,
+   "hits": []
+  },
+  "q1_side1": {
+   "n_members": 200,
+   "overlap": 7,
+   "hits": [
+    [
+     "pilot_goal",
+     21
+    ],
+    [
+     "pilot_p2e",
+     4
+    ],
+    [
+     "pilot_p2e",
+     20
+    ],
+    [
+     "pilot_p2e",
+     24
+    ],
+    [
+     "pilot_p2e",
+     34
+    ],
+    [
+     "pilot_random",
+     44
+    ],
+    [
+     "pilot_random",
+     84
+    ]
+   ]
+  },
+  "q2_side0": {
+   "n_members": 200,
+   "overlap": 0,
+   "hits": []
+  },
+  "q2_side1": {
+   "n_members": 200,
+   "overlap": 0,
+   "hits": []
+  }
+ },
+ "cup": {
+  "q1_side0": {
+   "n_members": 200,
+   "overlap": 0,
+   "hits": []
+  },
+  "q1_side1": {
+   "n_members": 200,
+   "overlap": 1,
+   "hits": [
+    [
+     "pilot_goal",
+     1
+    ]
+   ]
+  },
+  "q2_side0": {
+   "n_members": 200,
+   "overlap": 0,
+   "hits": []
+  },
+  "q2_side1": {
+   "n_members": 200,
+   "overlap": 8,
+   "hits": [
+    [
+     "pilot_goal",
+     21
+    ],
+    [
+     "pilot_goal",
+     40
+    ],
+    [
+     "pilot_goal",
+     49
+    ],
+    [
+     "pilot_goal",
+     56
+    ],
+    [
+     "pilot_random",
+     10
+    ],
+    [
+     "pilot_random",
+     67
+    ],
+    [
+     "pilot_random",
+     74
+    ],
+    [
+     "pilot_random",
+     90
+    ]
+   ]
+  }
+ },
+ "pixel_fingerpx": {
+  "q1m_side0": {
+   "n_members": 20,
+   "overlap": 8,
+   "hits": [
+    [
+     "apt101",
+     10
+    ],
+    [
+     "apt101",
+     53
+    ],
+    [
+     "p2e101",
+     16
+    ],
+    [
+     "random100",
+     2
+    ],
+    [
+     "random100",
+     42
+    ],
+    [
+     "random104",
+     53
+    ],
+    [
+     "random104",
+     81
+    ],
+    [
+     "random105",
+     16
+    ]
+   ]
+  },
+  "q1m_side1": {
+   "n_members": 20,
+   "overlap": 5,
+   "hits": [
+    [
+     "apt101",
+     32
+    ],
+    [
+     "apt101",
+     51
+    ],
+    [
+     "random100",
+     36
+    ],
+    [
+     "random105",
+     23
+    ],
+    [
+     "random105",
+     42
+    ]
+   ]
+  }
+ },
+ "probeset_sizes": {
+  "finger_v1": 60,
+  "cup_v1": 60,
+  "fingerpx_v1": 120
+ },
+ "verdict": "D1 CONFIRMED: finger q1 side1 7/60 (side0 0; q2 both 0); cup q1 side1 1/60, q2 side1 8/60 (lo sides 0); pixel q1m side0 8/20, side1 5/20 of buffer episodes are probe episodes. One-sided on proprio (hi-occupancy side only); both sides pixel."
+}

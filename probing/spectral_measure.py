@@ -42,13 +42,22 @@ RIDGE_SCALE = 1e-3             # ridge = RIDGE_SCALE * tr(Sigma)/D
 MAX_STEPS = 500_000            # uniform chunk subsample above this
 MIN_REWARDED = 50              # amend 1: fewer rewarded frames =>
                                # theta inestimable, spectrum-only record
-EXCLUDE_PREFIX = ("log", "stepid")
+# 2026-08-08 fix (review D2): stored collector latents ("dyn/deter",
+# "dyn/stoch", ...) were previously INCLUDED, so 97.7% of the feature dims
+# were the collecting agent's recurrent state, not environment state. Every
+# pre-fix json (diversity_pr / spectrum_pr / variance_rank / lambda_need /
+# theta) measures collector-latent space and is marked contaminated in the
+# record; do not compare pre-fix and post-fix numbers.
+EXCLUDE_PREFIX = ("log", "stepid", "dyn")
 EXCLUDE_KEYS = ("is_first", "is_last", "is_terminal", "reward",
                 "action", "reset", "cont")
 # v1_1 (amend 1): theta_estimable/theta_source/theta/n_rewarded fields;
 # v1 jsons (pre-amendment) are refused by compare() — re-measure them
 # (deterministic; same numbers plus the new fields).
-MEASURE_VERSION = "spectral_v1_1_20260724"
+# v2 (2026-08-08, review D2): dyn/* excluded from the feature space — the
+# measured object changes from collector-latent space to environment
+# observables. compare() refuses cross-version mixes by design.
+MEASURE_VERSION = "spectral_v2_20260808"
 
 
 # --------------------------------------------------------------------------

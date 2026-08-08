@@ -303,9 +303,45 @@ def _candidate_pool(args, index):
               occ_sep_min=occ_sep_min, source_coverages=raw_cov_sources)
 
 
+def apply_holdout(index, manifest_paths):
+  """Drop E4-probeset episodes from the donor index (review D1 guard).
+
+  Each manifest is an e4_stratified_error probeset manifest.json; its
+  sources' `picked` lists index complete modal-length episodes of the
+  source replay dir in enumeration order — the same enumeration this
+  index uses after modal filtering, so (replay_dir, ordinal) identifies
+  the episode. Default-off: frozen searches ran without this and stay
+  bit-reproducible; every NEW search must pass --holdout with every live
+  probeset of the domain.
+  """
+  if not manifest_paths:
+    return index
+  drop = collections.defaultdict(set)   # normalized replay dir -> ordinals
+  for mp in manifest_paths:
+    with open(mp) as f:
+      man = json.load(f)
+    assert man.get('kind') == 'e4_stratified_error', (
+        f'{mp}: not an E4 probeset manifest')
+    for src in man['sources'].values():
+      drop[os.path.normpath(src['replay_dir'])].update(src['picked'])
+  n_dropped = 0
+  for label, src in index['sources'].items():
+    key = os.path.normpath(src['replay'])
+    if key not in drop:
+      continue
+    kept = [e for j, e in enumerate(src['episodes'])
+            if j not in drop[key]]
+    n_dropped += len(src['episodes']) - len(kept)
+    src['episodes'] = kept
+  print(f'holdout: dropped {n_dropped} probe episodes from the donor index '
+        f'({len(manifest_paths)} probeset manifest(s))')
+  return index
+
+
 def cmd_search(args):
   with open(args.index) as f:
     index = json.load(f)
+  index = apply_holdout(index, getattr(args, 'holdout', None))
   pool = _candidate_pool(args, index)
   task, candidates = pool['task'], pool['candidates']
   cov_tol, occ_sep_min = pool['cov_tol'], pool['occ_sep_min']
@@ -368,6 +404,7 @@ def cmd_search(args):
 def cmd_search_dose(args):
   with open(args.index) as f:
     index = json.load(f)
+  index = apply_holdout(index, getattr(args, 'holdout', None))
   pool = _candidate_pool(args, index)
   candidates = pool['candidates']
   cov_tol, occ_sep_min = pool['cov_tol'], pool['occ_sep_min']
@@ -475,6 +512,7 @@ def cmd_search_dose(args):
 def cmd_search_rpair(args):
   with open(args.index) as f:
     index = json.load(f)
+  index = apply_holdout(index, getattr(args, 'holdout', None))
   pool = _candidate_pool(args, index)
   candidates = pool['candidates']
   cov_tol, occ_sep_min = pool['cov_tol'], pool['occ_sep_min']
@@ -558,6 +596,7 @@ def cmd_search_within(args):
   materializes it unchanged) plus a summary; --output is a directory."""
   with open(args.index) as f:
     index = json.load(f)
+  index = apply_holdout(index, getattr(args, 'holdout', None))
   task = index['task']
   spec = regimes.spec(task)
   cov_keys = sorted(spec['coverage_keys'])
@@ -734,6 +773,7 @@ def cmd_search_matched(args):
   `build --which q1` materializes it unchanged."""
   with open(args.index) as f:
     index = json.load(f)
+  index = apply_holdout(index, getattr(args, 'holdout', None))
   task = index['task']
   spec = regimes.spec(task)
   cov_keys = sorted(spec['coverage_keys'])
@@ -1354,6 +1394,10 @@ def main():
     sp.add_argument('--occ_sep_mult', type=float, default=3.0)
     sp.add_argument('--boot', type=int, default=100)
     sp.add_argument('--seed', type=int, default=0)
+    sp.add_argument('--holdout', nargs='*', default=None,
+                    help='E4 probeset manifest.json path(s); their picked '
+                         'episodes are dropped from the donor index '
+                         '(review-D1 guard; REQUIRED for new searches).')
     sp.add_argument('--output', required=True)
 
   se = sub.add_parser('search')
