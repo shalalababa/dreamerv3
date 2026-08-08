@@ -100,12 +100,23 @@ def load_episode_chunks(side_dir):
   return episodes
 
 
-def transform_reward(reward, in_regime, kind, rng):
-  """Return (new_reward, stats). Values are preserved as a multiset."""
+def transform_reward(reward, in_regime, kind, rng, scale=None):
+  """Return (new_reward, stats). shuffle/relocate preserve the value
+  multiset; `scale` preserves the SUPPORT (which frames are rewarded)
+  and multiplies values by a constant — the s-axis label-energy knob
+  (2026-08-08; see PREREG_swave_theory_correction_20260808)."""
   reward = np.asarray(reward)
   new = np.zeros_like(reward)
   pos = np.flatnonzero(reward > 0)
   stats = dict(n_frames=len(reward), n_rewarded=int(len(pos)))
+  if kind == 'scale':
+    if scale is None or not (scale > 0):
+      raise SystemExit('kind=scale requires --scale > 0')
+    new = (reward.astype(np.float64) * float(scale)).astype(reward.dtype)
+    stats['rewarded_in_regime'] = int(
+        (new > 0)[np.asarray(in_regime, bool)].sum())
+    stats['scale'] = float(scale)
+    return new, stats
   if kind == 'shuffle':
     new = reward[rng.permutation(len(reward))]
     stats['rewarded_in_regime'] = int((new > 0)[in_regime].sum())
@@ -353,9 +364,17 @@ def cmd_transform(args):
       below = spec['direction'] == 'below'
       in_r = (vals < spec['threshold']) if below else (vals > spec['threshold'])
       new_reward, stats = transform_reward(
-          frames['reward'], in_r, args.kind, rng)
-      assert sorted(new_reward.tolist()) == sorted(
-          np.asarray(frames['reward']).tolist()), 'reward multiset changed'
+          frames['reward'], in_r, args.kind, rng,
+          scale=getattr(args, 'scale', None))
+      if args.kind == 'scale':
+        orig = np.asarray(frames['reward'], np.float64)
+        assert np.array_equal(new_reward > 0, orig > 0), \
+            'scale changed the reward support'
+        assert np.allclose(np.asarray(new_reward, np.float64),
+                           orig * args.scale), 'scale values wrong'
+      else:
+        assert sorted(new_reward.tolist()) == sorted(
+            np.asarray(frames['reward']).tolist()), 'reward multiset changed'
       out_frames = dict(frames)
       out_frames['reward'] = new_reward.astype(frames['reward'].dtype)
       write_episode_chunk(out_dir, out_frames)
@@ -375,6 +394,7 @@ def cmd_transform(args):
   manifest = dict(src_manifest)
   manifest['reward_transform'] = dict(
       kind=args.kind, seed=args.seed, task=args.task,
+      scale=(float(args.scale) if args.kind == 'scale' else None),
       source_pair=os.path.abspath(args.input),
       regime=dict(name=spec['name'], threshold=float(spec['threshold']),
                   direction=spec['direction']),
@@ -465,6 +485,50 @@ def cmd_stamp_probeset(args):
         f'{tr["sides"][args.side]["n_stamped"] / tr["sides"][args.side]["n_frames"]:.6f})')
 
 
+def cmd_transform_probeset(args):
+  """Apply a LABEL transform (shuffle/relocate/scale) to a frozen E4 probe
+  set -> override npz for `stratified_error measure --reward_override`.
+
+  Own-label panels (2026-08-08, review D6/#11 + the s-wave scoring trap):
+  a fit trained on transformed labels must be scored against labels drawn
+  by the SAME process, or its NLL conflates mislocation with miscalibration.
+  Per-episode transform with the stored in_regime mask; rng(seed) advances
+  in row order, so the override is deterministic per (kind, seed)."""
+  npz_path = os.path.join(args.probeset, 'probeset_e4.npz')
+  with open(os.path.join(args.probeset, 'manifest.json')) as f:
+    ps_manifest = json.load(f)
+  # batch-review m17: verify the BYTES against the manifest sha before
+  # transforming (same convention as stratified_error.load_e4).
+  import hashlib
+  digest = hashlib.sha256(open(npz_path, 'rb').read()).hexdigest()
+  if digest != ps_manifest['sha256']:
+    raise SystemExit(f'{npz_path}: sha256 mismatch vs manifest')
+  arrays = np.load(npz_path)
+  reward = np.asarray(arrays['reward'])
+  in_regime = np.asarray(arrays['in_regime'], bool)
+  N, T = reward.shape
+  rng = np.random.default_rng(args.seed)
+  new = np.zeros_like(reward)
+  n_in = 0
+  for i in range(N):
+    new[i], stats = transform_reward(
+        reward[i], in_regime[i], args.kind, rng, scale=args.scale)
+    n_in += stats['rewarded_in_regime']
+  meta = dict(
+      kind=args.kind, seed=args.seed,
+      scale=(float(args.scale) if args.kind == 'scale' else None),
+      probeset_id=ps_manifest['probeset_id'],
+      probeset_sha256=ps_manifest['sha256'],
+      density=round(float((new > 0).mean()), 6),
+      rewarded_in_regime=int(n_in),
+      n_episodes=int(N), length=int(T))
+  np.savez_compressed(args.output, reward=new)
+  with open(args.output + '.json', 'w') as f:
+    json.dump(meta, f, indent=2)
+  print(f'{args.output}: {args.kind} override {N}x{T}, '
+        f'density {meta["density"]}, rewarded_in_regime {n_in}')
+
+
 def cmd_selfcheck(args):
   import tempfile
   rng = np.random.default_rng(7)
@@ -528,6 +592,63 @@ def cmd_selfcheck(args):
       raise AssertionError('overwrote an existing transform dir')
     except SystemExit:
       pass
+
+    # --- scale kind (2026-08-08) ------------------------------------------
+    out_pair = os.path.join(tmp, 'q1_sc')
+    cmd_transform(argparse.Namespace(
+        input=src, output=out_pair, seed=0, task='dmc_cup_catch',
+        kind='scale', scale=2.45))
+    for side in ('side0', 'side1'):
+      orig = load_episode_chunks(os.path.join(src, side))
+      new = load_episode_chunks(os.path.join(out_pair, side))
+      for o, t in zip(orig, new):
+        ov = np.asarray(o['reward'], np.float64)
+        tv = np.asarray(t['reward'], np.float64)
+        assert np.array_equal(ov > 0, tv > 0), 'scale moved the support'
+        assert np.allclose(tv, ov * 2.45), 'scale factor wrong'
+        for key in ('position', 'velocity', 'action', 'is_first'):
+          assert np.array_equal(o[key], t[key]), key
+    with open(os.path.join(out_pair, 'manifest.json')) as f:
+      assert json.load(f)['reward_transform']['scale'] == 2.45
+
+    # --- transform-probeset (2026-08-08) ----------------------------------
+    ps_dir = os.path.join(tmp, 'ps')
+    os.makedirs(ps_dir)
+    N_, T_ = 6, 50
+    ps_rew = (rng.random((N_, T_)) < 0.1).astype(np.float32)
+    ps_inr = rng.random((N_, T_)) < 0.3
+    np.savez_compressed(os.path.join(ps_dir, 'probeset_e4.npz'),
+                        reward=ps_rew, in_regime=ps_inr)
+    import hashlib
+    sha = hashlib.sha256(
+        open(os.path.join(ps_dir, 'probeset_e4.npz'), 'rb').read()).hexdigest()
+    with open(os.path.join(ps_dir, 'manifest.json'), 'w') as f:
+      json.dump(dict(probeset_id='selfcheck_ps', sha256=sha), f)
+    for kind, kw in (('relocate', {}), ('scale', dict(scale=3.0)),
+                     ('shuffle', {})):
+      outp = os.path.join(tmp, f'ovr_{kind}.npz')
+      cmd_transform_probeset(argparse.Namespace(
+          probeset=ps_dir, kind=kind, seed=1,
+          scale=kw.get('scale'), output=outp))
+      ov = np.asarray(np.load(outp)['reward'])
+      if kind == 'scale':
+        assert np.allclose(ov, ps_rew * 3.0)
+      else:
+        for i in range(N_):
+          assert sorted(ov[i].tolist()) == sorted(ps_rew[i].tolist())
+      if kind == 'relocate':
+        # relocated mass out of regime up to overflow
+        spill = int(json.load(open(outp + '.json'))['rewarded_in_regime'])
+        cap = sum(max(0, int((ps_rew[i] > 0).sum()) - int((~ps_inr[i]).sum()))
+                  for i in range(N_))
+        assert spill <= cap, 'relocate left avoidable mass in regime'
+      # determinism
+      outp2 = os.path.join(tmp, f'ovr_{kind}_b.npz')
+      cmd_transform_probeset(argparse.Namespace(
+          probeset=ps_dir, kind=kind, seed=1,
+          scale=kw.get('scale'), output=outp2))
+      assert np.array_equal(np.load(outp)['reward'],
+                            np.load(outp2)['reward']), 'nondeterministic'
 
     # --- stamp kinds -------------------------------------------------------
     for kind, tag in (('stamp_rand', 'srd0'), ('stamp_iid', 'sid')):
@@ -636,8 +757,12 @@ def main():
   t.add_argument('--output', required=True)
   t.add_argument('--task', required=True)
   t.add_argument('--kind', required=True,
-                 choices=['shuffle', 'relocate', 'stamp_rand', 'stamp_iid'])
+                 choices=['shuffle', 'relocate', 'scale',
+                          'stamp_rand', 'stamp_iid'])
   t.add_argument('--seed', type=int, default=0)
+  t.add_argument('--scale', type=float, default=None,
+                 help='kind=scale only: multiply reward values by this '
+                      'constant (support preserved).')
   t.add_argument('--fn_seed', type=int, default=0,
                  help='stamp_rand only: seed of the frozen random MLP '
                       '(srd0 -> 0, srd1 -> 1).')
@@ -654,6 +779,16 @@ def main():
                   help='Pilot replay chunk dirs for stepid-join recovery '
                        'of dyn/* stamp inputs (17-Jul manifests).')
   sp.set_defaults(fn=cmd_stamp_probeset)
+
+  tp = sub.add_parser('transform-probeset')
+  tp.add_argument('--probeset', required=True,
+                  help='E4 probe set dir (probeset_e4.npz + manifest.json).')
+  tp.add_argument('--kind', required=True,
+                  choices=['shuffle', 'relocate', 'scale'])
+  tp.add_argument('--seed', type=int, default=0)
+  tp.add_argument('--scale', type=float, default=None)
+  tp.add_argument('--output', required=True, help='Output .npz path.')
+  tp.set_defaults(fn=cmd_transform_probeset)
 
   sc = sub.add_parser('selfcheck')
   sc.set_defaults(fn=cmd_selfcheck)

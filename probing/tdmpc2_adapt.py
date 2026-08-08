@@ -96,6 +96,15 @@ def main():
   ap.add_argument('--eval_freq', type=int, default=16_000)
   ap.add_argument('--eval_episodes', type=int, default=16)
   ap.add_argument('--seed_steps', type=int, default=5_000)
+  def _bool(s):
+    v = s.strip().lower()
+    if v in ('true', '1', 'yes'): return True
+    if v in ('false', '0', 'no'): return False
+    raise argparse.ArgumentTypeError(f'expected true/false, got {s!r}')
+  ap.add_argument('--mpc', type=_bool, default=True,
+                  help='2026-08-08 (review #24): pass --mpc False to adapt '
+                       'with the learned actor-critic readout instead of the '
+                       'MPPI planner (family-boundary de-confound).')
   args = ap.parse_args()
 
   add_tdmpc2_path(args.tdmpc2_root)
@@ -122,7 +131,7 @@ def main():
                       buffer_size=args.steps + env.max_episode_steps + 1,
                       eval_freq=args.eval_freq,
                       eval_episodes=args.eval_episodes,
-                      seed_steps=args.seed_steps, mpc=True))
+                      seed_steps=args.seed_steps, mpc=args.mpc))
 
   from tdmpc2 import TDMPC2
   from common.buffer import Buffer
@@ -137,7 +146,7 @@ def main():
         eval_freq=args.eval_freq, eval_episodes=args.eval_episodes,
         seed_steps=args.seed_steps, pretrained=os.path.abspath(args.pretrained),
         frozen_prefixes=list(FROZEN_PREFIXES), n_frozen_tensors=len(frozen_keys),
-        mpc=True, horizon=cfg.horizon,
+        mpc=bool(cfg.mpc), horizon=cfg.horizon,
     ), f, indent=1)
 
   scores_path = logdir / 'scores.jsonl'

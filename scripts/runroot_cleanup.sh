@@ -101,6 +101,17 @@ KEEP_PENDING=(
   #  U1's remain the only copy of undecided scores and moved to DELETE_AFTER)
   ax1wm_finger_s25q1s*_seed* ax1wm_finger_fs25q1s*_seed*
   adapt_ax1s25q1s* adapt_ax1fs25q1s*
+  # 2026-08-08 review-resolution adapt-only waves (registered, not read):
+  # NOTE adapt_tm2mf* would otherwise be eaten by the DELETE-AFTER glob
+  # `adapt_tm2*`; KEEP-PENDING wins. Keep until each wave's bundle is
+  # synced + its ONE read verified.
+  adapt_rif_* adapt_p2eof_* adapt_p2eou_* adapt_ax1ter* adapt_tm2mf*
+  adapt_rndte_*
+  # turn_easy positive-control DONORS (PREREG_orthogonal_poscontrol_20260808):
+  # these globs also sit in DELETE-SAFE above — KEEP-PENDING wins for any
+  # cluster survivors until that wave's read verifies (batch-review B4).
+  ax1wm_finger_rgoq1s0_seed[1-4] ax1wm_finger_rgoq1s1_seed[1-4]
+  ax1wm_finger_sgbq1s0_seed[1-4] ax1wm_finger_sgbq1s1_seed[1-4]
   # R3 run dirs (ckpt_early + ckpt) are the SUBSTRATE of two registered
   # not-yet-executed waves (donor-dependency lesson, fpxpx incident):
   #   * PREREG_r3_amend2_20260730 (cross-checkpoint consumer: 128 label
