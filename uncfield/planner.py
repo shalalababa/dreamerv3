@@ -58,8 +58,14 @@ GH3 = ((0.0, 2.0 / 3.0), (np.sqrt(3.0), 1.0 / 6.0), (-np.sqrt(3.0), 1.0 / 6.0))
 
 
 # ------------------------------------------------------------- cycle catalog
+#
+# FAMILY GENERALITY (7 Aug 2026): every world-dependent function below takes
+# a `world` module defaulting to lgfield. Defaults leave family-1 behavior
+# byte-identical; family 2 (uncfield/dcfield.py, OBS_KIND "categorical")
+# passes `world=dcfield` and shares this planner — same cycle enumeration,
+# same accounting modes, same thresholds, same verdict tree.
 
-def _closed_walks(start, max_len):
+def _closed_walks(start, max_len, world=lg):
     walks = []
 
     def extend(path):
@@ -67,41 +73,41 @@ def _closed_walks(start, max_len):
             walks.append(tuple(path))
         if len(path) > max_len:
             return
-        for nxt in lg.ADJ[path[-1]]:
+        for nxt in world.ADJ[path[-1]]:
             extend(path + [nxt])
 
     extend([start])
     return walks
 
 
-def enumerate_cycles(max_len=6):
+def enumerate_cycles(max_len=6, world=lg):
     """Closed walks with sense variants: sense-all at each visit, or a single
     named sensor per visit (incl. the TV-only loop), or pure movement."""
     seen, cycles = set(), []
-    for start in range(lg.N_NODES):
-        for walk in _closed_walks(start, max_len):
+    for start in range(world.N_NODES):
+        for walk in _closed_walks(start, max_len, world=world):
             canon = min(tuple(walk[i:-1] + walk[:i]) for i in range(len(walk) - 1))
             if canon in seen:
                 continue
             seen.add(canon)
             variants = {"all": None}
             avail = set(walk)
-            for k, s in enumerate(lg.SENSORS):
+            for k, s in enumerate(world.SENSORS):
                 if s.node in avail:
                     variants[f"only_{s.name}"] = k
             variants["move_only"] = -1
             for vname, pick in variants.items():
                 actions = []
                 for i, node in enumerate(walk[:-1]):
-                    for k, s in enumerate(lg.SENSORS):
+                    for k, s in enumerate(world.SENSORS):
                         if s.node != node:
                             continue
                         if pick is None or pick == k:
-                            actions.append(lg.N_NODES + k)
+                            actions.append(world.N_NODES + k)
                     actions.append(walk[i + 1])
                 if pick == -1:
                     actions = [walk[i + 1] for i in range(len(walk) - 1)]
-                if not any(a >= lg.N_NODES for a in actions) and pick != -1:
+                if not any(a >= world.N_NODES for a in actions) and pick != -1:
                     continue
                 cycles.append(dict(name=f"c{len(cycles)}_{'-'.join(map(str, walk))}_{vname}",
                                    nodes=tuple(walk), actions=tuple(actions),
@@ -111,10 +117,18 @@ def enumerate_cycles(max_len=6):
 
 # --------------------------------------------------------------- imagination
 
-def _imagined_step(model, b, action, node, y_mode, rng):
+def _imagined_step(model, b, action, node, y_mode, rng, world=lg):
     """One imagined step; returns (b_next, node_next)."""
-    if action < lg.N_NODES:
+    if action < world.N_NODES:
         return model.step(b, action, node, None), action
+    if getattr(world, "OBS_KIND", "gauss") == "categorical":
+        q = np.asarray(model.obs_probs(b, action), np.float64)
+        q = q / q.sum()
+        if y_mode == "ml":
+            y = int(np.argmax(q))          # deterministic (ties -> symbol 0)
+        else:
+            y = int(rng.choice(len(q), p=q))
+        return model.step(b, action, node, y), node
     ymu, ylv = model.obs_pred(b, action)
     if y_mode == "ml":
         y = ymu
@@ -123,11 +137,23 @@ def _imagined_step(model, b, action, node, y_mode, rng):
     return model.step(b, action, node, y), node
 
 
-def _eig(model, b, action, node):
-    """3-point Gauss-Hermite expected info gain of one sense action."""
+def _eig(model, b, action, node, world=lg):
+    """Expected info gain of one sense action under the model's own
+    predictive: 3-point Gauss-Hermite for Gaussian observations; EXACT
+    symbol enumeration for categorical worlds (same functional, no
+    quadrature error)."""
+    h0 = model.entropy(b)
+    if getattr(world, "OBS_KIND", "gauss") == "categorical":
+        q = np.asarray(model.obs_probs(b, action), np.float64)
+        q = q / q.sum()
+        exp_h = 0.0
+        for y, w in enumerate(q):
+            if w <= 1e-12:
+                continue
+            exp_h += w * model.entropy(model.step(b, action, node, int(y)))
+        return h0 - exp_h
     ymu, ylv = model.obs_pred(b, action)
     sd = np.exp(0.5 * ylv)
-    h0 = model.entropy(b)
     exp_h = 0.0
     for u, w in GH3:
         b1 = model.step(b, action, node, ymu + u * sd)
@@ -136,7 +162,7 @@ def _eig(model, b, action, node):
 
 
 def score_cycle(model, b_start, node_start, cycle, n_loops=N_LOOPS,
-                n_burn=N_BURN, y_mode="ml", seed=0):
+                n_burn=N_BURN, y_mode="ml", seed=0, world=lg):
     """Imagine n_burn burn-in + n_loops scored repeats.
 
     Returns (rates, snaps, burn_dh): per-loop rates for the three scored
@@ -151,7 +177,7 @@ def score_cycle(model, b_start, node_start, cycle, n_loops=N_LOOPS,
     for _ in range(n_burn):
         h_in = model.entropy(b)
         for a in cycle["actions"]:
-            b, node = _imagined_step(model, b, a, node, y_mode, rng)
+            b, node = _imagined_step(model, b, a, node, y_mode, rng, world=world)
         burn_dh.append(h_in - model.entropy(b))
     rates = {"naive_eig": [], "carried_eig": [], "carried_dh": []}
     snaps = [b.copy()]
@@ -163,11 +189,11 @@ def score_cycle(model, b_start, node_start, cycle, n_loops=N_LOOPS,
         g_naive = g_carried = 0.0
         h_in = model.entropy(b)
         for a in cycle["actions"]:
-            if a >= lg.N_NODES:
-                g_carried += _eig(model, b, a, node)
-                g_naive += _eig(model, bn, a, node)
+            if a >= world.N_NODES:
+                g_carried += _eig(model, b, a, node, world=world)
+                g_naive += _eig(model, bn, a, node, world=world)
             node_pre = node
-            b, node = _imagined_step(model, b, a, node_pre, y_mode, rng)
+            b, node = _imagined_step(model, b, a, node_pre, y_mode, rng, world=world)
             bn = model.step(bn, a, node_pre, None)
         rates["naive_eig"].append(g_naive)
         rates["carried_eig"].append(g_carried)
@@ -183,27 +209,27 @@ def steady_rate(per_loop):
 
 # ------------------------------------------------------------ exploit search
 
-def warmup_state(model, seed=0, t_steps=60):
+def warmup_state(model, seed=0, t_steps=60, world=lg):
     """Run a shared random warmup through BOTH the model and the referee so
     predicted and true cycle gains start from matched information states.
     Returns (belief, referee, node). Env seed is offset so the warmup latent
     realization is disjoint from every training episode's."""
-    env = lg.LGFieldEnv(seed=seed + 10 ** 9)
-    ref = lg.KalmanReferee()
+    env = world.Env(seed=seed + 10 ** 9)
+    ref = world.Referee()
     rng = np.random.default_rng(seed + 1)
     b = model.init_belief()
     for _ in range(t_steps):
         node = env.node
-        a = int(rng.choice(lg.valid_actions(node)))
+        a = int(rng.choice(world.valid_actions(node)))
         _, y, sensed = env.step(a)
         if sensed is not None:
-            ref.update(lg.SENSORS[sensed], y)
+            ref.update(world.SENSORS[sensed], y)
         ref.predict()
         b = model.step(b, a, node, y)
     return b, ref, env.node
 
 
-def _route_to(node_from, node_to):
+def _route_to(node_from, node_to, world=lg):
     """Shortest move-action path on the small graph (BFS)."""
     if node_from == node_to:
         return []
@@ -211,7 +237,7 @@ def _route_to(node_from, node_to):
     while frontier:
         nxt = []
         for u in frontier:
-            for v in lg.ADJ[u]:
+            for v in world.ADJ[u]:
                 if v not in prev:
                     prev[v] = u
                     nxt.append(v)
@@ -224,19 +250,19 @@ def _route_to(node_from, node_to):
 
 
 def search_exploits(model, seed=0, max_len=6, n_loops=N_LOOPS, n_burn=N_BURN,
-                    y_mode="ml"):
+                    y_mode="ml", world=lg):
     """Full sweep: every cycle scored in imagination + exact true gains,
     both measured over the same post-burn-in loop window.
 
     Returns a list of per-cycle result dicts (sorted by carried_dh rate) and
     the shared warmup context.
     """
-    b0, ref0, node0 = warmup_state(model, seed=seed)
+    b0, ref0, node0 = warmup_state(model, seed=seed, world=world)
 
     # Pass 1: score every cycle (predicted modes + burn window + referee).
     results = []
-    for cycle in enumerate_cycles(max_len=max_len):
-        route = _route_to(node0, cycle["start"])
+    for cycle in enumerate_cycles(max_len=max_len, world=world):
+        route = _route_to(node0, cycle["start"], world=world)
         b, node = b0.copy(), node0
         ref = ref0.copy()
         for mv in route:
@@ -245,9 +271,10 @@ def search_exploits(model, seed=0, max_len=6, n_loops=N_LOOPS, n_burn=N_BURN,
             ref.predict()
         rates, snaps, burn_dh = score_cycle(model, b, node, cycle,
                                             n_loops=n_loops, n_burn=n_burn,
-                                            y_mode=y_mode, seed=seed)
-        true_all, _ = lg.true_cycle_gain(ref, list(cycle["actions"]),
-                                         n_burn + n_loops)
+                                            y_mode=y_mode, seed=seed,
+                                            world=world)
+        true_all, _ = world.true_cycle_gain(ref, list(cycle["actions"]),
+                                            n_burn + n_loops)
         res = dict(cycle=cycle,
                    true_rate=steady_rate(true_all[n_burn:]),
                    true_first=float(true_all[0]),

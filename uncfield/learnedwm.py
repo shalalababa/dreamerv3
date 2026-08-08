@@ -62,6 +62,28 @@ def init_params(seed, hid=HID):
     return p
 
 
+def init_params_lstm(seed, hid=HID, d_in=None):
+    """LSTM-cell parameters with the SAME head structure (family factorial,
+    7 Aug 2026). Belief vector = [h, c] (width 2*hid); heads read h only."""
+    d_in = D_IN if d_in is None else d_in
+    key = jax.random.PRNGKey(seed)
+    ks = jax.random.split(key, 16)
+    p = {}
+    for i, g in enumerate(("i", "f", "o", "g")):
+        p[f"lW{g}"] = _glorot(ks[3 * i], (d_in, hid))
+        p[f"lU{g}"] = _glorot(ks[3 * i + 1], (hid, hid))
+        p[f"lb{g}"] = jnp.zeros(hid)
+    p["zh_W1"] = _glorot(ks[12], (hid, 64))
+    p["zh_b1"] = jnp.zeros(64)
+    p["zh_W2"] = _glorot(ks[13], (64, 2 * lg.DZ))
+    p["zh_b2"] = jnp.zeros(2 * lg.DZ)
+    p["oh_W1"] = _glorot(ks[14], (hid + lg.N_ACTIONS, 64))
+    p["oh_b1"] = jnp.zeros(64)
+    p["oh_W2"] = _glorot(jax.random.PRNGKey(seed + 999), (64, 2))
+    p["oh_b2"] = jnp.zeros(2)
+    return p
+
+
 # ------------------------------------------------------------------- network
 
 def gru_step(p, b, x):
@@ -71,15 +93,49 @@ def gru_step(p, b, x):
     return (1.0 - z) * b + z * h
 
 
+def lstm_step(p, hc, x):
+    """Standard LSTM on the belief vector hc = concat[h, c]."""
+    hid = p["lbi"].shape[0]
+    h, c = hc[..., :hid], hc[..., hid:]
+    i = jax.nn.sigmoid(x @ p["lWi"] + h @ p["lUi"] + p["lbi"])
+    f = jax.nn.sigmoid(x @ p["lWf"] + h @ p["lUf"] + p["lbf"])
+    o = jax.nn.sigmoid(x @ p["lWo"] + h @ p["lUo"] + p["lbo"])
+    g = jnp.tanh(x @ p["lWg"] + h @ p["lUg"] + p["lbg"])
+    c_new = f * c + i * g
+    h_new = o * jnp.tanh(c_new)
+    return jnp.concatenate([h_new, c_new], axis=-1)
+
+
+def is_lstm(p):
+    return "lWi" in p
+
+
+def cell_step(p, b, x):
+    """Cell dispatch on the params dict (static at trace time)."""
+    return lstm_step(p, b, x) if is_lstm(p) else gru_step(p, b, x)
+
+
+def belief_width(p):
+    hid = p["zh_W1"].shape[0]
+    return 2 * hid if is_lstm(p) else hid
+
+
+def _head_features(p, b):
+    """Slice the head-visible features from the belief vector: h-part for
+    LSTM, identity for GRU (exact — GRU beliefs are exactly hid wide)."""
+    return b[..., : p["zh_W1"].shape[0]]
+
+
 def z_head(p, b):
-    h = jnp.tanh(b @ p["zh_W1"] + p["zh_b1"])
+    h = jnp.tanh(_head_features(p, b) @ p["zh_W1"] + p["zh_b1"])
     out = h @ p["zh_W2"] + p["zh_b2"]
     mu, logvar = out[..., : lg.DZ], out[..., lg.DZ:]
     return mu, jnp.clip(logvar, LOGVAR_MIN, LOGVAR_MAX)
 
 
 def obs_head(p, b, a_onehot):
-    h = jnp.tanh(jnp.concatenate([b, a_onehot], -1) @ p["oh_W1"] + p["oh_b1"])
+    h = jnp.tanh(jnp.concatenate([_head_features(p, b), a_onehot], -1)
+                 @ p["oh_W1"] + p["oh_b1"])
     out = h @ p["oh_W2"] + p["oh_b2"]
     return out[..., 0], jnp.clip(out[..., 1], LOGVAR_MIN, LOGVAR_MAX)
 
@@ -101,14 +157,14 @@ def _gauss_nll(target, mu, logvar):
 
 def seq_loss(p, xs, a1h, zt, ymask, ytrue):
     """xs (T,D_IN); a1h (T,n_act); zt (T,DZ); ymask/ytrue (T,)."""
-    b0 = jnp.zeros(p["bz"].shape[0])
+    b0 = jnp.zeros(belief_width(p))
 
     def step(b, inp):
         x, a, z, m, y = inp
         # obs head predicts the INCOMING observation from the prior belief
         ymu, ylv = obs_head(p, b, a)
         onll = m * _gauss_nll(y, ymu, ylv)
-        b_next = gru_step(p, b, x)
+        b_next = cell_step(p, b, x)
         mu, lv = z_head(p, b_next)
         znll = jnp.sum(_gauss_nll(z, mu, lv))
         return b_next, znll + onll
@@ -146,10 +202,11 @@ def episodes_to_arrays(episodes):
 
 
 def train_model(episodes, seed, steps=3000, batch=64, lr=1e-3, hid=HID,
-                verbose=False):
+                verbose=False, cell="gru"):
     data = episodes_to_arrays(episodes)
     n = data[0].shape[0]
-    params = init_params(seed, hid=hid)
+    params = init_params(seed, hid=hid) if cell == "gru" \
+        else init_params_lstm(seed, hid=hid)
     opt = optax.adam(lr)
     opt_state = opt.init(params)
 
@@ -187,12 +244,12 @@ class LearnedModel:
 
     def __init__(self, params):
         self.p = params
-        self._step = jax.jit(lambda p, b, x: gru_step(p, b, x))
+        self._step = jax.jit(lambda p, b, x: cell_step(p, b, x))
         self._zh = jax.jit(lambda p, b: z_head(p, b))
         self._oh = jax.jit(lambda p, b, a: obs_head(p, b, a))
 
     def init_belief(self):
-        return np.zeros(self.p["bz"].shape[0], np.float32)
+        return np.zeros(belief_width(self.p), np.float32)
 
     def step(self, b, action, node, y):
         x = make_input(action, node, y)

@@ -205,6 +205,13 @@ def true_cycle_gain(referee, cycle_actions, n_repeats):
     return np.array(per), ref
 
 
+# Canonical aliases + observation-kind tag consumed by the world-
+# parameterized planner (7 Aug 2026 family factorial; pure additions).
+OBS_KIND = "gauss"
+Env = LGFieldEnv
+Referee = KalmanReferee
+
+
 def selfcheck():
     """Referee integrity: chain rule, duplicate decay, TV-zero, commutator."""
     out = {}

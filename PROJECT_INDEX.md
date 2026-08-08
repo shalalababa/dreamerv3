@@ -84,6 +84,21 @@ Frozen pre-outcome readers, one per registered experiment; each has a
   collusion_stage23_20260725 + collusion_calib_20260730 (calibration:
   terminal reference frozen, Design-A dissociation smoke);
   confirmatory sweep registered `PREREG_collusion_confirm_20260730`.
+- `uncfield/` — Paper-5 NFI/CEI harness (1–7 Aug): `lgfield.py`
+  (LG world + exact Kalman referee; family-1), `dcfield.py` (7 Aug:
+  discrete-chain world + exact 256-state joint Bayes referee w/
+  observation-independence certificate; family-2), `planner.py`
+  (world-parameterized cycle-sweep planner, three accounting modes,
+  verdict tiers — thresholds shared across families), `learnedwm.py`
+  (GRU + additive-LSTM belief WMs + planted adapters), `dcwm.py`
+  (categorical belief WMs + dc planted battery), `pilot.py`/`sweeps.py`
+  (family-1 pilots + sensitivity queue), `family2.py`/`family2_read.py`
+  (generality factorial runner + frozen reader,
+  `PREREG_nfi_family2_20260807`), `mechanism.py`/`ratio_research.py`/
+  `gamma_rescore.py`/`cig_kernel.py`/`p1_rescore.py` (mechanism +
+  fidelity arms + PRIME-P1), `cei2.py` (CEI v2 calibration-falseness
+  pilot; `cei.py` = withdrawn v1, warning header), `residues.py`
+  (family-1 diagnostics).
 - `embodied/envs/distractor.py` — OU distractor wrapper (dose arms;
   restorable via oracle_get/set_state).
 - `embodied/envs/orthreward.py` — orthogonal-objective reward override
@@ -131,61 +146,78 @@ Frozen pre-outcome readers, one per registered experiment; each has a
 
 ## Plans, theory, reviews — `research_notes/` [gitignored]
 
-- `Roadmap_20260718.md` — the live status board (bands A–D + standing
-  tracks), updated every read.
-- `Research_Plan_v4_20260711.tex` — Paper-1 plan of record (v4).
-- `Theory_SpectralTransfer_20260717.tex` (+ decoder-free addendum
-  18 Jul + comp×capacity addendum
-  `Theory_CompCapacity_Addendum_20260724.tex`) — spectral-competition
-  model behind the P-A/P-B/P-E predictions.
-- `Direction_Review_TheoryMapping_20260724.md` — ledger sweep + method
-  mapping (λ/βa²/g table) + SOTA sequencing.
-- `Note_ExplainedBoundary_20260724.md` — draft-section note: TD-MPC2
-  boundary as predicted structure + "inclusion ≠ usefulness" named
-  claim.
-- Paper 3/4 launches: `Plan_CompCapacity_Launch_20260724.md`,
-  `Plan_Collusion_Launch_20260724.md`,
-  `Design_Collusion_Pilot_20260724.md` (pilot design of record).
-- `Research_Branch_Ideas_Triage_20260717.tex` — branch-idea scoring;
-  band definitions for the 40–55% claim strength.
-- Paper-1 writing pack (30 Jul, adversarially reviewed):
-  `Paper1_Distillation_20260730.md` (prof deliverable),
-  `Paper1_ResponseCurves_20260730.md` (+`figures_paper1_20260730/`),
-  `Paper1_TheoryAssumptions_20260730.md`,
-  `Paper1_ProseHygiene_20260730.md`,
-  `Paper1_PracticalCorollary_20260730.md`,
-  `Theory_HighFR_Prediction_20260730.md` (companion to the committed
-  `prereg/PREREG_highfr_theory_20260730.md` freeze).
-- Exec plans: `Plan_Stamping_20260717.md`,
-  `Plan_ScalingPilot_Exec_20260717.md`,
+**Reorganized 7 Aug 2026** to paper-first/genre-second. Paths cited in
+`prereg/`, `artifacts/`, `STUDY_LEDGER.md`, `analysis/DEVIATIONS.md`,
+and source-file comments were NOT rewritten (the first two are
+immutable; the frozen readers' shas are integrity checks) — resolve any
+pre-7-Aug research_notes path via `research_notes/PATHMAP.md`.
+
+Root: `README.md` (layout + conventions), `PATHMAP.md` (reorg
+redirects), `TODO.md` (shared working list), `Roadmap_20260718.md` (the
+live status board, bands A–D + standing tracks, updated every read).
+
+- `paper1_wm_transfer/` — `Paper1_FullRecord_20260807.md` (complete
+  research record; entry doc). `plan/` = `Research_Plan_v4_20260711.tex`
+  (plan of record). `theory/` = `Theory_SpectralTransfer_20260717.tex`
+  + decoder-free addendum 18 Jul + `Theory_HighFR_Prediction_20260730.md`
+  (companion to the committed `prereg/PREREG_highfr_theory_20260730.md`
+  freeze) — the spectral-competition model behind the P-A/P-B/P-E
+  predictions. `exec/` = per-wave plans (`Plan_Stamping_20260717.md`,
+  `Plan_ScalingPilot_Exec_20260717.md` + `Scaling_Pilot_Design_Brief_20260716.tex`,
   `Plan_PixelReplication_Exec_20260718.md`,
   `Plan_TDMPC2_FamilyBoundary_Exec_20260718.md`,
-  `Plan_PredictableHeads_20260717.md`.
-- Editorial reviews: `Research_Editorial_Review_v3/v4_20260711.tex`,
-  `Research_Editorial_Review_EVPI_20260711.tex`.
-- `other research/` — Paper 2 (EVPI): `EVPI_theory_note_20260702.tex`
-  + addendum, plan revisions v2–v4
-  (`EVPI_Plan_Revision_20260712/23/24.md` — v4 current), external
-  reviews (`D1_GPT_Analysis_20260723/24.md`), estimator checks; plus
-  `Idea_*.tex` briefs (side-project triage).
-- `Research_Other_Ideas_20260701.tex` — field scans / future
-  directions.
-- `Research_Methodology_Directions_Claims_20260801.tex` — standing
-  methodology note: direction / research-question / claim taxonomy,
-  six-level claim-granularity ladder, and the lit-check placement rule
-  (shallow check to start, exhaustive audit at claim-freeze); governs
-  new-direction selection for Papers 4/5+.
-- `Research_Idea_Uncertainty_field_20260727.tex` (external review, 7
-  directions, recommends Belief Hydrodynamics) +
-  `Research_Idea_Uncertainty_field_Fable_20260727.tex` (companion:
-  Riccati/determinism backbone, constitutive-laws program, repo
-  bridges, composition deltas + costed pilot) — Paper-5 seed
-  (solo project, own clock, finish-early; at most late-stage
-  prof review — the notes' "collaboration" framing is superseded
-  30 Jul).
-- `Audit_FrozenProtocol_20260726.md` (+ `_claims_*.json`) — 47-claim
-  frozen-vs-unfrozen protocol audit; U1–U4 stress-wave design.
-- `archive/` — superseded docs.
+  `Plan_PredictableHeads_20260717.md`). `writing/` = the 30-Jul
+  adversarially-reviewed pack (`Paper1_Distillation` = prof deliverable,
+  `Paper1_ResponseCurves`, `Paper1_TheoryAssumptions`,
+  `Paper1_ProseHygiene`, `Paper1_PracticalCorollary`,
+  `Note_ExplainedBoundary_20260724.md` = TD-MPC2 boundary as predicted
+  structure + the "inclusion ≠ usefulness" named claim). `audits/` =
+  `Audit_FrozenProtocol_20260726.md` (+ `_claims_*.json`; 47-claim
+  frozen-vs-unfrozen audit, U1–U4 stress-wave design) +
+  `Direction_Review_TheoryMapping_20260724.md` (ledger sweep + λ/βa²/g
+  method mapping + SOTA sequencing). `figures/paper1_20260730/` +
+  `figures/theory_20260804/`.
+- `paper2_evpi/` — `plan/` = `EVPI_Plan_Revision_20260712/23/24.md`
+  (v4 = 24 Jul current); `theory/` = `EVPI_theory_note_20260702.tex` +
+  addendum + memo; `design/` = competence-repair note + estimator
+  checks (`evpi_estimator_check_20260702.py`); `writing/` = Route-B
+  outline + `draft/` (the LaTeX sections); `reviews/` =
+  `D1_GPT_Analysis_20260723/24.md`, Route-A revision options, econ
+  reader review, `Research_Editorial_Review_EVPI_20260711.tex`.
+- `paper3_comp_capacity/` — `Plan_CompCapacity_Launch_20260724.md` +
+  `Theory_CompCapacity_Addendum_20260724.tex` (comp×capacity addendum
+  to the spectral model; P-E1–P-E4).
+- `paper4_collusion/` — `Plan_Collusion_Launch_20260724.md`,
+  `Design_Collusion_Pilot_20260724.md` (pilot design of record),
+  innovation audit, venue scan.
+- `paper5_uncertainty_field/` — `ideation/` =
+  `Research_Idea_Uncertainty_field_20260727.tex` (external review, 7
+  directions, recommends Belief Hydrodynamics) + the Fable companion
+  (Riccati/determinism backbone, constitutive-laws program, repo
+  bridges, costed pilot) + object-vs-field connections note; `theory/`
+  = `Theory_CEI_20260804.tex`; `design/` = `Design_CEI_v2_20260802.md`,
+  `Pilot_NFI_Design_20260801.md`; `audits/` = innovation audits ×3,
+  `NFI_ClaimFreeze_Audit_20260802.md`, `NFI_ScoopRescan_20260804.md`.
+  Solo project, own clock, finish-early; at most late-stage prof review
+  — the notes' "collaboration" framing is superseded 30 Jul.
+- `cross_cutting/` — `methodology/` =
+  `Research_Methodology_Directions_Claims_20260801.tex` (standing note:
+  direction / research-question / claim taxonomy, six-level
+  claim-granularity ladder, lit-check placement rule — shallow check to
+  start, exhaustive audit at claim-freeze; governs new-direction
+  selection for Papers 4/5+) + the critical-review prompt. `ideation/`
+  = `Research_Other_Ideas_20260701.tex` (field scans / future
+  directions), `Research_Branch_Ideas_Triage_20260717.tex` (branch-idea
+  scoring; band definitions for the 40–55% claim strength), the 13-Jul
+  innovation audit, and the five `Idea_*.tex` side-project briefs.
+  `reviews/` = `Research_Editorial_Review_v3/v4_20260711.tex`.
+- `meetings/` — raw discussion notes + `Meeting_Response_ProfDiscussion_20260729.md`.
+- `slides/` — all decks, chronological: dated `research_update_*` /
+  `group_meeting_*` plus the per-paper `personal_research_paper_N_*`.
+- `archive/` — superseded docs: the brainstorming series, plan v1/v2 +
+  criticism, runbook v1/v2, `Research_Plan_v3_20260701.tex`,
+  `Addendum_Post5a_Enhancements_20260707.tex`,
+  `Runbook_Addendum_RepConvergence_20260703.tex`, and the reorg plan.
 
 ## Data [gitignored]
 
@@ -199,3 +231,13 @@ Frozen pre-outcome readers, one per registered experiment; each has a
   read via `... verify <bundle> manifests/<bundle>.sha256`).
 - Cluster runroot (not in repo): see the DreamerV3-cluster-layout
   memory / `scripts/env.sh` for paths.
+- `temp_files/ops/` **[gitignored]** — cluster/instance operations
+  notes (grouped 7 Aug 2026; `temp_files/` root is scratch):
+  `instance_initiation_with_template.md` (cloud-instance setup, env
+  creation, repo/buffer sync, verification), `instance_sample_commands.md`
+  (launch / monitor / snapshot-refresh / result-sync patterns),
+  `instance_helper_design_notes.md` (per-GPU-lane queue design),
+  `template_onstart_script.sh` (Vast onstart template), `SU_usage.txt`
+  (RCC service-unit burn + per-GPU task runtimes), `ssh-keys.txt`.
+  Submission gotchas (`--export=ALL` module leakage; GPU jobs not
+  job-to-job deterministic on Midway3) live in the same memory.
