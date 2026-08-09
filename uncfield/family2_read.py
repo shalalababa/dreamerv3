@@ -112,7 +112,30 @@ def read_cell(cell_dir):
     return summary, members, ens
 
 
-def run_read(root, smoke=False):
+REPRO_PATH = (pathlib.Path(__file__).resolve().parent.parent / "artifacts"
+              / "nfi_family2_read_20260807" / "reproduction.json")
+
+
+def _reproduction_ok(path=None):
+    """Amendment-1 compensating control: clean-HEAD end-to-end model-level
+    reproduction of the claim-carrying dc members (see
+    prereg/PREREG_nfi_family2_amend1_20260809.md)."""
+    path = pathlib.Path(path or REPRO_PATH)
+    if not path.exists():
+        return False
+    try:
+        rec = json.load(open(path))
+    except Exception:
+        return False
+    if not rec.get("control_passes"):
+        return False
+    cells_ok = {e.get("cell") for e in rec.get("members", [])
+                if e.get("match_names") and e.get("match_neutral")
+                and e.get("max_rate_dev", 1.0) < 1e-6}
+    return {"dc_gru", "dc_lstm"} <= cells_ok
+
+
+def run_read(root, smoke=False, repro_path=None):
     halt = []
     cells = {}
     for cell in CELLS:
@@ -139,6 +162,14 @@ def run_read(root, smoke=False):
                     s.get("n_burn"), s.get("n_loops"))
             if pins != (0.02, 0.08, 30, 8):
                 halt.append(f"G-STAMP: {c} thresholds {pins}")
+        # Amendment 1 (9 Aug 2026): a dirty stamp HALTs unless the
+        # registered compensating control (clean-HEAD model-level
+        # reproduction of the claim-carrying dc members) is on record.
+        if any(s.get("dirty") for s in stamps.values()) \
+                and not _reproduction_ok(repro_path):
+            halt.append("G-STAMP: dirty stamp(s) without the Amendment-1 "
+                        "reproduction record (see "
+                        "PREREG_nfi_family2_amend1_20260809)")
         sha_g = cells["dc_gru"]["summary"].get("episodes_sha")
         sha_l = cells["dc_lstm"]["summary"].get("episodes_sha")
         if not sha_g or sha_g != sha_l:
@@ -185,7 +216,90 @@ def run_read(root, smoke=False):
     return out
 
 
+def _write_fixture(root, tamper=None):
+    """Synthetic 3-cell tree exercising the FULL run_read path (gates +
+    P-F2/P-F2b logic). Default: every member cig-only-exploiting, clean
+    identical stamps, matched dc shas → P-F2 fires, P-F2b does not.
+    `tamper` mutates one aspect to arm a specific gate/decision test."""
+    import os
+    stamp = dict(git="fixture1", dirty=False, eps_true=0.02, eps_pred=0.08,
+                 n_burn=30, n_loops=8)
+    for ci, cell in enumerate(CELLS):
+        d = root / cell
+        d.mkdir(parents=True, exist_ok=True)
+        members = []
+        for m in range(2):
+            cols = dict(names=np.array([f"c0_x_all", f"c1_y_move_only"]),
+                        true_rate=np.array([0.0, 0.0]),
+                        naive=np.array([0.0, 0.0]),
+                        carried=np.array([0.2, 0.0]),
+                        dh=np.array([0.0, 0.0]),
+                        dh_adj=np.array([0.0, 0.0]),
+                        transient=np.array([0.0, 0.0]),
+                        neutral=np.array([True, True]))
+            if tamper == "cell2_dead" and cell == "dc_lstm":
+                cols["carried"] = np.array([0.0, 0.0])
+            np.savez(d / f"results_m{m}.npz", **cols)
+            v = member_verdict(member_flags(cols))
+            members.append(dict(member=m, verdict=v))
+        if tamper == "tampered_verdict" and cell == "dc_gru":
+            members[0]["verdict"] = pl.VERDICTS[5]
+        s = dict(label=cell, world="dc" if cell.startswith("dc") else "lg",
+                 seed=0, members=members,
+                 ensemble_verdict=ensemble_verdict(
+                     [m["verdict"] for m in members]),
+                 stamp=dict(stamp), episodes_sha="e" * 8)
+        if tamper == "mixed_stamp" and cell == "dc_lstm":
+            s["stamp"]["git"] = "other"
+        if tamper == "sha_mismatch" and cell == "dc_lstm":
+            s["episodes_sha"] = "f" * 8
+        if tamper == "dirty":
+            s["stamp"]["dirty"] = True
+        with open(d / "summary.json", "w") as f:
+            json.dump(s, f)
+
+
 def selfcheck():
+    # (0) run_read-level fixture battery (9 Aug hardening — kills the
+    # review's surviving gate/decision mutants incl. the CIG_LEVEL flip).
+    import contextlib, io, tempfile
+    with tempfile.TemporaryDirectory() as td:
+        td = pathlib.Path(td)
+
+        def rr(tamper=None, repro=None):
+            root = td / (tamper or "clean")
+            _write_fixture(root, tamper)
+            with contextlib.redirect_stdout(io.StringIO()):
+                return run_read(root, smoke=False, repro_path=repro)
+
+        out = rr()
+        assert out.get("pf2_primary_fires") is True, \
+            "fixture fire failed (kills CIG_LEVEL flip: at level 5 these " \
+            "cig-only cells would not fire)"
+        assert out.get("pf2b_secondary_fires") is False
+        out = rr("cell2_dead")
+        assert out.get("pf2_primary_fires") is False, \
+            "one dead cell must kill the primary (kills all->any mutant)"
+        none_path = str(td / "no_such_repro.json")
+        for tamper, label in (("mixed_stamp", "G-STAMP uniformity"),
+                              ("sha_mismatch", "G-DATA"),
+                              ("tampered_verdict", "G-REPRO"),
+                              ("dirty", "Amendment-1 dirty gate")):
+            # pin a nonexistent repro path so the REAL artifact record
+            # can never satisfy the fixture's dirty case
+            out = rr(tamper, repro=none_path)
+            assert "halt" in out, f"{label} gate mutant undetected"
+        # dirty + valid reproduction record → proceeds
+        rp = td / "repro.json"
+        json.dump(dict(control_passes=True, members=[
+            dict(cell="dc_gru", member=1, match_names=True,
+                 match_neutral=True, max_rate_dev=1e-9),
+            dict(cell="dc_lstm", member=3, match_names=True,
+                 match_neutral=True, max_rate_dev=1e-9)]), open(rp, "w"))
+        out = rr("dirty", repro=str(rp))
+        assert "halt" not in out and out.get("pf2_primary_fires") is True, \
+            "dirty+reproduction path failed"
+
     # (1) Reader-vs-runner agreement on the real (quarantined) smoke files.
     smoke_root = ROOT / "family2_smoke"
     assert all((smoke_root / c / "summary.json").exists() for c in CELLS), \

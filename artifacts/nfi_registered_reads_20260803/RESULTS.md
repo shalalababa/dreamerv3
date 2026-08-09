@@ -1,3 +1,27 @@
+## ⚠ AMENDMENT (9 Aug 2026) — drift-baseline artifact in the conjunction statistic
+
+Read through this note first (full basis: reviews/Review_FullRecord_and_Draft_20260809.md
+§§1.1, 14 + artifacts/nfi_review_response_20260809/). (1) **P-N1's registered
+criterion (≥6/8 members ≥ CIG-ONLY) is UNAFFECTED and stands at 8/8** — it is the
+carried leg only. The CONJUNCTION descriptives ("6/8 at the full conjunction",
+n_both counts 21/41/45/87/14/122) are drift-adjusted quantities: on the raw statistic
+the registered cells' conjunctions carry mean credits +0.14 to +0.21 with 0–3 cycles
+clearing raw threshold. (2) Machine-record errors, corrected here: reads.json says
+"95/4080" — the prereg and the data say **95/816**; reads.json's `"others": 0` is
+wrong — **m1 has 129 negative-ale senses** (all on non-neutral dynamic cycles), which
+the prereg required to be reported alongside m3's; this RESULTS.md's "ratios far above
+the 1.000 coherent calibration everywhere" is false as written — **5 of 30 cells are
+≤ 1** (min 0.228). (3) Stamp disclosure was incomplete: stamp `96500fc` is a
+PRE-freeze ancestor of aa0d2efd and `p1_rescore.py` differs (21+/13− in `main()` only
+— selfcheck hardening + atomic write; `run_member`/`replay_cycle_senses` and the
+entire data path are byte-identical). The file list in the header below omits
+p1_rescore; it should not have. (4) This wave was read WITHOUT a frozen reader — the
+registered constants were applied in-session. The arithmetic was verified exact by
+the 9-Aug review; a retroactive frozen reader with selfcheck now exists
+(`uncfield/confirm_read.py`) and reproduces this record.
+
+---
+
 # NFI Registered Reads — Results Record (CONFIRMATORY, per frozen prereg)
 
 **Date:** 3 Aug 2026. All reads executed exactly per

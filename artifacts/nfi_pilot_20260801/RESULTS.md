@@ -1,3 +1,24 @@
+## ⚠ AMENDMENT (9 Aug 2026) — drift-baseline artifact in the conjunction statistic
+
+Read through this note first. The 12-lens review of 9 Aug
+(`research_notes/paper5_uncertainty_field/reviews/Review_FullRecord_and_Draft_20260809.md`
+§1, independently verified by recomputation — `artifacts/nfi_review_response_20260809/`)
+established that this record's FLAGSHIP CONJUNCTION verdict is an artifact of the
+move-only drift correction: measured drifts are NEGATIVE in every member, so
+`carried_dh_adj = carried_dh − drift·n_actions` is an additive CREDIT (median +0.054
+to +0.141 on flagged cycles, vs threshold 0.08). On the RAW realized-ΔH statistic the
+conjunction counts are **0 / 0 / 0 / 1** (vs reported 13/61/0/61); 52 of m3's 61
+flagged cycles have raw ΔH ≤ 0 (belief entropy ROSE). Recomputing the published
+verdict tree on the raw statistic gives ensemble **EXPLOIT-SURVIVES-CIG-ONLY**, not
+CIG+PBIM. The 1-Aug harness review's sign analysis ("this correction raised the bar")
+was backwards for negative drifts. **UNAFFECTED:** the carried (prefix-conditioned
+EIG) leg — every carried number, the 31× chord exhibit, the member heterogeneity of
+the carried leg, and the planted-null/positive battery verdicts as battery outcomes.
+The conjunction/PBIM-leg quantities in this record are superseded by the raw-statistic
+tables in the review-response record.
+
+---
+
 # NFI Level-1 Pilot — Results Record (EXPLORATORY, not registered)
 
 > **Naming note (claim-freeze audit, 2 Aug 2026):** the verdict tier

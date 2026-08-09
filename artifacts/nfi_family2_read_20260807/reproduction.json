@@ -1,0 +1,44 @@
+{
+ "purpose": "PREREG_nfi_family2_amend1_20260809 compensating control (device-matched CPU attempt 2; GPU attempt 1 deviated 1.68e-6 = documented jax device effect, disclosed in the amendment)",
+ "host_git": "d365149f",
+ "device": "cpu (JAX_PLATFORMS=cpu, matching registered runs)",
+ "members": [
+  {
+   "cell": "dc_gru",
+   "member": 1,
+   "match_names": true,
+   "match_neutral": true,
+   "max_rate_dev": 5.329070518200751e-15,
+   "rate_devs": {
+    "true_rate": 5.329070518200751e-15,
+    "carried": 1.1102230246251565e-15,
+    "dh": 3.3306690738754696e-16,
+    "dh_adj": 3.3306690738754696e-16,
+    "naive": 1.2212453270876722e-15,
+    "transient": 4.975186929101483e-15
+   },
+   "verdict": "EXPLOIT-SURVIVES-CIG+PBIM",
+   "n_exploit_both": 2,
+   "elapsed_s": 70.4
+  },
+  {
+   "cell": "dc_lstm",
+   "member": 3,
+   "match_names": true,
+   "match_neutral": true,
+   "max_rate_dev": 5.329070518200751e-15,
+   "rate_devs": {
+    "true_rate": 5.329070518200751e-15,
+    "carried": 1.7763568394002505e-15,
+    "dh": 4.440892098500626e-16,
+    "dh_adj": 4.440892098500626e-16,
+    "naive": 2.1094237467877974e-15,
+    "transient": 4.989064716909297e-15
+   },
+   "verdict": "EXPLOIT-SURVIVES-CIG+PBIM",
+   "n_exploit_both": 3,
+   "elapsed_s": 70.2
+  }
+ ],
+ "control_passes": true
+}

@@ -1,3 +1,17 @@
+## ⚠ AMENDMENT (9 Aug 2026) — drift-baseline artifact in the conjunction statistic
+
+Read through this note first. The γ-arm's per-member statements about CONJUNCTION
+cycle sets (e.g. "34/61 of m3's conjunction cycles farm level-neutrally") quantify
+over the drift-ADJUSTED conjunction sets, which the 9-Aug review showed are
+credit-manufactured in family 1 (raw counts 0/0/0/1; see
+reviews/Review_FullRecord_and_Draft_20260809.md §1 and the pilot record's amendment).
+The γ-invariance of the telescoped RETURN PREFERENCE and the stream-tax law are
+statements about preference/stream structure and are unaffected as mechanics; their
+application to "exploit" sets should be re-read against carried-leg exploit sets.
+The kernel arm (carried/EIG accounting space) is unaffected.
+
+---
+
 # NFI Defense-Fidelity Arms — Results Record (EXPLORATORY, not registered)
 
 **Date:** 2 Aug 2026. The two pre-freeze verification arms mandated by the

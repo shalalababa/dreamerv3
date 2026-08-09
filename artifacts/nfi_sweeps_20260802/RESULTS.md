@@ -1,3 +1,22 @@
+## ⚠ AMENDMENT (9 Aug 2026) — drift-baseline artifact in the conjunction statistic
+
+Read through this note first (full basis:
+`reviews/Review_FullRecord_and_Draft_20260809.md` §§1,3 + `artifacts/nfi_review_response_20260809/`).
+(1) Every CONJUNCTION count in this record is the drift-adjusted statistic, which the
+9-Aug review showed is credit-manufactured in family 1 (raw pilot2 counts 0/0/0/1);
+the dose-curve and capacity statements about the conjunction inherit that caveat, and
+the dose curve's n=4 peak is additionally not statistically supported (interior peak
+arises with p≈0.45 under a constant-rate null). (2) The capacity sentence "the exploit
+GROWS with capacity" is tier-membership only and is CONTRADICTED in magnitude: mean
+conjunction counts run 42.0 → 33.8 → 14.2 (hid32→64→128), with tier membership
+confounded with seed (fixed-capacity seed band spans 2/4–4/4). Corrected wording:
+"more seeds become exploitable at higher capacity while per-member exploit counts do
+not increase; not separable from seed variation at one cell per level."
+**UNAFFECTED:** the 37/40 carried-leg membership (the record's headline), obs-mode and
+fresh-data robustness of the carried leg, and hid32's NO-EXPLOIT member.
+
+---
+
 # NFI Sensitivity Sweeps — Results Record (EXPLORATORY, not registered)
 
 > **Naming note (claim-freeze audit, 2 Aug 2026):** the verdict tier

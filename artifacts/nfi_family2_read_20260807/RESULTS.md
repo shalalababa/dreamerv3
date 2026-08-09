@@ -1,3 +1,36 @@
+## ⚠ AMENDMENT (9 Aug 2026) — drift-baseline artifact in the conjunction statistic
+
+Read through this note first (full basis: reviews/Review_FullRecord_and_Draft_20260809.md
+§§2,14,15 + artifacts/nfi_review_response_20260809/). (1) FAVORABLE: family 2's
+conjunction statistic is drift-clean — all 5 conjunction cycles are identical on raw
+and adjusted ΔH (drift credits ~1e-4), verified independently, and the dc_gru m1 cell
+was end-to-end reproduced from ensemble.pkl at clean HEAD (names/neutral bitwise,
+rates at float64 round-off). (2) WINDOW SENSITIVITY (9 Aug re-score, review's
+recommended test): all 5 conjunctions REPRODUCE at the registered window (dev ≤1e-7)
+but hold at **0/5 in the early window (loops 2–5) and 0/5 in the late window (loops
+37–40)** — the realized-ΔH conjunction is a mid-imagination-depth transient here too.
+Combined with the family-1 drift finding: **the study has no window-robust
+realized-ΔH claim in either family**; the conjunction is a window-scoped descriptive.
+The CARRIED leg's window behavior is member-heterogeneous: top-5 carried exploits
+persist at loops 37–40 in 5/8 dc members (all four dc_lstm + dc_gru m3; dc_lstm m2's
+rates are bit-stable across all windows) and from loop 2 in 3/8. (3) COMPLIANCE: the
+prereg's §5 review record states "a dirty or wrong-commit stamp fails the G-STAMP
+gate," but the frozen reader never implemented the dirty check, and all three stamps
+carry dirty:true — under the registered gate as worded this read should have HALTED.
+Remediated by `prereg/PREREG_nfi_family2_amend1_20260809.md` (gate implemented; dirty
+discharged by the registered compensating control = clean-HEAD model-level
+reproduction) and a re-read under the amendment. P-F2's verdict is unchanged by the
+remediation (it was verified correct); the process defect is recorded, not hidden.
+REMEDIATION COMPLETE (9 Aug, same day): the compensating control executed
+device-matched (JAX_PLATFORMS=cpu; the first, GPU, attempt deviated at 1.68e-6 —
+the documented jax device effect — and the gate correctly HALTED on it, disclosed
+in the amendment) — dc_gru m1 and dc_lstm m3 reproduce end-to-end from ensemble.pkl
+at max rate dev 5.33e-15 with names/neutral bitwise and verdicts + conjunction
+counts exact (`reproduction.json`); the re-read under the amended gate passes all
+gates and reproduces every verdict of this record identically.
+
+---
+
 # NFI Family-Generality Factorial — Registered Read (CONFIRMATORY)
 
 **Date:** 7 Aug 2026. Read executed exactly per
