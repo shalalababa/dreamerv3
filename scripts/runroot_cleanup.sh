@@ -117,6 +117,16 @@ KEEP_PENDING=(
   # destroyed in the 1-2 Aug delete-only incident) — KEEP-PENDING wins
   # for the re-fits until the wave's ONE read verifies.
   ax1wm_finger_shq1s*_seed* ax1wm_finger_rlq1s*_seed*
+  # cup WM RE-FITS (PREREG_cup_refit_20260808): originals removed without
+  # archive; `ax1wm_cup_*_seed*` sits in the DELETE tier above —
+  # KEEP-PENDING wins for the regenerated fits until the P-C3 read.
+  ax1wm_cup_q1s*_seed* ax1wm_cup_fq1s*_seed*
+  # finger q1 main-arm RE-FITS (PREREG_finger_refit_20260808): originals
+  # destroyed (no archive); the names appear in a delete-eligible
+  # "U1 read verified" list below — KEEP-PENDING wins until the #9/P-C3
+  # reads verify. Also protects the archive-RESTORED rgo/sgb 1-8 anchors.
+  ax1wm_finger_q1s*_seed[1-8] ax1wm_finger_fq1s*_seed[1-8]
+  ax1wm_finger_rgoq1s*_seed[5-8] ax1wm_finger_sgbq1s*_seed[5-8]
   # R3 run dirs (ckpt_early + ckpt) are the SUBSTRATE of two registered
   # not-yet-executed waves (donor-dependency lesson, fpxpx incident):
   #   * PREREG_r3_amend2_20260730 (cross-checkpoint consumer: 128 label
