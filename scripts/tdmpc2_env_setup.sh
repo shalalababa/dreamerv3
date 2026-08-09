@@ -40,7 +40,33 @@ fi
 python -m pip install tensordict torchrl gymnasium omegaconf hydra-core \
     dm_control mujoco numpy
 # dv3-repo import chain for the env adapter (embodied -> elements/portal).
-python -m pip install elements portal ninjax jaxtyping chex optax "jax[cpu]"
+# Dv3TaskEnv imports embodied.envs.dmc, and embodied/__init__.py does
+# `from .core import *` + `from . import jax`, so the whole Dreamer import
+# chain is pulled in: embodied/jax/nets.py needs einops and
+# embodied/core/driver.py needs cloudpickle. These must be installed BEFORE
+# the smoke check below; otherwise the smoke dies on a bare
+# "ModuleNotFoundError: No module named 'einops'" that reads like a TD-MPC2 or
+# JAX bug rather than a missing adapter dep. gym is belt-and-braces for the
+# upstream tdmpc2 checkout; the repo adapter itself uses gymnasium.
+python -m pip install elements portal ninjax jaxtyping chex optax "jax[cpu]" \
+    einops cloudpickle gym
+
+# Fail loudly and specifically if the adapter chain is still incomplete, so a
+# half-repaired env names its missing packages instead of dying inside the
+# first Dv3TaskEnv construction.
+echo "Preflight: Dreamer adapter import chain"
+TM2_ENV="$TM2_CONDA_ENV" python - <<'EOF'
+import importlib.util, os, sys
+need = ('einops', 'cloudpickle', 'elements', 'portal', 'ninjax', 'chex',
+        'optax', 'jax', 'gymnasium', 'dm_control', 'torch', 'tensordict')
+missing = [m for m in need if importlib.util.find_spec(m) is None]
+if missing:
+    sys.exit(
+        'MISSING adapter deps in %s: %s\nrepair: %s/bin/python -m pip install %s'
+        % (os.environ['TM2_ENV'], ' '.join(missing),
+           os.environ['TM2_ENV'], ' '.join(missing)))
+print('adapter deps OK')
+EOF
 
 echo "Smoke checks (GPU-independent):"
 conda activate "$TM2_CONDA_ENV"
