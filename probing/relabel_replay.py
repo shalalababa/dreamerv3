@@ -494,6 +494,10 @@ def cmd_transform_probeset(args):
   by the SAME process, or its NLL conflates mislocation with miscalibration.
   Per-episode transform with the stored in_regime mask; rng(seed) advances
   in row order, so the override is deterministic per (kind, seed)."""
+  if os.path.exists(args.output):
+    raise SystemExit(f'{args.output} exists; refusing to overwrite '
+                     '(overrides are registered artifacts — s-wave '
+                     'batch review M7)')
   npz_path = os.path.join(args.probeset, 'probeset_e4.npz')
   with open(os.path.join(args.probeset, 'manifest.json')) as f:
     ps_manifest = json.load(f)

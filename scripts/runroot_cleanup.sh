@@ -125,6 +125,11 @@ KEEP_PENDING=(
   # m3): registered labels dir convention $RUNROOT/w1_labels — protect
   # until both family reads verify + bundle synced.
   w1_labels
+  # s x w_r wave (PREREG_swave_wave_20260809): fits + adapts + the two
+  # scaled buffers — protect until the ONE read verifies.
+  ax1wm_finger_swr*q1s0_seed* ax1wm_finger_swv*q1s0_seed*
+  adapt_ax1swr*q1s0_* adapt_ax1swv*q1s0_*
+  axis1_finger/q1_s245 axis1_finger/q1_s446
   # finger q1 main-arm RE-FITS (PREREG_finger_refit_20260808): originals
   # destroyed (no archive); the names appear in a delete-eligible
   # "U1 read verified" list below — KEEP-PENDING wins until the #9/P-C3
@@ -196,9 +201,16 @@ done
 if [ "${CONFIRM:-}" = "DELETE" ]; then
   echo
   echo "== CONFIRM=DELETE set: removing DELETE-SAFE entries only =="
-  grep '^DELETE-SAFE	' "$MANIFEST" | cut -f2 | while read -r path; do
+  # KEEP-* precedence (s-wave batch review F6): a path matched by BOTH a
+  # KEEP_* category and DELETE-SAFE must survive — the comments always
+  # claimed this; now the delete loop enforces it. Empty keep-list is
+  # safe (grep -f /dev/null matches nothing; -v passes all through).
+  KEEPLIST="$(mktemp)"
+  grep -E '^KEEP' "$MANIFEST" | cut -f2 | sort -u > "$KEEPLIST" || true
+  grep '^DELETE-SAFE	' "$MANIFEST" | cut -f2 | grep -v -x -F -f "$KEEPLIST" | while read -r path; do
     echo "rm -rf $path"; rm -rf "$path"
   done
+  rm -f "$KEEPLIST"
   echo "done; manifest preserved at $MANIFEST"
 else
   echo

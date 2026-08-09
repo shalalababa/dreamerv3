@@ -492,6 +492,18 @@ def cmd_collate(args):
       # written by earlier code, so old bundles collate unchanged.
       if s.get('deter_std') is not None:
         row['deter_std'] = s['deter_std']
+      # Additive columns (PREREG_swave_wave_20260809, batch-review F4):
+      # label-provenance travels into the csv so readers can machine-
+      # check own/true-label discipline per cell. Absent in summaries
+      # without an override (or written by earlier code) — old bundles
+      # collate unchanged.
+      ov = s.get('reward_override')
+      if ov:
+        row['override_stem'] = ov.get('stem', '')
+        side = ov.get('sidecar') or {}
+        row['override_kind'] = side.get('kind', '')
+        if side.get('scale') is not None:
+          row['override_scale'] = side.get('scale')
       rows.append(row)
   if not rows:
     raise SystemExit(f'No e4_{args.probeset_id}/summary.json under '

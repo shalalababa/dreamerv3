@@ -157,6 +157,14 @@ else
     AXIS1_FIT_FLAGS="${AXIS1_FIT_FLAGS:-} --run.from_checkpoint $INIT_CKPT --run.from_checkpoint_regex ${AXIS1_INIT_REGEX:-^enc/} --agent.frozen_enc True"
     echo "[$(date)] partial-init: enc from $INIT_CKPT (regex ${AXIS1_INIT_REGEX:-^enc/}), frozen_enc True"
   fi
+  # s x w_r wave (PREREG_swave_theory_correction_20260808 constraint 1):
+  # AXIS1_WR overrides the reward-head loss scale (pure fit-pressure
+  # knob). Empty = default path byte-identical.
+  if [ -n "${AXIS1_WR:-}" ]; then
+    [ "$AXIS1_EXPL_MODE" = task ] || { echo "ERROR: AXIS1_WR requires AXIS1_EXPL_MODE=task"; exit 2; }
+    AXIS1_FIT_FLAGS="${AXIS1_FIT_FLAGS:-} --agent.loss_scales.rew ${AXIS1_WR}"
+    echo "[$(date)] s x w_r: agent.loss_scales.rew=${AXIS1_WR}"
+  fi
   echo "[$(date)] fit flags: --agent.expl.mode $AXIS1_EXPL_MODE ${AXIS1_FIT_FLAGS:-} (arm=${AXIS1_ARM:-full} size=${AXIS1_SIZE:-default} base=${AXIS1_BASE_CONFIG:-dmc_proprio})"
   "$PYTHON" -u -m probing.offline_fit \
     --static_replay "$REPLAY" --updates "$UPDATES" \
