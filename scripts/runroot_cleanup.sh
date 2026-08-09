@@ -121,6 +121,10 @@ KEEP_PENDING=(
   # archive; `ax1wm_cup_*_seed*` sits in the DELETE tier above —
   # KEEP-PENDING wins for the regenerated fits until the P-C3 read.
   ax1wm_cup_q1s*_seed* ax1wm_cup_fq1s*_seed*
+  # W1 adjudication-wave labels (PREREG_w1_wave_20260809; batch-review
+  # m3): registered labels dir convention $RUNROOT/w1_labels — protect
+  # until both family reads verify + bundle synced.
+  w1_labels
   # finger q1 main-arm RE-FITS (PREREG_finger_refit_20260808): originals
   # destroyed (no archive); the names appear in a delete-eligible
   # "U1 read verified" list below — KEEP-PENDING wins until the #9/P-C3

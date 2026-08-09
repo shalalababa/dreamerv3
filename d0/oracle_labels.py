@@ -365,10 +365,104 @@ DUAL_CANDS_ATOL = 1e-4   # xc Amendment 1: max |cands_shadow - cands|
                          # (action units) — the shadow chooser must rank
                          # the SAME candidate set g_all was realized for
 
+# W1 adjudication wave (PREREG_w1_adjudication_constraints_20260809):
+# disjoint policy-RNG counter offsets. Each G rollout consumes at most
+# `horizon` policy calls and the probe at most M, so 5e4/1e5 spacings
+# guarantee non-overlapping follower seed schedules: the probe mark is
+# independent of every evaluation mark (constraint 5), and each repeat
+# r uses its own mark (constraint 1) with CRN across branches WITHIN a
+# repeat (same mark_r for all candidates + the actor branch).
+W1_PROBE_OFFSET = 50_000
+W1_MARK_OFFSET = 100_000
+
+
+def seed_env_task(env, seed):
+  """Seed the dm_control task RNG explicitly (W1 constraint 6).
+
+  The default config path never forwards a seed (`use_seed` is absent
+  from the dmc env block), so `suite.load` draws OS entropy and no two
+  labeler invocations share a physical trajectory. This walks the
+  wrapper chain to the dm_control env and replaces the task RNG before
+  the first reset. Returns the seed for meta stamping."""
+  import numpy as _np
+  for node in _chain(env):
+    dmenv = _own(node, '_dmenv')
+    if dmenv is not None and hasattr(dmenv, 'task'):
+      dmenv.task._random = _np.random.RandomState(int(seed))
+      return int(seed)
+  raise SystemExit('seed_env_task: no dm_control env found in the '
+                   'wrapper chain — refusing to run unseeded (W1 '
+                   'constraint 6)')
+
+
+def _w1_label_state(env, oracle, carry_post, obs, qfull, cands, snap,
+                    m_now, extras, horizon, run_id, ep, t, w1, act0):
+  """W1 adjudication labeling of ONE state
+  (PREREG_w1_adjudication_constraints_20260809).
+
+  Constraint 1: every candidate (and the actor branch) is evaluated
+  R times from the same restored snapshot; repeat r uses follower mark
+  base + (r+1)*W1_MARK_OFFSET — CRN across branches WITHIN a repeat,
+  independent follower schedules ACROSS repeats.
+  Constraint 3: dup_cand replaces the candidate set with M copies of
+  the plug-in choice's candidate (true opportunity exactly 0).
+  Constraint 4: the deployed actor's SAMPLED action at this state is
+  stored and evaluated as its own branch under every repeat.
+  Constraint 5: op_real runs under base + W1_PROBE_OFFSET — a mark
+  disjoint from every evaluation mark — and per-candidate r_real is
+  stored (leak decomposition happens in the frozen reader).
+  """
+  base = oracle.rng_mark()
+  # Deployed-actor branch (batch-review B1): the action is act0 — the
+  # sample d0_eval ALREADY drew from the deployed belief (carry_s +
+  # obs_t) and the default path discards (review D3). Re-sampling from
+  # carry_post here would double-assimilate obs_t (a belief the
+  # deployed agent never holds). The no-op reset keeps the per-state
+  # base mark as the selfcheck parser's delimiter.
+  oracle.rng_reset(base)
+  actor_vec = np.asarray(act0[oracle.act_key], np.float32).reshape(-1)
+  cands_eval = np.asarray(cands, np.float32)
+  if w1.get('dup_cand'):
+    cands_eval = np.tile(cands_eval[m_now:m_now + 1],
+                         (cands_eval.shape[0], 1))
+  m_count = cands_eval.shape[0]
+  # Probe under the INDEPENDENT mark (de-shared from all G marks).
+  m_real, cost_real, real_scores, r_real = op_real(
+      env, oracle, carry_post, obs, qfull, cands_eval, snap,
+      rng_mark=base + W1_PROBE_OFFSET, return_rewards=True)
+  repeats = int(w1['repeats'])
+  g_rep = np.zeros((repeats, m_count), np.float32)
+  g_actor_rep = np.zeros(repeats, np.float32)
+  for r in range(repeats):
+    mark_r = base + (r + 1) * W1_MARK_OFFSET
+    for m in range(m_count):
+      g_rep[r, m] = rollout_return(
+          env, oracle, oracle.branch_carry(carry_post, cands_eval[m]),
+          oracle.vec2act(cands_eval[m]), horizon, snap,
+          rng_mark=mark_r)[0]
+    g_actor_rep[r] = rollout_return(
+        env, oracle, oracle.branch_carry(carry_post, actor_vec),
+        oracle.vec2act(actor_vec), horizon, snap, rng_mark=mark_r)[0]
+  # Leave the counter past every mark this state consumed, so the base
+  # trajectory's schedule cannot collide with any branch schedule.
+  oracle.rng_reset(base + (repeats + 1) * W1_MARK_OFFSET)
+  return dict(
+      run_id=run_id, episode=ep, step=t,
+      qfull=qfull, cands=cands_eval,
+      g_all_rep=g_rep, g_actor_rep=g_actor_rep, actor_act=actor_vec,
+      udyn=np.float32(extras['udyn']),
+      deter=np.asarray(extras['deter'], np.float16),
+      m_now=m_now, m_real=m_real,
+      real_scores=np.asarray(real_scores, np.float32),
+      r_real=np.asarray(r_real, np.float32),
+      dup_cand=bool(w1.get('dup_cand', False)),
+      cost_real_env=cost_real['env_steps'],
+      cost_real_calls=cost_real['policy_calls'])
+
 
 def label_run(env, oracle, n_states, horizon, label_every, max_steps,
               rng, run_id, oracle_all=False, ref_stride=5,
-              behavior=None, consumer=None, dual=None):
+              behavior=None, consumer=None, dual=None, w1=None):
   """behavior: optional second AgentOracle that DRIVES the base
   trajectory (state visitation) while `oracle` remains the evaluation
   agent for beliefs, d0 evals, operations, and rollouts — the
@@ -417,7 +511,7 @@ def label_run(env, oracle, n_states, horizon, label_every, max_steps,
       snap = snapshot_env(env)
       carry_s = carry  # jax pytrees are immutable: safe belief snapshot
       c0 = oracle.rng_mark() if dual is not None else None
-      carry_post, qfull, cands, _, extras = oracle.d0_eval(carry_s, obs)
+      carry_post, qfull, cands, act0, extras = oracle.d0_eval(carry_s, obs)
       # determinism assert: restore must reproduce the same next obs
       restore_env(env, snap)
       probe1 = env.step({**oracle.vec2act(cands[0]), 'reset': np.array(False)})
@@ -428,110 +522,120 @@ def label_run(env, oracle, n_states, horizon, label_every, max_steps,
       restore_env(env, snap)
 
       m_now = plugin_choice(qfull)
-      if dual is not None:
-        # Shadow plugin chooser: replay the control d0_eval's RNG
-        # window under the consumer heads. The policy net is outside
-        # the overlay regex, so the candidate DRAWS repeat (same seeds)
-        # up to float jitter — gated below; the Q values differ only
-        # through the swapped heads (+ the same sample-noise class the
-        # registered two-pass design had per pass).
-        c1 = oracle.rng_mark()
-        oracle.rng_reset(c0)
-        dual.to_consumer()
-        _, qfull_x, cands_x, _, _ = oracle.d0_eval(carry_s, obs)
-        dual.to_control()
-        if oracle.rng_mark() != c1:
-          raise SystemExit(
-              'dual shadow d0_eval consumed a different RNG count '
-              f'({oracle.rng_mark()} != {c1}) — replay schedule broken')
-        cdiff = float(np.max(np.abs(
-            np.asarray(cands_x, np.float64) - np.asarray(cands,
-                                                         np.float64))))
-        if cdiff > DUAL_CANDS_ATOL:
-          raise SystemExit(
-              f'dual-chooser candidate drift {cdiff:.3e} > '
-              f'{DUAL_CANDS_ATOL} at episode {ep} step {t}: the shadow '
-              'chooser is not ranking the g_all candidate set — '
-              'instrument invalid on this substrate')
-        m_now_x = plugin_choice(qfull_x)
-      # op_imag re-assimilates obs_t from carry_s each sample (fresh
-      # candidate draws are the point there — no RNG reset).
-      m_imag, cost_imag = op_imag(oracle, carry_s, obs, qfull,
-                                  budget=cands.shape[0])
-      rmark = oracle.rng_mark()
-      if dual is not None:
-        m_real, cost_real, real_scores, r_ctl = op_real(
-            env, oracle, carry_post, obs, qfull, cands, snap,
-            rng_mark=rmark, return_rewards=True)
-        # Shadow op_real: SAME candidates, same env snapshot, same
-        # rng_mark — only the value bootstrap reads the consumer heads.
-        dual.to_consumer()
-        m_real_x, _, real_scores_x, r_x = op_real(
-            env, oracle, carry_post, obs, qfull_x, cands, snap,
-            rng_mark=rmark, return_rewards=True)
-        dual.to_control()
-        if not np.allclose(r_ctl, r_x, atol=1e-6):
-          raise SystemExit(
-              f'dual-chooser env-reward drift across the op_real '
-              f'replays at episode {ep} step {t}: '
-              f'{np.max(np.abs(r_ctl - r_x)):.3e} > 1e-6 — CRN broken')
+      if w1 is not None:
+        assert dual is None and consumer is None and behavior is None, (
+            'W1 passes are registered standalone (PREREG_w1_'
+            'adjudication_constraints_20260809): no dual/consumer/'
+            'behavior overlay')
+        rows.append(_w1_label_state(
+            env, oracle, carry_post, obs, qfull, cands, snap, m_now,
+            extras, horizon, run_id, ep, t, w1, act0))
+        restore_env(env, snap)  # resume the base trajectory untouched
       else:
-        m_real, cost_real, real_scores = op_real(
-            env, oracle, carry_post, obs, qfull, cands, snap,
-            rng_mark=rmark)
-      m_probe, ghat = m_real, None
-      if consumer is not None:
-        # External chooser override AFTER all env/policy work of this
-        # state: influences nothing downstream except the saved row
-        # (with oracle_all the rollout target set is all-M regardless).
-        m_hat, ghat = consumer(qfull, cands, extras['deter'],
-                               float(extras['udyn']))
-        m_real = int(m_hat)
+        if dual is not None:
+          # Shadow plugin chooser: replay the control d0_eval's RNG
+          # window under the consumer heads. The policy net is outside
+          # the overlay regex, so the candidate DRAWS repeat (same seeds)
+          # up to float jitter — gated below; the Q values differ only
+          # through the swapped heads (+ the same sample-noise class the
+          # registered two-pass design had per pass).
+          c1 = oracle.rng_mark()
+          oracle.rng_reset(c0)
+          dual.to_consumer()
+          _, qfull_x, cands_x, _, _ = oracle.d0_eval(carry_s, obs)
+          dual.to_control()
+          if oracle.rng_mark() != c1:
+            raise SystemExit(
+                'dual shadow d0_eval consumed a different RNG count '
+                f'({oracle.rng_mark()} != {c1}) — replay schedule broken')
+          cdiff = float(np.max(np.abs(
+              np.asarray(cands_x, np.float64) - np.asarray(cands,
+                                                           np.float64))))
+          if cdiff > DUAL_CANDS_ATOL:
+            raise SystemExit(
+                f'dual-chooser candidate drift {cdiff:.3e} > '
+                f'{DUAL_CANDS_ATOL} at episode {ep} step {t}: the shadow '
+                'chooser is not ranking the g_all candidate set — '
+                'instrument invalid on this substrate')
+          m_now_x = plugin_choice(qfull_x)
+        # op_imag re-assimilates obs_t from carry_s each sample (fresh
+        # candidate draws are the point there — no RNG reset).
+        m_imag, cost_imag = op_imag(oracle, carry_s, obs, qfull,
+                                    budget=cands.shape[0])
+        rmark = oracle.rng_mark()
+        if dual is not None:
+          m_real, cost_real, real_scores, r_ctl = op_real(
+              env, oracle, carry_post, obs, qfull, cands, snap,
+              rng_mark=rmark, return_rewards=True)
+          # Shadow op_real: SAME candidates, same env snapshot, same
+          # rng_mark — only the value bootstrap reads the consumer heads.
+          dual.to_consumer()
+          m_real_x, _, real_scores_x, r_x = op_real(
+              env, oracle, carry_post, obs, qfull_x, cands, snap,
+              rng_mark=rmark, return_rewards=True)
+          dual.to_control()
+          if not np.allclose(r_ctl, r_x, atol=1e-6):
+            raise SystemExit(
+                f'dual-chooser env-reward drift across the op_real '
+                f'replays at episode {ep} step {t}: '
+                f'{np.max(np.abs(r_ctl - r_x)):.3e} > 1e-6 — CRN broken')
+        else:
+          m_real, cost_real, real_scores = op_real(
+              env, oracle, carry_post, obs, qfull, cands, snap,
+              rng_mark=rmark)
+        m_probe, ghat = m_real, None
+        if consumer is not None:
+          # External chooser override AFTER all env/policy work of this
+          # state: influences nothing downstream except the saved row
+          # (with oracle_all the rollout target set is all-M regardless).
+          m_hat, ghat = consumer(qfull, cands, extras['deter'],
+                                 float(extras['udyn']))
+          m_real = int(m_hat)
 
-      targets = {m_now, m_imag, m_real}
-      if consumer is not None:
-        targets.add(m_probe)
-      if oracle_all:
-        targets = set(range(cands.shape[0]))
-      G = {m: rollout_return(env, oracle,
-                             oracle.branch_carry(carry_post, cands[m]),
-                             oracle.vec2act(cands[m]), horizon, snap,
-                             rng_mark=rmark) for m in sorted(targets)}
-      g_all = np.full(cands.shape[0], np.nan, np.float32)
-      g_all_boot = np.full(cands.shape[0], np.nan, np.float32)
-      for m, (gv, gb) in G.items():
-        g_all[m] = gv
-        g_all_boot[m] = gb
-      row = dict(
-          run_id=run_id, episode=ep, step=t,
-          qfull=qfull, cands=cands,
-          g_all=g_all, g_all_boot=g_all_boot,
-          udyn=np.float32(extras['udyn']),
-          deter=np.asarray(extras['deter'], np.float16),
-          m_now=m_now, m_imag=m_imag, m_real=m_real,
-          g_now=G[m_now][0], g_imag=G[m_imag][0], g_real=G[m_real][0],
-          delta_imag=G[m_imag][0] - G[m_now][0],
-          delta_real=G[m_real][0] - G[m_now][0],
-          g_now_boot=G[m_now][1], g_imag_boot=G[m_imag][1],
-          g_real_boot=G[m_real][1],
-          delta_imag_boot=G[m_imag][1] - G[m_now][1],
-          delta_real_boot=G[m_real][1] - G[m_now][1],
-          real_scores=real_scores,
-          cost_imag_env=cost_imag['env_steps'],
-          cost_imag_calls=cost_imag['policy_calls'],
-          cost_real_env=cost_real['env_steps'],
-          cost_real_calls=cost_real['policy_calls'],
-      )
-      if consumer is not None:
-        row.update(m_real_probe=m_probe,
-                   ghat=np.asarray(ghat, np.float32))
-      if dual is not None:
-        row.update(m_now_x=m_now_x, m_real_x=m_real_x,
-                   qfull_x=qfull_x,
-                   real_scores_x=real_scores_x,
-                   cands_max_absdiff=np.float32(cdiff))
-      rows.append(row)
-      restore_env(env, snap)  # resume the base trajectory untouched
+        targets = {m_now, m_imag, m_real}
+        if consumer is not None:
+          targets.add(m_probe)
+        if oracle_all:
+          targets = set(range(cands.shape[0]))
+        G = {m: rollout_return(env, oracle,
+                               oracle.branch_carry(carry_post, cands[m]),
+                               oracle.vec2act(cands[m]), horizon, snap,
+                               rng_mark=rmark) for m in sorted(targets)}
+        g_all = np.full(cands.shape[0], np.nan, np.float32)
+        g_all_boot = np.full(cands.shape[0], np.nan, np.float32)
+        for m, (gv, gb) in G.items():
+          g_all[m] = gv
+          g_all_boot[m] = gb
+        row = dict(
+            run_id=run_id, episode=ep, step=t,
+            qfull=qfull, cands=cands,
+            g_all=g_all, g_all_boot=g_all_boot,
+            udyn=np.float32(extras['udyn']),
+            deter=np.asarray(extras['deter'], np.float16),
+            m_now=m_now, m_imag=m_imag, m_real=m_real,
+            g_now=G[m_now][0], g_imag=G[m_imag][0], g_real=G[m_real][0],
+            delta_imag=G[m_imag][0] - G[m_now][0],
+            delta_real=G[m_real][0] - G[m_now][0],
+            g_now_boot=G[m_now][1], g_imag_boot=G[m_imag][1],
+            g_real_boot=G[m_real][1],
+            delta_imag_boot=G[m_imag][1] - G[m_now][1],
+            delta_real_boot=G[m_real][1] - G[m_now][1],
+            real_scores=real_scores,
+            cost_imag_env=cost_imag['env_steps'],
+            cost_imag_calls=cost_imag['policy_calls'],
+            cost_real_env=cost_real['env_steps'],
+            cost_real_calls=cost_real['policy_calls'],
+        )
+        if consumer is not None:
+          row.update(m_real_probe=m_probe,
+                     ghat=np.asarray(ghat, np.float32))
+        if dual is not None:
+          row.update(m_now_x=m_now_x, m_real_x=m_real_x,
+                     qfull_x=qfull_x,
+                     real_scores_x=real_scores_x,
+                     cands_max_absdiff=np.float32(cdiff))
+        rows.append(row)
+        restore_env(env, snap)  # resume the base trajectory untouched
     # the evaluation agent's belief always tracks the observed stream
     carry, acts, _ = oracle.policy(carry, obs)
     if behavior is not None:
@@ -573,9 +677,10 @@ def save_rows(rows, output, meta, extra_arrays=None):
   # registered per-state achieved, and paired stdout means would reveal
   # the primaries before the ONE read. Default path byte-identical.
   version = str(meta.get('labeler_version', ''))
-  if version.endswith(('_xc1', '_xc2', '_cm1')):
+  if version.endswith(('_xc1', '_xc2', '_cm1', '_w1')):
+    reason = ('W1 pass' if version.endswith('_w1') else 'consumer arm')
     print(f'wrote {output}: {len(rows)} labeled states '
-          f'(estimand summary redacted: consumer arm)')
+          f'(estimand summary redacted: {reason})')
   else:
     print(f'wrote {output}: {len(rows)} labeled states; '
           f'mean delta_real {cols["delta_real"].mean():+.3f}, '
@@ -897,6 +1002,22 @@ def main_real(args):
   out_dir = pathlib.Path(args.output).parent
   config, train_seed = load_config(args, out_dir)
   env = make_env(config, 0)
+  w1 = None
+  if getattr(args, 'w1_repeats', 0):
+    assert args.env_seed is not None, (
+        'W1 passes require --env_seed (constraint 6: the unseeded env '
+        'path is retired for all new labeling)')
+    assert args.oracle_all, 'W1 requires --oracle_all'
+    assert not (args.consumer_checkpoint or args.consumer_model or
+                args.behavior_checkpoint), (
+        'W1 passes are registered standalone')
+    w1 = dict(repeats=int(args.w1_repeats),
+              dup_cand=bool(args.w1_dup_cand))
+  else:
+    assert not getattr(args, 'w1_dup_cand', False), (
+        '--w1_dup_cand requires --w1_repeats > 0')
+  if args.env_seed is not None:
+    seed_env_task(env, args.env_seed)
   apply_mass_scale(env, args.mass_scale)
   agent = make_agent(config)
   ckpt = args.checkpoint or os.path.join(args.run_logdir, 'ckpt')
@@ -948,17 +1069,25 @@ def main_real(args):
       args.label_every, args.max_steps, rng,
       run_id=os.path.basename(args.run_logdir.rstrip('/')),
       oracle_all=args.oracle_all, ref_stride=args.ref_stride,
-      behavior=behavior, consumer=consumer, dual=dual)
+      behavior=behavior, consumer=consumer, dual=dual, w1=w1)
   meta = dict(
       run_logdir=args.run_logdir, checkpoint=str(ckpt),
       states=args.states, horizon=args.horizon,
       label_every=args.label_every, seed=args.seed,
       train_seed=train_seed, actions=args.actions, rollouts=args.rollouts,
-      ref_stride=args.ref_stride, labeler_version='d1fix_20260724',
+      ref_stride=args.ref_stride,
+      labeler_version=('d1fix_20260724_w1' if w1 is not None
+                       else 'd1fix_20260724'),
       dose=dict(config.distractor),
       behavior_checkpoint=str(args.behavior_checkpoint or ''),
       mass_scale=float(args.mass_scale),
       operation_pair='real_vs_imag_matched_candidate_budget')
+  if w1 is not None:
+    meta.update(w1=dict(w1), env_seed=int(args.env_seed),
+                w1_probe_offset=W1_PROBE_OFFSET,
+                w1_mark_offset=W1_MARK_OFFSET)
+  elif args.env_seed is not None:
+    meta.update(env_seed=int(args.env_seed))
   meta = stamp_consumer(meta, args.consumer_checkpoint,
                         max_steps=args.max_steps,
                         dual=bool(args.dual_chooser),
@@ -1043,6 +1172,178 @@ class _SynthOracle(AgentOracle):
 
   def rng_reset(self, mark):
     pass
+
+
+class _W1Env:
+  """Chaotic restorable env for the W1 fixture: the reward stream
+  depends sensitively on the accumulated position, so branches with
+  DIFFERENT first actions decorrelate under a COMMON follower schedule
+  (the within-repeat noise the old estimand maxes over), while
+  IDENTICAL first actions reproduce exactly (the duplicate-null gate).
+  Candidate true values are equal by construction (chaotic rewards are
+  effectively exchangeable across first actions)."""
+
+  def __init__(self):
+    self.pos, self.t = 0.0, 0
+
+  def oracle_get_state(self):
+    return (self.pos, self.t)
+
+  def oracle_set_state(self, s):
+    self.pos, self.t = s
+
+  def step(self, act):
+    if act.get('reset'):
+      self.pos, self.t = 0.0, 0
+      return dict(reward=np.float32(0), is_last=np.array(False))
+    a = float(np.asarray(act['action']).reshape(-1)[0])
+    self.pos += a
+    self.t += 1
+    reward = np.float32(np.sin(self.pos * 997.13) ** 2)
+    return dict(reward=reward, is_last=np.array(self.t >= 400))
+
+
+class _W1Oracle(AgentOracle):
+  """Counter-seeded STOCHASTIC follower (the property every previous
+  fixture lacked — §13.4 lesson): the sampled action is a deterministic
+  function of the RNG counter, so marks give exact CRN and different
+  marks give independent follower schedules. Records every rng_reset
+  for the mark-disjointness assertions."""
+
+  M = 4
+
+  def __init__(self):
+    self.act_keys = ['action']
+    self.act_key = 'action'
+    self.act_shape = (1,)
+    self.discount = 0.9
+    self._ctr = 7
+    self.resets = []
+
+  def init(self):
+    return ('carry',)
+
+  def rng_mark(self):
+    return int(self._ctr)
+
+  def rng_reset(self, mark):
+    self._ctr = int(mark)
+    self.resets.append(int(mark))
+
+  def policy(self, carry, obs, mode='eval'):
+    a = np.float32(np.sin(self._ctr * 12.9898) * 0.3)
+    self._ctr += 1
+    return carry, {'action': np.asarray([[a]], np.float32)}, {}
+
+  def d0_eval(self, carry, obs):
+    cands = np.linspace(0.1, 0.4, self.M,
+                        dtype=np.float32)[:, None]
+    q = np.tile(np.arange(self.M, dtype=np.float32)[None], (3, 1))
+    extras = dict(udyn=0.5, deter=np.zeros(2, np.float16))
+    return carry, q, cands, {'action': np.zeros(1, np.float32)}, extras
+
+  def latent_of(self, carry):
+    return np.zeros(2, np.float16)
+
+  def branch_carry(self, carry_post, cand_vec):
+    return carry_post
+
+  def with_prevact(self, carry, acts):
+    return carry
+
+
+def selfcheck_w1():
+  """W1 legs (PREREG_w1_adjudication_constraints_20260809)."""
+  # --- winner's-curse fixture: equal-value candidates, stochastic
+  # follower. Within-repeat opportunity must be POSITIVE (the max-of-
+  # noise bias is visible to this fixture — no previous fixture could
+  # see it) while split-selection kills it.
+  env, oracle = _W1Env(), _W1Oracle()
+  rows, _ = label_run(env, oracle, n_states=24, horizon=12,
+                      label_every=7, max_steps=400,
+                      rng=np.random.default_rng(0), run_id='w1synth',
+                      oracle_all=True, w1=dict(repeats=6))
+  g = np.stack([r['g_all_rep'] for r in rows])          # (S, R, M)
+  ga = np.stack([r['g_actor_rep'] for r in rows])       # (S, R)
+  assert g.shape[1:] == (6, _W1Oracle.M) and ga.shape[1] == 6
+  assert float(np.mean(g.std(1))) > 1e-3, 'follower not stochastic'
+  assert float(np.mean(ga.std(1))) > 1e-3, 'actor branch not stochastic'
+  within = float(np.mean(g.max(2) - g.mean(2)))
+  sel = g[:, 0::2].mean(1).argmax(1)                    # select on even
+  ho = g[:, 1::2].mean(1)                               # evaluate on odd
+  split = float(np.mean(ho[np.arange(len(ho)), sel] - ho.mean(1)))
+  if not within > 0.05:
+    raise SystemExit(f'selfcheck FAIL: within-repeat max bias invisible '
+                     f'({within}) — fixture lost its noise')
+  if not abs(split) < 0.5 * within:
+    raise SystemExit(f'selfcheck FAIL: split-selection did not remove '
+                     f'the max bias (within {within}, split {split})')
+  for r in rows:
+    assert r['r_real'].shape == (_W1Oracle.M,)
+    assert r['actor_act'].shape == (1,)
+    # carry-sensitive fixture (batch-review B1): the actor branch must
+    # carry d0_eval's OWN discarded sample (zeros in this fixture), not
+    # a fresh policy() draw (sin(ctr) != 0 here) from a
+    # double-assimilated belief.
+    assert np.all(r['actor_act'] == 0.0), r['actor_act']
+    assert not r['dup_cand']
+  # mark discipline: per state, the first reset is the base; every
+  # subsequent reset must be base + W1_PROBE_OFFSET (probe) or
+  # base + k*W1_MARK_OFFSET (repeat k / final advance), and both the
+  # probe and at least one repeat offset must occur for every state.
+  base, seen_probe, seen_rep, n_states_seen = None, False, False, 0
+  for v in oracle.resets:
+    d = None if base is None else v - base
+    if d is not None and (d == W1_PROBE_OFFSET or
+                          (d > 0 and d % W1_MARK_OFFSET == 0)):
+      seen_probe |= (d == W1_PROBE_OFFSET)
+      seen_rep |= (d > 0 and d % W1_MARK_OFFSET == 0)
+      continue
+    # new state's base mark
+    if base is not None:
+      assert seen_probe and seen_rep, (base, seen_probe, seen_rep)
+    base, seen_probe, seen_rep = v, False, False
+    n_states_seen += 1
+  assert seen_probe and seen_rep and n_states_seen == len(rows), (
+      n_states_seen, len(rows))
+  # --- duplicate-candidate NULL: identical actions must give
+  # bit-identical rollouts within every repeat (gate, not estimate)
+  env2, oracle2 = _W1Env(), _W1Oracle()
+  rows2, _ = label_run(env2, oracle2, n_states=6, horizon=12,
+                       label_every=7, max_steps=400,
+                       rng=np.random.default_rng(0), run_id='w1dup',
+                       oracle_all=True,
+                       w1=dict(repeats=3, dup_cand=True))
+  for r in rows2:
+    g2 = r['g_all_rep']
+    if not np.all(g2 == g2[:, :1]):
+      raise SystemExit('selfcheck FAIL: duplicate-null violated — '
+                       'within-repeat CRN broken')
+    assert float(np.ptp(r['r_real'])) == 0.0, r['r_real']
+    assert np.all(r['cands'] == r['cands'][0]), r['cands']
+    assert r['dup_cand']
+  # --- save/reload round-trip with the redacted (_w1) print path
+  import tempfile
+  with tempfile.TemporaryDirectory() as tmp:
+    out = os.path.join(tmp, 'w1.npz')
+    save_rows(rows2, out, meta=dict(labeler_version='d1fix_20260724_w1'))
+    z = np.load(out, allow_pickle=True)
+    for key in ('g_all_rep', 'g_actor_rep', 'actor_act', 'r_real',
+                'dup_cand'):
+      assert key in z.files, key
+  # --- flag guards: w1 with dual/consumer/behavior must refuse
+  try:
+    label_run(_W1Env(), _W1Oracle(), n_states=1, horizon=12,
+              label_every=7, max_steps=400,
+              rng=np.random.default_rng(0), run_id='w1bad',
+              oracle_all=True, w1=dict(repeats=2), dual=object())
+    raise SystemExit('selfcheck FAIL: w1+dual combo not refused')
+  except AssertionError:
+    pass
+  print('SELFCHECK PASS (W1: stochastic-follower fixture — within-repeat '
+        'max bias visible + split-selection kills it; duplicate-null '
+        'exact; mark-offset discipline; actor branch + r_real stored; '
+        '_w1 redacted save round-trip; standalone-flag guard)')
 
 
 def selfcheck():
@@ -1884,6 +2185,7 @@ def selfcheck():
         'with probe fields preserved + row schema round-trip, flag '
         'discipline (no composition, oracle_all required), _cm1 stamping '
         'byte-identical default, unknown-run guard)')
+  selfcheck_w1()
 
 
 def main():
@@ -1945,6 +2247,19 @@ def main():
                       'steps (kNN density reference for the R2 read).')
   p.add_argument('--platform', default='', choices=['', 'cpu', 'cuda'])
   p.add_argument('--selfcheck', action='store_true')
+  p.add_argument('--w1_repeats', type=int, default=0,
+                 help='W1 adjudication wave (PREREG_w1_adjudication_'
+                      'constraints_20260809): R independent-mark repeat '
+                      'evaluations per (state, branch). 0 = off (default '
+                      'path byte-identical).')
+  p.add_argument('--w1_dup_cand', action='store_true',
+                 help='W1 duplicate-candidate NULL pass: all M '
+                      'candidates replaced by the plug-in choice '
+                      '(true opportunity exactly 0). Requires '
+                      '--w1_repeats > 0.')
+  p.add_argument('--env_seed', type=int, default=None,
+                 help='Seed the dm_control task RNG explicitly (W1 '
+                      'constraint 6). REQUIRED for W1 passes.')
   args = p.parse_args()
   if args.selfcheck:
     selfcheck()

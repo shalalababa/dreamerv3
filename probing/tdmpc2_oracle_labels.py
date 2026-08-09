@@ -207,6 +207,17 @@ class Tm2Oracle:
     if self._cuda and 'cuda' in mark:
       torch.cuda.set_rng_state_all(mark['cuda'])
 
+  def w1_mark(self, seed):
+    """W1: derive a fresh, reproducible torch-RNG mark from an integer
+    seed (torch marks are opaque state dicts, so cross-repeat
+    independence is by SEEDING, not counter offsets — the dv3
+    analogue's base+offset arithmetic does not apply here)."""
+    torch = self._torch
+    torch.manual_seed(int(seed) % (2 ** 31))
+    if self._cuda:
+      torch.cuda.manual_seed_all(int(seed) % (2 ** 31))
+    return self.rng_mark()
+
 
 # --------------------------------------------------------------------------
 # Branches. CRN: every branch starts from one env snapshot, one restored
@@ -220,20 +231,30 @@ def _step(enode, act_vec):
                      'reset': np.array(False)})
 
 
-def op_real(enode, oracle, cands, snap, pstate, rmark):
+def op_real(enode, oracle, cands, snap, pstate, rmark,
+            return_rewards=False):
   """Real purchase: one real probe step per candidate from the restored
-  snapshot; score = r_real + disc * Vhat(s'_real)."""
+  snapshot; score = r_real + disc * Vhat(s'_real).
+
+  return_rewards (W1): additionally return the raw per-candidate env
+  rewards for the registered leak decomposition
+  (PREREG_w1_adjudication_constraints_20260809 constraint 5). Default
+  path byte-identical."""
   m_count = cands.shape[0]
   scores = np.zeros(m_count, np.float32)
+  rewards = np.zeros(m_count, np.float32)
   for m in range(m_count):
     oracle.rng_reset(rmark)
     oracle.set_plan_state(pstate)
     restore_env(enode, snap)
     nobs = _step(enode, cands[m])
     r = float(nobs['reward'])
+    rewards[m] = r
     scores[m] = r + oracle.discount * oracle.state_value(nobs)
-  return int(np.argmax(scores)), dict(env_steps=m_count,
-                                      policy_calls=m_count), scores
+  cost = dict(env_steps=m_count, policy_calls=m_count)
+  if return_rewards:
+    return int(np.argmax(scores)), cost, scores, rewards
+  return int(np.argmax(scores)), cost, scores
 
 
 def rollout_return(enode, oracle, first_act, horizon, snap, pstate, rmark):
@@ -262,8 +283,72 @@ def rollout_return(enode, oracle, first_act, horizon, snap, pstate, rmark):
 # Labeling sweep
 # --------------------------------------------------------------------------
 
+def _w1_seed(seed_base, ep, t, tag):
+  """Deterministic per-(state, purpose) mark seed. tag 0 = planner
+  action draw, 1 = probe (constraint 5: independent of every
+  evaluation mark), 2+r = repeat r (constraint 1)."""
+  return (int(seed_base) * 1_000_003 + int(ep) * 10_007
+          + int(t) * 101 + int(tag)) % (2 ** 31)
+
+
+def _w1_label_state_tm2(enode, oracle, obs, qfull, cands, zlat, snap,
+                        pstate, m_now, horizon, run_id, ep, t, w1):
+  """W1 adjudication labeling of ONE state — TD-MPC2 side
+  (PREREG_w1_adjudication_constraints_20260809). Mirrors the dv3
+  `_w1_label_state`: R independent-mark repeat evaluations with CRN
+  across branches within a repeat (constraint 1); dup_cand null
+  (constraint 3); the ACTUAL MPPI planner action as its own branch
+  (constraint 4 — the D1 fix: `follower_act` at the decision state IS
+  `agent.act(eval_mode=True)`, the planner); probe under an
+  independent mark with per-candidate r_real stored (constraint 5)."""
+  seed_base = int(w1['seed_base'])
+  # The planner's actual DEPLOYED action at the decision state
+  # (batch-review M1): t0=False with the warm-start buffer pstate
+  # restored — exactly the (state, warm-start) pair the deployed agent
+  # holds at a labeled step (t > 0 always). The t0=True cold-start
+  # convention is registered for CANDIDATE branches only (they execute
+  # counterfactual first actions the pre-label plan never conditioned
+  # on); the consumer branch measures the agent as deployed.
+  oracle.rng_reset(oracle.w1_mark(_w1_seed(seed_base, ep, t, 0)))
+  oracle.set_plan_state(pstate)
+  restore_env(enode, snap)
+  plan_act = np.asarray(oracle.follower_act(obs, t0=False),
+                        np.float32).reshape(-1)
+  cands_eval = np.asarray(cands, np.float32)
+  if w1.get('dup_cand'):
+    cands_eval = np.tile(cands_eval[m_now:m_now + 1],
+                         (cands_eval.shape[0], 1))
+  m_count = cands_eval.shape[0]
+  pmark = oracle.w1_mark(_w1_seed(seed_base, ep, t, 1))
+  m_real, cost_real, real_scores, r_real = op_real(
+      enode, oracle, cands_eval, snap, pstate, pmark,
+      return_rewards=True)
+  repeats = int(w1['repeats'])
+  g_rep = np.zeros((repeats, m_count), np.float32)
+  g_plan_rep = np.zeros(repeats, np.float32)
+  for r in range(repeats):
+    mark_r = oracle.w1_mark(_w1_seed(seed_base, ep, t, 2 + r))
+    for m in range(m_count):
+      g_rep[r, m] = rollout_return(enode, oracle, cands_eval[m],
+                                   horizon, snap, pstate, mark_r)[0]
+    g_plan_rep[r] = rollout_return(enode, oracle, plan_act, horizon,
+                                   snap, pstate, mark_r)[0]
+  return dict(
+      run_id=run_id, episode=ep, step=t,
+      qfull=qfull, cands=cands_eval,
+      g_all_rep=g_rep, g_plan_rep=g_plan_rep, plan_act=plan_act,
+      zlat=np.asarray(zlat, np.float16),
+      m_now=m_now, m_real=m_real,
+      real_scores=np.asarray(real_scores, np.float32),
+      r_real=np.asarray(r_real, np.float32),
+      dup_cand=bool(w1.get('dup_cand', False)),
+      cost_real_env=cost_real['env_steps'],
+      cost_real_calls=cost_real['policy_calls'])
+
+
 def label_run(enode, oracle, n_states, horizon, label_every, max_steps,
-              run_id, oracle_all=False, ref_stride=5, obs_flat=None):
+              run_id, oracle_all=False, ref_stride=5, obs_flat=None,
+              w1=None):
   """obs_flat: callable obs->1-D vector for the determinism assert
   (defaults to reward-only comparison when None)."""
   rows = []
@@ -297,42 +382,51 @@ def label_run(enode, oracle, n_states, horizon, label_every, max_steps,
       restore_env(enode, snap)
 
       m_now = plugin_choice(qfull)
-      rmark = oracle.rng_mark()
-      m_real, cost_real, real_scores = op_real(
-          enode, oracle, cands, snap, pstate, rmark)
-      targets = (set(range(cands.shape[0])) if oracle_all
-                 else {m_now, m_real})
-      G = {m: rollout_return(enode, oracle, cands[m], horizon, snap,
-                             pstate, rmark) for m in sorted(targets)}
-      # resume the base trajectory untouched: env snapshot AND the
-      # planner warm-start buffer (mutable, unlike jax carries)
-      restore_env(enode, snap)
-      oracle.set_plan_state(pstate)
-      g_all = np.full(cands.shape[0], np.nan, np.float32)
-      g_all_boot = np.full(cands.shape[0], np.nan, np.float32)
-      for m, (gv, gb) in G.items():
-        g_all[m] = gv
-        g_all_boot[m] = gb
-      nan = np.float32(np.nan)
-      rows.append(dict(
-          run_id=run_id, episode=ep, step=t,
-          qfull=qfull, cands=cands,
-          g_all=g_all, g_all_boot=g_all_boot,
-          udyn=nan,  # no TD-MPC2 analog (schema slot)
-          zlat=np.asarray(zlat, np.float16),
-          m_now=m_now, m_imag=-1, m_real=m_real,
-          g_now=G[m_now][0], g_imag=nan, g_real=G[m_real][0],
-          delta_imag=nan,
-          delta_real=G[m_real][0] - G[m_now][0],
-          g_now_boot=G[m_now][1], g_imag_boot=nan,
-          g_real_boot=G[m_real][1],
-          delta_imag_boot=nan,
-          delta_real_boot=G[m_real][1] - G[m_now][1],
-          real_scores=real_scores,
-          cost_imag_env=0, cost_imag_calls=0,
-          cost_real_env=cost_real['env_steps'],
-          cost_real_calls=cost_real['policy_calls'],
-      ))
+      if w1 is not None:
+        rows.append(_w1_label_state_tm2(
+            enode, oracle, obs, qfull, cands, zlat, snap, pstate,
+            m_now, horizon, run_id, ep, t, w1))
+        # resume the base trajectory untouched: env snapshot AND the
+        # planner warm-start buffer
+        restore_env(enode, snap)
+        oracle.set_plan_state(pstate)
+      else:
+        rmark = oracle.rng_mark()
+        m_real, cost_real, real_scores = op_real(
+            enode, oracle, cands, snap, pstate, rmark)
+        targets = (set(range(cands.shape[0])) if oracle_all
+                   else {m_now, m_real})
+        G = {m: rollout_return(enode, oracle, cands[m], horizon, snap,
+                               pstate, rmark) for m in sorted(targets)}
+        # resume the base trajectory untouched: env snapshot AND the
+        # planner warm-start buffer (mutable, unlike jax carries)
+        restore_env(enode, snap)
+        oracle.set_plan_state(pstate)
+        g_all = np.full(cands.shape[0], np.nan, np.float32)
+        g_all_boot = np.full(cands.shape[0], np.nan, np.float32)
+        for m, (gv, gb) in G.items():
+          g_all[m] = gv
+          g_all_boot[m] = gb
+        nan = np.float32(np.nan)
+        rows.append(dict(
+            run_id=run_id, episode=ep, step=t,
+            qfull=qfull, cands=cands,
+            g_all=g_all, g_all_boot=g_all_boot,
+            udyn=nan,  # no TD-MPC2 analog (schema slot)
+            zlat=np.asarray(zlat, np.float16),
+            m_now=m_now, m_imag=-1, m_real=m_real,
+            g_now=G[m_now][0], g_imag=nan, g_real=G[m_real][0],
+            delta_imag=nan,
+            delta_real=G[m_real][0] - G[m_now][0],
+            g_now_boot=G[m_now][1], g_imag_boot=nan,
+            g_real_boot=G[m_real][1],
+            delta_imag_boot=nan,
+            delta_real_boot=G[m_real][1] - G[m_now][1],
+            real_scores=real_scores,
+            cost_imag_env=0, cost_imag_calls=0,
+            cost_real_env=cost_real['env_steps'],
+            cost_real_calls=cost_real['policy_calls'],
+        ))
     if t % ref_stride == 0:
       ref['zlat'].append(oracle.zlat_of(obs))
       ref['episode'].append(ep)
@@ -428,10 +522,24 @@ def main_real(args):
     if not os.path.exists(args.checkpoint):
       raise SystemExit(f'checkpoint {args.checkpoint} does not exist')
 
-  # Same env builder (and same distractor seed derivation from the
-  # TRAIN seed) as the training run: label/train env identity holds by
-  # construction.
-  env = Dv3TaskEnv(task, seed=train_seed, dose=dose)
+  # Same env builder as the training run. Default path (env_seed None):
+  # seed = TRAIN seed, so label/train env identity holds by
+  # construction. Under --env_seed (W1) the identity is deliberately
+  # broken — the W1 estimands are within-pass only and never pair
+  # against committed labels.
+  w1 = None
+  if getattr(args, 'w1_repeats', 0):
+    assert args.env_seed is not None, (
+        'W1 passes require --env_seed (constraint 6)')
+    assert args.oracle_all, 'W1 requires --oracle_all'
+    w1 = dict(repeats=int(args.w1_repeats),
+              dup_cand=bool(args.w1_dup_cand),
+              seed_base=int(args.env_seed))
+  else:
+    assert not getattr(args, 'w1_dup_cand', False), (
+        '--w1_dup_cand requires --w1_repeats > 0')
+  env_seed = train_seed if args.env_seed is None else int(args.env_seed)
+  env = Dv3TaskEnv(task, seed=env_seed, dose=dose)
   obs_dim = int(env.observation_space.shape[0])
   act_dim = int(env.action_space.shape[0])
   if not args.smoke_random_init and obs_dim != int(audit['obs_dim']):
@@ -453,7 +561,8 @@ def main_real(args):
       enode, oracle, args.states, args.horizon, args.label_every,
       env.max_episode_steps, run_id=run_id, oracle_all=args.oracle_all,
       ref_stride=args.ref_stride,
-      obs_flat=lambda o: flatten_obs(o, task, extra=env._extra_keys))
+      obs_flat=lambda o: flatten_obs(o, task, extra=env._extra_keys),
+      w1=w1)
   smoke = bool(args.smoke_random_init)
   save_labels(rows, args.output, meta=dict(
       run_logdir=str(args.run_logdir or ''),
@@ -471,7 +580,10 @@ def main_real(args):
       early_step_realized=(None if smoke else audit['early_step_realized']),
       late_step_realized=(None if smoke else audit['late_step_realized']),
       mass_scale=1.0, behavior_checkpoint='',
-      labeler_version=LABELER_VERSION,
+      labeler_version=(LABELER_VERSION + '_w1' if w1 is not None
+                       else LABELER_VERSION),
+      **({} if w1 is None else dict(w1=dict(w1),
+                                    env_seed=int(env_seed))),
       smoke_random_init=bool(args.smoke_random_init),
       operation_pair='real_only_imag_retired',
       branch_first_follower_t0=True,
@@ -840,6 +952,93 @@ def selfcheck():
   legs.append('driver-stage guard refusals')
 
   print('SELFCHECK PASS (' + '; '.join(legs) + ')')
+  selfcheck_w1_tm2()
+
+
+class _W1ChaosEnv(_ChainEnv):
+  """Chaotic-reward chain for the W1 fixture: branches with different
+  first actions decorrelate under a common follower schedule; identical
+  first actions reproduce exactly (duplicate-null gate)."""
+
+  def step(self, act):
+    out = super().step(act)
+    if not act.get('reset'):
+      out['reward'] = np.float32(np.sin(self.pos * 997.13) ** 2)
+    return out
+
+
+class _W1Mock(_MockOracle):
+  """Counter-seeded STOCHASTIC follower (§13.4 lesson: every previous
+  fixture was deterministic and therefore blind to realization noise)
+  + the w1_mark(seed) interface the W1 path requires."""
+
+  def follower_act(self, obs, t0):
+    a = 0.3 * np.sin(self.rng_ctr * 12.9898)
+    self.rng_ctr += 1
+    return np.array([a], np.float32)
+
+  def w1_mark(self, seed):
+    self.rng_ctr = int(seed) % (2 ** 31)
+    return self.rng_mark()
+
+
+def selfcheck_w1_tm2():
+  """W1 legs (PREREG_w1_adjudication_constraints_20260809), TM2 side."""
+  env, oracle = _W1ChaosEnv(), _W1Mock()
+  rows, _ = label_run(env, oracle, n_states=24, horizon=12,
+                      label_every=7, max_steps=400, run_id='w1tm2',
+                      oracle_all=True,
+                      w1=dict(repeats=6, seed_base=17))
+  g = np.stack([r['g_all_rep'] for r in rows])          # (S, R, M)
+  gp = np.stack([r['g_plan_rep'] for r in rows])        # (S, R)
+  assert g.shape[1:] == (6, 3) and gp.shape[1] == 6
+  assert float(np.mean(g.std(1))) > 1e-3, 'follower not stochastic'
+  assert float(np.mean(gp.std(1))) > 1e-3, 'planner branch static'
+  within = float(np.mean(g.max(2) - g.mean(2)))
+  sel = g[:, 0::2].mean(1).argmax(1)
+  ho = g[:, 1::2].mean(1)
+  split = float(np.mean(ho[np.arange(len(ho)), sel] - ho.mean(1)))
+  if not within > 0.05:
+    raise SystemExit(f'selfcheck FAIL: W1 within-repeat max bias '
+                     f'invisible ({within})')
+  if not abs(split) < 0.5 * within:
+    raise SystemExit(f'selfcheck FAIL: W1 split-selection did not '
+                     f'remove the max bias ({within} vs {split})')
+  for r in rows:
+    assert r['r_real'].shape == (3,) and r['plan_act'].shape == (1,)
+    assert not r['dup_cand']
+  # duplicate-candidate NULL: bit-identical rollouts within a repeat
+  env2, oracle2 = _W1ChaosEnv(), _W1Mock()
+  rows2, _ = label_run(env2, oracle2, n_states=6, horizon=12,
+                       label_every=7, max_steps=400, run_id='w1tm2dup',
+                       oracle_all=True,
+                       w1=dict(repeats=3, dup_cand=True, seed_base=17))
+  for r in rows2:
+    g2 = r['g_all_rep']
+    if not np.all(g2 == g2[:, :1]):
+      raise SystemExit('selfcheck FAIL: TM2 duplicate-null violated — '
+                       'within-repeat CRN broken')
+    assert float(np.ptp(r['r_real'])) == 0.0, r['r_real']
+    assert np.all(r['cands'] == r['cands'][0])
+    assert r['dup_cand']
+  # base trajectory untouched by the W1 block (schedule replica)
+  poss, _ = _base_schedule(0)  # exercise import; full invariance is
+  # covered by the default-path legs — here assert env resumed cleanly:
+  assert env2.t > 0
+  # redacted save round-trip (version *_w1)
+  import tempfile
+  with tempfile.TemporaryDirectory() as tmp:
+    out = os.path.join(tmp, 'w1tm2.npz')
+    save_labels(rows2, out,
+                meta=dict(labeler_version=LABELER_VERSION + '_w1'))
+    z = np.load(out, allow_pickle=True)
+    for key in ('g_all_rep', 'g_plan_rep', 'plan_act', 'r_real',
+                'dup_cand'):
+      assert key in z.files, key
+  print('SELFCHECK PASS (W1 TM2: stochastic-follower fixture — '
+        'within-repeat max bias visible + split-selection kills it; '
+        'duplicate-null exact; planner branch + r_real stored; '
+        '_w1 redacted save round-trip)')
 
 
 def main():
@@ -867,6 +1066,16 @@ def main():
                  help='API smoke: random-init model, no checkpoint '
                       'touched, no outcome revealed')
   p.add_argument('--selfcheck', action='store_true')
+  p.add_argument('--w1_repeats', type=int, default=0,
+                 help='W1 adjudication wave (PREREG_w1_adjudication_'
+                      'constraints_20260809): R independent-mark '
+                      'repeats. 0 = off (default path byte-identical).')
+  p.add_argument('--w1_dup_cand', action='store_true',
+                 help='W1 duplicate-candidate NULL pass (requires '
+                      '--w1_repeats > 0).')
+  p.add_argument('--env_seed', type=int, default=None,
+                 help='Override the env seed (W1 constraint 6; also '
+                      'the W1 mark seed base). REQUIRED for W1.')
   args = p.parse_args()
   if args.selfcheck:
     selfcheck()
