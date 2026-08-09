@@ -9,6 +9,10 @@ remove (selection on occupancy is still selection on target placement).
 This audit reads the per-episode target angle marginal off the built
 sides and reports the side contrast.
 
+FINGER PAIRS ONLY (2026-08-08): `target_position` is a finger_turn_hard
+observable; cup buffers never contained the key (confirmed on
+axis1_cup/q1), so the assert below fails cleanly there by design.
+
 Usage:
   python -m probing.target_angle_audit --pair $RUNROOT/axis1_finger/q1 \
       --output target_angle_q1.json

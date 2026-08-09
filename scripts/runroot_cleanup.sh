@@ -112,6 +112,11 @@ KEEP_PENDING=(
   # cluster survivors until that wave's read verifies (batch-review B4).
   ax1wm_finger_rgoq1s0_seed[1-4] ax1wm_finger_rgoq1s1_seed[1-4]
   ax1wm_finger_sgbq1s0_seed[1-4] ax1wm_finger_sgbq1s1_seed[1-4]
+  # rl/sh own-label RE-FITS (PREREG_rlsh_ownlabel_refit_20260808): the
+  # same names sit in the "P3 arms closed" DELETE tier above (originals
+  # destroyed in the 1-2 Aug delete-only incident) — KEEP-PENDING wins
+  # for the re-fits until the wave's ONE read verifies.
+  ax1wm_finger_shq1s*_seed* ax1wm_finger_rlq1s*_seed*
   # R3 run dirs (ckpt_early + ckpt) are the SUBSTRATE of two registered
   # not-yet-executed waves (donor-dependency lesson, fpxpx incident):
   #   * PREREG_r3_amend2_20260730 (cross-checkpoint consumer: 128 label
