@@ -100,6 +100,28 @@ scrubbed; the honest form is "training does not remove it" (37/40 at
 pilot2 m1 253→211 as eps 0.08→0.16; dc members retain exploits at 2×
 threshold (e.g. dc_gru m0 51→22, dc_lstm m1 194→94).
 
+**3e. Global calibration over the enumerated cycle library (added 9 Aug
+late; cheap core of ideation fold-in L1,
+`research_notes/cross_cutting/ideation/Research_Ideation_Round_20260809.tex`).**
+Spearman ρ(carried predicted rate, true rate) over all 626 cycles, all 16
+members of the four factorial cells (pilot2 + family2 npz, midranks for
+ties): **median ρ = 0.10, max 0.60, NEGATIVE in 4/16 members** (pilot2 m3
+−0.25, dc_gru m2 −0.43, lg_lstm m1 −0.18, dc_lstm m3 −0.19 —
+anti-calibrated, not merely noisy). The exploit set (neutral ∧
+carried>0.08) is **1.1–42% of the library by count**; among
+predicted-positive cycles it is 46–100% by count and holds 44–100% of the
+predicted-gain mass. The ideation round's L1 kill-gate (ρ≥0.9 ∧ exploit
+mass <0.1% ⇒ rescope headline to measure-zero pathology) is cleared
+**0/16 members** — the mis-scored set is a basin, not a spike, on the
+planner's own search space; the strengthening branch fires. ρ_naive ≈ or
+> ρ_carried in 13/16: prefix-conditioning does not improve global rank
+fidelity. Consistency: pilot2 m1 (ranking §3a's honest exception) is the
+best-calibrated pilot2 member (ρ=0.56). Scope: enumerated max_len≤6
+cycle library at the registered window (= the planner's actual search
+space), not all reachable behaviour; L1's deep-enumeration DP (H≈10–12)
+is thereby demoted to optional. Script:
+scratchpad `l1_cheap_calibration.py` (session transcript).
+
 ## 4. Remediation ledger (compliance findings, review §§14–15)
 
 - **Confirm-wave frozen reader RETRO-BUILT** (`uncfield/confirm_read.py`,
@@ -160,3 +182,90 @@ threshold (e.g. dc_gru m0 51→22, dc_lstm m1 194→94).
    (n=4); C4 null uninformative (power 0.26–0.50); TV λ* negative
    restored (deployed penalty kills the TV class, not the duplicate
    class).
+
+## 6. ADDENDUM (9 Aug late) — raw-ΔH recovery wave LANDED
+
+Bundle `local_results/uncfield/raw_research/` manifest-verified (70
+files: 14 job jsons + 56 member npz), pinned as
+`manifests/uncfield_raw_20260809.sha256`. Executed on RCC CPU
+(`scripts/uncfield_raw.sbatch`, JAX_PLATFORMS=cpu, matched-device).
+
+**6a. verdict_match gate: 56/56.** Every sweep member's verdict AND all
+five exploit counts re-derive exactly from its `ensemble.pkl` at the
+registered (y_mode, seed). This retroactively closes review §15's
+residual ("P-N1 rests on runner-written verdict strings"): **P-N1's
+dataseed3/4 8/8 ≥ CIG-ONLY is now model-derived**, as is every other
+sweep verdict (incl. the 10×-dose 37/40 inputs).
+
+**6b. The drift-credit artifact generalizes across every sweep axis.**
+Census over all 56 members: **1462 adjusted conjunctions vs 102 raw**
+(raw survivors in 14/56 members); 453/1462 adjusted conjunctions have
+raw ΔH ≤ 0 (pure sign flips). Mechanism in the open:
+Spearman(n_both_adj, −drift) = **0.805** across members — the adjusted
+"both" tier tracks the size of the negative-drift credit — and only 4/56
+members hold adjusted conjunctions at non-negative drift (largely the
+same members whose raw counts survive: hid128 m0/m2, train30k m0,
+train10k m3). Raw survivors are member-sparse and concentrated in the
+y_mode=sample cells (ymode_s1 m3: 21, ymode_s2 m3: 14 — observation
+sampling, distinct seeds on the anchor ensemble) plus two ≈zero-drift
+ml members (train10k m3: 12, hid128 m2: 12). These raw counts are
+registered-window only — window transience (§2) untested on them; treat
+as descriptive. MANUSCRIPT: every sweep conjunction table now reports
+raw + adjusted side by side; "both"-tier rows in the dose/capacity/seed
+sweeps are predominantly an accounting credit and must be labeled so.
+
+**6c. Global calibration (§3e) extends to all 72 members.** The 56 sweep
+members are WORSE: median ρ(carried, true) = **−0.05**, negative in
+30/56, min −0.73 (dose/capacity cells); exploit set up to 47% of the
+library. L1 kill-gate: **0/56, pooled 0/72** — the measure-zero rescope
+is excluded on the full factorial + sweep record.
+
+## 7. ADDENDUM (9 Aug late) — L2 representation-adequacy control
+
+Ideation fold-in L2 executed (`uncfield/fullcov.py`, selfcheck PASS —
+NLL exact vs closed form, exact diagonal degeneracy, Hadamard, API,
+train smoke). Four GRU members with a full-Cholesky z-head (8+8+28
+outputs, full-cov Gaussian NLL) trained on the EXACT pilot2 episodes/
+seeds/config (0–3 / 3000 / 32; trunk+obs-head init identical to the
+diagonal members). Scored: the 46 pure-s4 cycles (s4 = z0+z1, the one
+genuine off-diagonal sensor; all referee-neutral, true ≈0.012) under
+(a) the MARGINAL entropy functional (inherited thresholds licensed) and
+(b) the descriptive JOINT log-det functional. Bundle
+`local_results/uncfield/fullcov/` (ensemble_full.pkl +
+fullcov_results.json).
+
+| m | diag n>ε / max | full-MARGINAL n / max | full-JOINT n / max | ρ̂₀₁ (true −0.083) |
+|---|---|---|---|---|
+| 0 | 0 / 0.015 | 3 / 0.106 | **31 / 0.202** | **−0.688** |
+| 1 | 10 / 0.128 | 0 / 0.050 | **20 / 0.128** | −0.237 |
+| 2 | 3 / 0.101 | 0 / 0.004 | 0 / 0.049 | +0.063 |
+| 3 | 11 / **0.970** | 0 / −0.048 | 0 / −0.040 | +0.174 |
+
+Three findings:
+1. **Marginal-functional s4 farming FALLS** (ensemble 24→3 exploits,
+   3/4→1/4 members, max 0.970→0.106): read-out expressivity is not the
+   binding defect — consistent with the diagnosed mechanism (update
+   operator, not head).
+2. **Correlation is representable but NOT learned**: warmup ρ̂₀₁ spans
+   −0.688..+0.174 against a true −0.083 (wrong sign 2/4, 8× magnitude
+   error) — the "give it the parameters and it learns the covariance"
+   premise fails empirically.
+3. **The exploit SURVIVES the correctly-joint acquisition objective**
+   (the clause CIG App. B.2 leaves open, per the ideation review): under
+   log-det scoring, 2/4 full-cov members farm neutral s4 cycles HARDER
+   than any marginal view (m0: 31/46 cycles) — mis-learned correlation
+   opens a NEW farming channel through the off-diagonal term itself.
+   Representational adequacy does not repair the planner; it relocates
+   the exploit.
+
+Caveats: ε=0.08 on the joint functional is descriptive (thresholds were
+calibrated on the marginal functional); member-index pairing across
+head types is not meaningful (independent trainings — compare ensemble
+level); ensemble-level verdicts on the FULL 626-cycle library under
+both views await the RCC extension (`scripts/uncfield_fullcov.sbatch`,
+ready). MANUSCRIPT: defenses/controls section — "under-equipped, not
+broken" objection closed with the two-sided form above; do NOT claim
+the joint-channel finding beyond the s4 exhibit until the full sweep
+lands. Prior-art note: Cholesky-KalmanNet (NSF PAR 10656999) and
+arXiv:2605.18704 remain unread — required only if this expands beyond a
+control paragraph.
