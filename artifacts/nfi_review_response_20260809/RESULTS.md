@@ -269,3 +269,57 @@ the joint-channel finding beyond the s4 exhibit until the full sweep
 lands. Prior-art note: Cholesky-KalmanNet (NSF PAR 10656999) and
 arXiv:2605.18704 remain unread — required only if this expands beyond a
 control paragraph.
+
+### 7b. AMENDMENT (9 Aug night) — full-library sweep landed; §7 finding 1 CORRECTED
+
+Bundle re-verified (10 files; `manifests/uncfield_fullcov_20260809.sha256`).
+**PROVENANCE:** the RCC job RETRAINED its own ensemble
+(`ensemble_full.pkl` was not pre-synced), and the rsync **overwrote the
+local batch's ensemble + json** — the local (batch-A) numbers survive
+only in §7's table and the session run log. Batch A ≠ batch B
+member-wise (e.g. m0 ρ̂₀₁ −0.688 vs −0.060): **cross-machine CPU
+TRAINING is not reproducible here** (score-only passes reproduce at
+5e-15; 3000 adam steps amplify float differences chaotically) — same
+lesson class as the Midway3 GPU-nondeterminism rule; never design
+cross-machine training-run pairing.
+
+**CORRECTION to §7 finding 1:** "marginal-functional s4 farming falls"
+does NOT replicate across training batches — batch B's s4-marginal
+exploits are 20/21/3/0 (44 total, vs diagonal 24; batch A had 3).
+The licensed cross-batch statement is the ideation doc's "holds"
+branch: **full-covariance capacity neither removes nor stabilizes the
+s4-channel exploit** (batch-unstable magnitude, present in both
+batches), and correlation is mis-learned in BOTH batches (8 members
+pooled: ρ̂₀₁ spans −0.688..+0.174 vs true −0.083, wrong sign 4/8).
+Findings 2 and 3 replicate and strengthen (below).
+
+**Full 626-cycle sweep (batch B, 4 members × 2 views): verdict
+EXPLOIT-SURVIVES-CIG-ONLY in 8/8.** Neutral carried exploits: marginal
+195/104/134/149, joint 284/97/157/102 — the carried-accounting exploit
+is fully retained under representation adequacy AND under the
+correctly-joint log-det acquisition objective at full-library scale
+(m0's joint count exceeds its marginal). Supporting facts:
+- **Top-1 ranked cycle is referee-certified evidence-neutral in 8/8**
+  (carried up to +2.94 nats/loop on true ≈0.013) — §3a's flagship
+  ranking exhibit reproduces on full-cov members under both
+  functionals. All eight top-1s are axis-aligned single-sensor
+  duplicate-decay cycles (s7/s2/s3/s1) — provably-diagonal channels:
+  correlation capacity is irrelevant to the top of the exploit ranking.
+- **Global calibration unchanged**: exploit basin 16–45% of the
+  library; ρ(carried,true) −0.21..+0.34 — kill-gate cleared in all 8
+  sweeps (pooled record now 0/80).
+- **pbim = both = transient = 0 everywhere, and move-only drift is
+  ≈0** (|drift| ≤ 4.2e-3 vs the diagonal members' −0.006..−0.028): the
+  negative-drift phenomenon that manufactured family-1's adjusted
+  conjunctions largely VANISHES under the full head — additional
+  support for the §1a artifact account (drift was a diagonal-head
+  behavior, not a world property).
+- TV channel: farmed by m0 at +1.27 (marginal) / +1.88 (joint);
+  m1/m2 small-positive, m3 negative — member-heterogeneous as in the
+  diagonal family.
+MANUSCRIPT (supersedes §7's instruction): the control paragraph may now
+claim the joint-objective survival at full-library scale, and must
+present the s4-marginal magnitude as batch-unstable — the load-bearing
+sentence is "a full-covariance read-out changes neither the verdict
+tier nor the fictitious-top ranking, and the correctly-joint
+acquisition objective does not repair the exploit."
