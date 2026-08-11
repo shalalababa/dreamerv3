@@ -1,0 +1,105 @@
+{
+ "descriptives": {
+  "d_rep_lam0.5": {
+   "ci": [
+    -0.030643776624130085,
+    0.01276931354980043
+   ],
+   "mean": -0.007695312500000002,
+   "perm_p": 0.5149485051494851
+  },
+  "d_rep_lam2": {
+   "ci": [
+    -0.05673222867547802,
+    0.02929888088806266
+   ],
+   "mean": -0.018164062499999998,
+   "perm_p": 0.4223577642235776
+  },
+  "d_rep_vs_plan": {
+   "ci": [
+    0.11553631920324939,
+    0.6179317711622985
+   ],
+   "mean": 0.27568359375000007,
+   "perm_p": 0.006399360063993601
+  },
+  "per_domain": {
+   "cup": {
+    "d_mode": -0.30875,
+    "d_qsel": 0.0214404296875,
+    "d_rep_lam1": -0.0192578125
+   },
+   "finger": {
+    "d_mode": -0.2133984375,
+    "d_qsel": 0.0105517578125,
+    "d_rep_lam1": 0.017968750000000002
+   }
+  },
+  "rho_cells_finite": 25,
+  "rho_q_g_pooled": 0.015203995322797837
+ },
+ "files": [
+  "w1tm2_cup_e1_seed51_late.npz",
+  "w1tm2_cup_e1_seed52_late.npz",
+  "w1tm2_cup_e1_seed53_late.npz",
+  "w1tm2_cup_e1_seed54_late.npz",
+  "w1tm2_cup_e1_seed55_late.npz",
+  "w1tm2_cup_e1_seed56_late.npz",
+  "w1tm2_cup_e1_seed57_late.npz",
+  "w1tm2_cup_e1_seed58_late.npz",
+  "w1tm2_cup_e4_seed51_late.npz",
+  "w1tm2_cup_e4_seed52_late.npz",
+  "w1tm2_cup_e4_seed53_late.npz",
+  "w1tm2_cup_e4_seed54_late.npz",
+  "w1tm2_cup_e4_seed55_late.npz",
+  "w1tm2_cup_e4_seed56_late.npz",
+  "w1tm2_cup_e4_seed57_late.npz",
+  "w1tm2_cup_e4_seed58_late.npz",
+  "w1tm2_finger_e1_seed51_late.npz",
+  "w1tm2_finger_e1_seed52_late.npz",
+  "w1tm2_finger_e1_seed53_late.npz",
+  "w1tm2_finger_e1_seed54_late.npz",
+  "w1tm2_finger_e1_seed55_late.npz",
+  "w1tm2_finger_e1_seed56_late.npz",
+  "w1tm2_finger_e1_seed57_late.npz",
+  "w1tm2_finger_e1_seed58_late.npz",
+  "w1tm2_finger_e4_seed51_late.npz",
+  "w1tm2_finger_e4_seed52_late.npz",
+  "w1tm2_finger_e4_seed53_late.npz",
+  "w1tm2_finger_e4_seed54_late.npz",
+  "w1tm2_finger_e4_seed55_late.npz",
+  "w1tm2_finger_e4_seed56_late.npz",
+  "w1tm2_finger_e4_seed57_late.npz",
+  "w1tm2_finger_e4_seed58_late.npz"
+ ],
+ "n_cells": 32,
+ "p_z1_prior_mode": {
+  "ci": [
+   -0.6115847698285417,
+   -0.10853223060843983
+  ],
+  "mean": -0.26107421875,
+  "perm_p": 0.007599240075992401
+ },
+ "p_z1_verdict": "PLANNER-BELOW-MODE: optimization strictly harmful vs the un-optimized prior mode",
+ "p_z2_q_selection": {
+  "ci": [
+   -0.01725609397353792,
+   0.05143894571185295
+  ],
+  "mean": 0.01599609375,
+  "perm_p": 0.39106089391060894
+ },
+ "p_z2_verdict": "NULL (uninformative)",
+ "p_z3_penalty_repair": {
+  "ci": [
+   -0.03361424491085822,
+   0.03356159230758635
+  ],
+  "mean": -0.0006445312500000001,
+  "perm_p": 0.9719028097190281
+ },
+ "p_z3_verdict": "NULL",
+ "prereg": "PREREG_antiharvest_zc_20260811.md"
+}

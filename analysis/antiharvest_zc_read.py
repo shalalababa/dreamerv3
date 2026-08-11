@@ -15,6 +15,7 @@ import json
 import math
 import os
 import re
+import tempfile
 
 import numpy as np
 
@@ -96,7 +97,10 @@ def spearman(a, b):
 
 def cell_stats(g_all_rep, g_plan_rep, qfull):
   """Per-cell means of the per-state estimands. Shapes: (S, R, M),
-  (S, R), (S, K, M)."""
+  (S, R), (S, K, M). Amendment 1: the selection layer (q, qstd, sel_q,
+  sel_p) runs in qfull's OWN dtype (storage float32 at execution, the
+  precision of the labeler's plugin_choice); g-side estimand arithmetic
+  is float64 from load_cells."""
   g_cand = g_all_rep.mean(1)                       # (S, M)
   g_plan = g_plan_rep.mean(1)                      # (S,)
   gbar = g_cand.mean(1)                            # (S,)
@@ -199,7 +203,11 @@ def load_cells(labels_dir):
     assert int(meta['states']) == EXPECT['states'], name
     g_all = np.asarray(z['g_all_rep'], float)
     g_plan = np.asarray(z['g_plan_rep'], float)
-    qfull = np.asarray(z['qfull'], float)
+    # Amendment 1: qfull stays in STORAGE precision (float32) — the
+    # labeler's plugin_choice ran on this array; a float64 upcast flips
+    # the head-mean argmax on 61/6400 near-tie states and breaks the
+    # identity gate below.
+    qfull = z['qfull']
     assert g_all.shape == (EXPECT['states'], EXPECT['repeats'],
                            EXPECT['actions']), (name, g_all.shape)
     assert g_plan.shape == (EXPECT['states'], EXPECT['repeats']), name
@@ -290,9 +298,35 @@ def selfcheck():
   r = analyse(cells)
   assert r['p_z1_verdict'] == 'INDETERMINATE', r['p_z1_prior_mode']
   assert r['p_z3_verdict'] == 'NULL', r['p_z3_penalty_repair']
+  # Amendment 1 defect-class leg: a float32 near-tie whose float64
+  # upcast flips the head-mean argmax; the reader-path expression
+  # (storage precision) must reproduce the labeler's m_now exactly,
+  # through an npz round-trip.
+  rng = np.random.default_rng(7)
+  tie_q = None
+  for _ in range(20000):
+    cand = (60.0 + 1e-5 * rng.standard_normal((6, 5, 8))).astype(
+        np.float32)
+    if (cand.mean(1).argmax(1)
+        != np.asarray(cand, float).mean(1).argmax(1)).any():
+      tie_q = cand
+      break
+  assert tie_q is not None, 'could not construct a near-tie fixture'
+  m_planted = tie_q.mean(1).argmax(1)     # storage-precision truth
+  with tempfile.TemporaryDirectory() as td:
+    tie_path = os.path.join(td, 'tie.npz')
+    np.savez(tie_path, qfull=tie_q, m_now=m_planted)
+    zz = np.load(tie_path)
+    assert zz['qfull'].dtype == np.float32, zz['qfull'].dtype
+    assert (zz['qfull'].mean(1).argmax(1) == zz['m_now']).all(), \
+        'storage-precision identity must hold after round-trip'
+    assert (np.asarray(zz['qfull'], float).mean(1).argmax(1)
+            != zz['m_now']).any(), \
+        'fixture must exhibit the float64 flip (defect class)'
   print('antiharvest_zc_read selfcheck PASS (planted below-mode / '
         'curse-at-q / q-harvests / penalty-repair recovered; null '
-        'no-fires; conjunction CI-and-p enforced by grade())')
+        'no-fires; conjunction CI-and-p enforced by grade(); '
+        'float32 near-tie identity leg PASS)')
 
 
 def main():
