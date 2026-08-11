@@ -1,0 +1,39 @@
+{
+  "prereg": "PREREG_inprotocol_external_20260808.md",
+  "p_x1": {
+    "n": [
+      5,
+      32
+    ],
+    "mean_a": 90.4979,
+    "mean_b": 81.30111562500001,
+    "diff": 9.196784374999993,
+    "perm_p": 0.2815371846281537,
+    "boot_ci": [
+      -0.8231631249999861,
+      18.69431334374999
+    ],
+    "welch_p": 0.12352679591250632
+  },
+  "p_x2": {
+    "n": [
+      5,
+      8
+    ],
+    "mean_a": 82.80416,
+    "mean_b": 147.6823,
+    "diff": -64.87814,
+    "perm_p": 0.003179968200317997,
+    "boot_ci": [
+      -92.559944125,
+      -39.2106935625
+    ],
+    "welch_p": 0.0012412614877436907
+  },
+  "floor_band": [
+    53.284,
+    113.682
+  ],
+  "excluded_submodal": [],
+  "verdict": "P-X1: p2e-online frozen ~ apt => the apt arm fairly represents the family in-protocol; P-X2: p2e-online unfrozen below scratch => C-R2 extends to the canonical external method"
+}

@@ -1,0 +1,29 @@
+{
+  "prereg": "PREREG_randominit_control_20260808.md",
+  "p_ri1": {
+    "n": [
+      8,
+      32
+    ],
+    "mean_a": 70.665375,
+    "mean_b": 81.30111562500001,
+    "diff": -10.635740625000011,
+    "perm_p": 0.12850871491285087,
+    "boot_ci": [
+      -21.202892421875003,
+      -0.40238484375001204
+    ],
+    "welch_p": 0.07850254904131336
+  },
+  "p_ri2_floor_band": {
+    "band": [
+      53.284,
+      113.682
+    ],
+    "mean": 70.665375,
+    "inside": true
+  },
+  "scratch_mean": 147.6823,
+  "excluded_submodal": [],
+  "verdict": "P-RI1: rif ~ apt (perm ns AND |diff| <= 15.1) => reward-free frozen transfer is indistinguishable from an untrained network; null family upgrades to no-learning form"
+}

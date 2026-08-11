@@ -1,0 +1,159 @@
+{
+ "amendment": "PREREG_refit_reads_amend1_20260810.md",
+ "apt": {
+  "auroc": {
+   "ci": [
+    0.38624333441982844,
+    0.4260121851912727
+   ],
+   "mean": 0.40106731884699365
+  },
+  "auroc_in": {
+   "ci": [
+    0.3780043658088235,
+    0.5232981822505218
+   ],
+   "mean": 0.4584080116421569
+  },
+  "auroc_out_defined": false,
+  "n": 16,
+  "r2_mean": -0.34504664249261574
+ },
+ "bundle": "local_results/regen_ridge_e4_20260810_220849",
+ "delta_dom": {
+  "ci": [
+   0.48274767585291894,
+   0.5570954175231226
+  ],
+  "mean": 0.533700847945767,
+  "n_pairs": 16,
+  "perm_note": "cluster-level sign flips; 2^8=256 distinct patterns bound the p resolution",
+  "perm_p": 0.008099190080991902
+ },
+ "domain": "finger",
+ "n_fresh": 30,
+ "n_rows": 32,
+ "replication_rider": {
+  "s0": {
+   "archived_mean": [
+    1.8072642268386563,
+    0.08640588044909604,
+    0.24244641582101653
+   ],
+   "fields": [
+    "rew_nll_in",
+    "rew_nll_out",
+    "rew_nll_all"
+   ],
+   "n_archived": 8,
+   "n_regen": 8,
+   "regen_mean": [
+    1.8072642268386563,
+    0.08640588044909604,
+    0.24244641582101653
+   ]
+  },
+  "s1": {
+   "archived_mean": [
+    1.0225983502475318,
+    0.10807995775883816,
+    0.19100481898916494
+   ],
+   "fields": [
+    "rew_nll_in",
+    "rew_nll_out",
+    "rew_nll_all"
+   ],
+   "n_archived": 8,
+   "n_regen": 8,
+   "regen_mean": [
+    1.0225983502475318,
+    0.10807995775883816,
+    0.19100481898916494
+   ]
+  }
+ },
+ "sensitivity_fresh_only": {
+  "agrees_with_primary": true,
+  "apt": {
+   "auroc": {
+    "ci": [
+     0.38442110741401875,
+     0.42944024797161406
+    ],
+    "mean": 0.3997097733500211
+   },
+   "auroc_in": {
+    "ci": [
+     0.37493777058096056,
+     0.5309869816012456
+    ],
+    "mean": 0.46604735644257705
+   },
+   "auroc_out_defined": false,
+   "n": 14,
+   "r2_mean": -0.3455612416089234
+  },
+  "delta_dom": {
+   "ci": [
+    0.47640100654708395,
+    0.5609560926621693
+   ],
+   "mean": 0.5327982168242617,
+   "n_pairs": 14,
+   "perm_note": "cluster-level sign flips; 2^8=256 distinct patterns bound the p resolution",
+   "perm_p": 0.008099190080991902
+  },
+  "grade": "ABSENT-OR-NONLINEAR",
+  "n": 30,
+  "task": {
+   "auroc": {
+    "ci": [
+     0.9082049842275912,
+     0.9523113415112703
+    ],
+    "mean": 0.9347681667927606
+   },
+   "auroc_in": {
+    "ci": [
+     0.8551642922794117,
+     0.9463981855731736
+    ],
+    "mean": 0.910958563112745
+   },
+   "auroc_out_defined": false,
+   "n": 16,
+   "r2_mean": 0.30661695197229955
+  },
+  "why": "apt AUROC CI includes 0.5 on a defined leg"
+ },
+ "substrate": {
+  "ax1wm_finger_fq1s0_seed6": "JULY-ORIGINAL",
+  "ax1wm_finger_fq1s1_seed5": "JULY-ORIGINAL"
+ },
+ "task": {
+  "auroc": {
+   "ci": [
+    0.9082049842275912,
+    0.9523113415112703
+   ],
+   "mean": 0.9347681667927606
+  },
+  "auroc_in": {
+   "ci": [
+    0.8551642922794117,
+    0.9463981855731736
+   ],
+   "mean": 0.910958563112745
+  },
+  "auroc_out_defined": false,
+  "n": 16,
+  "r2_mean": 0.30661695197229955
+ },
+ "verdict_9": {
+  "grade": "ABSENT-OR-NONLINEAR",
+  "in_regime_power_note": "in-regime leg has 6 negative frames (low-powered)",
+  "out_regime_leg": "structurally unevaluable (0 rewarded out-of-regime frames; amendment 1)",
+  "why": "apt AUROC CI includes 0.5 on a defined leg"
+ }
+}

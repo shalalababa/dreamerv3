@@ -1,0 +1,106 @@
+{
+ "amendment": "PREREG_refit_reads_amend1_20260810.md",
+ "apt": {
+  "auroc": {
+   "ci": [
+    0.9961533154902421,
+    0.9980879379416069
+   ],
+   "mean": 0.9974259023838077
+  },
+  "auroc_in": null,
+  "auroc_out_defined": true,
+  "n": 16,
+  "r2_mean": 0.9103698697231037
+ },
+ "bundle": "local_results/regen_ridge_e4_20260810_220849",
+ "delta_dom": {
+  "ci": [
+   0.0008595778272696097,
+   0.002750855385207133
+  ],
+  "mean": 0.0015297985126622518,
+  "n_pairs": 16,
+  "perm_note": "cluster-level sign flips; 2^8=256 distinct patterns bound the p resolution",
+  "perm_p": 0.008099190080991902
+ },
+ "domain": "cup",
+ "n_fresh": 32,
+ "n_rows": 32,
+ "replication_rider": {
+  "s0": {
+   "archived_mean": [
+    0.0016734317672156777,
+    0.21787976555601885,
+    0.18431126634555287
+   ],
+   "fields": [
+    "rew_nll_in",
+    "rew_nll_out",
+    "rew_nll_all"
+   ],
+   "n_archived": 8,
+   "n_regen": 8,
+   "regen_mean": [
+    0.0016734317672156777,
+    0.21787976555601885,
+    0.18431126634555287
+   ]
+  },
+  "s1": {
+   "archived_mean": [
+    2.129704319440008e-06,
+    0.22454216210229405,
+    0.18967976113474305
+   ],
+   "fields": [
+    "rew_nll_in",
+    "rew_nll_out",
+    "rew_nll_all"
+   ],
+   "n_archived": 8,
+   "n_regen": 8,
+   "regen_mean": [
+    2.9247855373106433e-06,
+    0.22410852353815386,
+    0.18931357334887397
+   ]
+  }
+ },
+ "substrate": "all-fresh",
+ "task": {
+  "auroc": {
+   "ci": [
+    0.9988951273972198,
+    0.9990051237302107
+   ],
+   "mean": 0.9989557008964699
+  },
+  "auroc_in": null,
+  "auroc_out_defined": true,
+  "n": 16,
+  "r2_mean": 0.932833169866274
+ },
+ "verdict_pc3": {
+  "cup_delta": {
+   "ci": [
+    0.0008595778272696097,
+    0.002750855385207133
+   ],
+   "mean": 0.0015297985126622518,
+   "n_pairs": 16,
+   "perm_note": "cluster-level sign flips; 2^8=256 distinct patterns bound the p resolution",
+   "perm_p": 0.008099190080991902
+  },
+  "finger_delta": {
+   "ci": [
+    0.48274767585291894,
+    0.5570954175231226
+   ],
+   "mean": 0.533700847945767
+  },
+  "grade": "AMBIGUOUS",
+  "in_regime_note": "cup in-regime AUROC undefined (0 rewarded in-regime frames); pooled AUROC per prereg rule",
+  "why": "registered catch-all: neither parity-with-violation nor overlap-refutation pattern"
+ }
+}

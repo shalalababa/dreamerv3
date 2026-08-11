@@ -1,0 +1,117 @@
+{
+ "P-RS1_rl": {
+  "levels": {
+   "s0": {
+    "archived_true": {
+     "in": 4.4104371233308,
+     "out": 0.2035808384117812
+    },
+    "own_in": 2.238846825819505,
+    "own_out": 0.5265948230253822,
+    "true_in": 5.265623411138378,
+    "true_out": 0.26002876497870603
+   },
+   "s1": {
+    "archived_true": {
+     "in": 3.4315837561287976,
+     "out": 0.37633941187488007
+    },
+    "own_in": 1.141661242780618,
+    "own_out": 0.7697041412996826,
+    "true_in": 3.4418823343048057,
+    "true_out": 0.5948032252634958
+   }
+  },
+  "n": 16,
+  "own_minus_true_all": {
+   "ci": [
+    -0.050158423969265974,
+    -0.03349276434594501
+   ],
+   "mean": -0.040797136409638966,
+   "perm_p": 9.999000099990002e-05
+  },
+  "s1": {
+   "anchor": 0.827,
+   "bar": 1.5,
+   "ci": [
+    1.5860590031072328,
+    1.774129130475338
+   ],
+   "claimable": false,
+   "own_in_mean": 1.6902540343000614
+  },
+  "s2": {
+   "archived": -0.018,
+   "ci": [
+    -0.016956534724145662,
+    -0.016112703270222913
+   ],
+   "mean": -0.01652543361722359,
+   "sign_replicates": true
+  },
+  "side0_mean": -0.032061048775980816,
+  "side1_mean": -0.04953322404329712,
+  "verdict": "LEARNED-BUT-UNALIGNED",
+  "why": "own - true CI entirely < 0 and perm p < .05"
+ },
+ "P-RS2_sh": {
+  "levels": {
+   "s0": {
+    "archived_true": {
+     "in": 4.6202990894961395,
+     "out": 0.20833358189815693
+    },
+    "own_in": 2.4559563821098886,
+    "own_out": 0.4295593212246207,
+    "true_in": 4.645851106536473,
+    "true_out": 0.2236565975598181
+   },
+   "s1": {
+    "archived_true": {
+     "in": 2.0251103207083183,
+     "out": 0.19984001964861356
+    },
+    "own_in": 1.0427149716331008,
+    "own_out": 0.31910954397785296,
+    "true_in": 1.9856199131053445,
+    "true_out": 0.16079507825835299
+   }
+  },
+  "n": 16,
+  "own_minus_true_all": {
+   "ci": [
+    0.019846389471881096,
+    0.026484002612960415
+   ],
+   "mean": 0.023560860810433574,
+   "perm_p": 0.025197480251974803
+  },
+  "s1": {
+   "anchor": 0.827,
+   "bar": 1.5,
+   "ci": [
+    1.6767400978160443,
+    1.9089508621213531
+   ],
+   "claimable": false,
+   "own_in_mean": 1.7493356768714947
+  },
+  "s2": {
+   "archived": -0.018,
+   "ci": [
+    -0.01704499688739192,
+    -0.01601097439810073
+   ],
+   "mean": -0.01655029861968811,
+   "sign_replicates": true
+  },
+  "side0_mean": -0.011338583399894298,
+  "side1_mean": 0.058460305020761445,
+  "verdict": "REGISTERED-ANOMALY",
+  "why": "own significantly ABOVE true - no wording licensed, disclosed"
+ },
+ "amendment": "PREREG_refit_reads_amend1_20260810.md",
+ "bundle": "local_results/rlsh_ownlabel_ridge_e4_20260810_220721",
+ "unconsumed": "per-run ridge_probe_finger_v1.json files present in the bundle are NOT read (unregistered)"
+}

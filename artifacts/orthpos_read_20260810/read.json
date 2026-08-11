@@ -1,0 +1,22 @@
+{
+  "prereg": "PREREG_orthogonal_poscontrol_20260808.md",
+  "p_op1": {
+    "n": 8,
+    "mean": 112.385425,
+    "pos": 8,
+    "perm_p": 0.0078125,
+    "boot_ci": [
+      53.357077812499995,
+      194.04330437499993
+    ],
+    "t_p": 0.02449995750817444
+  },
+  "pooled_level": 253.946625,
+  "floor_band_turn_easy": [
+    127.68788688948027,
+    211.22039311051972
+  ],
+  "floor_runs": 5,
+  "excluded_submodal": [],
+  "verdict": "P-OP1 FIRES => positive control passes: trunk differences detectable on the adjacent objective; the spin null is informative about orthogonality (U3 strengthened)"
+}

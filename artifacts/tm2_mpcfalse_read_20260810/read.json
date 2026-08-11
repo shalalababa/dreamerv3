@@ -1,0 +1,27 @@
+{
+  "prereg": "PREREG_tm2_mpcfalse_20260808.md",
+  "p_mf1": {
+    "n": 16,
+    "mean": 2.054706249999999,
+    "pos": 7,
+    "perm_p": 0.910430908203125,
+    "boot_ci": [
+      -32.40126015625,
+      35.53324171874999
+    ],
+    "t_p": 0.9107813179297969
+  },
+  "p_mf2_aware_simple": {
+    "n": 16,
+    "mean": 0.697556249999999,
+    "pos": 8,
+    "perm_p": 0.96649169921875,
+    "boot_ci": [
+      -28.279009687500004,
+      31.51061390624999
+    ],
+    "t_p": 0.9659466697839263
+  },
+  "excluded_submodal": [],
+  "verdict": "P-MF1 null => boundary survives the readout de-confound; family wording stands, one confound retired"
+}
