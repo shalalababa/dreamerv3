@@ -1,18 +1,25 @@
 """Registered producer (PREREG_evaluator_selection_20260811 leg 3b):
 per-policy and per-evaluator replay action stats.
 
-Usage (cluster):
-  python make_action_stats.py --evaluator $RUNROOT/ax1wm_finger_q1s1_seed1 \
-      --policies $RUNROOT/adapt_ax1sw*q1s0_* --output action_stats.json
+Usage (cluster; Amendment 1 corrected — the evaluator arg is E2's
+TRAINING buffer, not the fit run dir; offline fits retain no replay):
+  python make_action_stats.py --evaluator $RUNROOT/axis1_finger/q1/side1 \
+      --policies "$RUNROOT"/adapt_ax1sw*_finger_seed*_ckpt500000 \
+      --output action_stats.json
 Concatenates the per-dim action mean and std over every episode npz in
-each run's replay/ dir; the evaluator entry is keyed 'evaluator'.
+each run's replay/ dir (falling back to the dir itself for flat buffer
+dirs like the axis1 side buffers); the evaluator entry is keyed
+'evaluator'.
 """
 import argparse, glob, json, os
 import numpy as np
 
 def stats_of(run_dir, cap=200):
+    paths = sorted(glob.glob(os.path.join(run_dir, 'replay', '*.npz')))
+    if not paths:  # flat buffer dir (axis1 q1 side dirs; Amendment 1)
+        paths = sorted(glob.glob(os.path.join(run_dir, '*.npz')))
     acts = []
-    for p in sorted(glob.glob(os.path.join(run_dir, 'replay', '*.npz')))[:cap]:
+    for p in paths[:cap]:
         try:
             z = np.load(p)
             if 'action' in z.files:
