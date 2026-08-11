@@ -1,0 +1,125 @@
+{
+ "canonical_crosscheck_vs_0808": {
+  "pe": {
+   "s0": {
+    "delta_excl": 0.0,
+    "delta_full": 0.0
+   },
+   "s1": {
+    "delta_excl": 0.0,
+    "delta_full": 0.0
+   }
+  },
+  "rde": {
+   "s0": {
+    "delta_excl": 0.0,
+    "delta_full": 0.0
+   },
+   "s1": {
+    "delta_excl": 0.0,
+    "delta_full": 0.0
+   }
+  }
+ },
+ "pixel": {
+  "X2_pxpx": {
+   "s0": {
+    "delta": 0.18187990620758399,
+    "full": 41.15464692739749,
+    "leak_excluded": 41.33652683360508,
+    "n": 8
+   },
+   "s1": {
+    "delta": 1.8525586937042569,
+    "full": 5.523099058941511,
+    "leak_excluded": 7.375657752645768,
+    "n": 8
+   }
+  },
+  "pe": {
+   "s0": {
+    "delta": 0.1824668180621174,
+    "full": 41.2853160628291,
+    "leak_excluded": 41.467782880891214,
+    "n": 8
+   },
+   "s1": {
+    "delta": 1.8883184818773842,
+    "full": 4.779386769479984,
+    "leak_excluded": 6.6677052513573685,
+    "n": 8
+   }
+  },
+  "rde": {
+   "s0": {
+    "delta": 0.022972196581008575,
+    "full": 11.54224637956736,
+    "leak_excluded": 11.565218576148368,
+    "n": 8
+   },
+   "s1": {
+    "delta": 1.5534211097566608,
+    "full": 3.4054038553025494,
+    "leak_excluded": 4.95882496505921,
+    "n": 8
+   }
+  }
+ },
+ "pixel_leak_rows": {
+  "s0": [
+   1,
+   9,
+   30,
+   35,
+   42,
+   82,
+   100,
+   111
+  ],
+  "s1": [
+   7,
+   47,
+   53,
+   107,
+   110
+  ]
+ },
+ "probeset_manifest_sha256": "a78fe58ca526b51c9fd567b9627e6524eef9df55d918d49ac3f24994c452c786",
+ "proprio_leak_rows_s1": [
+  4,
+  29,
+  36,
+  40,
+  42,
+  43,
+  47
+ ],
+ "proprio_q1_task": {
+  "note": "rew_nll_in from errors.npz, frame-weighted in-regime mean; s1 drops the 7 fit-buffer-overlap probe episodes; s0 overlap = 0 by the committed d1_overlap census (identity expected)",
+  "results": {
+   "s0": {
+    "delta": 0.0,
+    "full": 1.8072642268386563,
+    "leak_excluded": 1.8072642268386563,
+    "max_summary_repro_err": 0.0,
+    "n": 8
+   },
+   "s1": {
+    "delta": 0.038056595410330685,
+    "full": 1.0225983502475318,
+    "leak_excluded": 1.0606549456578624,
+    "max_summary_repro_err": 0.0,
+    "n": 8
+   }
+  },
+  "substrate": "regen bundle q1 task fits = restored ORIGINAL July weights (amendment 2 census)"
+ },
+ "x2_anchor_pins": {
+  "baseline_pin": 23.338872993169502,
+  "member_band": [
+   19.409267325402837,
+   27.285688932142705
+  ],
+  "note": "pins consumed by executed rde/pe reads; leak-excluded X2 values here are a DISCLOSED SENSITIVITY on those pins, never a re-adjudication"
+ }
+}
