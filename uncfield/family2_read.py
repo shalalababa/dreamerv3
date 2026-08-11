@@ -129,10 +129,17 @@ def _reproduction_ok(path=None):
         return False
     if not rec.get("control_passes"):
         return False
-    cells_ok = {e.get("cell") for e in rec.get("members", [])
+    # 9 Aug night hardening (v2-delta review §4.3; registered as
+    # PREREG_nfi_family2_amend2_20260809): the record must identify the
+    # reproducing host commit and the EXACT claim-carrying
+    # (cell, member) pairs, not just cell names.
+    if not rec.get("host_git"):
+        return False
+    pairs_ok = {(e.get("cell"), e.get("member"))
+                for e in rec.get("members", [])
                 if e.get("match_names") and e.get("match_neutral")
                 and e.get("max_rate_dev", 1.0) < 1e-6}
-    return {"dc_gru", "dc_lstm"} <= cells_ok
+    return {("dc_gru", 1), ("dc_lstm", 3)} <= pairs_ok
 
 
 def run_read(root, smoke=False, repro_path=None):
@@ -165,6 +172,12 @@ def run_read(root, smoke=False, repro_path=None):
         # Amendment 1 (9 Aug 2026): a dirty stamp HALTs unless the
         # registered compensating control (clean-HEAD model-level
         # reproduction of the claim-carrying dc members) is on record.
+        # 9 Aug night hardening (v2-delta review §4.2): the dirty flag
+        # must be PRESENT in every stamp — a runner that drops the field
+        # must not bypass the gate.
+        for c, s in stamps.items():
+            if "dirty" not in s:
+                halt.append(f"G-STAMP: {c} stamp lacks the dirty flag")
         if any(s.get("dirty") for s in stamps.values()) \
                 and not _reproduction_ok(repro_path):
             halt.append("G-STAMP: dirty stamp(s) without the Amendment-1 "
@@ -255,6 +268,8 @@ def _write_fixture(root, tamper=None):
             s["episodes_sha"] = "f" * 8
         if tamper == "dirty":
             s["stamp"]["dirty"] = True
+        if tamper == "dirty_missing":
+            s["stamp"].pop("dirty", None)
         with open(d / "summary.json", "w") as f:
             json.dump(s, f)
 
@@ -291,7 +306,7 @@ def selfcheck():
             assert "halt" in out, f"{label} gate mutant undetected"
         # dirty + valid reproduction record → proceeds
         rp = td / "repro.json"
-        json.dump(dict(control_passes=True, members=[
+        json.dump(dict(control_passes=True, host_git="fixture0", members=[
             dict(cell="dc_gru", member=1, match_names=True,
                  match_neutral=True, max_rate_dev=1e-9),
             dict(cell="dc_lstm", member=3, match_names=True,
@@ -299,6 +314,25 @@ def selfcheck():
         out = rr("dirty", repro=str(rp))
         assert "halt" not in out and out.get("pf2_primary_fires") is True, \
             "dirty+reproduction path failed"
+        # hardened-gate mutants (v2-delta review §§4.2-4.3): a repro
+        # record missing host_git or the exact member index must NOT
+        # discharge dirty; a stamp missing the dirty flag must HALT.
+        json.dump(dict(control_passes=True, members=[
+            dict(cell="dc_gru", member=1, match_names=True,
+                 match_neutral=True, max_rate_dev=1e-9),
+            dict(cell="dc_lstm", member=3, match_names=True,
+                 match_neutral=True, max_rate_dev=1e-9)]), open(rp, "w"))
+        assert "halt" in rr("dirty", repro=str(rp)), \
+            "repro without host_git undetected"
+        json.dump(dict(control_passes=True, host_git="fixture0", members=[
+            dict(cell="dc_gru", member=0, match_names=True,
+                 match_neutral=True, max_rate_dev=1e-9),
+            dict(cell="dc_lstm", member=3, match_names=True,
+                 match_neutral=True, max_rate_dev=1e-9)]), open(rp, "w"))
+        assert "halt" in rr("dirty", repro=str(rp)), \
+            "repro with wrong member index undetected"
+        assert "halt" in rr("dirty_missing", repro=none_path), \
+            "stamp lacking dirty flag undetected"
 
     # (1) Reader-vs-runner agreement on the real (quarantined) smoke files.
     smoke_root = ROOT / "family2_smoke"

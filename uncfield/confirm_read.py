@@ -259,7 +259,10 @@ def read_c4():
     def bayes_gain(c):
         t = c.get("trace")
         if isinstance(t, str):
-            t = eval(t, {"None": None, "nan": float("nan")})  # legacy str dicts
+            # legacy str dicts; empty __builtins__ blocks code execution
+            # on bundle data (identical output for valid literal traces)
+            t = eval(t, {"__builtins__": {}, "None": None,
+                         "nan": float("nan")})
         return None if t is None else t.get("mean_bayes_gain")
     degen = [c for c in rest
              if bayes_gain(c) is None or (bayes_gain(c) or 0) < 1e-4]

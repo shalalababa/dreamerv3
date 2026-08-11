@@ -205,7 +205,9 @@ Spearman(n_both_adj, −drift) = **0.805** across members — the adjusted
 "both" tier tracks the size of the negative-drift credit — and only 4/56
 members hold adjusted conjunctions at non-negative drift (largely the
 same members whose raw counts survive: hid128 m0/m2, train30k m0,
-train10k m3). Raw survivors are member-sparse and concentrated in the
+dataseed2 m3 *[CORRECTED 9 Aug night per v2-delta review §1.7: this list
+originally named train10k m3, whose drift is −2.0e-05 (negative); the
+4/56 count was and is correct]*). Raw survivors are member-sparse and concentrated in the
 y_mode=sample cells (ymode_s1 m3: 21, ymode_s2 m3: 14 — observation
 sampling, distinct seeds on the anchor ensemble) plus two ≈zero-drift
 ml members (train10k m3: 12, hid128 m2: 12). These raw counts are
@@ -323,3 +325,184 @@ present the s4-marginal magnitude as batch-unstable — the load-bearing
 sentence is "a full-covariance read-out changes neither the verdict
 tier nor the fictitious-top ranking, and the correctly-joint
 acquisition objective does not repair the exploit."
+
+
+## 8. ADJUDICATION (9 Aug night) — v2-delta review resolved (record + code side)
+
+Review = `reviews/Review_v2Delta_20260809.md` (3 Opus reviewers + author
+recomputation; scope = v2 draft fidelity + the new scripts; CEI excluded).
+**Review #16, material yield 16/16.** My independent verifications this
+session: §1.1 capacity tiers (carried 3/4→4/4→4/4; the 1/4→3/4→4/4
+sequence is CONJUNCTION membership — the draft's BLOCKING is real);
+§1.6's non-member list (hid32 m2, train10k m2, train30k m2, hid128t30k
+m1 — 68/72 headline itself correct); §2.6 distinct-model Wilson
+(56/60 = 0.933, [0.8407, 0.9738] — matches the review); the §6b member
+error (corrected inline above). Remaining review numerics accepted on
+its recomputation record.
+
+**Record-level corrections (this record):**
+- **Denominator honesty (review §2.6):** the pooled rows are
+  member×view SCORINGS, not distinct models — ymode_s* re-scores the
+  anchor ensemble (12 rows) and fullcov is 4 models × 2 views. Licensed
+  phrasing: "0/80 scorings of **64 distinct trained models**" (§6c/§7b
+  kill-gate) and "72 scorings of **60 distinct models**; 56/60 = 0.933,
+  Wilson [0.841, 0.974]" (§3c pooled membership). The ICC defence covers
+  cell clustering, not weight-sharing — use the distinct-model CI.
+- **§3e/§6c kill-gate disclosure (review §5.3–5.4):** the gate as coded
+  uses the COUNT fraction (<0.1% of cycles), while the wording said
+  exploit MASS — immaterial to the verdict (the ρ≥0.9 conjunct fails in
+  all 80 rows on its own; count<0.001 at N=626 means literally zero
+  exploits), but the record now states the coded form. Also: the
+  discrete family's tie structure caps attainable Spearman at 0.6158
+  (534/626 true rates exactly 0), so the 8 dc rows can never clear the
+  ρ conjunct — they are not evidence for gate clearance; LG/fullcov
+  ceilings are 0.991 (72 informative rows).
+- **§6b framing softened (review §5.1):** the 0.805 Spearman is close
+  to arithmetically forced (the adjusted threshold moves down linearly
+  in |drift|); the decisive artifact evidence is the within-member raw
+  census (102/1462, 453 sign flips), with the credit-specific ratio
+  ρ(n_both_adj/n_cig, −drift) = 0.794 as the surviving non-trivial
+  association. "Mechanism in the open" is withdrawn as framing.
+- **§6a scope (review §5.6):** P-N1 is model-derived at the MEMBER
+  level; the ensemble leg follows transitively by the median-severity
+  rule on those member verdicts (dataseed3 [4,5,5,5]→5, dataseed4
+  [5,5,5,4]→5) — no code asserts that aggregation step; stated as such.
+- **§7b scope (review §5.5):** "drift ≈0 under the full head" is a
+  ONE-BATCH observation (batch A unrecoverable); given ρ̂₀₁ moved
+  −0.688→−0.060 across batches, attributing the drift change to head
+  architecture rather than training-batch variation is not licensed.
+- **§3e scope (review §5.2):** the strong "anti-calibrated" reading is
+  licensed for pilot2 m3 and dc_gru m2 (negativity = neutral ranked
+  above informative; bootstrap CIs exclude 0); lg_lstm m1's negativity
+  lives inside the neutral block's <0.02-nat indistinguishability band
+  and is NOT anti-calibration; dc_lstm m3 mixed.
+
+**Code hardenings (review §4; all validated, decisions unchanged):**
+- `raw_research.py`: verdict_match extracted to `_match` + 5-case
+  tamper battery in selfcheck (kills all→any, dropped-verdict-conjunct,
+  ==→>= mutants); RAW census columns now x-checked against
+  npz-independent derivations (kills raw:=adjusted faking); job SKIP
+  before ensemble load; idempotency docstring corrected (job-level).
+  Selfcheck PASS. NOTE: the selfcheck is device-matched to pilot2's
+  authoring device (this machine's GPU); under JAX_PLATFORMS=cpu it
+  correctly fails at the documented ~2e-6 device deviation.
+- `family2_read.py`: dirty flag now PRESENCE-pinned per stamp (a runner
+  that drops the field HALTs); `_reproduction_ok` requires host_git and
+  the exact claim-carrying (cell, member) pairs {(dc_gru,1),(dc_lstm,3)};
+  3 new fixture mutants (missing host_git, wrong member index, missing
+  dirty flag) all detected. Selfcheck PASS; the REAL registered read
+  re-run under the hardened gates: no HALT, P-F2 FIRES, verdicts
+  unchanged.
+- `confirm_read.py`: legacy-trace eval now runs with empty
+  __builtins__ (blocks code execution on bundle data; identical output
+  for valid literals). Full run: ALL recorded outcomes reproduce.
+
+**Handed to the writing chat (draft-side, review §7 actions 1–12):** the
+§1.1 capacity tier relabel + raw column; "true"→carried at L579; the
+0/32→32/32 inversion (draft AND Paper5_FullRecord:1417); the LG drift
+restatement (negative in 40/64, span [−0.028, +0.006]); the ≤0.08
+median-credit fix (max-credit +0.1808 framing available); App. D
+regenerated from §1.6's mechanised list; the 11 smaller mismatches; the
+missing dose curve (build or unpromise); "no window choice" dropped;
+"clean member m2" retired; distinct-model denominators; the mazhao2026
+title fix + the four unverified attributions verified-or-softened +
+the header self-report corrected. Also: fold the review-only numbers
+into the FullRecord; locate or drop 518/534.
+
+## 9. ADDENDUM (10 Aug) — planner-realistic-depth re-score (review §9 item 8)
+
+Full 626-cycle re-score of both dc cells' 8 members at **n_burn=1,
+n_loops=5** (steady = loops 2–5 — planner-realistic imagination depth;
+in the dc world neutrality is certified exactly from the first read, so
+no burn-in is needed for the referee certificate). EXPLORATORY /
+descriptive; script + json archived in this directory
+(`nburn1_rescore.py/.json`, also under `writing/figures/`). Execution:
+local machine (not matched-device to the RCC-trained models; count
+quantities at the 0.08 threshold are insensitive to ~1e-6 device
+drift — registered-window "reg" comparison counts below are the RCC
+summary values, not re-derived locally).
+
+| member | verdict@depth | cig@depth (reg. window) | both raw/adj | top-1 by carried | top-1 true |
+|---|---|---|---|---|---|
+| dc_gru m0 | CIG-ONLY | 2 (51) | 0/0 | c12 xor01 0.113 | exactly 0 |
+| dc_gru m1 | CIG-ONLY | 3 (16) | 0/0 | c325 0.104 | exactly 0 |
+| dc_gru m2 | CIG-ONLY | 11 (10) | 0/0 | c552 0.163 | exactly 0 |
+| dc_gru m3 | **NO-EXPLOIT** | 0 (7) | 0/0 | c224 0.043 | **2.07 (informative)** |
+| dc_lstm m0 | CIG+PBIM | 4 (13) | 1/1 | c552 0.113 | exactly 0 |
+| dc_lstm m1 | CIG+PBIM | 164 (194) | 3/8 | c340 0.397 | exactly 0 |
+| dc_lstm m2 | CIG-ONLY | 16 (16) | 0/0 | c503 0.217 | exactly 0 |
+| dc_lstm m3 | CIG+PBIM | 65 (60) | 0/23 | c609 0.248 | exactly 0 |
+
+**Reading.** (1) **The 38-loop-window deflation is substantially
+closed: 7/8 members still farm under carried accounting at
+planner-realistic depth, and both cell ensembles remain ≥ CIG-ONLY**
+(dc_lstm reaches the conjunction tier at depth). (2) **The
+fictitious-top ranking exhibit reproduces at depth in 7/8 members** —
+the single highest-scoring cycle by carried rate is referee-certified
+exactly-zero — with the one exception (dc_gru m3) being doubly
+informative: at depth it drops below threshold everywhere AND ranks a
+genuinely informative cycle (true 2.07 nats/loop) first, i.e. its
+farming was window-dependent. (3) Member heterogeneity matches the §2
+window analysis: GRU counts shrink sharply at depth (51→2, 16→3, 7→0)
+while LSTM counts persist (194→164, 16→16, 60→65). (4) The small
+depth-window conjunction counts (dc_lstm m0: 1 raw; m1: 3 raw; m3: 0
+raw / 23 adjusted-only) are descriptive and carry the §1a drift-credit
+caveat on the adjusted column; the window-scoped treatment of the
+realized-ΔH leg is unchanged. MANUSCRIPT: one scoping paragraph in the
+generality section — claim "persists at planner-realistic depth in 7/8
+members / both ensembles, window-dependent in one GRU member"; do NOT
+claim depth-window conjunctions beyond the descriptive note.
+
+
+## 9. ADJUDICATION (10 Aug) — CEI manuscript review resolved (record side)
+
+Review = `reviews/Review_CEI_Draft_20260809.md` (3 Opus lenses + author
+recomputation; first review of `Paper_CEI_Draft_20260809.tex`).
+**Review #17, material yield 17/17.** Bottom line accepted: the four
+theorems are true (Thm 3 attacked by 9 structural lines + 13 simulated
+adaptive auditors, no break) but the MANUSCRIPT does not prove them
+(Thm 4 has no proof — blocking), plus 3 hard page-errors, 1 wrong-paper
+citation, 4 abstract-level qualifier drops.
+
+**My independent verifications this session:**
+- **§1 source conflict CONFIRMED — the draft is right, the FullRecord is
+  wrong.** Exact one-sided χ² power: smallest m at 0.95 power = 652
+  (df=m) / **653** (df=m−1); power at 628 = 0.9433–0.9436; power at 668
+  = **0.954** — past target, so 668 cannot be the smallest m under any
+  of the four criteria. `Paper5_FullRecord:1266-1267`, `:1427` and the
+  12-lens review §11's "668 / 0.9446 / 2.3% above the optimum
+  direction-reversal" do not survive. **This record's own §1d (0.943 /
+  653) was already correct and needs no change.** The 12-lens review
+  document itself is a review record and is NOT edited; the correction
+  is registered here. FullRecord fix → writing chat (review action 17).
+- **E1 signs CONFIRMED** from `cei2/report.json`: liar-arm logLRs
+  −0.0976/−0.2377/−0.2469/−0.3305/+0.1217 with + = favours TRUE noise ⇒
+  **four of five seeds favour the false model**; the draft's "one seed
+  mildly favors the false model" is backwards (and understates the
+  paper's own point).
+- **Excluded stratum CONFIRMED**: bundle `gbar_per_read` =
+  46.89/39.76/52.02/**25.01** — the ε=0.15 cell exists and the draft's
+  "40–52 nats per read" silently drops it.
+- **τ=1/19 and the hazard-CI items verified analytically**: n ≥ 1/τ−1
+  gives 18 at τ=1/19 (τ=0.05 gives the paper's own n=19); [4.1, 5.9]
+  excludes 4 on its face. Thm 4(c)'s counterexamples confirmed by
+  inspection (c′=λc with R̂′/λ² is bit-identical in-family; (−A)P(−A)ᵀ =
+  APAᵀ; mean-channel liars leave P̂ untouched).
+
+**Resolved on my side:** `CEI_RelatedWork_Notes_20260807.md` §1c
+corrected (review action 14): Liu–Molinari–Velez's default result is
+PARTIAL identification; point ID needs their Assumption-5 MAR condition,
+not overlap alone — the endogenous-selection bridge survives restated on
+the partial-identification branch.
+
+**Handed to the writing chat:** review §9 actions 1–16 on the draft
+(blocking: Thm 4 proof-or-pointer; delete 4(c)'s false parenthetical;
+define L₃/arrival; then the hard errors, qualifier restorations, Wald +
+Wald–Wolfowitz and Cox/Basu/Rubin + Meier/Athans credits, chugg2022 →
+arXiv:2305.17570, bibitem descriptor fixes) + action 17 (FullRecord
+653/0.943 correction) + recommended 18–23 (Assumption-1 block structure
+in §10; route control as scoped limitation; integrity-note completions
+incl. the withdrawn 49× and the different-measurement sentence; E4
+MC-estimate disclosure + t_det + first-read-luck strata + 1/h
+recomputation note; framing meta-clauses deleted; unstated hypotheses
+into statements).

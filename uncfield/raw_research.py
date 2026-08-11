@@ -20,12 +20,20 @@ a halt. This gate also retroactively re-derives every sweep verdict
 (incl. P-N1's dataseed3/4 8/8) from the MODELS rather than from
 runner-written summary strings — closing review §15's residual.
 
-Idempotent per member (npz existence guard). Jobs:
+Idempotent per JOB (job-json existence guard; a partially crashed job
+re-runs whole on resubmission). Jobs:
   ymode_s{0,1,2}  anchor pilot2 ensemble, y_mode=sample, seed=s
   train{1k,10k,30k}, hid{32,128}, hid128t{10k,30k}   own ensemble, ml, seed=0
   dataseed{1,2,3,4}                                  own ensemble, ml, seed=N
 
 Run:  python -m uncfield.raw_research --job <job>     (or --selfcheck)
+
+9 Aug night hardening (v2-delta review §4.1; values/decisions unchanged):
+verdict_match extracted to `_match` and covered by a tamper battery in
+selfcheck (kills all→any, dropped-verdict-conjunct, and ==→>= mutants);
+selfcheck now also asserts the RAW census columns (n_both_raw,
+n_pbim_raw, n_adjconj_rawneg) against values derived independently from
+the saved pilot2 npz; job SKIP moved before the ensemble load.
 """
 
 from __future__ import annotations
@@ -89,17 +97,28 @@ def _census(results):
     )
 
 
+MATCH_KEYS = ("n_exploit_naive", "n_exploit_cig", "n_exploit_pbim",
+              "n_exploit_both", "n_exploit_transient")
+
+
+def _match(verdict, counts, stored):
+    """The verdict_match gate: recomputed verdict AND all five exploit
+    counts must equal the bundled summary's member entry."""
+    return bool(verdict == stored["verdict"]
+                and all(counts[k] == stored[k] for k in MATCH_KEYS))
+
+
 def run_job(job):
+    json_path = OUT / f"{job}.json"
+    if json_path.exists():
+        print(f"{job}: SKIP (json exists)", flush=True)
+        return
     ens_path, summ_dir, y_mode, seed = job_spec(job)
     summary = json.load(open(summ_dir / "summary.json"))
     ensemble = lw.load_ensemble(ens_path)
     OUT.mkdir(parents=True, exist_ok=True)
     out = {"job": job, "y_mode": y_mode, "seed": seed,
            "ensemble": str(ens_path.relative_to(ROOT)), "members": []}
-    json_path = OUT / f"{job}.json"
-    if json_path.exists():
-        print(f"{job}: SKIP (json exists)", flush=True)
-        return
     for m, params in enumerate(ensemble):
         npz_path = OUT / f"{job}_m{m}.npz"
         t0 = time.time()
@@ -109,10 +128,7 @@ def run_job(job):
         verdict, counts = pl.classify(results)
         _save_npz(npz_path, results)
         stored = summary["members"][m]
-        match = (verdict == stored["verdict"]) and all(
-            counts[k] == stored[k] for k in
-            ("n_exploit_naive", "n_exploit_cig", "n_exploit_pbim",
-             "n_exploit_both", "n_exploit_transient"))
+        match = _match(verdict, counts, stored)
         cen = _census(results)
         out["members"].append(dict(
             member=m, verdict=verdict, verdict_match=bool(match),
@@ -157,8 +173,31 @@ def selfcheck():
         assert dev < 1e-6, (col, dev)
     cen = _census(results)
     assert cen["n_both_adj"] == st["n_exploit_both"]
+    # RAW census columns vs values derived INDEPENDENTLY from the saved
+    # npz (kills any mutant that fakes a raw column from the adjusted).
+    ne = z["neutral"].astype(bool)
+    cig = ne & (z["carried"] > EPS)
+    ref_raw = int((cig & (z["dh"] > EPS)).sum())
+    ref_pbim = int((ne & (z["dh"] > EPS)).sum())
+    ref_rawneg = int((cig & (z["dh_adj"] > EPS) & (z["dh"] <= 0)).sum())
+    assert cen["n_both_raw"] == ref_raw, (cen["n_both_raw"], ref_raw)
+    assert cen["n_pbim_raw"] == ref_pbim, (cen["n_pbim_raw"], ref_pbim)
+    assert cen["n_adjconj_rawneg"] == ref_rawneg, \
+        (cen["n_adjconj_rawneg"], ref_rawneg)
+    # verdict_match gate battery: true on the genuine entry, false under
+    # each tamper class (kills all→any, dropped-verdict-conjunct, ==→>=).
+    assert _match(verdict, counts, st) is True
+    t1 = dict(st); t1["verdict"] = "NO-EXPLOIT"
+    assert _match(verdict, counts, t1) is False        # verdict conjunct
+    t2 = dict(st); t2["n_exploit_cig"] = st["n_exploit_cig"] + 1
+    assert _match(verdict, counts, t2) is False        # all→any
+    t3 = dict(st); t3["n_exploit_cig"] = st["n_exploit_cig"] - 1
+    assert _match(verdict, counts, t3) is False        # ==→>=
+    t4 = dict(st); t4["n_exploit_transient"] = st["n_exploit_transient"] + 1
+    assert _match(verdict, counts, t4) is False        # last-key coverage
     print(f"raw_research selfcheck PASS (m0: both adj/raw = "
-          f"{cen['n_both_adj']}/{cen['n_both_raw']})")
+          f"{cen['n_both_adj']}/{cen['n_both_raw']}; raw census x-checked; "
+          f"verdict_match battery 5/5)")
 
 
 def main():
