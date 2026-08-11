@@ -101,10 +101,11 @@ KEEP_PENDING=(
   #  U1's remain the only copy of undecided scores and moved to DELETE_AFTER)
   ax1wm_finger_s25q1s*_seed* ax1wm_finger_fs25q1s*_seed*
   adapt_ax1s25q1s* adapt_ax1fs25q1s*
-  # 2026-08-08 review-resolution adapt-only waves (registered, not read):
-  # NOTE adapt_tm2mf* would otherwise be eaten by the DELETE-AFTER glob
-  # `adapt_tm2*`; KEEP-PENDING wins. Keep until each wave's bundle is
-  # synced + its ONE read verified.
+  # 2026-08-08 review-resolution adapt-only waves. Reads verified 08-10,
+  # BUT the rif/p2eof/p2eou run dirs (ckpt + scores.jsonl) are now the
+  # POLICY POOL of PREREG_goodhart_partial_20260811 — hold until its
+  # scoring bundle is synced + the ONE read verifies. ter/rndte/tm2mf
+  # holds release on bundle-sync verification as before.
   adapt_rif_* adapt_p2eof_* adapt_p2eou_* adapt_ax1ter* adapt_tm2mf*
   adapt_rndte_*
   # turn_easy positive-control DONORS (PREREG_orthogonal_poscontrol_20260808):
@@ -125,8 +126,10 @@ KEEP_PENDING=(
   # m3): registered labels dir convention $RUNROOT/w1_labels — protect
   # until both family reads verify + bundle synced.
   w1_labels
-  # s x w_r wave (PREREG_swave_wave_20260809): fits + adapts + the two
-  # scaled buffers — protect until the ONE read verifies.
+  # s x w_r wave (PREREG_swave_wave_20260809): read verified 08-10, BUT
+  # the 88 adapt run dirs are now the main POLICY POOL of
+  # PREREG_goodhart_partial_20260811 — hold adapts (and fits/buffers as
+  # their provenance) until its scoring bundle is synced + read verified.
   ax1wm_finger_swr*q1s0_seed* ax1wm_finger_swv*q1s0_seed*
   adapt_ax1swr*q1s0_* adapt_ax1swv*q1s0_*
   axis1_finger/q1_s245 axis1_finger/q1_s446
