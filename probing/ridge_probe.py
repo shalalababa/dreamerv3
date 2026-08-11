@@ -302,8 +302,17 @@ def cmd_measure(args):
         s.get('probeset_sha256') == manifest['sha256']:
       ref = float(s['deter_std'])
       result['deter_std_summary'] = ref
+      # Tolerance 1e-3 (2026-08-10 instrument amendment, disclosed):
+      # the witness guards WRONG-extraction (wrong run/side/keys —
+      # 30-400% misses, e.g. the rde side asymmetry 0.03 vs 0.43),
+      # never bit-identity. The probe always runs in a DIFFERENT job
+      # than the E4 pass, and measured cross-job drift of single-
+      # forward RNG-free quantities on this cluster is up to ~7e-4
+      # (repair audit, udyn) — the original 1e-4 bar sat inside the
+      # substrate noise floor and tripped on a regenerated-fit pass at
+      # |diff| = 1.11e-4 with matched-magnitude values.
       result['witness_match'] = bool(
-          abs(our_deter_std - ref) <= 1e-4 * max(1.0, abs(ref)))
+          abs(our_deter_std - ref) <= 1e-3 * max(1.0, abs(ref)))
       break
 
   with open(out_path, 'w') as f:
@@ -419,7 +428,12 @@ def main():
                  help='npz from relabel_replay transform-probeset / '
                       'stamp-probeset (own-label scoring).')
   m.add_argument('--platform', default='gpu')
-  m.add_argument('--ep_batch', type=int, default=10)
+  # default 4 = stratified_error's ep_batch (2026-08-10 amendment):
+  # batched RSSM forwards are not batch-shape-invariant on GPU, and the
+  # deter_std witness compares like-for-like only when the probe's
+  # extraction batching matches the E4 pass that wrote the summary.
+  # Keep UNIFORM across a panel — never vary per run.
+  m.add_argument('--ep_batch', type=int, default=4)
   m.add_argument('--seed', type=int, default=0)
   m.add_argument('--allow_unfrozen', action='store_true')
   m.set_defaults(fn=cmd_measure)
