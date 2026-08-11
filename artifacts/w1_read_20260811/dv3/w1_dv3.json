@@ -1,0 +1,58 @@
+{
+ "family": "dv3",
+ "n_cells": 32,
+ "n_dup_passes": 2,
+ "p_w1a_split_opportunity": {
+  "point": 0.004804687500000006,
+  "ci": [
+   -0.06976562499999998,
+   0.0748828125
+  ],
+  "perm_p": 0.8982101789821018,
+  "n_cells": 32,
+  "n_clusters": 32
+ },
+ "p_w1a_fires": false,
+ "p_w1b_consumer_harvest": {
+  "point": 0.02375,
+  "ci": [
+   -0.03338418202957708,
+   0.08940502145146582
+  ],
+  "perm_p": 0.4757524247575243,
+  "n_cells": 32,
+  "n_clusters": 32
+ },
+ "p_w1b_fires": false,
+ "p_w1c_rho_full": {
+  "point": -0.010216438275493707,
+  "ci": [
+   -0.03677650789893755,
+   0.010580086031426994
+  ],
+  "perm_p": 0.41345865413458655,
+  "n_cells": 26,
+  "n_clusters": 32
+ },
+ "p_w1c_rho_reward_only": {
+  "point": 0.13801825386216524,
+  "ci": [
+   NaN,
+   NaN
+  ],
+  "perm_p": 0.037196280371962806,
+  "n_cells": 8,
+  "n_clusters": 32
+ },
+ "p_w1c_rho_value_component": {
+  "point": -0.011554521127472154,
+  "ci": [
+   -0.038057937065097434,
+   0.0093238449637959
+  ],
+  "perm_p": 0.3551644835516448,
+  "n_cells": 26,
+  "n_clusters": 32
+ },
+ "p_w1c_verdict": "LEAK-WAS-ALL"
+}

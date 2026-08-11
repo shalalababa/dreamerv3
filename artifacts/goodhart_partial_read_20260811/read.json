@@ -1,0 +1,48 @@
+{
+ "evaluators": {
+  "E2": {
+   "collate_crosscheck": {
+    "delta": 0.0,
+    "spearman_collate": 0.16527229907702487
+   },
+   "dropped_missing_ckpt": [
+    "adapt_p2eof_finger_seed1_ckpt500000",
+    "adapt_p2eof_finger_seed2_ckpt500000",
+    "adapt_p2eof_finger_seed3_ckpt500000",
+    "adapt_p2eof_finger_seed4_ckpt500000",
+    "adapt_p2eof_finger_seed5_ckpt500000",
+    "adapt_p2eou_finger_seed1_ckpt500000",
+    "adapt_p2eou_finger_seed2_ckpt500000",
+    "adapt_p2eou_finger_seed3_ckpt500000",
+    "adapt_p2eou_finger_seed4_ckpt500000",
+    "adapt_p2eou_finger_seed5_ckpt500000",
+    "adapt_rif_finger_seed1_ckpt0",
+    "adapt_rif_finger_seed2_ckpt0",
+    "adapt_rif_finger_seed3_ckpt0",
+    "adapt_rif_finger_seed4_ckpt0",
+    "adapt_rif_finger_seed5_ckpt0",
+    "adapt_rif_finger_seed6_ckpt0",
+    "adapt_rif_finger_seed7_ckpt0",
+    "adapt_rif_finger_seed8_ckpt0"
+   ],
+   "inversion_rate": 0.4455809074219774,
+   "n": 88,
+   "perm_p": 0.12418758124187582,
+   "random_pick_mean_regret": 711.7306818181818,
+   "random_pick_mean_regret_frac": 0.7868774812804663,
+   "spearman": 0.16527229907702487,
+   "top1_regret": 790.5,
+   "top1_regret_frac": 0.8739635157545605,
+   "top3_regret": 530.5,
+   "top3_regret_frac": 0.5865118850193477,
+   "top5_regret": 530.5,
+   "top5_regret_frac": 0.5865118850193477,
+   "verdict_ranking": "LOTTERY-REPLICATES: the evaluator cannot rank even with fixed code (cleanly attributable to WM evaluation; forward wording only)",
+   "verdict_selection": "SELECTION-NOT-USEFUL"
+  }
+ },
+ "forward_wording": "weaker-of-evaluators rule: LOTTERY-REPLICATES (single evaluator - E1 dropped, disclosed)",
+ "pool_sha_note": "pool pinned in artifacts/goodhart_partial_reg_20260811/pool_ids.json (committed)",
+ "prereg": "PREREG_goodhart_partial_20260811.md",
+ "withdrawn_note": "the archived sprint/p2elong Goodhart conclusions are PERMANENTLY WITHDRAWN independent of this read (original pools destroyed)"
+}
