@@ -22,7 +22,11 @@ import numpy as np
 
 B_PERM = 10_000
 RNG_SEED = 0
-POOL_FLOOR = 95
+# Amendment 1 (2026-08-11, pre-execution): floor 95 -> 88. 18 pinned
+# members (rif 1-8, p2eof/p2eou 1-5) have no loadable checkpoint; the 88
+# s x w_r survivors preserve the full final10 spread (0-904.5, sd 181).
+# Verdicts are scoped "within-family policy pool" per the amendment.
+POOL_FLOOR = 88
 RHO_BAR = 0.4
 SELECTION_FACTOR = 0.5
 REAL_TOL = 1e-6
@@ -212,13 +216,17 @@ def selfcheck():
                      [r_['real'] for r_ in rows])
   assert reg['top1_regret'] == 100.0 and reg['top3_regret'] == 0.0
   assert abs(reg['random_pick_mean_regret'] - 50.0) < 1e-12
-  # gate trips: pool floor, unknown id, real mismatch
-  small = dict(list(pool.items())[:94])
+  # gate trips: pool floor (amendment-1 pin: 87 refuses, 88 passes),
+  # unknown id, real mismatch
+  small = dict(list(pool.items())[:87])
   try:
     analyse({'E1': {'rows': _rows(small, 0.5), 'spearman': None}}, small)
     raise SystemExit('selfcheck FAIL: pool floor not enforced')
   except AssertionError:
     pass
+  ok88 = dict(list(pool.items())[:88])
+  r = analyse({'E1': {'rows': _rows(ok88, 0.5), 'spearman': None}}, ok88)
+  assert r['evaluators']['E1']['n'] == 88
   rows = _rows(pool, 0.5)
   rows[0]['policy_id'] = 'adapt_intruder'
   try:
