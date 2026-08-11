@@ -181,6 +181,28 @@ class Tm2Oracle:
                          eval_mode=True)
     return np.asarray(a.cpu(), np.float32).reshape(self.act_shape)
 
+  def q_of(self, obs, act):
+    """W2 (PREREG_antiharvest_mech_20260811): the Q-ensemble values of
+    an ARBITRARY action at obs — the same learned-value metric qfull
+    records for candidates, evaluated on planner outputs. Deterministic
+    given weights (no sampling)."""
+    torch = self._torch
+    with torch.no_grad():
+      z = self.model.encode(self._obs_tensor(obs).unsqueeze(0), None)
+      a = torch.from_numpy(np.asarray(act, np.float32).reshape(1, -1)
+                           ).to(z.device)
+      logits = self.model.Q(z, a, None, return_type='all')  # [K,1,bins]
+      q = self._tm2_math.two_hot_inv(logits, self.cfg).reshape(-1)
+    return np.asarray(q.cpu(), np.float32)
+
+  def get_iterations(self):
+    return int(self.agent.cfg.iterations)
+
+  def set_iterations(self, k):
+    """W2 pressure knob: MPPI reads cfg.iterations at plan time; callers
+    MUST restore via try/finally (the label function does)."""
+    self.agent.cfg.iterations = int(k)
+
   def zlat_of(self, obs):
     torch = self._torch
     with torch.no_grad():
@@ -346,9 +368,87 @@ def _w1_label_state_tm2(enode, oracle, obs, qfull, cands, zlat, snap,
       cost_real_calls=cost_real['policy_calls'])
 
 
+W2_ITERS_LOW = 1
+W2_ITERS_HIGH = 12
+
+
+def _w2_label_state_tm2(enode, oracle, obs, qfull, cands, zlat, snap,
+                        pstate, m_now, horizon, run_id, ep, t, w2):
+  """W2 mechanism labeling of ONE state (PREREG_antiharvest_mech_20260811).
+
+  Per state, four planner first-action variants — warm (t0=False, the
+  deployed convention, = the W1 consumer branch), cold (t0=True at
+  default iterations), and cold at iterations {W2_ITERS_LOW,
+  W2_ITERS_HIGH} — each with its Q-ensemble value, plus the W1-style
+  candidate ground-truth panel. ALL ground-truth rollouts share the
+  per-repeat marks with the candidate branches (CRN); the iterations
+  override is restored in a finally block, and every G rollout runs at
+  the DEFAULT iterations (variants differ in the first action only)."""
+  seed_base = int(w2['seed_base'])
+  repeats = int(w2['repeats'])
+  # Review M7: _w1_seed multiplies t by 101, so tags must stay < 101
+  # AND clear of the repeat tags 2..2+R-1; 10/11/12 are free for R<=8.
+  assert repeats <= 8, 'W2 tag space assumes repeats <= 8'
+  variants = {}
+  q_var = {}
+  # warm: t0=False with the deployed warm-start buffer (M1 convention)
+  oracle.rng_reset(oracle.w1_mark(_w1_seed(seed_base, ep, t, 0)))
+  oracle.set_plan_state(pstate)
+  restore_env(enode, snap)
+  variants['warm'] = np.asarray(oracle.follower_act(obs, t0=False),
+                                np.float32).reshape(-1)
+  # cold + pressure grid: t0=True (plan from scratch); iterations
+  # overridden ONLY for the action draw, restored before any rollout
+  it0 = oracle.get_iterations()
+  try:
+    for name, iters, tag in (('cold', it0, 10),
+                             ('p_low', W2_ITERS_LOW, 11),
+                             ('p_high', W2_ITERS_HIGH, 12)):
+      oracle.set_iterations(iters)
+      oracle.rng_reset(oracle.w1_mark(_w1_seed(seed_base, ep, t, tag)))
+      oracle.set_plan_state(pstate)
+      restore_env(enode, snap)
+      variants[name] = np.asarray(oracle.follower_act(obs, t0=True),
+                                  np.float32).reshape(-1)
+  finally:
+    oracle.set_iterations(it0)
+  for name, act in variants.items():
+    q_var[name] = np.asarray(oracle.q_of(obs, act), np.float32)
+  cands_eval = np.asarray(cands, np.float32)
+  if w2.get('dup_cand'):
+    cands_eval = np.tile(cands_eval[m_now:m_now + 1],
+                         (cands_eval.shape[0], 1))
+  m_count = cands_eval.shape[0]
+  g_rep = np.zeros((repeats, m_count), np.float32)
+  g_var = {name: np.zeros(repeats, np.float32) for name in variants}
+  for r in range(repeats):
+    mark_r = oracle.w1_mark(_w1_seed(seed_base, ep, t, 2 + r))
+    for m in range(m_count):
+      g_rep[r, m] = rollout_return(enode, oracle, cands_eval[m],
+                                   horizon, snap, pstate, mark_r)[0]
+    for name in variants:
+      g_var[name][r] = rollout_return(enode, oracle, variants[name],
+                                      horizon, snap, pstate, mark_r)[0]
+  return dict(
+      run_id=run_id, episode=ep, step=t,
+      qfull=qfull, cands=cands_eval,
+      g_all_rep=g_rep,
+      g_warm_rep=g_var['warm'], g_cold_rep=g_var['cold'],
+      g_plow_rep=g_var['p_low'], g_phigh_rep=g_var['p_high'],
+      act_warm=variants['warm'], act_cold=variants['cold'],
+      act_plow=variants['p_low'], act_phigh=variants['p_high'],
+      q_warm=q_var['warm'], q_cold=q_var['cold'],
+      q_plow=q_var['p_low'], q_phigh=q_var['p_high'],
+      zlat=np.asarray(zlat, np.float16),
+      m_now=m_now,
+      dup_cand=bool(w2.get('dup_cand', False)),
+      iters_realized=np.asarray([W2_ITERS_LOW, it0, W2_ITERS_HIGH],
+                                np.int64))
+
+
 def label_run(enode, oracle, n_states, horizon, label_every, max_steps,
               run_id, oracle_all=False, ref_stride=5, obs_flat=None,
-              w1=None):
+              w1=None, w2=None):
   """obs_flat: callable obs->1-D vector for the determinism assert
   (defaults to reward-only comparison when None)."""
   rows = []
@@ -382,7 +482,13 @@ def label_run(enode, oracle, n_states, horizon, label_every, max_steps,
       restore_env(enode, snap)
 
       m_now = plugin_choice(qfull)
-      if w1 is not None:
+      if w2 is not None:
+        rows.append(_w2_label_state_tm2(
+            enode, oracle, obs, qfull, cands, zlat, snap, pstate,
+            m_now, horizon, run_id, ep, t, w2))
+        restore_env(enode, snap)
+        oracle.set_plan_state(pstate)
+      elif w1 is not None:
         rows.append(_w1_label_state_tm2(
             enode, oracle, obs, qfull, cands, zlat, snap, pstate,
             m_now, horizon, run_id, ep, t, w1))
@@ -538,6 +644,17 @@ def main_real(args):
   else:
     assert not getattr(args, 'w1_dup_cand', False), (
         '--w1_dup_cand requires --w1_repeats > 0')
+  w2 = None
+  if getattr(args, 'w2_repeats', 0):
+    assert w1 is None, 'w1 and w2 modes are mutually exclusive'
+    assert args.env_seed is not None, 'W2 passes require --env_seed'
+    assert args.oracle_all, 'W2 requires --oracle_all'
+    w2 = dict(repeats=int(args.w2_repeats),
+              dup_cand=bool(getattr(args, 'w2_dup_cand', False)),
+              seed_base=int(args.env_seed))
+  else:
+    assert not getattr(args, 'w2_dup_cand', False), (
+        '--w2_dup_cand requires --w2_repeats > 0')
   env_seed = train_seed if args.env_seed is None else int(args.env_seed)
   env = Dv3TaskEnv(task, seed=env_seed, dose=dose)
   obs_dim = int(env.observation_space.shape[0])
@@ -562,7 +679,7 @@ def main_real(args):
       env.max_episode_steps, run_id=run_id, oracle_all=args.oracle_all,
       ref_stride=args.ref_stride,
       obs_flat=lambda o: flatten_obs(o, task, extra=env._extra_keys),
-      w1=w1)
+      w1=w1, w2=w2)
   smoke = bool(args.smoke_random_init)
   save_labels(rows, args.output, meta=dict(
       run_logdir=str(args.run_logdir or ''),
@@ -580,10 +697,16 @@ def main_real(args):
       early_step_realized=(None if smoke else audit['early_step_realized']),
       late_step_realized=(None if smoke else audit['late_step_realized']),
       mass_scale=1.0, behavior_checkpoint='',
-      labeler_version=(LABELER_VERSION + '_w1' if w1 is not None
-                       else LABELER_VERSION),
+      labeler_version=(LABELER_VERSION + '_w1' if w1 is not None else
+                       LABELER_VERSION + '_w2' if w2 is not None else
+                       LABELER_VERSION),
       **({} if w1 is None else dict(w1=dict(w1),
                                     env_seed=int(env_seed))),
+      **({} if w2 is None else dict(
+          w2=dict(w2), env_seed=int(env_seed),
+          w2_iters=dict(low=W2_ITERS_LOW,
+                        default=int(cfg.iterations),
+                        high=W2_ITERS_HIGH))),
       smoke_random_init=bool(args.smoke_random_init),
       operation_pair='real_only_imag_retired',
       branch_first_follower_t0=True,
@@ -953,6 +1076,7 @@ def selfcheck():
 
   print('SELFCHECK PASS (' + '; '.join(legs) + ')')
   selfcheck_w1_tm2()
+  selfcheck_w2_tm2()
 
 
 class _W1ChaosEnv(_ChainEnv):
@@ -980,6 +1104,131 @@ class _W1Mock(_MockOracle):
   def w1_mark(self, seed):
     self.rng_ctr = int(seed) % (2 ** 31)
     return self.rng_mark()
+
+
+class _W2Mock(_W1Mock):
+  """W2 fixture oracle: iterations-sensitive planner variants + q_of.
+  follower_act depends on (t0, iterations, warm-state) so the four
+  variants are provably distinct; q_of is a closed form of the action."""
+
+  def __init__(self):
+    super().__init__()
+    self.iterations = 6
+    self.iters_log = []
+
+  def get_iterations(self):
+    return int(self.iterations)
+
+  def set_iterations(self, k):
+    self.iterations = int(k)
+
+  def follower_act(self, obs, t0):
+    self.iters_log.append(self.iterations)
+    a = 0.3 * np.sin(self.rng_ctr * 12.9898)
+    self.rng_ctr += 1
+    if t0:
+      # cold plan: pressure-dependent first action; noise amplitude kept
+      # SMALL so the 0.01*iterations separation is provable across the
+      # per-variant mark reseeds
+      return np.array([0.02 * np.sin(self.rng_ctr * 7.77)
+                       + 0.01 * self.iterations], np.float32)
+    return np.array([a + 0.5 + 0.001 * float(self.ps)], np.float32)
+
+  def q_of(self, obs, act):
+    v = float(np.asarray(act).reshape(-1)[0])
+    return np.array([2.0 * v, 2.0 * v + 0.1], np.float32)
+
+
+def selfcheck_w2_tm2():
+  """W2 legs (PREREG_antiharvest_mech_20260811)."""
+  env, oracle = _W1ChaosEnv(), _W2Mock()
+  rows, _ = label_run(env, oracle, n_states=10, horizon=12,
+                      label_every=7, max_steps=400, run_id='w2tm2',
+                      oracle_all=True,
+                      w2=dict(repeats=4, seed_base=23))
+  assert oracle.get_iterations() == 6, 'iterations not restored'
+  # Review M4(i): a leaked override would put non-default iterations into
+  # the ROLLOUT follower calls; with a correct implementation each
+  # non-default value appears exactly once per labeled state (its action
+  # draw) and never during rollouts.
+  n_lo = oracle.iters_log.count(W2_ITERS_LOW)
+  n_hi = oracle.iters_log.count(W2_ITERS_HIGH)
+  assert n_lo == len(rows) and n_hi == len(rows), (
+      'iterations override leaked into rollouts', n_lo, n_hi, len(rows))
+  for r in rows:
+    assert r['g_all_rep'].shape == (4, 3)
+    for k in ('g_warm_rep', 'g_cold_rep', 'g_plow_rep', 'g_phigh_rep'):
+      assert r[k].shape == (4,), k
+    for k in ('q_warm', 'q_cold', 'q_plow', 'q_phigh'):
+      assert r[k].shape == (2,), k
+    assert list(r['iters_realized']) == [W2_ITERS_LOW, 6, W2_ITERS_HIGH]
+    # variants provably distinct in the fixture: warm carries +0.5,
+    # pressure variants differ by 0.01 * iterations
+    aw, ac = float(r['act_warm'][0]), float(r['act_cold'][0])
+    al, ah = float(r['act_plow'][0]), float(r['act_phigh'][0])
+    assert abs(aw - ac) > 0.05, (aw, ac)
+    assert abs(ah - al) > 0.05, (al, ah)
+    # q_of consistency with the closed form — ALL FOUR variants
+    # (review M4(ii): a q_of computed on the wrong action must trip)
+    assert abs(float(r['q_warm'][0]) - 2.0 * aw) < 1e-5
+    assert abs(float(r['q_cold'][0]) - 2.0 * ac) < 1e-5
+    assert abs(float(r['q_plow'][0]) - 2.0 * al) < 1e-5
+    assert abs(float(r['q_phigh'][0]) - 2.0 * ah) < 1e-5
+  g = np.stack([r['g_warm_rep'] for r in rows])
+  assert float(np.mean(g.std(1))) > 1e-3, 'variant branch static'
+  # duplicate-null: candidate rows bit-identical within repeat
+  env2, oracle2 = _W1ChaosEnv(), _W2Mock()
+  rows2, _ = label_run(env2, oracle2, n_states=4, horizon=12,
+                       label_every=7, max_steps=400, run_id='w2tm2dup',
+                       oracle_all=True,
+                       w2=dict(repeats=3, dup_cand=True, seed_base=23))
+  for r in rows2:
+    g2 = r['g_all_rep']
+    if not np.all(g2 == g2[:, :1]):
+      raise SystemExit('selfcheck FAIL: W2 duplicate-null violated')
+    assert r['dup_cand']
+  # CRN: the same mark reproduces a variant rollout bit-identically
+  env3, oracle3 = _W1ChaosEnv(), _W2Mock()
+  obs = env3.step({'action': np.zeros(1, np.float32),
+                   'reset': np.array(True)})
+  for _ in range(3):
+    obs = env3.step({'action': np.zeros(1, np.float32),
+                     'reset': np.array(False)})
+  snap = snapshot_env(env3)
+  ps = oracle3.plan_state()
+  mark = oracle3.w1_mark(99)
+  a = np.array([0.2], np.float32)
+  g1 = rollout_return(env3, oracle3, a, 8, snap, ps, mark)[0]
+  g2v = rollout_return(env3, oracle3, a, 8, snap, ps, mark)[0]
+  assert g1 == g2v, 'CRN mark does not reproduce'
+  # Review M4(iii): the candidate panel must be BIT-IDENTICAL between a
+  # W1 and a W2 pass at equal dials (same tags 2+r, same rollouts) — this
+  # kills both the iterations-leak and the CRN-de-pairing mutants.
+  env_a, oracle_a = _W1ChaosEnv(), _W2Mock()
+  rows_a, _ = label_run(env_a, oracle_a, n_states=3, horizon=12,
+                        label_every=7, max_steps=400, run_id='w1cmp',
+                        oracle_all=True, w1=dict(repeats=4, seed_base=23))
+  env_b, oracle_b = _W1ChaosEnv(), _W2Mock()
+  rows_b, _ = label_run(env_b, oracle_b, n_states=3, horizon=12,
+                        label_every=7, max_steps=400, run_id='w2cmp',
+                        oracle_all=True, w2=dict(repeats=4, seed_base=23))
+  if not np.array_equal(rows_a[0]['g_all_rep'], rows_b[0]['g_all_rep']):
+    raise SystemExit('selfcheck FAIL: W2 candidate panel diverges from '
+                     'W1 at equal dials - CRN or override leak')
+  # save round-trip
+  import tempfile
+  with tempfile.TemporaryDirectory() as tmp:
+    out = os.path.join(tmp, 'w2tm2.npz')
+    save_labels(rows2, out,
+                meta=dict(labeler_version=LABELER_VERSION + '_w2'))
+    z = np.load(out, allow_pickle=True)
+    for key in ('g_warm_rep', 'g_cold_rep', 'g_plow_rep', 'g_phigh_rep',
+                'q_warm', 'act_phigh', 'iters_realized'):
+      assert key in z.files, key
+  print('SELFCHECK PASS (W2 TM2: four variants distinct + '
+        'pressure-sensitive fixture; iterations override restored; '
+        'q_of closed-form consistency; duplicate-null exact; CRN mark '
+        'reproducibility; _w2 save round-trip)')
 
 
 def selfcheck_w1_tm2():
@@ -1070,6 +1319,12 @@ def main():
                  help='W1 adjudication wave (PREREG_w1_adjudication_'
                       'constraints_20260809): R independent-mark '
                       'repeats. 0 = off (default path byte-identical).')
+  p.add_argument('--w2_repeats', type=int, default=0,
+                 help='W2 mechanism passes (PREREG_antiharvest_mech_'
+                      '20260811): planner-variant repeats; 0 = off.')
+  p.add_argument('--w2_dup_cand', action='store_true',
+                 help='W2 duplicate-null gate pass (requires '
+                      '--w2_repeats > 0).')
   p.add_argument('--w1_dup_cand', action='store_true',
                  help='W1 duplicate-candidate NULL pass (requires '
                       '--w1_repeats > 0).')

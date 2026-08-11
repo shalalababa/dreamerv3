@@ -166,6 +166,16 @@ KEEP_PENDING=(
   # domain-broad (review #9: an accidental cup spill would otherwise hit
   # the ax1wm_cup_* DELETE tier).
   ax1wm_*_td[0-3]_seed* adapt_ax1td[0-3]_*
+  # W2 mechanism labels (PREREG_antiharvest_mech_20260811) + the
+  # evaluator-selection scoring dirs (PREREG_evaluator_selection_20260811,
+  # under goodhart_partial/EV_*) — hold until each wave's ONE read
+  # verifies + bundle synced. The tm2r3 checkpoint dirs are the W2
+  # substrate (same hold as W1 had).
+  w2_labels goodhart_partial
+  # tm2r3 checkpoint dirs = the W1/W2 substrate (review #20: they matched
+  # NO category and sat in the REVIEW bucket; never-delete-without-archive
+  # rule pins them here until the W2 read verifies + archive confirmed)
+  tm2r3
 )
 
 KEEP_SUBSTRATE=(
