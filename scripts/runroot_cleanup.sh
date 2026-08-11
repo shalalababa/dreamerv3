@@ -157,6 +157,12 @@ KEEP_PENDING=(
   # fpxpx fits are its latent-alive CALIBRATION reference; keep until the
   # rde calibration E4 pass has run and its csv is bundled off-scratch.
   ax1wm_finger_fpxpxq1ms*_seed[1-8]
+  # task-arm dose wave (#21, PREREG_dose_task_20260810): td names are
+  # glob-distinct from the DELETE-SAFE reward-free d<l> globs, but pin
+  # them here explicitly until the wave's ONE read verifies. Fit glob is
+  # domain-broad (review #9: an accidental cup spill would otherwise hit
+  # the ax1wm_cup_* DELETE tier).
+  ax1wm_*_td[0-3]_seed* adapt_ax1td[0-3]_*
 )
 
 KEEP_SUBSTRATE=(

@@ -876,9 +876,26 @@ case "$cmd" in
     # Dose/r-pair runs are reward-free by registration (no runs existed
     # under ax1d*/ax1r* names before the corrective protocol); require the
     # explicit mode anyway so nothing reward-aware slips through.
-    : "${AXIS1_EXPL_MODE:?set AXIS1_EXPL_MODE=apt (reward-free; ax1d* names are registered as reward-free fits)}"
-    [ "$AXIS1_EXPL_MODE" = apt ] || {
-      echo "axis1-dose-bundles requires AXIS1_EXPL_MODE=apt (ax1d*/ax1r* are registered reward-free; got: $AXIS1_EXPL_MODE)"; exit 1; }
+    # PREREG_dose_task_20260810 (#21): AXIS1_DOSE_TASK=1 switches to the
+    # task-arm wave under NEW names (ax1wm_*_td<l>/adapt_ax1td<l>_*) on the
+    # same level buffers; the ax1d* names stay registered reward-free and
+    # the default path stays byte-identical.
+    if [ "${AXIS1_DOSE_TASK:-0}" = "1" ]; then
+      [ "${AXIS1_EXPL_MODE:-}" = task ] || {
+        echo "AXIS1_DOSE_TASK=1 requires AXIS1_EXPL_MODE=task (PREREG_dose_task_20260810; got: ${AXIS1_EXPL_MODE:-unset})"; exit 1; }
+      # Review #8: task mode disables axis1.sbatch's implicit ARM!=full
+      # abort, so stale protocol knobs would silently change the fits.
+      [ "${AXIS1_ARM:-full}" = full ] && [ -z "${AXIS1_SIZE:-}" ] && \
+        [ -z "${AXIS1_BASE_CONFIG:-}" ] && [ -z "${AXIS1_WR:-}" ] && \
+        [ -z "${AXIS1_INIT_WM:-}" ] || {
+        echo "PREREG_dose_task_20260810: td wave requires AXIS1_ARM=full and empty AXIS1_SIZE/AXIS1_BASE_CONFIG/AXIS1_WR/AXIS1_INIT_WM"; exit 1; }
+      dose_prefix="td"
+    else
+      : "${AXIS1_EXPL_MODE:?set AXIS1_EXPL_MODE=apt (reward-free; ax1d* names are registered as reward-free fits)}"
+      [ "$AXIS1_EXPL_MODE" = apt ] || {
+        echo "axis1-dose-bundles requires AXIS1_EXPL_MODE=apt (ax1d*/ax1r* are registered reward-free; got: $AXIS1_EXPL_MODE)"; exit 1; }
+      dose_prefix="d"
+    fi
     read -ra seeds <<< "${AXIS1_SEEDS:-1 2 3 4 5}"
     read -ra levels <<< "${AXIS1_LEVELS:-0 1 2 3}"
     read -ra doms <<< "${AXIS1_DOMAINS:-cup finger}"
@@ -906,8 +923,8 @@ case "$cmd" in
           continue
         fi
         for s in "${seeds[@]}"; do
-          run_id="adapt_ax1d${l}_${dom}_seed${s}_ckpt${updates}"
-          wm_run="ax1wm_${dom}_d${l}_seed${s}"
+          run_id="adapt_ax1${dose_prefix}${l}_${dom}_seed${s}_ckpt${updates}"
+          wm_run="ax1wm_${dom}_${dose_prefix}${l}_seed${s}"
           if [ "${FORCE:-0}" != "1" ]; then
             if queued_job "$run_id"; then
               echo "SKIP queued/running: $run_id"
@@ -930,7 +947,7 @@ case "$cmd" in
               fi
             fi
           fi
-          pending+=("$run_id"$'\t'"$wm_run"$'\t'"$task"$'\t'"$s"$'\t'"$root/level${l}"$'\t'"$updates"$'\t'"$steps"$'\t'"axis1"$'\t'"ax1dose_${dom}")
+          pending+=("$run_id"$'\t'"$wm_run"$'\t'"$task"$'\t'"$s"$'\t'"$root/level${l}"$'\t'"$updates"$'\t'"$steps"$'\t'"axis1"$'\t'"ax1dose${dose_prefix#d}_${dom}")
         done
       done
     done
