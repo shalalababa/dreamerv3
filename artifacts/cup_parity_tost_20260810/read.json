@@ -1,0 +1,28 @@
+{
+ "band": 0.1,
+ "bundle": "local_results/regen_ridge_e4_20260810_220849",
+ "cup": {
+  "ci90": [
+   0.0009438269988874606,
+   0.0025161167239714085
+  ],
+  "mean": 0.0015297985126622518,
+  "n_pairs": 16,
+  "perm_note": "cluster sign flips, 2^8 patterns floor p at ~1/257",
+  "tost_p_vs_lower": 0.004199580041995801,
+  "tost_p_vs_upper": 0.004199580041995801
+ },
+ "cup_leg_pass": true,
+ "established": true,
+ "finger": {
+  "bar": "CI entirely > +0.1 (stricter than the original > 0)",
+  "ci95": [
+   0.48274767585291894,
+   0.5570954175231226
+  ],
+  "mean": 0.533700847945767
+ },
+ "finger_leg_pass": true,
+ "prereg": "PREREG_cup_parity_tost_20260810.md",
+ "verdict": "P-C3-EQ ESTABLISHED: cup parity within the registered +-0.10 AUROC band (TOST) with the finger contrast exceeding the band"
+}
