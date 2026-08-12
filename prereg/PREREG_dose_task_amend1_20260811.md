@@ -60,11 +60,45 @@ PY
   otherwise silently reduce the pooled read to look-1 rows. VOID ⇒
   REFUSE + investigate + a dated Amendment 2 BEFORE any re-invoke; no
   silent re-run.
-- **E4 row gate (finding 22)**: the pooled e4 csv must contain exactly
-  the 64 registered fit names — rows with unregistered names (e.g. the
-  td1 seed99 smoke fit, the presumed source of look-1's level-1 n=9
-  membership row) are removed pre-read with the removal disclosed in
-  the artifact.
+- **E4 row gate (finding 22; literal form per reviewer-2 M6 — the
+  seed99 contamination is confirmed real: KEEP_PENDING
+  `ax1wm_*_td[0-3]_seed*` outranks the seed99 DELETE glob, so the
+  smoke fit persists and re-collates)**: run from the bundle dir,
+  pre/post sha256 recorded in the artifact:
+
+```
+python - <<'PY'
+import csv, hashlib
+names = {f'ax1wm_finger_td{l}_seed{s}' for l in range(4)
+         for s in range(1, 17)}
+rows = list(csv.DictReader(open('inputs/e4_dose.csv')))
+keep = [r for r in rows if any(n in r[k] for n in names
+                               for k in ('run', 'run_id', 'checkpoint')
+                               if k in r)]
+dropped = [r for r in rows if r not in keep]
+kept_ids = {n for n in names for r in keep
+            if any(n in str(v) for v in r.values())}
+assert kept_ids == names, ('missing fits', sorted(names - kept_ids))
+with open('inputs/e4_dose_filtered.csv', 'w', newline='') as f:
+    w = csv.DictWriter(f, rows[0].keys())
+    w.writeheader()
+    w.writerows(keep)
+print('dropped rows:', len(dropped),
+      [str(r)[:80] for r in dropped])
+print('sha_pre ', hashlib.sha256(open('inputs/e4_dose.csv','rb')
+                                 .read()).hexdigest())
+print('sha_post', hashlib.sha256(open('inputs/e4_dose_filtered.csv',
+                                      'rb').read()).hexdigest())
+PY
+```
+
+  (exact column name carrying the run identity conformed at run time
+  and recorded; the read consumes the FILTERED csv; the drop list is
+  committed with the artifact.)
+- **Ckpt-steps producer json form (reviewer-2 m9)**: #21's registered
+  one-liner emits space-separated text; the amendment registers the
+  conversion the reader needs:
+  `python -c "import json,sys; print(json.dumps(dict((l.split()[0], int(l.split()[1])) for l in open(sys.argv[1]) if l.strip())))" ckpt_steps.txt > inputs/ckpt_steps.json`
 
 ## Registered read — frozen reader VERBATIM, corrected thresholds on top
 
@@ -105,21 +139,25 @@ PY
   computation, no reader invocation —
 
 ```
-python - <<'PY'
-import csv, json
-import numpy as np
-from analysis.dose_task_read import two_sample
-rows = list(csv.DictReader(open('inputs/auc_pooled.csv')))
-fresh = [r for r in rows if 9 <= int(r['seed']) <= 16]
-lv = lambda l: [float(r['auc100k']) for r in fresh
-                if r['mode'].startswith(f'ax1td{l}')]
-print(json.dumps(dict(fresh_g1=two_sample(lv(3), lv(0)))))
+cd $REPO && BUNDLE=<abs path to the pooled bundle> python - <<'PY'
+import json, os, sys
+sys.path.insert(0, os.getcwd())
+from analysis.dose_task_read import load_auc, two_sample
+cells = load_auc(os.environ['BUNDLE'] + '/inputs/auc_pooled.csv')
+lv = lambda l: [float(r['auc100k']) for r in cells[str(l)]
+                if 9 <= int(r['seed']) <= 16]
+print(json.dumps(dict(fresh_g1=two_sample(lv(3), lv(0)),
+                      n=[len(lv(3)), len(lv(0))])))
 PY
 ```
 
-  (exact column/mode names conformed to the pooled csv schema at run
-  time and recorded; REPLICATION-DESCRIPTIVE — sign/magnitude
-  reported, no branch wording, pooled witness covers these fits.)
+  (Reviewer-2 M4 form: runs from the repo root with an absolute
+  bundle path, and REUSES the frozen `load_auc` so the fresh subset
+  inherits ALL of the reader's row filters — domain, milestone,
+  qc_pass, duplicate gates — by construction; the exact `cells`
+  row-shape access is conformed at run time and recorded.
+  REPLICATION-DESCRIPTIVE — sign/magnitude reported, no branch
+  wording, pooled witness covers these fits.)
 - **Verdict map**: G1-pooled (perm p < .0294 ∧ CI > 0) passes ⇒ the
   wave regains decision weight — P-DR1 adjudicates under the
   corrected thresholds; P-DR2 stays descriptive per above. G1-pooled

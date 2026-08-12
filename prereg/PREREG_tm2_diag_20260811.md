@@ -1,10 +1,16 @@
 # PREREG: TM2 legibility diagnostics (P-F1 premise check) — 2026-08-11 (post-review REVISED form)
 
 User GO 2026-08-11 (family slate, diagnostics-first — the f_R lesson).
-Registered premise check for `PREREG_theory_R1_gating_20260811` P-F1:
-*"TM2 free-arm reward-legibility sits CLOSER to its aware arm than
-Dreamer apt sits to Dreamer task."* Premise tier — it licenses or
-re-scopes the POWERED TM2 wave; it adjudicates no paper claim.
+Registered premise check for `PREREG_theory_R1_gating_20260811` P-F1,
+quoted intact: *"Premise check (diagnostics wave, runs first): TM2
+free-arm reward-legibility (rew-NLL analog) sits CLOSER to its aware
+arm than Dreamer apt sits to Dreamer task."* The "(rew-NLL analog)"
+instrument is HERE instantiated as ridge AUROC (substitution called
+out and defended in the Instrument section: the free arm trains no
+reward head, so a probe-based legibility scalar is the only
+arm-symmetric analog; AUROC is the bounded house form). Premise tier
+— it licenses or re-scopes the POWERED TM2 wave; it adjudicates no
+paper claim.
 **This file replaces the pre-review draft in full** (batch review
 findings 1/2/5: the draft's reader consumed a nonexistent
 ridge_probe schema, its honesty block was false, and its R²-ratio
@@ -32,11 +38,34 @@ never run on any real fit).
   command ([YOU], runs first):**
   `for a in aware free; do for s in 0 1; do for k in 1 2 3 4 5 6 7 8; do d=$RUNROOT/tm2wm_finger_${a}q1s${s}_seed${k}; [ -f $d/tm2_ckpt.pt ] && [ -f $d/TM2_FIT_DONE ] && echo OK $d || echo MISS $d; done; done; done`
   plus `ls -la $RUNROOT/tm2_data/finger_q1_side{0,1}.pt`.
-- **Gate** (reader-enforced, re-checked after any degenerate-label
-  exclusion): ≥6 loadable fits PER ARM with BOTH sides represented in
-  each arm, and both `tm2_data` side files present; else
+- **Gate**: ≥6 loadable fits PER ARM with BOTH sides represented in
+  each arm — reader-enforced as a RETURNED verdict (rev-2 M2), not a
+  crash, re-checked after any degenerate-label exclusion; else
   **DIAGNOSTICS-BLOCKED** (reported; powered-wave decision returns to
-  the user).
+  the user). The `tm2_data` side files are checked by the OPERATOR
+  inventory step above (the reader never touches `tm2_data`; rev-2
+  m5).
+- **Positive-rate pre-check ([YOU], CPU, before any GPU pass; rev-2
+  m8 — side-0 is ~5.4% positive rows, and a zero-positive 16-episode
+  draw would nan every opposite-side fit's probe)**:
+
+```
+python - <<'PY'
+import os, torch, numpy as np
+for s in (0, 1):
+    td = torch.load(os.environ['RUNROOT']
+                    + f'/tm2_data/finger_q1_side{s}.pt',
+                    weights_only=False)['td']
+    idx = sorted(np.random.default_rng(0).choice(
+        td.shape[0], size=16, replace=False))
+    pos = sum(float((td['reward'][i].numpy() > 0).sum()) for i in idx)
+    print(f'side{s} sampled positives: {pos}')
+    assert pos >= 1, f'side{s}: zero positives in the rng-0 draw'
+PY
+```
+
+  A zero refuses the wave (re-registration with a larger draw; the
+  probe's rng-0 16-episode sample is exactly this draw).
 
 ## Instrument (frozen with this file)
 
@@ -72,11 +101,13 @@ BCa 95% CI are recorded alongside — a SEED-variance CI, n_data = 2
 side buffers per arm, disclosed). Pinned anchor: gap_dv3 = 0.53370.
 
 - **DEGENERATE** (fail-closed): gap_TM2 non-finite.
-- **PREMISE-STRONG**: 0 ≤ gap_TM2 < 0.267 (ratio < 0.5).
-- **PREMISE-CONSISTENT**: 0.267 ≤ gap_TM2 < 0.534 (ratio in [0.5, 1)),
-  or gap_TM2 < 0 with CI including 0 (compression to
-  indistinguishability counts toward the premise).
-- **PREMISE-VIOLATED**: gap_TM2 ≥ 0.534 (ratio ≥ 1) — P-F1's premise
+- **PREMISE-STRONG**: 0 ≤ ratio < 0.5 (ratio = gap_TM2 / 0.53370;
+  thresholds are RATIOS — the reader computes ratio < 0.5 / < 1.0
+  exactly; rev-2 m2).
+- **PREMISE-CONSISTENT**: 0.5 ≤ ratio < 1.0, or gap_TM2 < 0 with CI
+  including 0 (compression to indistinguishability counts toward the
+  premise).
+- **PREMISE-VIOLATED**: ratio ≥ 1.0 — P-F1's premise
   fails; the powered wave's attenuation prediction must be
   re-registered or dropped BEFORE that wave freezes.
 - **PREMISE-INVERTED**: gap_TM2 < 0 with CI upper < 0 (free MORE

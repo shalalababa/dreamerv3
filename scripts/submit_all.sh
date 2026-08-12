@@ -345,11 +345,11 @@ submit_axis1_bundle() {  # submit_axis1_bundle <bundle_id> <runlist> <num_tasks>
   local bundle_id="$1"; local runlist="$2"; local num_tasks="$3"
   local walltime="${AXIS1_BUNDLE_TIME:-33:00:00}"
   case "${AXIS1_SIZE:-}" in
-    ''|size1m|size12m|size25m|size50m|size100m|size200m|size400m) ;;
-    *) echo "AXIS1_SIZE must be size1m..size400m or empty, got: ${AXIS1_SIZE}"; exit 1 ;;
+    ''|size100k|size300k|size1m|size12m|size25m|size50m|size100m|size200m|size400m) ;;
+    *) echo "AXIS1_SIZE must be size100k..size400m or empty, got: ${AXIS1_SIZE}"; exit 1 ;;
   esac
   case "${AXIS1_BASE_CONFIG:-}" in
-    ''|dmc_proprio|pixel_wm) ;;
+    ''|dmc_proprio|pixel_wm|dz1|dz2) ;;
     *) echo "AXIS1_BASE_CONFIG must be dmc_proprio|pixel_wm or empty, got: ${AXIS1_BASE_CONFIG}"; exit 1 ;;
   esac
   local jobs_used=$((JOBS_AT_START + SUBMITTED_THIS_RUN))
@@ -371,7 +371,10 @@ submit_axis1_bundle() {  # submit_axis1_bundle <bundle_id> <runlist> <num_tasks>
   exports="$exports,STEPS=${STEPS:-1.25e5},AXIS1_UPDATES=${AXIS1_UPDATES:-500000}"
   # PREREG_axis1_corrective_20260711: the fitting objective must reach the
   # bundle children (this list intentionally avoids --export=ALL).
-  exports="$exports,AXIS1_EXPL_MODE=${AXIS1_EXPL_MODE:?},AXIS1_ARM=${AXIS1_ARM:-full},AXIS1_SAVE_EVERY_UPDATES=${AXIS1_SAVE_EVERY_UPDATES:-50000},AXIS1_SIZE=${AXIS1_SIZE:-},AXIS1_BASE_CONFIG=${AXIS1_BASE_CONFIG:-}"
+  # reviewer-3 F16: ADAPT_CONFIG/WR/INIT_WM must reach bundle children
+  # (single-token values only; FIT_FLAGS deliberately NOT exported -
+  # space-containing values corrupt the comma-separated --export list)
+  exports="$exports,AXIS1_EXPL_MODE=${AXIS1_EXPL_MODE:?},AXIS1_ARM=${AXIS1_ARM:-full},AXIS1_SAVE_EVERY_UPDATES=${AXIS1_SAVE_EVERY_UPDATES:-50000},AXIS1_SIZE=${AXIS1_SIZE:-},AXIS1_BASE_CONFIG=${AXIS1_BASE_CONFIG:-},AXIS1_ADAPT_CONFIG=${AXIS1_ADAPT_CONFIG:-},AXIS1_WR=${AXIS1_WR:-},AXIS1_INIT_WM=${AXIS1_INIT_WM:-}"
   local cmd=(sbatch --account="$SLURM_ACCOUNT" --partition="$SLURM_PARTITION"
              --gres="$SLURM_GRES" --time="$walltime"
              --job-name="$bundle_id" --export="$exports"

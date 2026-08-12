@@ -42,12 +42,15 @@ REGISTERED_IDS = {
     'scratch': {f'adapt_hscratch_finger_seed{k}_ckpt0'
                 for k in range(1, 9)},
 }
-# unfrozen_readout signature keys (dreamerv3/configs.yaml:262-266)
+# unfrozen_readout signature keys (dreamerv3/configs.yaml:276-280).
+# Reviewer-2 B1: NO expl-mode gate — the adapt stage never receives
+# --agent.expl.mode (AXIS1_EXPL_MODE is a Stage-1 knob; real U1 apt
+# adapts record mode 'task'); arm identity is carried by the
+# from_checkpoint WM name alone.
 WM_OF = {
     'hzf': lambda side, seed: f'ax1wm_finger_fq1s{side}_seed{seed}',
     'hzt': lambda side, seed: f'ax1wm_finger_q1s{side}_seed{seed}',
 }
-EXPL_OF = {'hzf': 'apt', 'hzt': 'task'}
 
 
 def _erfinv(x):
@@ -119,12 +122,10 @@ def _check_provenance(rid, arm, m, cfg):
     assert str(cfg['run'].get('from_checkpoint_regex', '')) == \
         '^(enc|dyn|dec)/', (rid, 'unfrozen_readout regex missing')
     assert cfg['agent']['frozen_wm'] is False, (rid, 'frozen_wm not False')
-    assert str(cfg['agent']['expl']['mode']) == EXPL_OF[arm], \
-        (rid, 'expl mode mismatch', cfg['agent']['expl']['mode'])
   else:
     fc = str(cfg.get('run', {}).get('from_checkpoint', '') or '')
-    assert 'ax1wm' not in fc, (rid, 'scratch run initialized from a WM',
-                               fc)
+    # real scratch configs carry from_checkpoint: '' (reviewer-2 m4)
+    assert fc == '', (rid, 'scratch run has a from_checkpoint', fc)
 
 
 def load_runs(runroot):
@@ -291,18 +292,22 @@ def _mk_runs(rng, hzf_late, scr_late, hzt_late=800.0, tmax=5.0e5,
   return runs
 
 
-def _cfg_for(rid):
+def _cfg_for(rid, frozen_wm=False):
+  """Fixture configs mirror REAL executed config shape (reviewer-2 B1:
+  expl.mode is 'task' on every adapt incl. apt-WM ones; scratch carries
+  from_checkpoint: '')."""
   for arm, rx in ARMS.items():
     m = rx.match(rid)
     if not m:
       continue
     if arm == 'scratch':
-      return {'run': {}, 'agent': {}}
+      return {'run': {'from_checkpoint': ''},
+              'agent': {'expl': {'mode': 'task'}}}
     return {'run': {'from_checkpoint':
                     f"/runs/{WM_OF[arm](m.group('side'), m.group('seed'))}/ckpt",
                     'from_checkpoint_regex': '^(enc|dyn|dec)/'},
-            'agent': {'frozen_wm': False,
-                      'expl': {'mode': EXPL_OF[arm]}}}
+            'agent': {'frozen_wm': frozen_wm,
+                      'expl': {'mode': 'task'}}}
   raise AssertionError(rid)
 
 
@@ -382,6 +387,16 @@ def selfcheck():
     try:
       load_runs(td)
       raise SystemExit('expected wrong-WM provenance refusal')
+    except AssertionError:
+      pass
+    with open(cfgp, 'w') as f:
+      json.dump(_cfg_for(bad), f)
+    # frozen adapt (default AXIS1_ADAPT_CONFIG) trips the gate (rev-2 M5)
+    with open(cfgp, 'w') as f:
+      json.dump(_cfg_for(bad, frozen_wm=True), f)
+    try:
+      load_runs(td)
+      raise SystemExit('expected frozen-wm refusal')
     except AssertionError:
       pass
     with open(cfgp, 'w') as f:

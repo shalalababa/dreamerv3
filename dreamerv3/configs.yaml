@@ -159,6 +159,20 @@ size1m: &size1m
   .*\.depth: 4
   .*\.units: 64
 
+# Capacity-DESCENT presets (PREREG_capdescent_20260811; B1 λ trial —
+# competition must bind as capacity shrinks if it exists). classes stay
+# 4 (= size1m) so stored stoch latents keep their shape; param counts
+# recorded at the registered smoke.
+size300k: &size300k
+  .*\.rssm: {deter: 256, hidden: 32, classes: 4}
+  .*\.depth: 2
+  .*\.units: 32
+
+size100k: &size100k
+  .*\.rssm: {deter: 128, hidden: 16, classes: 4}
+  .*\.depth: 2
+  .*\.units: 16
+
 size12m: &size12m
   .*\.rssm: {deter: 2048, hidden: 256, classes: 16}
   .*\.depth: 16
@@ -212,7 +226,7 @@ crafter:
   task: crafter_reward
   run: {steps: 1.1e6, envs: 1, train_ratio: 512}
 
-dmc_proprio:
+dmc_proprio: &dmc_proprio
   <<: *size1m
   task: dmc_walker_walk
   env.dmc.image: False
@@ -258,6 +272,32 @@ expl_apt:
 frozen_readout:
   agent.frozen_wm: True
   run.from_checkpoint_regex: '^(enc|dyn|dec)/'
+
+# B1 capacity-descent (PREREG_capdescent_20260811): frozen_readout PLUS
+# adapt heads pinned at the size1m widths, so the readout is constant
+# across WM sizes (reviewer-3 F5: otherwise the size preset shrinks the
+# fresh policy/value heads and confounds the capacity mediator).
+# Single-token composite: --export cannot carry space-separated lists.
+readout64_frozen:
+  agent.frozen_wm: True
+  run.from_checkpoint_regex: '^(enc|dyn|dec)/'
+  agent.policy.units: 64
+  agent.value.units: 64
+  agent.rewhead.units: 64
+  agent.conhead.units: 64
+
+# B2 nuisance-injection (PREREG_nuisance_20260811): dmc_proprio base
+# PLUS the distractor obs key at the two registered loads (D0 wrapper;
+# the env declares the space, the transformed replay carries the
+# channels). Passed as AXIS1_BASE_CONFIG (single token, replaces the
+# base, hence the inheritance) so BOTH stages see the key.
+dz1:
+  <<: *dmc_proprio
+  distractor: {dim: 16, basesd: 1.0, scale: 1.0, theta: 1.0}
+
+dz2:
+  <<: *dmc_proprio
+  distractor: {dim: 16, basesd: 4.0, scale: 1.0, theta: 1.0}
 
 unfrozen_readout:
   # Full-adaptation calibration: same WM initialization as frozen_readout,

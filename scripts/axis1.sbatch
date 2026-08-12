@@ -48,14 +48,14 @@ STEPS="${STEPS:-1.25e5}"
 # loading fails, which is the built-in guard against mixed-size cells.
 # Empty AXIS1_SIZE keeps the historical default (size1m via dmc_proprio).
 case "${AXIS1_SIZE:-}" in
-  ''|size1m|size12m|size25m|size50m|size100m|size200m|size400m) ;;
-  *) echo "ERROR: unknown AXIS1_SIZE=${AXIS1_SIZE} (size1m..size400m or empty)"; exit 2 ;;
+  ''|size100k|size300k|size1m|size12m|size25m|size50m|size100m|size200m|size400m) ;;
+  *) echo "ERROR: unknown AXIS1_SIZE=${AXIS1_SIZE} (size100k..size400m or empty)"; exit 2 ;;
 esac
 # Pixel study (Plan_PixelReplication): base config applied to BOTH stages
 # (like AXIS1_SIZE, the adapt stage must match the checkpoint's spaces --
 # a mismatch fails at load, which is the built-in guard).
 case "${AXIS1_BASE_CONFIG:-}" in
-  ''|dmc_proprio) ;;
+  ''|dmc_proprio|dz1|dz2) ;;
   pixel_wm) RENDER=True ;;  # pixel obs require rendering (dmc.py asserts)
   *) echo "ERROR: unknown AXIS1_BASE_CONFIG=${AXIS1_BASE_CONFIG} (dmc_proprio|pixel_wm or empty)"; exit 2 ;;
 esac

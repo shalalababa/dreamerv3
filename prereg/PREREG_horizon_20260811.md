@@ -31,21 +31,27 @@ sides {0,1} × seeds {1..4}; hscratch = fresh MODE=goal runs, seeds
 
 ```
 python - <<'PY'
-import json, glob, os
+import glob, os
 root = os.environ['RUNROOT']
 wms = sorted(glob.glob(root + '/ax1wm_finger_fq1s[01]_seed[1-4]')) \
     + sorted(glob.glob(root + '/ax1wm_finger_q1s[01]_seed[1-4]'))
 assert len(wms) == 16, wms
 for w in wms:
-    p = json.load(open(w + '/OFFLINE_FIT_PROGRESS'))
-    assert p['update'] == p['total'], (w, p)
-    ck = sorted(glob.glob(w + '/ckpt/*'))
-    assert any('500000' in os.path.basename(c) for c in ck), (w, ck[-3:])
+    kv = dict(l.split('=', 1) for l in
+              open(w + '/OFFLINE_FIT_PROGRESS').read().strip().split('\n'))
+    assert int(kv['update']) == int(kv['total_updates']), (w, kv)
+    cks = [c for c in sorted(glob.glob(w + '/ckpt/*'))
+           if '500000' in os.path.basename(c)]
+    assert cks and all(os.path.exists(os.path.join(c, 'done'))
+                       for c in cks[-1:]), (w, cks[-1:])
     print('OK', w)
 PY
 ```
 
-   (the literal python block is the gate; refuse on any assert).
+   (the literal python block is the gate; refuse on any assert.
+   Reviewer-2 B2 fix: OFFLINE_FIT_PROGRESS is key=value text with key
+   `total_updates`, not json; the ckpt leg requires the `done` marker
+   so a half-written checkpoint dir cannot pass.)
 2. Record the realized elapsed walltimes of one U1 adapt and one
    scratch-anchor run (sacct or log timestamps); the `--time` values
    below must be ≥1.5× the linear 4× extrapolation — if not, RAISE
@@ -79,7 +85,11 @@ sbatch --account=$SLURM_ACCOUNT --partition=$SLURM_PARTITION \
 ```
 
 (Submit from a clean shell — the `--export=ALL` module-leakage
-gotcha.) **Truncation-recovery policy (registered; review #9/#10)**: a
+gotcha. Reviewer-2 m11: if the realized-walltime check of pre-submit
+gate 2 demands more than 30:00:00/20:00:00, RAISE the `--time` values
+and record the executed values in the bundle notes — the raised form
+then IS the registered command, with the change disclosed.)
+**Truncation-recovery policy (registered; review #9/#10)**: a
 walltime-truncated run's dir is DELETED (after archiving its logs
 off-runroot), and the same id is resubmitted fresh with raised
 `--time`; the truncation is disclosed in the bundle notes. No resumes.
@@ -90,11 +100,15 @@ input).
 
 ## Registered decision rules
 
-Reader gates (fail-closed; review #8/#9): per-run `config.yaml`
-provenance — hz runs must show `run.from_checkpoint` naming the
-registered WM for that (arm, side, seed), `from_checkpoint_regex
-'^(enc|dyn|dec)/'`, `agent.frozen_wm: False`, `agent.expl.mode` =
-task (hzt) / apt (hzf); scratch runs must NOT be WM-initialized. Any
+Reader gates (fail-closed; review #8/#9; reviewer-2 B1 correction —
+NO expl-mode gate: `AXIS1_EXPL_MODE` is a Stage-1 fit knob and every
+adapt records `expl.mode: task` regardless of arm, verified on the
+executed U1 apt runs; arm identity is carried entirely by the
+`from_checkpoint` WM name): per-run `config.yaml` provenance — hz runs
+must show `run.from_checkpoint` naming the registered WM for that
+(arm, side, seed), `from_checkpoint_regex '^(enc|dyn|dec)/'`,
+`agent.frozen_wm: False`; scratch runs must show
+`run.from_checkpoint == ''` (the executed scratch form). Any
 unregistered `adapt_*` dir in the bundle ⇒ REFUSE. Per-run steps must
 be strictly increasing (appended/resumed file ⇒ REFUSE). The
 registered id set must be complete (a missing run ⇒ REFUSE); short

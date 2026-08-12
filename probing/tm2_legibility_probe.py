@@ -195,6 +195,8 @@ def main():
              seed=audit['seed'], reward_coef=audit['reward_coef'],
              value_coef=audit['value_coef'],
              instrument='tm2_legibility_probe_v1')
+  os.makedirs(os.path.dirname(os.path.abspath(args.output)),
+              exist_ok=True)
   with open(args.output, 'w') as f:
     json.dump(res, f, indent=1, sort_keys=True)
   print(f"{res['wm_run']}: r2={res['r2']:.4f} (arm={res['arm']})")

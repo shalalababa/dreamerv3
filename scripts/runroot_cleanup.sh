@@ -102,7 +102,15 @@ KEEP_PENDING=(
   # horizon wave (PREREG_horizon_20260811): 5e5-step unfrozen + scratch runs
   adapt_ax1hz* adapt_hscratch_*
   # TM2 legibility diagnostics (PREREG_tm2_diag_20260811): probe jsons
-  tm2_diag
+  # + the wave's INPUT substrate (reviewer-2 M1: the fits/data were
+  # DELETE-AFTER with a satisfied unblocking event - donor-dependency)
+  tm2_diag tm2wm_finger_*q1s*_seed[1-8] tm2_data
+  # B1 capacity-descent (PREREG_capdescent_20260811): fits+adapts
+  # (seed-restricted so seed99 smoke dirs stay DELETE-SAFE - rev-3 F13;
+  # ctx pairs live under axis1_finger = KEEP_SUBSTRATE)
+  ax1wm_finger_*sk[13]q1s*_seed[1-4] adapt_ax1*sk[13]q1s*_seed[1-4]_*
+  # B2 nuisance-injection (PREREG_nuisance_20260811): fits+adapts
+  ax1wm_finger_*nz[12]q1s*_seed[1-4] adapt_ax1*nz[12]q1s*_seed[1-4]_*
   ax1wm_finger_s25q1s*_seed* ax1wm_finger_fs25q1s*_seed*
   adapt_ax1s25q1s* adapt_ax1fs25q1s*
   # 2026-08-08 review-resolution adapt-only waves. Reads verified 08-10,

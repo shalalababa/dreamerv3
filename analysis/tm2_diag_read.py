@@ -115,10 +115,22 @@ def load_tm2(pattern):
 def analyse(tm2_rows, excluded=()):
   aware = {k: v for k, v in tm2_rows.items() if k[0] == 'aware'}
   free = {k: v for k, v in tm2_rows.items() if k[0] == 'free'}
-  # inventory gate re-checked AFTER exclusions (review #17)
+  # inventory gate re-checked AFTER exclusions (review #17); a failed
+  # gate is the REGISTERED reported verdict, not a crash (rev-2 M2)
   for arm, d in (('aware', aware), ('free', free)):
-    assert len(d) >= MIN_PER_ARM, (arm, len(d), 'inventory gate')
-    assert {k[1] for k in d} == {'0', '1'}, (arm, 'both sides required')
+    if len(d) < MIN_PER_ARM:
+      return {'verdict': ('DIAGNOSTICS-BLOCKED: inventory gate - '
+                          f'{arm} has {len(d)} < {MIN_PER_ARM} loadable '
+                          'fits; powered-wave decision returns to the '
+                          'user'),
+              'n': {'aware': len(aware), 'free': len(free)},
+              'excluded': list(excluded)}
+    if {k[1] for k in d} != {'0', '1'}:
+      return {'verdict': ('DIAGNOSTICS-BLOCKED: both-sides gate - '
+                          f'{arm} arm is single-sided; powered-wave '
+                          'decision returns to the user'),
+              'n': {'aware': len(aware), 'free': len(free)},
+              'excluded': list(excluded)}
 
   # review #20: side-balanced gap = mean of within-side gaps
   side_gaps = {}
@@ -208,22 +220,20 @@ def selfcheck():
   r = analyse(tm2)
   expect = np.mean([np.mean([0.8] * 4 + [0.9]) - 0.6, 0.8 - 0.6])
   assert abs(r['gap_tm2_side_balanced'] - expect) < 1e-12
-  # inventory gate: too few free fits refuses (after exclusion)
+  # inventory gate: too few free fits -> BLOCKED verdict (rev-2 M2)
   small = {k: v for k, v in _mk(0.8, 0.6).items()
            if not (k[0] == 'free' and k[2] > 2)}
-  try:
-    analyse(small)
-    raise SystemExit('expected inventory-gate refusal')
-  except AssertionError:
-    pass
-  # one-sided arm refuses
-  onesided = {k: v for k, v in _mk(0.8, 0.6).items()
+  r = analyse(small)
+  assert r['verdict'].startswith('DIAGNOSTICS-BLOCKED: inventory'), \
+      r['verdict']
+  # one-sided arm -> BLOCKED via the BOTH-SIDES leg specifically
+  # (rev-2 M3: seeds 1-8 so the count gate cannot mask this leg)
+  onesided = {k: v for k, v in _mk(0.8, 0.6,
+                                   seeds=range(1, 9)).items()
               if not (k[0] == 'free' and k[1] == '1')}
-  try:
-    analyse(onesided)
-    raise SystemExit('expected both-sides refusal')
-  except AssertionError:
-    pass
+  r = analyse(onesided)
+  assert r['verdict'].startswith('DIAGNOSTICS-BLOCKED: both-sides'), \
+      r['verdict']
   # loader round-trip (review #1 lesson): real files through load_tm2,
   # incl. audit gates, duplicate refusal, nan exclusion + gate re-check
   with tempfile.TemporaryDirectory() as td:
