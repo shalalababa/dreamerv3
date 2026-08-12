@@ -1,0 +1,64 @@
+{
+ "arm_means": {
+  "aware": 0.9993497721646931,
+  "free": 0.6628711713959965
+ },
+ "dv3_anchor": {
+  "apt_auroc": 0.40107,
+  "gap": 0.5337000000000001,
+  "note": "EXECUTED read values - pinned, value-aware disclosed",
+  "source": "artifacts/finger_refit_read_20260810/read.json",
+  "task_auroc": 0.93477
+ },
+ "excluded": [],
+ "gap_tm2_pooled_ci": [
+  0.24414244460193069,
+  0.42718565333363995
+ ],
+ "gap_tm2_side_balanced": 0.3364786007686965,
+ "n": {
+  "aware": 16,
+  "free": 16
+ },
+ "panels": {
+  "aware_s0_seed1": 0.9992013622596433,
+  "aware_s0_seed2": 0.9991010737250129,
+  "aware_s0_seed3": 0.998541003954369,
+  "aware_s0_seed4": 0.9989955246516289,
+  "aware_s0_seed5": 0.9994657762204027,
+  "aware_s0_seed6": 0.9991431580350416,
+  "aware_s0_seed7": 0.9989166334852405,
+  "aware_s0_seed8": 0.9971350699989953,
+  "aware_s1_seed1": 0.9995617178005961,
+  "aware_s1_seed2": 0.9999349217340279,
+  "aware_s1_seed3": 0.999920553805177,
+  "aware_s1_seed4": 0.9999757314815206,
+  "aware_s1_seed5": 0.9999432527179836,
+  "aware_s1_seed6": 0.9999613635526696,
+  "aware_s1_seed7": 0.999868394601281,
+  "aware_s1_seed8": 0.9999308166114991,
+  "free_s0_seed1": 0.84531138837289,
+  "free_s0_seed2": 0.8396744758321377,
+  "free_s0_seed3": 0.8602333717076386,
+  "free_s0_seed4": 0.8626178842755899,
+  "free_s0_seed5": 0.8771155907821829,
+  "free_s0_seed6": 0.8715490950351001,
+  "free_s0_seed7": 0.8342808674374681,
+  "free_s0_seed8": 0.7827854874083676,
+  "free_s1_seed1": 0.4556985439492607,
+  "free_s1_seed2": 0.4878358578830728,
+  "free_s1_seed3": 0.48234610167301856,
+  "free_s1_seed4": 0.4547971073374839,
+  "free_s1_seed5": 0.49463551039652465,
+  "free_s1_seed6": 0.540207200022699,
+  "free_s1_seed7": 0.4841364180511897,
+  "free_s1_seed8": 0.43271384217132003
+ },
+ "prereg": "PREREG_tm2_diag_20260811.md",
+ "ratio": 0.6304639324877206,
+ "side_gaps": {
+  "0": 0.15211643018486987,
+  "1": 0.5208407713525232
+ },
+ "verdict": "PREMISE-CONSISTENT"
+}
