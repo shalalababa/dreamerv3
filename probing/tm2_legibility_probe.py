@@ -22,6 +22,7 @@ import numpy as np
 ALPHAS = (1e-3, 1e-2, 1e-1, 1.0, 1e1, 1e2, 1e3)
 N_FOLDS = 4
 RNG_SEED = 0
+MAX_INNER_REDRAWS = 20  # Amendment 1 (PREREG_tm2_diag_amend1_20260812)
 SIDE_RE = re.compile(r'q1s([01])_seed')
 DATA_SIDE_RE = re.compile(r'side([01])\.pt$')
 
@@ -81,21 +82,43 @@ def ridge_r2_grouped(z_eps, y_eps, n_folds=N_FOLDS, alphas=ALPHAS,
   rng = np.random.default_rng(rng_seed)
   order = rng.permutation(n)
   folds = [sorted(order[i::n_folds]) for i in range(n_folds)]
-  r2s, oof_pred, oof_y = [], [], []
+  r2s, oof_pred, oof_y, redraw_counts = [], [], [], []
   for k in range(n_folds):
     te = folds[k]
     tr = [i for i in range(n) if i not in te]
-    # review #26: RANDOM grouped inner split (not the earliest slice)
-    tr_shuf = list(rng.permutation(tr))
+    # review #26: RANDOM grouped inner split (not the earliest slice).
+    # Amendment 1 (PREREG_tm2_diag_amend1_20260812): on sparse
+    # episode-clustered labels a single seeded draw can land a
+    # CONSTANT-label inner test set (realized cluster-side: side0
+    # cross-side data, outer fold 2, pos=0 -> every alpha scores NaN
+    # -> the refusal killed the run). Redraw the inner split — TRAINING
+    # episodes only, the outer test fold is never touched — until the
+    # inner test labels are non-constant, up to MAX_INNER_REDRAWS.
+    # RNG-STREAM IDENTITY: a valid first draw consumes exactly one
+    # permutation, byte-identical to the pre-amendment path, so
+    # already-completed probe outputs remain valid under the amended
+    # instrument (selfcheck pins the pre-amendment reference values).
     n_in = max(1, len(tr) // 4)
-    inner_te, inner_tr = tr_shuf[:n_in], tr_shuf[n_in:]
+    redraws = 0
+    while True:
+      tr_shuf = list(rng.permutation(tr))
+      inner_te, inner_tr = tr_shuf[:n_in], tr_shuf[n_in:]
+      yv = np.concatenate([y_eps[i] for i in inner_te])
+      if np.unique(yv).size >= 2:
+        break
+      redraws += 1
+      assert redraws < MAX_INNER_REDRAWS, (
+          'inner split constant-label after '
+          f'{MAX_INNER_REDRAWS} redraws - refusing')
+    redraw_counts.append(redraws)
     zi = np.concatenate([z_eps[i] for i in inner_tr])
     yi = np.concatenate([y_eps[i] for i in inner_tr])
     zv = np.concatenate([z_eps[i] for i in inner_te])
-    yv = np.concatenate([y_eps[i] for i in inner_te])
     scores = [(_ridge_fit_eval(zi, yi, zv, yv, al), al) for al in alphas]
     scores = [(s, al) for s, al in scores if not np.isnan(s)]
     # review #26: refuse silent fallback on degenerate inner scores
+    # (backstop; with the redraw loop this fires only on non-constant
+    # pathologies)
     assert scores, 'all inner alpha scores degenerate - refusing'
     alpha = max(scores)[1]
     ztr = np.concatenate([z_eps[i] for i in tr])
@@ -112,7 +135,8 @@ def ridge_r2_grouped(z_eps, y_eps, n_folds=N_FOLDS, alphas=ALPHAS,
   r2_clean = [r for r in r2s if not np.isnan(r)]
   return (auc,
           float(np.mean(r2_clean)) if r2_clean else float('nan'),
-          [float(r) for r in r2s])
+          [float(r) for r in r2s],
+          redraw_counts)
 
 
 def _extract(agent_encode, td_obs, td_reward, ep_idx):
@@ -131,9 +155,10 @@ def run_probe(agent_encode, td_obs, td_reward, n_episodes, episodes,
   k = min(episodes, n_episodes)
   ep_idx = sorted(rng.choice(n_episodes, size=k, replace=False))
   z_eps, y_eps = _extract(agent_encode, td_obs, td_reward, ep_idx)
-  auc, r2, per_fold = ridge_r2_grouped(z_eps, y_eps)
+  auc, r2, per_fold, redraws = ridge_r2_grouped(z_eps, y_eps)
   n_pos = int(sum((np.asarray(y) > 0).sum() for y in y_eps))
   return dict(auroc=auc, r2=r2, per_fold=per_fold, n_folds=N_FOLDS,
+              inner_redraws=redraws,
               episodes=[int(i) for i in ep_idx], n_pos_rows=n_pos,
               n_rows=int(sum(len(y) for y in y_eps)))
 
@@ -215,11 +240,32 @@ def selfcheck():
       np.float32)
   r = run_probe(enc, obs, rew_cont, N, 16)
   assert r['r2'] > 0.9 and r['auroc'] > 0.9, (r['r2'], r['auroc'])
+  # Amendment-1 RNG-stream identity: valid first draws consume exactly
+  # the pre-amendment stream — outputs pinned to the values captured
+  # BEFORE the redraw loop existed (12 Aug), and zero redraws occurred
+  assert r['inner_redraws'] == [0, 0, 0, 0], r['inner_redraws']
+  assert abs(r['auroc'] - 0.9999374902328488) < 1e-12, repr(r['auroc'])
+  assert abs(r['r2'] - 0.9997666377576077) < 1e-12, repr(r['r2'])
   # aligned sparse-binary reward (the finger-like regime): auroc high
   rew_bin = (obs @ w_true > 1.0).astype(np.float32)
   rb = run_probe(enc, obs, rew_bin, N, 16)
   assert rb['auroc'] > 0.9, rb['auroc']
   assert rb['n_pos_rows'] > 0
+  assert rb['inner_redraws'] == [0, 0, 0, 0], rb['inner_redraws']
+  assert abs(rb['auroc'] - 0.997932125854411) < 1e-12, repr(rb['auroc'])
+  # Amendment-1 repair leg: sparse EPISODE-CLUSTERED positives (the
+  # realized side0 failure shape) — first inner draws land constant
+  # inner-test labels, the seeded redraw recovers, the run COMPLETES
+  # (pre-amendment code refused here; pinned fixture: label rng 102,
+  # 3 positive episodes x 4 positive frames)
+  lr = np.random.default_rng(102)
+  pos_eps = lr.choice(N, size=3, replace=False)
+  rew_sparse = np.zeros((N, T), np.float32)
+  for e in pos_eps:
+    rew_sparse[e, lr.choice(T, size=4, replace=False)] = 1.0
+  rs = run_probe(enc, obs, rew_sparse, N, 16)
+  assert sum(rs['inner_redraws']) > 0, rs['inner_redraws']
+  assert not math.isnan(rs['auroc']), rs['auroc']
   # illegible: reward independent of latents -> auroc ~ 0.5, r2 ~ 0
   rew_noise = (rng.random((N, T)) < 0.2).astype(np.float32)
   r0 = run_probe(enc, obs, rew_noise, N, 16)
