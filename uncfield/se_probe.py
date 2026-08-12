@@ -359,19 +359,28 @@ def run(args):
     roll = {k: np.concatenate([o[k] for o in roll_outs], 0)
             for k in roll_outs[0]}
     intr = roll["intrinsic"].sum(1)                       # (K,)
-    rshare = np.zeros(K)
     num = np.zeros(K)
     den = np.zeros(K)
+    # Amendment A1 (12 Aug, pre-read, reporting-only): prereg §5 registers
+    # a per-family (D-family vs N) P-SE2 breakdown; track the family
+    # numerators so se_read can report it. No statistic, fire rule, or
+    # rng draw changes (PREREG_nfi_scale_exhibit_amend1_20260812.md).
+    num_fam = {"dfam": np.zeros(K), "noise": np.zeros(K)}
     for k in obs_keys:
         v = (roll[f"var_{k}"] / (norms[k] ** 2)[None, None]).mean(-1).sum(1)
         den += v
         if k in FIRE_KEYS:
             num += v
+            num_fam["noise" if k == "distractor" else "dfam"] += v
     rshare = num / np.maximum(den, 1e-12)
+    fam_share = {f: n / np.maximum(den, 1e-12) for f, n in num_fam.items()}
     order = np.argsort(-intr)
     top_share, base_share, p_rank = rollout_perm(
         rshare, order, args.topk, args.n_perm,
         np.random.default_rng(args.seed + 77))
+    fam_report = {f: dict(top_share=float(s[order[:args.topk]].mean()),
+                          base_share=float(s.mean()))
+                  for f, s in fam_share.items()}
 
     result = dict(
         run_logdir=os.path.abspath(args.run_logdir),
@@ -384,13 +393,16 @@ def run(args):
         calibration=cal,
         pse2=dict(K=K, topk=args.topk, top_share=top_share,
                   base_share=base_share, p_rank=p_rank,
-                  intrinsic_mean=float(intr.mean())),
+                  intrinsic_mean=float(intr.mean()),
+                  families=fam_report),
     )
     with open(os.path.join(out_dir, "se_probe.json"), "w") as f:
         json.dump(result, f, indent=1)
     np.savez(os.path.join(out_dir, "se_probe_dims.npz"),
              dims_d=dims_d, dims_label=dims_label,
              dim_key=dim_key_arr, rollout_share=rshare,
+             rollout_share_dfam=fam_share["dfam"],
+             rollout_share_noise=fam_share["noise"],
              rollout_intrinsic=intr,
              raw_norms=np.concatenate([raw_norms[k] for k in obs_keys]),
              norm_floor=np.float32(norm_floor))
@@ -438,6 +450,11 @@ def selfcheck():
     assert abs(sum(shares.values()) - 1.0) < 1e-6
     assert all(np.isfinite(list(shares.values())))
     assert all(v < 1.5 for v in r1["calibration"].values()), r1["calibration"]
+    fam = r1["pse2"]["families"]              # Amendment A1 consistency
+    assert abs(fam["dfam"]["top_share"] + fam["noise"]["top_share"]
+               - r1["pse2"]["top_share"]) < 1e-9
+    assert abs(fam["dfam"]["base_share"] + fam["noise"]["base_share"]
+               - r1["pse2"]["base_share"]) < 1e-9
     r2 = run(args)
     for k in r1["channels"]:
         assert r2["channels"][k]["p_perm"] == r1["channels"][k]["p_perm"], k
