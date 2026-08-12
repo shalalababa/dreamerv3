@@ -22,9 +22,10 @@ Registered mask forms (pinned, prereg §4):
                      delta == 0 with a noop flag (the value-level causal
                      answer; D0's redundancy content is carried by the
                      primary). Bitwise equality of the replayed dup0 and
-                     source is ASSERTED (a §2 construction check at read
-                     level); if replay munging ever broke it, the
-                     substitution would be real and the flag drops.
+                     source is HARD-ASSERTED (a §2 construction check at
+                     read level): if replay munging ever broke it, the
+                     construction is violated and the instrument ABORTS
+                     for investigation rather than reporting through it.
 
 Registered directional hypothesis: removal of a farmed key REDUCES
 disag -> mean paired delta < 0, one-sided sign-flip permutation
@@ -44,6 +45,7 @@ from __future__ import annotations
 import argparse
 import json
 import os
+import zlib
 
 import numpy as np
 from scipy.stats import norm as _norm
@@ -261,6 +263,21 @@ def run(args):
     assert dup0_equal, \
         "replayed planted_dup0 != source — construction violated"
 
+    # pairing cross-check (review m14): the "identical pinned replay
+    # slice" claim holds only if this pass used the probe's seed,
+    # window count, and checkpoint — verify when the probe output exists
+    probe_json = os.path.join(args.run_logdir, "se_probe", "se_probe.json")
+    if os.path.exists(probe_json):
+        with open(probe_json) as f:
+            pj = json.load(f)
+        assert int(pj["seed"]) == args.seed, \
+            f"probe seed {pj['seed']} != mask seed {args.seed}"
+        assert int(pj["n_eval"]) == S, \
+            f"probe windows {pj['n_eval']} != mask windows {S}"
+        assert (os.path.basename(os.path.normpath(pj["ckpt"]))
+                == os.path.basename(os.path.normpath(ckpt))), \
+            f"probe ckpt {pj['ckpt']} != mask ckpt {ckpt}"
+
     variants, mask_info = build_masks(
         arrays, source_key, mask_channels,
         np.random.default_rng(args.seed + 13))
@@ -275,12 +292,16 @@ def run(args):
         own_m = (masked[f"var_{ch}"] / (norms[ch] ** 2)[None]).mean(1)
         d_own = (own_m - own_b).astype(np.float64)
         rec = dict(mask_info[ch])
-        for name, d in (("intrinsic", d_int), ("own_d", d_own)):
+        # rng keyed per (channel, statistic) — review m13: identical
+        # streams across channels would couple the reported p's
+        chkey = zlib.crc32(ch.encode()) % 2 ** 16
+        for j, (name, d) in enumerate(
+                (("intrinsic", d_int), ("own_d", d_own))):
             obs_m, p_red, p_inf = signflip_p(
                 d, args.n_perm,
-                np.random.default_rng(args.seed + 101 + len(name)))
+                np.random.default_rng(args.seed + chkey + 101 + j))
             _, lo, hi = bca_interval(
-                d, np.random.default_rng(args.seed + 211 + len(name)),
+                d, np.random.default_rng(args.seed + chkey + 211 + j),
                 args.n_boot)
             rec[f"delta_{name}_mean"] = obs_m
             rec[f"delta_{name}_bca"] = [lo, hi]

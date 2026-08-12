@@ -47,7 +47,8 @@ import zlib
 import numpy as np
 from scipy.stats import chi2 as _chi2
 
-from uncfield.se_probe import FIRE_KEYS, PLANTED_KEYS, share_stats
+from uncfield.se_probe import (FIRE_KEYS, PLANTED_KEYS, REPO,
+                               resolve_ckpt, share_stats)
 from uncfield.se_mask import bca_interval
 
 N_REGISTERED = 8          # seeds 10-17, prereg §1 (frozen denominator)
@@ -136,7 +137,37 @@ def read_run(run_dir, probe_subdir, n_perm):
     all_keys = sorted(set(dim_key.tolist()))
     real_keys = [k for k in all_keys if k not in PLANTED_KEYS]
 
-    rec = dict(run_dir=os.path.abspath(run_dir), seed=seed,
+    # FINAL-CHECKPOINT GATE (review B1): an M4 snapshot probe pass with
+    # the default --output would clobber <run>/se_probe, and json+npz
+    # clobber together so the provenance gate alone cannot catch it.
+    # If the run's ckpt dir is reachable, the probed checkpoint MUST be
+    # the final one; unreachable -> flagged UNVERIFIED, never silent.
+    try:
+        final = resolve_ckpt(run_dir, "")
+        ckpt_final_ok = (os.path.basename(os.path.normpath(final))
+                         == os.path.basename(os.path.normpath(pj["ckpt"])))
+    except (AssertionError, FileNotFoundError, OSError):
+        final, ckpt_final_ok = None, None
+    assert ckpt_final_ok is not False, (
+        f"{run_dir}: se_probe output is from checkpoint "
+        f"{os.path.basename(os.path.normpath(pj['ckpt']))} but the run's "
+        f"final checkpoint is {os.path.basename(os.path.normpath(final))} "
+        f"— snapshot pass clobbered the primary output? Re-run se_probe "
+        f"on the final checkpoint (M4 passes must use --output "
+        f"<run>/se_probe_snap<pct>)")
+
+    # run identity (review M4): the probe seed is 0 for every run; the
+    # TRAINING seed lives in config.yaml (top-level `seed`)
+    train_seed = None
+    try:
+        import yaml
+        with open(os.path.join(run_dir, "config.yaml")) as f:
+            train_seed = int(yaml.safe_load(f)["seed"])
+    except Exception:
+        pass
+
+    rec = dict(run_dir=os.path.abspath(run_dir), probe_seed=seed,
+               train_seed=train_seed, ckpt_final_ok=ckpt_final_ok,
                n_eval=int(pj["n_eval"]), channels={},
                key_share=pj["key_share"],
                planted_share_total=float(pj["planted_share_total"]),
@@ -153,11 +184,32 @@ def read_run(run_dir, probe_subdir, n_perm):
             f"provenance/n_perm mismatch (json+npz pair, --n_perm)")
         rec["channels"][ch] = dict(
             share_vs_real=obs, p_perm=p, null_median=med,
-            indicator=bool(obs > med))
+            indicator=bool(obs > med),
+            vs_source=float(pj["channels"][ch]["vs_source"]))  # theta_1, §5
+    # weak-gate note (review m9): p==1.0 on every channel makes the
+    # equality gate insensitive to an --n_perm mismatch
+    rec["gate_all_p_one"] = all(
+        rec["channels"][ch]["p_perm"] == 1.0 for ch in FIRE_KEYS)
     # validity gates (registered)
     cal_real = {k: v for k, v in pj["calibration"].items()
                 if k not in PLANTED_KEYS}
     rec["cal_real_max"] = max(cal_real.values())
+    rec["cal_planted"] = {k: v for k, v in pj["calibration"].items()
+                          if k in PLANTED_KEYS}
+    # const vs its RAW (unfloored) normalizer (registered, §5): the
+    # stored cal is floored; recover raw = stored * floored/raw means
+    rec["cal_const_raw"] = None
+    if "raw_norms" in npz and "planted_const" in pj["calibration"]:
+        raw_c = np.asarray(npz["raw_norms"])[dim_key == "planted_const"]
+        floor = float(npz["norm_floor"])
+        raw_mean = float(raw_c.mean())
+        rec["cal_const_raw_norm_mean"] = raw_mean
+        if raw_mean > 0:
+            floored_mean = float(np.maximum(raw_c, floor).mean())
+            rec["cal_const_raw"] = float(
+                pj["calibration"]["planted_const"] * floored_mean / raw_mean)
+        # raw_mean == 0 -> exactly-constant channel: raw-normalized cal
+        # undefined; the None + the 0.0 raw mean IS the registered report
     rec["cal_ok"] = bool(rec["cal_real_max"] < CAL_MAX)
     rec["s_ok"] = bool(rec["n_eval"] >= S_MIN)
     rec["valid"] = bool(rec["cal_ok"] and rec["s_ok"])
@@ -190,12 +242,13 @@ def fit_counters(run_dir, expect_steps):
             out["flag"] += "+CONFIG-STEPS-MISMATCH"
     except Exception:
         out["config_steps"] = None
+        out["flag"] += "+NO-CONFIG"          # review m15: never bare OK
     return out
 
 
 # ---------------------------------------------------------------- aggregate
 
-def aggregate(recs, expect_steps=5e5, mask_summaries=None):
+def aggregate(recs, expect_steps=5e5, mask_summaries=None, n_perm=None):
     """The registered cross-seed read. recs: per-run records (order =
     registered seed order). Invalid runs count as fire FAILURES; the
     denominator stays N_REGISTERED."""
@@ -203,8 +256,29 @@ def aggregate(recs, expect_steps=5e5, mask_summaries=None):
     n_missing = N_REGISTERED - len(recs)
     invalid = [r["run_dir"] for r in recs if not r["valid"]]
 
+    # run identity (review M4): duplicate training seeds = the same run
+    # counted twice = statistical corruption -> fatal; unknown or
+    # out-of-family seeds -> flagged
+    tseeds = [r["train_seed"] for r in recs]
+    known = [s for s in tseeds if s is not None]
+    assert len(known) == len(set(known)), (
+        f"duplicate training seeds {sorted(known)} — same run loaded "
+        f"twice?")
+    if None in tseeds:
+        seed_check = "UNKNOWN-SEEDS (config.yaml unreadable on some runs)"
+    elif not all(10 <= s <= 17 for s in known):
+        seed_check = f"SEED-OUT-OF-FAMILY: {sorted(known)} != [10..17]"
+    else:
+        seed_check = "OK"
+
     out = dict(n_registered=N_REGISTERED, n_loaded=len(recs),
-               n_missing=n_missing, invalid_runs=invalid,
+               n_missing=n_missing, invalid_runs=invalid, n_perm=n_perm,
+               seed_check=seed_check,
+               ckpt_flag=("OK" if all(r["ckpt_final_ok"] for r in recs)
+                          else "UNVERIFIED (ckpt dir unreachable on some "
+                               "runs)"),
+               weak_gate_runs=[r["run_dir"] for r in recs
+                               if r["gate_all_p_one"]],
                instrument_flag=("CLEAN" if not invalid and not n_missing
                                 else "VALIDITY-VIOLATIONS"))
 
@@ -217,7 +291,12 @@ def aggregate(recs, expect_steps=5e5, mask_summaries=None):
         p = binom_tail(succ, N_REGISTERED)
         per_run_p = [r["channels"][ch]["p_perm"] for r in recs
                      if r["valid"]]
-        shares = [r["key_share"][ch] for r in recs if r["valid"]]
+        # BCa on the REGISTERED statistic (channel-vs-real share) —
+        # review m8; theta_1 (vs_source, §5) aggregated alongside
+        shares = [r["channels"][ch]["share_vs_real"] for r in recs
+                  if r["valid"]]
+        vs_src = [r["channels"][ch]["vs_source"] for r in recs
+                  if r["valid"]]
         rec = dict(successes=succ, binom_p=p,
                    fisher_p=(fisher_p(per_run_p) if per_run_p else None),
                    per_run_p=per_run_p)
@@ -226,6 +305,10 @@ def aggregate(recs, expect_steps=5e5, mask_summaries=None):
                                      np.random.default_rng(1234), 2000)
             rec["share_mean"] = m
             rec["share_bca"] = [lo, hi]
+            m2, lo2, hi2 = bca_interval(np.asarray(vs_src),
+                                        np.random.default_rng(1235), 2000)
+            rec["theta1_vs_source_mean"] = m2
+            rec["theta1_vs_source_bca"] = [lo2, hi2]
         se1[ch] = rec
         pvals.append(p)
     rej = bh_reject(pvals, BH_Q)
@@ -331,17 +414,21 @@ def run(args):
                                          "p_reduce_intrinsic",
                                          "p_inflate_intrinsic")}
                 for ch, rec in mj["channels"].items()}
-    out = aggregate(recs, args.expect_steps, masks or None)
+    out = aggregate(recs, args.expect_steps, masks or None,
+                    n_perm=args.n_perm)
     out["per_run"] = [
-        {f: r[f] for f in ("run_dir", "seed", "n_eval", "valid", "cal_ok",
-                           "s_ok", "cal_real_max", "pse2_indicator")}
+        {f: r[f] for f in ("run_dir", "probe_seed", "train_seed",
+                           "ckpt_final_ok", "n_eval", "valid", "cal_ok",
+                           "s_ok", "cal_real_max", "cal_planted",
+                           "cal_const_raw", "pse2_indicator")}
         | {"indicators": {ch: r["channels"][ch]["indicator"]
                           for ch in FIRE_KEYS}}
         for r in recs]
-    if args.output:
-        os.makedirs(args.output, exist_ok=True)
-        with open(os.path.join(args.output, "se_read.json"), "w") as f:
-            json.dump(out, f, indent=1)
+    # review m11: the registered read must persist its result
+    assert args.output, "registered read must persist: pass --output"
+    os.makedirs(args.output, exist_ok=True)
+    with open(os.path.join(args.output, "se_read.json"), "w") as f:
+        json.dump(out, f, indent=1)
     print(json.dumps({k: out[k] for k in
                       ("instrument_flag", "outcome_cell_suggestion")},
                      indent=1))
@@ -367,8 +454,10 @@ def _fixture_run(tmp, name, seed, hot, n_eval=512, cal=0.1, pse2=(0.5, 0.3),
                  steps_done=499968):
     """Write one synthetic run dir (se_probe outputs + counters).
     hot: {channel: level} per-dim attribution level (real dims ~1.0).
-    The stored p_perm is produced BY the reader's own recompute path so
-    the provenance gate passes iff json+npz are consistent."""
+    seed = the TRAINING seed (config.yaml); the probe seed is 0 as in
+    real runs. The stored p_perm is produced by se_probe's OWN perm_null
+    (cross-implementation, review M6), so the provenance gate tests the
+    reader's channel_null against the frozen probe implementation."""
     rd = os.path.join(tmp, name)
     pdir = os.path.join(rd, "se_probe")
     os.makedirs(pdir, exist_ok=True)
@@ -386,17 +475,34 @@ def _fixture_run(tmp, name, seed, hot, n_eval=512, cal=0.1, pse2=(0.5, 0.3),
     np.savez(os.path.join(pdir, "se_probe_dims.npz"),
              dims_d=dims_d, dims_label=dims_label, dim_key=dim_key)
     real_keys = [k for k, _ in KEY_DIMS if k not in PLANTED_KEYS]
+    # CROSS-IMPLEMENTATION provenance (review M6): the stored p comes
+    # from se_probe's own perm_null via se_probe's exact per-channel
+    # call pattern, so the reader's channel_null is genuinely tested
+    # against the frozen implementation, not against itself
+    from uncfield.se_probe import perm_null as probe_perm_null
     channels = {}
     for ch in ("planted_dup0", "planted_dup1", "planted_dup2",
                "planted_const", "distractor"):
-        crng = np.random.default_rng(seed + zlib.crc32(ch.encode()) % 2 ** 16)
-        _, p, _ = channel_null(dims_d, dim_key, ch, real_keys, FIX_PERM,
-                               crng)
-        channels[ch] = dict(p_perm=p)
+        mask = np.asarray([dk == ch or dk in real_keys for dk in dim_key])
+        sub_d = dims_d[mask]
+        sub_lab = np.asarray([dk == ch for dk in dim_key[mask]])
+        _, p, _ = probe_perm_null(
+            sub_d, sub_lab, FIX_PERM,
+            np.random.default_rng(0 + zlib.crc32(ch.encode()) % 2 ** 16))
+        channels[ch] = dict(p_perm=p)      # probe seed = 0, like real runs
     tot = dims_d.sum()
     key_share = {k: float(dims_d[dim_key == k].sum() / tot)
                  for k, _ in KEY_DIMS}
-    pj = dict(seed=seed, n_eval=n_eval, channels=channels,
+    for ch in channels:
+        channels[ch]["vs_source"] = key_share[ch] / max(
+            key_share["position"], 1e-12)
+    # ckpt layout for the final-checkpoint gate (review B1)
+    ck_name = "20260812T000000F000000"
+    os.makedirs(os.path.join(rd, "ckpt", ck_name), exist_ok=True)
+    with open(os.path.join(rd, "ckpt", "latest"), "w") as f:
+        f.write(ck_name)
+    pj = dict(seed=0, n_eval=n_eval, channels=channels,
+              ckpt=os.path.join(rd, "ckpt", ck_name),
               key_share=key_share,
               planted_share_total=float(
                   dims_d[dims_label].sum()
@@ -413,7 +519,7 @@ def _fixture_run(tmp, name, seed, hot, n_eval=512, cal=0.1, pse2=(0.5, 0.3),
     with open(os.path.join(pdir, "se_probe.json"), "w") as f:
         json.dump(pj, f)
     with open(os.path.join(rd, "config.yaml"), "w") as f:
-        f.write("run:\n  steps: 500000.0\n")
+        f.write(f"seed: {seed}\nrun:\n  steps: 500000.0\n")
     with open(os.path.join(rd, "metrics.jsonl"), "w") as f:
         f.write(json.dumps({"step": steps_done}) + "\n")
     return rd
@@ -502,6 +608,52 @@ def selfcheck():
         agg = aggregate(recs)
         assert agg["instrument_flag"] == "VALIDITY-VIOLATIONS"
 
+        # A7) MISSING run (review M5): only 7 of 8 loaded, all hot ->
+        #     successes capped at 7, binomial p on the REGISTERED
+        #     denominator (9/256, not 1/128), validity flagged
+        runs = batch("A7", lambda i: dict(hot={k: HOT for k in FIRE_KEYS}))
+        agg = aggregate([read_run(d, "se_probe", FIX_PERM)
+                         for d in runs[:7]])
+        assert agg["n_missing"] == 1
+        assert agg["instrument_flag"] == "VALIDITY-VIOLATIONS"
+        for ch in FIRE_KEYS:
+            c = agg["p_se1"][ch]
+            assert c["successes"] == 7, ch
+            assert abs(c["binom_p"] - 9 / 256) < 1e-12, \
+                "binomial denominator must stay at the 8 registered runs"
+        assert agg["p_se2"]["successes"] == 7
+
+        # I) final-checkpoint gate (review B1): probe json pointing at a
+        #    non-final checkpoint must abort loudly
+        rd = _fixture_run(os.path.join(tmp, "I"), "r0", 10,
+                          hot={k: HOT for k in FIRE_KEYS})
+        pj_path = os.path.join(rd, "se_probe", "se_probe.json")
+        with open(pj_path) as f:
+            pj = json.load(f)
+        os.makedirs(os.path.join(rd, "ckpt", "20260812T111111F000000"))
+        pj["ckpt"] = os.path.join(rd, "ckpt", "20260812T000000F000000")
+        with open(os.path.join(rd, "ckpt", "latest"), "w") as f:
+            f.write("20260812T111111F000000")
+        with open(pj_path, "w") as f:
+            json.dump(pj, f)
+        try:
+            read_run(rd, "se_probe", FIX_PERM)
+            raise SystemExit("checkpoint gate FAILED to fire")
+        except AssertionError as e:
+            assert "final checkpoint" in str(e)
+
+        # J) duplicate training seeds must be fatal (review M4)
+        r1 = _fixture_run(os.path.join(tmp, "J"), "ra", 10,
+                          hot={k: HOT for k in FIRE_KEYS})
+        r2 = _fixture_run(os.path.join(tmp, "J"), "rb", 10,
+                          hot={k: HOT for k in FIRE_KEYS})
+        try:
+            aggregate([read_run(d, "se_probe", FIX_PERM)
+                       for d in (r1, r2)])
+            raise SystemExit("duplicate-seed gate FAILED to fire")
+        except AssertionError as e:
+            assert "duplicate" in str(e)
+
         # F) provenance gate: doctored npz must fail loudly
         rd = _fixture_run(os.path.join(tmp, "F"), "r0", 10,
                           hot={k: HOT for k in FIRE_KEYS})
@@ -523,17 +675,40 @@ def selfcheck():
         assert fc["flag"].startswith("TRUNCATION-SUSPECT"), fc
 
         # H) end-to-end through run() with the glob path + output json
+        #    + the se_mask summary consumption path (review m10)
+        mdir = os.path.join(tmp, "A", "r0", "se_mask")
+        os.makedirs(mdir, exist_ok=True)
+        with open(os.path.join(mdir, "se_mask.json"), "w") as f:
+            json.dump(dict(channels={
+                "planted_dup1": dict(delta_intrinsic_mean=-1e-6,
+                                     p_reduce_intrinsic=0.03,
+                                     p_inflate_intrinsic=0.97)}), f)
         outd = os.path.join(tmp, "read_out")
         args = parse_args(["--runs", os.path.join(tmp, "A", "r*"),
                            "--n_perm", str(FIX_PERM), "--output", outd])
         out = run(args)
         assert out["outcome_cell_suggestion"] == 1
+        assert out["seed_check"] == "OK"
+        assert len(out["se_mask"]) == 1
         assert os.path.exists(os.path.join(outd, "se_read.json"))
+
+    # real-data cross-check (guarded): the smoke probe output exercises
+    # the provenance gate against a genuine se_probe artifact (the
+    # fixture path is cross-implementation but synthetic)
+    smoke_probe = REPO / "local_results" / "uncfield" / "se_probe_smoke"
+    if (smoke_probe / "se_probe.json").exists():
+        rec = read_run(str(smoke_probe.parent), "se_probe_smoke", 300)
+        assert rec["valid"] is False              # smoke n_eval 48 < 256
+        assert rec["cal_const_raw_norm_mean"] == 0.0 \
+            and rec["cal_const_raw"] is None      # exactly-constant key
+        print("  + real smoke-probe provenance cross-check PASS")
 
     print("se_read selfcheck PASS (binomial/BH/Fisher exact; scenarios "
           "A strong-fire cell-1, B null, C lone-7/8 killed by BH, "
           "D conservative-invalidity + BH rank-4 rescue, E calibration "
-          "breach, F provenance gate, G truncation flag, H end-to-end)")
+          "breach, A7 missing-run denominator, I ckpt gate, J duplicate "
+          "seeds, F provenance gate, G truncation flag, H end-to-end "
+          "incl. mask summaries)")
 
 
 def main():
