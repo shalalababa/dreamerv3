@@ -39,12 +39,26 @@ case "$TM2_DOMAIN" in
   cup)    TASK=dmc_cup_catch ;;
   *) echo "ERROR: unknown TM2_DOMAIN=$TM2_DOMAIN"; exit 2 ;;
 esac
-case "$TM2_ARM" in aware|free) ;; *) echo "ERROR: TM2_ARM=$TM2_ARM"; exit 2 ;; esac
+# TM2_WAVE=bridge (PREREG_tm2_bridge_20260812): rec arm allowed, fits run
+# through probing.tdmpc2_recon_fit (decoder attached in EVERY arm), run ids
+# take the b<arm> infix. Default (TM2_WAVE unset/empty) behavior unchanged
+# (the submit stage now exports an empty TM2_WAVE= for legacy jobs —
+# verification N3: functionally identical, not byte-identical).
+TM2_WAVE="${TM2_WAVE:-}"
+if [ "$TM2_WAVE" = "bridge" ]; then
+  case "$TM2_ARM" in aware|free|rec) ;; *) echo "ERROR: TM2_ARM=$TM2_ARM"; exit 2 ;; esac
+  FIT_MODULE=probing.tdmpc2_recon_fit
+  ARM_TAG="b${TM2_ARM}"
+else
+  case "$TM2_ARM" in aware|free) ;; *) echo "ERROR: TM2_ARM=$TM2_ARM"; exit 2 ;; esac
+  FIT_MODULE=probing.tdmpc2_offline_fit
+  ARM_TAG="$TM2_ARM"
+fi
 
 SIDE_DIR="$RUNROOT/axis1_${TM2_DOMAIN}/${TM2_QUAD}/side${TM2_SIDE}"
 DATA="$RUNROOT/tm2_data/${TM2_DOMAIN}_${TM2_QUAD}_side${TM2_SIDE}.pt"
-WM_RUN="$RUNROOT/tm2wm_${TM2_DOMAIN}_${TM2_ARM}${TM2_QUAD}s${TM2_SIDE}_seed${TM2_SEED}"
-ADAPT_RUN="$RUNROOT/adapt_tm2${TM2_ARM}${TM2_QUAD}s${TM2_SIDE}_${TM2_DOMAIN}_seed${TM2_SEED}_ckpt${TM2_UPDATES}"
+WM_RUN="$RUNROOT/tm2wm_${TM2_DOMAIN}_${ARM_TAG}${TM2_QUAD}s${TM2_SIDE}_seed${TM2_SEED}"
+ADAPT_RUN="$RUNROOT/adapt_tm2${ARM_TAG}${TM2_QUAD}s${TM2_SIDE}_${TM2_DOMAIN}_seed${TM2_SEED}_ckpt${TM2_UPDATES}"
 
 # --- stage 1: bridge (once per side; guarded against concurrent writers) ---
 if [ ! -f "$DATA" ]; then
@@ -73,8 +87,8 @@ fi
 
 # --- stage 2: offline WM fit ---
 if [ ! -f "$WM_RUN/TM2_FIT_DONE" ]; then
-  echo "[$(date)] offline_fit WM_RUN=$(basename "$WM_RUN") ARM=$TM2_ARM DATA=$DATA UPDATES=$TM2_UPDATES SEED=$TM2_SEED"
-  python -m probing.tdmpc2_offline_fit \
+  echo "[$(date)] offline_fit WM_RUN=$(basename "$WM_RUN") ARM=$TM2_ARM MODULE=$FIT_MODULE DATA=$DATA UPDATES=$TM2_UPDATES SEED=$TM2_SEED"
+  python -m "$FIT_MODULE" \
     --data "$DATA" --logdir "$WM_RUN" --arm "$TM2_ARM" \
     --task "$TASK" --updates "$TM2_UPDATES" --seed "$TM2_SEED"
 fi

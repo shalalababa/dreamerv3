@@ -56,6 +56,18 @@ def _reacher_to_target(frames):
   return np.linalg.norm(np.asarray(frames['to_target'], np.float32), axis=1)
 
 
+def _walker_horizontal_speed(frames):
+  # walker qvel layout = [rootz, rootx, rooty, 6 joint vels] (verified against
+  # the loaded MuJoCo model 2026-08-12: qpos row names + random-rollout
+  # comparison vs physics.horizontal_velocity()). Index 1 = rootx slide
+  # velocity = horizontal root speed. NOT the reward's torso_subtreelinvel
+  # sensor (that includes limb motion and is absent from the proprio obs);
+  # under sustained locomotion the two track, under random flailing both
+  # hover near zero — disclosed instrument note in PREREG_domains_20260812.
+  vel = np.asarray(frames['velocity'], np.float32)
+  return vel[:, 1]
+
+
 # name         : short label for the regime scalar (for logging/plots)
 # fn           : frames-dict -> (N,) regime quantity
 # needs        : obs keys the fn reads (must be present to compute occupancy)
@@ -80,6 +92,24 @@ REGIMES = {
         name='to_target_norm', fn=_reacher_to_target, needs=('to_target',),
         threshold=0.025, direction='below',
         coverage_keys=('position', 'velocity')),
+    # walker_walk (dense leg, PREREG_domains_20260812): the walk reward's
+    # shaped plateau condition is horizontal speed >= _WALK_SPEED = 1.0;
+    # in-regime = moving at/above walk speed. direction='above' (the only
+    # such spec). Random-rollout occupancy measured 0.002-0.07 across
+    # three independent probes (builder 8 eps x 400 steps; reviewer +
+    # verifier 6 x 1000 steps, 12 Aug — see PREREG_domains_20260812
+    # honesty block for the proxy precision/recall ranges), so the
+    # in-regime corner is a small subset, matching the frozen contract. Walker has no goal keys; the
+    # regime quantity lives inside 'velocity', accepted on the CUP
+    # precedent (cup's regime derives from 'position', which its
+    # coverage includes; reacher is NOT a precedent — its regime key
+    # 'to_target' is goal-blacklisted). The fn returns a SIGNED
+    # velocity, not a speed; correct against the one-sided 'above'
+    # threshold (review A7).
+    'walker': dict(
+        name='horizontal_speed', fn=_walker_horizontal_speed,
+        needs=('velocity',), threshold=1.0, direction='above',
+        coverage_keys=('orientations', 'height', 'velocity')),
     # synth_reach (embodied/envs/synthpred.py): reward fires at
     # ||to_target|| < radius (default 0.1); threshold == default radius,
     # so regime membership == the sparse reward condition, exactly like

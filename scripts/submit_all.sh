@@ -422,13 +422,20 @@ cmd="${1:-}"; shift || true
 case "$cmd" in
 
   pilots)
+    # PILOT_SEEDS (default "1", the historical behavior) lets a wave ask for
+    # extra pilot seeds, e.g. extra goal collectors for a new domain's
+    # occupancy pool (PREREG_domains_20260812); PILOT_MODES restricts modes.
     if [ "$#" -gt 0 ]; then domains=("$@"); else domains=("${DECOUPLERS[@]}"); fi
+    read -ra pilot_seeds <<< "${PILOT_SEEDS:-1}"
+    read -ra pilot_modes <<< "${PILOT_MODES:-expl_p2e expl_apt expl_random goal}"
     for task in "${domains[@]}"; do
       short=$(short_of "$task")
-      for mode in expl_p2e expl_apt expl_random goal; do
+      for mode in "${pilot_modes[@]}"; do
         m=${mode#expl_}
-        submit pilot.sbatch "pilot_${m}_${short}_seed1" \
-          "TASK=$task" "MODE=$mode" "SEED=1" "STEPS=${STEPS:-1e5}" "AXIS=d0"
+        for ps in "${pilot_seeds[@]}"; do
+          submit pilot.sbatch "pilot_${m}_${short}_seed${ps}" \
+            "TASK=$task" "MODE=$mode" "SEED=$ps" "STEPS=${STEPS:-1e5}" "AXIS=d0"
+        done
       done
     done ;;
 
@@ -746,6 +753,8 @@ case "$cmd" in
       case "$dom" in
         cup) task=dmc_cup_catch ;;
         finger) task=dmc_finger_turn_hard ;;
+        reacher) task=dmc_reacher_hard ;;
+        walker) task=dmc_walker_walk ;;
         synth) task=synth_reach ;;
         *) echo "unknown axis1 domain: $dom"; exit 1 ;;
       esac
@@ -796,6 +805,8 @@ case "$cmd" in
       case "$dom" in
         cup) task=dmc_cup_catch ;;
         finger) task=dmc_finger_turn_hard ;;
+        reacher) task=dmc_reacher_hard ;;
+        walker) task=dmc_walker_walk ;;
         synth) task=synth_reach ;;
         *) echo "unknown axis1 domain: $dom"; exit 1 ;;
       esac
@@ -1126,6 +1137,8 @@ for k, v in d['sources'].items():
       case "$dom" in
         cup) task=dmc_cup_catch ;;
         finger) task=dmc_finger_turn_hard ;;
+        reacher) task=dmc_reacher_hard ;;
+        walker) task=dmc_walker_walk ;;
         synth) task=synth_reach ;;
         *) echo "unknown axis1 domain: $dom"; exit 1 ;;
       esac
@@ -1195,22 +1208,36 @@ for k, v in d['sources'].items():
     # Tunables: TM2_DOMAIN (finger), TM2_QUAD (q1), TM2_ARMS, TM2_SIDES,
     # TM2_SEEDS, TM2_UPDATES, TM2_CONDA_ENV, TDMPC2_CHECKOUT.
     # Recommend SLURM_TIME=12:00:00 (500K torch updates + 125K-step adapt).
+    # TM2_WAVE=bridge (PREREG_tm2_bridge_20260812): arms aware|free|rec,
+    # fits via probing.tdmpc2_recon_fit, run ids take the b<arm> infix
+    # (tm2wm_finger_b<arm>q1s<side>_seed<k>). Default behavior unchanged
+    # (legacy jobs now carry an empty TM2_WAVE= export — verification N3).
     read -ra TM2_ARMS_A <<< "${TM2_ARMS:-aware free}"
     read -ra TM2_SIDES_A <<< "${TM2_SIDES:-0 1}"
     read -ra TM2_SEEDS_A <<< "${TM2_SEEDS:-1 2 3 4 5 6 7 8}"
     tm2_dom="${TM2_DOMAIN:-finger}"
     tm2_quad="${TM2_QUAD:-q1}"
     tm2_upd="${TM2_UPDATES:-500000}"
+    tm2_wave="${TM2_WAVE:-}"
     for tm2_arm in "${TM2_ARMS_A[@]}"; do
-      case "$tm2_arm" in aware|free) ;; *)
-        echo "ERROR: TM2_ARMS entries must be aware|free (got $tm2_arm)"; exit 1 ;;
-      esac
+      if [ "$tm2_wave" = "bridge" ]; then
+        case "$tm2_arm" in aware|free|rec) ;; *)
+          echo "ERROR: TM2_ARMS entries must be aware|free|rec (got $tm2_arm)"; exit 1 ;;
+        esac
+        arm_tag="b${tm2_arm}"
+      else
+        case "$tm2_arm" in aware|free) ;; *)
+          echo "ERROR: TM2_ARMS entries must be aware|free (got $tm2_arm)"; exit 1 ;;
+        esac
+        arm_tag="$tm2_arm"
+      fi
       for tm2_side in "${TM2_SIDES_A[@]}"; do
         for tm2_seed in "${TM2_SEEDS_A[@]}"; do
           submit tdmpc2.sbatch \
-            "adapt_tm2${tm2_arm}${tm2_quad}s${tm2_side}_${tm2_dom}_seed${tm2_seed}_ckpt${tm2_upd}" \
+            "adapt_tm2${arm_tag}${tm2_quad}s${tm2_side}_${tm2_dom}_seed${tm2_seed}_ckpt${tm2_upd}" \
             "TM2_ARM=$tm2_arm" "TM2_SIDE=$tm2_side" "TM2_SEED=$tm2_seed" \
             "TM2_DOMAIN=$tm2_dom" "TM2_QUAD=$tm2_quad" "TM2_UPDATES=$tm2_upd" \
+            "TM2_WAVE=$tm2_wave" \
             "TM2_CONDA_ENV=${TM2_CONDA_ENV:-/scratch/midway3/$USER/conda_envs/tdmpc2}" \
             "TDMPC2_CHECKOUT=${TDMPC2_CHECKOUT:-/scratch/midway3/$USER/tdmpc2}"
         done

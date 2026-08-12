@@ -42,6 +42,7 @@ defaults:
 
   # Gate D0 E2 arm: OU distractor observations (dim 0 disables the wrapper).
   distractor: {dim: 0, scale: 1.0, theta: 0.1, basesd: 0.0, calib: 1000}
+  planted: {source_key: '', basesd: 0.0, const_dim: 4, gate_key: '', gate_index: 0, gate_threshold: 0.0}
 
   # Orthogonal-objective reward override (empty task disables the wrapper).
   orthreward: {task: ''}

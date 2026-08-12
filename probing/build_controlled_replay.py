@@ -147,7 +147,8 @@ def cmd_index(args):
   spec = regimes.spec(args.task)
   sources = parse_replays(args.replay)
   index = dict(task=args.task, regime=spec['name'],
-               threshold=spec['threshold'], sources={})
+               threshold=spec['threshold'],
+               direction=spec['direction'], sources={})
   for label, replay_dir in sources.items():
     streams = stream_meta(replay_dir)
     episodes = []

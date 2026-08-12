@@ -256,6 +256,14 @@ def make_env(config, index, **overrides):
     seed = int(np.random.SeedSequence(
         [config.seed, index, 0xD0]).generate_state(1)[0])
     env = distractor.Distractor(env, **dict(distractor_cfg), seed=seed)
+  planted_cfg = config.get('planted', {})
+  if planted_cfg.get('source_key', ''):
+    from embodied.envs import planted
+    # SE wave (PREREG_nfi_scale_exhibit_20260812): wrapper stream keyed to
+    # the training seed, same SeedSequence rationale as the distractor.
+    seed = int(np.random.SeedSequence(
+        [config.seed, index, 0x5E]).generate_state(1)[0])
+    env = planted.Planted(env, **dict(planted_cfg), seed=seed)
   return wrap_env(env, config)
 
 

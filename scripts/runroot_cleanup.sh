@@ -188,10 +188,24 @@ KEEP_PENDING=(
   # NO category and sat in the REVIEW bucket; never-delete-without-archive
   # rule pins them here until the W2 read verifies + archive confirmed)
   tm2r3
+  # third-domain wave (PREREG_domains_20260812): reacher+walker collector
+  # pilots beyond seed1 (pretrain_* and axis1_reacher/axis1_walker live in
+  # KEEP_SUBSTRATE), fits + adapts — hold until the wave's ONE read.
+  pilot_*_reacher_seed* pilot_*_walker_seed*
+  ax1wm_reacher_*q1s*_seed* adapt_ax1*q1s*_reacher_*
+  ax1wm_walker_*q1s*_seed* adapt_ax1*q1s*_walker_*
+  # TM2 bridge wave (PREREG_tm2_bridge_20260812): baware/bfree/brec fits
+  # + adapts (tm2_data blobs already held above for tm2_diag).
+  tm2wm_finger_b*q1s*_seed[1-8] adapt_tm2b*q1s*_finger_seed[1-8]_*
+  # LeWM/JEPA arm (PREREG_lewm_20260812): LeWM training runs + embedding
+  # sidecars + distilled donors + stage-2 fits + adapts. pxq1m buffers sit
+  # under axis1_finger = KEEP_SUBSTRATE; fpxpx donors held above (rde) —
+  # this wave ALSO consumes them (ridge anchors), same donor-dependency.
+  lewm_* ax1wm_finger_jppxq1ms*_seed[1-8] adapt_ax1jppxq1ms*_finger_*
 )
 
 KEEP_SUBSTRATE=(
-  axis1_finger axis1_cup axis1_reacher axis1_synth   # ALL frozen buffers
+  axis1_finger axis1_cup axis1_reacher axis1_walker axis1_synth  # ALL frozen buffers
   pretrain_* pilot_goal_*_seed1 e4_probesets pixel_x0
 )
 
