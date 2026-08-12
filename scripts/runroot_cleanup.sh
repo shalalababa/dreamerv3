@@ -99,6 +99,10 @@ DELETE_AFTER=(  # "glob :: unblocking event"
 KEEP_PENDING=(
   # (u2/u3/u4 uz adapts promoted to DELETE_SAFE 07-30 after read verification;
   #  U1's remain the only copy of undecided scores and moved to DELETE_AFTER)
+  # horizon wave (PREREG_horizon_20260811): 5e5-step unfrozen + scratch runs
+  adapt_ax1hz* adapt_hscratch_*
+  # TM2 legibility diagnostics (PREREG_tm2_diag_20260811): probe jsons
+  tm2_diag
   ax1wm_finger_s25q1s*_seed* ax1wm_finger_fs25q1s*_seed*
   adapt_ax1s25q1s* adapt_ax1fs25q1s*
   # 2026-08-08 review-resolution adapt-only waves. Reads verified 08-10,
