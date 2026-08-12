@@ -196,3 +196,152 @@ and the descriptive decomposition; H1′ stated as a scope condition —
 it is a REAL scope boundary, not a technicality: agents whose
 randomization is coupled to unread outcomes are outside the theorem,
 which is worth one honest sentence in the paper).
+
+> **EXECUTED (12 Aug, writing chat):** integration landed in
+> `writing/Paper_CEI_Draft_20260809.tex` (header change-log block
+> documents the delta). Thm 3 → two-part form: (a) exposure budget
+> KL ≤ κ·E[N_j] for arbitrary (P₀,A,Q)/policies/coupling, (b) the
+> d(δ,1−δ) audit-cost corollary (constants unchanged). Added:
+> Assumption 2 (H1/H1′/H2/H3) + H1′ scope remark (quantile-coupling
+> counterexample stated as a real boundary, in the theorem's scope
+> sentence AND §10); Prop 1 no-action-channel-evidence w/ classical
+> credits (Wald/Rubin/KCG16 — composition-only claim); Prop 2
+> exposure decomposition (descriptive) + emission-closed vanishing
+> condition + pointwise-cap-is-false honesty (1.988 vs 1.808) + ρ +
+> slopes 2.07/1.99; endogenous-law remark (unique-rescue = companion
+> gate/re-admission hook); genie full-path proof w/ static-X as
+> special case; App C (stopped-τ Wald 1944/Gut + non-Gaussian sup_x
+> w/ countable-sup measurability); worked-example numbers in App B;
+> App A provenance item 6 (broken-then-repaired intermediate claims
+> disclosed); Chernoff-1959/NAV-2013 controlled-sensing ¶; scope §10:
+> E[n] conjecture resolved in count form, dynamic-target LOWER bound
+> discharged (upper bound + counting stay open), block structure
+> rescoped to constructive results. Static checks green; theorem
+> numbering 1–4 preserved. Flagged at file foot: the manuscript
+> rendering of §7+App C postdates all manuscript reviews → next
+> review round alongside the 10-Aug Thm-4 proof.
+
+
+## 6. SE smoke VERIFIED + all FILLs pinned (12 Aug night) — prereg v2.1
+
+Smoke bundle `local_results/uncfield_se_smoke_20260812_155552`
+(manifest OK, 146 files; cloud lane, rc=0, 2e4 steps ≈ 16 min).
+Verified live in the run: all 5 planted keys in obs space WITH per-key
+decoder losses (planted_dup0's loss tracks `position` exactly —
+0.38/0.38 → 0.03/0.03, as an exact duplicate must; dup2 sits at its
+ε-noise floor ~1.1; the distractor OU is being learned, loss 3.1→0.5);
+disag ensemble trained (3.17M params); run config confirms
+expl.mode=p2e, disag_task=False, ens 8, target postfeat. Snapshots
+retained at 0/8.4k/14.9k + final (M4 machinery works).
+
+**FILLs pinned (prereg → v2.1, sbatch updated):** task cheetah_run;
+SOURCE_KEY = `position` (dim 8, mean per-dim sd 0.0976); **BASESD split
+into two constants** — BASESD_PLANTED = 0.0976 (source-commensurate;
+the velocity-dominated overall mean 1.215 would have made D1's ε-noise
+≈60% of the source scale and wrecked the ladder semantics) and
+BASESD_N = 1.215 (the Distractor's own convention); STEPS = 5e5
+(≈6.7 h/run, sbatch limit raised to 10 h); **Stage-1 seeds renumbered
+10–17** (no collision with smoke seed 0). Probe design risks retired
+by recon: `Disag.predict` exposes per-member postfeat predictions
+(explore.py:30-33); `dyn.imagine` accepts a policy callable
+(rssm.py:94) with the agent.py:307 sampling pattern; per-key decoder
+heads confirmed by the smoke's own loss lines; loading path =
+probing.collect.load_run_config/load_frozen_agent + make_agent
+(latent_uq.py precedent, CPU-capable). Soft-stoch decoding of member
+predictions registered with a calibration control in the probe
+selfcheck.
+
+**Remaining before freeze: `uncfield/se_probe.py`** (next focused
+block; develops against the smoke checkpoint) → freeze commit → [YOU]
+submit 8 runs (seeds 10–17).
+
+
+## 7. se_probe BUILT + selfchecked (12 Aug night); pre-freeze reviewer in flight
+
+`uncfield/se_probe.py`: decoder-projected per-key disagreement (per
+prereg §4 — Disag.predict per-member postfeat → soft-stoch decode
+through the frozen per-key heads → per-key ensemble variance,
+normalized in decoder target space), P-SE1 dim-level permutation null
++ per-channel tests + θ₁ source-share comparator, P-SE2 policy-driven
+imagined rollouts (dyn.imagine callable form) ranked by intrinsic
+return with rollout-label permutation, calibration control
+(soft-vs-hard decode), pilot-schema outputs (json + dims npz).
+**Selfcheck PASS**: statistics mutants killed (inflated-planted p<0.01;
+exchangeable labels null; rank-uninformative order → mean p ≈ 0.5 over
+20 orders — single-order asserts are 5%-flaky by construction);
+end-to-end on the smoke checkpoint; bit-deterministic under fixed seed.
+
+**Instrument bug caught by the smoke run, fixed + pinned:** the
+constant channel's normalizer (std of a constant ≡ 0, floored at 1e-6)
+divided decoder round-off by 1e-12 and manufactured share 0.9999.
+Fix = pinned normalizer floor, 0.05 × the mean per-dim std of the REAL
+keys. Post-fix smoke-dose diagnostics (2e4 steps = 4% of full dose;
+DESCRIPTIVE, not a read): key shares — planted_const 0.605, distractor
+0.096, dup0 0.083, dup1 0.062, dup2 0.013, position 0.076, velocity
+0.066; calibration 0.065–0.183 for real keys, 0.368 for const; P-SE2
+top≈base (p 0.46) as expected for a barely-trained policy. The const
+channel's large early share is itself informative (ensemble members
+disagree even about a constant at this dose) and is exactly what M4's
+persistence read adjudicates at full dose.
+
+Pre-freeze instrument reviewer (Fable, auto-approved) launched on
+se_probe.py + prereg v2.1 — known open questions handed to it: the
+pooled permutation null's power under planted-dim majority (36/53
+dims), the per-channel rng's hash() salting (cross-process
+determinism), and the not-yet-implemented SECONDARY masks
+(implement-pre-freeze vs re-scope). FREEZE after adjudication.
+
+
+## 8. ADJUDICATION (12 Aug night) — probe review #21 + D-niche search; SE wave FREEZE-READY
+
+**Review #21 (probe + prereg pre-freeze; Fable; yield 21/21): 5 BLOCKING
+/ 6 MAJOR / 7 MINOR — ALL ADOPTED same session** (se_probe fixes +
+prereg v2.2). The blockers:
+- **B1 rollout pairing off-by-one**: dyn.imagine returns (s_{i+1}, a_i)
+  pairs; the deployed disag pairing is (s_i, a_i) → states rebuilt from
+  the anchor carry (latent_uq.py:281-293 pattern). Post-fix the smoke
+  P-SE2 FLIPPED from null (p 0.455) to top-rollouts-carry-more-fire-
+  channel-share (0.264 vs 0.242, p 0.010) — the mispairing was masking
+  the signal. (Smoke dose; descriptive.)
+- **B2 process-salted hash()** in the per-channel rng (three fresh
+  interpreters: 3 different streams; smoke distractor p sat at 0.0465,
+  exactly at the α boundary — a rerun could have flipped a registered
+  fire) → crc32; determinism assert extended to per-channel p's.
+- **B3 const contamination**: planted_const (share 0.605 at smoke) was
+  inside the pooled statistic and the P-SE2 numerator against the
+  prereg's own scoping → FIRE_KEYS = {D0,D1,D2,N}; const = projection-
+  floor diagnostic only.
+- **B4 cross-seed aggregation unpinned** → registered fire rule:
+  per-channel share > per-run null MEDIAN in ≥7/8 runs (binomial
+  p=.035), BH q=.05 over the 4 fire-eligible channels; Fisher/BCa
+  reporting-only; `uncfield/se_read.py` = frozen reader built before
+  the read (registered).
+- **B5 prereg not freeze-ready** (2 residual FILLs; §8 promised masks
+  the probe lacks) → FILLs filled (mask window = probe window 16;
+  walltime 6.7h/10h); masks re-scoped to built-before-READ (their only
+  decision role is outcome cell 6).
+Majors: dim-exchangeability caveat registered (confirmatory weight on
+the cross-seed axis); pooled share demoted to descriptive
+(near-powerless at 32/49 fire dims); BH multiplicity; burn_in=16 /
+ep_batch=64 / S≥256 floor pinned; M4 runs on the FINAL replay buffer
+(registered analytic choice); calibration acceptance = soft-vs-hard
+< 0.5 on every REAL key (smoke 0.066/0.083). Verified-correct list:
+anchor/action alignment, postsplit order/dims, decoder soft-stoch
+consumption, feat2tensor, nj purity, statistics mechanics.
+se_probe selfcheck re-PASS post-fixes (per-channel determinism incl.).
+
+**D-niche scoped search (freeze precondition, §7): CLEAR — LIMIT-2.**
+No 2024–26 work occupies claims (i)–(iii); CIG arXiv:2605.20878 (the
+NFI paper's own transplanted-defense foil — its "redundancy" is
+temporal state-revisit, not channel redundancy) and DreamerV3-XP
+(arXiv:2510.21418; reward-ensemble disagreement in DreamerV3, no
+channels/attribution) registered as differentiation cites. Citation
+graphs of Sekar 2020 + Mavor-Parker 2022: zero matches.
+
+**PREREG v2.2 IS FREEZE-READY** (no residual FILLs; instruments built
++ selfchecked; smoke verified; search discharged). FREEZE = [YOU]
+commit: prereg/PREREG_nfi_scale_exhibit_20260812.md,
+embodied/envs/planted.py, uncfield/se_probe.py, dreamerv3/main.py,
+dreamerv3/configs.yaml, scripts/uncfield_se.sbatch,
+manifests/uncfield_se_smoke_20260812_155552.sha256, this record — then
+submit the 8 runs (seeds 10–17).

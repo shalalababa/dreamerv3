@@ -1,6 +1,14 @@
-# PREREG — NFI Scale Exhibit (SE wave), DRAFT v2 (12 Aug 2026, post-review)
+# PREREG — NFI Scale Exhibit (SE wave), DRAFT v2.2 (12 Aug 2026, probe-review fixes)
 
-**Status: DRAFT v2 — freeze after smoke FILL slots.** v1 reviewed same
+**Status: DRAFT v2.1 — smoke executed and verified
+(`local_results/uncfield_se_smoke_20260812_155552`, manifest OK, rc=0,
+all 5 planted keys live with per-key decoder losses, disag 3.17M params
+trained, expl.mode=p2e confirmed in the run config); all smoke FILLs
+pinned below.** Probe built + reviewed same day (review #21: 5
+BLOCKING / 6 MAJOR / 7 MINOR, all adopted in this v2.2 + se_probe
+fixes; adjudication in `artifacts/nfi_assessment_response_20260812/`
+§8). **Freeze after the registered D-niche scoped search (§7)
+returns.** v1 reviewed same
 day (instrument reviewer, Fable): 4 BLOCKING / 8 MAJOR / 9 MINOR, all
 adopted below (adjudication in
 `artifacts/nfi_assessment_response_20260812/RESULTS.md` §2). Plan:
@@ -11,12 +19,15 @@ NOT gating ICLR.
 
 ## 1. Substrate (pinned)
 
-DreamerV3 (this repo), size1m, dmc proprio `cheetah_run` [FILL smoke:
-proprio-key inventory; fallback walker_walk]. Objective: the repo's
+DreamerV3 (this repo), size1m, dmc proprio `cheetah_run` (PINNED —
+smoke inventory: `position` dim 8 per-dim sd 0.024–0.143 mean 0.0976;
+`velocity` dim 9 sd 0.37–3.72; overall proprio mean sd 1.215). Objective: the repo's
 deployed latent-ensemble disagreement module (`dreamerv3/explore.py`,
 `expl.mode: p2e`, `disag_task: False` — asserted at agent.py:104), the
-UNMODIFIED training path. Training steps [FILL: size1m default]. **Seeds
-0–7 pre-committed** (8 runs; no conditional extension clause). Arms are
+UNMODIFIED training path. Training steps PINNED = 5e5 (exploration-study convention; smoke
+timing 2e4 ≈ 16 min ⇒ ≈ 6.7 h/run, inside the sbatch limit). **Seeds
+10–17 pre-committed** (8 runs; renumbered from 0–7 so no seed collides
+with the smoke run se_smoke0/seed 0; no conditional extension clause). Arms are
 independent samples — never cross-arm seed-paired (1-Aug GPU
 nondeterminism rule).
 
@@ -24,19 +35,25 @@ nondeterminism rule).
 
 Precise information statements (review M-1):
 - **N (noisy-TV)**: `embodied/envs/distractor.py` OU wrapper, dim 8,
-  scale 1.0, `basesd` PINNED from the smoke run (no online calibration
-  window — the zero statement then holds from step 0), wrapper seed =
+  scale 1.0, `basesd` PINNED = 1.215 (overall proprio mean per-dim sd from the
+  smoke inventory — the Distractor's own reference convention; no
+  online calibration window, so the zero statement holds from step 0), wrapper seed =
   training seed. **Zero information about task state and reward**; the
   OU latent itself is learnable, so early disagreement on N is partly
   legitimate — the registered claim is FINITE-TIME NON-DECAY (M4), not
   instant-zero.
 - **D-family (redundancy ladder) — FLAGSHIP = D0**:
-  - **D0**: exact duplicate (ε = 0) of one pinned proprio source key
-    [FILL smoke: key id + dim]. Zero marginal information given the
+  - **D0**: exact duplicate (ε = 0) of the pinned source key
+    `position` (dim 8; the bounded, low-sd key — velocity's 30×-larger
+    sds would make the ladder semantics scale-inhomogeneous). Zero marginal information given the
     source key, and no stochastic component whatsoever — if the
     objective allocates value to D0, no noisy-TV reading survives.
   - **D1**: duplicate + i.i.d. N(0, (0.05·refsd)²); **D2**: same at
-    ε = 0.5·refsd. The ε-ladder is the registered discriminator
+    ε = 0.5·refsd, with refsd = BASESD_PLANTED PINNED = **0.0976** (the
+    SOURCE key's own mean per-dim sd — source-commensurate, so the
+    ε-ladder stays a small-to-moderate perturbation OF THE SOURCE; the
+    velocity-dominated overall mean 1.215 would have made D1's noise
+    ≈ 60% of the source scale and wrecked the ladder semantics). The ε-ladder is the registered discriminator
     (review B3): redundancy farming predicts D0 > floor and/or
     D-share NOT ∝ ε²; noisy-TV predicts share ∝ ε² with D0 at floor.
 - **C (constant ≡ 0, dim 4)**: anchor for the DECODER-PROJECTION floor
@@ -51,10 +68,10 @@ smoke cross-correlation diagnostic (review minor 3).
 
 ## 3. Arms
 
-**Stage 1: planted arm ONLY, seeds 0–7 = 8 runs** (the v1 unwrapped
+**Stage 1: planted arm ONLY, seeds 10–17 = 8 runs** (the v1 unwrapped
 control arm fed no registered measurement and carried a dimensionality
 confound — deleted per review B4; all Stage-1 primaries are within-arm).
-**Conditional D-only arm** (channels D0/D1/D2 without N, seeds 0–3,
+**Conditional D-only arm** (channels D0/D1/D2 without N, seeds 10–13,
 4 runs) PRE-AUTHORIZED, trigger: N-share fires while all D-shares are
 at floor (cross-channel interference check, review M-8).
 **Stage 2 (behavioral, trigger: P-SE1 fires on any non-C channel):
@@ -69,13 +86,21 @@ itself observed (stated per review minor 7). 2 × 4 seeds = 8 runs.
 ## 4. Attribution instruments (registered architecture, review B2)
 
 - **PRIMARY (intervention-free, defined identically in replay and
-  imagination): decoder-projected per-key disagreement.** For each
+  imagination): decoder-projected per-key disagreement.** Recon-pinned
+  mechanics: `Disag.predict` (explore.py:30-33) exposes per-member
+  postfeat predictions; each is split into (deter̂, probŝ) and decoded
+  with SOFT stoch (the decoder consumes {deter, stoch} dicts); the
+  probe selfcheck registers a calibration control — decoding the TRUE
+  postfeat of held states must track decoding their actual sampled
+  state (pins the soft-stoch approximation as adequate before any
+  read). For each
   disag-ensemble member m, push its predicted next latent through the
   frozen decoder's per-key heads (plumbing exists: per-key heads
   agent.py:277-281; imagined-feature decoding precedent
   agent.py:469-479); d_k = Var_m(μ_k^m) averaged over key-k dims,
-  normalized per key [FILL smoke: per-dim refsd² vs decoder-licensed
-  variance — pin one]. Planted share S = Σ_planted d_k / Σ_all d_k,
+  normalized per key PINNED: per-dim probe-set variance in the
+  decoder's target space (symlog), matching probing/latent_uq.py's
+  normalization convention. Planted share S = Σ_planted d_k / Σ_all d_k,
   reported per channel. This reads out the DEPLOYED ensemble — no
   retraining (the v1 `disag_target` fallback is WITHDRAWN: it changes
   the trained objective and forfeits the "standard objective"
@@ -86,35 +111,70 @@ itself observed (stated per review minor 7). 2 × 4 seeds = 8 runs.
   shift-artifact diagnostic (review M-2). Mask forms pinned per
   channel: N → batch-permutation mask; D-family →
   source-substitution (D := source value, deleting exactly the
-  fictitious content); masks applied over the full filtering window
-  [FILL smoke: window length], in raw obs space before symlog, mask
-  statistics from a pinned replay slice (review M-3).
+  fictitious content); masks applied over the full probe window
+  (burn_in = 16, the same window as the primary), in raw obs space
+  before symlog, mask statistics from a pinned replay slice (review
+  M-3). **Build scope (review #21 B5): the mask instrument is built +
+  selfchecked BEFORE THE READ, not before freeze** — replay-only
+  secondary whose sole decision role is outcome-map cell 6, which
+  cannot be adjudicated until it exists.
 
 ## 5. Registered measurements
 
 - **P-SE1 (accounting, PRIMARY).** On N_eval = 512 replay states per
-  run at the FINAL checkpoint: per-channel decoder-projected share vs
-  the **permutation-null floor** (key-label permutation within run,
-  planted/real labels reassigned dim-matched, ≥1000 permutations,
-  α = .05 — this is the registered permutation-primary; seed-level BCa
-  intervals are reporting-only, review M-6/B1) AND vs the comparator
-  θ₁ = own source key's share (D-family) / nearest-dim real key by
-  pinned rule (N) (review M-4). **FIRES** per channel if share exceeds
-  the permutation null; the FLAGSHIP wording additionally requires the
-  D-family discriminator (§2).
+  run (validity floor: read invalid if realized S < 256) at the FINAL
+  checkpoint, probe window burn_in = 16, ep_batch = 64, normalizer
+  floor = 0.05 × mean real-key per-dim sd (pinned instrument
+  constants; member-prediction probs simplex-projected via
+  clip+renormalize): **per-channel** decoder-projected share vs the
+  within-run dim-level permutation null (channel dims vs REAL dims
+  only, ≥1000 permutations; crc32-keyed rng) AND vs θ₁ = the source
+  key's own share (D-family) / nearest-dim real key (N).
+  **Fire-eligible channels = {D0, D1, D2, N}; the constant channel is
+  the decoder-projection floor DIAGNOSTIC only and never fires.**
+  Registered caveat (review #21 M1): dims within a key co-move, so
+  dim-level permutation is anti-conservative as a per-run test — the
+  CONFIRMATORY axis is cross-seed replication:
+  **CROSS-SEED PRIMARY (the registered fire rule): a channel FIRES if
+  its per-run share exceeds its per-run permutation-null MEDIAN in
+  ≥ 7 of 8 runs (exact binomial p = .035 under the null), with BH
+  q = .05 over the 4 fire-eligible channels.** Supporting (reporting
+  only): Fisher-combined per-run p's, seed-level BCa intervals, and
+  the pooled fire+real share (const-excluded; near-powerless by
+  construction — 32/49 pooled dims are fire dims — hence DESCRIPTIVE
+  only). The FLAGSHIP wording additionally requires the D-family
+  discriminator (§2).
 - **P-SE2 (ranking, PRIMARY).** M = 256 imagined rollouts (trained p2e
-  policy, imag_length 15, replay-start selection rule [FILL smoke]),
-  ranked by imagined intrinsic return; statistic = mean planted
-  decoder-projected share of the top-k = 10 vs the all-rollout mean
-  (dimension-fair continuous form, review B2), permutation test over
-  rollout labels. **FIRES** if top-k share exceeds the mean, p < .05.
+  policy via the policy-callable form of `dyn.imagine` — rssm.py:94 —
+  with the agent.py:307 sampling pattern; imag_length 15; starts = the
+  probe-window anchor states, uniform over the N_eval replay windows),
+  ranked by imagined UNDISCOUNTED intrinsic sum over the horizon
+  (states paired with the actions taken AT them — the deployed disag
+  pairing, review #21 B1); statistic = mean FIRE-channel (const
+  excluded) decoder-projected share of the top-k = 10 vs the
+  all-rollout mean, permutation test over rollout labels within run.
+  **CROSS-SEED PRIMARY: FIRES if top-k share > all-rollout mean in
+  ≥ 7 of 8 runs (binomial p = .035)**; per-run p's and the per-family
+  (D-family vs N) share breakdown reported (the pooled SE2 statistic
+  cannot separate outcome cells 1 vs 2 on its own).
 - **M3 (behavioral, Stage 2 SECONDARY).** Occupancy share of the gate
   region, gated vs ungated arm, + task-return delta under identical
   eval. Directional: diversion toward the gate region.
 - **M4 (persistence, SECONDARY).** P-SE1 statistic at 25/50/100%
-  checkpoints vs the permutation-null floor at each (falsifiable
-  floor, review B1): registered weak form = planted share remains
-  above the null at 100%.
+  checkpoints vs the permutation-null floor at each: registered weak
+  form = fire-channel share remains above the null at 100%.
+  **Registered analytic choice (review #21 M5): snapshots retain
+  checkpoints, not buffers — all M4 probes run on the FINAL replay
+  buffer (fixed eval distribution, shared read-time normalizers).**
+- **Calibration acceptance (registered, review #21 M6): the
+  instrument is VALID iff the normalized soft-vs-hard decode
+  discrepancy is < 0.5 on every REAL key** (smoke: 0.066/0.083 —
+  wide margin); planted keys reported; const reported against its RAW
+  (unfloored) normalizer.
+- **Cross-seed reader (review #21 B4): `uncfield/se_read.py` — the
+  frozen reader implementing the ≥7/8 fire rules + BH — is built and
+  selfchecked BEFORE THE READ and executes it; per-run se_probe
+  outputs are its only inputs.**
 - Exploratory (unregistered): M5 coherence fingerprint; encoder-mask
   attribution comparisons.
 
@@ -161,24 +221,38 @@ ensemble-disagreement ≠ calibrated epistemic uncertainty in principle
 Novel content claimed ONLY as: (i) redundancy/duplicate farming (D0 +
 ladder), (ii) per-key model-internal attribution certified against
 by-construction-zero channels, (iii) planner-ranking concentration
-(P-SE2). **Pre-freeze registered action: one scoped search, 2024–26
-"disagreement/curiosity exploration + redundant or distractor
-observation channels", to certify the D-niche is still open.**
+(P-SE2). **Pre-freeze scoped search EXECUTED 12 Aug 2026 (web + arXiv +
+citation graphs of Sekar 2020 / Mavor-Parker 2022): CLEAR — claims
+(i)–(iii) unoccupied at freeze; LIMIT-2, cited for differentiation
+only:** CIG (arXiv:2605.20878 — the same work the NFI paper engages as
+a transplanted defense) builds an ensemble-disagreement kernel whose
+"redundancy" is within-rollout state-visit repetition — TEMPORAL, not
+observation-channel redundancy — with a stochastic-only distractor arm
+and no per-key attribution; DreamerV3-XP (arXiv:2510.21418) deploys
+ensemble-disagreement intrinsic reward inside DreamerV3 (over predicted
+REWARDS, not latent dynamics), confirming the objective family is
+current at our substrate scale, with no planted channels and no
+attribution analysis. No 2024–26 work measures disagreement/curiosity
+objectives on zero-marginal-information channels, does model-internal
+per-key attribution against by-construction-zero channels, or analyzes
+planner-ranking concentration.
 
 ## 8. Instruments to build (inline; review fixes folded)
 
-`embodied/envs/planted.py` (Duplicate ε-ladder + Constant + gate;
-construction selfchecks §2); `uncfield/se_probe.py` (decoder-projected
-per-key disagreement + interventional masks + P-SE1/P-SE2 reads +
-fixture battery incl. a share-statistic mutant killed by the
-permutation null); `scripts/uncfield_se.sbatch` (8 runs + probe passes
-+ manifest collect). Smoke = 1 planted run, reduced steps → fills all
-[FILL] → freeze commit → full submission.
+BUILT + selfchecked: `embodied/envs/planted.py` (construction checks
+§2); `uncfield/se_probe.py` (decoder-projected attribution, P-SE1/
+P-SE2 per-run reads, calibration control, statistics mutant battery;
+reviewed #21, all findings adopted); `scripts/uncfield_se.sbatch`.
+TO BUILD BEFORE THE READ (registered): the §4 mask instrument;
+`uncfield/se_read.py` (cross-seed frozen reader, §5). Smoke executed
+12 Aug (bundle `uncfield_se_smoke_20260812_155552`) → all FILLs pinned
+→ freeze commit → full submission (seeds 10–17).
 
 ## 9. Compute
 
-Stage 1: 8 × size1m [FILL walltime]. Conditional D-only: +4.
-Stage 2: +8. All RCC.
+Stage 1: 8 × size1m ≈ 6.7 h/run (smoke-extrapolated; sbatch limit
+10 h) + CPU probe passes. Conditional D-only: +4. Stage 2: +8.
+All RCC/cloud lanes.
 
 ## 10. Standing-rule compliance
 

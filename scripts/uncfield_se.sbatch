@@ -5,7 +5,7 @@
 #SBATCH --gres=gpu:1
 #SBATCH --cpus-per-task=8
 #SBATCH --mem=32G
-#SBATCH --time=08:00:00
+#SBATCH --time=10:00:00
 #SBATCH --output=%x_%j.out
 # ---------------------------------------------------------------------------
 # NFI Scale Exhibit (SE wave) — PREREG_nfi_scale_exhibit_20260812.md §3.
@@ -18,9 +18,10 @@
 # Required env (sbatch --export):
 #   RUN_ID      e.g. se_cheetah_seed0
 #   TASK        e.g. dmc_cheetah_run
-#   SEED        integer 0..7
-#   SOURCE_KEY  pinned proprio key to duplicate     [FILL from smoke]
-#   BASESD      pinned per-dim proprio sd            [FILL from smoke]
+#   SEED        integer 10..17 (prereg v2.1; smoke used 0)
+#   SOURCE_KEY      pinned: position (smoke 12 Aug)
+#   BASESD_PLANTED  pinned: 0.0976 (source-key mean per-dim sd)
+#   BASESD_N        pinned: 1.215  (overall proprio mean per-dim sd)
 # Optional: STEPS (default from prereg FILL; smoke: 2e4), SMOKE=1
 #   (smoke additionally prints the proprio key inventory + per-key sd
 #   over 2000 random steps BEFORE training — fills SOURCE_KEY/BASESD),
@@ -42,7 +43,7 @@ PYTHON="${CONDA_ENV:-}/bin/python"; [ -x "$PYTHON" ] || PYTHON="$(command -v pyt
 cd "$REPO"
 
 : "${RUN_ID:?set RUN_ID}"; : "${TASK:?set TASK}"; : "${SEED:?set SEED}"
-STEPS="${STEPS:-2e4}"           # FILL at freeze: full Stage-1 step count
+STEPS="${STEPS:-5e5}"           # pinned (prereg v2.1); smoke used 2e4
 SAVE_EVERY="${SAVE_EVERY:-300}"
 LOGDIR="$RUNROOT/$RUN_ID"
 mkdir -p "$LOGDIR"
@@ -79,8 +80,9 @@ print(f"MEAN per-dim proprio sd (candidate BASESD): {np.mean(allsd):.5f}")
 PY
 fi
 
-: "${SOURCE_KEY:?set SOURCE_KEY (FILL from smoke inventory)}"
-: "${BASESD:?set BASESD (FILL from smoke inventory)}"
+: "${SOURCE_KEY:=position}"
+: "${BASESD_PLANTED:=0.0976}"
+: "${BASESD_N:=1.215}"
 
 echo "[$(date)] SE run RUN_ID=$RUN_ID TASK=$TASK SEED=$SEED STEPS=$STEPS"
 STOP_STEP=$("$PYTHON" -c "print(int(float('$STEPS')))")
@@ -89,8 +91,8 @@ STOP_STEP=$("$PYTHON" -c "print(int(float('$STEPS')))")
   --logdir "$LOGDIR" --configs dmc_proprio expl_p2e \
   --task "$TASK" --seed "$SEED" \
   --env.dmc.render False \
-  --distractor.dim 8 --distractor.scale 1.0 --distractor.basesd "$BASESD" \
-  --planted.source_key "$SOURCE_KEY" --planted.basesd "$BASESD" \
+  --distractor.dim 8 --distractor.scale 1.0 --distractor.basesd "$BASESD_N" \
+  --planted.source_key "$SOURCE_KEY" --planted.basesd "$BASESD_PLANTED" \
   --planted.gate_key "${GATE_KEY:-}" \
   --planted.gate_index "${GATE_INDEX:-0}" \
   --planted.gate_threshold "${GATE_THRESHOLD:-0.0}" \
