@@ -258,7 +258,8 @@ def selfcheck():
   np.random.seed(1)
   import random as _random
   _random.seed(1)
-  cfg_ref = build_cfg(None, 'dmc_finger_turn_hard', obs_dim, act_dim,
+  cfg_ref = build_cfg(os.environ.get('TDMPC2_ROOT'),
+                      'dmc_finger_turn_hard', obs_dim, act_dim,
                       ep_len - 1, dict(seed=1, steps=n_eps * ep_len,
                                        buffer_size=n_eps * ep_len))
   ref = make_agent(cfg_ref, 0.0)
@@ -290,7 +291,8 @@ def selfcheck():
       'rec encoder identical to free - recon gradient never reached enc'
   # official-class strict load of the stripped dict
   blob = torch.load(data, weights_only=False)
-  cfg = build_cfg(None, 'dmc_finger_turn_hard', obs_dim, act_dim,
+  cfg = build_cfg(os.environ.get('TDMPC2_ROOT'),
+                  'dmc_finger_turn_hard', obs_dim, act_dim,
                   ep_len - 1, dict(seed=1, steps=n_eps * ep_len,
                                    buffer_size=n_eps * ep_len))
   official = TDMPC2(cfg)
