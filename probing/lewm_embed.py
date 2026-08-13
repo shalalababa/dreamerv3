@@ -22,12 +22,15 @@ stratified_error probeset dir (probeset_e4.npz with 'image'
 
 `verify` (the registered embedding-pipeline positive control): compares
 this script's preprocessed pixels for ONE episode against the pinned
-checkout's OWN training-time pixel path (its image preprocessor,
-located inside the checkout on PYTHONPATH/LEWM_CHECKOUT), and writes
-embed_control.json {preproc, max_abs_diff, pass}. It FAILS LOUDLY if
-the checkout's preprocessor cannot be located — never a silent pass;
-an interface adjustment lands as a dated amendment before any full
-training (FILL discipline).
+checkout's OWN training-time pixel path — Amendment 1: the factory call
+`utils.get_img_preprocessor(source='pixels', target='pixels',
+img_size=--img_size)` fed a sample dict {'pixels': uint8 [T,C,H,W]
+tensor}, exactly the stable_worldmodel HDF5Dataset yield the training
+loop transforms — and writes embed_control.json {preproc, img_size,
+spt_version, max_abs_diff, pass}. It FAILS LOUDLY if the checkout's
+preprocessor cannot be located or the shapes cannot match — never a
+silent pass; interface adjustments land as dated amendments before any
+full training (FILL discipline).
 
 Runs in the lewm conda env (torch + hydra + the pinned checkout on
 LEWM_CHECKOUT). GPU optional.
@@ -167,50 +170,73 @@ def cmd_embed(args):
 
 
 def _checkout_preprocessor():
-  """Locate the pinned checkout's own training-time image preprocessor.
-  FAILS LOUDLY when not found (review C3: never a silent pass)."""
+  """Locate the pinned checkout's own training-time image-preprocessor
+  FACTORY. FAILS LOUDLY when not found (review C3: never a silent pass).
+
+  Amendment 1 (interface pin, from the checkout at 8edfeb33):
+  train.py:59 builds the training transform as
+    get_img_preprocessor(source='pixels', target='pixels',
+                         img_size=cfg.img_size)
+  (utils.py:6), a stable_pretraining dict-transform Compose of
+  ToImage(**ImageNet_stats) + Resize(img_size) keyed on 'pixels'."""
   co = _add_checkout_path()
   assert co, 'LEWM_CHECKOUT env var must point at the pinned checkout'
-  candidates = []
-  for modname in ('utils', 'module', 'train'):
-    try:
-      mod = __import__(modname)
-    except Exception as e:  # noqa: BLE001 — diagnostic path only
-      candidates.append(f'{modname}: import failed ({e})')
-      continue
-    for attr in ('get_img_preprocessor', 'img_preprocessor',
-                 'get_image_preprocessor'):
-      fn = getattr(mod, attr, None)
-      if fn is not None:
-        return fn, f'{modname}.{attr}'
-    candidates.append(f'{modname}: no preprocessor attr')
-  raise SystemExit(
-      'could not locate the checkout image preprocessor; tried: '
-      + '; '.join(candidates)
-      + ' — pin the correct symbol via a dated amendment before any '
-        'full training (FILL discipline).')
+  try:
+    import utils as lewm_utils
+  except Exception as e:  # noqa: BLE001 — diagnostic path only
+    raise SystemExit(
+        f'could not import the checkout `utils` module ({e}) — pin the '
+        'correct symbol via a dated amendment before any full training '
+        '(FILL discipline).')
+  factory = getattr(lewm_utils, 'get_img_preprocessor', None)
+  if factory is None:
+    raise SystemExit(
+        'checkout utils has no get_img_preprocessor — pin the correct '
+        'symbol via a dated amendment before any full training '
+        '(FILL discipline).')
+  return factory, 'utils.get_img_preprocessor'
 
 
 def cmd_verify(args):
   import torch
-  fn, symbol = _checkout_preprocessor()
+  factory, symbol = _checkout_preprocessor()
   with np.load(args.episode) as z:
     img = np.asarray(z['image'])
   ours = preprocess(img, args.preproc)
+  # Replicate the checkout's training-time pixel path EXACTLY:
+  # stable_worldmodel HDF5Dataset._load_slice yields 'pixels' as a torch
+  # uint8 tensor permuted [T, C, H, W]; the transform consumes/returns a
+  # sample dict keyed 'pixels' (train.py:59 call signature).
   raw = torch.from_numpy(img).permute(0, 3, 1, 2)
+  fn = factory(source='pixels', target='pixels', img_size=args.img_size)
+  theirs = torch.as_tensor(fn({'pixels': raw})['pixels']).float()
   try:
-    theirs = fn()(raw.float())
-  except TypeError:
-    theirs = fn(raw.float())
-  theirs = torch.as_tensor(theirs).float()
-  assert theirs.shape == ours.shape, (theirs.shape, ours.shape)
+    import importlib.metadata as md
+    spt_version = md.version('stable-pretraining')
+  except Exception:  # noqa: BLE001 — audit field only
+    spt_version = 'unknown'
+  os.makedirs(args.output, exist_ok=True)
+  path = os.path.join(args.output, 'embed_control.json')
+  if theirs.shape != ours.shape:
+    # img_size != source resolution: the embed path has no resize, so no
+    # --preproc candidate can match — recorded fail, loud exit
+    rec = dict(preproc=args.preproc, preprocessor_symbol=symbol,
+               episode=os.path.abspath(args.episode),
+               img_size=args.img_size, spt_version=spt_version,
+               their_shape=list(theirs.shape), our_shape=list(ours.shape),
+               max_abs_diff=None, threshold=1e-5, **{'pass': False})
+    with open(path, 'w') as f:
+      json.dump(rec, f, indent=1)
+    raise SystemExit(
+        f'SHAPE MISMATCH: checkout path yields {tuple(theirs.shape)} vs '
+        f'ours {tuple(ours.shape)} — the embed path has no resize; a '
+        'dated amendment is required before any full training.')
   diff = float((theirs - ours).abs().max())
   ok = diff < 1e-5
-  os.makedirs(args.output, exist_ok=True)
   rec = dict(preproc=args.preproc, preprocessor_symbol=symbol,
              episode=os.path.abspath(args.episode),
+             img_size=args.img_size, spt_version=spt_version,
              max_abs_diff=diff, threshold=1e-5, **{'pass': bool(ok)})
-  path = os.path.join(args.output, 'embed_control.json')
   with open(path, 'w') as f:
     json.dump(rec, f, indent=1)
   print(json.dumps(rec, indent=1))
@@ -236,6 +262,9 @@ def main():
   ve.add_argument('--episode', required=True)
   ve.add_argument('--preproc', required=True,
                   choices=('raw', 'unit', 'imagenet'))
+  ve.add_argument('--img_size', type=int, default=64,
+                  help='cfg.img_size of the registered training config '
+                       '(prereg pin: 64)')
   ve.add_argument('--output', required=True)
   args = ap.parse_args()
   if args.cmd == 'verify':
