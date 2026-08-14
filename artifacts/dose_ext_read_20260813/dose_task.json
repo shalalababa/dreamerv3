@@ -1,0 +1,235 @@
+{
+ "cell_means": {
+  "0": 141.69921250000002,
+  "1": 285.03059375,
+  "2": 267.44464375,
+  "3": 244.300125
+ },
+ "dose_manifest_sha256": "de8d31e5d9a839abd8b71f548b4bd5f330f17240272a4adf41bc39d7538b4bf6",
+ "excluded_qc": [],
+ "excluded_submodal": [],
+ "g1_replication": {
+  "ci": [
+   24.791298770885604,
+   200.20812336119747
+  ],
+  "diff": 102.60091249999999,
+  "gate_pass": true,
+  "n": [
+   16,
+   16
+  ],
+  "perm_p": 0.0292970702929707
+ },
+ "leak_overlap": {
+  "dose_json": "/scratch/midway3/rickybao/dreamerv3_runs/axis1_finger/dose.json",
+  "dose_json_sha256": "5b214ce0bbe6189798abf0319bcc580de0a922c27cca0e070912d1f4a776b08b",
+  "levels": [
+   {
+    "level": 0,
+    "n_members": 200,
+    "overlap_by_source": {
+     "goal": 0,
+     "p2e": 0,
+     "random": 0
+    },
+    "overlap_eids_by_source": {
+     "goal": [],
+     "p2e": [],
+     "random": []
+    },
+    "overlap_total": 0
+   },
+   {
+    "level": 1,
+    "n_members": 200,
+    "overlap_by_source": {
+     "goal": 1,
+     "p2e": 4,
+     "random": 6
+    },
+    "overlap_eids_by_source": {
+     "goal": [
+      7640
+     ],
+     "p2e": [
+      7332,
+      7336,
+      7373,
+      7386
+     ],
+     "random": [
+      7522,
+      7542,
+      7554,
+      7575,
+      7585,
+      7587
+     ]
+    },
+    "overlap_total": 11
+   },
+   {
+    "level": 2,
+    "n_members": 200,
+    "overlap_by_source": {
+     "goal": 1,
+     "p2e": 1,
+     "random": 3
+    },
+    "overlap_eids_by_source": {
+     "goal": [
+      7670
+     ],
+     "p2e": [
+      7332
+     ],
+     "random": [
+      7554,
+      7585,
+      7594
+     ]
+    },
+    "overlap_total": 5
+   },
+   {
+    "level": 3,
+    "n_members": 200,
+    "overlap_by_source": {
+     "goal": 1,
+     "p2e": 4,
+     "random": 2
+    },
+    "overlap_eids_by_source": {
+     "goal": [
+      7637
+     ],
+     "p2e": [
+      7332,
+      7348,
+      7352,
+      7362
+     ],
+     "random": [
+      7564,
+      7604
+     ]
+    },
+    "overlap_total": 7
+   }
+  ],
+  "probe_manifest": "/scratch/midway3/rickybao/dreamerv3_runs/e4_probesets/finger_v1/manifest.json",
+  "probe_manifest_sha256": "8792f0ec256a6c354832aefdefb5c425fef7e250c27d5eb8d935fe3d75d0d849",
+  "unmatched_probe_ordinals": {}
+ },
+ "mde_note": "interior-contrast MDE ~ 69 at n=8v8 (highfr pooled-sd basis); interior nulls are weak evidence. G1 power at the same basis: ~0.73 for a true +100, ~0.50 at +69 - a G1 failure is only interpretable AT THIS POWER.",
+ "modal_n_ep": 96,
+ "n_per_cell": {
+  "0": 16,
+  "1": 16,
+  "2": 16,
+  "3": 16
+ },
+ "occupancies": {
+  "0": 0.053636,
+  "1": 0.13046,
+  "2": 0.248951,
+  "3": 0.323392
+ },
+ "p_dr1": {
+  "activation": "EARLY (effect present by the 0.131 cell)",
+  "bh_survivors": [
+   "1",
+   "2"
+  ],
+  "contrasts": {
+   "1": {
+    "ci": [
+     63.293256912715755,
+     227.67924905003684
+    ],
+    "diff": 143.33138124999996,
+    "n": [
+     16,
+     16
+    ],
+    "perm_p": 0.0024997500249975004
+   },
+   "2": {
+    "ci": [
+     48.18065772224054,
+     197.11216139620714
+    ],
+    "diff": 125.74543125,
+    "n": [
+     16,
+     16
+    ],
+    "perm_p": 0.0031996800319968005
+   }
+  }
+ },
+ "p_dr2": {
+  "b_perm": 1000,
+  "best_cut": 0.092,
+  "cv_mse": {
+   "linear": 21395.783572521752,
+   "log": 20572.320803923685,
+   "step": 19164.13170538899
+  },
+  "decisive": true,
+  "df_note": "step cut chosen inside each training fold (inner LOSO); decisiveness calibrated against the within-seed label-permutation null",
+  "fold_cuts": [
+   0.09204799999999999,
+   0.09204799999999999,
+   0.09204799999999999,
+   0.09204799999999999,
+   0.09204799999999999,
+   0.09204799999999999,
+   0.09204799999999999,
+   0.09204799999999999,
+   0.09204799999999999,
+   0.09204799999999999,
+   0.09204799999999999,
+   0.09204799999999999,
+   0.09204799999999999,
+   0.09204799999999999,
+   0.09204799999999999,
+   0.09204799999999999
+  ],
+  "margin": 0.0684506678636917,
+  "null_margin_crit95": 0.0406302174637416,
+  "runner_up": "log",
+  "verdict": "THRESHOLD-AT-0.092 (on this grid realization): step form wins the calibrated CV comparison",
+  "winner": "step"
+ },
+ "p_dr3_membership": {
+  "anchor": 0.827,
+  "bar": 1.5,
+  "note": "descriptive, never adjudicated; the dose buffers predate the --holdout guard - D1-leak overlap disclosed in leak_overlap when supplied",
+  "per_level": {
+   "0": {
+    "in_band": false,
+    "mean": 1.7903051735929736,
+    "n": 16
+   },
+   "1": {
+    "in_band": true,
+    "mean": 1.3869181709296337,
+    "n": 16
+   },
+   "2": {
+    "in_band": true,
+    "mean": 0.9986595209336351,
+    "n": 16
+   },
+   "3": {
+    "in_band": true,
+    "mean": 0.9855051288433206,
+    "n": 16
+   }
+  }
+ },
+ "prereg": "PREREG_dose_task_20260810.md",
+ "verdict": "THRESHOLD-AT-0.092 (on this grid realization): step form wins the calibrated CV comparison | activation: EARLY (effect present by the 0.131 cell)"
+}

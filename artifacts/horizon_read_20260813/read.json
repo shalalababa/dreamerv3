@@ -1,0 +1,202 @@
+{
+ "excluded_short": [],
+ "late_hzf": {
+  "adapt_ax1hzfq1s0_finger_seed1_ckpt500000": 721.5982142857143,
+  "adapt_ax1hzfq1s0_finger_seed2_ckpt500000": 935.0892857142857,
+  "adapt_ax1hzfq1s0_finger_seed3_ckpt500000": 842.5446428571429,
+  "adapt_ax1hzfq1s0_finger_seed4_ckpt500000": 935.1428571428571,
+  "adapt_ax1hzfq1s1_finger_seed1_ckpt500000": 761.1696428571429,
+  "adapt_ax1hzfq1s1_finger_seed2_ckpt500000": 873.6875,
+  "adapt_ax1hzfq1s1_finger_seed3_ckpt500000": 780.5089285714286,
+  "adapt_ax1hzfq1s1_finger_seed4_ckpt500000": 897.5267857142857
+ },
+ "late_hzt": {
+  "adapt_ax1hztq1s0_finger_seed1_ckpt500000": 867.5625,
+  "adapt_ax1hztq1s0_finger_seed2_ckpt500000": 881.7857142857143,
+  "adapt_ax1hztq1s0_finger_seed3_ckpt500000": 896.3392857142857,
+  "adapt_ax1hztq1s0_finger_seed4_ckpt500000": 910.8303571428571,
+  "adapt_ax1hztq1s1_finger_seed1_ckpt500000": 949.3482142857143,
+  "adapt_ax1hztq1s1_finger_seed2_ckpt500000": 959.7767857142857,
+  "adapt_ax1hztq1s1_finger_seed3_ckpt500000": 920.5089285714286,
+  "adapt_ax1hztq1s1_finger_seed4_ckpt500000": 921.1428571428571
+ },
+ "late_scratch": {
+  "adapt_hscratch_finger_seed1_ckpt0": 918.7857142857143,
+  "adapt_hscratch_finger_seed2_ckpt0": 926.6160714285714,
+  "adapt_hscratch_finger_seed3_ckpt0": 903.1785714285714,
+  "adapt_hscratch_finger_seed4_ckpt0": 948.7589285714286,
+  "adapt_hscratch_finger_seed5_ckpt0": 940.3303571428571,
+  "adapt_hscratch_finger_seed6_ckpt0": 947.8035714285714,
+  "adapt_hscratch_finger_seed7_ckpt0": 935.6607142857143,
+  "adapt_hscratch_finger_seed8_ckpt0": 945.5178571428571
+ },
+ "n_per_arm": {
+  "hzf": 8,
+  "hzt": 8,
+  "scratch": 8
+ },
+ "p_h1": {
+  "ci": [
+   -147.33067665061887,
+   -40.26135884275689
+  ],
+  "delta": 139.99972098214286,
+  "diff": -89.92299107142867,
+  "n": [
+   8,
+   8
+  ],
+  "perm_p": 0.005699430056994301
+ },
+ "p_h2_descriptive": {
+  "bin_curves": {
+   "hzf": {
+    "0": 89.95052083333334,
+    "50000": 95.03645833333333,
+    "100000": 128.84895833333331,
+    "150000": 244.05729166666669,
+    "200000": 371.9765625,
+    "250000": 530.2786458333334,
+    "300000": 600.890625,
+    "350000": 677.5885416666666,
+    "400000": 807.0859375,
+    "450000": 891.8385416666667
+   },
+   "hzt": {
+    "0": 223.51302083333334,
+    "50000": 561.1119791666667,
+    "100000": 820.265625,
+    "150000": 872.0755208333333,
+    "200000": 871.6953125,
+    "250000": 889.859375,
+    "300000": 872.1640625,
+    "350000": 904.84375,
+    "400000": 907.2578125,
+    "450000": 921.6171875
+   },
+   "scratch": {
+    "0": 114.49739583333331,
+    "50000": 227.98697916666669,
+    "100000": 467.22656249999994,
+    "150000": 736.3229166666667,
+    "200000": 843.4921875,
+    "250000": 890.3489583333334,
+    "300000": 925.9635416666667,
+    "350000": 922.2109375,
+    "400000": 934.849609375,
+    "450000": 931.3072916666666
+   }
+  },
+  "early_ratio_hzf_over_scratch": 0.32324686986429013,
+  "first_sustained_positive_bin": null,
+  "note": "descriptive only; early ratio is a DIRECTIONAL, non-matched comparison vs the U-wave AUC-based 0.5-0.6x anchors"
+ },
+ "p_h3_control": {
+  "ci": [
+   -41.936762855443966,
+   3.4115397642160388
+  ],
+  "diff": -19.91964285714289,
+  "perm_p": 0.1356864313568643
+ },
+ "prereg": "PREREG_horizon_20260811.md",
+ "run_stats": {
+  "adapt_ax1hzfq1s0_finger_seed1_ckpt500000": {
+   "max_step": 496496.0,
+   "n_episodes": 496
+  },
+  "adapt_ax1hzfq1s0_finger_seed2_ckpt500000": {
+   "max_step": 496496.0,
+   "n_episodes": 496
+  },
+  "adapt_ax1hzfq1s0_finger_seed3_ckpt500000": {
+   "max_step": 496496.0,
+   "n_episodes": 496
+  },
+  "adapt_ax1hzfq1s0_finger_seed4_ckpt500000": {
+   "max_step": 496496.0,
+   "n_episodes": 496
+  },
+  "adapt_ax1hzfq1s1_finger_seed1_ckpt500000": {
+   "max_step": 496496.0,
+   "n_episodes": 496
+  },
+  "adapt_ax1hzfq1s1_finger_seed2_ckpt500000": {
+   "max_step": 496496.0,
+   "n_episodes": 496
+  },
+  "adapt_ax1hzfq1s1_finger_seed3_ckpt500000": {
+   "max_step": 496496.0,
+   "n_episodes": 496
+  },
+  "adapt_ax1hzfq1s1_finger_seed4_ckpt500000": {
+   "max_step": 496496.0,
+   "n_episodes": 496
+  },
+  "adapt_ax1hztq1s0_finger_seed1_ckpt500000": {
+   "max_step": 496496.0,
+   "n_episodes": 496
+  },
+  "adapt_ax1hztq1s0_finger_seed2_ckpt500000": {
+   "max_step": 496496.0,
+   "n_episodes": 496
+  },
+  "adapt_ax1hztq1s0_finger_seed3_ckpt500000": {
+   "max_step": 496496.0,
+   "n_episodes": 496
+  },
+  "adapt_ax1hztq1s0_finger_seed4_ckpt500000": {
+   "max_step": 496496.0,
+   "n_episodes": 496
+  },
+  "adapt_ax1hztq1s1_finger_seed1_ckpt500000": {
+   "max_step": 496496.0,
+   "n_episodes": 496
+  },
+  "adapt_ax1hztq1s1_finger_seed2_ckpt500000": {
+   "max_step": 496496.0,
+   "n_episodes": 496
+  },
+  "adapt_ax1hztq1s1_finger_seed3_ckpt500000": {
+   "max_step": 496496.0,
+   "n_episodes": 496
+  },
+  "adapt_ax1hztq1s1_finger_seed4_ckpt500000": {
+   "max_step": 496496.0,
+   "n_episodes": 496
+  },
+  "adapt_hscratch_finger_seed1_ckpt0": {
+   "max_step": 496496.0,
+   "n_episodes": 496
+  },
+  "adapt_hscratch_finger_seed2_ckpt0": {
+   "max_step": 496496.0,
+   "n_episodes": 496
+  },
+  "adapt_hscratch_finger_seed3_ckpt0": {
+   "max_step": 496496.0,
+   "n_episodes": 496
+  },
+  "adapt_hscratch_finger_seed4_ckpt0": {
+   "max_step": 496496.0,
+   "n_episodes": 496
+  },
+  "adapt_hscratch_finger_seed5_ckpt0": {
+   "max_step": 496496.0,
+   "n_episodes": 496
+  },
+  "adapt_hscratch_finger_seed6_ckpt0": {
+   "max_step": 496496.0,
+   "n_episodes": 496
+  },
+  "adapt_hscratch_finger_seed7_ckpt0": {
+   "max_step": 496496.0,
+   "n_episodes": 496
+  },
+  "adapt_hscratch_finger_seed8_ckpt0": {
+   "max_step": 496496.0,
+   "n_episodes": 496
+  }
+ },
+ "verdict": "INSTRUMENT-SUSPECT (positive control failed) | APT-INIT-BELOW-SCRATCH-AT-4X (also bounded: no meaningful late advantage, CI upper < delta)"
+}

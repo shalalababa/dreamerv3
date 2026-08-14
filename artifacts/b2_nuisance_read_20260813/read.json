@@ -1,0 +1,32 @@
+{
+ "informativeness_gate": {
+  "apt_nz1_mean": 0.7180130325674831,
+  "floor": 0.55,
+  "passed": true
+ },
+ "mde_note": "realized per-group AUROC sd 0.0510 (pooled); DID se ~ 0.0361 at n=8/group; 80%-power MDE ~ 0.1011 (aligned permutation)",
+ "p_n2a": {
+  "ci": [
+   -0.2580929229985362,
+   -0.09603117052531554
+  ],
+  "did": -0.1963896731712932,
+  "n": {
+   "apt_nz1": 8,
+   "apt_nz2": 8,
+   "task_nz1": 8,
+   "task_nz2": 8
+  },
+  "perm_p": 9.999000099990002e-05,
+  "slot_mapping": "nz2->sk1, nz1->sk3 (capdescent did_stats slots)"
+ },
+ "panel_means": {
+  "apt_nz1": 0.7180130325674831,
+  "apt_nz2": 0.6805027838421669,
+  "task_nz1": 0.9133080491668023,
+  "task_nz2": 0.679408127270193
+ },
+ "prereg": "PREREG_nuisance_20260811.md",
+ "task_load_slope": -0.23389992189660935,
+ "verdict": "NEGATIVE-DID: the task arm lost MORE - outside both models' registered predictions; fact reported, no further wording"
+}

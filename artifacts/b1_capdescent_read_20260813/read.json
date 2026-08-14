@@ -1,0 +1,49 @@
+{
+ "floor_sk1": {
+  "floor": 113.682,
+  "passed": false,
+  "task_mean": 97.4661625
+ },
+ "floor_sk3": {
+  "floor": 113.682,
+  "passed": false,
+  "task_mean": 73.6028625
+ },
+ "legibility_means": {
+  "apt_sk1": 0.3916292180634383,
+  "apt_sk3": 0.4133574680243985,
+  "task_sk1": 0.6973345832233937,
+  "task_sk3": 0.8470036440776649
+ },
+ "p_b1a": {
+  "sk1": {
+   "ci": [
+    -25.959724722986063,
+    80.88887349491148
+   ],
+   "diff": 4.119799999999998,
+   "n": [
+    8,
+    8
+   ],
+   "perm_p": 0.9548045195480452
+  },
+  "sk3": {
+   "ci": [
+    -33.611442814583285,
+    16.349243204727262
+   ],
+   "diff": -5.634124999999997,
+   "n": [
+    8,
+    8
+   ],
+   "perm_p": 0.6847315268473153
+  }
+ },
+ "p_b1c_legibility": {
+  "verdict": "APT-FLOOR-CENSORED: apt legibility has no headroom at sk3 (mean 0.413 < 0.55) - the legibility DID cannot discriminate"
+ },
+ "prereg": "PREREG_capdescent_20260811.md",
+ "verdict": "INSTRUMENT-LIMITED: both sizes FLOOR-CENSORED - the descent overshot; a shallower grid is a new registration"
+}
