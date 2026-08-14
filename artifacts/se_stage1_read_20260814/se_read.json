@@ -1,0 +1,432 @@
+{
+ "n_registered": 8,
+ "n_loaded": 8,
+ "n_missing": 0,
+ "invalid_runs": [],
+ "n_perm": 1000,
+ "seed_check": "OK",
+ "ckpt_flag": "OK",
+ "weak_gate_runs": [],
+ "instrument_flag": "CLEAN",
+ "p_se1": {
+  "planted_dup0": {
+   "successes": 0,
+   "binom_p": 1.0,
+   "fisher_p": 0.9999999944699092,
+   "per_run_p": [
+    0.957042957042957,
+    0.9040959040959041,
+    0.954045954045954,
+    0.955044955044955,
+    0.949050949050949,
+    0.9660339660339661,
+    0.9790209790209791,
+    0.9820179820179821
+   ],
+   "share_mean": 0.230754928663373,
+   "share_bca": [
+    0.22223076768049538,
+    0.23924321718855338
+   ],
+   "theta1_vs_source_mean": 0.9997109777994496,
+   "theta1_vs_source_bca": [
+    0.9988617875525929,
+    1.0004390088227646
+   ],
+   "fires": false
+  },
+  "planted_dup1": {
+   "successes": 0,
+   "binom_p": 1.0,
+   "fisher_p": 0.999999999252086,
+   "per_run_p": [
+    0.964035964035964,
+    0.9100899100899101,
+    0.971028971028971,
+    0.968031968031968,
+    0.964035964035964,
+    0.972027972027972,
+    0.988011988011988,
+    0.989010989010989
+   ],
+   "share_mean": 0.2308297771960497,
+   "share_bca": [
+    0.22238007560372353,
+    0.23941507491640623
+   ],
+   "theta1_vs_source_mean": 1.0001375760300375,
+   "theta1_vs_source_bca": [
+    0.9995683042126262,
+    1.0008332978361925
+   ],
+   "fires": false
+  },
+  "planted_dup2": {
+   "successes": 0,
+   "binom_p": 1.0,
+   "fisher_p": 0.9999999999335153,
+   "per_run_p": [
+    0.977022977022977,
+    0.9300699300699301,
+    0.9820179820179821,
+    0.972027972027972,
+    0.981018981018981,
+    0.974025974025974,
+    0.99000999000999,
+    0.9920079920079921
+   ],
+   "share_mean": 0.22604050859808922,
+   "share_bca": [
+    0.217776030641648,
+    0.2341155918344144
+   ],
+   "theta1_vs_source_mean": 0.973372098415137,
+   "theta1_vs_source_bca": [
+    0.9681875579017124,
+    0.9778697192645562
+   ],
+   "fires": false
+  },
+  "distractor": {
+   "successes": 8,
+   "binom_p": 0.00390625,
+   "fisher_p": 3.540722857377284e-16,
+   "per_run_p": [
+    0.000999000999000999,
+    0.000999000999000999,
+    0.000999000999000999,
+    0.000999000999000999,
+    0.000999000999000999,
+    0.000999000999000999,
+    0.000999000999000999,
+    0.000999000999000999
+   ],
+   "share_mean": 0.6110485792160034,
+   "share_bca": [
+    0.5923470705747604,
+    0.6248852954994752
+   ],
+   "theta1_vs_source_mean": 5.257880576599408,
+   "theta1_vs_source_bca": [
+    5.015408347306699,
+    5.455857553962391
+   ],
+   "fires": true
+  }
+ },
+ "p_se2": {
+  "successes": 1,
+  "binom_p": 0.99609375,
+  "fires": false,
+  "per_run_p": [
+   0.988011988011988,
+   0.996003996003996,
+   1.0,
+   0.993006993006993,
+   0.22577422577422576,
+   0.6443556443556444,
+   0.6153846153846154,
+   0.999000999000999
+  ],
+  "delta_mean": -0.016960101799574023,
+  "delta_bca": [
+   -0.027675547586597044,
+   -0.00640142017807066
+  ],
+  "families": {
+   "dfam": {
+    "top_mean": 0.2518168102605559,
+    "base_mean": 0.26288998724249185
+   },
+   "noise": {
+    "top_mean": 0.450215296848845,
+    "base_mean": 0.456102221666483
+   }
+  }
+ },
+ "pooled_fire_share": {
+  "mean": 0.7110722288489342,
+  "bca": [
+   0.6970970606209681,
+   0.7226237121163396
+  ],
+  "note": "DESCRIPTIVE only (prereg \u00a75)"
+ },
+ "d_ladder": {
+  "dup0_mean": 0.08843951142544453,
+  "dup1_mean": 0.08847721596796694,
+  "dup2_mean": 0.08609728036193874,
+  "dup0_fires": false,
+  "excess_ratio_d2_over_d1": -62.12065992083911,
+  "eps2_predicted_ratio": 100.0
+ },
+ "outcome_cell_suggestion": 3,
+ "fit_counters": {
+  "/home/rickybao/projects/dreamerv3/local_results/uncfield_se_stage1_20260813_193324/se_cheetah_seed10": {
+   "expected": 500000.0,
+   "last_step": 497584,
+   "ratio": 0.995168,
+   "flag": "OK",
+   "config_steps": 500000.0
+  },
+  "/home/rickybao/projects/dreamerv3/local_results/uncfield_se_stage1_20260813_193324/se_cheetah_seed11": {
+   "expected": 500000.0,
+   "last_step": 498512,
+   "ratio": 0.997024,
+   "flag": "OK",
+   "config_steps": 500000.0
+  },
+  "/home/rickybao/projects/dreamerv3/local_results/uncfield_se_stage1_20260813_193324/se_cheetah_seed12": {
+   "expected": 500000.0,
+   "last_step": 498144,
+   "ratio": 0.996288,
+   "flag": "OK",
+   "config_steps": 500000.0
+  },
+  "/home/rickybao/projects/dreamerv3/local_results/uncfield_se_stage1_20260813_193324/se_cheetah_seed13": {
+   "expected": 500000.0,
+   "last_step": 499200,
+   "ratio": 0.9984,
+   "flag": "OK",
+   "config_steps": 500000.0
+  },
+  "/home/rickybao/projects/dreamerv3/local_results/uncfield_se_stage1_20260813_193324/se_cheetah_seed14": {
+   "expected": 500000.0,
+   "last_step": 497728,
+   "ratio": 0.995456,
+   "flag": "OK",
+   "config_steps": 500000.0
+  },
+  "/home/rickybao/projects/dreamerv3/local_results/uncfield_se_stage1_20260813_193324/se_cheetah_seed15": {
+   "expected": 500000.0,
+   "last_step": 498416,
+   "ratio": 0.996832,
+   "flag": "OK",
+   "config_steps": 500000.0
+  },
+  "/home/rickybao/projects/dreamerv3/local_results/uncfield_se_stage1_20260813_193324/se_cheetah_seed16": {
+   "expected": 500000.0,
+   "last_step": 499568,
+   "ratio": 0.999136,
+   "flag": "OK",
+   "config_steps": 500000.0
+  },
+  "/home/rickybao/projects/dreamerv3/local_results/uncfield_se_stage1_20260813_193324/se_cheetah_seed17": {
+   "expected": 500000.0,
+   "last_step": 499440,
+   "ratio": 0.99888,
+   "flag": "OK",
+   "config_steps": 500000.0
+  }
+ },
+ "per_run": [
+  {
+   "run_dir": "/home/rickybao/projects/dreamerv3/local_results/uncfield_se_stage1_20260813_193324/se_cheetah_seed10",
+   "probe_seed": 0,
+   "train_seed": 10,
+   "ckpt_final_ok": true,
+   "n_eval": 512,
+   "valid": true,
+   "cal_ok": true,
+   "s_ok": true,
+   "cal_real_max": 0.045010264962911606,
+   "cal_planted": {
+    "distractor": 0.2085661143064499,
+    "planted_const": 5.1803413953166455e-05,
+    "planted_dup0": 0.02568729780614376,
+    "planted_dup1": 0.025602199137210846,
+    "planted_dup2": 0.025492729619145393
+   },
+   "cal_const_raw": null,
+   "pse2_indicator": false,
+   "indicators": {
+    "planted_dup0": false,
+    "planted_dup1": false,
+    "planted_dup2": false,
+    "distractor": true
+   }
+  },
+  {
+   "run_dir": "/home/rickybao/projects/dreamerv3/local_results/uncfield_se_stage1_20260813_193324/se_cheetah_seed11",
+   "probe_seed": 0,
+   "train_seed": 11,
+   "ckpt_final_ok": true,
+   "n_eval": 512,
+   "valid": true,
+   "cal_ok": true,
+   "s_ok": true,
+   "cal_real_max": 0.04239422082901001,
+   "cal_planted": {
+    "distractor": 0.20324639976024628,
+    "planted_const": 4.0155337046599016e-05,
+    "planted_dup0": 0.023559967055916786,
+    "planted_dup1": 0.023592695593833923,
+    "planted_dup2": 0.0234990194439888
+   },
+   "cal_const_raw": null,
+   "pse2_indicator": false,
+   "indicators": {
+    "planted_dup0": false,
+    "planted_dup1": false,
+    "planted_dup2": false,
+    "distractor": true
+   }
+  },
+  {
+   "run_dir": "/home/rickybao/projects/dreamerv3/local_results/uncfield_se_stage1_20260813_193324/se_cheetah_seed12",
+   "probe_seed": 0,
+   "train_seed": 12,
+   "ckpt_final_ok": true,
+   "n_eval": 512,
+   "valid": true,
+   "cal_ok": true,
+   "s_ok": true,
+   "cal_real_max": 0.04518357291817665,
+   "cal_planted": {
+    "distractor": 0.2124582976102829,
+    "planted_const": 5.895065623917617e-05,
+    "planted_dup0": 0.02397029474377632,
+    "planted_dup1": 0.023950856178998947,
+    "planted_dup2": 0.023836810141801834
+   },
+   "cal_const_raw": null,
+   "pse2_indicator": false,
+   "indicators": {
+    "planted_dup0": false,
+    "planted_dup1": false,
+    "planted_dup2": false,
+    "distractor": true
+   }
+  },
+  {
+   "run_dir": "/home/rickybao/projects/dreamerv3/local_results/uncfield_se_stage1_20260813_193324/se_cheetah_seed13",
+   "probe_seed": 0,
+   "train_seed": 13,
+   "ckpt_final_ok": true,
+   "n_eval": 512,
+   "valid": true,
+   "cal_ok": true,
+   "s_ok": true,
+   "cal_real_max": 0.042790092527866364,
+   "cal_planted": {
+    "distractor": 0.20240835845470428,
+    "planted_const": 4.4071559386793524e-05,
+    "planted_dup0": 0.024653414264321327,
+    "planted_dup1": 0.024693617597222328,
+    "planted_dup2": 0.02471301332116127
+   },
+   "cal_const_raw": null,
+   "pse2_indicator": false,
+   "indicators": {
+    "planted_dup0": false,
+    "planted_dup1": false,
+    "planted_dup2": false,
+    "distractor": true
+   }
+  },
+  {
+   "run_dir": "/home/rickybao/projects/dreamerv3/local_results/uncfield_se_stage1_20260813_193324/se_cheetah_seed14",
+   "probe_seed": 0,
+   "train_seed": 14,
+   "ckpt_final_ok": true,
+   "n_eval": 512,
+   "valid": true,
+   "cal_ok": true,
+   "s_ok": true,
+   "cal_real_max": 0.04145129770040512,
+   "cal_planted": {
+    "distractor": 0.20804540812969208,
+    "planted_const": 2.9971934054628946e-05,
+    "planted_dup0": 0.02389809675514698,
+    "planted_dup1": 0.023902883753180504,
+    "planted_dup2": 0.023681338876485825
+   },
+   "cal_const_raw": null,
+   "pse2_indicator": true,
+   "indicators": {
+    "planted_dup0": false,
+    "planted_dup1": false,
+    "planted_dup2": false,
+    "distractor": true
+   }
+  },
+  {
+   "run_dir": "/home/rickybao/projects/dreamerv3/local_results/uncfield_se_stage1_20260813_193324/se_cheetah_seed15",
+   "probe_seed": 0,
+   "train_seed": 15,
+   "ckpt_final_ok": true,
+   "n_eval": 512,
+   "valid": true,
+   "cal_ok": true,
+   "s_ok": true,
+   "cal_real_max": 0.040657613426446915,
+   "cal_planted": {
+    "distractor": 0.20269712805747986,
+    "planted_const": 4.406719017424621e-05,
+    "planted_dup0": 0.02351461909711361,
+    "planted_dup1": 0.023478932678699493,
+    "planted_dup2": 0.023302968591451645
+   },
+   "cal_const_raw": null,
+   "pse2_indicator": false,
+   "indicators": {
+    "planted_dup0": false,
+    "planted_dup1": false,
+    "planted_dup2": false,
+    "distractor": true
+   }
+  },
+  {
+   "run_dir": "/home/rickybao/projects/dreamerv3/local_results/uncfield_se_stage1_20260813_193324/se_cheetah_seed16",
+   "probe_seed": 0,
+   "train_seed": 16,
+   "ckpt_final_ok": true,
+   "n_eval": 512,
+   "valid": true,
+   "cal_ok": true,
+   "s_ok": true,
+   "cal_real_max": 0.043805915862321854,
+   "cal_planted": {
+    "distractor": 0.2016667127609253,
+    "planted_const": 2.4980587113532238e-05,
+    "planted_dup0": 0.02336280606687069,
+    "planted_dup1": 0.02337867021560669,
+    "planted_dup2": 0.023105185478925705
+   },
+   "cal_const_raw": null,
+   "pse2_indicator": false,
+   "indicators": {
+    "planted_dup0": false,
+    "planted_dup1": false,
+    "planted_dup2": false,
+    "distractor": true
+   }
+  },
+  {
+   "run_dir": "/home/rickybao/projects/dreamerv3/local_results/uncfield_se_stage1_20260813_193324/se_cheetah_seed17",
+   "probe_seed": 0,
+   "train_seed": 17,
+   "ckpt_final_ok": true,
+   "n_eval": 512,
+   "valid": true,
+   "cal_ok": true,
+   "s_ok": true,
+   "cal_real_max": 0.04853971675038338,
+   "cal_planted": {
+    "distractor": 0.20377476513385773,
+    "planted_const": 5.290291301207617e-05,
+    "planted_dup0": 0.02460179105401039,
+    "planted_dup1": 0.024744311347603798,
+    "planted_dup2": 0.024553311988711357
+   },
+   "cal_const_raw": null,
+   "pse2_indicator": false,
+   "indicators": {
+    "planted_dup0": false,
+    "planted_dup1": false,
+    "planted_dup2": false,
+    "distractor": true
+   }
+  }
+ ]
+}
