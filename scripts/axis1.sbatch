@@ -55,7 +55,7 @@ esac
 # (like AXIS1_SIZE, the adapt stage must match the checkpoint's spaces --
 # a mismatch fails at load, which is the built-in guard).
 case "${AXIS1_BASE_CONFIG:-}" in
-  ''|dmc_proprio|dz1|dz2) ;;
+  ''|dmc_proprio|dz1|dz2|dzs2|dzs8) ;;
   pixel_wm) RENDER=True ;;  # pixel obs require rendering (dmc.py asserts)
   *) echo "ERROR: unknown AXIS1_BASE_CONFIG=${AXIS1_BASE_CONFIG} (dmc_proprio|pixel_wm or empty)"; exit 2 ;;
 esac

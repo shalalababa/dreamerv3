@@ -300,6 +300,17 @@ dz2:
   <<: *dmc_proprio
   distractor: {dim: 16, basesd: 4.0, scale: 1.0, theta: 1.0}
 
+# Sigma-ladder extension (PREREG_sigma_ladder_20260814): two more loads
+# on the same D0-wrapper mechanism; token carries sigma explicitly so
+# the ladder order stays readable (1, 2, 4, 8 = dz1, dzs2, dz2, dzs8).
+dzs2:
+  <<: *dmc_proprio
+  distractor: {dim: 16, basesd: 2.0, scale: 1.0, theta: 1.0}
+
+dzs8:
+  <<: *dmc_proprio
+  distractor: {dim: 16, basesd: 8.0, scale: 1.0, theta: 1.0}
+
 unfrozen_readout:
   # Full-adaptation calibration: same WM initialization as frozen_readout,
   # nothing frozen — enc/dyn/dec continue training during adaptation.

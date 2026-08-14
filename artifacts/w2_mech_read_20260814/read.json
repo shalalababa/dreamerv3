@@ -1,0 +1,103 @@
+{
+ "descriptives": {
+  "per_domain": {
+   "cup": {
+    "curse": -1.2391838836734896,
+    "d_inertia": -0.004101562500000003,
+    "harv": -0.036499023437500014,
+    "slope": 0.04327466213061407
+   },
+   "finger": {
+    "curse": NaN,
+    "d_inertia": 0.07125,
+    "harv": -0.21862304687499998,
+    "slope": -0.03728561212870194
+   }
+  },
+  "pressure_means": {
+   "g_cold": 40.1766796875,
+   "g_mode": 40.324296875,
+   "g_phigh": 40.18962890625,
+   "g_plow": 40.17939453125
+  },
+  "rho_qg_pooled": 0.019892179298196675
+ },
+ "files": [
+  "w2tm2_cup_e1_seed51_late.npz",
+  "w2tm2_cup_e1_seed52_late.npz",
+  "w2tm2_cup_e1_seed53_late.npz",
+  "w2tm2_cup_e1_seed54_late.npz",
+  "w2tm2_cup_e1_seed55_late.npz",
+  "w2tm2_cup_e1_seed56_late.npz",
+  "w2tm2_cup_e1_seed57_late.npz",
+  "w2tm2_cup_e1_seed58_late.npz",
+  "w2tm2_cup_e4_seed51_late.npz",
+  "w2tm2_cup_e4_seed52_late.npz",
+  "w2tm2_cup_e4_seed53_late.npz",
+  "w2tm2_cup_e4_seed54_late.npz",
+  "w2tm2_cup_e4_seed55_late.npz",
+  "w2tm2_cup_e4_seed56_late.npz",
+  "w2tm2_cup_e4_seed57_late.npz",
+  "w2tm2_cup_e4_seed58_late.npz",
+  "w2tm2_finger_e1_seed51_late.npz",
+  "w2tm2_finger_e1_seed52_late.npz",
+  "w2tm2_finger_e1_seed53_late.npz",
+  "w2tm2_finger_e1_seed54_late.npz",
+  "w2tm2_finger_e1_seed55_late.npz",
+  "w2tm2_finger_e1_seed56_late.npz",
+  "w2tm2_finger_e1_seed57_late.npz",
+  "w2tm2_finger_e1_seed58_late.npz",
+  "w2tm2_finger_e4_seed51_late.npz",
+  "w2tm2_finger_e4_seed52_late.npz",
+  "w2tm2_finger_e4_seed53_late.npz",
+  "w2tm2_finger_e4_seed54_late.npz",
+  "w2tm2_finger_e4_seed55_late.npz",
+  "w2tm2_finger_e4_seed56_late.npz",
+  "w2tm2_finger_e4_seed57_late.npz",
+  "w2tm2_finger_e4_seed58_late.npz"
+ ],
+ "g0_replication": {
+  "ci": [
+   -0.3541430986022701,
+   0.03448091814351334
+  ],
+  "gate_pass": false,
+  "mean": -0.12756103515625,
+  "perm_p": 0.21747825217478253,
+  "sign_reversed": false
+ },
+ "n_cells": 32,
+ "p_n1_coverage": {
+  "frac": 0.27125,
+  "n_cells_retained": 29
+ },
+ "p_n1_curse": {
+  "ci": [
+   -1.1746018812223247,
+   -0.43531911250848
+  ],
+  "fires": false,
+  "mean": -0.7944810256966504,
+  "perm_p": 0.0004999500049995
+ },
+ "p_n2_pressure": {
+  "ci": [
+   -0.07842267572650202,
+   0.04621074818969654
+  ],
+  "fires": false,
+  "mean": 0.0029945250009560595,
+  "perm_p": 0.9315068493150684
+ },
+ "p_n3_inertia": {
+  "ci": [
+   -0.04797741148920688,
+   0.12275615553505724
+  ],
+  "fires": false,
+  "mean": 0.033574218749999996,
+  "perm_p": 0.46025397460253975
+ },
+ "prereg": "PREREG_antiharvest_mech_20260811.md",
+ "verdict": "REPLICATION-FAILED: in-wave anti-harvest absent at this power; mechanism legs reported with ZERO decision weight"
+}

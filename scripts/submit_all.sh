@@ -349,7 +349,7 @@ submit_axis1_bundle() {  # submit_axis1_bundle <bundle_id> <runlist> <num_tasks>
     *) echo "AXIS1_SIZE must be size100k..size400m or empty, got: ${AXIS1_SIZE}"; exit 1 ;;
   esac
   case "${AXIS1_BASE_CONFIG:-}" in
-    ''|dmc_proprio|pixel_wm|dz1|dz2) ;;
+    ''|dmc_proprio|pixel_wm|dz1|dz2|dzs2|dzs8) ;;
     *) echo "AXIS1_BASE_CONFIG must be dmc_proprio|pixel_wm or empty, got: ${AXIS1_BASE_CONFIG}"; exit 1 ;;
   esac
   local jobs_used=$((JOBS_AT_START + SUBMITTED_THIS_RUN))
