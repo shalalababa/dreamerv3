@@ -51,6 +51,11 @@ def setup(
     elements.Path(xladump).mkdir()
     xlaflags.append(f'--xla_dump_to={xladump}')
     xlaflags.append('--xla_dump_hlo_as_long_text')
+  # Escape hatch for hosts whose newer XLA rejects removed flags below
+  # (e.g. --xla_gpu_enable_triton_softmax_fusion, --xla_gpu_graph_level):
+  # perf tuning only, does not affect deterministic_ops above.
+  if int(os.environ.get('DREAMER_DISABLE_GPUFLAGS', '0') or '0'):
+    gpuflags = False
   if gpuflags and platform == 'gpu':
     # xla_flags.append('--xla_gpu_enable_latency_hiding_scheduler=true')
     # xla_flags.append('--xla_gpu_enable_async_all_gather=true')
