@@ -1,0 +1,227 @@
+{
+ "wave_id": "walker_domain",
+ "spec": "ops/waves/walker_domain/spec.yaml",
+ "prereg": "prereg/PREREG_domains_20260812.md",
+ "bundle": {
+  "prefix": "domains_walker",
+  "include_stages": [
+   "fit_adapt_task",
+   "fit_adapt_apt"
+  ],
+  "cloud_logs": [
+   "adapt_ax1q1s*_walker_seed*.out",
+   "adapt_ax1fq1s*_walker_seed*.out",
+   "worker_shard*.out"
+  ]
+ },
+ "stages": [
+  {
+   "name": "fit_adapt_task",
+   "target": "vast",
+   "kind": "axis1_fit_adapt",
+   "on_failure": "abort",
+   "needs": null
+  },
+  {
+   "name": "fit_adapt_apt",
+   "target": "vast",
+   "kind": "axis1_fit_adapt",
+   "on_failure": "abort",
+   "needs": null
+  }
+ ],
+ "runs": [
+  {
+   "stage": "fit_adapt_task",
+   "kind": "axis1_fit_adapt",
+   "target": "vast",
+   "run_id": "adapt_ax1q1s1_walker_seed10_ckpt500000",
+   "cmd": "DV3_TASK_NAME=adapt_ax1q1s1_walker_seed10_ckpt500000 RUN_ID=adapt_ax1q1s1_walker_seed10_ckpt500000 WM_RUN=ax1wm_walker_q1s1_seed10 TASK=dmc_walker_walk SEED=10 REPLAY=${RUNROOT}/axis1_walker/q1/side1 UPDATES=500000 STEPS=1.25e5 AXIS1_EXPL_MODE=task AXIS1_BASE_CONFIG=dmc_proprio AXIS1_ADAPT_CONFIG=frozen_readout DREAMER_DISABLE_GPUFLAGS=1 bash -c 'scores=$(wc -l < \"$RUNROOT/$RUN_ID/scores.jsonl\" 2>/dev/null || echo 0); if [ -f \"$RUNROOT/$RUN_ID/ADAPT_DONE\" ] && [ \"$scores\" -ge 100 ]; then echo \"SKIP done: $RUN_ID scores=$scores\"; else bash scripts/axis1.sbatch; fi'",
+   "vars": {
+    "side": 1,
+    "seed": 10,
+    "cmd": "DV3_TASK_NAME=adapt_ax1q1s1_walker_seed10_ckpt500000 RUN_ID=adapt_ax1q1s1_walker_seed10_ckpt500000 WM_RUN=ax1wm_walker_q1s1_seed10 TASK=dmc_walker_walk SEED=10 REPLAY=${RUNROOT}/axis1_walker/q1/side1 UPDATES=500000 STEPS=1.25e5 AXIS1_EXPL_MODE=task AXIS1_BASE_CONFIG=dmc_proprio AXIS1_ADAPT_CONFIG=frozen_readout DREAMER_DISABLE_GPUFLAGS=1 bash -c 'scores=$(wc -l < \"$RUNROOT/$RUN_ID/scores.jsonl\" 2>/dev/null || echo 0); if [ -f \"$RUNROOT/$RUN_ID/ADAPT_DONE\" ] && [ \"$scores\" -ge 100 ]; then echo \"SKIP done: $RUN_ID scores=$scores\"; else bash scripts/axis1.sbatch; fi'",
+    "run_id": "adapt_ax1q1s1_walker_seed10_ckpt500000"
+   },
+   "logdir": "adapt_ax1q1s1_walker_seed10_ckpt500000",
+   "outputs": [
+    "adapt_ax1q1s1_walker_seed10_ckpt500000",
+    "ax1wm_walker_q1s1_seed10"
+   ],
+   "inputs": [
+    "axis1_walker/q1/side1",
+    "axis1_walker/q1/manifest.json"
+   ],
+   "done_when": [
+    {
+     "exists": "ADAPT_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 100
+     }
+    },
+    {
+     "ckpt_step_min": {
+      "dir": "../ax1wm_walker_q1s1_seed10",
+      "min": 500000
+     }
+    },
+    {
+     "file_contains": {
+      "file": "../ax1wm_walker_q1s1_seed10/OFFLINE_FIT_PROGRESS",
+      "pattern": "update=500000\ntotal_updates=500000"
+     }
+    }
+   ]
+  },
+  {
+   "stage": "fit_adapt_task",
+   "kind": "axis1_fit_adapt",
+   "target": "vast",
+   "run_id": "adapt_ax1q1s1_walker_seed11_ckpt500000",
+   "cmd": "DV3_TASK_NAME=adapt_ax1q1s1_walker_seed11_ckpt500000 RUN_ID=adapt_ax1q1s1_walker_seed11_ckpt500000 WM_RUN=ax1wm_walker_q1s1_seed11 TASK=dmc_walker_walk SEED=11 REPLAY=${RUNROOT}/axis1_walker/q1/side1 UPDATES=500000 STEPS=1.25e5 AXIS1_EXPL_MODE=task AXIS1_BASE_CONFIG=dmc_proprio AXIS1_ADAPT_CONFIG=frozen_readout DREAMER_DISABLE_GPUFLAGS=1 bash -c 'scores=$(wc -l < \"$RUNROOT/$RUN_ID/scores.jsonl\" 2>/dev/null || echo 0); if [ -f \"$RUNROOT/$RUN_ID/ADAPT_DONE\" ] && [ \"$scores\" -ge 100 ]; then echo \"SKIP done: $RUN_ID scores=$scores\"; else bash scripts/axis1.sbatch; fi'",
+   "vars": {
+    "side": 1,
+    "seed": 11,
+    "cmd": "DV3_TASK_NAME=adapt_ax1q1s1_walker_seed11_ckpt500000 RUN_ID=adapt_ax1q1s1_walker_seed11_ckpt500000 WM_RUN=ax1wm_walker_q1s1_seed11 TASK=dmc_walker_walk SEED=11 REPLAY=${RUNROOT}/axis1_walker/q1/side1 UPDATES=500000 STEPS=1.25e5 AXIS1_EXPL_MODE=task AXIS1_BASE_CONFIG=dmc_proprio AXIS1_ADAPT_CONFIG=frozen_readout DREAMER_DISABLE_GPUFLAGS=1 bash -c 'scores=$(wc -l < \"$RUNROOT/$RUN_ID/scores.jsonl\" 2>/dev/null || echo 0); if [ -f \"$RUNROOT/$RUN_ID/ADAPT_DONE\" ] && [ \"$scores\" -ge 100 ]; then echo \"SKIP done: $RUN_ID scores=$scores\"; else bash scripts/axis1.sbatch; fi'",
+    "run_id": "adapt_ax1q1s1_walker_seed11_ckpt500000"
+   },
+   "logdir": "adapt_ax1q1s1_walker_seed11_ckpt500000",
+   "outputs": [
+    "adapt_ax1q1s1_walker_seed11_ckpt500000",
+    "ax1wm_walker_q1s1_seed11"
+   ],
+   "inputs": [
+    "axis1_walker/q1/side1",
+    "axis1_walker/q1/manifest.json"
+   ],
+   "done_when": [
+    {
+     "exists": "ADAPT_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 100
+     }
+    },
+    {
+     "ckpt_step_min": {
+      "dir": "../ax1wm_walker_q1s1_seed11",
+      "min": 500000
+     }
+    },
+    {
+     "file_contains": {
+      "file": "../ax1wm_walker_q1s1_seed11/OFFLINE_FIT_PROGRESS",
+      "pattern": "update=500000\ntotal_updates=500000"
+     }
+    }
+   ]
+  },
+  {
+   "stage": "fit_adapt_apt",
+   "kind": "axis1_fit_adapt",
+   "target": "vast",
+   "run_id": "adapt_ax1fq1s0_walker_seed8_ckpt500000",
+   "cmd": "DV3_TASK_NAME=adapt_ax1fq1s0_walker_seed8_ckpt500000 RUN_ID=adapt_ax1fq1s0_walker_seed8_ckpt500000 WM_RUN=ax1wm_walker_fq1s0_seed8 TASK=dmc_walker_walk SEED=8 REPLAY=${RUNROOT}/axis1_walker/q1/side0 UPDATES=500000 STEPS=1.25e5 AXIS1_EXPL_MODE=apt AXIS1_BASE_CONFIG=dmc_proprio AXIS1_ADAPT_CONFIG=frozen_readout DREAMER_DISABLE_GPUFLAGS=1 bash -c 'scores=$(wc -l < \"$RUNROOT/$RUN_ID/scores.jsonl\" 2>/dev/null || echo 0); if [ -f \"$RUNROOT/$RUN_ID/ADAPT_DONE\" ] && [ \"$scores\" -ge 100 ]; then echo \"SKIP done: $RUN_ID scores=$scores\"; else bash scripts/axis1.sbatch; fi'",
+   "vars": {
+    "side": 0,
+    "seed": 8,
+    "cmd": "DV3_TASK_NAME=adapt_ax1fq1s0_walker_seed8_ckpt500000 RUN_ID=adapt_ax1fq1s0_walker_seed8_ckpt500000 WM_RUN=ax1wm_walker_fq1s0_seed8 TASK=dmc_walker_walk SEED=8 REPLAY=${RUNROOT}/axis1_walker/q1/side0 UPDATES=500000 STEPS=1.25e5 AXIS1_EXPL_MODE=apt AXIS1_BASE_CONFIG=dmc_proprio AXIS1_ADAPT_CONFIG=frozen_readout DREAMER_DISABLE_GPUFLAGS=1 bash -c 'scores=$(wc -l < \"$RUNROOT/$RUN_ID/scores.jsonl\" 2>/dev/null || echo 0); if [ -f \"$RUNROOT/$RUN_ID/ADAPT_DONE\" ] && [ \"$scores\" -ge 100 ]; then echo \"SKIP done: $RUN_ID scores=$scores\"; else bash scripts/axis1.sbatch; fi'",
+    "run_id": "adapt_ax1fq1s0_walker_seed8_ckpt500000"
+   },
+   "logdir": "adapt_ax1fq1s0_walker_seed8_ckpt500000",
+   "outputs": [
+    "adapt_ax1fq1s0_walker_seed8_ckpt500000",
+    "ax1wm_walker_fq1s0_seed8"
+   ],
+   "inputs": [
+    "axis1_walker/q1/side0",
+    "axis1_walker/q1/manifest.json"
+   ],
+   "done_when": [
+    {
+     "exists": "ADAPT_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 100
+     }
+    },
+    {
+     "ckpt_step_min": {
+      "dir": "../ax1wm_walker_fq1s0_seed8",
+      "min": 500000
+     }
+    },
+    {
+     "file_contains": {
+      "file": "../ax1wm_walker_fq1s0_seed8/OFFLINE_FIT_PROGRESS",
+      "pattern": "update=500000\ntotal_updates=500000"
+     }
+    }
+   ]
+  },
+  {
+   "stage": "fit_adapt_apt",
+   "kind": "axis1_fit_adapt",
+   "target": "vast",
+   "run_id": "adapt_ax1fq1s0_walker_seed9_ckpt500000",
+   "cmd": "DV3_TASK_NAME=adapt_ax1fq1s0_walker_seed9_ckpt500000 RUN_ID=adapt_ax1fq1s0_walker_seed9_ckpt500000 WM_RUN=ax1wm_walker_fq1s0_seed9 TASK=dmc_walker_walk SEED=9 REPLAY=${RUNROOT}/axis1_walker/q1/side0 UPDATES=500000 STEPS=1.25e5 AXIS1_EXPL_MODE=apt AXIS1_BASE_CONFIG=dmc_proprio AXIS1_ADAPT_CONFIG=frozen_readout DREAMER_DISABLE_GPUFLAGS=1 bash -c 'scores=$(wc -l < \"$RUNROOT/$RUN_ID/scores.jsonl\" 2>/dev/null || echo 0); if [ -f \"$RUNROOT/$RUN_ID/ADAPT_DONE\" ] && [ \"$scores\" -ge 100 ]; then echo \"SKIP done: $RUN_ID scores=$scores\"; else bash scripts/axis1.sbatch; fi'",
+   "vars": {
+    "side": 0,
+    "seed": 9,
+    "cmd": "DV3_TASK_NAME=adapt_ax1fq1s0_walker_seed9_ckpt500000 RUN_ID=adapt_ax1fq1s0_walker_seed9_ckpt500000 WM_RUN=ax1wm_walker_fq1s0_seed9 TASK=dmc_walker_walk SEED=9 REPLAY=${RUNROOT}/axis1_walker/q1/side0 UPDATES=500000 STEPS=1.25e5 AXIS1_EXPL_MODE=apt AXIS1_BASE_CONFIG=dmc_proprio AXIS1_ADAPT_CONFIG=frozen_readout DREAMER_DISABLE_GPUFLAGS=1 bash -c 'scores=$(wc -l < \"$RUNROOT/$RUN_ID/scores.jsonl\" 2>/dev/null || echo 0); if [ -f \"$RUNROOT/$RUN_ID/ADAPT_DONE\" ] && [ \"$scores\" -ge 100 ]; then echo \"SKIP done: $RUN_ID scores=$scores\"; else bash scripts/axis1.sbatch; fi'",
+    "run_id": "adapt_ax1fq1s0_walker_seed9_ckpt500000"
+   },
+   "logdir": "adapt_ax1fq1s0_walker_seed9_ckpt500000",
+   "outputs": [
+    "adapt_ax1fq1s0_walker_seed9_ckpt500000",
+    "ax1wm_walker_fq1s0_seed9"
+   ],
+   "inputs": [
+    "axis1_walker/q1/side0",
+    "axis1_walker/q1/manifest.json"
+   ],
+   "done_when": [
+    {
+     "exists": "ADAPT_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 100
+     }
+    },
+    {
+     "ckpt_step_min": {
+      "dir": "../ax1wm_walker_fq1s0_seed9",
+      "min": 500000
+     }
+    },
+    {
+     "file_contains": {
+      "file": "../ax1wm_walker_fq1s0_seed9/OFFLINE_FIT_PROGRESS",
+      "pattern": "update=500000\ntotal_updates=500000"
+     }
+    }
+   ]
+  }
+ ]
+}
