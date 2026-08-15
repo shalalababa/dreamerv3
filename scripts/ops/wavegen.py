@@ -78,23 +78,49 @@ def cmd_line(unit: list[wavespec.Run], label: str) -> str:
   advance until both exit, failing if either does. That barrier is what stands
   in for a VRAM-compatibility model -- the lane can never place an unknown
   neighbour next to a running task.
-  """
-  if len(unit) == 1:
-    r = unit[0]
-    return f"DV3_TASK_NAME={r.run_id} {_logged(r.cmd, r.run_id)}"
 
+  Single runs and pairs take the SAME shape on purpose. They used to differ --
+  a lone run was emitted as `DV3_TASK_NAME=x ( ... ) >> log`, which is a bash
+  syntax error: an assignment prefix may precede a simple command, never a
+  compound one like a subshell. Bash rejected the line before running anything,
+  so all 16 ridge tasks on instance 7 died with rc=2 in 0s (2026-08-15). Only
+  per_gpu=1 stages were affected, which is why the paired tm2 wave never showed
+  it. Keeping one code path means a fix here cannot miss the other case.
+
+  The `DV3_TASK_NAME=` prefix stays textually first: the supervisor scrapes the
+  task name out of the line with a regex before executing it.
+  """
   parts = ['set -uo pipefail', 'source /root/.dreamer_vast_env',
            'cd "$REPO"', 'mkdir -p "$RUNROOT/_cloud_logs"']
-  waits = []
-  for i, r in enumerate(unit, start=1):
-    parts.append(f"{_logged(r.cmd, r.run_id)} & p{i}=$!")
-    waits.append(i)
-  for i in waits:
-    parts.append(f"wait $p{i}; r{i}=$?")
-  cond = " || ".join(f"[ $r{i} -ne 0 ]" for i in waits)
-  parts.append(f"if {cond}; then exit 1; fi")
+  # Create the parent of any output that is a FILE in a shared folder.
+  # A stage writing per-run directories needs nothing: its driver creates the
+  # dir. But a probe stage writes $RUNROOT/<folder>/<run>.json, and nothing
+  # creates <folder> -- so the probe does its whole GPU pass and then dies on
+  # the open() at the very end. That cost a full run on instances 2 and 3
+  # (2026-08-15); instance 7 survived only because the folder happened to
+  # exist there from the smoke test.
+  #
+  # Parents only, never the run dir itself: pre-creating an empty run dir can
+  # make a driver believe it is resuming.
+  outdirs = sorted({os.path.dirname(o) for r in unit for o in r.outputs}
+                   - {"", "."})
+  parts += [f'mkdir -p "$RUNROOT/{d}"' for d in outdirs]
+  if len(unit) == 1:
+    r = unit[0]
+    parts.append(_logged(r.cmd, r.run_id))
+    name = r.run_id
+  else:
+    waits = []
+    for i, r in enumerate(unit, start=1):
+      parts.append(f"{_logged(r.cmd, r.run_id)} & p{i}=$!")
+      waits.append(i)
+    for i in waits:
+      parts.append(f"wait $p{i}; r{i}=$?")
+    cond = " || ".join(f"[ $r{i} -ne 0 ]" for i in waits)
+    parts.append(f"if {cond}; then exit 1; fi")
+    name = label
   body = "; ".join(parts)
-  return f"DV3_TASK_NAME={label} bash -lc {shlex.quote(body)}"
+  return f"DV3_TASK_NAME={name} bash -lc {shlex.quote(body)}"
 
 
 # --------------------------------------------------------------------------

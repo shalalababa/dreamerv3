@@ -28,6 +28,9 @@ dv3ops <verb> [args]
     events N [k]            tail the instance event log (what the watchdog/queue emitted)
     migrate N               guided helper migration for a running instance (see §P0)
     selfcheck               local static checks of the ops library
+    rcc-connect [--status|--close]
+                            open/reuse ONE shared ssh connection to RCC, so
+                            every later RCC command skips password + 2FA
 
   P1 -- built  (all take --wave <wave_id>)
     gen --wave W [--lanes 0,1,2,3]    spec -> commands, checker, rsync filters, bundle
@@ -181,6 +184,10 @@ case "$verb" in
   migrate)
     n="${1:?usage: dv3ops migrate N}"
     exec bash "$DV3OPS_ROOT/scripts/ops/migrate_instance.sh" "$n"
+    ;;
+
+  rcc-connect)
+    exec bash "$DV3OPS_ROOT/scripts/ops/rcc_connect.sh" "$@"
     ;;
 
   selfcheck)

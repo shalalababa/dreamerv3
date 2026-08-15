@@ -353,6 +353,10 @@ stages:
     needs: fit
     expand: {arm: [a, b]}
     run_id: "sc_probe_${arm}"
+    # Loose files in a SHARED folder -- the real probe/E4 shape (lewm_graft,
+    # sigma_ladder). Exercises output-parent creation and logdir != run_id.
+    logdir: "sc_probe_out"
+    outputs: ["sc_probe_out/${arm}.json"]
     cmd: 'echo probe ${arm}'
     done_when: [{exists: PROBE_DONE}]
 bundle: {prefix: sc, include_stages: [fit], cloud_logs: ["sc_*.out"]}
@@ -381,6 +385,37 @@ grep -q -- "--include='/donor_a/ckpt/\*\*\*'" "$G/push_donors.sh" 2>/dev/null \
 # $RUNROOT must survive generation unexpanded: RCC and instance paths differ.
 grep -q '\$RUNROOT' "$G"/lane_fit_0.cmds 2>/dev/null \
   && ok "\$RUNROOT left for the remote shell" || bad "\$RUNROOT was expanded at generation time"
+
+# Every generated queue line must PARSE as bash. `DV3_TASK_NAME=x ( ... )` is a
+# syntax error -- an assignment prefix may precede a simple command, never a
+# subshell -- and bash rejects it before running anything, so the task fails in
+# 0s with rc=2 and no output of its own. That shipped in the per_gpu=1 path and
+# killed all 16 ridge tasks on instance 7 (2026-08-15). Parsing is the check
+# that catches it; reading the line does not.
+syntax_bad=0
+for f in "$G"/lane_*.cmds; do
+  bash -n "$f" 2>/dev/null || { syntax_bad=1; echo "    unparseable: $(basename "$f")"; }
+done
+[ "$syntax_bad" -eq 0 ] \
+  && ok "every generated queue line parses as bash" \
+  || bad "a generated queue line is not valid bash"
+# ...and specifically for the single-run (per_gpu=1) shape, which is the one
+# that regressed. sc_probe is per_gpu 1.
+bash -n "$G"/lane_probe_*.cmds 2>/dev/null \
+  && ok "single-run queue line parses (per_gpu=1 shape)" \
+  || bad "single-run queue line does not parse"
+
+# A stage whose outputs are loose files in a shared folder must have that
+# folder created first. Otherwise the run does its entire GPU pass and dies on
+# the final open() -- the most expensive possible place to fail. sc_probe
+# writes into a shared folder; the fit stage writes run dirs and must NOT have
+# its run dir pre-created (that can look like a resume to a driver).
+grep -q 'mkdir -p "$RUNROOT/sc_probe_out"' "$G"/lane_probe_*.cmds 2>/dev/null \
+  && ok "shared-folder output dir is created before the run" \
+  || bad "shared-folder output dir is not created (probe would fail at write)"
+grep -q 'mkdir -p "$RUNROOT/sc_fit_a_seed1"' "$G"/lane_fit_0.cmds 2>/dev/null \
+  && bad "run dir pre-created (can read as a resume)" \
+  || ok "per-run output dirs are left to the driver"
 
 # submit.sh addresses TWO machines with different runroots. The wave dir must
 # land where the instance's queue will look for it, so the path is resolved by
@@ -806,11 +841,15 @@ echo "== every advertised verb dispatches =="
 missing=""
 for v in push-repo versions status board-raw sh watch events migrate selfcheck \
          gen preflight submit check requeue pull bundle pull-local \
-         durations refresh board pack triage digest archive-report; do
-  o="$(bash "$ROOT/scripts/ops/dv3ops" "$v" 2>&1 </dev/null | head -1)"
+         durations refresh board pack triage digest archive-report \
+         rcc-connect; do
+  # rcc-connect with no args would try to OPEN an ssh connection; a selfcheck
+  # must never reach the network or prompt for 2FA. --status only reports.
+  vargs=""; [ "$v" = rcc-connect ] && vargs="--status"
+  o="$(bash "$ROOT/scripts/ops/dv3ops" "$v" $vargs 2>&1 </dev/null | head -1)"
   case "$o" in *"not built yet"*|*"unknown verb"*) missing="$missing $v" ;; esac
 done
-[ -z "$missing" ] && ok "all 24 verbs dispatch" || bad "verbs not dispatching:$missing"
+[ -z "$missing" ] && ok "all 25 verbs dispatch" || bad "verbs not dispatching:$missing"
 # `help` must not advertise anything that does not exist.
 bash "$ROOT/scripts/ops/dv3ops" help 2>&1 | grep -q "not built yet" \
   && bad "help still lists unbuilt verbs" || ok "help lists no unbuilt verbs"
