@@ -33,13 +33,39 @@ support the apt arm never had — and what remains is common to both.
   reward-relevant support in effective eigenvalue — the quantitative
   form of "reward-relevant features are low-variance".
 
+## Per-fit bootstrap (2026-08-15, run on user GO; B=5000, rng 0,
+## 0 fit failures; draws in POST_READ_parametric_bootstrap.json)
+
+Resampling the 8 fits within every (arm, σ) cell and refitting:
+
+- rescued knee σ\*: point **1.92**, 95% CI **[0.42, 2.06]** — the
+  knee is below σ=2.06 in ≥97.5% of draws; the soft LOWER tail comes
+  from the σ=1 task cell's side-mixed heterogeneity (sd 0.104:
+  side0 0.838 vs side1 0.989 — the same side stratification the B1'
+  review surfaced on the capacity axis; a side-stratified refit is
+  the next refinement if a figure needs a tighter lower edge).
+- rescued width: 95% CI [0.005, 0.57] — consistent with
+  sharp-to-moderately-sharp; the near-step point estimate is not an
+  artifact of the means-only fit but its sharpness is not pinned.
+- shared knee: right-censored beyond the ladder in **100% of draws**
+  (P(σ\*_C > 8) = 1.0); 95% CI [11.2, 1034] — the upper edge is
+  extrapolation noise, the LOWER edge is the usable number.
+- knee ratio σ\*_C/σ\*_R: 95% CI **[6.1, 837]**, P(ratio > 4) = 1.0.
+- eigenvalue separation under g ∝ σ²: **λ_corr/λ_rew_eff > 37 at 95%
+  bootstrap confidence** (upgrades the conservative >17 of the
+  means-only fit).
+
 ## What this is for
 
 The writing-phase "quantitative form" paragraph + one figure (two
-curves, two knees, the merge). It converts the ordering theory into
-three fitted numbers and a bound. NOT a registered claim; if a
-reviewer demands inferential status for the knee locations, the
-per-fit refit with bootstrap CIs is the first step, and a
-finer σ grid in (1, 2] would be the (unplanned) confirmatory wave.
+curves with bootstrap bands, two knees, the merge). Quotable form:
+"the rescued reward-relevant support dies below σ ≈ 2 while the
+shared support's knee lies beyond the sampled range in every
+bootstrap draw; the implied eigenvalue separation exceeds 37×."
+NOT a registered claim; a finer σ grid in (1, 2] would be the
+(unplanned) confirmatory wave if a reviewer demands inferential
+knees.
 
-Script: `POST_READ_parametric_fit.py` (this directory).
+Scripts: `POST_READ_parametric_fit.py` (means fit) + the bootstrap
+block recorded in `POST_READ_parametric_bootstrap.json` (inputs =
+the 64 per-fit jsons of the two sha-verified bundles).

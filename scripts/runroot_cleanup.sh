@@ -115,6 +115,8 @@ KEEP_PENDING=(
   ax1wm_finger_*nz[12]q1s*_seed[1-4] adapt_ax1*nz[12]q1s*_seed[1-4]_*
   # sigma-ladder extension (PREREG_sigma_ladder_20260814): fits+adapts
   ax1wm_finger_*nzs[28]q1s*_seed[1-4] adapt_ax1*nzs[28]q1s*_seed[1-4]_*
+  # rescue-under-load (PREREG_rescue_load_20260815): fits+adapts
+  ax1wm_finger_ruw*q1s*_seed[1-4] adapt_ax1ruw*q1s*_seed[1-4]_*
   ax1wm_finger_s25q1s*_seed* ax1wm_finger_fs25q1s*_seed*
   adapt_ax1s25q1s* adapt_ax1fs25q1s*
   # 2026-08-08 review-resolution adapt-only waves. Reads verified 08-10,
