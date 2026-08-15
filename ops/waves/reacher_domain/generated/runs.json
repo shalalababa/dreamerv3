@@ -1,0 +1,3043 @@
+{
+ "wave_id": "reacher_domain",
+ "spec": "/home/rickybao/projects/dreamerv3/ops/waves/reacher_domain/spec.yaml",
+ "prereg": "prereg/PREREG_domains_20260812.md",
+ "bundle": {
+  "prefix": "domains_reacher",
+  "include_stages": [
+   "fit_adapt_task",
+   "fit_adapt_apt"
+  ],
+  "cloud_logs": [
+   "adapt_ax1q1s*_reacher_seed*.out",
+   "adapt_ax1fq1s*_reacher_seed*.out",
+   "worker_shard*.out"
+  ]
+ },
+ "stages": [
+  {
+   "name": "fit_adapt_task",
+   "target": "vast",
+   "kind": "axis1_fit_adapt",
+   "on_failure": "abort",
+   "needs": null
+  },
+  {
+   "name": "fit_adapt_apt",
+   "target": "vast",
+   "kind": "axis1_fit_adapt",
+   "on_failure": "abort",
+   "needs": null
+  }
+ ],
+ "runs": [
+  {
+   "stage": "fit_adapt_task",
+   "kind": "axis1_fit_adapt",
+   "target": "vast",
+   "run_id": "adapt_ax1q1s0_reacher_seed1_ckpt500000",
+   "cmd": "DV3_TASK_NAME=adapt_ax1q1s0_reacher_seed1_ckpt500000 RUN_ID=adapt_ax1q1s0_reacher_seed1_ckpt500000 WM_RUN=ax1wm_reacher_q1s0_seed1 TASK=dmc_reacher_hard SEED=1 REPLAY=${RUNROOT}/axis1_reacher/q1/side0 UPDATES=500000 STEPS=1.25e5 AXIS1_EXPL_MODE=task AXIS1_BASE_CONFIG=dmc_proprio AXIS1_ADAPT_CONFIG=frozen_readout DREAMER_DISABLE_GPUFLAGS=1 bash -c 'scores=$(wc -l < \"$RUNROOT/$RUN_ID/scores.jsonl\" 2>/dev/null || echo 0); if [ -f \"$RUNROOT/$RUN_ID/ADAPT_DONE\" ] && [ \"$scores\" -ge 100 ]; then echo \"SKIP done: $RUN_ID scores=$scores\"; else bash scripts/axis1.sbatch; fi'",
+   "vars": {
+    "side": 0,
+    "seed": 1,
+    "run_id": "adapt_ax1q1s0_reacher_seed1_ckpt500000"
+   },
+   "logdir": "adapt_ax1q1s0_reacher_seed1_ckpt500000",
+   "outputs": [
+    "adapt_ax1q1s0_reacher_seed1_ckpt500000",
+    "ax1wm_reacher_q1s0_seed1"
+   ],
+   "inputs": [
+    "axis1_reacher/q1/side0",
+    "axis1_reacher/q1/manifest.json"
+   ],
+   "done_when": [
+    {
+     "exists": "ADAPT_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 100
+     }
+    },
+    {
+     "ckpt_step_min": {
+      "dir": "../ax1wm_reacher_q1s0_seed1",
+      "min": 500000
+     }
+    },
+    {
+     "file_contains": {
+      "file": "../ax1wm_reacher_q1s0_seed1/OFFLINE_FIT_PROGRESS",
+      "pattern": "update=500000\ntotal_updates=500000"
+     }
+    }
+   ]
+  },
+  {
+   "stage": "fit_adapt_task",
+   "kind": "axis1_fit_adapt",
+   "target": "vast",
+   "run_id": "adapt_ax1q1s0_reacher_seed2_ckpt500000",
+   "cmd": "DV3_TASK_NAME=adapt_ax1q1s0_reacher_seed2_ckpt500000 RUN_ID=adapt_ax1q1s0_reacher_seed2_ckpt500000 WM_RUN=ax1wm_reacher_q1s0_seed2 TASK=dmc_reacher_hard SEED=2 REPLAY=${RUNROOT}/axis1_reacher/q1/side0 UPDATES=500000 STEPS=1.25e5 AXIS1_EXPL_MODE=task AXIS1_BASE_CONFIG=dmc_proprio AXIS1_ADAPT_CONFIG=frozen_readout DREAMER_DISABLE_GPUFLAGS=1 bash -c 'scores=$(wc -l < \"$RUNROOT/$RUN_ID/scores.jsonl\" 2>/dev/null || echo 0); if [ -f \"$RUNROOT/$RUN_ID/ADAPT_DONE\" ] && [ \"$scores\" -ge 100 ]; then echo \"SKIP done: $RUN_ID scores=$scores\"; else bash scripts/axis1.sbatch; fi'",
+   "vars": {
+    "side": 0,
+    "seed": 2,
+    "run_id": "adapt_ax1q1s0_reacher_seed2_ckpt500000"
+   },
+   "logdir": "adapt_ax1q1s0_reacher_seed2_ckpt500000",
+   "outputs": [
+    "adapt_ax1q1s0_reacher_seed2_ckpt500000",
+    "ax1wm_reacher_q1s0_seed2"
+   ],
+   "inputs": [
+    "axis1_reacher/q1/side0",
+    "axis1_reacher/q1/manifest.json"
+   ],
+   "done_when": [
+    {
+     "exists": "ADAPT_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 100
+     }
+    },
+    {
+     "ckpt_step_min": {
+      "dir": "../ax1wm_reacher_q1s0_seed2",
+      "min": 500000
+     }
+    },
+    {
+     "file_contains": {
+      "file": "../ax1wm_reacher_q1s0_seed2/OFFLINE_FIT_PROGRESS",
+      "pattern": "update=500000\ntotal_updates=500000"
+     }
+    }
+   ]
+  },
+  {
+   "stage": "fit_adapt_task",
+   "kind": "axis1_fit_adapt",
+   "target": "vast",
+   "run_id": "adapt_ax1q1s0_reacher_seed3_ckpt500000",
+   "cmd": "DV3_TASK_NAME=adapt_ax1q1s0_reacher_seed3_ckpt500000 RUN_ID=adapt_ax1q1s0_reacher_seed3_ckpt500000 WM_RUN=ax1wm_reacher_q1s0_seed3 TASK=dmc_reacher_hard SEED=3 REPLAY=${RUNROOT}/axis1_reacher/q1/side0 UPDATES=500000 STEPS=1.25e5 AXIS1_EXPL_MODE=task AXIS1_BASE_CONFIG=dmc_proprio AXIS1_ADAPT_CONFIG=frozen_readout DREAMER_DISABLE_GPUFLAGS=1 bash -c 'scores=$(wc -l < \"$RUNROOT/$RUN_ID/scores.jsonl\" 2>/dev/null || echo 0); if [ -f \"$RUNROOT/$RUN_ID/ADAPT_DONE\" ] && [ \"$scores\" -ge 100 ]; then echo \"SKIP done: $RUN_ID scores=$scores\"; else bash scripts/axis1.sbatch; fi'",
+   "vars": {
+    "side": 0,
+    "seed": 3,
+    "run_id": "adapt_ax1q1s0_reacher_seed3_ckpt500000"
+   },
+   "logdir": "adapt_ax1q1s0_reacher_seed3_ckpt500000",
+   "outputs": [
+    "adapt_ax1q1s0_reacher_seed3_ckpt500000",
+    "ax1wm_reacher_q1s0_seed3"
+   ],
+   "inputs": [
+    "axis1_reacher/q1/side0",
+    "axis1_reacher/q1/manifest.json"
+   ],
+   "done_when": [
+    {
+     "exists": "ADAPT_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 100
+     }
+    },
+    {
+     "ckpt_step_min": {
+      "dir": "../ax1wm_reacher_q1s0_seed3",
+      "min": 500000
+     }
+    },
+    {
+     "file_contains": {
+      "file": "../ax1wm_reacher_q1s0_seed3/OFFLINE_FIT_PROGRESS",
+      "pattern": "update=500000\ntotal_updates=500000"
+     }
+    }
+   ]
+  },
+  {
+   "stage": "fit_adapt_task",
+   "kind": "axis1_fit_adapt",
+   "target": "vast",
+   "run_id": "adapt_ax1q1s0_reacher_seed4_ckpt500000",
+   "cmd": "DV3_TASK_NAME=adapt_ax1q1s0_reacher_seed4_ckpt500000 RUN_ID=adapt_ax1q1s0_reacher_seed4_ckpt500000 WM_RUN=ax1wm_reacher_q1s0_seed4 TASK=dmc_reacher_hard SEED=4 REPLAY=${RUNROOT}/axis1_reacher/q1/side0 UPDATES=500000 STEPS=1.25e5 AXIS1_EXPL_MODE=task AXIS1_BASE_CONFIG=dmc_proprio AXIS1_ADAPT_CONFIG=frozen_readout DREAMER_DISABLE_GPUFLAGS=1 bash -c 'scores=$(wc -l < \"$RUNROOT/$RUN_ID/scores.jsonl\" 2>/dev/null || echo 0); if [ -f \"$RUNROOT/$RUN_ID/ADAPT_DONE\" ] && [ \"$scores\" -ge 100 ]; then echo \"SKIP done: $RUN_ID scores=$scores\"; else bash scripts/axis1.sbatch; fi'",
+   "vars": {
+    "side": 0,
+    "seed": 4,
+    "run_id": "adapt_ax1q1s0_reacher_seed4_ckpt500000"
+   },
+   "logdir": "adapt_ax1q1s0_reacher_seed4_ckpt500000",
+   "outputs": [
+    "adapt_ax1q1s0_reacher_seed4_ckpt500000",
+    "ax1wm_reacher_q1s0_seed4"
+   ],
+   "inputs": [
+    "axis1_reacher/q1/side0",
+    "axis1_reacher/q1/manifest.json"
+   ],
+   "done_when": [
+    {
+     "exists": "ADAPT_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 100
+     }
+    },
+    {
+     "ckpt_step_min": {
+      "dir": "../ax1wm_reacher_q1s0_seed4",
+      "min": 500000
+     }
+    },
+    {
+     "file_contains": {
+      "file": "../ax1wm_reacher_q1s0_seed4/OFFLINE_FIT_PROGRESS",
+      "pattern": "update=500000\ntotal_updates=500000"
+     }
+    }
+   ]
+  },
+  {
+   "stage": "fit_adapt_task",
+   "kind": "axis1_fit_adapt",
+   "target": "vast",
+   "run_id": "adapt_ax1q1s0_reacher_seed5_ckpt500000",
+   "cmd": "DV3_TASK_NAME=adapt_ax1q1s0_reacher_seed5_ckpt500000 RUN_ID=adapt_ax1q1s0_reacher_seed5_ckpt500000 WM_RUN=ax1wm_reacher_q1s0_seed5 TASK=dmc_reacher_hard SEED=5 REPLAY=${RUNROOT}/axis1_reacher/q1/side0 UPDATES=500000 STEPS=1.25e5 AXIS1_EXPL_MODE=task AXIS1_BASE_CONFIG=dmc_proprio AXIS1_ADAPT_CONFIG=frozen_readout DREAMER_DISABLE_GPUFLAGS=1 bash -c 'scores=$(wc -l < \"$RUNROOT/$RUN_ID/scores.jsonl\" 2>/dev/null || echo 0); if [ -f \"$RUNROOT/$RUN_ID/ADAPT_DONE\" ] && [ \"$scores\" -ge 100 ]; then echo \"SKIP done: $RUN_ID scores=$scores\"; else bash scripts/axis1.sbatch; fi'",
+   "vars": {
+    "side": 0,
+    "seed": 5,
+    "run_id": "adapt_ax1q1s0_reacher_seed5_ckpt500000"
+   },
+   "logdir": "adapt_ax1q1s0_reacher_seed5_ckpt500000",
+   "outputs": [
+    "adapt_ax1q1s0_reacher_seed5_ckpt500000",
+    "ax1wm_reacher_q1s0_seed5"
+   ],
+   "inputs": [
+    "axis1_reacher/q1/side0",
+    "axis1_reacher/q1/manifest.json"
+   ],
+   "done_when": [
+    {
+     "exists": "ADAPT_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 100
+     }
+    },
+    {
+     "ckpt_step_min": {
+      "dir": "../ax1wm_reacher_q1s0_seed5",
+      "min": 500000
+     }
+    },
+    {
+     "file_contains": {
+      "file": "../ax1wm_reacher_q1s0_seed5/OFFLINE_FIT_PROGRESS",
+      "pattern": "update=500000\ntotal_updates=500000"
+     }
+    }
+   ]
+  },
+  {
+   "stage": "fit_adapt_task",
+   "kind": "axis1_fit_adapt",
+   "target": "vast",
+   "run_id": "adapt_ax1q1s0_reacher_seed6_ckpt500000",
+   "cmd": "DV3_TASK_NAME=adapt_ax1q1s0_reacher_seed6_ckpt500000 RUN_ID=adapt_ax1q1s0_reacher_seed6_ckpt500000 WM_RUN=ax1wm_reacher_q1s0_seed6 TASK=dmc_reacher_hard SEED=6 REPLAY=${RUNROOT}/axis1_reacher/q1/side0 UPDATES=500000 STEPS=1.25e5 AXIS1_EXPL_MODE=task AXIS1_BASE_CONFIG=dmc_proprio AXIS1_ADAPT_CONFIG=frozen_readout DREAMER_DISABLE_GPUFLAGS=1 bash -c 'scores=$(wc -l < \"$RUNROOT/$RUN_ID/scores.jsonl\" 2>/dev/null || echo 0); if [ -f \"$RUNROOT/$RUN_ID/ADAPT_DONE\" ] && [ \"$scores\" -ge 100 ]; then echo \"SKIP done: $RUN_ID scores=$scores\"; else bash scripts/axis1.sbatch; fi'",
+   "vars": {
+    "side": 0,
+    "seed": 6,
+    "run_id": "adapt_ax1q1s0_reacher_seed6_ckpt500000"
+   },
+   "logdir": "adapt_ax1q1s0_reacher_seed6_ckpt500000",
+   "outputs": [
+    "adapt_ax1q1s0_reacher_seed6_ckpt500000",
+    "ax1wm_reacher_q1s0_seed6"
+   ],
+   "inputs": [
+    "axis1_reacher/q1/side0",
+    "axis1_reacher/q1/manifest.json"
+   ],
+   "done_when": [
+    {
+     "exists": "ADAPT_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 100
+     }
+    },
+    {
+     "ckpt_step_min": {
+      "dir": "../ax1wm_reacher_q1s0_seed6",
+      "min": 500000
+     }
+    },
+    {
+     "file_contains": {
+      "file": "../ax1wm_reacher_q1s0_seed6/OFFLINE_FIT_PROGRESS",
+      "pattern": "update=500000\ntotal_updates=500000"
+     }
+    }
+   ]
+  },
+  {
+   "stage": "fit_adapt_task",
+   "kind": "axis1_fit_adapt",
+   "target": "vast",
+   "run_id": "adapt_ax1q1s0_reacher_seed7_ckpt500000",
+   "cmd": "DV3_TASK_NAME=adapt_ax1q1s0_reacher_seed7_ckpt500000 RUN_ID=adapt_ax1q1s0_reacher_seed7_ckpt500000 WM_RUN=ax1wm_reacher_q1s0_seed7 TASK=dmc_reacher_hard SEED=7 REPLAY=${RUNROOT}/axis1_reacher/q1/side0 UPDATES=500000 STEPS=1.25e5 AXIS1_EXPL_MODE=task AXIS1_BASE_CONFIG=dmc_proprio AXIS1_ADAPT_CONFIG=frozen_readout DREAMER_DISABLE_GPUFLAGS=1 bash -c 'scores=$(wc -l < \"$RUNROOT/$RUN_ID/scores.jsonl\" 2>/dev/null || echo 0); if [ -f \"$RUNROOT/$RUN_ID/ADAPT_DONE\" ] && [ \"$scores\" -ge 100 ]; then echo \"SKIP done: $RUN_ID scores=$scores\"; else bash scripts/axis1.sbatch; fi'",
+   "vars": {
+    "side": 0,
+    "seed": 7,
+    "run_id": "adapt_ax1q1s0_reacher_seed7_ckpt500000"
+   },
+   "logdir": "adapt_ax1q1s0_reacher_seed7_ckpt500000",
+   "outputs": [
+    "adapt_ax1q1s0_reacher_seed7_ckpt500000",
+    "ax1wm_reacher_q1s0_seed7"
+   ],
+   "inputs": [
+    "axis1_reacher/q1/side0",
+    "axis1_reacher/q1/manifest.json"
+   ],
+   "done_when": [
+    {
+     "exists": "ADAPT_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 100
+     }
+    },
+    {
+     "ckpt_step_min": {
+      "dir": "../ax1wm_reacher_q1s0_seed7",
+      "min": 500000
+     }
+    },
+    {
+     "file_contains": {
+      "file": "../ax1wm_reacher_q1s0_seed7/OFFLINE_FIT_PROGRESS",
+      "pattern": "update=500000\ntotal_updates=500000"
+     }
+    }
+   ]
+  },
+  {
+   "stage": "fit_adapt_task",
+   "kind": "axis1_fit_adapt",
+   "target": "vast",
+   "run_id": "adapt_ax1q1s0_reacher_seed8_ckpt500000",
+   "cmd": "DV3_TASK_NAME=adapt_ax1q1s0_reacher_seed8_ckpt500000 RUN_ID=adapt_ax1q1s0_reacher_seed8_ckpt500000 WM_RUN=ax1wm_reacher_q1s0_seed8 TASK=dmc_reacher_hard SEED=8 REPLAY=${RUNROOT}/axis1_reacher/q1/side0 UPDATES=500000 STEPS=1.25e5 AXIS1_EXPL_MODE=task AXIS1_BASE_CONFIG=dmc_proprio AXIS1_ADAPT_CONFIG=frozen_readout DREAMER_DISABLE_GPUFLAGS=1 bash -c 'scores=$(wc -l < \"$RUNROOT/$RUN_ID/scores.jsonl\" 2>/dev/null || echo 0); if [ -f \"$RUNROOT/$RUN_ID/ADAPT_DONE\" ] && [ \"$scores\" -ge 100 ]; then echo \"SKIP done: $RUN_ID scores=$scores\"; else bash scripts/axis1.sbatch; fi'",
+   "vars": {
+    "side": 0,
+    "seed": 8,
+    "run_id": "adapt_ax1q1s0_reacher_seed8_ckpt500000"
+   },
+   "logdir": "adapt_ax1q1s0_reacher_seed8_ckpt500000",
+   "outputs": [
+    "adapt_ax1q1s0_reacher_seed8_ckpt500000",
+    "ax1wm_reacher_q1s0_seed8"
+   ],
+   "inputs": [
+    "axis1_reacher/q1/side0",
+    "axis1_reacher/q1/manifest.json"
+   ],
+   "done_when": [
+    {
+     "exists": "ADAPT_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 100
+     }
+    },
+    {
+     "ckpt_step_min": {
+      "dir": "../ax1wm_reacher_q1s0_seed8",
+      "min": 500000
+     }
+    },
+    {
+     "file_contains": {
+      "file": "../ax1wm_reacher_q1s0_seed8/OFFLINE_FIT_PROGRESS",
+      "pattern": "update=500000\ntotal_updates=500000"
+     }
+    }
+   ]
+  },
+  {
+   "stage": "fit_adapt_task",
+   "kind": "axis1_fit_adapt",
+   "target": "vast",
+   "run_id": "adapt_ax1q1s0_reacher_seed9_ckpt500000",
+   "cmd": "DV3_TASK_NAME=adapt_ax1q1s0_reacher_seed9_ckpt500000 RUN_ID=adapt_ax1q1s0_reacher_seed9_ckpt500000 WM_RUN=ax1wm_reacher_q1s0_seed9 TASK=dmc_reacher_hard SEED=9 REPLAY=${RUNROOT}/axis1_reacher/q1/side0 UPDATES=500000 STEPS=1.25e5 AXIS1_EXPL_MODE=task AXIS1_BASE_CONFIG=dmc_proprio AXIS1_ADAPT_CONFIG=frozen_readout DREAMER_DISABLE_GPUFLAGS=1 bash -c 'scores=$(wc -l < \"$RUNROOT/$RUN_ID/scores.jsonl\" 2>/dev/null || echo 0); if [ -f \"$RUNROOT/$RUN_ID/ADAPT_DONE\" ] && [ \"$scores\" -ge 100 ]; then echo \"SKIP done: $RUN_ID scores=$scores\"; else bash scripts/axis1.sbatch; fi'",
+   "vars": {
+    "side": 0,
+    "seed": 9,
+    "run_id": "adapt_ax1q1s0_reacher_seed9_ckpt500000"
+   },
+   "logdir": "adapt_ax1q1s0_reacher_seed9_ckpt500000",
+   "outputs": [
+    "adapt_ax1q1s0_reacher_seed9_ckpt500000",
+    "ax1wm_reacher_q1s0_seed9"
+   ],
+   "inputs": [
+    "axis1_reacher/q1/side0",
+    "axis1_reacher/q1/manifest.json"
+   ],
+   "done_when": [
+    {
+     "exists": "ADAPT_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 100
+     }
+    },
+    {
+     "ckpt_step_min": {
+      "dir": "../ax1wm_reacher_q1s0_seed9",
+      "min": 500000
+     }
+    },
+    {
+     "file_contains": {
+      "file": "../ax1wm_reacher_q1s0_seed9/OFFLINE_FIT_PROGRESS",
+      "pattern": "update=500000\ntotal_updates=500000"
+     }
+    }
+   ]
+  },
+  {
+   "stage": "fit_adapt_task",
+   "kind": "axis1_fit_adapt",
+   "target": "vast",
+   "run_id": "adapt_ax1q1s0_reacher_seed10_ckpt500000",
+   "cmd": "DV3_TASK_NAME=adapt_ax1q1s0_reacher_seed10_ckpt500000 RUN_ID=adapt_ax1q1s0_reacher_seed10_ckpt500000 WM_RUN=ax1wm_reacher_q1s0_seed10 TASK=dmc_reacher_hard SEED=10 REPLAY=${RUNROOT}/axis1_reacher/q1/side0 UPDATES=500000 STEPS=1.25e5 AXIS1_EXPL_MODE=task AXIS1_BASE_CONFIG=dmc_proprio AXIS1_ADAPT_CONFIG=frozen_readout DREAMER_DISABLE_GPUFLAGS=1 bash -c 'scores=$(wc -l < \"$RUNROOT/$RUN_ID/scores.jsonl\" 2>/dev/null || echo 0); if [ -f \"$RUNROOT/$RUN_ID/ADAPT_DONE\" ] && [ \"$scores\" -ge 100 ]; then echo \"SKIP done: $RUN_ID scores=$scores\"; else bash scripts/axis1.sbatch; fi'",
+   "vars": {
+    "side": 0,
+    "seed": 10,
+    "run_id": "adapt_ax1q1s0_reacher_seed10_ckpt500000"
+   },
+   "logdir": "adapt_ax1q1s0_reacher_seed10_ckpt500000",
+   "outputs": [
+    "adapt_ax1q1s0_reacher_seed10_ckpt500000",
+    "ax1wm_reacher_q1s0_seed10"
+   ],
+   "inputs": [
+    "axis1_reacher/q1/side0",
+    "axis1_reacher/q1/manifest.json"
+   ],
+   "done_when": [
+    {
+     "exists": "ADAPT_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 100
+     }
+    },
+    {
+     "ckpt_step_min": {
+      "dir": "../ax1wm_reacher_q1s0_seed10",
+      "min": 500000
+     }
+    },
+    {
+     "file_contains": {
+      "file": "../ax1wm_reacher_q1s0_seed10/OFFLINE_FIT_PROGRESS",
+      "pattern": "update=500000\ntotal_updates=500000"
+     }
+    }
+   ]
+  },
+  {
+   "stage": "fit_adapt_task",
+   "kind": "axis1_fit_adapt",
+   "target": "vast",
+   "run_id": "adapt_ax1q1s0_reacher_seed11_ckpt500000",
+   "cmd": "DV3_TASK_NAME=adapt_ax1q1s0_reacher_seed11_ckpt500000 RUN_ID=adapt_ax1q1s0_reacher_seed11_ckpt500000 WM_RUN=ax1wm_reacher_q1s0_seed11 TASK=dmc_reacher_hard SEED=11 REPLAY=${RUNROOT}/axis1_reacher/q1/side0 UPDATES=500000 STEPS=1.25e5 AXIS1_EXPL_MODE=task AXIS1_BASE_CONFIG=dmc_proprio AXIS1_ADAPT_CONFIG=frozen_readout DREAMER_DISABLE_GPUFLAGS=1 bash -c 'scores=$(wc -l < \"$RUNROOT/$RUN_ID/scores.jsonl\" 2>/dev/null || echo 0); if [ -f \"$RUNROOT/$RUN_ID/ADAPT_DONE\" ] && [ \"$scores\" -ge 100 ]; then echo \"SKIP done: $RUN_ID scores=$scores\"; else bash scripts/axis1.sbatch; fi'",
+   "vars": {
+    "side": 0,
+    "seed": 11,
+    "run_id": "adapt_ax1q1s0_reacher_seed11_ckpt500000"
+   },
+   "logdir": "adapt_ax1q1s0_reacher_seed11_ckpt500000",
+   "outputs": [
+    "adapt_ax1q1s0_reacher_seed11_ckpt500000",
+    "ax1wm_reacher_q1s0_seed11"
+   ],
+   "inputs": [
+    "axis1_reacher/q1/side0",
+    "axis1_reacher/q1/manifest.json"
+   ],
+   "done_when": [
+    {
+     "exists": "ADAPT_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 100
+     }
+    },
+    {
+     "ckpt_step_min": {
+      "dir": "../ax1wm_reacher_q1s0_seed11",
+      "min": 500000
+     }
+    },
+    {
+     "file_contains": {
+      "file": "../ax1wm_reacher_q1s0_seed11/OFFLINE_FIT_PROGRESS",
+      "pattern": "update=500000\ntotal_updates=500000"
+     }
+    }
+   ]
+  },
+  {
+   "stage": "fit_adapt_task",
+   "kind": "axis1_fit_adapt",
+   "target": "vast",
+   "run_id": "adapt_ax1q1s0_reacher_seed12_ckpt500000",
+   "cmd": "DV3_TASK_NAME=adapt_ax1q1s0_reacher_seed12_ckpt500000 RUN_ID=adapt_ax1q1s0_reacher_seed12_ckpt500000 WM_RUN=ax1wm_reacher_q1s0_seed12 TASK=dmc_reacher_hard SEED=12 REPLAY=${RUNROOT}/axis1_reacher/q1/side0 UPDATES=500000 STEPS=1.25e5 AXIS1_EXPL_MODE=task AXIS1_BASE_CONFIG=dmc_proprio AXIS1_ADAPT_CONFIG=frozen_readout DREAMER_DISABLE_GPUFLAGS=1 bash -c 'scores=$(wc -l < \"$RUNROOT/$RUN_ID/scores.jsonl\" 2>/dev/null || echo 0); if [ -f \"$RUNROOT/$RUN_ID/ADAPT_DONE\" ] && [ \"$scores\" -ge 100 ]; then echo \"SKIP done: $RUN_ID scores=$scores\"; else bash scripts/axis1.sbatch; fi'",
+   "vars": {
+    "side": 0,
+    "seed": 12,
+    "run_id": "adapt_ax1q1s0_reacher_seed12_ckpt500000"
+   },
+   "logdir": "adapt_ax1q1s0_reacher_seed12_ckpt500000",
+   "outputs": [
+    "adapt_ax1q1s0_reacher_seed12_ckpt500000",
+    "ax1wm_reacher_q1s0_seed12"
+   ],
+   "inputs": [
+    "axis1_reacher/q1/side0",
+    "axis1_reacher/q1/manifest.json"
+   ],
+   "done_when": [
+    {
+     "exists": "ADAPT_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 100
+     }
+    },
+    {
+     "ckpt_step_min": {
+      "dir": "../ax1wm_reacher_q1s0_seed12",
+      "min": 500000
+     }
+    },
+    {
+     "file_contains": {
+      "file": "../ax1wm_reacher_q1s0_seed12/OFFLINE_FIT_PROGRESS",
+      "pattern": "update=500000\ntotal_updates=500000"
+     }
+    }
+   ]
+  },
+  {
+   "stage": "fit_adapt_task",
+   "kind": "axis1_fit_adapt",
+   "target": "vast",
+   "run_id": "adapt_ax1q1s0_reacher_seed13_ckpt500000",
+   "cmd": "DV3_TASK_NAME=adapt_ax1q1s0_reacher_seed13_ckpt500000 RUN_ID=adapt_ax1q1s0_reacher_seed13_ckpt500000 WM_RUN=ax1wm_reacher_q1s0_seed13 TASK=dmc_reacher_hard SEED=13 REPLAY=${RUNROOT}/axis1_reacher/q1/side0 UPDATES=500000 STEPS=1.25e5 AXIS1_EXPL_MODE=task AXIS1_BASE_CONFIG=dmc_proprio AXIS1_ADAPT_CONFIG=frozen_readout DREAMER_DISABLE_GPUFLAGS=1 bash -c 'scores=$(wc -l < \"$RUNROOT/$RUN_ID/scores.jsonl\" 2>/dev/null || echo 0); if [ -f \"$RUNROOT/$RUN_ID/ADAPT_DONE\" ] && [ \"$scores\" -ge 100 ]; then echo \"SKIP done: $RUN_ID scores=$scores\"; else bash scripts/axis1.sbatch; fi'",
+   "vars": {
+    "side": 0,
+    "seed": 13,
+    "run_id": "adapt_ax1q1s0_reacher_seed13_ckpt500000"
+   },
+   "logdir": "adapt_ax1q1s0_reacher_seed13_ckpt500000",
+   "outputs": [
+    "adapt_ax1q1s0_reacher_seed13_ckpt500000",
+    "ax1wm_reacher_q1s0_seed13"
+   ],
+   "inputs": [
+    "axis1_reacher/q1/side0",
+    "axis1_reacher/q1/manifest.json"
+   ],
+   "done_when": [
+    {
+     "exists": "ADAPT_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 100
+     }
+    },
+    {
+     "ckpt_step_min": {
+      "dir": "../ax1wm_reacher_q1s0_seed13",
+      "min": 500000
+     }
+    },
+    {
+     "file_contains": {
+      "file": "../ax1wm_reacher_q1s0_seed13/OFFLINE_FIT_PROGRESS",
+      "pattern": "update=500000\ntotal_updates=500000"
+     }
+    }
+   ]
+  },
+  {
+   "stage": "fit_adapt_task",
+   "kind": "axis1_fit_adapt",
+   "target": "vast",
+   "run_id": "adapt_ax1q1s0_reacher_seed14_ckpt500000",
+   "cmd": "DV3_TASK_NAME=adapt_ax1q1s0_reacher_seed14_ckpt500000 RUN_ID=adapt_ax1q1s0_reacher_seed14_ckpt500000 WM_RUN=ax1wm_reacher_q1s0_seed14 TASK=dmc_reacher_hard SEED=14 REPLAY=${RUNROOT}/axis1_reacher/q1/side0 UPDATES=500000 STEPS=1.25e5 AXIS1_EXPL_MODE=task AXIS1_BASE_CONFIG=dmc_proprio AXIS1_ADAPT_CONFIG=frozen_readout DREAMER_DISABLE_GPUFLAGS=1 bash -c 'scores=$(wc -l < \"$RUNROOT/$RUN_ID/scores.jsonl\" 2>/dev/null || echo 0); if [ -f \"$RUNROOT/$RUN_ID/ADAPT_DONE\" ] && [ \"$scores\" -ge 100 ]; then echo \"SKIP done: $RUN_ID scores=$scores\"; else bash scripts/axis1.sbatch; fi'",
+   "vars": {
+    "side": 0,
+    "seed": 14,
+    "run_id": "adapt_ax1q1s0_reacher_seed14_ckpt500000"
+   },
+   "logdir": "adapt_ax1q1s0_reacher_seed14_ckpt500000",
+   "outputs": [
+    "adapt_ax1q1s0_reacher_seed14_ckpt500000",
+    "ax1wm_reacher_q1s0_seed14"
+   ],
+   "inputs": [
+    "axis1_reacher/q1/side0",
+    "axis1_reacher/q1/manifest.json"
+   ],
+   "done_when": [
+    {
+     "exists": "ADAPT_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 100
+     }
+    },
+    {
+     "ckpt_step_min": {
+      "dir": "../ax1wm_reacher_q1s0_seed14",
+      "min": 500000
+     }
+    },
+    {
+     "file_contains": {
+      "file": "../ax1wm_reacher_q1s0_seed14/OFFLINE_FIT_PROGRESS",
+      "pattern": "update=500000\ntotal_updates=500000"
+     }
+    }
+   ]
+  },
+  {
+   "stage": "fit_adapt_task",
+   "kind": "axis1_fit_adapt",
+   "target": "vast",
+   "run_id": "adapt_ax1q1s0_reacher_seed15_ckpt500000",
+   "cmd": "DV3_TASK_NAME=adapt_ax1q1s0_reacher_seed15_ckpt500000 RUN_ID=adapt_ax1q1s0_reacher_seed15_ckpt500000 WM_RUN=ax1wm_reacher_q1s0_seed15 TASK=dmc_reacher_hard SEED=15 REPLAY=${RUNROOT}/axis1_reacher/q1/side0 UPDATES=500000 STEPS=1.25e5 AXIS1_EXPL_MODE=task AXIS1_BASE_CONFIG=dmc_proprio AXIS1_ADAPT_CONFIG=frozen_readout DREAMER_DISABLE_GPUFLAGS=1 bash -c 'scores=$(wc -l < \"$RUNROOT/$RUN_ID/scores.jsonl\" 2>/dev/null || echo 0); if [ -f \"$RUNROOT/$RUN_ID/ADAPT_DONE\" ] && [ \"$scores\" -ge 100 ]; then echo \"SKIP done: $RUN_ID scores=$scores\"; else bash scripts/axis1.sbatch; fi'",
+   "vars": {
+    "side": 0,
+    "seed": 15,
+    "run_id": "adapt_ax1q1s0_reacher_seed15_ckpt500000"
+   },
+   "logdir": "adapt_ax1q1s0_reacher_seed15_ckpt500000",
+   "outputs": [
+    "adapt_ax1q1s0_reacher_seed15_ckpt500000",
+    "ax1wm_reacher_q1s0_seed15"
+   ],
+   "inputs": [
+    "axis1_reacher/q1/side0",
+    "axis1_reacher/q1/manifest.json"
+   ],
+   "done_when": [
+    {
+     "exists": "ADAPT_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 100
+     }
+    },
+    {
+     "ckpt_step_min": {
+      "dir": "../ax1wm_reacher_q1s0_seed15",
+      "min": 500000
+     }
+    },
+    {
+     "file_contains": {
+      "file": "../ax1wm_reacher_q1s0_seed15/OFFLINE_FIT_PROGRESS",
+      "pattern": "update=500000\ntotal_updates=500000"
+     }
+    }
+   ]
+  },
+  {
+   "stage": "fit_adapt_task",
+   "kind": "axis1_fit_adapt",
+   "target": "vast",
+   "run_id": "adapt_ax1q1s0_reacher_seed16_ckpt500000",
+   "cmd": "DV3_TASK_NAME=adapt_ax1q1s0_reacher_seed16_ckpt500000 RUN_ID=adapt_ax1q1s0_reacher_seed16_ckpt500000 WM_RUN=ax1wm_reacher_q1s0_seed16 TASK=dmc_reacher_hard SEED=16 REPLAY=${RUNROOT}/axis1_reacher/q1/side0 UPDATES=500000 STEPS=1.25e5 AXIS1_EXPL_MODE=task AXIS1_BASE_CONFIG=dmc_proprio AXIS1_ADAPT_CONFIG=frozen_readout DREAMER_DISABLE_GPUFLAGS=1 bash -c 'scores=$(wc -l < \"$RUNROOT/$RUN_ID/scores.jsonl\" 2>/dev/null || echo 0); if [ -f \"$RUNROOT/$RUN_ID/ADAPT_DONE\" ] && [ \"$scores\" -ge 100 ]; then echo \"SKIP done: $RUN_ID scores=$scores\"; else bash scripts/axis1.sbatch; fi'",
+   "vars": {
+    "side": 0,
+    "seed": 16,
+    "run_id": "adapt_ax1q1s0_reacher_seed16_ckpt500000"
+   },
+   "logdir": "adapt_ax1q1s0_reacher_seed16_ckpt500000",
+   "outputs": [
+    "adapt_ax1q1s0_reacher_seed16_ckpt500000",
+    "ax1wm_reacher_q1s0_seed16"
+   ],
+   "inputs": [
+    "axis1_reacher/q1/side0",
+    "axis1_reacher/q1/manifest.json"
+   ],
+   "done_when": [
+    {
+     "exists": "ADAPT_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 100
+     }
+    },
+    {
+     "ckpt_step_min": {
+      "dir": "../ax1wm_reacher_q1s0_seed16",
+      "min": 500000
+     }
+    },
+    {
+     "file_contains": {
+      "file": "../ax1wm_reacher_q1s0_seed16/OFFLINE_FIT_PROGRESS",
+      "pattern": "update=500000\ntotal_updates=500000"
+     }
+    }
+   ]
+  },
+  {
+   "stage": "fit_adapt_task",
+   "kind": "axis1_fit_adapt",
+   "target": "vast",
+   "run_id": "adapt_ax1q1s1_reacher_seed1_ckpt500000",
+   "cmd": "DV3_TASK_NAME=adapt_ax1q1s1_reacher_seed1_ckpt500000 RUN_ID=adapt_ax1q1s1_reacher_seed1_ckpt500000 WM_RUN=ax1wm_reacher_q1s1_seed1 TASK=dmc_reacher_hard SEED=1 REPLAY=${RUNROOT}/axis1_reacher/q1/side1 UPDATES=500000 STEPS=1.25e5 AXIS1_EXPL_MODE=task AXIS1_BASE_CONFIG=dmc_proprio AXIS1_ADAPT_CONFIG=frozen_readout DREAMER_DISABLE_GPUFLAGS=1 bash -c 'scores=$(wc -l < \"$RUNROOT/$RUN_ID/scores.jsonl\" 2>/dev/null || echo 0); if [ -f \"$RUNROOT/$RUN_ID/ADAPT_DONE\" ] && [ \"$scores\" -ge 100 ]; then echo \"SKIP done: $RUN_ID scores=$scores\"; else bash scripts/axis1.sbatch; fi'",
+   "vars": {
+    "side": 1,
+    "seed": 1,
+    "run_id": "adapt_ax1q1s1_reacher_seed1_ckpt500000"
+   },
+   "logdir": "adapt_ax1q1s1_reacher_seed1_ckpt500000",
+   "outputs": [
+    "adapt_ax1q1s1_reacher_seed1_ckpt500000",
+    "ax1wm_reacher_q1s1_seed1"
+   ],
+   "inputs": [
+    "axis1_reacher/q1/side1",
+    "axis1_reacher/q1/manifest.json"
+   ],
+   "done_when": [
+    {
+     "exists": "ADAPT_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 100
+     }
+    },
+    {
+     "ckpt_step_min": {
+      "dir": "../ax1wm_reacher_q1s1_seed1",
+      "min": 500000
+     }
+    },
+    {
+     "file_contains": {
+      "file": "../ax1wm_reacher_q1s1_seed1/OFFLINE_FIT_PROGRESS",
+      "pattern": "update=500000\ntotal_updates=500000"
+     }
+    }
+   ]
+  },
+  {
+   "stage": "fit_adapt_task",
+   "kind": "axis1_fit_adapt",
+   "target": "vast",
+   "run_id": "adapt_ax1q1s1_reacher_seed2_ckpt500000",
+   "cmd": "DV3_TASK_NAME=adapt_ax1q1s1_reacher_seed2_ckpt500000 RUN_ID=adapt_ax1q1s1_reacher_seed2_ckpt500000 WM_RUN=ax1wm_reacher_q1s1_seed2 TASK=dmc_reacher_hard SEED=2 REPLAY=${RUNROOT}/axis1_reacher/q1/side1 UPDATES=500000 STEPS=1.25e5 AXIS1_EXPL_MODE=task AXIS1_BASE_CONFIG=dmc_proprio AXIS1_ADAPT_CONFIG=frozen_readout DREAMER_DISABLE_GPUFLAGS=1 bash -c 'scores=$(wc -l < \"$RUNROOT/$RUN_ID/scores.jsonl\" 2>/dev/null || echo 0); if [ -f \"$RUNROOT/$RUN_ID/ADAPT_DONE\" ] && [ \"$scores\" -ge 100 ]; then echo \"SKIP done: $RUN_ID scores=$scores\"; else bash scripts/axis1.sbatch; fi'",
+   "vars": {
+    "side": 1,
+    "seed": 2,
+    "run_id": "adapt_ax1q1s1_reacher_seed2_ckpt500000"
+   },
+   "logdir": "adapt_ax1q1s1_reacher_seed2_ckpt500000",
+   "outputs": [
+    "adapt_ax1q1s1_reacher_seed2_ckpt500000",
+    "ax1wm_reacher_q1s1_seed2"
+   ],
+   "inputs": [
+    "axis1_reacher/q1/side1",
+    "axis1_reacher/q1/manifest.json"
+   ],
+   "done_when": [
+    {
+     "exists": "ADAPT_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 100
+     }
+    },
+    {
+     "ckpt_step_min": {
+      "dir": "../ax1wm_reacher_q1s1_seed2",
+      "min": 500000
+     }
+    },
+    {
+     "file_contains": {
+      "file": "../ax1wm_reacher_q1s1_seed2/OFFLINE_FIT_PROGRESS",
+      "pattern": "update=500000\ntotal_updates=500000"
+     }
+    }
+   ]
+  },
+  {
+   "stage": "fit_adapt_task",
+   "kind": "axis1_fit_adapt",
+   "target": "vast",
+   "run_id": "adapt_ax1q1s1_reacher_seed3_ckpt500000",
+   "cmd": "DV3_TASK_NAME=adapt_ax1q1s1_reacher_seed3_ckpt500000 RUN_ID=adapt_ax1q1s1_reacher_seed3_ckpt500000 WM_RUN=ax1wm_reacher_q1s1_seed3 TASK=dmc_reacher_hard SEED=3 REPLAY=${RUNROOT}/axis1_reacher/q1/side1 UPDATES=500000 STEPS=1.25e5 AXIS1_EXPL_MODE=task AXIS1_BASE_CONFIG=dmc_proprio AXIS1_ADAPT_CONFIG=frozen_readout DREAMER_DISABLE_GPUFLAGS=1 bash -c 'scores=$(wc -l < \"$RUNROOT/$RUN_ID/scores.jsonl\" 2>/dev/null || echo 0); if [ -f \"$RUNROOT/$RUN_ID/ADAPT_DONE\" ] && [ \"$scores\" -ge 100 ]; then echo \"SKIP done: $RUN_ID scores=$scores\"; else bash scripts/axis1.sbatch; fi'",
+   "vars": {
+    "side": 1,
+    "seed": 3,
+    "run_id": "adapt_ax1q1s1_reacher_seed3_ckpt500000"
+   },
+   "logdir": "adapt_ax1q1s1_reacher_seed3_ckpt500000",
+   "outputs": [
+    "adapt_ax1q1s1_reacher_seed3_ckpt500000",
+    "ax1wm_reacher_q1s1_seed3"
+   ],
+   "inputs": [
+    "axis1_reacher/q1/side1",
+    "axis1_reacher/q1/manifest.json"
+   ],
+   "done_when": [
+    {
+     "exists": "ADAPT_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 100
+     }
+    },
+    {
+     "ckpt_step_min": {
+      "dir": "../ax1wm_reacher_q1s1_seed3",
+      "min": 500000
+     }
+    },
+    {
+     "file_contains": {
+      "file": "../ax1wm_reacher_q1s1_seed3/OFFLINE_FIT_PROGRESS",
+      "pattern": "update=500000\ntotal_updates=500000"
+     }
+    }
+   ]
+  },
+  {
+   "stage": "fit_adapt_task",
+   "kind": "axis1_fit_adapt",
+   "target": "vast",
+   "run_id": "adapt_ax1q1s1_reacher_seed4_ckpt500000",
+   "cmd": "DV3_TASK_NAME=adapt_ax1q1s1_reacher_seed4_ckpt500000 RUN_ID=adapt_ax1q1s1_reacher_seed4_ckpt500000 WM_RUN=ax1wm_reacher_q1s1_seed4 TASK=dmc_reacher_hard SEED=4 REPLAY=${RUNROOT}/axis1_reacher/q1/side1 UPDATES=500000 STEPS=1.25e5 AXIS1_EXPL_MODE=task AXIS1_BASE_CONFIG=dmc_proprio AXIS1_ADAPT_CONFIG=frozen_readout DREAMER_DISABLE_GPUFLAGS=1 bash -c 'scores=$(wc -l < \"$RUNROOT/$RUN_ID/scores.jsonl\" 2>/dev/null || echo 0); if [ -f \"$RUNROOT/$RUN_ID/ADAPT_DONE\" ] && [ \"$scores\" -ge 100 ]; then echo \"SKIP done: $RUN_ID scores=$scores\"; else bash scripts/axis1.sbatch; fi'",
+   "vars": {
+    "side": 1,
+    "seed": 4,
+    "run_id": "adapt_ax1q1s1_reacher_seed4_ckpt500000"
+   },
+   "logdir": "adapt_ax1q1s1_reacher_seed4_ckpt500000",
+   "outputs": [
+    "adapt_ax1q1s1_reacher_seed4_ckpt500000",
+    "ax1wm_reacher_q1s1_seed4"
+   ],
+   "inputs": [
+    "axis1_reacher/q1/side1",
+    "axis1_reacher/q1/manifest.json"
+   ],
+   "done_when": [
+    {
+     "exists": "ADAPT_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 100
+     }
+    },
+    {
+     "ckpt_step_min": {
+      "dir": "../ax1wm_reacher_q1s1_seed4",
+      "min": 500000
+     }
+    },
+    {
+     "file_contains": {
+      "file": "../ax1wm_reacher_q1s1_seed4/OFFLINE_FIT_PROGRESS",
+      "pattern": "update=500000\ntotal_updates=500000"
+     }
+    }
+   ]
+  },
+  {
+   "stage": "fit_adapt_task",
+   "kind": "axis1_fit_adapt",
+   "target": "vast",
+   "run_id": "adapt_ax1q1s1_reacher_seed5_ckpt500000",
+   "cmd": "DV3_TASK_NAME=adapt_ax1q1s1_reacher_seed5_ckpt500000 RUN_ID=adapt_ax1q1s1_reacher_seed5_ckpt500000 WM_RUN=ax1wm_reacher_q1s1_seed5 TASK=dmc_reacher_hard SEED=5 REPLAY=${RUNROOT}/axis1_reacher/q1/side1 UPDATES=500000 STEPS=1.25e5 AXIS1_EXPL_MODE=task AXIS1_BASE_CONFIG=dmc_proprio AXIS1_ADAPT_CONFIG=frozen_readout DREAMER_DISABLE_GPUFLAGS=1 bash -c 'scores=$(wc -l < \"$RUNROOT/$RUN_ID/scores.jsonl\" 2>/dev/null || echo 0); if [ -f \"$RUNROOT/$RUN_ID/ADAPT_DONE\" ] && [ \"$scores\" -ge 100 ]; then echo \"SKIP done: $RUN_ID scores=$scores\"; else bash scripts/axis1.sbatch; fi'",
+   "vars": {
+    "side": 1,
+    "seed": 5,
+    "run_id": "adapt_ax1q1s1_reacher_seed5_ckpt500000"
+   },
+   "logdir": "adapt_ax1q1s1_reacher_seed5_ckpt500000",
+   "outputs": [
+    "adapt_ax1q1s1_reacher_seed5_ckpt500000",
+    "ax1wm_reacher_q1s1_seed5"
+   ],
+   "inputs": [
+    "axis1_reacher/q1/side1",
+    "axis1_reacher/q1/manifest.json"
+   ],
+   "done_when": [
+    {
+     "exists": "ADAPT_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 100
+     }
+    },
+    {
+     "ckpt_step_min": {
+      "dir": "../ax1wm_reacher_q1s1_seed5",
+      "min": 500000
+     }
+    },
+    {
+     "file_contains": {
+      "file": "../ax1wm_reacher_q1s1_seed5/OFFLINE_FIT_PROGRESS",
+      "pattern": "update=500000\ntotal_updates=500000"
+     }
+    }
+   ]
+  },
+  {
+   "stage": "fit_adapt_task",
+   "kind": "axis1_fit_adapt",
+   "target": "vast",
+   "run_id": "adapt_ax1q1s1_reacher_seed6_ckpt500000",
+   "cmd": "DV3_TASK_NAME=adapt_ax1q1s1_reacher_seed6_ckpt500000 RUN_ID=adapt_ax1q1s1_reacher_seed6_ckpt500000 WM_RUN=ax1wm_reacher_q1s1_seed6 TASK=dmc_reacher_hard SEED=6 REPLAY=${RUNROOT}/axis1_reacher/q1/side1 UPDATES=500000 STEPS=1.25e5 AXIS1_EXPL_MODE=task AXIS1_BASE_CONFIG=dmc_proprio AXIS1_ADAPT_CONFIG=frozen_readout DREAMER_DISABLE_GPUFLAGS=1 bash -c 'scores=$(wc -l < \"$RUNROOT/$RUN_ID/scores.jsonl\" 2>/dev/null || echo 0); if [ -f \"$RUNROOT/$RUN_ID/ADAPT_DONE\" ] && [ \"$scores\" -ge 100 ]; then echo \"SKIP done: $RUN_ID scores=$scores\"; else bash scripts/axis1.sbatch; fi'",
+   "vars": {
+    "side": 1,
+    "seed": 6,
+    "run_id": "adapt_ax1q1s1_reacher_seed6_ckpt500000"
+   },
+   "logdir": "adapt_ax1q1s1_reacher_seed6_ckpt500000",
+   "outputs": [
+    "adapt_ax1q1s1_reacher_seed6_ckpt500000",
+    "ax1wm_reacher_q1s1_seed6"
+   ],
+   "inputs": [
+    "axis1_reacher/q1/side1",
+    "axis1_reacher/q1/manifest.json"
+   ],
+   "done_when": [
+    {
+     "exists": "ADAPT_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 100
+     }
+    },
+    {
+     "ckpt_step_min": {
+      "dir": "../ax1wm_reacher_q1s1_seed6",
+      "min": 500000
+     }
+    },
+    {
+     "file_contains": {
+      "file": "../ax1wm_reacher_q1s1_seed6/OFFLINE_FIT_PROGRESS",
+      "pattern": "update=500000\ntotal_updates=500000"
+     }
+    }
+   ]
+  },
+  {
+   "stage": "fit_adapt_task",
+   "kind": "axis1_fit_adapt",
+   "target": "vast",
+   "run_id": "adapt_ax1q1s1_reacher_seed7_ckpt500000",
+   "cmd": "DV3_TASK_NAME=adapt_ax1q1s1_reacher_seed7_ckpt500000 RUN_ID=adapt_ax1q1s1_reacher_seed7_ckpt500000 WM_RUN=ax1wm_reacher_q1s1_seed7 TASK=dmc_reacher_hard SEED=7 REPLAY=${RUNROOT}/axis1_reacher/q1/side1 UPDATES=500000 STEPS=1.25e5 AXIS1_EXPL_MODE=task AXIS1_BASE_CONFIG=dmc_proprio AXIS1_ADAPT_CONFIG=frozen_readout DREAMER_DISABLE_GPUFLAGS=1 bash -c 'scores=$(wc -l < \"$RUNROOT/$RUN_ID/scores.jsonl\" 2>/dev/null || echo 0); if [ -f \"$RUNROOT/$RUN_ID/ADAPT_DONE\" ] && [ \"$scores\" -ge 100 ]; then echo \"SKIP done: $RUN_ID scores=$scores\"; else bash scripts/axis1.sbatch; fi'",
+   "vars": {
+    "side": 1,
+    "seed": 7,
+    "run_id": "adapt_ax1q1s1_reacher_seed7_ckpt500000"
+   },
+   "logdir": "adapt_ax1q1s1_reacher_seed7_ckpt500000",
+   "outputs": [
+    "adapt_ax1q1s1_reacher_seed7_ckpt500000",
+    "ax1wm_reacher_q1s1_seed7"
+   ],
+   "inputs": [
+    "axis1_reacher/q1/side1",
+    "axis1_reacher/q1/manifest.json"
+   ],
+   "done_when": [
+    {
+     "exists": "ADAPT_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 100
+     }
+    },
+    {
+     "ckpt_step_min": {
+      "dir": "../ax1wm_reacher_q1s1_seed7",
+      "min": 500000
+     }
+    },
+    {
+     "file_contains": {
+      "file": "../ax1wm_reacher_q1s1_seed7/OFFLINE_FIT_PROGRESS",
+      "pattern": "update=500000\ntotal_updates=500000"
+     }
+    }
+   ]
+  },
+  {
+   "stage": "fit_adapt_task",
+   "kind": "axis1_fit_adapt",
+   "target": "vast",
+   "run_id": "adapt_ax1q1s1_reacher_seed8_ckpt500000",
+   "cmd": "DV3_TASK_NAME=adapt_ax1q1s1_reacher_seed8_ckpt500000 RUN_ID=adapt_ax1q1s1_reacher_seed8_ckpt500000 WM_RUN=ax1wm_reacher_q1s1_seed8 TASK=dmc_reacher_hard SEED=8 REPLAY=${RUNROOT}/axis1_reacher/q1/side1 UPDATES=500000 STEPS=1.25e5 AXIS1_EXPL_MODE=task AXIS1_BASE_CONFIG=dmc_proprio AXIS1_ADAPT_CONFIG=frozen_readout DREAMER_DISABLE_GPUFLAGS=1 bash -c 'scores=$(wc -l < \"$RUNROOT/$RUN_ID/scores.jsonl\" 2>/dev/null || echo 0); if [ -f \"$RUNROOT/$RUN_ID/ADAPT_DONE\" ] && [ \"$scores\" -ge 100 ]; then echo \"SKIP done: $RUN_ID scores=$scores\"; else bash scripts/axis1.sbatch; fi'",
+   "vars": {
+    "side": 1,
+    "seed": 8,
+    "run_id": "adapt_ax1q1s1_reacher_seed8_ckpt500000"
+   },
+   "logdir": "adapt_ax1q1s1_reacher_seed8_ckpt500000",
+   "outputs": [
+    "adapt_ax1q1s1_reacher_seed8_ckpt500000",
+    "ax1wm_reacher_q1s1_seed8"
+   ],
+   "inputs": [
+    "axis1_reacher/q1/side1",
+    "axis1_reacher/q1/manifest.json"
+   ],
+   "done_when": [
+    {
+     "exists": "ADAPT_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 100
+     }
+    },
+    {
+     "ckpt_step_min": {
+      "dir": "../ax1wm_reacher_q1s1_seed8",
+      "min": 500000
+     }
+    },
+    {
+     "file_contains": {
+      "file": "../ax1wm_reacher_q1s1_seed8/OFFLINE_FIT_PROGRESS",
+      "pattern": "update=500000\ntotal_updates=500000"
+     }
+    }
+   ]
+  },
+  {
+   "stage": "fit_adapt_task",
+   "kind": "axis1_fit_adapt",
+   "target": "vast",
+   "run_id": "adapt_ax1q1s1_reacher_seed9_ckpt500000",
+   "cmd": "DV3_TASK_NAME=adapt_ax1q1s1_reacher_seed9_ckpt500000 RUN_ID=adapt_ax1q1s1_reacher_seed9_ckpt500000 WM_RUN=ax1wm_reacher_q1s1_seed9 TASK=dmc_reacher_hard SEED=9 REPLAY=${RUNROOT}/axis1_reacher/q1/side1 UPDATES=500000 STEPS=1.25e5 AXIS1_EXPL_MODE=task AXIS1_BASE_CONFIG=dmc_proprio AXIS1_ADAPT_CONFIG=frozen_readout DREAMER_DISABLE_GPUFLAGS=1 bash -c 'scores=$(wc -l < \"$RUNROOT/$RUN_ID/scores.jsonl\" 2>/dev/null || echo 0); if [ -f \"$RUNROOT/$RUN_ID/ADAPT_DONE\" ] && [ \"$scores\" -ge 100 ]; then echo \"SKIP done: $RUN_ID scores=$scores\"; else bash scripts/axis1.sbatch; fi'",
+   "vars": {
+    "side": 1,
+    "seed": 9,
+    "run_id": "adapt_ax1q1s1_reacher_seed9_ckpt500000"
+   },
+   "logdir": "adapt_ax1q1s1_reacher_seed9_ckpt500000",
+   "outputs": [
+    "adapt_ax1q1s1_reacher_seed9_ckpt500000",
+    "ax1wm_reacher_q1s1_seed9"
+   ],
+   "inputs": [
+    "axis1_reacher/q1/side1",
+    "axis1_reacher/q1/manifest.json"
+   ],
+   "done_when": [
+    {
+     "exists": "ADAPT_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 100
+     }
+    },
+    {
+     "ckpt_step_min": {
+      "dir": "../ax1wm_reacher_q1s1_seed9",
+      "min": 500000
+     }
+    },
+    {
+     "file_contains": {
+      "file": "../ax1wm_reacher_q1s1_seed9/OFFLINE_FIT_PROGRESS",
+      "pattern": "update=500000\ntotal_updates=500000"
+     }
+    }
+   ]
+  },
+  {
+   "stage": "fit_adapt_task",
+   "kind": "axis1_fit_adapt",
+   "target": "vast",
+   "run_id": "adapt_ax1q1s1_reacher_seed10_ckpt500000",
+   "cmd": "DV3_TASK_NAME=adapt_ax1q1s1_reacher_seed10_ckpt500000 RUN_ID=adapt_ax1q1s1_reacher_seed10_ckpt500000 WM_RUN=ax1wm_reacher_q1s1_seed10 TASK=dmc_reacher_hard SEED=10 REPLAY=${RUNROOT}/axis1_reacher/q1/side1 UPDATES=500000 STEPS=1.25e5 AXIS1_EXPL_MODE=task AXIS1_BASE_CONFIG=dmc_proprio AXIS1_ADAPT_CONFIG=frozen_readout DREAMER_DISABLE_GPUFLAGS=1 bash -c 'scores=$(wc -l < \"$RUNROOT/$RUN_ID/scores.jsonl\" 2>/dev/null || echo 0); if [ -f \"$RUNROOT/$RUN_ID/ADAPT_DONE\" ] && [ \"$scores\" -ge 100 ]; then echo \"SKIP done: $RUN_ID scores=$scores\"; else bash scripts/axis1.sbatch; fi'",
+   "vars": {
+    "side": 1,
+    "seed": 10,
+    "run_id": "adapt_ax1q1s1_reacher_seed10_ckpt500000"
+   },
+   "logdir": "adapt_ax1q1s1_reacher_seed10_ckpt500000",
+   "outputs": [
+    "adapt_ax1q1s1_reacher_seed10_ckpt500000",
+    "ax1wm_reacher_q1s1_seed10"
+   ],
+   "inputs": [
+    "axis1_reacher/q1/side1",
+    "axis1_reacher/q1/manifest.json"
+   ],
+   "done_when": [
+    {
+     "exists": "ADAPT_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 100
+     }
+    },
+    {
+     "ckpt_step_min": {
+      "dir": "../ax1wm_reacher_q1s1_seed10",
+      "min": 500000
+     }
+    },
+    {
+     "file_contains": {
+      "file": "../ax1wm_reacher_q1s1_seed10/OFFLINE_FIT_PROGRESS",
+      "pattern": "update=500000\ntotal_updates=500000"
+     }
+    }
+   ]
+  },
+  {
+   "stage": "fit_adapt_task",
+   "kind": "axis1_fit_adapt",
+   "target": "vast",
+   "run_id": "adapt_ax1q1s1_reacher_seed11_ckpt500000",
+   "cmd": "DV3_TASK_NAME=adapt_ax1q1s1_reacher_seed11_ckpt500000 RUN_ID=adapt_ax1q1s1_reacher_seed11_ckpt500000 WM_RUN=ax1wm_reacher_q1s1_seed11 TASK=dmc_reacher_hard SEED=11 REPLAY=${RUNROOT}/axis1_reacher/q1/side1 UPDATES=500000 STEPS=1.25e5 AXIS1_EXPL_MODE=task AXIS1_BASE_CONFIG=dmc_proprio AXIS1_ADAPT_CONFIG=frozen_readout DREAMER_DISABLE_GPUFLAGS=1 bash -c 'scores=$(wc -l < \"$RUNROOT/$RUN_ID/scores.jsonl\" 2>/dev/null || echo 0); if [ -f \"$RUNROOT/$RUN_ID/ADAPT_DONE\" ] && [ \"$scores\" -ge 100 ]; then echo \"SKIP done: $RUN_ID scores=$scores\"; else bash scripts/axis1.sbatch; fi'",
+   "vars": {
+    "side": 1,
+    "seed": 11,
+    "run_id": "adapt_ax1q1s1_reacher_seed11_ckpt500000"
+   },
+   "logdir": "adapt_ax1q1s1_reacher_seed11_ckpt500000",
+   "outputs": [
+    "adapt_ax1q1s1_reacher_seed11_ckpt500000",
+    "ax1wm_reacher_q1s1_seed11"
+   ],
+   "inputs": [
+    "axis1_reacher/q1/side1",
+    "axis1_reacher/q1/manifest.json"
+   ],
+   "done_when": [
+    {
+     "exists": "ADAPT_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 100
+     }
+    },
+    {
+     "ckpt_step_min": {
+      "dir": "../ax1wm_reacher_q1s1_seed11",
+      "min": 500000
+     }
+    },
+    {
+     "file_contains": {
+      "file": "../ax1wm_reacher_q1s1_seed11/OFFLINE_FIT_PROGRESS",
+      "pattern": "update=500000\ntotal_updates=500000"
+     }
+    }
+   ]
+  },
+  {
+   "stage": "fit_adapt_task",
+   "kind": "axis1_fit_adapt",
+   "target": "vast",
+   "run_id": "adapt_ax1q1s1_reacher_seed12_ckpt500000",
+   "cmd": "DV3_TASK_NAME=adapt_ax1q1s1_reacher_seed12_ckpt500000 RUN_ID=adapt_ax1q1s1_reacher_seed12_ckpt500000 WM_RUN=ax1wm_reacher_q1s1_seed12 TASK=dmc_reacher_hard SEED=12 REPLAY=${RUNROOT}/axis1_reacher/q1/side1 UPDATES=500000 STEPS=1.25e5 AXIS1_EXPL_MODE=task AXIS1_BASE_CONFIG=dmc_proprio AXIS1_ADAPT_CONFIG=frozen_readout DREAMER_DISABLE_GPUFLAGS=1 bash -c 'scores=$(wc -l < \"$RUNROOT/$RUN_ID/scores.jsonl\" 2>/dev/null || echo 0); if [ -f \"$RUNROOT/$RUN_ID/ADAPT_DONE\" ] && [ \"$scores\" -ge 100 ]; then echo \"SKIP done: $RUN_ID scores=$scores\"; else bash scripts/axis1.sbatch; fi'",
+   "vars": {
+    "side": 1,
+    "seed": 12,
+    "run_id": "adapt_ax1q1s1_reacher_seed12_ckpt500000"
+   },
+   "logdir": "adapt_ax1q1s1_reacher_seed12_ckpt500000",
+   "outputs": [
+    "adapt_ax1q1s1_reacher_seed12_ckpt500000",
+    "ax1wm_reacher_q1s1_seed12"
+   ],
+   "inputs": [
+    "axis1_reacher/q1/side1",
+    "axis1_reacher/q1/manifest.json"
+   ],
+   "done_when": [
+    {
+     "exists": "ADAPT_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 100
+     }
+    },
+    {
+     "ckpt_step_min": {
+      "dir": "../ax1wm_reacher_q1s1_seed12",
+      "min": 500000
+     }
+    },
+    {
+     "file_contains": {
+      "file": "../ax1wm_reacher_q1s1_seed12/OFFLINE_FIT_PROGRESS",
+      "pattern": "update=500000\ntotal_updates=500000"
+     }
+    }
+   ]
+  },
+  {
+   "stage": "fit_adapt_task",
+   "kind": "axis1_fit_adapt",
+   "target": "vast",
+   "run_id": "adapt_ax1q1s1_reacher_seed13_ckpt500000",
+   "cmd": "DV3_TASK_NAME=adapt_ax1q1s1_reacher_seed13_ckpt500000 RUN_ID=adapt_ax1q1s1_reacher_seed13_ckpt500000 WM_RUN=ax1wm_reacher_q1s1_seed13 TASK=dmc_reacher_hard SEED=13 REPLAY=${RUNROOT}/axis1_reacher/q1/side1 UPDATES=500000 STEPS=1.25e5 AXIS1_EXPL_MODE=task AXIS1_BASE_CONFIG=dmc_proprio AXIS1_ADAPT_CONFIG=frozen_readout DREAMER_DISABLE_GPUFLAGS=1 bash -c 'scores=$(wc -l < \"$RUNROOT/$RUN_ID/scores.jsonl\" 2>/dev/null || echo 0); if [ -f \"$RUNROOT/$RUN_ID/ADAPT_DONE\" ] && [ \"$scores\" -ge 100 ]; then echo \"SKIP done: $RUN_ID scores=$scores\"; else bash scripts/axis1.sbatch; fi'",
+   "vars": {
+    "side": 1,
+    "seed": 13,
+    "run_id": "adapt_ax1q1s1_reacher_seed13_ckpt500000"
+   },
+   "logdir": "adapt_ax1q1s1_reacher_seed13_ckpt500000",
+   "outputs": [
+    "adapt_ax1q1s1_reacher_seed13_ckpt500000",
+    "ax1wm_reacher_q1s1_seed13"
+   ],
+   "inputs": [
+    "axis1_reacher/q1/side1",
+    "axis1_reacher/q1/manifest.json"
+   ],
+   "done_when": [
+    {
+     "exists": "ADAPT_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 100
+     }
+    },
+    {
+     "ckpt_step_min": {
+      "dir": "../ax1wm_reacher_q1s1_seed13",
+      "min": 500000
+     }
+    },
+    {
+     "file_contains": {
+      "file": "../ax1wm_reacher_q1s1_seed13/OFFLINE_FIT_PROGRESS",
+      "pattern": "update=500000\ntotal_updates=500000"
+     }
+    }
+   ]
+  },
+  {
+   "stage": "fit_adapt_task",
+   "kind": "axis1_fit_adapt",
+   "target": "vast",
+   "run_id": "adapt_ax1q1s1_reacher_seed14_ckpt500000",
+   "cmd": "DV3_TASK_NAME=adapt_ax1q1s1_reacher_seed14_ckpt500000 RUN_ID=adapt_ax1q1s1_reacher_seed14_ckpt500000 WM_RUN=ax1wm_reacher_q1s1_seed14 TASK=dmc_reacher_hard SEED=14 REPLAY=${RUNROOT}/axis1_reacher/q1/side1 UPDATES=500000 STEPS=1.25e5 AXIS1_EXPL_MODE=task AXIS1_BASE_CONFIG=dmc_proprio AXIS1_ADAPT_CONFIG=frozen_readout DREAMER_DISABLE_GPUFLAGS=1 bash -c 'scores=$(wc -l < \"$RUNROOT/$RUN_ID/scores.jsonl\" 2>/dev/null || echo 0); if [ -f \"$RUNROOT/$RUN_ID/ADAPT_DONE\" ] && [ \"$scores\" -ge 100 ]; then echo \"SKIP done: $RUN_ID scores=$scores\"; else bash scripts/axis1.sbatch; fi'",
+   "vars": {
+    "side": 1,
+    "seed": 14,
+    "run_id": "adapt_ax1q1s1_reacher_seed14_ckpt500000"
+   },
+   "logdir": "adapt_ax1q1s1_reacher_seed14_ckpt500000",
+   "outputs": [
+    "adapt_ax1q1s1_reacher_seed14_ckpt500000",
+    "ax1wm_reacher_q1s1_seed14"
+   ],
+   "inputs": [
+    "axis1_reacher/q1/side1",
+    "axis1_reacher/q1/manifest.json"
+   ],
+   "done_when": [
+    {
+     "exists": "ADAPT_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 100
+     }
+    },
+    {
+     "ckpt_step_min": {
+      "dir": "../ax1wm_reacher_q1s1_seed14",
+      "min": 500000
+     }
+    },
+    {
+     "file_contains": {
+      "file": "../ax1wm_reacher_q1s1_seed14/OFFLINE_FIT_PROGRESS",
+      "pattern": "update=500000\ntotal_updates=500000"
+     }
+    }
+   ]
+  },
+  {
+   "stage": "fit_adapt_task",
+   "kind": "axis1_fit_adapt",
+   "target": "vast",
+   "run_id": "adapt_ax1q1s1_reacher_seed15_ckpt500000",
+   "cmd": "DV3_TASK_NAME=adapt_ax1q1s1_reacher_seed15_ckpt500000 RUN_ID=adapt_ax1q1s1_reacher_seed15_ckpt500000 WM_RUN=ax1wm_reacher_q1s1_seed15 TASK=dmc_reacher_hard SEED=15 REPLAY=${RUNROOT}/axis1_reacher/q1/side1 UPDATES=500000 STEPS=1.25e5 AXIS1_EXPL_MODE=task AXIS1_BASE_CONFIG=dmc_proprio AXIS1_ADAPT_CONFIG=frozen_readout DREAMER_DISABLE_GPUFLAGS=1 bash -c 'scores=$(wc -l < \"$RUNROOT/$RUN_ID/scores.jsonl\" 2>/dev/null || echo 0); if [ -f \"$RUNROOT/$RUN_ID/ADAPT_DONE\" ] && [ \"$scores\" -ge 100 ]; then echo \"SKIP done: $RUN_ID scores=$scores\"; else bash scripts/axis1.sbatch; fi'",
+   "vars": {
+    "side": 1,
+    "seed": 15,
+    "run_id": "adapt_ax1q1s1_reacher_seed15_ckpt500000"
+   },
+   "logdir": "adapt_ax1q1s1_reacher_seed15_ckpt500000",
+   "outputs": [
+    "adapt_ax1q1s1_reacher_seed15_ckpt500000",
+    "ax1wm_reacher_q1s1_seed15"
+   ],
+   "inputs": [
+    "axis1_reacher/q1/side1",
+    "axis1_reacher/q1/manifest.json"
+   ],
+   "done_when": [
+    {
+     "exists": "ADAPT_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 100
+     }
+    },
+    {
+     "ckpt_step_min": {
+      "dir": "../ax1wm_reacher_q1s1_seed15",
+      "min": 500000
+     }
+    },
+    {
+     "file_contains": {
+      "file": "../ax1wm_reacher_q1s1_seed15/OFFLINE_FIT_PROGRESS",
+      "pattern": "update=500000\ntotal_updates=500000"
+     }
+    }
+   ]
+  },
+  {
+   "stage": "fit_adapt_task",
+   "kind": "axis1_fit_adapt",
+   "target": "vast",
+   "run_id": "adapt_ax1q1s1_reacher_seed16_ckpt500000",
+   "cmd": "DV3_TASK_NAME=adapt_ax1q1s1_reacher_seed16_ckpt500000 RUN_ID=adapt_ax1q1s1_reacher_seed16_ckpt500000 WM_RUN=ax1wm_reacher_q1s1_seed16 TASK=dmc_reacher_hard SEED=16 REPLAY=${RUNROOT}/axis1_reacher/q1/side1 UPDATES=500000 STEPS=1.25e5 AXIS1_EXPL_MODE=task AXIS1_BASE_CONFIG=dmc_proprio AXIS1_ADAPT_CONFIG=frozen_readout DREAMER_DISABLE_GPUFLAGS=1 bash -c 'scores=$(wc -l < \"$RUNROOT/$RUN_ID/scores.jsonl\" 2>/dev/null || echo 0); if [ -f \"$RUNROOT/$RUN_ID/ADAPT_DONE\" ] && [ \"$scores\" -ge 100 ]; then echo \"SKIP done: $RUN_ID scores=$scores\"; else bash scripts/axis1.sbatch; fi'",
+   "vars": {
+    "side": 1,
+    "seed": 16,
+    "run_id": "adapt_ax1q1s1_reacher_seed16_ckpt500000"
+   },
+   "logdir": "adapt_ax1q1s1_reacher_seed16_ckpt500000",
+   "outputs": [
+    "adapt_ax1q1s1_reacher_seed16_ckpt500000",
+    "ax1wm_reacher_q1s1_seed16"
+   ],
+   "inputs": [
+    "axis1_reacher/q1/side1",
+    "axis1_reacher/q1/manifest.json"
+   ],
+   "done_when": [
+    {
+     "exists": "ADAPT_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 100
+     }
+    },
+    {
+     "ckpt_step_min": {
+      "dir": "../ax1wm_reacher_q1s1_seed16",
+      "min": 500000
+     }
+    },
+    {
+     "file_contains": {
+      "file": "../ax1wm_reacher_q1s1_seed16/OFFLINE_FIT_PROGRESS",
+      "pattern": "update=500000\ntotal_updates=500000"
+     }
+    }
+   ]
+  },
+  {
+   "stage": "fit_adapt_apt",
+   "kind": "axis1_fit_adapt",
+   "target": "vast",
+   "run_id": "adapt_ax1fq1s0_reacher_seed1_ckpt500000",
+   "cmd": "DV3_TASK_NAME=adapt_ax1fq1s0_reacher_seed1_ckpt500000 RUN_ID=adapt_ax1fq1s0_reacher_seed1_ckpt500000 WM_RUN=ax1wm_reacher_fq1s0_seed1 TASK=dmc_reacher_hard SEED=1 REPLAY=${RUNROOT}/axis1_reacher/q1/side0 UPDATES=500000 STEPS=1.25e5 AXIS1_EXPL_MODE=apt AXIS1_BASE_CONFIG=dmc_proprio AXIS1_ADAPT_CONFIG=frozen_readout DREAMER_DISABLE_GPUFLAGS=1 bash -c 'scores=$(wc -l < \"$RUNROOT/$RUN_ID/scores.jsonl\" 2>/dev/null || echo 0); if [ -f \"$RUNROOT/$RUN_ID/ADAPT_DONE\" ] && [ \"$scores\" -ge 100 ]; then echo \"SKIP done: $RUN_ID scores=$scores\"; else bash scripts/axis1.sbatch; fi'",
+   "vars": {
+    "side": 0,
+    "seed": 1,
+    "run_id": "adapt_ax1fq1s0_reacher_seed1_ckpt500000"
+   },
+   "logdir": "adapt_ax1fq1s0_reacher_seed1_ckpt500000",
+   "outputs": [
+    "adapt_ax1fq1s0_reacher_seed1_ckpt500000",
+    "ax1wm_reacher_fq1s0_seed1"
+   ],
+   "inputs": [
+    "axis1_reacher/q1/side0",
+    "axis1_reacher/q1/manifest.json"
+   ],
+   "done_when": [
+    {
+     "exists": "ADAPT_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 100
+     }
+    },
+    {
+     "ckpt_step_min": {
+      "dir": "../ax1wm_reacher_fq1s0_seed1",
+      "min": 500000
+     }
+    },
+    {
+     "file_contains": {
+      "file": "../ax1wm_reacher_fq1s0_seed1/OFFLINE_FIT_PROGRESS",
+      "pattern": "update=500000\ntotal_updates=500000"
+     }
+    }
+   ]
+  },
+  {
+   "stage": "fit_adapt_apt",
+   "kind": "axis1_fit_adapt",
+   "target": "vast",
+   "run_id": "adapt_ax1fq1s0_reacher_seed2_ckpt500000",
+   "cmd": "DV3_TASK_NAME=adapt_ax1fq1s0_reacher_seed2_ckpt500000 RUN_ID=adapt_ax1fq1s0_reacher_seed2_ckpt500000 WM_RUN=ax1wm_reacher_fq1s0_seed2 TASK=dmc_reacher_hard SEED=2 REPLAY=${RUNROOT}/axis1_reacher/q1/side0 UPDATES=500000 STEPS=1.25e5 AXIS1_EXPL_MODE=apt AXIS1_BASE_CONFIG=dmc_proprio AXIS1_ADAPT_CONFIG=frozen_readout DREAMER_DISABLE_GPUFLAGS=1 bash -c 'scores=$(wc -l < \"$RUNROOT/$RUN_ID/scores.jsonl\" 2>/dev/null || echo 0); if [ -f \"$RUNROOT/$RUN_ID/ADAPT_DONE\" ] && [ \"$scores\" -ge 100 ]; then echo \"SKIP done: $RUN_ID scores=$scores\"; else bash scripts/axis1.sbatch; fi'",
+   "vars": {
+    "side": 0,
+    "seed": 2,
+    "run_id": "adapt_ax1fq1s0_reacher_seed2_ckpt500000"
+   },
+   "logdir": "adapt_ax1fq1s0_reacher_seed2_ckpt500000",
+   "outputs": [
+    "adapt_ax1fq1s0_reacher_seed2_ckpt500000",
+    "ax1wm_reacher_fq1s0_seed2"
+   ],
+   "inputs": [
+    "axis1_reacher/q1/side0",
+    "axis1_reacher/q1/manifest.json"
+   ],
+   "done_when": [
+    {
+     "exists": "ADAPT_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 100
+     }
+    },
+    {
+     "ckpt_step_min": {
+      "dir": "../ax1wm_reacher_fq1s0_seed2",
+      "min": 500000
+     }
+    },
+    {
+     "file_contains": {
+      "file": "../ax1wm_reacher_fq1s0_seed2/OFFLINE_FIT_PROGRESS",
+      "pattern": "update=500000\ntotal_updates=500000"
+     }
+    }
+   ]
+  },
+  {
+   "stage": "fit_adapt_apt",
+   "kind": "axis1_fit_adapt",
+   "target": "vast",
+   "run_id": "adapt_ax1fq1s0_reacher_seed3_ckpt500000",
+   "cmd": "DV3_TASK_NAME=adapt_ax1fq1s0_reacher_seed3_ckpt500000 RUN_ID=adapt_ax1fq1s0_reacher_seed3_ckpt500000 WM_RUN=ax1wm_reacher_fq1s0_seed3 TASK=dmc_reacher_hard SEED=3 REPLAY=${RUNROOT}/axis1_reacher/q1/side0 UPDATES=500000 STEPS=1.25e5 AXIS1_EXPL_MODE=apt AXIS1_BASE_CONFIG=dmc_proprio AXIS1_ADAPT_CONFIG=frozen_readout DREAMER_DISABLE_GPUFLAGS=1 bash -c 'scores=$(wc -l < \"$RUNROOT/$RUN_ID/scores.jsonl\" 2>/dev/null || echo 0); if [ -f \"$RUNROOT/$RUN_ID/ADAPT_DONE\" ] && [ \"$scores\" -ge 100 ]; then echo \"SKIP done: $RUN_ID scores=$scores\"; else bash scripts/axis1.sbatch; fi'",
+   "vars": {
+    "side": 0,
+    "seed": 3,
+    "run_id": "adapt_ax1fq1s0_reacher_seed3_ckpt500000"
+   },
+   "logdir": "adapt_ax1fq1s0_reacher_seed3_ckpt500000",
+   "outputs": [
+    "adapt_ax1fq1s0_reacher_seed3_ckpt500000",
+    "ax1wm_reacher_fq1s0_seed3"
+   ],
+   "inputs": [
+    "axis1_reacher/q1/side0",
+    "axis1_reacher/q1/manifest.json"
+   ],
+   "done_when": [
+    {
+     "exists": "ADAPT_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 100
+     }
+    },
+    {
+     "ckpt_step_min": {
+      "dir": "../ax1wm_reacher_fq1s0_seed3",
+      "min": 500000
+     }
+    },
+    {
+     "file_contains": {
+      "file": "../ax1wm_reacher_fq1s0_seed3/OFFLINE_FIT_PROGRESS",
+      "pattern": "update=500000\ntotal_updates=500000"
+     }
+    }
+   ]
+  },
+  {
+   "stage": "fit_adapt_apt",
+   "kind": "axis1_fit_adapt",
+   "target": "vast",
+   "run_id": "adapt_ax1fq1s0_reacher_seed4_ckpt500000",
+   "cmd": "DV3_TASK_NAME=adapt_ax1fq1s0_reacher_seed4_ckpt500000 RUN_ID=adapt_ax1fq1s0_reacher_seed4_ckpt500000 WM_RUN=ax1wm_reacher_fq1s0_seed4 TASK=dmc_reacher_hard SEED=4 REPLAY=${RUNROOT}/axis1_reacher/q1/side0 UPDATES=500000 STEPS=1.25e5 AXIS1_EXPL_MODE=apt AXIS1_BASE_CONFIG=dmc_proprio AXIS1_ADAPT_CONFIG=frozen_readout DREAMER_DISABLE_GPUFLAGS=1 bash -c 'scores=$(wc -l < \"$RUNROOT/$RUN_ID/scores.jsonl\" 2>/dev/null || echo 0); if [ -f \"$RUNROOT/$RUN_ID/ADAPT_DONE\" ] && [ \"$scores\" -ge 100 ]; then echo \"SKIP done: $RUN_ID scores=$scores\"; else bash scripts/axis1.sbatch; fi'",
+   "vars": {
+    "side": 0,
+    "seed": 4,
+    "run_id": "adapt_ax1fq1s0_reacher_seed4_ckpt500000"
+   },
+   "logdir": "adapt_ax1fq1s0_reacher_seed4_ckpt500000",
+   "outputs": [
+    "adapt_ax1fq1s0_reacher_seed4_ckpt500000",
+    "ax1wm_reacher_fq1s0_seed4"
+   ],
+   "inputs": [
+    "axis1_reacher/q1/side0",
+    "axis1_reacher/q1/manifest.json"
+   ],
+   "done_when": [
+    {
+     "exists": "ADAPT_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 100
+     }
+    },
+    {
+     "ckpt_step_min": {
+      "dir": "../ax1wm_reacher_fq1s0_seed4",
+      "min": 500000
+     }
+    },
+    {
+     "file_contains": {
+      "file": "../ax1wm_reacher_fq1s0_seed4/OFFLINE_FIT_PROGRESS",
+      "pattern": "update=500000\ntotal_updates=500000"
+     }
+    }
+   ]
+  },
+  {
+   "stage": "fit_adapt_apt",
+   "kind": "axis1_fit_adapt",
+   "target": "vast",
+   "run_id": "adapt_ax1fq1s0_reacher_seed5_ckpt500000",
+   "cmd": "DV3_TASK_NAME=adapt_ax1fq1s0_reacher_seed5_ckpt500000 RUN_ID=adapt_ax1fq1s0_reacher_seed5_ckpt500000 WM_RUN=ax1wm_reacher_fq1s0_seed5 TASK=dmc_reacher_hard SEED=5 REPLAY=${RUNROOT}/axis1_reacher/q1/side0 UPDATES=500000 STEPS=1.25e5 AXIS1_EXPL_MODE=apt AXIS1_BASE_CONFIG=dmc_proprio AXIS1_ADAPT_CONFIG=frozen_readout DREAMER_DISABLE_GPUFLAGS=1 bash -c 'scores=$(wc -l < \"$RUNROOT/$RUN_ID/scores.jsonl\" 2>/dev/null || echo 0); if [ -f \"$RUNROOT/$RUN_ID/ADAPT_DONE\" ] && [ \"$scores\" -ge 100 ]; then echo \"SKIP done: $RUN_ID scores=$scores\"; else bash scripts/axis1.sbatch; fi'",
+   "vars": {
+    "side": 0,
+    "seed": 5,
+    "run_id": "adapt_ax1fq1s0_reacher_seed5_ckpt500000"
+   },
+   "logdir": "adapt_ax1fq1s0_reacher_seed5_ckpt500000",
+   "outputs": [
+    "adapt_ax1fq1s0_reacher_seed5_ckpt500000",
+    "ax1wm_reacher_fq1s0_seed5"
+   ],
+   "inputs": [
+    "axis1_reacher/q1/side0",
+    "axis1_reacher/q1/manifest.json"
+   ],
+   "done_when": [
+    {
+     "exists": "ADAPT_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 100
+     }
+    },
+    {
+     "ckpt_step_min": {
+      "dir": "../ax1wm_reacher_fq1s0_seed5",
+      "min": 500000
+     }
+    },
+    {
+     "file_contains": {
+      "file": "../ax1wm_reacher_fq1s0_seed5/OFFLINE_FIT_PROGRESS",
+      "pattern": "update=500000\ntotal_updates=500000"
+     }
+    }
+   ]
+  },
+  {
+   "stage": "fit_adapt_apt",
+   "kind": "axis1_fit_adapt",
+   "target": "vast",
+   "run_id": "adapt_ax1fq1s0_reacher_seed6_ckpt500000",
+   "cmd": "DV3_TASK_NAME=adapt_ax1fq1s0_reacher_seed6_ckpt500000 RUN_ID=adapt_ax1fq1s0_reacher_seed6_ckpt500000 WM_RUN=ax1wm_reacher_fq1s0_seed6 TASK=dmc_reacher_hard SEED=6 REPLAY=${RUNROOT}/axis1_reacher/q1/side0 UPDATES=500000 STEPS=1.25e5 AXIS1_EXPL_MODE=apt AXIS1_BASE_CONFIG=dmc_proprio AXIS1_ADAPT_CONFIG=frozen_readout DREAMER_DISABLE_GPUFLAGS=1 bash -c 'scores=$(wc -l < \"$RUNROOT/$RUN_ID/scores.jsonl\" 2>/dev/null || echo 0); if [ -f \"$RUNROOT/$RUN_ID/ADAPT_DONE\" ] && [ \"$scores\" -ge 100 ]; then echo \"SKIP done: $RUN_ID scores=$scores\"; else bash scripts/axis1.sbatch; fi'",
+   "vars": {
+    "side": 0,
+    "seed": 6,
+    "run_id": "adapt_ax1fq1s0_reacher_seed6_ckpt500000"
+   },
+   "logdir": "adapt_ax1fq1s0_reacher_seed6_ckpt500000",
+   "outputs": [
+    "adapt_ax1fq1s0_reacher_seed6_ckpt500000",
+    "ax1wm_reacher_fq1s0_seed6"
+   ],
+   "inputs": [
+    "axis1_reacher/q1/side0",
+    "axis1_reacher/q1/manifest.json"
+   ],
+   "done_when": [
+    {
+     "exists": "ADAPT_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 100
+     }
+    },
+    {
+     "ckpt_step_min": {
+      "dir": "../ax1wm_reacher_fq1s0_seed6",
+      "min": 500000
+     }
+    },
+    {
+     "file_contains": {
+      "file": "../ax1wm_reacher_fq1s0_seed6/OFFLINE_FIT_PROGRESS",
+      "pattern": "update=500000\ntotal_updates=500000"
+     }
+    }
+   ]
+  },
+  {
+   "stage": "fit_adapt_apt",
+   "kind": "axis1_fit_adapt",
+   "target": "vast",
+   "run_id": "adapt_ax1fq1s0_reacher_seed7_ckpt500000",
+   "cmd": "DV3_TASK_NAME=adapt_ax1fq1s0_reacher_seed7_ckpt500000 RUN_ID=adapt_ax1fq1s0_reacher_seed7_ckpt500000 WM_RUN=ax1wm_reacher_fq1s0_seed7 TASK=dmc_reacher_hard SEED=7 REPLAY=${RUNROOT}/axis1_reacher/q1/side0 UPDATES=500000 STEPS=1.25e5 AXIS1_EXPL_MODE=apt AXIS1_BASE_CONFIG=dmc_proprio AXIS1_ADAPT_CONFIG=frozen_readout DREAMER_DISABLE_GPUFLAGS=1 bash -c 'scores=$(wc -l < \"$RUNROOT/$RUN_ID/scores.jsonl\" 2>/dev/null || echo 0); if [ -f \"$RUNROOT/$RUN_ID/ADAPT_DONE\" ] && [ \"$scores\" -ge 100 ]; then echo \"SKIP done: $RUN_ID scores=$scores\"; else bash scripts/axis1.sbatch; fi'",
+   "vars": {
+    "side": 0,
+    "seed": 7,
+    "run_id": "adapt_ax1fq1s0_reacher_seed7_ckpt500000"
+   },
+   "logdir": "adapt_ax1fq1s0_reacher_seed7_ckpt500000",
+   "outputs": [
+    "adapt_ax1fq1s0_reacher_seed7_ckpt500000",
+    "ax1wm_reacher_fq1s0_seed7"
+   ],
+   "inputs": [
+    "axis1_reacher/q1/side0",
+    "axis1_reacher/q1/manifest.json"
+   ],
+   "done_when": [
+    {
+     "exists": "ADAPT_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 100
+     }
+    },
+    {
+     "ckpt_step_min": {
+      "dir": "../ax1wm_reacher_fq1s0_seed7",
+      "min": 500000
+     }
+    },
+    {
+     "file_contains": {
+      "file": "../ax1wm_reacher_fq1s0_seed7/OFFLINE_FIT_PROGRESS",
+      "pattern": "update=500000\ntotal_updates=500000"
+     }
+    }
+   ]
+  },
+  {
+   "stage": "fit_adapt_apt",
+   "kind": "axis1_fit_adapt",
+   "target": "vast",
+   "run_id": "adapt_ax1fq1s0_reacher_seed8_ckpt500000",
+   "cmd": "DV3_TASK_NAME=adapt_ax1fq1s0_reacher_seed8_ckpt500000 RUN_ID=adapt_ax1fq1s0_reacher_seed8_ckpt500000 WM_RUN=ax1wm_reacher_fq1s0_seed8 TASK=dmc_reacher_hard SEED=8 REPLAY=${RUNROOT}/axis1_reacher/q1/side0 UPDATES=500000 STEPS=1.25e5 AXIS1_EXPL_MODE=apt AXIS1_BASE_CONFIG=dmc_proprio AXIS1_ADAPT_CONFIG=frozen_readout DREAMER_DISABLE_GPUFLAGS=1 bash -c 'scores=$(wc -l < \"$RUNROOT/$RUN_ID/scores.jsonl\" 2>/dev/null || echo 0); if [ -f \"$RUNROOT/$RUN_ID/ADAPT_DONE\" ] && [ \"$scores\" -ge 100 ]; then echo \"SKIP done: $RUN_ID scores=$scores\"; else bash scripts/axis1.sbatch; fi'",
+   "vars": {
+    "side": 0,
+    "seed": 8,
+    "run_id": "adapt_ax1fq1s0_reacher_seed8_ckpt500000"
+   },
+   "logdir": "adapt_ax1fq1s0_reacher_seed8_ckpt500000",
+   "outputs": [
+    "adapt_ax1fq1s0_reacher_seed8_ckpt500000",
+    "ax1wm_reacher_fq1s0_seed8"
+   ],
+   "inputs": [
+    "axis1_reacher/q1/side0",
+    "axis1_reacher/q1/manifest.json"
+   ],
+   "done_when": [
+    {
+     "exists": "ADAPT_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 100
+     }
+    },
+    {
+     "ckpt_step_min": {
+      "dir": "../ax1wm_reacher_fq1s0_seed8",
+      "min": 500000
+     }
+    },
+    {
+     "file_contains": {
+      "file": "../ax1wm_reacher_fq1s0_seed8/OFFLINE_FIT_PROGRESS",
+      "pattern": "update=500000\ntotal_updates=500000"
+     }
+    }
+   ]
+  },
+  {
+   "stage": "fit_adapt_apt",
+   "kind": "axis1_fit_adapt",
+   "target": "vast",
+   "run_id": "adapt_ax1fq1s0_reacher_seed9_ckpt500000",
+   "cmd": "DV3_TASK_NAME=adapt_ax1fq1s0_reacher_seed9_ckpt500000 RUN_ID=adapt_ax1fq1s0_reacher_seed9_ckpt500000 WM_RUN=ax1wm_reacher_fq1s0_seed9 TASK=dmc_reacher_hard SEED=9 REPLAY=${RUNROOT}/axis1_reacher/q1/side0 UPDATES=500000 STEPS=1.25e5 AXIS1_EXPL_MODE=apt AXIS1_BASE_CONFIG=dmc_proprio AXIS1_ADAPT_CONFIG=frozen_readout DREAMER_DISABLE_GPUFLAGS=1 bash -c 'scores=$(wc -l < \"$RUNROOT/$RUN_ID/scores.jsonl\" 2>/dev/null || echo 0); if [ -f \"$RUNROOT/$RUN_ID/ADAPT_DONE\" ] && [ \"$scores\" -ge 100 ]; then echo \"SKIP done: $RUN_ID scores=$scores\"; else bash scripts/axis1.sbatch; fi'",
+   "vars": {
+    "side": 0,
+    "seed": 9,
+    "run_id": "adapt_ax1fq1s0_reacher_seed9_ckpt500000"
+   },
+   "logdir": "adapt_ax1fq1s0_reacher_seed9_ckpt500000",
+   "outputs": [
+    "adapt_ax1fq1s0_reacher_seed9_ckpt500000",
+    "ax1wm_reacher_fq1s0_seed9"
+   ],
+   "inputs": [
+    "axis1_reacher/q1/side0",
+    "axis1_reacher/q1/manifest.json"
+   ],
+   "done_when": [
+    {
+     "exists": "ADAPT_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 100
+     }
+    },
+    {
+     "ckpt_step_min": {
+      "dir": "../ax1wm_reacher_fq1s0_seed9",
+      "min": 500000
+     }
+    },
+    {
+     "file_contains": {
+      "file": "../ax1wm_reacher_fq1s0_seed9/OFFLINE_FIT_PROGRESS",
+      "pattern": "update=500000\ntotal_updates=500000"
+     }
+    }
+   ]
+  },
+  {
+   "stage": "fit_adapt_apt",
+   "kind": "axis1_fit_adapt",
+   "target": "vast",
+   "run_id": "adapt_ax1fq1s0_reacher_seed10_ckpt500000",
+   "cmd": "DV3_TASK_NAME=adapt_ax1fq1s0_reacher_seed10_ckpt500000 RUN_ID=adapt_ax1fq1s0_reacher_seed10_ckpt500000 WM_RUN=ax1wm_reacher_fq1s0_seed10 TASK=dmc_reacher_hard SEED=10 REPLAY=${RUNROOT}/axis1_reacher/q1/side0 UPDATES=500000 STEPS=1.25e5 AXIS1_EXPL_MODE=apt AXIS1_BASE_CONFIG=dmc_proprio AXIS1_ADAPT_CONFIG=frozen_readout DREAMER_DISABLE_GPUFLAGS=1 bash -c 'scores=$(wc -l < \"$RUNROOT/$RUN_ID/scores.jsonl\" 2>/dev/null || echo 0); if [ -f \"$RUNROOT/$RUN_ID/ADAPT_DONE\" ] && [ \"$scores\" -ge 100 ]; then echo \"SKIP done: $RUN_ID scores=$scores\"; else bash scripts/axis1.sbatch; fi'",
+   "vars": {
+    "side": 0,
+    "seed": 10,
+    "run_id": "adapt_ax1fq1s0_reacher_seed10_ckpt500000"
+   },
+   "logdir": "adapt_ax1fq1s0_reacher_seed10_ckpt500000",
+   "outputs": [
+    "adapt_ax1fq1s0_reacher_seed10_ckpt500000",
+    "ax1wm_reacher_fq1s0_seed10"
+   ],
+   "inputs": [
+    "axis1_reacher/q1/side0",
+    "axis1_reacher/q1/manifest.json"
+   ],
+   "done_when": [
+    {
+     "exists": "ADAPT_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 100
+     }
+    },
+    {
+     "ckpt_step_min": {
+      "dir": "../ax1wm_reacher_fq1s0_seed10",
+      "min": 500000
+     }
+    },
+    {
+     "file_contains": {
+      "file": "../ax1wm_reacher_fq1s0_seed10/OFFLINE_FIT_PROGRESS",
+      "pattern": "update=500000\ntotal_updates=500000"
+     }
+    }
+   ]
+  },
+  {
+   "stage": "fit_adapt_apt",
+   "kind": "axis1_fit_adapt",
+   "target": "vast",
+   "run_id": "adapt_ax1fq1s0_reacher_seed11_ckpt500000",
+   "cmd": "DV3_TASK_NAME=adapt_ax1fq1s0_reacher_seed11_ckpt500000 RUN_ID=adapt_ax1fq1s0_reacher_seed11_ckpt500000 WM_RUN=ax1wm_reacher_fq1s0_seed11 TASK=dmc_reacher_hard SEED=11 REPLAY=${RUNROOT}/axis1_reacher/q1/side0 UPDATES=500000 STEPS=1.25e5 AXIS1_EXPL_MODE=apt AXIS1_BASE_CONFIG=dmc_proprio AXIS1_ADAPT_CONFIG=frozen_readout DREAMER_DISABLE_GPUFLAGS=1 bash -c 'scores=$(wc -l < \"$RUNROOT/$RUN_ID/scores.jsonl\" 2>/dev/null || echo 0); if [ -f \"$RUNROOT/$RUN_ID/ADAPT_DONE\" ] && [ \"$scores\" -ge 100 ]; then echo \"SKIP done: $RUN_ID scores=$scores\"; else bash scripts/axis1.sbatch; fi'",
+   "vars": {
+    "side": 0,
+    "seed": 11,
+    "run_id": "adapt_ax1fq1s0_reacher_seed11_ckpt500000"
+   },
+   "logdir": "adapt_ax1fq1s0_reacher_seed11_ckpt500000",
+   "outputs": [
+    "adapt_ax1fq1s0_reacher_seed11_ckpt500000",
+    "ax1wm_reacher_fq1s0_seed11"
+   ],
+   "inputs": [
+    "axis1_reacher/q1/side0",
+    "axis1_reacher/q1/manifest.json"
+   ],
+   "done_when": [
+    {
+     "exists": "ADAPT_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 100
+     }
+    },
+    {
+     "ckpt_step_min": {
+      "dir": "../ax1wm_reacher_fq1s0_seed11",
+      "min": 500000
+     }
+    },
+    {
+     "file_contains": {
+      "file": "../ax1wm_reacher_fq1s0_seed11/OFFLINE_FIT_PROGRESS",
+      "pattern": "update=500000\ntotal_updates=500000"
+     }
+    }
+   ]
+  },
+  {
+   "stage": "fit_adapt_apt",
+   "kind": "axis1_fit_adapt",
+   "target": "vast",
+   "run_id": "adapt_ax1fq1s0_reacher_seed12_ckpt500000",
+   "cmd": "DV3_TASK_NAME=adapt_ax1fq1s0_reacher_seed12_ckpt500000 RUN_ID=adapt_ax1fq1s0_reacher_seed12_ckpt500000 WM_RUN=ax1wm_reacher_fq1s0_seed12 TASK=dmc_reacher_hard SEED=12 REPLAY=${RUNROOT}/axis1_reacher/q1/side0 UPDATES=500000 STEPS=1.25e5 AXIS1_EXPL_MODE=apt AXIS1_BASE_CONFIG=dmc_proprio AXIS1_ADAPT_CONFIG=frozen_readout DREAMER_DISABLE_GPUFLAGS=1 bash -c 'scores=$(wc -l < \"$RUNROOT/$RUN_ID/scores.jsonl\" 2>/dev/null || echo 0); if [ -f \"$RUNROOT/$RUN_ID/ADAPT_DONE\" ] && [ \"$scores\" -ge 100 ]; then echo \"SKIP done: $RUN_ID scores=$scores\"; else bash scripts/axis1.sbatch; fi'",
+   "vars": {
+    "side": 0,
+    "seed": 12,
+    "run_id": "adapt_ax1fq1s0_reacher_seed12_ckpt500000"
+   },
+   "logdir": "adapt_ax1fq1s0_reacher_seed12_ckpt500000",
+   "outputs": [
+    "adapt_ax1fq1s0_reacher_seed12_ckpt500000",
+    "ax1wm_reacher_fq1s0_seed12"
+   ],
+   "inputs": [
+    "axis1_reacher/q1/side0",
+    "axis1_reacher/q1/manifest.json"
+   ],
+   "done_when": [
+    {
+     "exists": "ADAPT_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 100
+     }
+    },
+    {
+     "ckpt_step_min": {
+      "dir": "../ax1wm_reacher_fq1s0_seed12",
+      "min": 500000
+     }
+    },
+    {
+     "file_contains": {
+      "file": "../ax1wm_reacher_fq1s0_seed12/OFFLINE_FIT_PROGRESS",
+      "pattern": "update=500000\ntotal_updates=500000"
+     }
+    }
+   ]
+  },
+  {
+   "stage": "fit_adapt_apt",
+   "kind": "axis1_fit_adapt",
+   "target": "vast",
+   "run_id": "adapt_ax1fq1s0_reacher_seed13_ckpt500000",
+   "cmd": "DV3_TASK_NAME=adapt_ax1fq1s0_reacher_seed13_ckpt500000 RUN_ID=adapt_ax1fq1s0_reacher_seed13_ckpt500000 WM_RUN=ax1wm_reacher_fq1s0_seed13 TASK=dmc_reacher_hard SEED=13 REPLAY=${RUNROOT}/axis1_reacher/q1/side0 UPDATES=500000 STEPS=1.25e5 AXIS1_EXPL_MODE=apt AXIS1_BASE_CONFIG=dmc_proprio AXIS1_ADAPT_CONFIG=frozen_readout DREAMER_DISABLE_GPUFLAGS=1 bash -c 'scores=$(wc -l < \"$RUNROOT/$RUN_ID/scores.jsonl\" 2>/dev/null || echo 0); if [ -f \"$RUNROOT/$RUN_ID/ADAPT_DONE\" ] && [ \"$scores\" -ge 100 ]; then echo \"SKIP done: $RUN_ID scores=$scores\"; else bash scripts/axis1.sbatch; fi'",
+   "vars": {
+    "side": 0,
+    "seed": 13,
+    "run_id": "adapt_ax1fq1s0_reacher_seed13_ckpt500000"
+   },
+   "logdir": "adapt_ax1fq1s0_reacher_seed13_ckpt500000",
+   "outputs": [
+    "adapt_ax1fq1s0_reacher_seed13_ckpt500000",
+    "ax1wm_reacher_fq1s0_seed13"
+   ],
+   "inputs": [
+    "axis1_reacher/q1/side0",
+    "axis1_reacher/q1/manifest.json"
+   ],
+   "done_when": [
+    {
+     "exists": "ADAPT_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 100
+     }
+    },
+    {
+     "ckpt_step_min": {
+      "dir": "../ax1wm_reacher_fq1s0_seed13",
+      "min": 500000
+     }
+    },
+    {
+     "file_contains": {
+      "file": "../ax1wm_reacher_fq1s0_seed13/OFFLINE_FIT_PROGRESS",
+      "pattern": "update=500000\ntotal_updates=500000"
+     }
+    }
+   ]
+  },
+  {
+   "stage": "fit_adapt_apt",
+   "kind": "axis1_fit_adapt",
+   "target": "vast",
+   "run_id": "adapt_ax1fq1s0_reacher_seed14_ckpt500000",
+   "cmd": "DV3_TASK_NAME=adapt_ax1fq1s0_reacher_seed14_ckpt500000 RUN_ID=adapt_ax1fq1s0_reacher_seed14_ckpt500000 WM_RUN=ax1wm_reacher_fq1s0_seed14 TASK=dmc_reacher_hard SEED=14 REPLAY=${RUNROOT}/axis1_reacher/q1/side0 UPDATES=500000 STEPS=1.25e5 AXIS1_EXPL_MODE=apt AXIS1_BASE_CONFIG=dmc_proprio AXIS1_ADAPT_CONFIG=frozen_readout DREAMER_DISABLE_GPUFLAGS=1 bash -c 'scores=$(wc -l < \"$RUNROOT/$RUN_ID/scores.jsonl\" 2>/dev/null || echo 0); if [ -f \"$RUNROOT/$RUN_ID/ADAPT_DONE\" ] && [ \"$scores\" -ge 100 ]; then echo \"SKIP done: $RUN_ID scores=$scores\"; else bash scripts/axis1.sbatch; fi'",
+   "vars": {
+    "side": 0,
+    "seed": 14,
+    "run_id": "adapt_ax1fq1s0_reacher_seed14_ckpt500000"
+   },
+   "logdir": "adapt_ax1fq1s0_reacher_seed14_ckpt500000",
+   "outputs": [
+    "adapt_ax1fq1s0_reacher_seed14_ckpt500000",
+    "ax1wm_reacher_fq1s0_seed14"
+   ],
+   "inputs": [
+    "axis1_reacher/q1/side0",
+    "axis1_reacher/q1/manifest.json"
+   ],
+   "done_when": [
+    {
+     "exists": "ADAPT_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 100
+     }
+    },
+    {
+     "ckpt_step_min": {
+      "dir": "../ax1wm_reacher_fq1s0_seed14",
+      "min": 500000
+     }
+    },
+    {
+     "file_contains": {
+      "file": "../ax1wm_reacher_fq1s0_seed14/OFFLINE_FIT_PROGRESS",
+      "pattern": "update=500000\ntotal_updates=500000"
+     }
+    }
+   ]
+  },
+  {
+   "stage": "fit_adapt_apt",
+   "kind": "axis1_fit_adapt",
+   "target": "vast",
+   "run_id": "adapt_ax1fq1s0_reacher_seed15_ckpt500000",
+   "cmd": "DV3_TASK_NAME=adapt_ax1fq1s0_reacher_seed15_ckpt500000 RUN_ID=adapt_ax1fq1s0_reacher_seed15_ckpt500000 WM_RUN=ax1wm_reacher_fq1s0_seed15 TASK=dmc_reacher_hard SEED=15 REPLAY=${RUNROOT}/axis1_reacher/q1/side0 UPDATES=500000 STEPS=1.25e5 AXIS1_EXPL_MODE=apt AXIS1_BASE_CONFIG=dmc_proprio AXIS1_ADAPT_CONFIG=frozen_readout DREAMER_DISABLE_GPUFLAGS=1 bash -c 'scores=$(wc -l < \"$RUNROOT/$RUN_ID/scores.jsonl\" 2>/dev/null || echo 0); if [ -f \"$RUNROOT/$RUN_ID/ADAPT_DONE\" ] && [ \"$scores\" -ge 100 ]; then echo \"SKIP done: $RUN_ID scores=$scores\"; else bash scripts/axis1.sbatch; fi'",
+   "vars": {
+    "side": 0,
+    "seed": 15,
+    "run_id": "adapt_ax1fq1s0_reacher_seed15_ckpt500000"
+   },
+   "logdir": "adapt_ax1fq1s0_reacher_seed15_ckpt500000",
+   "outputs": [
+    "adapt_ax1fq1s0_reacher_seed15_ckpt500000",
+    "ax1wm_reacher_fq1s0_seed15"
+   ],
+   "inputs": [
+    "axis1_reacher/q1/side0",
+    "axis1_reacher/q1/manifest.json"
+   ],
+   "done_when": [
+    {
+     "exists": "ADAPT_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 100
+     }
+    },
+    {
+     "ckpt_step_min": {
+      "dir": "../ax1wm_reacher_fq1s0_seed15",
+      "min": 500000
+     }
+    },
+    {
+     "file_contains": {
+      "file": "../ax1wm_reacher_fq1s0_seed15/OFFLINE_FIT_PROGRESS",
+      "pattern": "update=500000\ntotal_updates=500000"
+     }
+    }
+   ]
+  },
+  {
+   "stage": "fit_adapt_apt",
+   "kind": "axis1_fit_adapt",
+   "target": "vast",
+   "run_id": "adapt_ax1fq1s0_reacher_seed16_ckpt500000",
+   "cmd": "DV3_TASK_NAME=adapt_ax1fq1s0_reacher_seed16_ckpt500000 RUN_ID=adapt_ax1fq1s0_reacher_seed16_ckpt500000 WM_RUN=ax1wm_reacher_fq1s0_seed16 TASK=dmc_reacher_hard SEED=16 REPLAY=${RUNROOT}/axis1_reacher/q1/side0 UPDATES=500000 STEPS=1.25e5 AXIS1_EXPL_MODE=apt AXIS1_BASE_CONFIG=dmc_proprio AXIS1_ADAPT_CONFIG=frozen_readout DREAMER_DISABLE_GPUFLAGS=1 bash -c 'scores=$(wc -l < \"$RUNROOT/$RUN_ID/scores.jsonl\" 2>/dev/null || echo 0); if [ -f \"$RUNROOT/$RUN_ID/ADAPT_DONE\" ] && [ \"$scores\" -ge 100 ]; then echo \"SKIP done: $RUN_ID scores=$scores\"; else bash scripts/axis1.sbatch; fi'",
+   "vars": {
+    "side": 0,
+    "seed": 16,
+    "run_id": "adapt_ax1fq1s0_reacher_seed16_ckpt500000"
+   },
+   "logdir": "adapt_ax1fq1s0_reacher_seed16_ckpt500000",
+   "outputs": [
+    "adapt_ax1fq1s0_reacher_seed16_ckpt500000",
+    "ax1wm_reacher_fq1s0_seed16"
+   ],
+   "inputs": [
+    "axis1_reacher/q1/side0",
+    "axis1_reacher/q1/manifest.json"
+   ],
+   "done_when": [
+    {
+     "exists": "ADAPT_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 100
+     }
+    },
+    {
+     "ckpt_step_min": {
+      "dir": "../ax1wm_reacher_fq1s0_seed16",
+      "min": 500000
+     }
+    },
+    {
+     "file_contains": {
+      "file": "../ax1wm_reacher_fq1s0_seed16/OFFLINE_FIT_PROGRESS",
+      "pattern": "update=500000\ntotal_updates=500000"
+     }
+    }
+   ]
+  },
+  {
+   "stage": "fit_adapt_apt",
+   "kind": "axis1_fit_adapt",
+   "target": "vast",
+   "run_id": "adapt_ax1fq1s1_reacher_seed1_ckpt500000",
+   "cmd": "DV3_TASK_NAME=adapt_ax1fq1s1_reacher_seed1_ckpt500000 RUN_ID=adapt_ax1fq1s1_reacher_seed1_ckpt500000 WM_RUN=ax1wm_reacher_fq1s1_seed1 TASK=dmc_reacher_hard SEED=1 REPLAY=${RUNROOT}/axis1_reacher/q1/side1 UPDATES=500000 STEPS=1.25e5 AXIS1_EXPL_MODE=apt AXIS1_BASE_CONFIG=dmc_proprio AXIS1_ADAPT_CONFIG=frozen_readout DREAMER_DISABLE_GPUFLAGS=1 bash -c 'scores=$(wc -l < \"$RUNROOT/$RUN_ID/scores.jsonl\" 2>/dev/null || echo 0); if [ -f \"$RUNROOT/$RUN_ID/ADAPT_DONE\" ] && [ \"$scores\" -ge 100 ]; then echo \"SKIP done: $RUN_ID scores=$scores\"; else bash scripts/axis1.sbatch; fi'",
+   "vars": {
+    "side": 1,
+    "seed": 1,
+    "run_id": "adapt_ax1fq1s1_reacher_seed1_ckpt500000"
+   },
+   "logdir": "adapt_ax1fq1s1_reacher_seed1_ckpt500000",
+   "outputs": [
+    "adapt_ax1fq1s1_reacher_seed1_ckpt500000",
+    "ax1wm_reacher_fq1s1_seed1"
+   ],
+   "inputs": [
+    "axis1_reacher/q1/side1",
+    "axis1_reacher/q1/manifest.json"
+   ],
+   "done_when": [
+    {
+     "exists": "ADAPT_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 100
+     }
+    },
+    {
+     "ckpt_step_min": {
+      "dir": "../ax1wm_reacher_fq1s1_seed1",
+      "min": 500000
+     }
+    },
+    {
+     "file_contains": {
+      "file": "../ax1wm_reacher_fq1s1_seed1/OFFLINE_FIT_PROGRESS",
+      "pattern": "update=500000\ntotal_updates=500000"
+     }
+    }
+   ]
+  },
+  {
+   "stage": "fit_adapt_apt",
+   "kind": "axis1_fit_adapt",
+   "target": "vast",
+   "run_id": "adapt_ax1fq1s1_reacher_seed2_ckpt500000",
+   "cmd": "DV3_TASK_NAME=adapt_ax1fq1s1_reacher_seed2_ckpt500000 RUN_ID=adapt_ax1fq1s1_reacher_seed2_ckpt500000 WM_RUN=ax1wm_reacher_fq1s1_seed2 TASK=dmc_reacher_hard SEED=2 REPLAY=${RUNROOT}/axis1_reacher/q1/side1 UPDATES=500000 STEPS=1.25e5 AXIS1_EXPL_MODE=apt AXIS1_BASE_CONFIG=dmc_proprio AXIS1_ADAPT_CONFIG=frozen_readout DREAMER_DISABLE_GPUFLAGS=1 bash -c 'scores=$(wc -l < \"$RUNROOT/$RUN_ID/scores.jsonl\" 2>/dev/null || echo 0); if [ -f \"$RUNROOT/$RUN_ID/ADAPT_DONE\" ] && [ \"$scores\" -ge 100 ]; then echo \"SKIP done: $RUN_ID scores=$scores\"; else bash scripts/axis1.sbatch; fi'",
+   "vars": {
+    "side": 1,
+    "seed": 2,
+    "run_id": "adapt_ax1fq1s1_reacher_seed2_ckpt500000"
+   },
+   "logdir": "adapt_ax1fq1s1_reacher_seed2_ckpt500000",
+   "outputs": [
+    "adapt_ax1fq1s1_reacher_seed2_ckpt500000",
+    "ax1wm_reacher_fq1s1_seed2"
+   ],
+   "inputs": [
+    "axis1_reacher/q1/side1",
+    "axis1_reacher/q1/manifest.json"
+   ],
+   "done_when": [
+    {
+     "exists": "ADAPT_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 100
+     }
+    },
+    {
+     "ckpt_step_min": {
+      "dir": "../ax1wm_reacher_fq1s1_seed2",
+      "min": 500000
+     }
+    },
+    {
+     "file_contains": {
+      "file": "../ax1wm_reacher_fq1s1_seed2/OFFLINE_FIT_PROGRESS",
+      "pattern": "update=500000\ntotal_updates=500000"
+     }
+    }
+   ]
+  },
+  {
+   "stage": "fit_adapt_apt",
+   "kind": "axis1_fit_adapt",
+   "target": "vast",
+   "run_id": "adapt_ax1fq1s1_reacher_seed3_ckpt500000",
+   "cmd": "DV3_TASK_NAME=adapt_ax1fq1s1_reacher_seed3_ckpt500000 RUN_ID=adapt_ax1fq1s1_reacher_seed3_ckpt500000 WM_RUN=ax1wm_reacher_fq1s1_seed3 TASK=dmc_reacher_hard SEED=3 REPLAY=${RUNROOT}/axis1_reacher/q1/side1 UPDATES=500000 STEPS=1.25e5 AXIS1_EXPL_MODE=apt AXIS1_BASE_CONFIG=dmc_proprio AXIS1_ADAPT_CONFIG=frozen_readout DREAMER_DISABLE_GPUFLAGS=1 bash -c 'scores=$(wc -l < \"$RUNROOT/$RUN_ID/scores.jsonl\" 2>/dev/null || echo 0); if [ -f \"$RUNROOT/$RUN_ID/ADAPT_DONE\" ] && [ \"$scores\" -ge 100 ]; then echo \"SKIP done: $RUN_ID scores=$scores\"; else bash scripts/axis1.sbatch; fi'",
+   "vars": {
+    "side": 1,
+    "seed": 3,
+    "run_id": "adapt_ax1fq1s1_reacher_seed3_ckpt500000"
+   },
+   "logdir": "adapt_ax1fq1s1_reacher_seed3_ckpt500000",
+   "outputs": [
+    "adapt_ax1fq1s1_reacher_seed3_ckpt500000",
+    "ax1wm_reacher_fq1s1_seed3"
+   ],
+   "inputs": [
+    "axis1_reacher/q1/side1",
+    "axis1_reacher/q1/manifest.json"
+   ],
+   "done_when": [
+    {
+     "exists": "ADAPT_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 100
+     }
+    },
+    {
+     "ckpt_step_min": {
+      "dir": "../ax1wm_reacher_fq1s1_seed3",
+      "min": 500000
+     }
+    },
+    {
+     "file_contains": {
+      "file": "../ax1wm_reacher_fq1s1_seed3/OFFLINE_FIT_PROGRESS",
+      "pattern": "update=500000\ntotal_updates=500000"
+     }
+    }
+   ]
+  },
+  {
+   "stage": "fit_adapt_apt",
+   "kind": "axis1_fit_adapt",
+   "target": "vast",
+   "run_id": "adapt_ax1fq1s1_reacher_seed4_ckpt500000",
+   "cmd": "DV3_TASK_NAME=adapt_ax1fq1s1_reacher_seed4_ckpt500000 RUN_ID=adapt_ax1fq1s1_reacher_seed4_ckpt500000 WM_RUN=ax1wm_reacher_fq1s1_seed4 TASK=dmc_reacher_hard SEED=4 REPLAY=${RUNROOT}/axis1_reacher/q1/side1 UPDATES=500000 STEPS=1.25e5 AXIS1_EXPL_MODE=apt AXIS1_BASE_CONFIG=dmc_proprio AXIS1_ADAPT_CONFIG=frozen_readout DREAMER_DISABLE_GPUFLAGS=1 bash -c 'scores=$(wc -l < \"$RUNROOT/$RUN_ID/scores.jsonl\" 2>/dev/null || echo 0); if [ -f \"$RUNROOT/$RUN_ID/ADAPT_DONE\" ] && [ \"$scores\" -ge 100 ]; then echo \"SKIP done: $RUN_ID scores=$scores\"; else bash scripts/axis1.sbatch; fi'",
+   "vars": {
+    "side": 1,
+    "seed": 4,
+    "run_id": "adapt_ax1fq1s1_reacher_seed4_ckpt500000"
+   },
+   "logdir": "adapt_ax1fq1s1_reacher_seed4_ckpt500000",
+   "outputs": [
+    "adapt_ax1fq1s1_reacher_seed4_ckpt500000",
+    "ax1wm_reacher_fq1s1_seed4"
+   ],
+   "inputs": [
+    "axis1_reacher/q1/side1",
+    "axis1_reacher/q1/manifest.json"
+   ],
+   "done_when": [
+    {
+     "exists": "ADAPT_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 100
+     }
+    },
+    {
+     "ckpt_step_min": {
+      "dir": "../ax1wm_reacher_fq1s1_seed4",
+      "min": 500000
+     }
+    },
+    {
+     "file_contains": {
+      "file": "../ax1wm_reacher_fq1s1_seed4/OFFLINE_FIT_PROGRESS",
+      "pattern": "update=500000\ntotal_updates=500000"
+     }
+    }
+   ]
+  },
+  {
+   "stage": "fit_adapt_apt",
+   "kind": "axis1_fit_adapt",
+   "target": "vast",
+   "run_id": "adapt_ax1fq1s1_reacher_seed5_ckpt500000",
+   "cmd": "DV3_TASK_NAME=adapt_ax1fq1s1_reacher_seed5_ckpt500000 RUN_ID=adapt_ax1fq1s1_reacher_seed5_ckpt500000 WM_RUN=ax1wm_reacher_fq1s1_seed5 TASK=dmc_reacher_hard SEED=5 REPLAY=${RUNROOT}/axis1_reacher/q1/side1 UPDATES=500000 STEPS=1.25e5 AXIS1_EXPL_MODE=apt AXIS1_BASE_CONFIG=dmc_proprio AXIS1_ADAPT_CONFIG=frozen_readout DREAMER_DISABLE_GPUFLAGS=1 bash -c 'scores=$(wc -l < \"$RUNROOT/$RUN_ID/scores.jsonl\" 2>/dev/null || echo 0); if [ -f \"$RUNROOT/$RUN_ID/ADAPT_DONE\" ] && [ \"$scores\" -ge 100 ]; then echo \"SKIP done: $RUN_ID scores=$scores\"; else bash scripts/axis1.sbatch; fi'",
+   "vars": {
+    "side": 1,
+    "seed": 5,
+    "run_id": "adapt_ax1fq1s1_reacher_seed5_ckpt500000"
+   },
+   "logdir": "adapt_ax1fq1s1_reacher_seed5_ckpt500000",
+   "outputs": [
+    "adapt_ax1fq1s1_reacher_seed5_ckpt500000",
+    "ax1wm_reacher_fq1s1_seed5"
+   ],
+   "inputs": [
+    "axis1_reacher/q1/side1",
+    "axis1_reacher/q1/manifest.json"
+   ],
+   "done_when": [
+    {
+     "exists": "ADAPT_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 100
+     }
+    },
+    {
+     "ckpt_step_min": {
+      "dir": "../ax1wm_reacher_fq1s1_seed5",
+      "min": 500000
+     }
+    },
+    {
+     "file_contains": {
+      "file": "../ax1wm_reacher_fq1s1_seed5/OFFLINE_FIT_PROGRESS",
+      "pattern": "update=500000\ntotal_updates=500000"
+     }
+    }
+   ]
+  },
+  {
+   "stage": "fit_adapt_apt",
+   "kind": "axis1_fit_adapt",
+   "target": "vast",
+   "run_id": "adapt_ax1fq1s1_reacher_seed6_ckpt500000",
+   "cmd": "DV3_TASK_NAME=adapt_ax1fq1s1_reacher_seed6_ckpt500000 RUN_ID=adapt_ax1fq1s1_reacher_seed6_ckpt500000 WM_RUN=ax1wm_reacher_fq1s1_seed6 TASK=dmc_reacher_hard SEED=6 REPLAY=${RUNROOT}/axis1_reacher/q1/side1 UPDATES=500000 STEPS=1.25e5 AXIS1_EXPL_MODE=apt AXIS1_BASE_CONFIG=dmc_proprio AXIS1_ADAPT_CONFIG=frozen_readout DREAMER_DISABLE_GPUFLAGS=1 bash -c 'scores=$(wc -l < \"$RUNROOT/$RUN_ID/scores.jsonl\" 2>/dev/null || echo 0); if [ -f \"$RUNROOT/$RUN_ID/ADAPT_DONE\" ] && [ \"$scores\" -ge 100 ]; then echo \"SKIP done: $RUN_ID scores=$scores\"; else bash scripts/axis1.sbatch; fi'",
+   "vars": {
+    "side": 1,
+    "seed": 6,
+    "run_id": "adapt_ax1fq1s1_reacher_seed6_ckpt500000"
+   },
+   "logdir": "adapt_ax1fq1s1_reacher_seed6_ckpt500000",
+   "outputs": [
+    "adapt_ax1fq1s1_reacher_seed6_ckpt500000",
+    "ax1wm_reacher_fq1s1_seed6"
+   ],
+   "inputs": [
+    "axis1_reacher/q1/side1",
+    "axis1_reacher/q1/manifest.json"
+   ],
+   "done_when": [
+    {
+     "exists": "ADAPT_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 100
+     }
+    },
+    {
+     "ckpt_step_min": {
+      "dir": "../ax1wm_reacher_fq1s1_seed6",
+      "min": 500000
+     }
+    },
+    {
+     "file_contains": {
+      "file": "../ax1wm_reacher_fq1s1_seed6/OFFLINE_FIT_PROGRESS",
+      "pattern": "update=500000\ntotal_updates=500000"
+     }
+    }
+   ]
+  },
+  {
+   "stage": "fit_adapt_apt",
+   "kind": "axis1_fit_adapt",
+   "target": "vast",
+   "run_id": "adapt_ax1fq1s1_reacher_seed7_ckpt500000",
+   "cmd": "DV3_TASK_NAME=adapt_ax1fq1s1_reacher_seed7_ckpt500000 RUN_ID=adapt_ax1fq1s1_reacher_seed7_ckpt500000 WM_RUN=ax1wm_reacher_fq1s1_seed7 TASK=dmc_reacher_hard SEED=7 REPLAY=${RUNROOT}/axis1_reacher/q1/side1 UPDATES=500000 STEPS=1.25e5 AXIS1_EXPL_MODE=apt AXIS1_BASE_CONFIG=dmc_proprio AXIS1_ADAPT_CONFIG=frozen_readout DREAMER_DISABLE_GPUFLAGS=1 bash -c 'scores=$(wc -l < \"$RUNROOT/$RUN_ID/scores.jsonl\" 2>/dev/null || echo 0); if [ -f \"$RUNROOT/$RUN_ID/ADAPT_DONE\" ] && [ \"$scores\" -ge 100 ]; then echo \"SKIP done: $RUN_ID scores=$scores\"; else bash scripts/axis1.sbatch; fi'",
+   "vars": {
+    "side": 1,
+    "seed": 7,
+    "run_id": "adapt_ax1fq1s1_reacher_seed7_ckpt500000"
+   },
+   "logdir": "adapt_ax1fq1s1_reacher_seed7_ckpt500000",
+   "outputs": [
+    "adapt_ax1fq1s1_reacher_seed7_ckpt500000",
+    "ax1wm_reacher_fq1s1_seed7"
+   ],
+   "inputs": [
+    "axis1_reacher/q1/side1",
+    "axis1_reacher/q1/manifest.json"
+   ],
+   "done_when": [
+    {
+     "exists": "ADAPT_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 100
+     }
+    },
+    {
+     "ckpt_step_min": {
+      "dir": "../ax1wm_reacher_fq1s1_seed7",
+      "min": 500000
+     }
+    },
+    {
+     "file_contains": {
+      "file": "../ax1wm_reacher_fq1s1_seed7/OFFLINE_FIT_PROGRESS",
+      "pattern": "update=500000\ntotal_updates=500000"
+     }
+    }
+   ]
+  },
+  {
+   "stage": "fit_adapt_apt",
+   "kind": "axis1_fit_adapt",
+   "target": "vast",
+   "run_id": "adapt_ax1fq1s1_reacher_seed8_ckpt500000",
+   "cmd": "DV3_TASK_NAME=adapt_ax1fq1s1_reacher_seed8_ckpt500000 RUN_ID=adapt_ax1fq1s1_reacher_seed8_ckpt500000 WM_RUN=ax1wm_reacher_fq1s1_seed8 TASK=dmc_reacher_hard SEED=8 REPLAY=${RUNROOT}/axis1_reacher/q1/side1 UPDATES=500000 STEPS=1.25e5 AXIS1_EXPL_MODE=apt AXIS1_BASE_CONFIG=dmc_proprio AXIS1_ADAPT_CONFIG=frozen_readout DREAMER_DISABLE_GPUFLAGS=1 bash -c 'scores=$(wc -l < \"$RUNROOT/$RUN_ID/scores.jsonl\" 2>/dev/null || echo 0); if [ -f \"$RUNROOT/$RUN_ID/ADAPT_DONE\" ] && [ \"$scores\" -ge 100 ]; then echo \"SKIP done: $RUN_ID scores=$scores\"; else bash scripts/axis1.sbatch; fi'",
+   "vars": {
+    "side": 1,
+    "seed": 8,
+    "run_id": "adapt_ax1fq1s1_reacher_seed8_ckpt500000"
+   },
+   "logdir": "adapt_ax1fq1s1_reacher_seed8_ckpt500000",
+   "outputs": [
+    "adapt_ax1fq1s1_reacher_seed8_ckpt500000",
+    "ax1wm_reacher_fq1s1_seed8"
+   ],
+   "inputs": [
+    "axis1_reacher/q1/side1",
+    "axis1_reacher/q1/manifest.json"
+   ],
+   "done_when": [
+    {
+     "exists": "ADAPT_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 100
+     }
+    },
+    {
+     "ckpt_step_min": {
+      "dir": "../ax1wm_reacher_fq1s1_seed8",
+      "min": 500000
+     }
+    },
+    {
+     "file_contains": {
+      "file": "../ax1wm_reacher_fq1s1_seed8/OFFLINE_FIT_PROGRESS",
+      "pattern": "update=500000\ntotal_updates=500000"
+     }
+    }
+   ]
+  },
+  {
+   "stage": "fit_adapt_apt",
+   "kind": "axis1_fit_adapt",
+   "target": "vast",
+   "run_id": "adapt_ax1fq1s1_reacher_seed9_ckpt500000",
+   "cmd": "DV3_TASK_NAME=adapt_ax1fq1s1_reacher_seed9_ckpt500000 RUN_ID=adapt_ax1fq1s1_reacher_seed9_ckpt500000 WM_RUN=ax1wm_reacher_fq1s1_seed9 TASK=dmc_reacher_hard SEED=9 REPLAY=${RUNROOT}/axis1_reacher/q1/side1 UPDATES=500000 STEPS=1.25e5 AXIS1_EXPL_MODE=apt AXIS1_BASE_CONFIG=dmc_proprio AXIS1_ADAPT_CONFIG=frozen_readout DREAMER_DISABLE_GPUFLAGS=1 bash -c 'scores=$(wc -l < \"$RUNROOT/$RUN_ID/scores.jsonl\" 2>/dev/null || echo 0); if [ -f \"$RUNROOT/$RUN_ID/ADAPT_DONE\" ] && [ \"$scores\" -ge 100 ]; then echo \"SKIP done: $RUN_ID scores=$scores\"; else bash scripts/axis1.sbatch; fi'",
+   "vars": {
+    "side": 1,
+    "seed": 9,
+    "run_id": "adapt_ax1fq1s1_reacher_seed9_ckpt500000"
+   },
+   "logdir": "adapt_ax1fq1s1_reacher_seed9_ckpt500000",
+   "outputs": [
+    "adapt_ax1fq1s1_reacher_seed9_ckpt500000",
+    "ax1wm_reacher_fq1s1_seed9"
+   ],
+   "inputs": [
+    "axis1_reacher/q1/side1",
+    "axis1_reacher/q1/manifest.json"
+   ],
+   "done_when": [
+    {
+     "exists": "ADAPT_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 100
+     }
+    },
+    {
+     "ckpt_step_min": {
+      "dir": "../ax1wm_reacher_fq1s1_seed9",
+      "min": 500000
+     }
+    },
+    {
+     "file_contains": {
+      "file": "../ax1wm_reacher_fq1s1_seed9/OFFLINE_FIT_PROGRESS",
+      "pattern": "update=500000\ntotal_updates=500000"
+     }
+    }
+   ]
+  },
+  {
+   "stage": "fit_adapt_apt",
+   "kind": "axis1_fit_adapt",
+   "target": "vast",
+   "run_id": "adapt_ax1fq1s1_reacher_seed10_ckpt500000",
+   "cmd": "DV3_TASK_NAME=adapt_ax1fq1s1_reacher_seed10_ckpt500000 RUN_ID=adapt_ax1fq1s1_reacher_seed10_ckpt500000 WM_RUN=ax1wm_reacher_fq1s1_seed10 TASK=dmc_reacher_hard SEED=10 REPLAY=${RUNROOT}/axis1_reacher/q1/side1 UPDATES=500000 STEPS=1.25e5 AXIS1_EXPL_MODE=apt AXIS1_BASE_CONFIG=dmc_proprio AXIS1_ADAPT_CONFIG=frozen_readout DREAMER_DISABLE_GPUFLAGS=1 bash -c 'scores=$(wc -l < \"$RUNROOT/$RUN_ID/scores.jsonl\" 2>/dev/null || echo 0); if [ -f \"$RUNROOT/$RUN_ID/ADAPT_DONE\" ] && [ \"$scores\" -ge 100 ]; then echo \"SKIP done: $RUN_ID scores=$scores\"; else bash scripts/axis1.sbatch; fi'",
+   "vars": {
+    "side": 1,
+    "seed": 10,
+    "run_id": "adapt_ax1fq1s1_reacher_seed10_ckpt500000"
+   },
+   "logdir": "adapt_ax1fq1s1_reacher_seed10_ckpt500000",
+   "outputs": [
+    "adapt_ax1fq1s1_reacher_seed10_ckpt500000",
+    "ax1wm_reacher_fq1s1_seed10"
+   ],
+   "inputs": [
+    "axis1_reacher/q1/side1",
+    "axis1_reacher/q1/manifest.json"
+   ],
+   "done_when": [
+    {
+     "exists": "ADAPT_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 100
+     }
+    },
+    {
+     "ckpt_step_min": {
+      "dir": "../ax1wm_reacher_fq1s1_seed10",
+      "min": 500000
+     }
+    },
+    {
+     "file_contains": {
+      "file": "../ax1wm_reacher_fq1s1_seed10/OFFLINE_FIT_PROGRESS",
+      "pattern": "update=500000\ntotal_updates=500000"
+     }
+    }
+   ]
+  },
+  {
+   "stage": "fit_adapt_apt",
+   "kind": "axis1_fit_adapt",
+   "target": "vast",
+   "run_id": "adapt_ax1fq1s1_reacher_seed11_ckpt500000",
+   "cmd": "DV3_TASK_NAME=adapt_ax1fq1s1_reacher_seed11_ckpt500000 RUN_ID=adapt_ax1fq1s1_reacher_seed11_ckpt500000 WM_RUN=ax1wm_reacher_fq1s1_seed11 TASK=dmc_reacher_hard SEED=11 REPLAY=${RUNROOT}/axis1_reacher/q1/side1 UPDATES=500000 STEPS=1.25e5 AXIS1_EXPL_MODE=apt AXIS1_BASE_CONFIG=dmc_proprio AXIS1_ADAPT_CONFIG=frozen_readout DREAMER_DISABLE_GPUFLAGS=1 bash -c 'scores=$(wc -l < \"$RUNROOT/$RUN_ID/scores.jsonl\" 2>/dev/null || echo 0); if [ -f \"$RUNROOT/$RUN_ID/ADAPT_DONE\" ] && [ \"$scores\" -ge 100 ]; then echo \"SKIP done: $RUN_ID scores=$scores\"; else bash scripts/axis1.sbatch; fi'",
+   "vars": {
+    "side": 1,
+    "seed": 11,
+    "run_id": "adapt_ax1fq1s1_reacher_seed11_ckpt500000"
+   },
+   "logdir": "adapt_ax1fq1s1_reacher_seed11_ckpt500000",
+   "outputs": [
+    "adapt_ax1fq1s1_reacher_seed11_ckpt500000",
+    "ax1wm_reacher_fq1s1_seed11"
+   ],
+   "inputs": [
+    "axis1_reacher/q1/side1",
+    "axis1_reacher/q1/manifest.json"
+   ],
+   "done_when": [
+    {
+     "exists": "ADAPT_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 100
+     }
+    },
+    {
+     "ckpt_step_min": {
+      "dir": "../ax1wm_reacher_fq1s1_seed11",
+      "min": 500000
+     }
+    },
+    {
+     "file_contains": {
+      "file": "../ax1wm_reacher_fq1s1_seed11/OFFLINE_FIT_PROGRESS",
+      "pattern": "update=500000\ntotal_updates=500000"
+     }
+    }
+   ]
+  },
+  {
+   "stage": "fit_adapt_apt",
+   "kind": "axis1_fit_adapt",
+   "target": "vast",
+   "run_id": "adapt_ax1fq1s1_reacher_seed12_ckpt500000",
+   "cmd": "DV3_TASK_NAME=adapt_ax1fq1s1_reacher_seed12_ckpt500000 RUN_ID=adapt_ax1fq1s1_reacher_seed12_ckpt500000 WM_RUN=ax1wm_reacher_fq1s1_seed12 TASK=dmc_reacher_hard SEED=12 REPLAY=${RUNROOT}/axis1_reacher/q1/side1 UPDATES=500000 STEPS=1.25e5 AXIS1_EXPL_MODE=apt AXIS1_BASE_CONFIG=dmc_proprio AXIS1_ADAPT_CONFIG=frozen_readout DREAMER_DISABLE_GPUFLAGS=1 bash -c 'scores=$(wc -l < \"$RUNROOT/$RUN_ID/scores.jsonl\" 2>/dev/null || echo 0); if [ -f \"$RUNROOT/$RUN_ID/ADAPT_DONE\" ] && [ \"$scores\" -ge 100 ]; then echo \"SKIP done: $RUN_ID scores=$scores\"; else bash scripts/axis1.sbatch; fi'",
+   "vars": {
+    "side": 1,
+    "seed": 12,
+    "run_id": "adapt_ax1fq1s1_reacher_seed12_ckpt500000"
+   },
+   "logdir": "adapt_ax1fq1s1_reacher_seed12_ckpt500000",
+   "outputs": [
+    "adapt_ax1fq1s1_reacher_seed12_ckpt500000",
+    "ax1wm_reacher_fq1s1_seed12"
+   ],
+   "inputs": [
+    "axis1_reacher/q1/side1",
+    "axis1_reacher/q1/manifest.json"
+   ],
+   "done_when": [
+    {
+     "exists": "ADAPT_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 100
+     }
+    },
+    {
+     "ckpt_step_min": {
+      "dir": "../ax1wm_reacher_fq1s1_seed12",
+      "min": 500000
+     }
+    },
+    {
+     "file_contains": {
+      "file": "../ax1wm_reacher_fq1s1_seed12/OFFLINE_FIT_PROGRESS",
+      "pattern": "update=500000\ntotal_updates=500000"
+     }
+    }
+   ]
+  },
+  {
+   "stage": "fit_adapt_apt",
+   "kind": "axis1_fit_adapt",
+   "target": "vast",
+   "run_id": "adapt_ax1fq1s1_reacher_seed13_ckpt500000",
+   "cmd": "DV3_TASK_NAME=adapt_ax1fq1s1_reacher_seed13_ckpt500000 RUN_ID=adapt_ax1fq1s1_reacher_seed13_ckpt500000 WM_RUN=ax1wm_reacher_fq1s1_seed13 TASK=dmc_reacher_hard SEED=13 REPLAY=${RUNROOT}/axis1_reacher/q1/side1 UPDATES=500000 STEPS=1.25e5 AXIS1_EXPL_MODE=apt AXIS1_BASE_CONFIG=dmc_proprio AXIS1_ADAPT_CONFIG=frozen_readout DREAMER_DISABLE_GPUFLAGS=1 bash -c 'scores=$(wc -l < \"$RUNROOT/$RUN_ID/scores.jsonl\" 2>/dev/null || echo 0); if [ -f \"$RUNROOT/$RUN_ID/ADAPT_DONE\" ] && [ \"$scores\" -ge 100 ]; then echo \"SKIP done: $RUN_ID scores=$scores\"; else bash scripts/axis1.sbatch; fi'",
+   "vars": {
+    "side": 1,
+    "seed": 13,
+    "run_id": "adapt_ax1fq1s1_reacher_seed13_ckpt500000"
+   },
+   "logdir": "adapt_ax1fq1s1_reacher_seed13_ckpt500000",
+   "outputs": [
+    "adapt_ax1fq1s1_reacher_seed13_ckpt500000",
+    "ax1wm_reacher_fq1s1_seed13"
+   ],
+   "inputs": [
+    "axis1_reacher/q1/side1",
+    "axis1_reacher/q1/manifest.json"
+   ],
+   "done_when": [
+    {
+     "exists": "ADAPT_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 100
+     }
+    },
+    {
+     "ckpt_step_min": {
+      "dir": "../ax1wm_reacher_fq1s1_seed13",
+      "min": 500000
+     }
+    },
+    {
+     "file_contains": {
+      "file": "../ax1wm_reacher_fq1s1_seed13/OFFLINE_FIT_PROGRESS",
+      "pattern": "update=500000\ntotal_updates=500000"
+     }
+    }
+   ]
+  },
+  {
+   "stage": "fit_adapt_apt",
+   "kind": "axis1_fit_adapt",
+   "target": "vast",
+   "run_id": "adapt_ax1fq1s1_reacher_seed14_ckpt500000",
+   "cmd": "DV3_TASK_NAME=adapt_ax1fq1s1_reacher_seed14_ckpt500000 RUN_ID=adapt_ax1fq1s1_reacher_seed14_ckpt500000 WM_RUN=ax1wm_reacher_fq1s1_seed14 TASK=dmc_reacher_hard SEED=14 REPLAY=${RUNROOT}/axis1_reacher/q1/side1 UPDATES=500000 STEPS=1.25e5 AXIS1_EXPL_MODE=apt AXIS1_BASE_CONFIG=dmc_proprio AXIS1_ADAPT_CONFIG=frozen_readout DREAMER_DISABLE_GPUFLAGS=1 bash -c 'scores=$(wc -l < \"$RUNROOT/$RUN_ID/scores.jsonl\" 2>/dev/null || echo 0); if [ -f \"$RUNROOT/$RUN_ID/ADAPT_DONE\" ] && [ \"$scores\" -ge 100 ]; then echo \"SKIP done: $RUN_ID scores=$scores\"; else bash scripts/axis1.sbatch; fi'",
+   "vars": {
+    "side": 1,
+    "seed": 14,
+    "run_id": "adapt_ax1fq1s1_reacher_seed14_ckpt500000"
+   },
+   "logdir": "adapt_ax1fq1s1_reacher_seed14_ckpt500000",
+   "outputs": [
+    "adapt_ax1fq1s1_reacher_seed14_ckpt500000",
+    "ax1wm_reacher_fq1s1_seed14"
+   ],
+   "inputs": [
+    "axis1_reacher/q1/side1",
+    "axis1_reacher/q1/manifest.json"
+   ],
+   "done_when": [
+    {
+     "exists": "ADAPT_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 100
+     }
+    },
+    {
+     "ckpt_step_min": {
+      "dir": "../ax1wm_reacher_fq1s1_seed14",
+      "min": 500000
+     }
+    },
+    {
+     "file_contains": {
+      "file": "../ax1wm_reacher_fq1s1_seed14/OFFLINE_FIT_PROGRESS",
+      "pattern": "update=500000\ntotal_updates=500000"
+     }
+    }
+   ]
+  },
+  {
+   "stage": "fit_adapt_apt",
+   "kind": "axis1_fit_adapt",
+   "target": "vast",
+   "run_id": "adapt_ax1fq1s1_reacher_seed15_ckpt500000",
+   "cmd": "DV3_TASK_NAME=adapt_ax1fq1s1_reacher_seed15_ckpt500000 RUN_ID=adapt_ax1fq1s1_reacher_seed15_ckpt500000 WM_RUN=ax1wm_reacher_fq1s1_seed15 TASK=dmc_reacher_hard SEED=15 REPLAY=${RUNROOT}/axis1_reacher/q1/side1 UPDATES=500000 STEPS=1.25e5 AXIS1_EXPL_MODE=apt AXIS1_BASE_CONFIG=dmc_proprio AXIS1_ADAPT_CONFIG=frozen_readout DREAMER_DISABLE_GPUFLAGS=1 bash -c 'scores=$(wc -l < \"$RUNROOT/$RUN_ID/scores.jsonl\" 2>/dev/null || echo 0); if [ -f \"$RUNROOT/$RUN_ID/ADAPT_DONE\" ] && [ \"$scores\" -ge 100 ]; then echo \"SKIP done: $RUN_ID scores=$scores\"; else bash scripts/axis1.sbatch; fi'",
+   "vars": {
+    "side": 1,
+    "seed": 15,
+    "run_id": "adapt_ax1fq1s1_reacher_seed15_ckpt500000"
+   },
+   "logdir": "adapt_ax1fq1s1_reacher_seed15_ckpt500000",
+   "outputs": [
+    "adapt_ax1fq1s1_reacher_seed15_ckpt500000",
+    "ax1wm_reacher_fq1s1_seed15"
+   ],
+   "inputs": [
+    "axis1_reacher/q1/side1",
+    "axis1_reacher/q1/manifest.json"
+   ],
+   "done_when": [
+    {
+     "exists": "ADAPT_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 100
+     }
+    },
+    {
+     "ckpt_step_min": {
+      "dir": "../ax1wm_reacher_fq1s1_seed15",
+      "min": 500000
+     }
+    },
+    {
+     "file_contains": {
+      "file": "../ax1wm_reacher_fq1s1_seed15/OFFLINE_FIT_PROGRESS",
+      "pattern": "update=500000\ntotal_updates=500000"
+     }
+    }
+   ]
+  },
+  {
+   "stage": "fit_adapt_apt",
+   "kind": "axis1_fit_adapt",
+   "target": "vast",
+   "run_id": "adapt_ax1fq1s1_reacher_seed16_ckpt500000",
+   "cmd": "DV3_TASK_NAME=adapt_ax1fq1s1_reacher_seed16_ckpt500000 RUN_ID=adapt_ax1fq1s1_reacher_seed16_ckpt500000 WM_RUN=ax1wm_reacher_fq1s1_seed16 TASK=dmc_reacher_hard SEED=16 REPLAY=${RUNROOT}/axis1_reacher/q1/side1 UPDATES=500000 STEPS=1.25e5 AXIS1_EXPL_MODE=apt AXIS1_BASE_CONFIG=dmc_proprio AXIS1_ADAPT_CONFIG=frozen_readout DREAMER_DISABLE_GPUFLAGS=1 bash -c 'scores=$(wc -l < \"$RUNROOT/$RUN_ID/scores.jsonl\" 2>/dev/null || echo 0); if [ -f \"$RUNROOT/$RUN_ID/ADAPT_DONE\" ] && [ \"$scores\" -ge 100 ]; then echo \"SKIP done: $RUN_ID scores=$scores\"; else bash scripts/axis1.sbatch; fi'",
+   "vars": {
+    "side": 1,
+    "seed": 16,
+    "run_id": "adapt_ax1fq1s1_reacher_seed16_ckpt500000"
+   },
+   "logdir": "adapt_ax1fq1s1_reacher_seed16_ckpt500000",
+   "outputs": [
+    "adapt_ax1fq1s1_reacher_seed16_ckpt500000",
+    "ax1wm_reacher_fq1s1_seed16"
+   ],
+   "inputs": [
+    "axis1_reacher/q1/side1",
+    "axis1_reacher/q1/manifest.json"
+   ],
+   "done_when": [
+    {
+     "exists": "ADAPT_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 100
+     }
+    },
+    {
+     "ckpt_step_min": {
+      "dir": "../ax1wm_reacher_fq1s1_seed16",
+      "min": 500000
+     }
+    },
+    {
+     "file_contains": {
+      "file": "../ax1wm_reacher_fq1s1_seed16/OFFLINE_FIT_PROGRESS",
+      "pattern": "update=500000\ntotal_updates=500000"
+     }
+    }
+   ]
+  }
+ ]
+}
