@@ -1,0 +1,19 @@
+wave_id: lewm_graft
+spec:    ops/waves/lewm_graft/spec.yaml
+
+=== stage graft  [vast]  kind=graft_fit_adapt  on_failure=abort  n=7 ===
+  adapt_ax1jppxq1ms0_finger_seed4_ckpt500000
+  adapt_ax1jppxq1ms1_finger_seed4_ckpt500000
+  adapt_ax1jppxq1ms0_finger_seed5_ckpt500000
+  adapt_ax1jppxq1ms1_finger_seed5_ckpt500000
+  adapt_ax1jppxq1ms0_finger_seed6_ckpt500000
+  adapt_ax1jppxq1ms0_finger_seed8_ckpt500000
+  adapt_ax1jppxq1ms1_finger_seed8_ckpt500000
+
+=== stage probe_e4  [vast]  kind=probe  on_failure=continue  n=0 ===
+
+TOTAL RUNS: 7
+
+Check this list against the prereg before submitting. run_ids are
+consumed by frozen readers and the ledger; a wrong expansion here
+propagates into every downstream artifact.

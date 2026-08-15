@@ -1,0 +1,336 @@
+{
+ "wave_id": "lewm_graft",
+ "spec": "ops/waves/lewm_graft/spec.yaml",
+ "prereg": null,
+ "bundle": {
+  "prefix": "lewm_jp",
+  "include_stages": [
+   "graft",
+   "probe_e4"
+  ],
+  "cloud_logs": [
+   "adapt_ax1jppx*_seed*.out",
+   "lewm_probe_e4_*.out",
+   "worker_shard*.out"
+  ]
+ },
+ "stages": [
+  {
+   "name": "graft",
+   "target": "vast",
+   "kind": "graft_fit_adapt",
+   "on_failure": "abort",
+   "needs": null
+  },
+  {
+   "name": "probe_e4",
+   "target": "vast",
+   "kind": "probe",
+   "on_failure": "continue",
+   "needs": "graft"
+  }
+ ],
+ "runs": [
+  {
+   "stage": "graft",
+   "kind": "graft_fit_adapt",
+   "target": "vast",
+   "run_id": "adapt_ax1jppxq1ms0_finger_seed4_ckpt500000",
+   "cmd": "DREAMER_DISABLE_GPUFLAGS=1 bash \"$REPO/scripts/ops/runners/axis1_graft_one.sh\" adapt_ax1jppxq1ms0_finger_seed4_ckpt500000 ax1wm_finger_jppxq1ms0_seed4 0 4 lewm_distill_finger_s0_seed4",
+   "vars": {
+    "seed": 4,
+    "side": 0,
+    "cmd": "DREAMER_DISABLE_GPUFLAGS=1 bash \"$REPO/scripts/ops/runners/axis1_graft_one.sh\" adapt_ax1jppxq1ms0_finger_seed4_ckpt500000 ax1wm_finger_jppxq1ms0_seed4 0 4 lewm_distill_finger_s0_seed4",
+    "run_id": "adapt_ax1jppxq1ms0_finger_seed4_ckpt500000"
+   },
+   "logdir": "adapt_ax1jppxq1ms0_finger_seed4_ckpt500000",
+   "outputs": [
+    "adapt_ax1jppxq1ms0_finger_seed4_ckpt500000",
+    "ax1wm_finger_jppxq1ms0_seed4"
+   ],
+   "inputs": [
+    "lewm_distill_finger_s0_seed4/ckpt",
+    "axis1_finger/pxq1m/side0",
+    "axis1_finger/pxq1m/manifest.json"
+   ],
+   "done_when": [
+    {
+     "exists": "ADAPT_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 100
+     }
+    },
+    {
+     "ckpt_step_min": {
+      "dir": "../ax1wm_finger_jppxq1ms0_seed4",
+      "min": 500000
+     }
+    }
+   ]
+  },
+  {
+   "stage": "graft",
+   "kind": "graft_fit_adapt",
+   "target": "vast",
+   "run_id": "adapt_ax1jppxq1ms1_finger_seed4_ckpt500000",
+   "cmd": "DREAMER_DISABLE_GPUFLAGS=1 bash \"$REPO/scripts/ops/runners/axis1_graft_one.sh\" adapt_ax1jppxq1ms1_finger_seed4_ckpt500000 ax1wm_finger_jppxq1ms1_seed4 1 4 lewm_distill_finger_s1_seed4",
+   "vars": {
+    "seed": 4,
+    "side": 1,
+    "cmd": "DREAMER_DISABLE_GPUFLAGS=1 bash \"$REPO/scripts/ops/runners/axis1_graft_one.sh\" adapt_ax1jppxq1ms1_finger_seed4_ckpt500000 ax1wm_finger_jppxq1ms1_seed4 1 4 lewm_distill_finger_s1_seed4",
+    "run_id": "adapt_ax1jppxq1ms1_finger_seed4_ckpt500000"
+   },
+   "logdir": "adapt_ax1jppxq1ms1_finger_seed4_ckpt500000",
+   "outputs": [
+    "adapt_ax1jppxq1ms1_finger_seed4_ckpt500000",
+    "ax1wm_finger_jppxq1ms1_seed4"
+   ],
+   "inputs": [
+    "lewm_distill_finger_s1_seed4/ckpt",
+    "axis1_finger/pxq1m/side1",
+    "axis1_finger/pxq1m/manifest.json"
+   ],
+   "done_when": [
+    {
+     "exists": "ADAPT_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 100
+     }
+    },
+    {
+     "ckpt_step_min": {
+      "dir": "../ax1wm_finger_jppxq1ms1_seed4",
+      "min": 500000
+     }
+    }
+   ]
+  },
+  {
+   "stage": "graft",
+   "kind": "graft_fit_adapt",
+   "target": "vast",
+   "run_id": "adapt_ax1jppxq1ms0_finger_seed5_ckpt500000",
+   "cmd": "DREAMER_DISABLE_GPUFLAGS=1 bash \"$REPO/scripts/ops/runners/axis1_graft_one.sh\" adapt_ax1jppxq1ms0_finger_seed5_ckpt500000 ax1wm_finger_jppxq1ms0_seed5 0 5 lewm_distill_finger_s0_seed5",
+   "vars": {
+    "seed": 5,
+    "side": 0,
+    "cmd": "DREAMER_DISABLE_GPUFLAGS=1 bash \"$REPO/scripts/ops/runners/axis1_graft_one.sh\" adapt_ax1jppxq1ms0_finger_seed5_ckpt500000 ax1wm_finger_jppxq1ms0_seed5 0 5 lewm_distill_finger_s0_seed5",
+    "run_id": "adapt_ax1jppxq1ms0_finger_seed5_ckpt500000"
+   },
+   "logdir": "adapt_ax1jppxq1ms0_finger_seed5_ckpt500000",
+   "outputs": [
+    "adapt_ax1jppxq1ms0_finger_seed5_ckpt500000",
+    "ax1wm_finger_jppxq1ms0_seed5"
+   ],
+   "inputs": [
+    "lewm_distill_finger_s0_seed5/ckpt",
+    "axis1_finger/pxq1m/side0",
+    "axis1_finger/pxq1m/manifest.json"
+   ],
+   "done_when": [
+    {
+     "exists": "ADAPT_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 100
+     }
+    },
+    {
+     "ckpt_step_min": {
+      "dir": "../ax1wm_finger_jppxq1ms0_seed5",
+      "min": 500000
+     }
+    }
+   ]
+  },
+  {
+   "stage": "graft",
+   "kind": "graft_fit_adapt",
+   "target": "vast",
+   "run_id": "adapt_ax1jppxq1ms1_finger_seed5_ckpt500000",
+   "cmd": "DREAMER_DISABLE_GPUFLAGS=1 bash \"$REPO/scripts/ops/runners/axis1_graft_one.sh\" adapt_ax1jppxq1ms1_finger_seed5_ckpt500000 ax1wm_finger_jppxq1ms1_seed5 1 5 lewm_distill_finger_s1_seed5",
+   "vars": {
+    "seed": 5,
+    "side": 1,
+    "cmd": "DREAMER_DISABLE_GPUFLAGS=1 bash \"$REPO/scripts/ops/runners/axis1_graft_one.sh\" adapt_ax1jppxq1ms1_finger_seed5_ckpt500000 ax1wm_finger_jppxq1ms1_seed5 1 5 lewm_distill_finger_s1_seed5",
+    "run_id": "adapt_ax1jppxq1ms1_finger_seed5_ckpt500000"
+   },
+   "logdir": "adapt_ax1jppxq1ms1_finger_seed5_ckpt500000",
+   "outputs": [
+    "adapt_ax1jppxq1ms1_finger_seed5_ckpt500000",
+    "ax1wm_finger_jppxq1ms1_seed5"
+   ],
+   "inputs": [
+    "lewm_distill_finger_s1_seed5/ckpt",
+    "axis1_finger/pxq1m/side1",
+    "axis1_finger/pxq1m/manifest.json"
+   ],
+   "done_when": [
+    {
+     "exists": "ADAPT_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 100
+     }
+    },
+    {
+     "ckpt_step_min": {
+      "dir": "../ax1wm_finger_jppxq1ms1_seed5",
+      "min": 500000
+     }
+    }
+   ]
+  },
+  {
+   "stage": "graft",
+   "kind": "graft_fit_adapt",
+   "target": "vast",
+   "run_id": "adapt_ax1jppxq1ms0_finger_seed6_ckpt500000",
+   "cmd": "DREAMER_DISABLE_GPUFLAGS=1 bash \"$REPO/scripts/ops/runners/axis1_graft_one.sh\" adapt_ax1jppxq1ms0_finger_seed6_ckpt500000 ax1wm_finger_jppxq1ms0_seed6 0 6 lewm_distill_finger_s0_seed6",
+   "vars": {
+    "seed": 6,
+    "side": 0,
+    "cmd": "DREAMER_DISABLE_GPUFLAGS=1 bash \"$REPO/scripts/ops/runners/axis1_graft_one.sh\" adapt_ax1jppxq1ms0_finger_seed6_ckpt500000 ax1wm_finger_jppxq1ms0_seed6 0 6 lewm_distill_finger_s0_seed6",
+    "run_id": "adapt_ax1jppxq1ms0_finger_seed6_ckpt500000"
+   },
+   "logdir": "adapt_ax1jppxq1ms0_finger_seed6_ckpt500000",
+   "outputs": [
+    "adapt_ax1jppxq1ms0_finger_seed6_ckpt500000",
+    "ax1wm_finger_jppxq1ms0_seed6"
+   ],
+   "inputs": [
+    "lewm_distill_finger_s0_seed6/ckpt",
+    "axis1_finger/pxq1m/side0",
+    "axis1_finger/pxq1m/manifest.json"
+   ],
+   "done_when": [
+    {
+     "exists": "ADAPT_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 100
+     }
+    },
+    {
+     "ckpt_step_min": {
+      "dir": "../ax1wm_finger_jppxq1ms0_seed6",
+      "min": 500000
+     }
+    }
+   ]
+  },
+  {
+   "stage": "graft",
+   "kind": "graft_fit_adapt",
+   "target": "vast",
+   "run_id": "adapt_ax1jppxq1ms0_finger_seed8_ckpt500000",
+   "cmd": "DREAMER_DISABLE_GPUFLAGS=1 bash \"$REPO/scripts/ops/runners/axis1_graft_one.sh\" adapt_ax1jppxq1ms0_finger_seed8_ckpt500000 ax1wm_finger_jppxq1ms0_seed8 0 8 lewm_distill_finger_s0_seed8",
+   "vars": {
+    "seed": 8,
+    "side": 0,
+    "cmd": "DREAMER_DISABLE_GPUFLAGS=1 bash \"$REPO/scripts/ops/runners/axis1_graft_one.sh\" adapt_ax1jppxq1ms0_finger_seed8_ckpt500000 ax1wm_finger_jppxq1ms0_seed8 0 8 lewm_distill_finger_s0_seed8",
+    "run_id": "adapt_ax1jppxq1ms0_finger_seed8_ckpt500000"
+   },
+   "logdir": "adapt_ax1jppxq1ms0_finger_seed8_ckpt500000",
+   "outputs": [
+    "adapt_ax1jppxq1ms0_finger_seed8_ckpt500000",
+    "ax1wm_finger_jppxq1ms0_seed8"
+   ],
+   "inputs": [
+    "lewm_distill_finger_s0_seed8/ckpt",
+    "axis1_finger/pxq1m/side0",
+    "axis1_finger/pxq1m/manifest.json"
+   ],
+   "done_when": [
+    {
+     "exists": "ADAPT_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 100
+     }
+    },
+    {
+     "ckpt_step_min": {
+      "dir": "../ax1wm_finger_jppxq1ms0_seed8",
+      "min": 500000
+     }
+    }
+   ]
+  },
+  {
+   "stage": "graft",
+   "kind": "graft_fit_adapt",
+   "target": "vast",
+   "run_id": "adapt_ax1jppxq1ms1_finger_seed8_ckpt500000",
+   "cmd": "DREAMER_DISABLE_GPUFLAGS=1 bash \"$REPO/scripts/ops/runners/axis1_graft_one.sh\" adapt_ax1jppxq1ms1_finger_seed8_ckpt500000 ax1wm_finger_jppxq1ms1_seed8 1 8 lewm_distill_finger_s1_seed8",
+   "vars": {
+    "seed": 8,
+    "side": 1,
+    "cmd": "DREAMER_DISABLE_GPUFLAGS=1 bash \"$REPO/scripts/ops/runners/axis1_graft_one.sh\" adapt_ax1jppxq1ms1_finger_seed8_ckpt500000 ax1wm_finger_jppxq1ms1_seed8 1 8 lewm_distill_finger_s1_seed8",
+    "run_id": "adapt_ax1jppxq1ms1_finger_seed8_ckpt500000"
+   },
+   "logdir": "adapt_ax1jppxq1ms1_finger_seed8_ckpt500000",
+   "outputs": [
+    "adapt_ax1jppxq1ms1_finger_seed8_ckpt500000",
+    "ax1wm_finger_jppxq1ms1_seed8"
+   ],
+   "inputs": [
+    "lewm_distill_finger_s1_seed8/ckpt",
+    "axis1_finger/pxq1m/side1",
+    "axis1_finger/pxq1m/manifest.json"
+   ],
+   "done_when": [
+    {
+     "exists": "ADAPT_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 100
+     }
+    },
+    {
+     "ckpt_step_min": {
+      "dir": "../ax1wm_finger_jppxq1ms1_seed8",
+      "min": 500000
+     }
+    }
+   ]
+  }
+ ]
+}
