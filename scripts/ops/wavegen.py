@@ -279,7 +279,22 @@ def gen(spec: wavespec.WaveSpec, out: Path, lanes: list[str]) -> dict:
                   ROOT_PREAMBLE.format(root=shlex.quote(str(_repo_root()))),
                   'source "$DV3OPS_ROOT/scripts/ops/lib/common.sh"',
                   'dv3_require_instance "$N"',
-                  f'REMOTE="$RUNROOT/_waves/{spec.wave_id}"', "",
+                  # The instance's RUNROOT is NOT this machine's: RCC is
+                  # /scratch/midway3/<user>/dreamerv3_runs and a Vast box is
+                  # /workspace/dreamerv3_runs. Ask the instance for its own.
+                  #
+                  # Both alternatives were live bugs, found on 2026-08-15 while
+                  # submitting the sigma-ladder ridge stage -- the first real
+                  # use of submit.sh: expanding "$RUNROOT" here sent the wave
+                  # dir to an RCC path that does not exist on the instance,
+                  # while leaving "$REMOTE" for the instance to expand hit an
+                  # unset variable (it is defined only in THIS script), so the
+                  # queue lines died on `set -u` after the rsync had already
+                  # claimed success.
+                  'REMOTE_ROOT="$(dv3_ssh_dv3 "$N" \'printf %s "$RUNROOT"\')"',
+                  '[ -n "$REMOTE_ROOT" ] || { echo "ERROR: cannot read RUNROOT'
+                  ' on instance $N" >&2; exit 1; }',
+                  f'REMOTE="$REMOTE_ROOT/_waves/{spec.wave_id}"', "",
                   "# rsync rather than heredoc: no quoting survives ssh reliably,",
                   "# and it leaves the exact submitted commands on the instance.",
                   'dv3_ssh_dv3 "$N" "mkdir -p \\"$REMOTE\\""',
@@ -310,8 +325,10 @@ def gen(spec: wavespec.WaveSpec, out: Path, lanes: list[str]) -> dict:
       submit_lines.append(
           f'echo "-- stage {st.name} lane {ln}: {len(lane_units)} task(s) --"')
       submit_lines.append(
-          f'dv3_ssh_dv3 "$N" \'DV3_ABORT_ON_FAIL={abort} '
-          f'dv3_queue_or_add "$REMOTE/{fname}" {ln}\'')
+          # Double quotes: $REMOTE must expand HERE, to the path we just
+          # resolved on the instance, not remotely where it does not exist.
+          f'dv3_ssh_dv3 "$N" "DV3_ABORT_ON_FAIL={abort} '
+          f'dv3_queue_or_add \\"$REMOTE/{fname}\\" {ln}"')
   submit_lines += ["", 'echo "submitted. verify with: dv3ops status $N"']
   _w(out / "submit.sh", "\n".join(submit_lines) + "\n", executable=True)
 

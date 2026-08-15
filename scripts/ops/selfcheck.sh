@@ -382,6 +382,20 @@ grep -q -- "--include='/donor_a/ckpt/\*\*\*'" "$G/push_donors.sh" 2>/dev/null \
 grep -q '\$RUNROOT' "$G"/lane_fit_0.cmds 2>/dev/null \
   && ok "\$RUNROOT left for the remote shell" || bad "\$RUNROOT was expanded at generation time"
 
+# submit.sh addresses TWO machines with different runroots. The wave dir must
+# land where the instance's queue will look for it, so the path is resolved by
+# asking the instance -- not by expanding this machine's $RUNROOT (which rsyncs
+# to a nonexistent path) and not by leaving $REMOTE for the instance (which is
+# unset there, so `set -u` kills every queue line after the rsync "succeeded").
+grep -q 'REMOTE_ROOT="\$(dv3_ssh_dv3 "\$N"' "$G/submit.sh" 2>/dev/null \
+  && ok "submit.sh resolves the instance's own RUNROOT" \
+  || bad "submit.sh does not ask the instance for its RUNROOT"
+grep -q "dv3_queue_or_add \"\\\$REMOTE/" "$G/submit.sh" 2>/dev/null \
+  && bad "submit.sh leaves \$REMOTE for the instance to expand (unset there)" \
+  || ok "queue lines expand \$REMOTE locally"
+grep -qE 'dv3_ssh_dv3 "\$N" "DV3_ABORT_ON_FAIL=[01] dv3_queue_or_add' "$G/submit.sh" 2>/dev/null \
+  && ok "queue line quoting is locally-expanding" || bad "queue line quoting"
+
 echo
 echo "== P1: checker =="
 FR="$TMP/fakerun"; mkdir -p "$FR"

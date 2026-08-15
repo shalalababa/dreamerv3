@@ -1,0 +1,23 @@
+wave_id: sigma_ladder
+spec:    ops/waves/sigma_ladder/spec.yaml
+prereg:  prereg/PREREG_sigma_ladder_20260814.md
+
+=== stage fit_adapt_task  [vast]  kind=axis1_fit_adapt  on_failure=abort  n=0 ===
+
+=== stage fit_adapt_apt  [vast]  kind=axis1_fit_adapt  on_failure=abort  n=0 ===
+
+=== stage ridge  [vast]  kind=ridge  on_failure=continue  n=8 ===
+  sgl_ridge_nzs2q1s0_seed3
+  sgl_ridge_nzs2q1s1_seed3
+  sgl_ridge_nzs8q1s0_seed3
+  sgl_ridge_nzs8q1s1_seed3
+  sgl_ridge_fnzs2q1s0_seed3
+  sgl_ridge_fnzs2q1s1_seed3
+  sgl_ridge_fnzs8q1s0_seed3
+  sgl_ridge_fnzs8q1s1_seed3
+
+TOTAL RUNS: 8
+
+Check this list against the prereg before submitting. run_ids are
+consumed by frozen readers and the ledger; a wrong expansion here
+propagates into every downstream artifact.

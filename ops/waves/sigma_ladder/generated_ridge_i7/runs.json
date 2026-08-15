@@ -1,0 +1,475 @@
+{
+ "wave_id": "sigma_ladder",
+ "spec": "ops/waves/sigma_ladder/spec.yaml",
+ "prereg": "prereg/PREREG_sigma_ladder_20260814.md",
+ "bundle": {
+  "prefix": "sgl",
+  "include_stages": [
+   "fit_adapt_task",
+   "fit_adapt_apt",
+   "ridge"
+  ],
+  "cloud_logs": [
+   "adapt_ax1nzs*_seed*.out",
+   "adapt_ax1fnzs*_seed*.out",
+   "worker_shard*.out"
+  ]
+ },
+ "stages": [
+  {
+   "name": "fit_adapt_task",
+   "target": "vast",
+   "kind": "axis1_fit_adapt",
+   "on_failure": "abort",
+   "needs": null
+  },
+  {
+   "name": "fit_adapt_apt",
+   "target": "vast",
+   "kind": "axis1_fit_adapt",
+   "on_failure": "abort",
+   "needs": null
+  },
+  {
+   "name": "ridge",
+   "target": "vast",
+   "kind": "ridge",
+   "on_failure": "continue",
+   "needs": "fit_adapt_task"
+  }
+ ],
+ "runs": [
+  {
+   "stage": "ridge",
+   "kind": "ridge",
+   "target": "vast",
+   "run_id": "sgl_ridge_nzs2q1s0_seed1",
+   "cmd": "DREAMER_DISABLE_GPUFLAGS=1 python -m probing.ridge_probe measure --run_logdir \"${RUNROOT}/ax1wm_finger_nzs2q1s0_seed1\" --probeset \"${RUNROOT}/e4_probesets/finger_nzs2_v1\" --output \"${RUNROOT}/sgl_ridge/ax1wm_finger_nzs2q1s0_seed1.json\" --platform cuda --ep_batch 4",
+   "vars": {
+    "armp": "",
+    "sig": 2,
+    "side": 0,
+    "seed": 1,
+    "cmd": "DREAMER_DISABLE_GPUFLAGS=1 python -m probing.ridge_probe measure --run_logdir \"${RUNROOT}/ax1wm_finger_nzs2q1s0_seed1\" --probeset \"${RUNROOT}/e4_probesets/finger_nzs2_v1\" --output \"${RUNROOT}/sgl_ridge/ax1wm_finger_nzs2q1s0_seed1.json\" --platform cuda --ep_batch 4",
+    "run_id": "sgl_ridge_nzs2q1s0_seed1"
+   },
+   "logdir": "sgl_ridge",
+   "outputs": [
+    "sgl_ridge/ax1wm_finger_nzs2q1s0_seed1.json"
+   ],
+   "inputs": [
+    "e4_probesets/finger_nzs2_v1"
+   ],
+   "done_when": [
+    {
+     "exists": "ax1wm_finger_nzs2q1s0_seed1.json"
+    }
+   ]
+  },
+  {
+   "stage": "ridge",
+   "kind": "ridge",
+   "target": "vast",
+   "run_id": "sgl_ridge_nzs2q1s0_seed2",
+   "cmd": "DREAMER_DISABLE_GPUFLAGS=1 python -m probing.ridge_probe measure --run_logdir \"${RUNROOT}/ax1wm_finger_nzs2q1s0_seed2\" --probeset \"${RUNROOT}/e4_probesets/finger_nzs2_v1\" --output \"${RUNROOT}/sgl_ridge/ax1wm_finger_nzs2q1s0_seed2.json\" --platform cuda --ep_batch 4",
+   "vars": {
+    "armp": "",
+    "sig": 2,
+    "side": 0,
+    "seed": 2,
+    "cmd": "DREAMER_DISABLE_GPUFLAGS=1 python -m probing.ridge_probe measure --run_logdir \"${RUNROOT}/ax1wm_finger_nzs2q1s0_seed2\" --probeset \"${RUNROOT}/e4_probesets/finger_nzs2_v1\" --output \"${RUNROOT}/sgl_ridge/ax1wm_finger_nzs2q1s0_seed2.json\" --platform cuda --ep_batch 4",
+    "run_id": "sgl_ridge_nzs2q1s0_seed2"
+   },
+   "logdir": "sgl_ridge",
+   "outputs": [
+    "sgl_ridge/ax1wm_finger_nzs2q1s0_seed2.json"
+   ],
+   "inputs": [
+    "e4_probesets/finger_nzs2_v1"
+   ],
+   "done_when": [
+    {
+     "exists": "ax1wm_finger_nzs2q1s0_seed2.json"
+    }
+   ]
+  },
+  {
+   "stage": "ridge",
+   "kind": "ridge",
+   "target": "vast",
+   "run_id": "sgl_ridge_nzs2q1s1_seed1",
+   "cmd": "DREAMER_DISABLE_GPUFLAGS=1 python -m probing.ridge_probe measure --run_logdir \"${RUNROOT}/ax1wm_finger_nzs2q1s1_seed1\" --probeset \"${RUNROOT}/e4_probesets/finger_nzs2_v1\" --output \"${RUNROOT}/sgl_ridge/ax1wm_finger_nzs2q1s1_seed1.json\" --platform cuda --ep_batch 4",
+   "vars": {
+    "armp": "",
+    "sig": 2,
+    "side": 1,
+    "seed": 1,
+    "cmd": "DREAMER_DISABLE_GPUFLAGS=1 python -m probing.ridge_probe measure --run_logdir \"${RUNROOT}/ax1wm_finger_nzs2q1s1_seed1\" --probeset \"${RUNROOT}/e4_probesets/finger_nzs2_v1\" --output \"${RUNROOT}/sgl_ridge/ax1wm_finger_nzs2q1s1_seed1.json\" --platform cuda --ep_batch 4",
+    "run_id": "sgl_ridge_nzs2q1s1_seed1"
+   },
+   "logdir": "sgl_ridge",
+   "outputs": [
+    "sgl_ridge/ax1wm_finger_nzs2q1s1_seed1.json"
+   ],
+   "inputs": [
+    "e4_probesets/finger_nzs2_v1"
+   ],
+   "done_when": [
+    {
+     "exists": "ax1wm_finger_nzs2q1s1_seed1.json"
+    }
+   ]
+  },
+  {
+   "stage": "ridge",
+   "kind": "ridge",
+   "target": "vast",
+   "run_id": "sgl_ridge_nzs2q1s1_seed2",
+   "cmd": "DREAMER_DISABLE_GPUFLAGS=1 python -m probing.ridge_probe measure --run_logdir \"${RUNROOT}/ax1wm_finger_nzs2q1s1_seed2\" --probeset \"${RUNROOT}/e4_probesets/finger_nzs2_v1\" --output \"${RUNROOT}/sgl_ridge/ax1wm_finger_nzs2q1s1_seed2.json\" --platform cuda --ep_batch 4",
+   "vars": {
+    "armp": "",
+    "sig": 2,
+    "side": 1,
+    "seed": 2,
+    "cmd": "DREAMER_DISABLE_GPUFLAGS=1 python -m probing.ridge_probe measure --run_logdir \"${RUNROOT}/ax1wm_finger_nzs2q1s1_seed2\" --probeset \"${RUNROOT}/e4_probesets/finger_nzs2_v1\" --output \"${RUNROOT}/sgl_ridge/ax1wm_finger_nzs2q1s1_seed2.json\" --platform cuda --ep_batch 4",
+    "run_id": "sgl_ridge_nzs2q1s1_seed2"
+   },
+   "logdir": "sgl_ridge",
+   "outputs": [
+    "sgl_ridge/ax1wm_finger_nzs2q1s1_seed2.json"
+   ],
+   "inputs": [
+    "e4_probesets/finger_nzs2_v1"
+   ],
+   "done_when": [
+    {
+     "exists": "ax1wm_finger_nzs2q1s1_seed2.json"
+    }
+   ]
+  },
+  {
+   "stage": "ridge",
+   "kind": "ridge",
+   "target": "vast",
+   "run_id": "sgl_ridge_nzs8q1s0_seed1",
+   "cmd": "DREAMER_DISABLE_GPUFLAGS=1 python -m probing.ridge_probe measure --run_logdir \"${RUNROOT}/ax1wm_finger_nzs8q1s0_seed1\" --probeset \"${RUNROOT}/e4_probesets/finger_nzs8_v1\" --output \"${RUNROOT}/sgl_ridge/ax1wm_finger_nzs8q1s0_seed1.json\" --platform cuda --ep_batch 4",
+   "vars": {
+    "armp": "",
+    "sig": 8,
+    "side": 0,
+    "seed": 1,
+    "cmd": "DREAMER_DISABLE_GPUFLAGS=1 python -m probing.ridge_probe measure --run_logdir \"${RUNROOT}/ax1wm_finger_nzs8q1s0_seed1\" --probeset \"${RUNROOT}/e4_probesets/finger_nzs8_v1\" --output \"${RUNROOT}/sgl_ridge/ax1wm_finger_nzs8q1s0_seed1.json\" --platform cuda --ep_batch 4",
+    "run_id": "sgl_ridge_nzs8q1s0_seed1"
+   },
+   "logdir": "sgl_ridge",
+   "outputs": [
+    "sgl_ridge/ax1wm_finger_nzs8q1s0_seed1.json"
+   ],
+   "inputs": [
+    "e4_probesets/finger_nzs8_v1"
+   ],
+   "done_when": [
+    {
+     "exists": "ax1wm_finger_nzs8q1s0_seed1.json"
+    }
+   ]
+  },
+  {
+   "stage": "ridge",
+   "kind": "ridge",
+   "target": "vast",
+   "run_id": "sgl_ridge_nzs8q1s0_seed2",
+   "cmd": "DREAMER_DISABLE_GPUFLAGS=1 python -m probing.ridge_probe measure --run_logdir \"${RUNROOT}/ax1wm_finger_nzs8q1s0_seed2\" --probeset \"${RUNROOT}/e4_probesets/finger_nzs8_v1\" --output \"${RUNROOT}/sgl_ridge/ax1wm_finger_nzs8q1s0_seed2.json\" --platform cuda --ep_batch 4",
+   "vars": {
+    "armp": "",
+    "sig": 8,
+    "side": 0,
+    "seed": 2,
+    "cmd": "DREAMER_DISABLE_GPUFLAGS=1 python -m probing.ridge_probe measure --run_logdir \"${RUNROOT}/ax1wm_finger_nzs8q1s0_seed2\" --probeset \"${RUNROOT}/e4_probesets/finger_nzs8_v1\" --output \"${RUNROOT}/sgl_ridge/ax1wm_finger_nzs8q1s0_seed2.json\" --platform cuda --ep_batch 4",
+    "run_id": "sgl_ridge_nzs8q1s0_seed2"
+   },
+   "logdir": "sgl_ridge",
+   "outputs": [
+    "sgl_ridge/ax1wm_finger_nzs8q1s0_seed2.json"
+   ],
+   "inputs": [
+    "e4_probesets/finger_nzs8_v1"
+   ],
+   "done_when": [
+    {
+     "exists": "ax1wm_finger_nzs8q1s0_seed2.json"
+    }
+   ]
+  },
+  {
+   "stage": "ridge",
+   "kind": "ridge",
+   "target": "vast",
+   "run_id": "sgl_ridge_nzs8q1s1_seed1",
+   "cmd": "DREAMER_DISABLE_GPUFLAGS=1 python -m probing.ridge_probe measure --run_logdir \"${RUNROOT}/ax1wm_finger_nzs8q1s1_seed1\" --probeset \"${RUNROOT}/e4_probesets/finger_nzs8_v1\" --output \"${RUNROOT}/sgl_ridge/ax1wm_finger_nzs8q1s1_seed1.json\" --platform cuda --ep_batch 4",
+   "vars": {
+    "armp": "",
+    "sig": 8,
+    "side": 1,
+    "seed": 1,
+    "cmd": "DREAMER_DISABLE_GPUFLAGS=1 python -m probing.ridge_probe measure --run_logdir \"${RUNROOT}/ax1wm_finger_nzs8q1s1_seed1\" --probeset \"${RUNROOT}/e4_probesets/finger_nzs8_v1\" --output \"${RUNROOT}/sgl_ridge/ax1wm_finger_nzs8q1s1_seed1.json\" --platform cuda --ep_batch 4",
+    "run_id": "sgl_ridge_nzs8q1s1_seed1"
+   },
+   "logdir": "sgl_ridge",
+   "outputs": [
+    "sgl_ridge/ax1wm_finger_nzs8q1s1_seed1.json"
+   ],
+   "inputs": [
+    "e4_probesets/finger_nzs8_v1"
+   ],
+   "done_when": [
+    {
+     "exists": "ax1wm_finger_nzs8q1s1_seed1.json"
+    }
+   ]
+  },
+  {
+   "stage": "ridge",
+   "kind": "ridge",
+   "target": "vast",
+   "run_id": "sgl_ridge_nzs8q1s1_seed2",
+   "cmd": "DREAMER_DISABLE_GPUFLAGS=1 python -m probing.ridge_probe measure --run_logdir \"${RUNROOT}/ax1wm_finger_nzs8q1s1_seed2\" --probeset \"${RUNROOT}/e4_probesets/finger_nzs8_v1\" --output \"${RUNROOT}/sgl_ridge/ax1wm_finger_nzs8q1s1_seed2.json\" --platform cuda --ep_batch 4",
+   "vars": {
+    "armp": "",
+    "sig": 8,
+    "side": 1,
+    "seed": 2,
+    "cmd": "DREAMER_DISABLE_GPUFLAGS=1 python -m probing.ridge_probe measure --run_logdir \"${RUNROOT}/ax1wm_finger_nzs8q1s1_seed2\" --probeset \"${RUNROOT}/e4_probesets/finger_nzs8_v1\" --output \"${RUNROOT}/sgl_ridge/ax1wm_finger_nzs8q1s1_seed2.json\" --platform cuda --ep_batch 4",
+    "run_id": "sgl_ridge_nzs8q1s1_seed2"
+   },
+   "logdir": "sgl_ridge",
+   "outputs": [
+    "sgl_ridge/ax1wm_finger_nzs8q1s1_seed2.json"
+   ],
+   "inputs": [
+    "e4_probesets/finger_nzs8_v1"
+   ],
+   "done_when": [
+    {
+     "exists": "ax1wm_finger_nzs8q1s1_seed2.json"
+    }
+   ]
+  },
+  {
+   "stage": "ridge",
+   "kind": "ridge",
+   "target": "vast",
+   "run_id": "sgl_ridge_fnzs2q1s0_seed1",
+   "cmd": "DREAMER_DISABLE_GPUFLAGS=1 python -m probing.ridge_probe measure --run_logdir \"${RUNROOT}/ax1wm_finger_fnzs2q1s0_seed1\" --probeset \"${RUNROOT}/e4_probesets/finger_nzs2_v1\" --output \"${RUNROOT}/sgl_ridge/ax1wm_finger_fnzs2q1s0_seed1.json\" --platform cuda --ep_batch 4",
+   "vars": {
+    "armp": "f",
+    "sig": 2,
+    "side": 0,
+    "seed": 1,
+    "cmd": "DREAMER_DISABLE_GPUFLAGS=1 python -m probing.ridge_probe measure --run_logdir \"${RUNROOT}/ax1wm_finger_fnzs2q1s0_seed1\" --probeset \"${RUNROOT}/e4_probesets/finger_nzs2_v1\" --output \"${RUNROOT}/sgl_ridge/ax1wm_finger_fnzs2q1s0_seed1.json\" --platform cuda --ep_batch 4",
+    "run_id": "sgl_ridge_fnzs2q1s0_seed1"
+   },
+   "logdir": "sgl_ridge",
+   "outputs": [
+    "sgl_ridge/ax1wm_finger_fnzs2q1s0_seed1.json"
+   ],
+   "inputs": [
+    "e4_probesets/finger_nzs2_v1"
+   ],
+   "done_when": [
+    {
+     "exists": "ax1wm_finger_fnzs2q1s0_seed1.json"
+    }
+   ]
+  },
+  {
+   "stage": "ridge",
+   "kind": "ridge",
+   "target": "vast",
+   "run_id": "sgl_ridge_fnzs2q1s0_seed2",
+   "cmd": "DREAMER_DISABLE_GPUFLAGS=1 python -m probing.ridge_probe measure --run_logdir \"${RUNROOT}/ax1wm_finger_fnzs2q1s0_seed2\" --probeset \"${RUNROOT}/e4_probesets/finger_nzs2_v1\" --output \"${RUNROOT}/sgl_ridge/ax1wm_finger_fnzs2q1s0_seed2.json\" --platform cuda --ep_batch 4",
+   "vars": {
+    "armp": "f",
+    "sig": 2,
+    "side": 0,
+    "seed": 2,
+    "cmd": "DREAMER_DISABLE_GPUFLAGS=1 python -m probing.ridge_probe measure --run_logdir \"${RUNROOT}/ax1wm_finger_fnzs2q1s0_seed2\" --probeset \"${RUNROOT}/e4_probesets/finger_nzs2_v1\" --output \"${RUNROOT}/sgl_ridge/ax1wm_finger_fnzs2q1s0_seed2.json\" --platform cuda --ep_batch 4",
+    "run_id": "sgl_ridge_fnzs2q1s0_seed2"
+   },
+   "logdir": "sgl_ridge",
+   "outputs": [
+    "sgl_ridge/ax1wm_finger_fnzs2q1s0_seed2.json"
+   ],
+   "inputs": [
+    "e4_probesets/finger_nzs2_v1"
+   ],
+   "done_when": [
+    {
+     "exists": "ax1wm_finger_fnzs2q1s0_seed2.json"
+    }
+   ]
+  },
+  {
+   "stage": "ridge",
+   "kind": "ridge",
+   "target": "vast",
+   "run_id": "sgl_ridge_fnzs2q1s1_seed1",
+   "cmd": "DREAMER_DISABLE_GPUFLAGS=1 python -m probing.ridge_probe measure --run_logdir \"${RUNROOT}/ax1wm_finger_fnzs2q1s1_seed1\" --probeset \"${RUNROOT}/e4_probesets/finger_nzs2_v1\" --output \"${RUNROOT}/sgl_ridge/ax1wm_finger_fnzs2q1s1_seed1.json\" --platform cuda --ep_batch 4",
+   "vars": {
+    "armp": "f",
+    "sig": 2,
+    "side": 1,
+    "seed": 1,
+    "cmd": "DREAMER_DISABLE_GPUFLAGS=1 python -m probing.ridge_probe measure --run_logdir \"${RUNROOT}/ax1wm_finger_fnzs2q1s1_seed1\" --probeset \"${RUNROOT}/e4_probesets/finger_nzs2_v1\" --output \"${RUNROOT}/sgl_ridge/ax1wm_finger_fnzs2q1s1_seed1.json\" --platform cuda --ep_batch 4",
+    "run_id": "sgl_ridge_fnzs2q1s1_seed1"
+   },
+   "logdir": "sgl_ridge",
+   "outputs": [
+    "sgl_ridge/ax1wm_finger_fnzs2q1s1_seed1.json"
+   ],
+   "inputs": [
+    "e4_probesets/finger_nzs2_v1"
+   ],
+   "done_when": [
+    {
+     "exists": "ax1wm_finger_fnzs2q1s1_seed1.json"
+    }
+   ]
+  },
+  {
+   "stage": "ridge",
+   "kind": "ridge",
+   "target": "vast",
+   "run_id": "sgl_ridge_fnzs2q1s1_seed2",
+   "cmd": "DREAMER_DISABLE_GPUFLAGS=1 python -m probing.ridge_probe measure --run_logdir \"${RUNROOT}/ax1wm_finger_fnzs2q1s1_seed2\" --probeset \"${RUNROOT}/e4_probesets/finger_nzs2_v1\" --output \"${RUNROOT}/sgl_ridge/ax1wm_finger_fnzs2q1s1_seed2.json\" --platform cuda --ep_batch 4",
+   "vars": {
+    "armp": "f",
+    "sig": 2,
+    "side": 1,
+    "seed": 2,
+    "cmd": "DREAMER_DISABLE_GPUFLAGS=1 python -m probing.ridge_probe measure --run_logdir \"${RUNROOT}/ax1wm_finger_fnzs2q1s1_seed2\" --probeset \"${RUNROOT}/e4_probesets/finger_nzs2_v1\" --output \"${RUNROOT}/sgl_ridge/ax1wm_finger_fnzs2q1s1_seed2.json\" --platform cuda --ep_batch 4",
+    "run_id": "sgl_ridge_fnzs2q1s1_seed2"
+   },
+   "logdir": "sgl_ridge",
+   "outputs": [
+    "sgl_ridge/ax1wm_finger_fnzs2q1s1_seed2.json"
+   ],
+   "inputs": [
+    "e4_probesets/finger_nzs2_v1"
+   ],
+   "done_when": [
+    {
+     "exists": "ax1wm_finger_fnzs2q1s1_seed2.json"
+    }
+   ]
+  },
+  {
+   "stage": "ridge",
+   "kind": "ridge",
+   "target": "vast",
+   "run_id": "sgl_ridge_fnzs8q1s0_seed1",
+   "cmd": "DREAMER_DISABLE_GPUFLAGS=1 python -m probing.ridge_probe measure --run_logdir \"${RUNROOT}/ax1wm_finger_fnzs8q1s0_seed1\" --probeset \"${RUNROOT}/e4_probesets/finger_nzs8_v1\" --output \"${RUNROOT}/sgl_ridge/ax1wm_finger_fnzs8q1s0_seed1.json\" --platform cuda --ep_batch 4",
+   "vars": {
+    "armp": "f",
+    "sig": 8,
+    "side": 0,
+    "seed": 1,
+    "cmd": "DREAMER_DISABLE_GPUFLAGS=1 python -m probing.ridge_probe measure --run_logdir \"${RUNROOT}/ax1wm_finger_fnzs8q1s0_seed1\" --probeset \"${RUNROOT}/e4_probesets/finger_nzs8_v1\" --output \"${RUNROOT}/sgl_ridge/ax1wm_finger_fnzs8q1s0_seed1.json\" --platform cuda --ep_batch 4",
+    "run_id": "sgl_ridge_fnzs8q1s0_seed1"
+   },
+   "logdir": "sgl_ridge",
+   "outputs": [
+    "sgl_ridge/ax1wm_finger_fnzs8q1s0_seed1.json"
+   ],
+   "inputs": [
+    "e4_probesets/finger_nzs8_v1"
+   ],
+   "done_when": [
+    {
+     "exists": "ax1wm_finger_fnzs8q1s0_seed1.json"
+    }
+   ]
+  },
+  {
+   "stage": "ridge",
+   "kind": "ridge",
+   "target": "vast",
+   "run_id": "sgl_ridge_fnzs8q1s0_seed2",
+   "cmd": "DREAMER_DISABLE_GPUFLAGS=1 python -m probing.ridge_probe measure --run_logdir \"${RUNROOT}/ax1wm_finger_fnzs8q1s0_seed2\" --probeset \"${RUNROOT}/e4_probesets/finger_nzs8_v1\" --output \"${RUNROOT}/sgl_ridge/ax1wm_finger_fnzs8q1s0_seed2.json\" --platform cuda --ep_batch 4",
+   "vars": {
+    "armp": "f",
+    "sig": 8,
+    "side": 0,
+    "seed": 2,
+    "cmd": "DREAMER_DISABLE_GPUFLAGS=1 python -m probing.ridge_probe measure --run_logdir \"${RUNROOT}/ax1wm_finger_fnzs8q1s0_seed2\" --probeset \"${RUNROOT}/e4_probesets/finger_nzs8_v1\" --output \"${RUNROOT}/sgl_ridge/ax1wm_finger_fnzs8q1s0_seed2.json\" --platform cuda --ep_batch 4",
+    "run_id": "sgl_ridge_fnzs8q1s0_seed2"
+   },
+   "logdir": "sgl_ridge",
+   "outputs": [
+    "sgl_ridge/ax1wm_finger_fnzs8q1s0_seed2.json"
+   ],
+   "inputs": [
+    "e4_probesets/finger_nzs8_v1"
+   ],
+   "done_when": [
+    {
+     "exists": "ax1wm_finger_fnzs8q1s0_seed2.json"
+    }
+   ]
+  },
+  {
+   "stage": "ridge",
+   "kind": "ridge",
+   "target": "vast",
+   "run_id": "sgl_ridge_fnzs8q1s1_seed1",
+   "cmd": "DREAMER_DISABLE_GPUFLAGS=1 python -m probing.ridge_probe measure --run_logdir \"${RUNROOT}/ax1wm_finger_fnzs8q1s1_seed1\" --probeset \"${RUNROOT}/e4_probesets/finger_nzs8_v1\" --output \"${RUNROOT}/sgl_ridge/ax1wm_finger_fnzs8q1s1_seed1.json\" --platform cuda --ep_batch 4",
+   "vars": {
+    "armp": "f",
+    "sig": 8,
+    "side": 1,
+    "seed": 1,
+    "cmd": "DREAMER_DISABLE_GPUFLAGS=1 python -m probing.ridge_probe measure --run_logdir \"${RUNROOT}/ax1wm_finger_fnzs8q1s1_seed1\" --probeset \"${RUNROOT}/e4_probesets/finger_nzs8_v1\" --output \"${RUNROOT}/sgl_ridge/ax1wm_finger_fnzs8q1s1_seed1.json\" --platform cuda --ep_batch 4",
+    "run_id": "sgl_ridge_fnzs8q1s1_seed1"
+   },
+   "logdir": "sgl_ridge",
+   "outputs": [
+    "sgl_ridge/ax1wm_finger_fnzs8q1s1_seed1.json"
+   ],
+   "inputs": [
+    "e4_probesets/finger_nzs8_v1"
+   ],
+   "done_when": [
+    {
+     "exists": "ax1wm_finger_fnzs8q1s1_seed1.json"
+    }
+   ]
+  },
+  {
+   "stage": "ridge",
+   "kind": "ridge",
+   "target": "vast",
+   "run_id": "sgl_ridge_fnzs8q1s1_seed2",
+   "cmd": "DREAMER_DISABLE_GPUFLAGS=1 python -m probing.ridge_probe measure --run_logdir \"${RUNROOT}/ax1wm_finger_fnzs8q1s1_seed2\" --probeset \"${RUNROOT}/e4_probesets/finger_nzs8_v1\" --output \"${RUNROOT}/sgl_ridge/ax1wm_finger_fnzs8q1s1_seed2.json\" --platform cuda --ep_batch 4",
+   "vars": {
+    "armp": "f",
+    "sig": 8,
+    "side": 1,
+    "seed": 2,
+    "cmd": "DREAMER_DISABLE_GPUFLAGS=1 python -m probing.ridge_probe measure --run_logdir \"${RUNROOT}/ax1wm_finger_fnzs8q1s1_seed2\" --probeset \"${RUNROOT}/e4_probesets/finger_nzs8_v1\" --output \"${RUNROOT}/sgl_ridge/ax1wm_finger_fnzs8q1s1_seed2.json\" --platform cuda --ep_batch 4",
+    "run_id": "sgl_ridge_fnzs8q1s1_seed2"
+   },
+   "logdir": "sgl_ridge",
+   "outputs": [
+    "sgl_ridge/ax1wm_finger_fnzs8q1s1_seed2.json"
+   ],
+   "inputs": [
+    "e4_probesets/finger_nzs8_v1"
+   ],
+   "done_when": [
+    {
+     "exists": "ax1wm_finger_fnzs8q1s1_seed2.json"
+    }
+   ]
+  }
+ ]
+}
