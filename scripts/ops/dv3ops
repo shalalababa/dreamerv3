@@ -1,0 +1,136 @@
+#!/usr/bin/env bash
+# ---------------------------------------------------------------------------
+# dv3ops -- experiment operations CLI  (P0, 2026-08-14)
+#
+# Design: temp_files/ops/dv3ops_design_20260814.md
+# Scope for ops sessions: scripts/ops/CLAUDE.md
+#
+# P0 implements the verbs the migration needs. Verbs from later phases are
+# listed and fail with the phase that owns them rather than silently missing,
+# so `dv3ops help` is an accurate map of what exists.
+# ---------------------------------------------------------------------------
+set -uo pipefail
+
+DV3OPS_ROOT="$(cd "$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")/../.." && pwd)"
+source "$DV3OPS_ROOT/scripts/ops/lib/common.sh"
+
+usage () {
+  cat <<'USAGE'
+dv3ops <verb> [args]
+
+  P0 -- built
+    push-repo N...          canonical whole-repo rsync + VERSION stamp + start watchdog
+    versions [N...]         helper provenance per instance vs repo HEAD
+    status N [--json]       dv3_status on one instance
+    board-raw [N...]        dv3_status --json for each instance (raw; board.py is P2)
+    sh N [cmd...]           ssh into instance N (no cmd = interactive)
+    watch N [secs]          nvidia-smi + shard-log loop on instance N
+    events N [k]            tail the instance event log (what the watchdog/queue emitted)
+    migrate N               guided helper migration for a running instance (see §P0)
+    selfcheck               local static checks of the ops library
+
+  P1 -- not built yet: gen, preflight, submit, check, requeue, pull, bundle, pull-local
+  P2 -- not built yet: refresh, board, pack
+  P3 -- not built yet: digest
+  P4 -- not built yet: archive-report
+
+Instances resolve from ops/state/instances.env if present, else from IP<N>/PORT<N>
+already exported in your shell.
+USAGE
+}
+
+not_yet () { die "'$1' is $2 work; not built yet (see temp_files/ops/dv3ops_design_20260814.md §11)"; }
+
+verb="${1:-help}"; shift || true
+
+case "$verb" in
+
+  push-repo)
+    [ $# -gt 0 ] || die "usage: dv3ops push-repo N [N...]"
+    for n in "$@"; do dv3_push_repo "$n"; done
+    ;;
+
+  versions)
+    dv3_load_instances
+    local_sha="$(git -C "$DV3OPS_ROOT" rev-parse --short HEAD 2>/dev/null || echo unknown)"
+    echo "repo HEAD: $local_sha"
+    targets=("$@")
+    if [ ${#targets[@]} -eq 0 ]; then
+      mapfile -t targets < <(compgen -A variable | sed -n 's/^IP\([0-9]\+\)$/\1/p' | sort -n)
+    fi
+    [ ${#targets[@]} -gt 0 ] || die "no instances known (export IP<N>/PORT<N> or run refresh)"
+    printf '%-6s %-34s %s\n' INST HELPERS STATUS
+    for n in "${targets[@]}"; do
+      v="$(dv3_ssh_dv3 "$n" 'dv3_version' 2>/dev/null | tail -1)"
+      [ -n "$v" ] || v="UNREACHABLE"
+      case "$v" in
+        "$local_sha"*) st="ok" ;;
+        UNREACHABLE)   st="-" ;;
+        UNKNOWN*)      st="PRE-DV3OPS (needs push-repo)" ;;
+        *)             st="SKEW (needs push-repo)" ;;
+      esac
+      printf '%-6s %-34s %s\n' "$n" "$v" "$st"
+    done
+    ;;
+
+  status)
+    n="${1:?usage: dv3ops status N [--json]}"; shift || true
+    if [ "${1:-}" = "--json" ]; then
+      dv3_ssh_dv3 "$n" 'dv3_status --json'
+    else
+      dv3_ssh_dv3 "$n" 'dv3_status'
+    fi
+    ;;
+
+  board-raw)
+    dv3_load_instances
+    targets=("$@")
+    if [ ${#targets[@]} -eq 0 ]; then
+      mapfile -t targets < <(compgen -A variable | sed -n 's/^IP\([0-9]\+\)$/\1/p' | sort -n)
+    fi
+    for n in "${targets[@]}"; do
+      printf '{"instance":"%s","state":' "$n"
+      dv3_ssh_dv3 "$n" 'dv3_status --json' 2>/dev/null | tail -1 || printf 'null'
+      printf '}\n'
+    done
+    ;;
+
+  sh)
+    n="${1:?usage: dv3ops sh N [cmd...]}"; shift || true
+    if [ $# -eq 0 ]; then
+      dv3_require_instance "$n"
+      exec ssh -t -p "$(dv3_port "$n")" "${DV3_SSH_OPTS[@]}" "root@$(dv3_ip "$n")"
+    else
+      dv3_ssh_dv3 "$n" "$*"
+    fi
+    ;;
+
+  watch)
+    n="${1:?usage: dv3ops watch N [secs]}"; secs="${2:-15}"
+    dv3_require_instance "$n"
+    exec ssh -t -p "$(dv3_port "$n")" "${DV3_SSH_OPTS[@]}" "root@$(dv3_ip "$n")" \
+      "bash -lc $(printf '%q' "source /root/.dreamer_vast_env; source /root/dreamer_instance_helpers.sh; dv3_watch $secs")"
+    ;;
+
+  events)
+    n="${1:?usage: dv3ops events N [lines]}"; k="${2:-40}"
+    dv3_ssh_dv3 "$n" "tail -n $k \"\$RUNROOT/_cloud_logs/events.jsonl\" 2>/dev/null || echo 'no events yet'"
+    ;;
+
+  migrate)
+    n="${1:?usage: dv3ops migrate N}"
+    exec bash "$DV3OPS_ROOT/scripts/ops/migrate_instance.sh" "$n"
+    ;;
+
+  selfcheck)
+    exec bash "$DV3OPS_ROOT/scripts/ops/selfcheck.sh"
+    ;;
+
+  gen|preflight|submit|check|requeue|pull|bundle|pull-local) not_yet "$verb" P1 ;;
+  refresh|board|pack)                                        not_yet "$verb" P2 ;;
+  digest)                                                    not_yet "$verb" P3 ;;
+  archive-report)                                            not_yet "$verb" P4 ;;
+
+  help|-h|--help) usage ;;
+  *) usage; die "unknown verb: $verb" ;;
+esac

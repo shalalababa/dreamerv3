@@ -19,13 +19,26 @@ class Distractor(embodied.wrappers.Wrapper):
 
   def __init__(
       self, env, dim, scale=1.0, theta=0.1, basesd=0.0, calib=1000,
-      key='distractor', seed=0):
+      key='distractor', gate_key='', gate_index=0, gate_threshold=0.0,
+      seed=0):
     super().__init__(env)
     assert dim > 0, dim
     self._dim = int(dim)
     self._scale = float(scale)
     self._theta = float(theta)
     self._key = key
+    # Gating (SE Stage 2, PREREG_nfi_scale_exhibit_amend2_20260814):
+    # if gate_key is set, the OU values are EMITTED only when
+    # obs[gate_key][gate_index] > gate_threshold, else zeros. The OU
+    # state recursion and rng consumption are gate-independent (no
+    # stream desync — same rule as planted.py), so gated and ungated
+    # wrappers with the same seed carry identical latent OU paths.
+    # Default gate_key='' is bitwise-inert (all prior consumers).
+    self._gate_key = gate_key
+    self._gate_index = int(gate_index)
+    self._gate_threshold = float(gate_threshold)
+    if gate_key:
+      assert gate_key in env.obs_space, gate_key
     self._rng = np.random.default_rng(seed)
     # Unit-stationary-sd AR(1): x' = (1 - theta) x + sqrt(1 - (1-theta)^2) eps,
     # so the emitted distractor sd is exactly scale * refsd at stationarity.
@@ -70,8 +83,17 @@ class Distractor(embodied.wrappers.Wrapper):
           self._noisesd * self._rng.standard_normal(self._dim))
     if not self._basesd and self._count < self._calib:
       self._update_stats(obs)
-    obs[self._key] = np.float32(self._state * self._scale * self._refsd())
+    if self._gate_open(obs):
+      obs[self._key] = np.float32(self._state * self._scale * self._refsd())
+    else:
+      obs[self._key] = np.zeros(self._dim, np.float32)
     return obs
+
+  def _gate_open(self, obs):
+    if not self._gate_key:
+      return True
+    val = np.asarray(obs[self._gate_key], np.float64).reshape(-1)
+    return bool(val[self._gate_index] > self._gate_threshold)
 
   def _update_stats(self, obs):
     values = np.concatenate(
@@ -120,3 +142,77 @@ class Distractor(embodied.wrappers.Wrapper):
       self._count = int(state['count'])
       self._mean = np.asarray(state['mean'], np.float64)
       self._m2 = np.asarray(state['m2'], np.float64)
+
+
+def selfcheck():
+  """Gate extension checks (Amendment 2): default-inert, zeros-when-
+  closed, no rng desync. Mirrors planted.py's selfcheck stub."""
+  from embodied.envs.planted import _StubEnv
+
+  # (1) default gate_key='' is bitwise-inert vs the pre-gate emission
+  # rule (reference simulation of the same OU recursion)
+  env = Distractor(_StubEnv(seed=3), dim=4, basesd=0.5, seed=11)
+  rng = np.random.default_rng(11)
+  state = rng.standard_normal(4)
+  ar, noisesd = 1.0 - 0.1, np.sqrt(1.0 - (1.0 - 0.1) ** 2)
+  for t in range(500):
+    obs = env.step({'action': np.zeros(1, np.float32)})
+    state = ar * state + noisesd * rng.standard_normal(4)
+    assert np.array_equal(obs['distractor'],
+                          np.float32(state * 1.0 * 0.5)), t
+
+  # (2) gated wrapper: zeros exactly when closed, OU emission when open,
+  # against the gate coordinate of the SAME obs
+  base = _StubEnv(seed=5)
+  env = Distractor(base, dim=4, basesd=0.5, seed=12,
+                   gate_key='proprio', gate_index=1, gate_threshold=0.2)
+  opens = closes = 0
+  for t in range(2000):
+    obs = env.step({'action': np.zeros(1, np.float32)})
+    if obs['proprio'][1] > 0.2:
+      opens += 1
+      assert not np.array_equal(obs['distractor'], np.zeros(4)), t
+    else:
+      closes += 1
+      assert np.array_equal(obs['distractor'],
+                            np.zeros(4, np.float32)), t
+  assert opens > 100 and closes > 100, (opens, closes)
+
+  # (3) no rng desync: same seed, gated vs ungated — emissions agree
+  # bitwise wherever the gate is open (identical latent OU paths)
+  e1 = Distractor(_StubEnv(seed=7), dim=4, basesd=0.5, seed=13)
+  e2 = Distractor(_StubEnv(seed=7), dim=4, basesd=0.5, seed=13,
+                  gate_key='proprio', gate_index=0, gate_threshold=0.0)
+  agree = 0
+  for t in range(2000):
+    o1 = e1.step({'action': np.zeros(1, np.float32)})
+    o2 = e2.step({'action': np.zeros(1, np.float32)})
+    if o2['proprio'][0] > 0.0:
+      assert np.array_equal(o1['distractor'], o2['distractor']), t
+      agree += 1
+    else:
+      assert np.array_equal(o2['distractor'], np.zeros(4, np.float32)), t
+  assert agree > 100, agree
+
+  # (4) Welford calibration x gate (review #23 m17): with basesd=0 the
+  # reference sd is estimated from the INNER env's obs before the
+  # emission is appended, so gating must not move frozen_refsd
+  e3 = Distractor(_StubEnv(seed=9), dim=4, basesd=0.0, calib=300,
+                  seed=14)
+  e4 = Distractor(_StubEnv(seed=9), dim=4, basesd=0.0, calib=300,
+                  seed=14, gate_key='proprio', gate_index=0,
+                  gate_threshold=0.0)
+  for t in range(400):
+    e3.step({'action': np.zeros(1, np.float32)})
+    e4.step({'action': np.zeros(1, np.float32)})
+  assert e3.frozen_refsd == e4.frozen_refsd and e3.frozen_refsd, (
+      e3.frozen_refsd, e4.frozen_refsd)
+
+  print(f'distractor gate selfcheck PASS (default-inert 500 steps; '
+        f'gated zeros-when-closed {closes}/2000; no-desync agree '
+        f'{agree}/2000; Welford gate-independent '
+        f'refsd={e3.frozen_refsd:.4f})')
+
+
+if __name__ == '__main__':
+  selfcheck()
