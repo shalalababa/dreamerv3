@@ -23,7 +23,7 @@
 set -uo pipefail
 
 RCC_HOST="${DV3_RCC_HOST:-rickybao@midway3-login3.rcc.uchicago.edu}"
-PERSIST="${DV3_RCC_PERSIST:-8h}"
+PERSIST="${DV3_RCC_PERSIST:-24h}"
 CTL_DIR="$HOME/.ssh/cm"
 CTL="$CTL_DIR/%r@%h:%p"
 
