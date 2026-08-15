@@ -321,11 +321,20 @@ def main() -> int:
     # scp into a path that does not exist fails (or, with one file, silently
     # creates a FILE with that name). ops/state is gitignored, so on a fresh
     # second machine it never exists. Create it first.
+    #
+    # Ride the shared connection `dv3ops rcc-connect` opens. Without these
+    # options ssh/scp authenticate from scratch, and on a 2FA host that means
+    # an askpass prompt this non-interactive call cannot answer: the push dies
+    # with "Too many authentication failures" and the other machine silently
+    # keeps a STALE inventory. That is how a freshly rented instance stayed
+    # invisible to RCC while every local command saw it (2026-08-15).
+    ctl = os.path.expanduser("~/.ssh/cm/%r@%h:%p")
+    share = ["-o", "ControlMaster=no", "-o", f"ControlPath={ctl}"]
     if ":" in tgt:
       rhost, rpath = tgt.split(":", 1)
-      subprocess.run(["ssh", "-n", rhost, "mkdir", "-p", rpath.rstrip("/")],
+      subprocess.run(["ssh", "-n", *share, rhost, "mkdir", "-p", rpath.rstrip("/")],
                      capture_output=True, text=True)
-    r = subprocess.run(["scp", str(state / "instances.json"),
+    r = subprocess.run(["scp", *share, str(state / "instances.json"),
                         str(state / "instances.env"), tgt],
                        capture_output=True, text=True)
     print(f"pushed instances.json + instances.env to {tgt}" if r.returncode == 0
