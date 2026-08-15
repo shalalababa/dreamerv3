@@ -488,6 +488,21 @@ case "$bd" in *"(+1.7h)"*) ok "board projects drain time from measurements" ;;
               *) bad "board drain projection" ;; esac
 case "$bd" in *"??"*) ok "board marks unmeasured kinds rather than guessing" ;;
               *) bad "board unmeasured marker" ;; esac
+# THE REAL PIPELINE SHAPE. dv3_status --json ends with a newline, so a producer
+# that interleaves printf with it splits every record across two lines. The
+# renderer was only ever tested on hand-written single-line input, so it looked
+# fine while dropping every instance in production.
+split="$(printf '{"instance":"1","state":{"gpus":[],"lanes":[]}\n}\n{"instance":"2","state":{"gpus":[],"lanes":[{"lane":"0","alive":true,"next":2,"total":5,"pending":4,"running_task":"x"}]}\n}\n' \
+  | python3 "$ROOT/scripts/ops/board.py" --durations /dev/null 2>&1)"
+case "$split" in *"IDLE and billing: instance(s) 1"*) ok "board parses records split across lines" ;;
+                 *) bad "board drops newline-split records (got: $split)" ;; esac
+case "$split" in *"2      0     RUNNING"*) ok "board renders a lane from split input" ;;
+                 *) bad "board lane from split input" ;; esac
+# And the producer must not emit that shape in the first place.
+chk "board-raw captures before printing (one record per line)" \
+    "grep -q 'st=\"\$(dv3_ssh_dv3' '$ROOT/scripts/ops/dv3ops'"
+chk "board-raw no longer interleaves printf with the ssh call" \
+    "! grep -q \"printf '{\\\"instance\\\":\\\"%s\\\",\\\"state\\\":' \" '$ROOT/scripts/ops/dv3ops'"
 
 echo
 echo "== P3: failure classification =="

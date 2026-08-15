@@ -294,6 +294,13 @@ def main() -> int:
     # invent a conflicting numbering -- which is worse than no numbering,
     # because both look right and "instance 4" quietly means two machines.
     tgt = args.push_to
+    # scp into a path that does not exist fails (or, with one file, silently
+    # creates a FILE with that name). ops/state is gitignored, so on a fresh
+    # second machine it never exists. Create it first.
+    if ":" in tgt:
+      rhost, rpath = tgt.split(":", 1)
+      subprocess.run(["ssh", "-n", rhost, "mkdir", "-p", rpath.rstrip("/")],
+                     capture_output=True, text=True)
     r = subprocess.run(["scp", str(state / "instances.json"),
                         str(state / "instances.env"), tgt],
                        capture_output=True, text=True)

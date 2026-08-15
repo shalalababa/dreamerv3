@@ -36,7 +36,23 @@ note () { echo "[dv3ops] $*"; }
 # hand-maintained practice -- so P0 works before P2 exists.
 
 dv3_load_instances () {
-  [ -r "$DV3OPS_STATE/instances.env" ] && source "$DV3OPS_STATE/instances.env"
+  if [ -r "$DV3OPS_STATE/instances.env" ]; then
+    source "$DV3OPS_STATE/instances.env"
+    return 0
+  fi
+  # Say where we looked. ops/state/ is gitignored, so it does NOT arrive with a
+  # git pull -- on a second machine it has to be created and copied explicitly,
+  # and the symptom otherwise is a bare "no instances reported".
+  if [ -z "${DV3_QUIET_STATE:-}" ] && [ -z "${IP1:-}" ]; then
+    echo "note: no instance inventory at $DV3OPS_STATE/instances.env" >&2
+    if [ -e "$DV3OPS_STATE" ] && [ ! -d "$DV3OPS_STATE" ]; then
+      echo "      ($DV3OPS_STATE exists but is NOT a directory -- an scp into a" >&2
+      echo "       missing path can create a file with that name; remove it)" >&2
+    fi
+    echo "      fix: mkdir -p $DV3OPS_STATE, then from WSL:" >&2
+    echo "        dv3ops refresh --push-to <user@rcc>:$DV3OPS_STATE/" >&2
+    echo "      or export IP<N>/PORT<N> in this shell." >&2
+  fi
   return 0
 }
 

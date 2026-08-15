@@ -130,9 +130,11 @@ case "$verb" in
       mapfile -t targets < <(compgen -A variable | sed -n 's/^IP\([0-9]\+\)$/\1/p' | sort -n)
     fi
     for n in "${targets[@]}"; do
-      printf '{"instance":"%s","state":' "$n"
-      dv3_ssh_dv3 "$n" 'dv3_status --json' 2>/dev/null | tail -1 || printf 'null'
-      printf '}\n'
+      # Capture, THEN print. Interleaving printf with a command whose output
+      # ends in a newline splits each record across two lines, and a
+      # line-oriented consumer then drops every one of them.
+      st="$(dv3_ssh_dv3 "$n" 'dv3_status --json' 2>/dev/null | tail -1)"
+      printf '{"instance":"%s","state":%s}\n' "$n" "${st:-null}"
     done
     ;;
 

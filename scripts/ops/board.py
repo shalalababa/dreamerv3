@@ -34,14 +34,31 @@ def main() -> int:
   db = durations.load(Path(args.durations))
   spec_index = durations.build_spec_index()
 
-  rows, idle, dead, unmeasured = [], [], [], 0
-  for line in sys.stdin:
-    line = line.strip()
-    if not line:
-      continue
+  # Decode a STREAM of JSON values rather than assuming one per line. A
+  # producer that emits pretty-printed or newline-terminated records would
+  # otherwise be silently dropped whole -- which is exactly how this reported
+  # "no instances" while every instance was answering fine.
+  raw = sys.stdin.read()
+  records, dec, i = [], json.JSONDecoder(), 0
+  while i < len(raw):
+    while i < len(raw) and raw[i] in " \t\r\n":
+      i += 1
+    if i >= len(raw):
+      break
     try:
-      rec = json.loads(line)
+      obj, end = dec.raw_decode(raw, i)
     except json.JSONDecodeError:
+      nl = raw.find("\n", i)
+      if nl == -1:
+        break
+      i = nl + 1
+      continue
+    records.append(obj)
+    i = end
+
+  rows, idle, dead, unmeasured = [], [], [], 0
+  for rec in records:
+    if not isinstance(rec, dict):
       continue
     inst, state = rec.get("instance", "?"), rec.get("state")
     if not state:
