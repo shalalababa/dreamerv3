@@ -1,0 +1,111 @@
+{
+ "fired": {
+  "collapse_negative": [],
+  "collapse_positive": [],
+  "negative": [],
+  "positive": [
+   "nzs8",
+   "nzs2"
+  ]
+ },
+ "mde_note": {
+  "note": "pinned-anchor se (~0.031/0.059 normalized) not propagated - disclosed",
+  "per_load": {
+   "nzs2": {
+    "mde80": 0.2357832616915296,
+    "sd_apt": 0.08144966797144955,
+    "sd_task": 0.2238174799612721,
+    "se": 0.08420830774697487
+   },
+   "nzs8": {
+    "mde80": 0.2114906660241161,
+    "sd_apt": 0.20705372045080858,
+    "sd_task": 0.05262966035259648,
+    "se": 0.07553238072289861
+   }
+  }
+ },
+ "p_s2_curve": {
+  "1.0": {
+   "apt": 0.7180130325674831,
+   "s": 0.0,
+   "source": "pinned (executed B2 nz1)",
+   "task": 0.9133080491668023
+  },
+  "2.0": {
+   "apt": 0.7080403580495704,
+   "s": 0.1402128373449387,
+   "source": "this wave",
+   "task": 0.754189063866245
+  },
+  "4.0": {
+   "apt": 0.6805027838421669,
+   "s": 0.16278817439305993,
+   "source": "pinned (executed B2 nz2)",
+   "task": 0.679408127270193
+  },
+  "8.0": {
+   "apt": 0.675063250927064,
+   "s": 0.15329345977700531,
+   "source": "this wave",
+   "task": 0.6785906017827854
+  }
+ },
+ "panel_means": {
+  "apt_nzs2": 0.7080403580495704,
+  "apt_nzs8": 0.675063250927064,
+  "task_nzs2": 0.754189063866245,
+  "task_nzs8": 0.6785906017827854
+ },
+ "per_load": {
+  "nzs2": {
+   "apt_mean": 0.7080403580495704,
+   "bh_threshold": 0.05,
+   "contrast": {
+    "ci": [
+     0.1344298432051171,
+     0.45660031831760545
+    ],
+    "diff": 0.33924535858325783,
+    "n": [
+     8,
+     8
+    ],
+    "perm_p": 0.0015998400159984002
+   },
+   "norm_apt_mean": 0.04574347872907876,
+   "norm_task_mean": 0.3849888373123366,
+   "status": "INFORMATIVE",
+   "task_mean": 0.754189063866245
+  },
+  "nzs8": {
+   "apt_mean": 0.675063250927064,
+   "bh_threshold": 0.025,
+   "contrast": {
+    "ci": [
+     0.23910796322472497,
+     0.512546960012321
+    ],
+    "diff": 0.3708939617460476,
+    "n": [
+     8,
+     8
+    ],
+    "perm_p": 0.0005999400059994001
+   },
+   "norm_apt_mean": 0.1970055695047701,
+   "norm_task_mean": 0.5678995312508177,
+   "status": "INFORMATIVE",
+   "task_mean": 0.6785906017827854
+  }
+ },
+ "pins": {
+  "base_apt": 0.7180130325674831,
+  "base_task": 0.9133080491668023,
+  "hr_apt": 0.21801303256748306,
+  "hr_task": 0.4133080491668023,
+  "r_headroom": 1.89579514719547
+ },
+ "prereg": "PREREG_sigma_ladder_20260814.md",
+ "verdict": "EXCESS-TASK-LOSS: the task arm loses MORE than headroom-proportional at nzs8,nzs2 - the competition-with-swamped-rescue account is supported; proportional-compression is rejected at those loads"
+}
