@@ -54,10 +54,18 @@ dv3_require_instance () {
 
 # Run a command string on an instance. The string is passed as ONE argument to
 # a login shell -- never build it by concatenating unquoted variables.
+#
+# `-n` is load-bearing, not tidiness. ssh reads stdin by default, so an ssh
+# call inside a script that is ITSELF being fed on stdin -- the
+# `ssh host 'bash -s' <<'EOF' ... ssh host 'mkdir -p ...' ... EOF` shape --
+# swallows the remainder of the enclosing script. Every command after it
+# silently never runs, with no error: exactly the "rsync after an ssh mkdir
+# doesn't execute" symptom. `-n` redirects stdin from /dev/null so an inner
+# ssh cannot eat its parent.
 dv3_ssh () {
   local n="${1:?instance}"; shift
   dv3_require_instance "$n"
-  ssh -p "$(dv3_port "$n")" "${DV3_SSH_OPTS[@]}" "root@$(dv3_ip "$n")" "$@"
+  ssh -n -p "$(dv3_port "$n")" "${DV3_SSH_OPTS[@]}" "root@$(dv3_ip "$n")" "$@"
 }
 
 # Feed a heredoc/script to an instance with positional args that survive the
@@ -101,6 +109,37 @@ dv3_push_repo () {
   rsync "${DV3_RSYNC_OPTS[@]}" --delete "${DV3_REPO_EXCLUDES[@]}" \
     -e "ssh -p $(dv3_port "$n") ${DV3_SSH_OPTS[*]}" \
     "$DV3OPS_ROOT/" "root@$(dv3_ip "$n"):/workspace/dreamerv3/"
+  # Install/refresh the helper shim at /root/dreamer_instance_helpers.sh.
+  #
+  # Without this, push-repo delivers new helpers to $REPO but leaves whatever
+  # /root/dreamer_instance_helpers.sh the instance booted with -- and on an
+  # instance created (or REBOOTED) under the v1 onstart template that file is
+  # the whole v1 library, inline. The result is split-brain: the watchdog
+  # sources the repo copy and works, while every interactive shell and every
+  # dv3_ssh_dv3 call gets v1 and reports `dv3_version: command not found`.
+  # Writing the shim here makes push-repo self-sufficient regardless of which
+  # template vintage the instance came up on.
+  dv3_ssh_script "$n" '
+set -uo pipefail
+real="${REPO:-/workspace/dreamerv3}/scripts/ops/instance_helpers.sh"
+[ -r "$real" ] || { echo "  ERROR: helpers not synced to $real" >&2; exit 1; }
+if [ -f /root/dreamer_instance_helpers.sh ] &&
+   ! grep -q "scripts/ops/instance_helpers.sh" /root/dreamer_instance_helpers.sh 2>/dev/null; then
+  cp -a /root/dreamer_instance_helpers.sh /root/dreamer_instance_helpers.v1.bak
+  echo "  replacing inline v1 helpers (backed up to /root/dreamer_instance_helpers.v1.bak)"
+fi
+cat > /root/dreamer_instance_helpers.sh <<SHIM
+DV3_HELPERS_REAL="\${REPO:-/workspace/dreamerv3}/scripts/ops/instance_helpers.sh"
+if [ -r "\$DV3_HELPERS_REAL" ]; then
+  source "\$DV3_HELPERS_REAL"
+else
+  echo "dv3: helpers not installed yet -- run '"'"'dv3ops push-repo <N>'"'"' from RCC" >&2
+fi
+SHIM
+chmod 644 /root/dreamer_instance_helpers.sh
+echo "  shim installed -> $real"
+'
+
   # Backfill notification config into /root/.dreamer_vast_env.
   # An instance that predates the new onstart template -- or one that REBOOTED
   # and re-ran the old template -- has no DV3_NTFY_* vars, so the watchdog comes

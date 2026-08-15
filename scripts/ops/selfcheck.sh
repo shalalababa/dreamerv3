@@ -79,6 +79,19 @@ chk "watchdog cannot fork-bomb on source" \
 # checking for the word "requeue" would match the prose in its own alerts.
 chk "watchdog has no auto-mitigation in P0" \
     "! grep -qE 'dv3_(queue_cmds_list|add_cmd_tasks|queue_or_add|cancel_queue|remove_tasks)' '$ROOT/scripts/ops/watchdog.sh'"
+# ssh reads stdin; an ssh inside a heredoc-fed script eats the rest of that
+# script and every later command silently never runs.
+chk "bare-command ssh uses -n so it cannot eat its parent script" \
+    "grep -q 'ssh -n -p' '$ROOT/scripts/ops/lib/common.sh'"
+# push-repo must replace the shim, not just ship helpers into the repo: an
+# instance that booted (or rebooted) under the v1 template still has the whole
+# v1 library at /root/dreamer_instance_helpers.sh, and nothing would point it
+# at the new one -- the watchdog works while every shell reports
+# "dv3_version: command not found".
+chk "push-repo installs the helper shim" \
+    "grep -q 'shim installed' '$ROOT/scripts/ops/lib/common.sh'"
+chk "push-repo backs up inline v1 helpers before replacing them" \
+    "grep -q 'dreamer_instance_helpers.v1.bak' '$ROOT/scripts/ops/lib/common.sh'"
 chk "ssh helper pre-quotes arguments (§0.9)" \
     "grep -q \"printf '%q '\" '$ROOT/scripts/ops/lib/common.sh'"
 chk "repo sync keeps the canonical whole-repo shape" \
