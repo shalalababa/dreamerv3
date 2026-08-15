@@ -31,17 +31,42 @@ import wavespec  # noqa: E402
 
 STEP_RE = re.compile(r"(\d+)$")
 
+# A DreamerV3 checkpoint directory is named either `<timestamp>-<step>` or,
+# when the driver writes no step, `<timestamp>` alone -- where the timestamp is
+# `YYYYMMDDThhmmssF<microseconds>`. The bare form carries NO step, but it ends
+# in digits, so the trailing-number match above happily reads the MICROSECOND
+# field as a training step. Adapt runs are written in exactly that bare form,
+# so every adapt in a wave reported a six-digit pseudo-step drawn from the
+# clock, and the realized-training outlier check then compared those to each
+# other and flagged the disagreement it had itself manufactured (observed
+# 2026-08-15 on the sigma-ladder: "ckpt_step=669262 vs modal 649186", both
+# pure timestamp noise, on two runs that were in fact complete).
+#
+# Recognising the bare timestamp is enough to fix it, and is deliberately
+# narrow: any other naming convention still falls through to the loose match,
+# so drivers whose layout has not been observed here keep their old behaviour.
+TIMESTAMP_ONLY_RE = re.compile(r"^\d{8}T\d{6}F\d+$")
+
 
 # --------------------------------------------------------------------------
 # observations
 # --------------------------------------------------------------------------
 
 def ckpt_step(rundir: Path) -> int:
-  """Highest step among checkpoints that actually finished writing."""
+  """Highest step among checkpoints that actually finished writing.
+
+  Returns 0 when the checkpoints carry no step in their names. That is the
+  honest answer -- it means this run's progress cannot be read off the
+  filesystem -- and it is why no spec asserts ckpt_step_min against an adapt
+  dir: the fit half, which IS step-named, is where truncation hides anyway.
+  """
   best = 0
   for p in glob.glob(str(rundir / "ckpt" / "*")):
     if os.path.exists(os.path.join(p, "done")):
-      m = STEP_RE.search(os.path.basename(p))
+      name = os.path.basename(p)
+      if TIMESTAMP_ONLY_RE.match(name):
+        continue
+      m = STEP_RE.search(name)
       if m:
         best = max(best, int(m.group(1)))
   # Some drivers write a flat ckpt dir with its own `done`.

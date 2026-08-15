@@ -407,6 +407,31 @@ case "$pend" in *sc_fit_a_seed2*) ok "--pending lists the incomplete run" ;;
 case "$pend" in *sc_fit_a_seed1*) bad "--pending wrongly lists a complete run" ;;
                 *) ok "--pending excludes complete runs" ;; esac
 
+# ckpt_step must not read a training step out of a bare timestamp. Adapt runs
+# write `<timestamp>` checkpoints with no step suffix, and a trailing-digit
+# match turns the microsecond field into a six-digit pseudo-step -- which the
+# outlier check then compares across runs and flags as disagreement it invented
+# (2026-08-15, sigma-ladder: "ckpt_step=669262 vs modal 649186" on two complete
+# runs). Fits, which DO carry `-<step>`, must still parse.
+CS="$TMP/ckptstep"; mkdir -p "$CS"
+mk_ckpt () { mkdir -p "$CS/$1/ckpt/$2"; touch "$CS/$1/ckpt/$2/done"; }
+mk_ckpt bare_ts   20260815T041132F669262
+mk_ckpt with_step 20260815T035522F111998-000000500000
+mk_ckpt bare_num  000000450000
+step_of () { python3 -c "
+import sys; sys.path.insert(0, '$ROOT/scripts/ops')
+from pathlib import Path
+import wavecheck; print(wavecheck.ckpt_step(Path('$CS/$1')))"; }
+[ "$(step_of bare_ts)" = "0" ] \
+  && ok "ckpt_step ignores a bare timestamp (no step in the name)" \
+  || bad "ckpt_step read a step out of a timestamp: got $(step_of bare_ts)"
+[ "$(step_of with_step)" = "500000" ] \
+  && ok "ckpt_step parses <timestamp>-<step>" \
+  || bad "ckpt_step parses <timestamp>-<step>: got $(step_of with_step)"
+[ "$(step_of bare_num)" = "450000" ] \
+  && ok "ckpt_step still parses a plain step-named ckpt" \
+  || bad "ckpt_step still parses a plain step-named ckpt: got $(step_of bare_num)"
+
 echo
 echo "== P1: spec validation rejects bad specs =="
 mkbad () { mkdir -p "$TMP/bad"; printf '%s\n' "$1" > "$TMP/bad/spec.yaml"; }

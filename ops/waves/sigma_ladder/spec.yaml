@@ -1,0 +1,148 @@
+# sigma-ladder (B2 crowding-account discriminator) -- PREREG_sigma_ladder_20260814.
+#
+# TRANSCRIBED, NOT AUTHORED. This wave was submitted by hand on 2026-08-14,
+# before dv3ops existed. The fit_adapt commands below are copied VERBATIM from
+# the queue snapshots the supervisor recorded on instance 2
+# ($RUNROOT/_queue_control/lane_0/queue_uGUaf0Vj/tasks.txt), with the one
+# literal `/workspace/dreamerv3_runs` replaced by ${RUNROOT} so the same spec
+# resolves on RCC. Nothing here was reconstructed from the prereg prose except
+# the ridge stage, which is flagged where it is declared.
+#
+# The point of writing it down after the fact: `check`, `pull` and `bundle`
+# then derive from ONE run table, so "which runs are in this wave" cannot drift
+# between what was submitted, what gets verified and what gets archived.
+
+wave_id: sigma_ladder
+paper: paper1
+prereg: prereg/PREREG_sigma_ladder_20260814.md
+notes: >-
+  2 nuisance loads (sigma 2, sigma 8) x 2 arms (task / apt) x 2 sides x 4 seeds
+  = 32 fit+adapt jobs. axis1.sbatch runs the fit and the adapt in one
+  invocation, so a single queued task owns TWO output dirs. The fit half is
+  checked explicitly and by its own dual witness (update == total_updates),
+  because an adapt completes normally on top of a world model that stopped
+  short -- the axis1 latest_ckpt truncation hole found on 2026-08-07.
+
+defaults:
+  target: vast
+
+kinds:
+  axis1_fit_adapt: {per_gpu: 1}
+  ridge:           {per_gpu: 1}
+
+stages:
+
+  # -- arm: task (AXIS1_EXPL_MODE=task -> id prefix ax1nzs{2,8}) --------------
+  - name: fit_adapt_task
+    kind: axis1_fit_adapt
+    on_failure: abort
+    expand:
+      sig:  [2, 8]
+      side: [0, 1]
+      seed: [1, 2, 3, 4]
+    run_id: "adapt_ax1nzs${sig}q1s${side}_finger_seed${seed}_ckpt500000"
+    cmd: >-
+      DV3_TASK_NAME=${run_id} DREAMER_DISABLE_GPUFLAGS=1 RUN_ID=${run_id}
+      WM_RUN=ax1wm_finger_nzs${sig}q1s${side}_seed${seed}
+      TASK=dmc_finger_turn_hard SEED=${seed}
+      REPLAY=${RUNROOT}/axis1_finger/q1_nzs${sig}/side${side}
+      UPDATES=500000 STEPS=1.25e5 AXIS1_EXPL_MODE=task
+      AXIS1_BASE_CONFIG=dzs${sig} AXIS1_ADAPT_CONFIG=frozen_readout
+      AXIS1_SAVE_EVERY_UPDATES=50000 bash scripts/axis1.sbatch
+    outputs:
+      - "adapt_ax1nzs${sig}q1s${side}_finger_seed${seed}_ckpt500000"
+      - "ax1wm_finger_nzs${sig}q1s${side}_seed${seed}"
+    inputs:
+      - "axis1_finger/q1_nzs${sig}/side${side}"
+      # Parent-directory unit: the sigma gates + pinned holdout sha live here,
+      # and the prereg's bundle requires this manifest by name.
+      - "axis1_finger/q1_nzs${sig}/manifest.json"
+    done_when:
+      - exists: ADAPT_DONE
+      - exists: config.yaml
+      - jsonl_min_lines: {file: scores.jsonl, n: 100}
+      # The fit half, in the sibling dir this same task wrote.
+      - ckpt_step_min: {dir: "../ax1wm_finger_nzs${sig}q1s${side}_seed${seed}", min: 500000}
+      # The prereg's dual fit witness: a checkpoint at 500k is necessary but not
+      # sufficient -- update must equal total_updates in the progress file, or
+      # the run was still short of its own declared budget.
+      - file_contains:
+          file: "../ax1wm_finger_nzs${sig}q1s${side}_seed${seed}/OFFLINE_FIT_PROGRESS"
+          pattern: "update=500000\ntotal_updates=500000"
+
+  # -- arm: apt (AXIS1_EXPL_MODE=apt -> id prefix ax1fnzs{2,8}) --------------
+  - name: fit_adapt_apt
+    kind: axis1_fit_adapt
+    on_failure: abort
+    expand:
+      sig:  [2, 8]
+      side: [0, 1]
+      seed: [1, 2, 3, 4]
+    run_id: "adapt_ax1fnzs${sig}q1s${side}_finger_seed${seed}_ckpt500000"
+    cmd: >-
+      DV3_TASK_NAME=${run_id} DREAMER_DISABLE_GPUFLAGS=1 RUN_ID=${run_id}
+      WM_RUN=ax1wm_finger_fnzs${sig}q1s${side}_seed${seed}
+      TASK=dmc_finger_turn_hard SEED=${seed}
+      REPLAY=${RUNROOT}/axis1_finger/q1_nzs${sig}/side${side}
+      UPDATES=500000 STEPS=1.25e5 AXIS1_EXPL_MODE=apt
+      AXIS1_BASE_CONFIG=dzs${sig} AXIS1_ADAPT_CONFIG=frozen_readout
+      AXIS1_SAVE_EVERY_UPDATES=50000 bash scripts/axis1.sbatch
+    outputs:
+      - "adapt_ax1fnzs${sig}q1s${side}_finger_seed${seed}_ckpt500000"
+      - "ax1wm_finger_fnzs${sig}q1s${side}_seed${seed}"
+    inputs:
+      - "axis1_finger/q1_nzs${sig}/side${side}"
+      - "axis1_finger/q1_nzs${sig}/manifest.json"
+    done_when:
+      - exists: ADAPT_DONE
+      - exists: config.yaml
+      - jsonl_min_lines: {file: scores.jsonl, n: 100}
+      - ckpt_step_min: {dir: "../ax1wm_finger_fnzs${sig}q1s${side}_seed${seed}", min: 500000}
+      - file_contains:
+          file: "../ax1wm_finger_fnzs${sig}q1s${side}_seed${seed}/OFFLINE_FIT_PROGRESS"
+          pattern: "update=500000\ntotal_updates=500000"
+
+  # -- ridge probes, one per fit ---------------------------------------------
+  # RECONSTRUCTED FROM THE PREREG PROSE, NOT YET EXECUTED. Unlike the two
+  # stages above there is no queue snapshot to copy, so this cmd is the ONE
+  # thing in this file that has not been observed to run. It is declared so
+  # `check` reports the wave honestly -- the ladder is NOT complete when the
+  # 32 fits land, it is complete when the 32 ridge jsons exist -- but reconcile
+  # it against `python -m probing.ridge_probe measure --help` (and the
+  # post-2026-08-08 --holdout guard) BEFORE approving a submit.
+  - name: ridge
+    kind: ridge
+    needs: fit_adapt_task
+    on_failure: continue
+    expand:
+      armp: ["", "f"]
+      sig:  [2, 8]
+      side: [0, 1]
+      seed: [1, 2, 3, 4]
+    run_id: "sgl_ridge_${armp}nzs${sig}q1s${side}_seed${seed}"
+    logdir: "sgl_ridge"
+    outputs:
+      # Renamed by WM run_id, as the reader requires (prereg: "each output json
+      # renamed <wm_run>.json in the bundle").
+      - "sgl_ridge/ax1wm_finger_${armp}nzs${sig}q1s${side}_seed${seed}.json"
+    cmd: >-
+      DREAMER_DISABLE_GPUFLAGS=1 python -m probing.ridge_probe measure
+      --run_logdir "${RUNROOT}/ax1wm_finger_${armp}nzs${sig}q1s${side}_seed${seed}"
+      --probeset "${RUNROOT}/e4_probesets/finger_nzs${sig}_v1"
+      --output "${RUNROOT}/sgl_ridge/ax1wm_finger_${armp}nzs${sig}q1s${side}_seed${seed}.json"
+      --platform cuda --ep_batch 4
+    inputs:
+      - "e4_probesets/finger_nzs${sig}_v1"
+    done_when:
+      - exists: "ax1wm_finger_${armp}nzs${sig}q1s${side}_seed${seed}.json"
+
+bundle:
+  prefix: sgl
+  include_stages: [fit_adapt_task, fit_adapt_apt, ridge]
+  cloud_logs:
+    - "adapt_ax1nzs*_seed*.out"
+    - "adapt_ax1fnzs*_seed*.out"
+    - "worker_shard*.out"
+
+night:
+  auto_requeue_unaffected: true
