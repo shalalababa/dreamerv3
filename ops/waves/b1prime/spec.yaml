@@ -1,0 +1,118 @@
+# B1' -- the 600k capacity point between size300k (floor-FAIL) and size1m
+# (floor-pass).  PREREG_b1prime_20260815.
+#
+# The per-cell command is DERIVED from scripts/submit_all.sh's axis1-bundles
+# branch, not invented and not copied from a sibling wave:
+#   run_id  = adapt_${id_prefix}${q}s${side}_${dom}_seed${s}_ckpt${updates}
+#   wm_run  = ax1wm_${dom}_${wm_infix}${q}s${side}_seed${s}, wm_infix = id_prefix#ax1
+#   REPLAY  = $RUNROOT/axis1_${dom}/${q}${AXIS1_QUAD_SUFFIX}/side${side}
+# with id_prefix ax1sk6 (task) / ax1fsk6 (apt) and AXIS1_QUAD_SUFFIX=_ctxk6,
+# exactly as the prereg's two registered submission lines specify. The suffix
+# deliberately does NOT enter run naming -- that is the _ctx convention, and
+# getting it backwards would name the runs after the buffer instead of the arm.
+#
+# AXIS1_BASE_CONFIG is left UNSET on purpose: axis1.sbatch defaults it to
+# dmc_proprio, and the registered command does not set it. Setting it here
+# "for clarity" would be a silent deviation from what was registered.
+#
+# Prerequisites, both satisfied before this wave was submitted:
+#   * the ctx pair $RUNROOT/axis1_finger/q1_ctxk6 (deter 384, stoch 32 4),
+#     built on the RCC login node; operator gate PASSED -- both sides report
+#     source_latent_shapes deter [512], stoch [32, 4].
+#   * the seed99 smoke fit (task, sk6, side0), config-audited then removed by
+#     hand. seed99 cannot enter this wave: the expansion is seeds 1-4 only,
+#     and the reader's regex is seed-anchored.
+
+wave_id: b1prime
+paper: paper1
+prereg: prereg/PREREG_b1prime_20260815.md
+notes: >-
+  1 size x 2 arms x 2 sides x 4 seeds = 16 fit+adapt jobs at size600k
+  (rssm deter 384, hidden 48, classes 4; depth 2; units 48) on the
+  context-resized q1_ctxk6 pair. All 16 adapts pin the readout at the size1m
+  width via AXIS1_ADAPT_CONFIG=readout64_frozen (the B1 mediator repair); the
+  frozen reader gates agent.policy.units == 64 per adapt.
+
+defaults:
+  target: vast
+
+kinds:
+  axis1_fit_adapt: {per_gpu: 1}
+
+stages:
+
+  # -- arm: task (AXIS1_ID_PREFIX=ax1sk6 -> ax1wm_finger_sk6q1s*) ------------
+  - name: fit_adapt_task
+    kind: axis1_fit_adapt
+    on_failure: abort
+    expand:
+      side: [0, 1]
+      seed: [1, 2, 3, 4]
+    run_id: "adapt_ax1sk6q1s${side}_finger_seed${seed}_ckpt500000"
+    cmd: >-
+      DV3_TASK_NAME=${run_id} RUN_ID=${run_id}
+      WM_RUN=ax1wm_finger_sk6q1s${side}_seed${seed}
+      TASK=dmc_finger_turn_hard SEED=${seed}
+      REPLAY=${RUNROOT}/axis1_finger/q1_ctxk6/side${side}
+      UPDATES=500000 STEPS=1.25e5 AXIS1_EXPL_MODE=task
+      AXIS1_SIZE=size600k AXIS1_ADAPT_CONFIG=readout64_frozen
+      DREAMER_DISABLE_GPUFLAGS=1 bash scripts/axis1.sbatch
+    outputs:
+      - "adapt_ax1sk6q1s${side}_finger_seed${seed}_ckpt500000"
+      - "ax1wm_finger_sk6q1s${side}_seed${seed}"
+    inputs:
+      - "axis1_finger/q1_ctxk6/side${side}"
+      # Parent-directory unit: axis1.sbatch requires manifest.json beside the
+      # side dir, and for this wave it also carries the context_resize block
+      # the operator gate reads.
+      - "axis1_finger/q1_ctxk6/manifest.json"
+    done_when:
+      - exists: ADAPT_DONE
+      - exists: config.yaml
+      - jsonl_min_lines: {file: scores.jsonl, n: 100}
+      - ckpt_step_min: {dir: "../ax1wm_finger_sk6q1s${side}_seed${seed}", min: 500000}
+      - file_contains:
+          file: "../ax1wm_finger_sk6q1s${side}_seed${seed}/OFFLINE_FIT_PROGRESS"
+          pattern: "update=500000\ntotal_updates=500000"
+
+  # -- arm: apt (AXIS1_ID_PREFIX=ax1fsk6 -> ax1wm_finger_fsk6q1s*) ----------
+  - name: fit_adapt_apt
+    kind: axis1_fit_adapt
+    on_failure: abort
+    expand:
+      side: [0, 1]
+      seed: [1, 2, 3, 4]
+    run_id: "adapt_ax1fsk6q1s${side}_finger_seed${seed}_ckpt500000"
+    cmd: >-
+      DV3_TASK_NAME=${run_id} RUN_ID=${run_id}
+      WM_RUN=ax1wm_finger_fsk6q1s${side}_seed${seed}
+      TASK=dmc_finger_turn_hard SEED=${seed}
+      REPLAY=${RUNROOT}/axis1_finger/q1_ctxk6/side${side}
+      UPDATES=500000 STEPS=1.25e5 AXIS1_EXPL_MODE=apt
+      AXIS1_SIZE=size600k AXIS1_ADAPT_CONFIG=readout64_frozen
+      DREAMER_DISABLE_GPUFLAGS=1 bash scripts/axis1.sbatch
+    outputs:
+      - "adapt_ax1fsk6q1s${side}_finger_seed${seed}_ckpt500000"
+      - "ax1wm_finger_fsk6q1s${side}_seed${seed}"
+    inputs:
+      - "axis1_finger/q1_ctxk6/side${side}"
+      - "axis1_finger/q1_ctxk6/manifest.json"
+    done_when:
+      - exists: ADAPT_DONE
+      - exists: config.yaml
+      - jsonl_min_lines: {file: scores.jsonl, n: 100}
+      - ckpt_step_min: {dir: "../ax1wm_finger_fsk6q1s${side}_seed${seed}", min: 500000}
+      - file_contains:
+          file: "../ax1wm_finger_fsk6q1s${side}_seed${seed}/OFFLINE_FIT_PROGRESS"
+          pattern: "update=500000\ntotal_updates=500000"
+
+bundle:
+  prefix: b1prime
+  include_stages: [fit_adapt_task, fit_adapt_apt]
+  cloud_logs:
+    - "adapt_ax1sk6q1s*_finger_seed*.out"
+    - "adapt_ax1fsk6q1s*_finger_seed*.out"
+    - "worker_shard*.out"
+
+night:
+  auto_requeue_unaffected: true
