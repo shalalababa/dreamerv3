@@ -28,6 +28,8 @@ dv3ops <verb> [args]
     events N [k]            tail the instance event log (what the watchdog/queue emitted)
     migrate N               guided helper migration for a running instance (see §P0)
     selfcheck               local static checks of the ops library
+    destroy N [--yes]       destroy a rented instance -- REPORTS by default;
+                            refuses unless every run dir is already on RCC
     rcc-connect [--status|--close]
                             open/reuse ONE shared ssh connection to RCC, so
                             every later RCC command skips password + 2FA
@@ -184,6 +186,10 @@ case "$verb" in
   migrate)
     n="${1:?usage: dv3ops migrate N}"
     exec bash "$DV3OPS_ROOT/scripts/ops/migrate_instance.sh" "$n"
+    ;;
+
+  destroy)
+    exec bash "$DV3OPS_ROOT/scripts/ops/destroy_instance.sh" "$@"
     ;;
 
   rcc-connect)

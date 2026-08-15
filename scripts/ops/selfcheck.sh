@@ -845,19 +845,63 @@ case "$out" in *"Keys seen"*) ok "unrecognised vast JSON reports the keys it saw
                *) bad "unrecognised vast JSON should name the keys" ;; esac
 
 echo
+echo "== destroy: the archive gate =="
+# Destroying a rented instance deletes every run dir on it. The gate is the
+# whole point of the verb existing, so assert its shape rather than its prose.
+D="$ROOT/scripts/ops/destroy_instance.sh"
+chk "destroy is report-only without --yes" \
+    "grep -q 'REPORT ONLY -- nothing destroyed' '$D'"
+chk "destroy refuses on unarchived data" \
+    "grep -q 'refusing to destroy: unarchived data' '$D'"
+chk "destroy refuses while work is in flight" \
+    "grep -q 'refusing to destroy an instance with work in flight' '$D'"
+chk "destroy requires typing the vast id" \
+    "grep -q 'Type the vast id' '$D'"
+chk "unsafe override needs a typed acknowledgement" \
+    "grep -q 'DESTROY UNARCHIVED' '$D'"
+chk "destroy records the instance BEFORE calling vastai" \
+    "awk '/destroyed.jsonl/{r=NR} /vastai destroy instance/{d=NR} END{exit !(r && d && r<d)}' '$D'"
+chk "destroy retires the index afterwards" \
+    "grep -q 'refresh.py' '$D'"
+# There is deliberately no create verb: picking an offer is a price judgement.
+chk "no create/rent verb exists" \
+    "! grep -qE '^  (create|rent|launch)\)' '$ROOT/scripts/ops/dv3ops'"
+
+# The inventory is the evidence the gate runs on. Counters, not names.
+INVP="$ROOT/scripts/ops/runroot_inventory.py"
+IR="$TMP/invroot"; mkdir -p "$IR/keep_me/ckpt/20260815T035522F111998-000000500000" \
+                            "$IR/_cloud_logs" "$IR/_queue_control"
+touch "$IR/keep_me/ckpt/20260815T035522F111998-000000500000/done"
+seq 1 42 > "$IR/keep_me/scores.jsonl"
+touch "$IR/keep_me/ADAPT_DONE"
+inv="$(python3 "$INVP" "$IR" 2>/dev/null)"
+python3 - "$inv" <<'PY' && ok "inventory reports counters and skips scaffolding" \
+                        || bad "inventory output wrong"
+import json, sys
+d = json.loads(sys.argv[1])["entries"]
+assert "keep_me" in d, d
+assert "_cloud_logs" not in d and "_queue_control" not in d, d
+e = d["keep_me"]
+assert e["ckpt_step"] == 500000, e
+assert e["n_scores"] == 42, e
+assert "ADAPT_DONE" in e["markers"], e
+assert e["n_files"] >= 3 and e["bytes"] > 0, e
+PY
+
+echo
 echo "== every advertised verb dispatches =="
 missing=""
 for v in push-repo versions status board-raw sh watch events migrate selfcheck \
          gen preflight submit check requeue pull bundle pull-local \
          durations refresh board pack triage digest archive-report \
-         rcc-connect; do
+         rcc-connect destroy; do
   # rcc-connect with no args would try to OPEN an ssh connection; a selfcheck
   # must never reach the network or prompt for 2FA. --status only reports.
   vargs=""; [ "$v" = rcc-connect ] && vargs="--status"
   o="$(bash "$ROOT/scripts/ops/dv3ops" "$v" $vargs 2>&1 </dev/null | head -1)"
   case "$o" in *"not built yet"*|*"unknown verb"*) missing="$missing $v" ;; esac
 done
-[ -z "$missing" ] && ok "all 25 verbs dispatch" || bad "verbs not dispatching:$missing"
+[ -z "$missing" ] && ok "all 26 verbs dispatch" || bad "verbs not dispatching:$missing"
 # `help` must not advertise anything that does not exist.
 bash "$ROOT/scripts/ops/dv3ops" help 2>&1 | grep -q "not built yet" \
   && bad "help still lists unbuilt verbs" || ok "help lists no unbuilt verbs"
