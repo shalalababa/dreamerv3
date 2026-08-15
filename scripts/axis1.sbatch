@@ -48,7 +48,7 @@ STEPS="${STEPS:-1.25e5}"
 # loading fails, which is the built-in guard against mixed-size cells.
 # Empty AXIS1_SIZE keeps the historical default (size1m via dmc_proprio).
 case "${AXIS1_SIZE:-}" in
-  ''|size100k|size300k|size1m|size12m|size25m|size50m|size100m|size200m|size400m) ;;
+  ''|size100k|size300k|size600k|size1m|size12m|size25m|size50m|size100m|size200m|size400m) ;;
   *) echo "ERROR: unknown AXIS1_SIZE=${AXIS1_SIZE} (size100k..size400m or empty)"; exit 2 ;;
 esac
 # Pixel study (Plan_PixelReplication): base config applied to BOTH stages

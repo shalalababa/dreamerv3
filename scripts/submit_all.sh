@@ -345,7 +345,7 @@ submit_axis1_bundle() {  # submit_axis1_bundle <bundle_id> <runlist> <num_tasks>
   local bundle_id="$1"; local runlist="$2"; local num_tasks="$3"
   local walltime="${AXIS1_BUNDLE_TIME:-33:00:00}"
   case "${AXIS1_SIZE:-}" in
-    ''|size100k|size300k|size1m|size12m|size25m|size50m|size100m|size200m|size400m) ;;
+    ''|size100k|size300k|size600k|size1m|size12m|size25m|size50m|size100m|size200m|size400m) ;;
     *) echo "AXIS1_SIZE must be size100k..size400m or empty, got: ${AXIS1_SIZE}"; exit 1 ;;
   esac
   case "${AXIS1_BASE_CONFIG:-}" in

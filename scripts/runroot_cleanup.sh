@@ -109,6 +109,8 @@ KEEP_PENDING=(
   # (seed-restricted so seed99 smoke dirs stay DELETE-SAFE - rev-3 F13;
   # ctx pairs live under axis1_finger = KEEP_SUBSTRATE)
   ax1wm_finger_*sk[13]q1s*_seed[1-4] adapt_ax1*sk[13]q1s*_seed[1-4]_*
+  # B1' 600k point (PREREG_b1prime_20260815): fits+adapts
+  ax1wm_finger_*sk6q1s*_seed[1-4] adapt_ax1*sk6q1s*_seed[1-4]_*
   # B2 nuisance-injection (PREREG_nuisance_20260811): fits+adapts
   ax1wm_finger_*nz[12]q1s*_seed[1-4] adapt_ax1*nz[12]q1s*_seed[1-4]_*
   # sigma-ladder extension (PREREG_sigma_ladder_20260814): fits+adapts

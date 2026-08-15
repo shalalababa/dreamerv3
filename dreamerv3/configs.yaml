@@ -169,6 +169,14 @@ size300k: &size300k
   .*\.depth: 2
   .*\.units: 32
 
+# B1' capacity point (PREREG_b1prime_20260815): between size300k
+# (task floor-FAIL) and size1m (floor-pass); classes stays 4 so the
+# stored stoch latents keep shape (ctx pair resizes deter only).
+size600k: &size600k
+  .*\.rssm: {deter: 384, hidden: 48, classes: 4}
+  .*\.depth: 2
+  .*\.units: 48
+
 size100k: &size100k
   .*\.rssm: {deter: 128, hidden: 16, classes: 4}
   .*\.depth: 2
