@@ -645,6 +645,15 @@ printf '[{"id":42,"ssh_host":"ssh3.vast.ai","ssh_port":17836,"gpu_name":"X","num
 pout="$(python3 "$ROOT/scripts/ops/refresh.py" --state "$TMP/rst2" --from-json "$TMP/v_proxy.json" 2>&1)"
 case "$pout" in *"proxy(ssh_host+ssh_port)"*) ok "proxy-only instance falls back to the proxy route" ;;
                 *) bad "proxy fallback (got: $pout)" ;; esac
+# Two machines each running refresh produce two numberings that both look
+# right. Warn before inventing a second one.
+mkdir -p "$TMP/fresh"
+g="$(python3 "$ROOT/scripts/ops/refresh.py" --state "$TMP/fresh" --from-json "$TMP/v1.json" --dry-run 2>&1)"
+case "$g" in *"no index history here"*) ok "warns when a second machine would renumber a live fleet" ;;
+             *) bad "no second-machine warning" ;; esac
+chk "push-to sends the authority file, not just the derived env" \
+    "grep -q 'instances.json\", str(state / \"instances.env' '$ROOT/scripts/ops/refresh.py' \
+     || grep -q 'instances.json + instances.env' '$ROOT/scripts/ops/refresh.py'"
 
 # Vast has changed its JSON shape before; an unusable payload must name the keys.
 printf '[{"weird":1,"other":2}]\n' > "$TMP/v3.json"

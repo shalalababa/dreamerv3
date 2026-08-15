@@ -195,6 +195,20 @@ def main() -> int:
     print("Extend address() in refresh.py with the right route.", file=sys.stderr)
     return 2
 
+  # A fleet appearing all at once with no prior state usually means this is a
+  # SECOND machine, not a first rental -- and assigning fresh numbers here
+  # creates two authorities that disagree. Warn loudly; the fix is one scp.
+  if not prior and not retired and len(entries) > 1:
+    print(f"WARNING: no index history here, but {len(entries)} instances are "
+          "already running.", file=sys.stderr)
+    print("  If you already run refresh on another machine, its numbering is "
+          "the authority.", file=sys.stderr)
+    print("  Copy it over instead of letting this host invent its own:",
+          file=sys.stderr)
+    print("    scp <primary>:.../ops/state/instances.json ops/state/",
+          file=sys.stderr)
+    print("  Continuing with fresh indices.\n", file=sys.stderr)
+
   # Sticky indices: keep what an id already had, then fill the lowest free slot
   # that no live OR retired instance holds.
   known = dict(retired); known.update(prior)
@@ -275,10 +289,15 @@ def main() -> int:
   print(f"wrote {state / 'instances.env'}   (source this, or let dv3ops load it)")
 
   if args.push_to:
+    # Push the AUTHORITY (instances.json) as well as the derived env. Sending
+    # only the env leaves the other machine free to run its own refresh and
+    # invent a conflicting numbering -- which is worse than no numbering,
+    # because both look right and "instance 4" quietly means two machines.
     tgt = args.push_to
-    r = subprocess.run(["scp", str(state / "instances.env"), tgt],
+    r = subprocess.run(["scp", str(state / "instances.json"),
+                        str(state / "instances.env"), tgt],
                        capture_output=True, text=True)
-    print(f"pushed to {tgt}" if r.returncode == 0
+    print(f"pushed instances.json + instances.env to {tgt}" if r.returncode == 0
           else f"WARN: push failed: {r.stderr.strip()}")
   return 0
 
