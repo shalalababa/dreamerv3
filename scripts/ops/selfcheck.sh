@@ -587,10 +587,30 @@ python3 "$ROOT/scripts/ops/refresh.py" --state "$TMP/rst" --from-json "$TMP/v2.j
 grep -q '^export IP2=5.6.7.8$' "$TMP/rst/instances.env" \
   && ok "an instance keeps its index across refreshes" \
   || bad "index churned across refreshes"
-# A destroyed instance must not hand its number to a stranger.
+# A destroyed instance must not hand its number to a stranger -- and not just
+# for one cycle. The first implementation dropped retired ids from the file, so
+# the index freed up on the NEXT refresh and the following rental inherited it.
 grep -q '^export IP1=' "$TMP/rst/instances.env" \
   && bad "destroyed instance's index was reused" \
-  || ok "destroyed instance's index stays reserved"
+  || ok "destroyed instance's index stays reserved (one cycle)"
+# Separate state dir: this sequence rewrites instances.env, and the assertions
+# above (and below) still read the one built from v1/v2.
+mkdir -p "$TMP/rstc"
+python3 "$ROOT/scripts/ops/refresh.py" --state "$TMP/rstc" --from-json "$TMP/v1.json" >/dev/null 2>&1
+python3 "$ROOT/scripts/ops/refresh.py" --state "$TMP/rstc" --from-json "$TMP/v2.json" >/dev/null 2>&1
+python3 "$ROOT/scripts/ops/refresh.py" --state "$TMP/rstc" --from-json "$TMP/v2.json" >/dev/null 2>&1
+cat > "$TMP/v4.json" <<'J'
+[{"id":9922,"public_ipaddr":"5.6.7.8","ports":{"22/tcp":[{"HostPort":"13315"}]},"gpu_name":"G","num_gpus":2},
+ {"id":9944,"public_ipaddr":"4.4.4.4","ports":{"22/tcp":[{"HostPort":"14444"}]},"gpu_name":"G","num_gpus":1}]
+J
+r4="$(python3 "$ROOT/scripts/ops/refresh.py" --state "$TMP/rstc" --from-json "$TMP/v4.json" 2>&1)"
+case "$r4" in *"IP1"*|*" 1  "*9944*) bad "retired index recycled after two cycles" ;;
+              *) ok "retired index survives repeated refreshes" ;; esac
+case "$r4" in *"retired indices held"*) ok "retired indices are reported" ;;
+              *) bad "retired indices not reported" ;; esac
+fg="$(python3 "$ROOT/scripts/ops/refresh.py" --state "$TMP/rstc" --from-json "$TMP/v4.json" --forget 9922 2>&1 || true)"
+case "$fg" in *REFUSED*) ok "refuses to forget a still-rented instance" ;;
+              *) bad "should refuse to forget a live instance" ;; esac
 grep -q '^export IP3=9.9.9.9$' "$TMP/rst/instances.env" \
   && ok "a new instance takes the next free index" || bad "new instance indexing"
 # Real field names, confirmed against a live instance 2026-08-14. The proxy
