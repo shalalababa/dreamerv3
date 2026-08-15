@@ -863,6 +863,12 @@ chk "destroy records the instance BEFORE calling vastai" \
     "awk '/destroyed.jsonl/{r=NR} /vastai destroy instance/{d=NR} END{exit !(r && d && r<d)}' '$D'"
 chk "destroy retires the index afterwards" \
     "grep -q 'refresh.py' '$D'"
+# Every bare ssh in destroy must use -n. Without it the inventory call eats the
+# script's stdin and the confirmation prompt reads an empty stream, aborting a
+# gate-passing destroy with "got ''" (2026-08-15) -- or swallowing the user's
+# keystrokes on a terminal.
+chk "destroy's RCC ssh cannot eat the confirmation prompt" \
+    "grep -q 'RCC_SSH=(-n ' '$D'"
 # There is deliberately no create verb: picking an offer is a price judgement.
 chk "no create/rent verb exists" \
     "! grep -qE '^  (create|rent|launch)\)' '$ROOT/scripts/ops/dv3ops'"

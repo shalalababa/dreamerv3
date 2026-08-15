@@ -33,7 +33,12 @@ source "$DV3OPS_ROOT/scripts/ops/lib/common.sh"
 RCC_HOST="${DV3_RCC_HOST:-rickybao@midway3-login3.rcc.uchicago.edu}"
 RCC_RUNROOT="${DV3_RCC_RUNROOT:-/scratch/midway3/rickybao/dreamerv3_runs}"
 CTL="$HOME/.ssh/cm/%r@%h:%p"
-RCC_SSH=(-o BatchMode=yes -o ControlMaster=no -o "ControlPath=$CTL")
+# -n is load-bearing: without it this ssh reads the SCRIPT's stdin, and the
+# confirmation prompt further down then reads an already-empty stream and
+# aborts with "got ''" -- or, worse on a terminal, silently eats the keystrokes
+# meant for the prompt. Same §0.9 hazard dv3_ssh guards against; it is easy to
+# reintroduce every time a new bare ssh is added (hit here 2026-08-15).
+RCC_SSH=(-n -o BatchMode=yes -o ControlMaster=no -o "ControlPath=$CTL")
 
 N=""; DO_IT=0; FORCE=0
 while [ $# -gt 0 ]; do
