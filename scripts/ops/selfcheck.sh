@@ -94,6 +94,14 @@ chk "push-repo backs up inline v1 helpers before replacing them" \
     "grep -q 'dreamer_instance_helpers.v1.bak' '$ROOT/scripts/ops/lib/common.sh'"
 chk "ssh helper pre-quotes arguments (§0.9)" \
     "grep -q \"printf '%q '\" '$ROOT/scripts/ops/lib/common.sh'"
+# dv3_ssh_dv3 pipes its own wrapper into ssh, so a remote `bash -s` reads an
+# already-consumed stdin and silently executes nothing. preflight did exactly
+# that: it printed no checks, and an empty report is indistinguishable from a
+# clean pass (2026-08-15). Scripts must be passed as TEXT.
+chk "no verb feeds a remote 'bash -s' on stdin" \
+    "! grep -q 'dv3_ssh_dv3 \"\$n\" \"bash -s\"' '$ROOT/scripts/ops/dv3ops'"
+chk "preflight refuses to treat silence as success" \
+    "grep -q 'preflight produced no checks' '$ROOT/scripts/ops/dv3ops'"
 # --append-verify only APPENDS to files shorter on the destination and skips
 # same-size files entirely. On a code sync that means an edited file of
 # unchanged length never propagates -- which is why VERSION kept reporting the

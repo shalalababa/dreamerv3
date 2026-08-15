@@ -211,7 +211,21 @@ case "$verb" in
       [ -f "$w/generated/preflight_remote.sh" ] ||
         die "no generated preflight for $WAVE -- run 'dv3ops gen --wave $WAVE' first"
       note "preflight instance $n against wave $WAVE"
-      dv3_ssh_dv3 "$n" "bash -s" < "$w/generated/preflight_remote.sh"
+      # Pass the script as TEXT, not on stdin. dv3_ssh_dv3 already pipes its
+      # own wrapper into ssh, so a `bash -s` here would read an
+      # already-consumed stdin and get nothing: the preflight printed no
+      # checks at all and an empty report reads exactly like a clean pass.
+      # (2026-08-15, first use against the reacher wave.)
+      pf="$(cat "$w/generated/preflight_remote.sh")"
+      out="$(dv3_ssh_dv3 "$n" "$pf")"
+      printf '%s\n' "$out"
+      # A preflight that produced no PASS/FAIL lines did not run. Say so
+      # rather than letting silence stand in for success.
+      case "$out" in
+        *PASS*|*FAIL*) ;;
+        *) die "preflight produced no checks on instance $n -- it did not run" ;;
+      esac
+      case "$out" in *FAIL*) exit 1 ;; esac
     else
       dv3_ssh_dv3 "$n" '
         echo "== fork =="
