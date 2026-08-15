@@ -1,0 +1,47 @@
+wave_id: rescue_load
+spec:    /home/rickybao/projects/dreamerv3/ops/waves/rescue_load/spec.yaml
+prereg:  prereg/PREREG_rescue_load_20260815.md
+
+=== stage fit_adapt_w1  [vast]  kind=axis1_fit_adapt  on_failure=abort  n=8 ===
+  adapt_ax1ruw1q1s0_finger_seed1_ckpt500000
+  adapt_ax1ruw1q1s0_finger_seed2_ckpt500000
+  adapt_ax1ruw1q1s0_finger_seed3_ckpt500000
+  adapt_ax1ruw1q1s0_finger_seed4_ckpt500000
+  adapt_ax1ruw1q1s1_finger_seed1_ckpt500000
+  adapt_ax1ruw1q1s1_finger_seed2_ckpt500000
+  adapt_ax1ruw1q1s1_finger_seed3_ckpt500000
+  adapt_ax1ruw1q1s1_finger_seed4_ckpt500000
+
+=== stage fit_adapt_w100  [vast]  kind=axis1_fit_adapt  on_failure=abort  n=8 ===
+  adapt_ax1ruw100q1s0_finger_seed1_ckpt500000
+  adapt_ax1ruw100q1s0_finger_seed2_ckpt500000
+  adapt_ax1ruw100q1s0_finger_seed3_ckpt500000
+  adapt_ax1ruw100q1s0_finger_seed4_ckpt500000
+  adapt_ax1ruw100q1s1_finger_seed1_ckpt500000
+  adapt_ax1ruw100q1s1_finger_seed2_ckpt500000
+  adapt_ax1ruw100q1s1_finger_seed3_ckpt500000
+  adapt_ax1ruw100q1s1_finger_seed4_ckpt500000
+
+=== stage ridge  [vast]  kind=ridge  on_failure=continue  n=16 ===
+  ruw_ridge_w1q1s0_seed1
+  ruw_ridge_w1q1s0_seed2
+  ruw_ridge_w1q1s0_seed3
+  ruw_ridge_w1q1s0_seed4
+  ruw_ridge_w1q1s1_seed1
+  ruw_ridge_w1q1s1_seed2
+  ruw_ridge_w1q1s1_seed3
+  ruw_ridge_w1q1s1_seed4
+  ruw_ridge_w100q1s0_seed1
+  ruw_ridge_w100q1s0_seed2
+  ruw_ridge_w100q1s0_seed3
+  ruw_ridge_w100q1s0_seed4
+  ruw_ridge_w100q1s1_seed1
+  ruw_ridge_w100q1s1_seed2
+  ruw_ridge_w100q1s1_seed3
+  ruw_ridge_w100q1s1_seed4
+
+TOTAL RUNS: 32
+
+Check this list against the prereg before submitting. run_ids are
+consumed by frozen readers and the ledger; a wrong expansion here
+propagates into every downstream artifact.

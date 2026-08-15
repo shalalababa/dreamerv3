@@ -1,0 +1,142 @@
+# Rescue-under-load -- PREREG_rescue_load_20260815.
+#
+# Does raising the reward loss weight rescue a world model fit under a
+# distractor load? Two w_r cells on the SAME substrate, so the only thing that
+# differs between them is AXIS1_WR.
+#
+# Per-cell command derived from scripts/submit_all.sh's axis1-bundles branch
+# (run_id = adapt_${id_prefix}${q}s${side}_${dom}_seed${s}_ckpt${updates};
+# wm_infix = id_prefix#ax1) plus the prereg's two registered submission lines.
+#
+# AXIS1_WR IS CARRIED IN EVERY TASK'S ENV, deliberately and per the prereg's
+# own note about this route: w_r is the ONLY thing distinguishing the two
+# cells, and on the ops/waves route there is no bundle-level environment to
+# inherit it from. A task line that lost AXIS1_WR would run w_r=1 under a
+# ruw100 run_id -- silently producing the wrong cell under the right name.
+# The reader's both-directions loss_scales.rew gate is the backstop.
+#
+# AXIS1_ADAPT_CONFIG is left unset: the registered command does not set it and
+# axis1.sbatch defaults to frozen_readout. Adding it "for clarity" would be a
+# deviation from what was registered (same reasoning as b1prime's base config).
+#
+# Substrate is REUSED, nothing new built: q1_nzs2 (the sigma-ladder sigma=2
+# pair), probeset finger_nzs2_v1, config token dzs2 -- all frozen and already
+# cluster-resident.
+
+wave_id: rescue_load
+paper: paper1
+prereg: prereg/PREREG_rescue_load_20260815.md
+notes: >-
+  2 w_r cells (1, 100) x 2 sides x 4 seeds = 16 fit+adapt jobs, both TASK arm
+  (AXIS1_WR is task-mode-only by construction), on the sigma=2 nuisance buffer.
+  Adapts are DESCRIPTIVE-ONLY -- no behavioral decision rule.
+
+defaults:
+  target: vast
+
+kinds:
+  axis1_fit_adapt: {per_gpu: 1}
+  ridge:           {per_gpu: 1}
+
+stages:
+
+  # -- cell w_r = 1 ----------------------------------------------------------
+  - name: fit_adapt_w1
+    kind: axis1_fit_adapt
+    on_failure: abort
+    expand:
+      side: [0, 1]
+      seed: [1, 2, 3, 4]
+    run_id: "adapt_ax1ruw1q1s${side}_finger_seed${seed}_ckpt500000"
+    cmd: >-
+      DV3_TASK_NAME=${run_id} RUN_ID=${run_id}
+      WM_RUN=ax1wm_finger_ruw1q1s${side}_seed${seed}
+      TASK=dmc_finger_turn_hard SEED=${seed}
+      REPLAY=${RUNROOT}/axis1_finger/q1_nzs2/side${side}
+      UPDATES=500000 STEPS=1.25e5 AXIS1_EXPL_MODE=task
+      AXIS1_WR=1 AXIS1_BASE_CONFIG=dzs2
+      DREAMER_DISABLE_GPUFLAGS=1 bash scripts/axis1.sbatch
+    outputs:
+      - "adapt_ax1ruw1q1s${side}_finger_seed${seed}_ckpt500000"
+      - "ax1wm_finger_ruw1q1s${side}_seed${seed}"
+    inputs:
+      - "axis1_finger/q1_nzs2/side${side}"
+      - "axis1_finger/q1_nzs2/manifest.json"
+    done_when:
+      - exists: ADAPT_DONE
+      - exists: config.yaml
+      - jsonl_min_lines: {file: scores.jsonl, n: 100}
+      - ckpt_step_min: {dir: "../ax1wm_finger_ruw1q1s${side}_seed${seed}", min: 500000}
+      - file_contains:
+          file: "../ax1wm_finger_ruw1q1s${side}_seed${seed}/OFFLINE_FIT_PROGRESS"
+          pattern: "update=500000\ntotal_updates=500000"
+
+  # -- cell w_r = 100 --------------------------------------------------------
+  - name: fit_adapt_w100
+    kind: axis1_fit_adapt
+    on_failure: abort
+    expand:
+      side: [0, 1]
+      seed: [1, 2, 3, 4]
+    run_id: "adapt_ax1ruw100q1s${side}_finger_seed${seed}_ckpt500000"
+    cmd: >-
+      DV3_TASK_NAME=${run_id} RUN_ID=${run_id}
+      WM_RUN=ax1wm_finger_ruw100q1s${side}_seed${seed}
+      TASK=dmc_finger_turn_hard SEED=${seed}
+      REPLAY=${RUNROOT}/axis1_finger/q1_nzs2/side${side}
+      UPDATES=500000 STEPS=1.25e5 AXIS1_EXPL_MODE=task
+      AXIS1_WR=100 AXIS1_BASE_CONFIG=dzs2
+      DREAMER_DISABLE_GPUFLAGS=1 bash scripts/axis1.sbatch
+    outputs:
+      - "adapt_ax1ruw100q1s${side}_finger_seed${seed}_ckpt500000"
+      - "ax1wm_finger_ruw100q1s${side}_seed${seed}"
+    inputs:
+      - "axis1_finger/q1_nzs2/side${side}"
+      - "axis1_finger/q1_nzs2/manifest.json"
+    done_when:
+      - exists: ADAPT_DONE
+      - exists: config.yaml
+      - jsonl_min_lines: {file: scores.jsonl, n: 100}
+      - ckpt_step_min: {dir: "../ax1wm_finger_ruw100q1s${side}_seed${seed}", min: 500000}
+      - file_contains:
+          file: "../ax1wm_finger_ruw100q1s${side}_seed${seed}/OFFLINE_FIT_PROGRESS"
+          pattern: "update=500000\ntotal_updates=500000"
+
+  # -- ridge probe, one per fit ---------------------------------------------
+  # Command is the prereg's own, including its note that Vast lanes add
+  # --platform cuda (the default `gpu` is not a backend in this JAX build --
+  # confirmed by the sigma-ladder smoke, 2026-08-15). Output lands INSIDE the
+  # fit dir as ridge_probe.json and is renamed <wm_run>.json at bundle time.
+  - name: ridge
+    kind: ridge
+    needs: fit_adapt_w1
+    on_failure: continue
+    expand:
+      wr:   ["1", "100"]
+      side: [0, 1]
+      seed: [1, 2, 3, 4]
+    run_id: "ruw_ridge_w${wr}q1s${side}_seed${seed}"
+    logdir: "ax1wm_finger_ruw${wr}q1s${side}_seed${seed}"
+    outputs:
+      - "ax1wm_finger_ruw${wr}q1s${side}_seed${seed}/ridge_probe.json"
+    cmd: >-
+      DREAMER_DISABLE_GPUFLAGS=1 python -m probing.ridge_probe measure
+      --run_logdir "${RUNROOT}/ax1wm_finger_ruw${wr}q1s${side}_seed${seed}"
+      --probeset "${RUNROOT}/e4_probesets/finger_nzs2_v1"
+      --output "${RUNROOT}/ax1wm_finger_ruw${wr}q1s${side}_seed${seed}/ridge_probe.json"
+      --platform cuda --ep_batch 4
+    inputs:
+      - "e4_probesets/finger_nzs2_v1"
+    done_when:
+      - exists: "ridge_probe.json"
+
+bundle:
+  prefix: ruw
+  include_stages: [fit_adapt_w1, fit_adapt_w100, ridge]
+  cloud_logs:
+    - "adapt_ax1ruw1q1s*_finger_seed*.out"
+    - "adapt_ax1ruw100q1s*_finger_seed*.out"
+    - "worker_shard*.out"
+
+night:
+  auto_requeue_unaffected: true
