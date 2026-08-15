@@ -88,7 +88,25 @@ case "$verb" in
 
   push-repo)
     [ $# -gt 0 ] || die "usage: dv3ops push-repo N [N...]"
-    for n in "$@"; do dv3_push_repo "$n"; done
+    # Per-instance isolation. dv3_push_repo calls die() on failure, and die()
+    # exits the SCRIPT -- so a single unreachable instance used to abort the
+    # loop and silently skip every one after it, leaving a fleet that looks
+    # pushed because the command "finished".
+    pr_ok=(); pr_bad=()
+    for n in "$@"; do
+      echo "=================== instance $n ==================="
+      if ( dv3_push_repo "$n" ); then pr_ok+=("$n"); else pr_bad+=("$n"); fi
+    done
+    echo
+    echo "push-repo: ${#pr_ok[@]} ok${pr_ok[*]+ (${pr_ok[*]})}"
+    if [ ${#pr_bad[@]} -gt 0 ]; then
+      echo "push-repo: ${#pr_bad[@]} FAILED (${pr_bad[*]}) -- these still run old code" >&2
+      echo "           re-run individually to see the error:  dv3ops push-repo ${pr_bad[0]}" >&2
+      exit 1
+    fi
+    # Confirm the stamp actually landed, rather than trusting that rsync ran.
+    echo
+    bash "$0" versions "$@"
     ;;
 
   versions)

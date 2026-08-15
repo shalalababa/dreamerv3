@@ -187,11 +187,41 @@ if [ "$MODE" = cancel ]; then
     [ -e "$f" ] || continue
     echo "  $(basename "$f"): $(wc -l < "$f") task(s)"
   done
+  # --- 5. RESUME AUTOMATICALLY -------------------------------------------
+  # Earlier this wrote instructions and stopped, which meant a migration could
+  # complete "successfully" while leaving the instance idle and the wave dead.
+  # Requeuing the captured lines on the same lanes is identical in intent to
+  # what was already running -- same command text, same order, nothing
+  # re-derived -- so it is the one thing this script should do without asking.
+  if [ "${SKIP_RESUME:-0}" != "1" ]; then
+    echo
+    echo "--- 5. resuming lanes ---"
+    for f in "$SNAP"/resume_lane_*.cmds; do
+      [ -e "$f" ] || continue
+      lane="$(basename "$f" .cmds)"; lane="${lane#resume_lane_}"
+      cnt="$(wc -l < "$f")"
+      [ "$cnt" -gt 0 ] || { echo "  lane $lane: nothing pending"; continue; }
+      echo "  lane $lane: requeueing $cnt task(s)"
+      scp -q -P "$(dv3_port "$N")" "$f" "root@$(dv3_ip "$N"):/tmp/$(basename "$f")" ||
+        { echo "  ERROR: could not copy resume file for lane $lane" >&2; continue; }
+      dv3_ssh_dv3 "$N" "dv3_queue_cmds_list /tmp/$(basename "$f") $lane" ||
+        echo "  ERROR: requeue failed on lane $lane -- do it by hand from $f" >&2
+    done
+    echo
+    echo "lane state after resume:"
+    dv3_ssh_dv3 "$N" 'dv3_status' 2>/dev/null | sed -n "/== queues ==/,\$p" | head -20
+  else
+    echo
+    echo "--- 5. SKIPPED (SKIP_RESUME=1); requeue by hand per RESUME.md ---"
+  fi
+
   cat > "$SNAP/RESUME.md" <<EOF
 # Resume after migration -- instance $N, $STAMP
 
-Per-lane remainders were reconstructed from the pre-cancel snapshot.
-Copy each to the instance and requeue on the SAME lane number:
+Per-lane remainders were reconstructed from the pre-cancel snapshot and, unless
+SKIP_RESUME=1 was set, ALREADY REQUEUED automatically on the same lanes.
+
+To requeue by hand (or to redo it):
 
     scp -P $(dv3_port "$N") $SNAP/resume_lane_0.cmds root@$(dv3_ip "$N"):/tmp/
     dv3ops sh $N 'dv3_queue_cmds_list /tmp/resume_lane_0.cmds 0'
@@ -219,6 +249,6 @@ fi
 echo
 echo "=============================================================="
 echo " migration complete for instance $N"
-[ "$MODE" = cancel ] && echo " NEXT: requeue per $SNAP/RESUME.md, then verify counters"
+[ "$MODE" = cancel ] && echo " Lanes were resumed automatically; VERIFY counters per $SNAP/RESUME.md"
 echo " snapshot: $SNAP"
 echo "=============================================================="

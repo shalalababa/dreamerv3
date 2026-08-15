@@ -21,7 +21,20 @@ DV3OPS_STATE="${DV3OPS_STATE:-$DV3OPS_ROOT/ops/state}"
 DV3_SSH_OPTS=(-o ServerAliveInterval=30 -o ServerAliveCountMax=120
               -o StrictHostKeyChecking=accept-new)
 
+# Two option sets, because code and payload need opposite things.
+#
+# PAYLOAD (checkpoints, replay, results): --append-verify is right. Transfers
+# are huge and resumable, and the files are immutable once written.
 DV3_RSYNC_OPTS=(-az --partial --append-verify --info=progress2 --stats)
+#
+# CODE: --append-verify is CATASTROPHIC here. It only ever appends to a file
+# that is SHORTER on the destination and skips it outright when the size
+# matches -- so an edited file of unchanged length never propagates. That is
+# why scripts/ops/VERSION kept reporting last night's commit after a push
+# (2026-08-15): the stamp is the same length every time, so rsync skipped it,
+# and every same-size source edit was skipped with it. --checksum costs a hash
+# of a small tree and removes the whole guessing game.
+DV3_CODE_RSYNC_OPTS=(-az --checksum --info=progress2 --stats)
 
 DV3_REPO_EXCLUDES=(--exclude='.git/' --exclude='local_results/' --exclude='artifacts/'
                    --exclude='research_notes/' --exclude='__pycache__/'
@@ -122,7 +135,7 @@ dv3_push_repo () {
   dv3_require_instance "$n"
   ver="$(dv3_stamp_version)"
   note "push-repo -> instance $n  (repo $ver)"
-  rsync "${DV3_RSYNC_OPTS[@]}" --delete "${DV3_REPO_EXCLUDES[@]}" \
+  rsync "${DV3_CODE_RSYNC_OPTS[@]}" --delete "${DV3_REPO_EXCLUDES[@]}" \
     -e "ssh -p $(dv3_port "$n") ${DV3_SSH_OPTS[*]}" \
     "$DV3OPS_ROOT/" "root@$(dv3_ip "$n"):/workspace/dreamerv3/"
   # Install/refresh the helper shim at /root/dreamer_instance_helpers.sh.

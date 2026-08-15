@@ -94,6 +94,20 @@ chk "push-repo backs up inline v1 helpers before replacing them" \
     "grep -q 'dreamer_instance_helpers.v1.bak' '$ROOT/scripts/ops/lib/common.sh'"
 chk "ssh helper pre-quotes arguments (§0.9)" \
     "grep -q \"printf '%q '\" '$ROOT/scripts/ops/lib/common.sh'"
+# --append-verify only APPENDS to files shorter on the destination and skips
+# same-size files entirely. On a code sync that means an edited file of
+# unchanged length never propagates -- which is why VERSION kept reporting the
+# previous commit after a successful push (2026-08-15).
+chk "repo sync does NOT use --append-verify" \
+    "! grep -q 'DV3_CODE_RSYNC_OPTS=(.*append-verify' '$ROOT/scripts/ops/lib/common.sh'"
+chk "repo sync uses --checksum" \
+    "grep -q 'DV3_CODE_RSYNC_OPTS=(-az --checksum' '$ROOT/scripts/ops/lib/common.sh'"
+chk "push-repo uses the CODE option set, not the payload one" \
+    "grep -q 'rsync \"\${DV3_CODE_RSYNC_OPTS\[@\]}\" --delete' '$ROOT/scripts/ops/lib/common.sh'"
+chk "payload sync KEEPS --append-verify (resumable, immutable)" \
+    "grep -q 'DV3_RSYNC_OPTS=(-az --partial --append-verify' '$ROOT/scripts/ops/lib/common.sh'"
+chk "generated submit.sh checksums the command files" \
+    "grep -q 'rsync -az --checksum' '$ROOT/scripts/ops/wavegen.py'"
 chk "repo sync keeps the canonical whole-repo shape" \
     "grep -q 'root@\$(dv3_ip \"\$n\"):/workspace/dreamerv3/' '$ROOT/scripts/ops/lib/common.sh'"
 
@@ -258,6 +272,62 @@ wave_out="$(bash "$ROOT/scripts/ops/dv3ops" gen 2>&1 || true)"
 case "$wave_out" in *--wave*) ok "wave verbs demand --wave" ;;
                     *) bad "wave verbs demand --wave (got: $wave_out)" ;; esac
 chk "unknown verb fails" "! bash '$ROOT/scripts/ops/dv3ops' bogusverb"
+
+echo
+echo "== push-repo isolates failures per instance =="
+# dv3_push_repo calls die(), and die() exits the SCRIPT. A single unreachable
+# instance therefore aborted the loop and silently skipped every one after it,
+# so the fleet looked pushed because the command "finished".
+chk "push-repo runs each instance in a subshell" \
+    "grep -q '( dv3_push_repo' '$ROOT/scripts/ops/dv3ops'"
+chk "push-repo reports which instances failed" \
+    "grep -q 'still run old code' '$ROOT/scripts/ops/dv3ops'"
+chk "push-repo verifies the stamp landed afterwards" \
+    "grep -q 'bash \"\$0\" versions' '$ROOT/scripts/ops/dv3ops'"
+loopres="$(bash -c '
+die () { echo "ERROR: $*" >&2; exit 1; }
+push_one () { [ "$1" = 2 ] && die "unreachable"; echo "pushed $1"; }
+ok=(); bad=()
+for n in 1 2 3 4; do if ( push_one "$n" ); then ok+=("$n"); else bad+=("$n"); fi; done
+echo "ok=${ok[*]} bad=${bad[*]}"' 2>/dev/null)"
+case "$loopres" in *"ok=1 3 4 bad=2"*) ok "one failure no longer skips later instances" ;;
+                   *) bad "loop isolation (got: $loopres)" ;; esac
+
+echo
+echo "== migration resumes what it cancelled =="
+# A migration that cancels lanes and then only writes instructions can complete
+# "successfully" while leaving the instance idle and the wave dead. That
+# happened on inst1, 2026-08-15.
+chk "migrate requeues the captured lanes" \
+    "grep -q 'dv3_queue_cmds_list /tmp/' '$ROOT/scripts/ops/migrate_instance.sh'"
+chk "migrate resume is opt-OUT, not opt-in" \
+    "grep -q 'SKIP_RESUME:-0' '$ROOT/scripts/ops/migrate_instance.sh'"
+chk "migrate still snapshots realized counters before cancelling" \
+    "grep -q 'realized_before.json' '$ROOT/scripts/ops/migrate_instance.sh'"
+# The resume set must include the INTERRUPTED task, not just the untouched
+# queue behind it.
+mkdir -p "$TMP/mig"
+cat > "$TMP/mig/lanes.txt" <<'LANES'
+===LANE 0 queue_abc next=3 total=4 running=3
+===TASKS
+DV3_TASK_NAME=t1 c1
+DV3_TASK_NAME=t2 c2
+DV3_TASK_NAME=t3 c3
+DV3_TASK_NAME=t4 c4
+===END
+LANES
+awk '
+    /^===LANE /   { lane=$2; nx=0; for(i=1;i<=NF;i++) if ($i ~ /^next=/) { split($i,a,"="); nx=a[2] } ; n=0; next }
+    /^===TASKS$/  { intask=1; n=0; next }
+    /^===END$/    { intask=0; next }
+    intask        { n++; if (n >= nx && $0 !~ /^#removed# /) print > ("'"$TMP"'/mig/resume_lane_" lane ".cmds") }
+' "$TMP/mig/lanes.txt"
+[ "$(wc -l < "$TMP/mig/resume_lane_0.cmds" 2>/dev/null)" = "2" ] \
+  && ok "resume set includes the interrupted task and the rest" \
+  || bad "resume set wrong size"
+grep -q '^DV3_TASK_NAME=t3 ' "$TMP/mig/resume_lane_0.cmds" 2>/dev/null \
+  && ok "the interrupted task is re-queued, not skipped" \
+  || bad "interrupted task missing from resume set"
 
 echo
 echo "== P1: spec -> artifacts =="

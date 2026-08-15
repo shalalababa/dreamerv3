@@ -283,7 +283,9 @@ def gen(spec: wavespec.WaveSpec, out: Path, lanes: list[str]) -> dict:
                   "# rsync rather than heredoc: no quoting survives ssh reliably,",
                   "# and it leaves the exact submitted commands on the instance.",
                   'dv3_ssh_dv3 "$N" "mkdir -p \\"$REMOTE\\""',
-                  'rsync -az --info=progress2 \\',
+                  '# --checksum: these are small text files that can be',
+                  '# regenerated at the same size, and size+mtime would skip them.',
+                  'rsync -az --checksum --info=progress2 \\',
                   '  -e "ssh -p $(dv3_port "$N") ${DV3_SSH_OPTS[*]}" \\',
                   f'  "$HERE/" "root@$(dv3_ip "$N"):$REMOTE/"', ""]
 
