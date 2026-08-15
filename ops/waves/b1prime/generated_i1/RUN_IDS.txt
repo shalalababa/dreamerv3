@@ -1,0 +1,17 @@
+wave_id: b1prime
+spec:    ops/waves/b1prime/spec.yaml
+prereg:  prereg/PREREG_b1prime_20260815.md
+
+=== stage fit_adapt_task  [vast]  kind=axis1_fit_adapt  on_failure=abort  n=0 ===
+
+=== stage fit_adapt_apt  [vast]  kind=axis1_fit_adapt  on_failure=abort  n=4 ===
+  adapt_ax1fsk6q1s0_finger_seed3_ckpt500000
+  adapt_ax1fsk6q1s0_finger_seed4_ckpt500000
+  adapt_ax1fsk6q1s1_finger_seed3_ckpt500000
+  adapt_ax1fsk6q1s1_finger_seed4_ckpt500000
+
+TOTAL RUNS: 4
+
+Check this list against the prereg before submitting. run_ids are
+consumed by frozen readers and the ledger; a wrong expansion here
+propagates into every downstream artifact.
