@@ -181,6 +181,11 @@ grep -q "^export DV3_HC_URL=" "$env_file" 2>/dev/null || echo "export DV3_HC_URL
   dv3_ssh_dv3 "$n" '
     chmod +x "$REPO"/scripts/ops/*.sh "$REPO"/scripts/ops/runners/*.sh 2>/dev/null || true
     echo "helpers: $(dv3_version)"
+    # RESTART, not start: `start` sees the pidfile and leaves the old process
+    # running the old code, so a push that fixes the watchdog would not take
+    # effect until the instance rebooted. Safe to bounce -- it only observes,
+    # holds no queue state, and its dedupe markers live on disk.
+    bash "$REPO/scripts/ops/watchdog.sh" stop >/dev/null 2>&1 || true
     bash "$REPO/scripts/ops/watchdog.sh" start || echo "WARN: watchdog did not start"
     bash "$REPO/scripts/ops/watchdog.sh" status
   '

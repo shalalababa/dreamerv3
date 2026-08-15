@@ -670,6 +670,22 @@ chk "push-to sends the authority file, not just the derived env" \
     "grep -q 'instances.json\", str(state / \"instances.env' '$ROOT/scripts/ops/refresh.py' \
      || grep -q 'instances.json + instances.env' '$ROOT/scripts/ops/refresh.py'"
 
+# Single-writer: two machines each running refresh produce two numberings that
+# both look right. The file records its owner and refuses a second one.
+mkdir -p "$TMP/auth"
+python3 "$ROOT/scripts/ops/refresh.py" --state "$TMP/auth" --from-json "$TMP/v_real.json" >/dev/null 2>&1
+python3 - "$TMP/auth/instances.json" <<'PYX'
+import json, sys, pathlib
+f = pathlib.Path(sys.argv[1]); d = json.loads(f.read_text())
+d["authority_host"] = "some-other-machine"; f.write_text(json.dumps(d))
+PYX
+a1="$(python3 "$ROOT/scripts/ops/refresh.py" --state "$TMP/auth" --from-json "$TMP/v_real.json" 2>&1 || true)"
+case "$a1" in *REFUSING*) ok "refresh refuses to write an inventory owned elsewhere" ;;
+              *) bad "second writer not blocked" ;; esac
+a2="$(python3 "$ROOT/scripts/ops/refresh.py" --state "$TMP/auth" --from-json "$TMP/v_real.json" --take-authority 2>&1 || true)"
+case "$a2" in *"authority moved"*) ok "ownership can be taken deliberately" ;;
+              *) bad "--take-authority did not transfer ownership" ;; esac
+
 # Vast has changed its JSON shape before; an unusable payload must name the keys.
 printf '[{"weird":1,"other":2}]\n' > "$TMP/v3.json"
 out="$(python3 "$ROOT/scripts/ops/refresh.py" --state "$TMP/rst" --from-json "$TMP/v3.json" 2>&1 || true)"
