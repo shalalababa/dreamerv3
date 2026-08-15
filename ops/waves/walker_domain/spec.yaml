@@ -1,0 +1,125 @@
+# dmc_walker_walk -- PREREG_domains_20260812 (P-D2, the walker leg).
+#
+# TRANSCRIBED, NOT AUTHORED. The cmd strings match the queue snapshots the
+# supervisor recorded on instances 5 and 6
+# ($RUNROOT/_queue_control/lane_*/queue_*/tasks.txt), where this wave was
+# submitted by hand; the only edit is the literal `/workspace/dreamerv3_runs`
+# -> ${RUNROOT}, so the same spec resolves on RCC.
+#
+# THIS SPEC WAS WRITTEN TO PULL AND CHECK, NOT TO SUBMIT. The wave was already
+# running when it was written, and as of 2026-08-15 it is INCOMPLETE: 46/64
+# adapts done, 6 empty shells, and 12 (q1s1 + fq1s1, seeds 7-12) never started.
+# Re-submitting the remainder needs a home that is not instance 6 -- its GPU1
+# is dead (`Unable to determine the device handle for GPU1 ... Unknown Error`),
+# which is the likely reason its lanes stopped short.
+#
+# The spec declares the FULL registered wave (2 arms x 2 sides x 16 seeds = 64
+# fit+adapt jobs). Per-instance submission is done with `wavegen --only-runs`,
+# so `check` always reports the whole wave rather than one box's slice.
+#
+# NOTE on the inline SKIP guard carried in both commands: it tests the ADAPT
+# half only (ADAPT_DONE + >=100 score lines). A fit that stopped short but
+# whose adapt completed normally would be silently skipped -- the axis1
+# latest_ckpt + idempotent-skip hole found on 2026-08-07, which truncated both
+# capacity waves without ever being recorded. It is kept because this file
+# transcribes what was actually submitted; the mitigation is in done_when
+# below, which checks the FIT's own counters and refuses to call a cell
+# complete on the adapt's say-so.
+
+wave_id: walker_domain
+paper: paper1
+prereg: prereg/PREREG_domains_20260812.md
+notes: >-
+  dmc_walker_walk, the third domain. 2 arms (task / apt) x 2 sides x 16 seeds
+  = 64 fit+adapt jobs. axis1.sbatch runs the fit and the adapt in one
+  invocation, so one queued task owns TWO output dirs. Seeds 1-4 of both arms
+  were submitted by hand to instance 1 on 2026-08-15 and are not re-submitted
+  here; seeds 5-16 are the remaining 48.
+
+defaults:
+  target: vast
+
+kinds:
+  axis1_fit_adapt: {per_gpu: 1}
+
+stages:
+
+  # -- arm: task (AXIS1_EXPL_MODE=task -> ax1wm_walker_q1s*) ----------------
+  - name: fit_adapt_task
+    kind: axis1_fit_adapt
+    on_failure: abort
+    expand:
+      side: [0, 1]
+      seed: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]
+    run_id: "adapt_ax1q1s${side}_walker_seed${seed}_ckpt500000"
+    cmd: >-
+      DV3_TASK_NAME=${run_id} RUN_ID=${run_id}
+      WM_RUN=ax1wm_walker_q1s${side}_seed${seed}
+      TASK=dmc_walker_walk SEED=${seed}
+      REPLAY=${RUNROOT}/axis1_walker/q1/side${side}
+      UPDATES=500000 STEPS=1.25e5 AXIS1_EXPL_MODE=task
+      AXIS1_BASE_CONFIG=dmc_proprio AXIS1_ADAPT_CONFIG=frozen_readout
+      DREAMER_DISABLE_GPUFLAGS=1
+      bash -c 'scores=$(wc -l < "$RUNROOT/$RUN_ID/scores.jsonl" 2>/dev/null || echo 0);
+      if [ -f "$RUNROOT/$RUN_ID/ADAPT_DONE" ] && [ "$scores" -ge 100 ];
+      then echo "SKIP done: $RUN_ID scores=$scores"; else bash scripts/axis1.sbatch; fi'
+    outputs:
+      - "adapt_ax1q1s${side}_walker_seed${seed}_ckpt500000"
+      - "ax1wm_walker_q1s${side}_seed${seed}"
+    inputs:
+      - "axis1_walker/q1/side${side}"
+      # Parent-directory unit: axis1.sbatch requires this beside the side dir.
+      - "axis1_walker/q1/manifest.json"
+    done_when:
+      - exists: ADAPT_DONE
+      - exists: config.yaml
+      - jsonl_min_lines: {file: scores.jsonl, n: 100}
+      - ckpt_step_min: {dir: "../ax1wm_walker_q1s${side}_seed${seed}", min: 500000}
+      - file_contains:
+          file: "../ax1wm_walker_q1s${side}_seed${seed}/OFFLINE_FIT_PROGRESS"
+          pattern: "update=500000\ntotal_updates=500000"
+
+  # -- arm: apt (AXIS1_EXPL_MODE=apt -> ax1wm_walker_fq1s*) -----------------
+  - name: fit_adapt_apt
+    kind: axis1_fit_adapt
+    on_failure: abort
+    expand:
+      side: [0, 1]
+      seed: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]
+    run_id: "adapt_ax1fq1s${side}_walker_seed${seed}_ckpt500000"
+    cmd: >-
+      DV3_TASK_NAME=${run_id} RUN_ID=${run_id}
+      WM_RUN=ax1wm_walker_fq1s${side}_seed${seed}
+      TASK=dmc_walker_walk SEED=${seed}
+      REPLAY=${RUNROOT}/axis1_walker/q1/side${side}
+      UPDATES=500000 STEPS=1.25e5 AXIS1_EXPL_MODE=apt
+      AXIS1_BASE_CONFIG=dmc_proprio AXIS1_ADAPT_CONFIG=frozen_readout
+      DREAMER_DISABLE_GPUFLAGS=1
+      bash -c 'scores=$(wc -l < "$RUNROOT/$RUN_ID/scores.jsonl" 2>/dev/null || echo 0);
+      if [ -f "$RUNROOT/$RUN_ID/ADAPT_DONE" ] && [ "$scores" -ge 100 ];
+      then echo "SKIP done: $RUN_ID scores=$scores"; else bash scripts/axis1.sbatch; fi'
+    outputs:
+      - "adapt_ax1fq1s${side}_walker_seed${seed}_ckpt500000"
+      - "ax1wm_walker_fq1s${side}_seed${seed}"
+    inputs:
+      - "axis1_walker/q1/side${side}"
+      - "axis1_walker/q1/manifest.json"
+    done_when:
+      - exists: ADAPT_DONE
+      - exists: config.yaml
+      - jsonl_min_lines: {file: scores.jsonl, n: 100}
+      - ckpt_step_min: {dir: "../ax1wm_walker_fq1s${side}_seed${seed}", min: 500000}
+      - file_contains:
+          file: "../ax1wm_walker_fq1s${side}_seed${seed}/OFFLINE_FIT_PROGRESS"
+          pattern: "update=500000\ntotal_updates=500000"
+
+bundle:
+  prefix: domains_walker
+  include_stages: [fit_adapt_task, fit_adapt_apt]
+  cloud_logs:
+    - "adapt_ax1q1s*_walker_seed*.out"
+    - "adapt_ax1fq1s*_walker_seed*.out"
+    - "worker_shard*.out"
+
+night:
+  auto_requeue_unaffected: true
