@@ -29,8 +29,23 @@ dv3ops <verb> [args]
     migrate N               guided helper migration for a running instance (see §P0)
     selfcheck               local static checks of the ops library
 
-  P1 -- not built yet: gen, preflight, submit, check, requeue, pull, bundle, pull-local
-  P2 -- not built yet: refresh, board, pack
+  P1 -- built  (all take --wave <wave_id>)
+    gen --wave W [--lanes 0,1,2,3]    spec -> commands, checker, rsync filters, bundle
+    preflight N [--wave W]            assertions on an instance before submitting
+    submit --wave W N                 approval prompt, then queue every lane
+    check --wave W [--json|--pending] completion by realized counters, not markers
+    requeue --wave W N                retry exactly the runs the checker says are not done
+    pull --wave W N...                two-pass result pull from instance(s) to RCC
+    bundle --wave W                   bundle + COMPLETION.txt + sha256 manifest
+
+  P2 -- built
+    durations scan DIR...   backfill measured runtimes from _cloud_logs (--gpu 5060Ti)
+    durations show          the measured table (derived twin of SU_usage.txt)
+    board                   fleet table: every lane, progress, re-projected drain time
+    pack --wave W           LPT lane assignment over measured durations (advisory)
+
+  P1 -- not built yet: pull-local
+  P2 -- not built yet: refresh
   P3 -- not built yet: digest
   P4 -- not built yet: archive-report
 
@@ -42,6 +57,25 @@ USAGE
 not_yet () { die "'$1' is $2 work; not built yet (see temp_files/ops/dv3ops_design_20260814.md §11)"; }
 
 verb="${1:-help}"; shift || true
+
+# Pull --wave/--lanes out of the argument list up front so each verb sees only
+# its positional arguments.
+WAVE=""; LANES=""; ARGS=()
+while [ $# -gt 0 ]; do
+  case "$1" in
+    --wave)  WAVE="${2:?--wave needs a wave id}"; shift 2 ;;
+    --lanes) LANES="${2:?--lanes needs a list}"; shift 2 ;;
+    *)       ARGS+=("$1"); shift ;;
+  esac
+done
+set -- ${ARGS+"${ARGS[@]}"}
+
+wave_dir () {
+  [ -n "$WAVE" ] || die "this verb needs --wave <wave_id>"
+  local d="$DV3OPS_ROOT/ops/waves/$WAVE"
+  [ -d "$d" ] || die "no such wave: $d"
+  printf '%s' "$d"
+}
 
 case "$verb" in
 
@@ -126,8 +160,95 @@ case "$verb" in
     exec bash "$DV3OPS_ROOT/scripts/ops/selfcheck.sh"
     ;;
 
-  gen|preflight|submit|check|requeue|pull|bundle|pull-local) not_yet "$verb" P1 ;;
-  refresh|board|pack)                                        not_yet "$verb" P2 ;;
+  gen)
+    exec python3 "$DV3OPS_ROOT/scripts/ops/wavegen.py" "$(wave_dir)" \
+      ${LANES:+--lanes "$LANES"}
+    ;;
+
+  check)
+    exec python3 "$DV3OPS_ROOT/scripts/ops/wavecheck.py" "$(wave_dir)" \
+      --runroot "$RUNROOT" "$@"
+    ;;
+
+  preflight)
+    n="${1:?usage: dv3ops preflight N [--wave W]}"
+    if [ -n "$WAVE" ]; then
+      w="$(wave_dir)"
+      [ -f "$w/generated/preflight_remote.sh" ] ||
+        die "no generated preflight for $WAVE -- run 'dv3ops gen --wave $WAVE' first"
+      note "preflight instance $n against wave $WAVE"
+      dv3_ssh_dv3 "$n" "bash -s" < "$w/generated/preflight_remote.sh"
+    else
+      dv3_ssh_dv3 "$n" '
+        echo "== fork =="
+        for f in scripts/env.sh scripts/ops/instance_helpers.sh; do
+          [ -e "$REPO/$f" ] && echo "  PASS $f" || echo "  FAIL MISSING $f -- run push-repo"
+        done
+        echo "== helpers =="; dv3_version
+        echo "== disk =="; df -h "$RUNROOT" | tail -1
+        echo "== gpu =="; nvidia-smi --query-gpu=index,name,memory.total --format=csv,noheader'
+    fi
+    ;;
+
+  submit)
+    w="$(wave_dir)"
+    n="${1:?usage: dv3ops submit --wave W <instance>}"
+    [ -f "$w/generated/submit.sh" ] || die "run 'dv3ops gen' first"
+    echo "About to submit to instance $n:"
+    sed -n '1,12p' "$w/generated/RUN_IDS.txt"
+    echo "Full list: $w/generated/RUN_IDS.txt"
+    read -r -p "Submit? [y/N] " ans
+    [ "$ans" = y ] || die "aborted"
+    exec bash "$w/generated/submit.sh" "$n"
+    ;;
+
+  pull)
+    w="$(wave_dir)"
+    [ -f "$w/generated/pull_results.sh" ] || die "run 'dv3ops gen' first"
+    exec bash "$w/generated/pull_results.sh" "$@"
+    ;;
+
+  bundle)
+    w="$(wave_dir)"
+    [ -f "$w/generated/bundle.sh" ] || die "this wave's spec declares no bundle"
+    exec bash "$w/generated/bundle.sh"
+    ;;
+
+  requeue)
+    w="$(wave_dir)"
+    n="${1:?usage: dv3ops requeue --wave W <instance>}"
+    pend="$(mktemp)"; trap 'rm -f "$pend"' EXIT
+    python3 "$DV3OPS_ROOT/scripts/ops/wavecheck.py" "$w" --runroot "$RUNROOT" --pending > "$pend"
+    cnt="$(wc -l < "$pend")"
+    [ "$cnt" -gt 0 ] || { echo "nothing pending; wave is complete"; exit 0; }
+    echo "$cnt run(s) not complete:"; cat "$pend"
+    echo
+    echo "These are regenerated verbatim from the original expansion -- same"
+    echo "configs, same hardware unless you move them. If a cell failed for a"
+    echo "reason a retry cannot fix (OOM), send it elsewhere instead."
+    read -r -p "Requeue these on instance $n? [y/N] " ans
+    [ "$ans" = y ] || die "aborted"
+    python3 "$DV3OPS_ROOT/scripts/ops/wavegen.py" "$w" --only-runs "$pend" \
+      --out "$w/generated_requeue" --quiet ${LANES:+--lanes "$LANES"}
+    exec bash "$w/generated_requeue/submit.sh" "$n"
+    ;;
+
+  durations)
+    exec python3 "$DV3OPS_ROOT/scripts/ops/durations.py" "$@"
+    ;;
+
+  pack)
+    [ -n "$WAVE" ] || die "usage: dv3ops pack --wave W [--lanes 0,1,2,3] [--gpu 5060Ti]"
+    exec python3 "$DV3OPS_ROOT/scripts/ops/packing.py" --wave "$WAVE" \
+      ${LANES:+--lanes "$LANES"} "$@"
+    ;;
+
+  board)
+    bash "$0" board-raw "$@" | python3 "$DV3OPS_ROOT/scripts/ops/board.py" ${GPU:+--gpu "$GPU"}
+    ;;
+
+  pull-local)                                                not_yet "$verb" P1 ;;
+  refresh)                                                   not_yet "$verb" P2 ;;
   digest)                                                    not_yet "$verb" P3 ;;
   archive-report)                                            not_yet "$verb" P4 ;;
 

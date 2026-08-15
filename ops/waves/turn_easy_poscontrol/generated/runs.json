@@ -1,0 +1,661 @@
+{
+ "wave_id": "turn_easy_poscontrol",
+ "spec": "ops/waves/turn_easy_poscontrol/spec.yaml",
+ "prereg": null,
+ "bundle": {
+  "prefix": "turn_easy_pc",
+  "include_stages": [
+   "adapt",
+   "random_floor"
+  ],
+  "cloud_logs": [
+   "adapt_ax1ter*_seed*.out",
+   "adapt_rndte_*_seed*.out",
+   "worker_shard*.out"
+  ]
+ },
+ "stages": [
+  {
+   "name": "adapt",
+   "target": "vast",
+   "kind": "turn_easy_adapt",
+   "on_failure": "continue",
+   "needs": null
+  },
+  {
+   "name": "random_floor",
+   "target": "vast",
+   "kind": "turn_easy_adapt",
+   "on_failure": "continue",
+   "needs": null
+  }
+ ],
+ "runs": [
+  {
+   "stage": "adapt",
+   "kind": "turn_easy_adapt",
+   "target": "vast",
+   "run_id": "adapt_ax1terrgoq1s0_finger_seed1_ckpt500000",
+   "cmd": "bash \"$REPO/scripts/ops/runners/adapt_one.sh\" adapt_ax1terrgoq1s0_finger_seed1_ckpt500000 1 frozen_readout dmc_finger_turn_easy 1.25e5 \"$RUNROOT/ax1wm_finger_rgoq1s0_seed1/ckpt\"",
+   "vars": {
+    "arm": "rgo",
+    "side": 0,
+    "seed": 1,
+    "run_id": "adapt_ax1terrgoq1s0_finger_seed1_ckpt500000"
+   },
+   "inputs": [
+    "ax1wm_finger_rgoq1s0_seed1/ckpt",
+    "ax1wm_finger_rgoq1s0_seed1/config.yaml"
+   ],
+   "done_when": [
+    {
+     "exists": "ADAPT_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 100
+     }
+    }
+   ]
+  },
+  {
+   "stage": "adapt",
+   "kind": "turn_easy_adapt",
+   "target": "vast",
+   "run_id": "adapt_ax1terrgoq1s0_finger_seed2_ckpt500000",
+   "cmd": "bash \"$REPO/scripts/ops/runners/adapt_one.sh\" adapt_ax1terrgoq1s0_finger_seed2_ckpt500000 2 frozen_readout dmc_finger_turn_easy 1.25e5 \"$RUNROOT/ax1wm_finger_rgoq1s0_seed2/ckpt\"",
+   "vars": {
+    "arm": "rgo",
+    "side": 0,
+    "seed": 2,
+    "run_id": "adapt_ax1terrgoq1s0_finger_seed2_ckpt500000"
+   },
+   "inputs": [
+    "ax1wm_finger_rgoq1s0_seed2/ckpt",
+    "ax1wm_finger_rgoq1s0_seed2/config.yaml"
+   ],
+   "done_when": [
+    {
+     "exists": "ADAPT_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 100
+     }
+    }
+   ]
+  },
+  {
+   "stage": "adapt",
+   "kind": "turn_easy_adapt",
+   "target": "vast",
+   "run_id": "adapt_ax1terrgoq1s0_finger_seed3_ckpt500000",
+   "cmd": "bash \"$REPO/scripts/ops/runners/adapt_one.sh\" adapt_ax1terrgoq1s0_finger_seed3_ckpt500000 3 frozen_readout dmc_finger_turn_easy 1.25e5 \"$RUNROOT/ax1wm_finger_rgoq1s0_seed3/ckpt\"",
+   "vars": {
+    "arm": "rgo",
+    "side": 0,
+    "seed": 3,
+    "run_id": "adapt_ax1terrgoq1s0_finger_seed3_ckpt500000"
+   },
+   "inputs": [
+    "ax1wm_finger_rgoq1s0_seed3/ckpt",
+    "ax1wm_finger_rgoq1s0_seed3/config.yaml"
+   ],
+   "done_when": [
+    {
+     "exists": "ADAPT_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 100
+     }
+    }
+   ]
+  },
+  {
+   "stage": "adapt",
+   "kind": "turn_easy_adapt",
+   "target": "vast",
+   "run_id": "adapt_ax1terrgoq1s0_finger_seed4_ckpt500000",
+   "cmd": "bash \"$REPO/scripts/ops/runners/adapt_one.sh\" adapt_ax1terrgoq1s0_finger_seed4_ckpt500000 4 frozen_readout dmc_finger_turn_easy 1.25e5 \"$RUNROOT/ax1wm_finger_rgoq1s0_seed4/ckpt\"",
+   "vars": {
+    "arm": "rgo",
+    "side": 0,
+    "seed": 4,
+    "run_id": "adapt_ax1terrgoq1s0_finger_seed4_ckpt500000"
+   },
+   "inputs": [
+    "ax1wm_finger_rgoq1s0_seed4/ckpt",
+    "ax1wm_finger_rgoq1s0_seed4/config.yaml"
+   ],
+   "done_when": [
+    {
+     "exists": "ADAPT_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 100
+     }
+    }
+   ]
+  },
+  {
+   "stage": "adapt",
+   "kind": "turn_easy_adapt",
+   "target": "vast",
+   "run_id": "adapt_ax1terrgoq1s1_finger_seed1_ckpt500000",
+   "cmd": "bash \"$REPO/scripts/ops/runners/adapt_one.sh\" adapt_ax1terrgoq1s1_finger_seed1_ckpt500000 1 frozen_readout dmc_finger_turn_easy 1.25e5 \"$RUNROOT/ax1wm_finger_rgoq1s1_seed1/ckpt\"",
+   "vars": {
+    "arm": "rgo",
+    "side": 1,
+    "seed": 1,
+    "run_id": "adapt_ax1terrgoq1s1_finger_seed1_ckpt500000"
+   },
+   "inputs": [
+    "ax1wm_finger_rgoq1s1_seed1/ckpt",
+    "ax1wm_finger_rgoq1s1_seed1/config.yaml"
+   ],
+   "done_when": [
+    {
+     "exists": "ADAPT_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 100
+     }
+    }
+   ]
+  },
+  {
+   "stage": "adapt",
+   "kind": "turn_easy_adapt",
+   "target": "vast",
+   "run_id": "adapt_ax1terrgoq1s1_finger_seed2_ckpt500000",
+   "cmd": "bash \"$REPO/scripts/ops/runners/adapt_one.sh\" adapt_ax1terrgoq1s1_finger_seed2_ckpt500000 2 frozen_readout dmc_finger_turn_easy 1.25e5 \"$RUNROOT/ax1wm_finger_rgoq1s1_seed2/ckpt\"",
+   "vars": {
+    "arm": "rgo",
+    "side": 1,
+    "seed": 2,
+    "run_id": "adapt_ax1terrgoq1s1_finger_seed2_ckpt500000"
+   },
+   "inputs": [
+    "ax1wm_finger_rgoq1s1_seed2/ckpt",
+    "ax1wm_finger_rgoq1s1_seed2/config.yaml"
+   ],
+   "done_when": [
+    {
+     "exists": "ADAPT_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 100
+     }
+    }
+   ]
+  },
+  {
+   "stage": "adapt",
+   "kind": "turn_easy_adapt",
+   "target": "vast",
+   "run_id": "adapt_ax1terrgoq1s1_finger_seed3_ckpt500000",
+   "cmd": "bash \"$REPO/scripts/ops/runners/adapt_one.sh\" adapt_ax1terrgoq1s1_finger_seed3_ckpt500000 3 frozen_readout dmc_finger_turn_easy 1.25e5 \"$RUNROOT/ax1wm_finger_rgoq1s1_seed3/ckpt\"",
+   "vars": {
+    "arm": "rgo",
+    "side": 1,
+    "seed": 3,
+    "run_id": "adapt_ax1terrgoq1s1_finger_seed3_ckpt500000"
+   },
+   "inputs": [
+    "ax1wm_finger_rgoq1s1_seed3/ckpt",
+    "ax1wm_finger_rgoq1s1_seed3/config.yaml"
+   ],
+   "done_when": [
+    {
+     "exists": "ADAPT_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 100
+     }
+    }
+   ]
+  },
+  {
+   "stage": "adapt",
+   "kind": "turn_easy_adapt",
+   "target": "vast",
+   "run_id": "adapt_ax1terrgoq1s1_finger_seed4_ckpt500000",
+   "cmd": "bash \"$REPO/scripts/ops/runners/adapt_one.sh\" adapt_ax1terrgoq1s1_finger_seed4_ckpt500000 4 frozen_readout dmc_finger_turn_easy 1.25e5 \"$RUNROOT/ax1wm_finger_rgoq1s1_seed4/ckpt\"",
+   "vars": {
+    "arm": "rgo",
+    "side": 1,
+    "seed": 4,
+    "run_id": "adapt_ax1terrgoq1s1_finger_seed4_ckpt500000"
+   },
+   "inputs": [
+    "ax1wm_finger_rgoq1s1_seed4/ckpt",
+    "ax1wm_finger_rgoq1s1_seed4/config.yaml"
+   ],
+   "done_when": [
+    {
+     "exists": "ADAPT_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 100
+     }
+    }
+   ]
+  },
+  {
+   "stage": "adapt",
+   "kind": "turn_easy_adapt",
+   "target": "vast",
+   "run_id": "adapt_ax1tersgbq1s0_finger_seed1_ckpt500000",
+   "cmd": "bash \"$REPO/scripts/ops/runners/adapt_one.sh\" adapt_ax1tersgbq1s0_finger_seed1_ckpt500000 1 frozen_readout dmc_finger_turn_easy 1.25e5 \"$RUNROOT/ax1wm_finger_sgbq1s0_seed1/ckpt\"",
+   "vars": {
+    "arm": "sgb",
+    "side": 0,
+    "seed": 1,
+    "run_id": "adapt_ax1tersgbq1s0_finger_seed1_ckpt500000"
+   },
+   "inputs": [
+    "ax1wm_finger_sgbq1s0_seed1/ckpt",
+    "ax1wm_finger_sgbq1s0_seed1/config.yaml"
+   ],
+   "done_when": [
+    {
+     "exists": "ADAPT_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 100
+     }
+    }
+   ]
+  },
+  {
+   "stage": "adapt",
+   "kind": "turn_easy_adapt",
+   "target": "vast",
+   "run_id": "adapt_ax1tersgbq1s0_finger_seed2_ckpt500000",
+   "cmd": "bash \"$REPO/scripts/ops/runners/adapt_one.sh\" adapt_ax1tersgbq1s0_finger_seed2_ckpt500000 2 frozen_readout dmc_finger_turn_easy 1.25e5 \"$RUNROOT/ax1wm_finger_sgbq1s0_seed2/ckpt\"",
+   "vars": {
+    "arm": "sgb",
+    "side": 0,
+    "seed": 2,
+    "run_id": "adapt_ax1tersgbq1s0_finger_seed2_ckpt500000"
+   },
+   "inputs": [
+    "ax1wm_finger_sgbq1s0_seed2/ckpt",
+    "ax1wm_finger_sgbq1s0_seed2/config.yaml"
+   ],
+   "done_when": [
+    {
+     "exists": "ADAPT_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 100
+     }
+    }
+   ]
+  },
+  {
+   "stage": "adapt",
+   "kind": "turn_easy_adapt",
+   "target": "vast",
+   "run_id": "adapt_ax1tersgbq1s0_finger_seed3_ckpt500000",
+   "cmd": "bash \"$REPO/scripts/ops/runners/adapt_one.sh\" adapt_ax1tersgbq1s0_finger_seed3_ckpt500000 3 frozen_readout dmc_finger_turn_easy 1.25e5 \"$RUNROOT/ax1wm_finger_sgbq1s0_seed3/ckpt\"",
+   "vars": {
+    "arm": "sgb",
+    "side": 0,
+    "seed": 3,
+    "run_id": "adapt_ax1tersgbq1s0_finger_seed3_ckpt500000"
+   },
+   "inputs": [
+    "ax1wm_finger_sgbq1s0_seed3/ckpt",
+    "ax1wm_finger_sgbq1s0_seed3/config.yaml"
+   ],
+   "done_when": [
+    {
+     "exists": "ADAPT_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 100
+     }
+    }
+   ]
+  },
+  {
+   "stage": "adapt",
+   "kind": "turn_easy_adapt",
+   "target": "vast",
+   "run_id": "adapt_ax1tersgbq1s0_finger_seed4_ckpt500000",
+   "cmd": "bash \"$REPO/scripts/ops/runners/adapt_one.sh\" adapt_ax1tersgbq1s0_finger_seed4_ckpt500000 4 frozen_readout dmc_finger_turn_easy 1.25e5 \"$RUNROOT/ax1wm_finger_sgbq1s0_seed4/ckpt\"",
+   "vars": {
+    "arm": "sgb",
+    "side": 0,
+    "seed": 4,
+    "run_id": "adapt_ax1tersgbq1s0_finger_seed4_ckpt500000"
+   },
+   "inputs": [
+    "ax1wm_finger_sgbq1s0_seed4/ckpt",
+    "ax1wm_finger_sgbq1s0_seed4/config.yaml"
+   ],
+   "done_when": [
+    {
+     "exists": "ADAPT_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 100
+     }
+    }
+   ]
+  },
+  {
+   "stage": "adapt",
+   "kind": "turn_easy_adapt",
+   "target": "vast",
+   "run_id": "adapt_ax1tersgbq1s1_finger_seed1_ckpt500000",
+   "cmd": "bash \"$REPO/scripts/ops/runners/adapt_one.sh\" adapt_ax1tersgbq1s1_finger_seed1_ckpt500000 1 frozen_readout dmc_finger_turn_easy 1.25e5 \"$RUNROOT/ax1wm_finger_sgbq1s1_seed1/ckpt\"",
+   "vars": {
+    "arm": "sgb",
+    "side": 1,
+    "seed": 1,
+    "run_id": "adapt_ax1tersgbq1s1_finger_seed1_ckpt500000"
+   },
+   "inputs": [
+    "ax1wm_finger_sgbq1s1_seed1/ckpt",
+    "ax1wm_finger_sgbq1s1_seed1/config.yaml"
+   ],
+   "done_when": [
+    {
+     "exists": "ADAPT_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 100
+     }
+    }
+   ]
+  },
+  {
+   "stage": "adapt",
+   "kind": "turn_easy_adapt",
+   "target": "vast",
+   "run_id": "adapt_ax1tersgbq1s1_finger_seed2_ckpt500000",
+   "cmd": "bash \"$REPO/scripts/ops/runners/adapt_one.sh\" adapt_ax1tersgbq1s1_finger_seed2_ckpt500000 2 frozen_readout dmc_finger_turn_easy 1.25e5 \"$RUNROOT/ax1wm_finger_sgbq1s1_seed2/ckpt\"",
+   "vars": {
+    "arm": "sgb",
+    "side": 1,
+    "seed": 2,
+    "run_id": "adapt_ax1tersgbq1s1_finger_seed2_ckpt500000"
+   },
+   "inputs": [
+    "ax1wm_finger_sgbq1s1_seed2/ckpt",
+    "ax1wm_finger_sgbq1s1_seed2/config.yaml"
+   ],
+   "done_when": [
+    {
+     "exists": "ADAPT_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 100
+     }
+    }
+   ]
+  },
+  {
+   "stage": "adapt",
+   "kind": "turn_easy_adapt",
+   "target": "vast",
+   "run_id": "adapt_ax1tersgbq1s1_finger_seed3_ckpt500000",
+   "cmd": "bash \"$REPO/scripts/ops/runners/adapt_one.sh\" adapt_ax1tersgbq1s1_finger_seed3_ckpt500000 3 frozen_readout dmc_finger_turn_easy 1.25e5 \"$RUNROOT/ax1wm_finger_sgbq1s1_seed3/ckpt\"",
+   "vars": {
+    "arm": "sgb",
+    "side": 1,
+    "seed": 3,
+    "run_id": "adapt_ax1tersgbq1s1_finger_seed3_ckpt500000"
+   },
+   "inputs": [
+    "ax1wm_finger_sgbq1s1_seed3/ckpt",
+    "ax1wm_finger_sgbq1s1_seed3/config.yaml"
+   ],
+   "done_when": [
+    {
+     "exists": "ADAPT_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 100
+     }
+    }
+   ]
+  },
+  {
+   "stage": "adapt",
+   "kind": "turn_easy_adapt",
+   "target": "vast",
+   "run_id": "adapt_ax1tersgbq1s1_finger_seed4_ckpt500000",
+   "cmd": "bash \"$REPO/scripts/ops/runners/adapt_one.sh\" adapt_ax1tersgbq1s1_finger_seed4_ckpt500000 4 frozen_readout dmc_finger_turn_easy 1.25e5 \"$RUNROOT/ax1wm_finger_sgbq1s1_seed4/ckpt\"",
+   "vars": {
+    "arm": "sgb",
+    "side": 1,
+    "seed": 4,
+    "run_id": "adapt_ax1tersgbq1s1_finger_seed4_ckpt500000"
+   },
+   "inputs": [
+    "ax1wm_finger_sgbq1s1_seed4/ckpt",
+    "ax1wm_finger_sgbq1s1_seed4/config.yaml"
+   ],
+   "done_when": [
+    {
+     "exists": "ADAPT_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 100
+     }
+    }
+   ]
+  },
+  {
+   "stage": "random_floor",
+   "kind": "turn_easy_adapt",
+   "target": "vast",
+   "run_id": "adapt_rndte_finger_seed1_ckpt0",
+   "cmd": "bash \"$REPO/scripts/ops/runners/adapt_one.sh\" adapt_rndte_finger_seed1_ckpt0 1 expl_random dmc_finger_turn_easy 1.25e5 NONE",
+   "vars": {
+    "seed": 1,
+    "run_id": "adapt_rndte_finger_seed1_ckpt0"
+   },
+   "inputs": [],
+   "done_when": [
+    {
+     "exists": "ADAPT_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 100
+     }
+    }
+   ]
+  },
+  {
+   "stage": "random_floor",
+   "kind": "turn_easy_adapt",
+   "target": "vast",
+   "run_id": "adapt_rndte_finger_seed2_ckpt0",
+   "cmd": "bash \"$REPO/scripts/ops/runners/adapt_one.sh\" adapt_rndte_finger_seed2_ckpt0 2 expl_random dmc_finger_turn_easy 1.25e5 NONE",
+   "vars": {
+    "seed": 2,
+    "run_id": "adapt_rndte_finger_seed2_ckpt0"
+   },
+   "inputs": [],
+   "done_when": [
+    {
+     "exists": "ADAPT_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 100
+     }
+    }
+   ]
+  },
+  {
+   "stage": "random_floor",
+   "kind": "turn_easy_adapt",
+   "target": "vast",
+   "run_id": "adapt_rndte_finger_seed3_ckpt0",
+   "cmd": "bash \"$REPO/scripts/ops/runners/adapt_one.sh\" adapt_rndte_finger_seed3_ckpt0 3 expl_random dmc_finger_turn_easy 1.25e5 NONE",
+   "vars": {
+    "seed": 3,
+    "run_id": "adapt_rndte_finger_seed3_ckpt0"
+   },
+   "inputs": [],
+   "done_when": [
+    {
+     "exists": "ADAPT_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 100
+     }
+    }
+   ]
+  },
+  {
+   "stage": "random_floor",
+   "kind": "turn_easy_adapt",
+   "target": "vast",
+   "run_id": "adapt_rndte_finger_seed4_ckpt0",
+   "cmd": "bash \"$REPO/scripts/ops/runners/adapt_one.sh\" adapt_rndte_finger_seed4_ckpt0 4 expl_random dmc_finger_turn_easy 1.25e5 NONE",
+   "vars": {
+    "seed": 4,
+    "run_id": "adapt_rndte_finger_seed4_ckpt0"
+   },
+   "inputs": [],
+   "done_when": [
+    {
+     "exists": "ADAPT_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 100
+     }
+    }
+   ]
+  },
+  {
+   "stage": "random_floor",
+   "kind": "turn_easy_adapt",
+   "target": "vast",
+   "run_id": "adapt_rndte_finger_seed5_ckpt0",
+   "cmd": "bash \"$REPO/scripts/ops/runners/adapt_one.sh\" adapt_rndte_finger_seed5_ckpt0 5 expl_random dmc_finger_turn_easy 1.25e5 NONE",
+   "vars": {
+    "seed": 5,
+    "run_id": "adapt_rndte_finger_seed5_ckpt0"
+   },
+   "inputs": [],
+   "done_when": [
+    {
+     "exists": "ADAPT_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 100
+     }
+    }
+   ]
+  }
+ ]
+}

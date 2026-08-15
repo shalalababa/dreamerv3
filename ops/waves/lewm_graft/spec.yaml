@@ -1,0 +1,89 @@
+# Reference wave C: the canonical shape -- fit+adapt -> probe/E4.
+# Transcribed from the hand-written 2026-08-13 LeWM graft submission.
+#
+# Shapes exercised that A and B do not: one queued task producing TWO run dirs;
+# a done_when that reaches into a sibling dir; a replay buffer whose parent
+# manifest is a hard prerequisite; and a probe stage whose outputs are loose
+# files in a shared folder rather than per-run directories.
+
+wave_id: lewm_graft
+paper: paper1
+notes: >-
+  LeWM encoder grafted into a DreamerV3 pixel world model, then adapted on
+  dmc_finger_turn_hard with a frozen readout. axis1.sbatch runs the fit and the
+  adapt in one invocation, so a single queued task owns both output dirs; the
+  fit half is checked explicitly because an adapt can complete normally on top
+  of a world model that stopped short.
+
+defaults:
+  target: vast
+
+kinds:
+  graft_fit_adapt: {per_gpu: 1}
+  probe:           {per_gpu: 1}
+
+stages:
+
+  - name: graft
+    kind: graft_fit_adapt
+    on_failure: abort
+    expand:
+      seed: [1, 2, 3, 4, 5, 6, 7, 8]
+      side: [0, 1]
+    run_id: "adapt_ax1jppxq1ms${side}_finger_seed${seed}_ckpt500000"
+    cmd: >-
+      DREAMER_DISABLE_GPUFLAGS=1
+      bash "$REPO/scripts/ops/runners/axis1_graft_one.sh"
+      ${run_id} ax1wm_finger_jppxq1ms${side}_seed${seed} ${side} ${seed}
+      lewm_distill_finger_s${side}_seed${seed}
+    outputs:
+      - "adapt_ax1jppxq1ms${side}_finger_seed${seed}_ckpt500000"
+      - "ax1wm_finger_jppxq1ms${side}_seed${seed}"
+    inputs:
+      - "lewm_distill_finger_s${side}_seed${seed}/ckpt"
+      - "axis1_finger/pxq1m/side${side}"
+      # Parent-directory unit: axis1.sbatch:77 requires this beside the side
+      # dir. Declaring it makes preflight catch a side-only sync before the
+      # wave burns GPU time discovering it.
+      - "axis1_finger/pxq1m/manifest.json"
+    done_when:
+      - exists: ADAPT_DONE
+      - exists: config.yaml
+      # Same threshold as the runner's own skip guard, so "skipped" and
+      # "complete" cannot disagree.
+      - jsonl_min_lines: {file: scores.jsonl, n: 100}
+      # The fit half, in the sibling dir this task also wrote.
+      - ckpt_step_min: {dir: "../ax1wm_finger_jppxq1ms${side}_seed${seed}", min: 500000}
+
+  - name: probe_e4
+    kind: probe
+    needs: graft
+    on_failure: continue
+    expand:
+      seed: [1, 2, 3, 4, 5, 6, 7, 8]
+      side: [0, 1]
+    run_id: "lewm_probe_e4_s${side}_seed${seed}"
+    logdir: "lewm_probe"
+    outputs:
+      - "lewm_probe/fpx_s${side}_seed${seed}.json"
+    cmd: >-
+      DREAMER_DISABLE_GPUFLAGS=1 python -m probing.ridge_probe measure
+      --run_logdir "$RUNROOT/ax1wm_finger_fpxpxq1ms${side}_seed${seed}"
+      --probeset "$RUNROOT/e4_probesets/fingerpx_v1"
+      --output "$RUNROOT/lewm_probe/fpx_s${side}_seed${seed}.json"
+      --platform cuda --ep_batch 4
+    inputs:
+      - "e4_probesets/fingerpx_v1"
+    done_when:
+      - exists: "fpx_s${side}_seed${seed}.json"
+
+bundle:
+  prefix: lewm_jp
+  include_stages: [graft, probe_e4]
+  cloud_logs:
+    - "adapt_ax1jppx*_seed*.out"
+    - "lewm_probe_e4_*.out"
+    - "worker_shard*.out"
+
+night:
+  auto_requeue_unaffected: true

@@ -1,0 +1,1287 @@
+{
+ "wave_id": "lewm_upstream",
+ "spec": "ops/waves/lewm_upstream/spec.yaml",
+ "prereg": null,
+ "bundle": {
+  "prefix": "lewm_upstream",
+  "include_stages": [
+   "train",
+   "distill",
+   "graft_rcc"
+  ],
+  "cloud_logs": [
+   "lewm_finger_*.out",
+   "lewm_distill_*.out",
+   "worker_shard*.out"
+  ]
+ },
+ "stages": [
+  {
+   "name": "train",
+   "target": "vast",
+   "kind": "lewm_train",
+   "on_failure": "continue",
+   "needs": null
+  },
+  {
+   "name": "distill",
+   "target": "vast",
+   "kind": "distill",
+   "on_failure": "continue",
+   "needs": "train"
+  },
+  {
+   "name": "graft_rcc",
+   "target": "rcc-slurm",
+   "kind": "distill",
+   "on_failure": "abort",
+   "needs": "distill"
+  }
+ ],
+ "runs": [
+  {
+   "stage": "train",
+   "kind": "lewm_train",
+   "target": "vast",
+   "run_id": "lewm_finger_s0_seed1",
+   "cmd": "bash \"$REPO/scripts/ops/runners/lewm_train_one.sh\" 0 1",
+   "vars": {
+    "seed": 1,
+    "side": 0,
+    "run_id": "lewm_finger_s0_seed1"
+   },
+   "logdir": "lewm_finger_s0_seed1",
+   "outputs": [
+    "lewm_finger_s0_seed1"
+   ],
+   "inputs": [
+    "lewm_data/finger_pxq1m_side0.h5",
+    "lewm_data/finger_pxq1m_side0.manifest.json"
+   ],
+   "done_when": [
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "exists": "lewm_weights.ckpt"
+    }
+   ]
+  },
+  {
+   "stage": "train",
+   "kind": "lewm_train",
+   "target": "vast",
+   "run_id": "lewm_finger_s1_seed1",
+   "cmd": "bash \"$REPO/scripts/ops/runners/lewm_train_one.sh\" 1 1",
+   "vars": {
+    "seed": 1,
+    "side": 1,
+    "run_id": "lewm_finger_s1_seed1"
+   },
+   "logdir": "lewm_finger_s1_seed1",
+   "outputs": [
+    "lewm_finger_s1_seed1"
+   ],
+   "inputs": [
+    "lewm_data/finger_pxq1m_side1.h5",
+    "lewm_data/finger_pxq1m_side1.manifest.json"
+   ],
+   "done_when": [
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "exists": "lewm_weights.ckpt"
+    }
+   ]
+  },
+  {
+   "stage": "train",
+   "kind": "lewm_train",
+   "target": "vast",
+   "run_id": "lewm_finger_s0_seed2",
+   "cmd": "bash \"$REPO/scripts/ops/runners/lewm_train_one.sh\" 0 2",
+   "vars": {
+    "seed": 2,
+    "side": 0,
+    "run_id": "lewm_finger_s0_seed2"
+   },
+   "logdir": "lewm_finger_s0_seed2",
+   "outputs": [
+    "lewm_finger_s0_seed2"
+   ],
+   "inputs": [
+    "lewm_data/finger_pxq1m_side0.h5",
+    "lewm_data/finger_pxq1m_side0.manifest.json"
+   ],
+   "done_when": [
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "exists": "lewm_weights.ckpt"
+    }
+   ]
+  },
+  {
+   "stage": "train",
+   "kind": "lewm_train",
+   "target": "vast",
+   "run_id": "lewm_finger_s1_seed2",
+   "cmd": "bash \"$REPO/scripts/ops/runners/lewm_train_one.sh\" 1 2",
+   "vars": {
+    "seed": 2,
+    "side": 1,
+    "run_id": "lewm_finger_s1_seed2"
+   },
+   "logdir": "lewm_finger_s1_seed2",
+   "outputs": [
+    "lewm_finger_s1_seed2"
+   ],
+   "inputs": [
+    "lewm_data/finger_pxq1m_side1.h5",
+    "lewm_data/finger_pxq1m_side1.manifest.json"
+   ],
+   "done_when": [
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "exists": "lewm_weights.ckpt"
+    }
+   ]
+  },
+  {
+   "stage": "train",
+   "kind": "lewm_train",
+   "target": "vast",
+   "run_id": "lewm_finger_s0_seed3",
+   "cmd": "bash \"$REPO/scripts/ops/runners/lewm_train_one.sh\" 0 3",
+   "vars": {
+    "seed": 3,
+    "side": 0,
+    "run_id": "lewm_finger_s0_seed3"
+   },
+   "logdir": "lewm_finger_s0_seed3",
+   "outputs": [
+    "lewm_finger_s0_seed3"
+   ],
+   "inputs": [
+    "lewm_data/finger_pxq1m_side0.h5",
+    "lewm_data/finger_pxq1m_side0.manifest.json"
+   ],
+   "done_when": [
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "exists": "lewm_weights.ckpt"
+    }
+   ]
+  },
+  {
+   "stage": "train",
+   "kind": "lewm_train",
+   "target": "vast",
+   "run_id": "lewm_finger_s1_seed3",
+   "cmd": "bash \"$REPO/scripts/ops/runners/lewm_train_one.sh\" 1 3",
+   "vars": {
+    "seed": 3,
+    "side": 1,
+    "run_id": "lewm_finger_s1_seed3"
+   },
+   "logdir": "lewm_finger_s1_seed3",
+   "outputs": [
+    "lewm_finger_s1_seed3"
+   ],
+   "inputs": [
+    "lewm_data/finger_pxq1m_side1.h5",
+    "lewm_data/finger_pxq1m_side1.manifest.json"
+   ],
+   "done_when": [
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "exists": "lewm_weights.ckpt"
+    }
+   ]
+  },
+  {
+   "stage": "train",
+   "kind": "lewm_train",
+   "target": "vast",
+   "run_id": "lewm_finger_s0_seed4",
+   "cmd": "bash \"$REPO/scripts/ops/runners/lewm_train_one.sh\" 0 4",
+   "vars": {
+    "seed": 4,
+    "side": 0,
+    "run_id": "lewm_finger_s0_seed4"
+   },
+   "logdir": "lewm_finger_s0_seed4",
+   "outputs": [
+    "lewm_finger_s0_seed4"
+   ],
+   "inputs": [
+    "lewm_data/finger_pxq1m_side0.h5",
+    "lewm_data/finger_pxq1m_side0.manifest.json"
+   ],
+   "done_when": [
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "exists": "lewm_weights.ckpt"
+    }
+   ]
+  },
+  {
+   "stage": "train",
+   "kind": "lewm_train",
+   "target": "vast",
+   "run_id": "lewm_finger_s1_seed4",
+   "cmd": "bash \"$REPO/scripts/ops/runners/lewm_train_one.sh\" 1 4",
+   "vars": {
+    "seed": 4,
+    "side": 1,
+    "run_id": "lewm_finger_s1_seed4"
+   },
+   "logdir": "lewm_finger_s1_seed4",
+   "outputs": [
+    "lewm_finger_s1_seed4"
+   ],
+   "inputs": [
+    "lewm_data/finger_pxq1m_side1.h5",
+    "lewm_data/finger_pxq1m_side1.manifest.json"
+   ],
+   "done_when": [
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "exists": "lewm_weights.ckpt"
+    }
+   ]
+  },
+  {
+   "stage": "train",
+   "kind": "lewm_train",
+   "target": "vast",
+   "run_id": "lewm_finger_s0_seed5",
+   "cmd": "bash \"$REPO/scripts/ops/runners/lewm_train_one.sh\" 0 5",
+   "vars": {
+    "seed": 5,
+    "side": 0,
+    "run_id": "lewm_finger_s0_seed5"
+   },
+   "logdir": "lewm_finger_s0_seed5",
+   "outputs": [
+    "lewm_finger_s0_seed5"
+   ],
+   "inputs": [
+    "lewm_data/finger_pxq1m_side0.h5",
+    "lewm_data/finger_pxq1m_side0.manifest.json"
+   ],
+   "done_when": [
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "exists": "lewm_weights.ckpt"
+    }
+   ]
+  },
+  {
+   "stage": "train",
+   "kind": "lewm_train",
+   "target": "vast",
+   "run_id": "lewm_finger_s1_seed5",
+   "cmd": "bash \"$REPO/scripts/ops/runners/lewm_train_one.sh\" 1 5",
+   "vars": {
+    "seed": 5,
+    "side": 1,
+    "run_id": "lewm_finger_s1_seed5"
+   },
+   "logdir": "lewm_finger_s1_seed5",
+   "outputs": [
+    "lewm_finger_s1_seed5"
+   ],
+   "inputs": [
+    "lewm_data/finger_pxq1m_side1.h5",
+    "lewm_data/finger_pxq1m_side1.manifest.json"
+   ],
+   "done_when": [
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "exists": "lewm_weights.ckpt"
+    }
+   ]
+  },
+  {
+   "stage": "train",
+   "kind": "lewm_train",
+   "target": "vast",
+   "run_id": "lewm_finger_s0_seed6",
+   "cmd": "bash \"$REPO/scripts/ops/runners/lewm_train_one.sh\" 0 6",
+   "vars": {
+    "seed": 6,
+    "side": 0,
+    "run_id": "lewm_finger_s0_seed6"
+   },
+   "logdir": "lewm_finger_s0_seed6",
+   "outputs": [
+    "lewm_finger_s0_seed6"
+   ],
+   "inputs": [
+    "lewm_data/finger_pxq1m_side0.h5",
+    "lewm_data/finger_pxq1m_side0.manifest.json"
+   ],
+   "done_when": [
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "exists": "lewm_weights.ckpt"
+    }
+   ]
+  },
+  {
+   "stage": "train",
+   "kind": "lewm_train",
+   "target": "vast",
+   "run_id": "lewm_finger_s1_seed6",
+   "cmd": "bash \"$REPO/scripts/ops/runners/lewm_train_one.sh\" 1 6",
+   "vars": {
+    "seed": 6,
+    "side": 1,
+    "run_id": "lewm_finger_s1_seed6"
+   },
+   "logdir": "lewm_finger_s1_seed6",
+   "outputs": [
+    "lewm_finger_s1_seed6"
+   ],
+   "inputs": [
+    "lewm_data/finger_pxq1m_side1.h5",
+    "lewm_data/finger_pxq1m_side1.manifest.json"
+   ],
+   "done_when": [
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "exists": "lewm_weights.ckpt"
+    }
+   ]
+  },
+  {
+   "stage": "train",
+   "kind": "lewm_train",
+   "target": "vast",
+   "run_id": "lewm_finger_s0_seed7",
+   "cmd": "bash \"$REPO/scripts/ops/runners/lewm_train_one.sh\" 0 7",
+   "vars": {
+    "seed": 7,
+    "side": 0,
+    "run_id": "lewm_finger_s0_seed7"
+   },
+   "logdir": "lewm_finger_s0_seed7",
+   "outputs": [
+    "lewm_finger_s0_seed7"
+   ],
+   "inputs": [
+    "lewm_data/finger_pxq1m_side0.h5",
+    "lewm_data/finger_pxq1m_side0.manifest.json"
+   ],
+   "done_when": [
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "exists": "lewm_weights.ckpt"
+    }
+   ]
+  },
+  {
+   "stage": "train",
+   "kind": "lewm_train",
+   "target": "vast",
+   "run_id": "lewm_finger_s1_seed7",
+   "cmd": "bash \"$REPO/scripts/ops/runners/lewm_train_one.sh\" 1 7",
+   "vars": {
+    "seed": 7,
+    "side": 1,
+    "run_id": "lewm_finger_s1_seed7"
+   },
+   "logdir": "lewm_finger_s1_seed7",
+   "outputs": [
+    "lewm_finger_s1_seed7"
+   ],
+   "inputs": [
+    "lewm_data/finger_pxq1m_side1.h5",
+    "lewm_data/finger_pxq1m_side1.manifest.json"
+   ],
+   "done_when": [
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "exists": "lewm_weights.ckpt"
+    }
+   ]
+  },
+  {
+   "stage": "train",
+   "kind": "lewm_train",
+   "target": "vast",
+   "run_id": "lewm_finger_s0_seed8",
+   "cmd": "bash \"$REPO/scripts/ops/runners/lewm_train_one.sh\" 0 8",
+   "vars": {
+    "seed": 8,
+    "side": 0,
+    "run_id": "lewm_finger_s0_seed8"
+   },
+   "logdir": "lewm_finger_s0_seed8",
+   "outputs": [
+    "lewm_finger_s0_seed8"
+   ],
+   "inputs": [
+    "lewm_data/finger_pxq1m_side0.h5",
+    "lewm_data/finger_pxq1m_side0.manifest.json"
+   ],
+   "done_when": [
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "exists": "lewm_weights.ckpt"
+    }
+   ]
+  },
+  {
+   "stage": "train",
+   "kind": "lewm_train",
+   "target": "vast",
+   "run_id": "lewm_finger_s1_seed8",
+   "cmd": "bash \"$REPO/scripts/ops/runners/lewm_train_one.sh\" 1 8",
+   "vars": {
+    "seed": 8,
+    "side": 1,
+    "run_id": "lewm_finger_s1_seed8"
+   },
+   "logdir": "lewm_finger_s1_seed8",
+   "outputs": [
+    "lewm_finger_s1_seed8"
+   ],
+   "inputs": [
+    "lewm_data/finger_pxq1m_side1.h5",
+    "lewm_data/finger_pxq1m_side1.manifest.json"
+   ],
+   "done_when": [
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "exists": "lewm_weights.ckpt"
+    }
+   ]
+  },
+  {
+   "stage": "distill",
+   "kind": "distill",
+   "target": "vast",
+   "run_id": "lewm_distill_finger_s0_seed1",
+   "cmd": "python -m probing.distill_encoder train --platform gpu --ref_run \"$RUNROOT/ax1wm_finger_fpxpxq1ms0_seed1\" --side_dir \"$RUNROOT/axis1_finger/pxq1m/side0\" --emb_dir \"$RUNROOT/lewm_emb/s0_seed1\" --holdout_list \"$RUNROOT/lewm_data/finger_pxq1m_side0.manifest.json\" --output \"$RUNROOT/lewm_distill_finger_s0_seed1\"",
+   "vars": {
+    "seed": 1,
+    "side": 0,
+    "run_id": "lewm_distill_finger_s0_seed1"
+   },
+   "logdir": "lewm_distill_finger_s0_seed1",
+   "outputs": [
+    "lewm_distill_finger_s0_seed1"
+   ],
+   "inputs": [
+    "ax1wm_finger_fpxpxq1ms0_seed1/config.yaml",
+    "axis1_finger/pxq1m/side0",
+    "axis1_finger/pxq1m/manifest.json",
+    "lewm_emb/s0_seed1/embed_manifest.json",
+    "lewm_data/finger_pxq1m_side0.manifest.json"
+   ],
+   "done_when": [
+    {
+     "exists": "DISTILL_DONE"
+    },
+    {
+     "exists": "ckpt/distill-0/agent.pkl"
+    },
+    {
+     "exists": "ckpt/distill-0/done"
+    },
+    {
+     "json_field_min": {
+      "file": "fidelity.json",
+      "field": "holdout_r2",
+      "min": 0.5
+     }
+    }
+   ]
+  },
+  {
+   "stage": "distill",
+   "kind": "distill",
+   "target": "vast",
+   "run_id": "lewm_distill_finger_s1_seed1",
+   "cmd": "python -m probing.distill_encoder train --platform gpu --ref_run \"$RUNROOT/ax1wm_finger_fpxpxq1ms1_seed1\" --side_dir \"$RUNROOT/axis1_finger/pxq1m/side1\" --emb_dir \"$RUNROOT/lewm_emb/s1_seed1\" --holdout_list \"$RUNROOT/lewm_data/finger_pxq1m_side1.manifest.json\" --output \"$RUNROOT/lewm_distill_finger_s1_seed1\"",
+   "vars": {
+    "seed": 1,
+    "side": 1,
+    "run_id": "lewm_distill_finger_s1_seed1"
+   },
+   "logdir": "lewm_distill_finger_s1_seed1",
+   "outputs": [
+    "lewm_distill_finger_s1_seed1"
+   ],
+   "inputs": [
+    "ax1wm_finger_fpxpxq1ms1_seed1/config.yaml",
+    "axis1_finger/pxq1m/side1",
+    "axis1_finger/pxq1m/manifest.json",
+    "lewm_emb/s1_seed1/embed_manifest.json",
+    "lewm_data/finger_pxq1m_side1.manifest.json"
+   ],
+   "done_when": [
+    {
+     "exists": "DISTILL_DONE"
+    },
+    {
+     "exists": "ckpt/distill-0/agent.pkl"
+    },
+    {
+     "exists": "ckpt/distill-0/done"
+    },
+    {
+     "json_field_min": {
+      "file": "fidelity.json",
+      "field": "holdout_r2",
+      "min": 0.5
+     }
+    }
+   ]
+  },
+  {
+   "stage": "distill",
+   "kind": "distill",
+   "target": "vast",
+   "run_id": "lewm_distill_finger_s0_seed2",
+   "cmd": "python -m probing.distill_encoder train --platform gpu --ref_run \"$RUNROOT/ax1wm_finger_fpxpxq1ms0_seed2\" --side_dir \"$RUNROOT/axis1_finger/pxq1m/side0\" --emb_dir \"$RUNROOT/lewm_emb/s0_seed2\" --holdout_list \"$RUNROOT/lewm_data/finger_pxq1m_side0.manifest.json\" --output \"$RUNROOT/lewm_distill_finger_s0_seed2\"",
+   "vars": {
+    "seed": 2,
+    "side": 0,
+    "run_id": "lewm_distill_finger_s0_seed2"
+   },
+   "logdir": "lewm_distill_finger_s0_seed2",
+   "outputs": [
+    "lewm_distill_finger_s0_seed2"
+   ],
+   "inputs": [
+    "ax1wm_finger_fpxpxq1ms0_seed2/config.yaml",
+    "axis1_finger/pxq1m/side0",
+    "axis1_finger/pxq1m/manifest.json",
+    "lewm_emb/s0_seed2/embed_manifest.json",
+    "lewm_data/finger_pxq1m_side0.manifest.json"
+   ],
+   "done_when": [
+    {
+     "exists": "DISTILL_DONE"
+    },
+    {
+     "exists": "ckpt/distill-0/agent.pkl"
+    },
+    {
+     "exists": "ckpt/distill-0/done"
+    },
+    {
+     "json_field_min": {
+      "file": "fidelity.json",
+      "field": "holdout_r2",
+      "min": 0.5
+     }
+    }
+   ]
+  },
+  {
+   "stage": "distill",
+   "kind": "distill",
+   "target": "vast",
+   "run_id": "lewm_distill_finger_s1_seed2",
+   "cmd": "python -m probing.distill_encoder train --platform gpu --ref_run \"$RUNROOT/ax1wm_finger_fpxpxq1ms1_seed2\" --side_dir \"$RUNROOT/axis1_finger/pxq1m/side1\" --emb_dir \"$RUNROOT/lewm_emb/s1_seed2\" --holdout_list \"$RUNROOT/lewm_data/finger_pxq1m_side1.manifest.json\" --output \"$RUNROOT/lewm_distill_finger_s1_seed2\"",
+   "vars": {
+    "seed": 2,
+    "side": 1,
+    "run_id": "lewm_distill_finger_s1_seed2"
+   },
+   "logdir": "lewm_distill_finger_s1_seed2",
+   "outputs": [
+    "lewm_distill_finger_s1_seed2"
+   ],
+   "inputs": [
+    "ax1wm_finger_fpxpxq1ms1_seed2/config.yaml",
+    "axis1_finger/pxq1m/side1",
+    "axis1_finger/pxq1m/manifest.json",
+    "lewm_emb/s1_seed2/embed_manifest.json",
+    "lewm_data/finger_pxq1m_side1.manifest.json"
+   ],
+   "done_when": [
+    {
+     "exists": "DISTILL_DONE"
+    },
+    {
+     "exists": "ckpt/distill-0/agent.pkl"
+    },
+    {
+     "exists": "ckpt/distill-0/done"
+    },
+    {
+     "json_field_min": {
+      "file": "fidelity.json",
+      "field": "holdout_r2",
+      "min": 0.5
+     }
+    }
+   ]
+  },
+  {
+   "stage": "distill",
+   "kind": "distill",
+   "target": "vast",
+   "run_id": "lewm_distill_finger_s0_seed3",
+   "cmd": "python -m probing.distill_encoder train --platform gpu --ref_run \"$RUNROOT/ax1wm_finger_fpxpxq1ms0_seed3\" --side_dir \"$RUNROOT/axis1_finger/pxq1m/side0\" --emb_dir \"$RUNROOT/lewm_emb/s0_seed3\" --holdout_list \"$RUNROOT/lewm_data/finger_pxq1m_side0.manifest.json\" --output \"$RUNROOT/lewm_distill_finger_s0_seed3\"",
+   "vars": {
+    "seed": 3,
+    "side": 0,
+    "run_id": "lewm_distill_finger_s0_seed3"
+   },
+   "logdir": "lewm_distill_finger_s0_seed3",
+   "outputs": [
+    "lewm_distill_finger_s0_seed3"
+   ],
+   "inputs": [
+    "ax1wm_finger_fpxpxq1ms0_seed3/config.yaml",
+    "axis1_finger/pxq1m/side0",
+    "axis1_finger/pxq1m/manifest.json",
+    "lewm_emb/s0_seed3/embed_manifest.json",
+    "lewm_data/finger_pxq1m_side0.manifest.json"
+   ],
+   "done_when": [
+    {
+     "exists": "DISTILL_DONE"
+    },
+    {
+     "exists": "ckpt/distill-0/agent.pkl"
+    },
+    {
+     "exists": "ckpt/distill-0/done"
+    },
+    {
+     "json_field_min": {
+      "file": "fidelity.json",
+      "field": "holdout_r2",
+      "min": 0.5
+     }
+    }
+   ]
+  },
+  {
+   "stage": "distill",
+   "kind": "distill",
+   "target": "vast",
+   "run_id": "lewm_distill_finger_s1_seed3",
+   "cmd": "python -m probing.distill_encoder train --platform gpu --ref_run \"$RUNROOT/ax1wm_finger_fpxpxq1ms1_seed3\" --side_dir \"$RUNROOT/axis1_finger/pxq1m/side1\" --emb_dir \"$RUNROOT/lewm_emb/s1_seed3\" --holdout_list \"$RUNROOT/lewm_data/finger_pxq1m_side1.manifest.json\" --output \"$RUNROOT/lewm_distill_finger_s1_seed3\"",
+   "vars": {
+    "seed": 3,
+    "side": 1,
+    "run_id": "lewm_distill_finger_s1_seed3"
+   },
+   "logdir": "lewm_distill_finger_s1_seed3",
+   "outputs": [
+    "lewm_distill_finger_s1_seed3"
+   ],
+   "inputs": [
+    "ax1wm_finger_fpxpxq1ms1_seed3/config.yaml",
+    "axis1_finger/pxq1m/side1",
+    "axis1_finger/pxq1m/manifest.json",
+    "lewm_emb/s1_seed3/embed_manifest.json",
+    "lewm_data/finger_pxq1m_side1.manifest.json"
+   ],
+   "done_when": [
+    {
+     "exists": "DISTILL_DONE"
+    },
+    {
+     "exists": "ckpt/distill-0/agent.pkl"
+    },
+    {
+     "exists": "ckpt/distill-0/done"
+    },
+    {
+     "json_field_min": {
+      "file": "fidelity.json",
+      "field": "holdout_r2",
+      "min": 0.5
+     }
+    }
+   ]
+  },
+  {
+   "stage": "distill",
+   "kind": "distill",
+   "target": "vast",
+   "run_id": "lewm_distill_finger_s0_seed4",
+   "cmd": "python -m probing.distill_encoder train --platform gpu --ref_run \"$RUNROOT/ax1wm_finger_fpxpxq1ms0_seed4\" --side_dir \"$RUNROOT/axis1_finger/pxq1m/side0\" --emb_dir \"$RUNROOT/lewm_emb/s0_seed4\" --holdout_list \"$RUNROOT/lewm_data/finger_pxq1m_side0.manifest.json\" --output \"$RUNROOT/lewm_distill_finger_s0_seed4\"",
+   "vars": {
+    "seed": 4,
+    "side": 0,
+    "run_id": "lewm_distill_finger_s0_seed4"
+   },
+   "logdir": "lewm_distill_finger_s0_seed4",
+   "outputs": [
+    "lewm_distill_finger_s0_seed4"
+   ],
+   "inputs": [
+    "ax1wm_finger_fpxpxq1ms0_seed4/config.yaml",
+    "axis1_finger/pxq1m/side0",
+    "axis1_finger/pxq1m/manifest.json",
+    "lewm_emb/s0_seed4/embed_manifest.json",
+    "lewm_data/finger_pxq1m_side0.manifest.json"
+   ],
+   "done_when": [
+    {
+     "exists": "DISTILL_DONE"
+    },
+    {
+     "exists": "ckpt/distill-0/agent.pkl"
+    },
+    {
+     "exists": "ckpt/distill-0/done"
+    },
+    {
+     "json_field_min": {
+      "file": "fidelity.json",
+      "field": "holdout_r2",
+      "min": 0.5
+     }
+    }
+   ]
+  },
+  {
+   "stage": "distill",
+   "kind": "distill",
+   "target": "vast",
+   "run_id": "lewm_distill_finger_s1_seed4",
+   "cmd": "python -m probing.distill_encoder train --platform gpu --ref_run \"$RUNROOT/ax1wm_finger_fpxpxq1ms1_seed4\" --side_dir \"$RUNROOT/axis1_finger/pxq1m/side1\" --emb_dir \"$RUNROOT/lewm_emb/s1_seed4\" --holdout_list \"$RUNROOT/lewm_data/finger_pxq1m_side1.manifest.json\" --output \"$RUNROOT/lewm_distill_finger_s1_seed4\"",
+   "vars": {
+    "seed": 4,
+    "side": 1,
+    "run_id": "lewm_distill_finger_s1_seed4"
+   },
+   "logdir": "lewm_distill_finger_s1_seed4",
+   "outputs": [
+    "lewm_distill_finger_s1_seed4"
+   ],
+   "inputs": [
+    "ax1wm_finger_fpxpxq1ms1_seed4/config.yaml",
+    "axis1_finger/pxq1m/side1",
+    "axis1_finger/pxq1m/manifest.json",
+    "lewm_emb/s1_seed4/embed_manifest.json",
+    "lewm_data/finger_pxq1m_side1.manifest.json"
+   ],
+   "done_when": [
+    {
+     "exists": "DISTILL_DONE"
+    },
+    {
+     "exists": "ckpt/distill-0/agent.pkl"
+    },
+    {
+     "exists": "ckpt/distill-0/done"
+    },
+    {
+     "json_field_min": {
+      "file": "fidelity.json",
+      "field": "holdout_r2",
+      "min": 0.5
+     }
+    }
+   ]
+  },
+  {
+   "stage": "distill",
+   "kind": "distill",
+   "target": "vast",
+   "run_id": "lewm_distill_finger_s0_seed5",
+   "cmd": "python -m probing.distill_encoder train --platform gpu --ref_run \"$RUNROOT/ax1wm_finger_fpxpxq1ms0_seed5\" --side_dir \"$RUNROOT/axis1_finger/pxq1m/side0\" --emb_dir \"$RUNROOT/lewm_emb/s0_seed5\" --holdout_list \"$RUNROOT/lewm_data/finger_pxq1m_side0.manifest.json\" --output \"$RUNROOT/lewm_distill_finger_s0_seed5\"",
+   "vars": {
+    "seed": 5,
+    "side": 0,
+    "run_id": "lewm_distill_finger_s0_seed5"
+   },
+   "logdir": "lewm_distill_finger_s0_seed5",
+   "outputs": [
+    "lewm_distill_finger_s0_seed5"
+   ],
+   "inputs": [
+    "ax1wm_finger_fpxpxq1ms0_seed5/config.yaml",
+    "axis1_finger/pxq1m/side0",
+    "axis1_finger/pxq1m/manifest.json",
+    "lewm_emb/s0_seed5/embed_manifest.json",
+    "lewm_data/finger_pxq1m_side0.manifest.json"
+   ],
+   "done_when": [
+    {
+     "exists": "DISTILL_DONE"
+    },
+    {
+     "exists": "ckpt/distill-0/agent.pkl"
+    },
+    {
+     "exists": "ckpt/distill-0/done"
+    },
+    {
+     "json_field_min": {
+      "file": "fidelity.json",
+      "field": "holdout_r2",
+      "min": 0.5
+     }
+    }
+   ]
+  },
+  {
+   "stage": "distill",
+   "kind": "distill",
+   "target": "vast",
+   "run_id": "lewm_distill_finger_s1_seed5",
+   "cmd": "python -m probing.distill_encoder train --platform gpu --ref_run \"$RUNROOT/ax1wm_finger_fpxpxq1ms1_seed5\" --side_dir \"$RUNROOT/axis1_finger/pxq1m/side1\" --emb_dir \"$RUNROOT/lewm_emb/s1_seed5\" --holdout_list \"$RUNROOT/lewm_data/finger_pxq1m_side1.manifest.json\" --output \"$RUNROOT/lewm_distill_finger_s1_seed5\"",
+   "vars": {
+    "seed": 5,
+    "side": 1,
+    "run_id": "lewm_distill_finger_s1_seed5"
+   },
+   "logdir": "lewm_distill_finger_s1_seed5",
+   "outputs": [
+    "lewm_distill_finger_s1_seed5"
+   ],
+   "inputs": [
+    "ax1wm_finger_fpxpxq1ms1_seed5/config.yaml",
+    "axis1_finger/pxq1m/side1",
+    "axis1_finger/pxq1m/manifest.json",
+    "lewm_emb/s1_seed5/embed_manifest.json",
+    "lewm_data/finger_pxq1m_side1.manifest.json"
+   ],
+   "done_when": [
+    {
+     "exists": "DISTILL_DONE"
+    },
+    {
+     "exists": "ckpt/distill-0/agent.pkl"
+    },
+    {
+     "exists": "ckpt/distill-0/done"
+    },
+    {
+     "json_field_min": {
+      "file": "fidelity.json",
+      "field": "holdout_r2",
+      "min": 0.5
+     }
+    }
+   ]
+  },
+  {
+   "stage": "distill",
+   "kind": "distill",
+   "target": "vast",
+   "run_id": "lewm_distill_finger_s0_seed6",
+   "cmd": "python -m probing.distill_encoder train --platform gpu --ref_run \"$RUNROOT/ax1wm_finger_fpxpxq1ms0_seed6\" --side_dir \"$RUNROOT/axis1_finger/pxq1m/side0\" --emb_dir \"$RUNROOT/lewm_emb/s0_seed6\" --holdout_list \"$RUNROOT/lewm_data/finger_pxq1m_side0.manifest.json\" --output \"$RUNROOT/lewm_distill_finger_s0_seed6\"",
+   "vars": {
+    "seed": 6,
+    "side": 0,
+    "run_id": "lewm_distill_finger_s0_seed6"
+   },
+   "logdir": "lewm_distill_finger_s0_seed6",
+   "outputs": [
+    "lewm_distill_finger_s0_seed6"
+   ],
+   "inputs": [
+    "ax1wm_finger_fpxpxq1ms0_seed6/config.yaml",
+    "axis1_finger/pxq1m/side0",
+    "axis1_finger/pxq1m/manifest.json",
+    "lewm_emb/s0_seed6/embed_manifest.json",
+    "lewm_data/finger_pxq1m_side0.manifest.json"
+   ],
+   "done_when": [
+    {
+     "exists": "DISTILL_DONE"
+    },
+    {
+     "exists": "ckpt/distill-0/agent.pkl"
+    },
+    {
+     "exists": "ckpt/distill-0/done"
+    },
+    {
+     "json_field_min": {
+      "file": "fidelity.json",
+      "field": "holdout_r2",
+      "min": 0.5
+     }
+    }
+   ]
+  },
+  {
+   "stage": "distill",
+   "kind": "distill",
+   "target": "vast",
+   "run_id": "lewm_distill_finger_s1_seed6",
+   "cmd": "python -m probing.distill_encoder train --platform gpu --ref_run \"$RUNROOT/ax1wm_finger_fpxpxq1ms1_seed6\" --side_dir \"$RUNROOT/axis1_finger/pxq1m/side1\" --emb_dir \"$RUNROOT/lewm_emb/s1_seed6\" --holdout_list \"$RUNROOT/lewm_data/finger_pxq1m_side1.manifest.json\" --output \"$RUNROOT/lewm_distill_finger_s1_seed6\"",
+   "vars": {
+    "seed": 6,
+    "side": 1,
+    "run_id": "lewm_distill_finger_s1_seed6"
+   },
+   "logdir": "lewm_distill_finger_s1_seed6",
+   "outputs": [
+    "lewm_distill_finger_s1_seed6"
+   ],
+   "inputs": [
+    "ax1wm_finger_fpxpxq1ms1_seed6/config.yaml",
+    "axis1_finger/pxq1m/side1",
+    "axis1_finger/pxq1m/manifest.json",
+    "lewm_emb/s1_seed6/embed_manifest.json",
+    "lewm_data/finger_pxq1m_side1.manifest.json"
+   ],
+   "done_when": [
+    {
+     "exists": "DISTILL_DONE"
+    },
+    {
+     "exists": "ckpt/distill-0/agent.pkl"
+    },
+    {
+     "exists": "ckpt/distill-0/done"
+    },
+    {
+     "json_field_min": {
+      "file": "fidelity.json",
+      "field": "holdout_r2",
+      "min": 0.5
+     }
+    }
+   ]
+  },
+  {
+   "stage": "distill",
+   "kind": "distill",
+   "target": "vast",
+   "run_id": "lewm_distill_finger_s0_seed7",
+   "cmd": "python -m probing.distill_encoder train --platform gpu --ref_run \"$RUNROOT/ax1wm_finger_fpxpxq1ms0_seed7\" --side_dir \"$RUNROOT/axis1_finger/pxq1m/side0\" --emb_dir \"$RUNROOT/lewm_emb/s0_seed7\" --holdout_list \"$RUNROOT/lewm_data/finger_pxq1m_side0.manifest.json\" --output \"$RUNROOT/lewm_distill_finger_s0_seed7\"",
+   "vars": {
+    "seed": 7,
+    "side": 0,
+    "run_id": "lewm_distill_finger_s0_seed7"
+   },
+   "logdir": "lewm_distill_finger_s0_seed7",
+   "outputs": [
+    "lewm_distill_finger_s0_seed7"
+   ],
+   "inputs": [
+    "ax1wm_finger_fpxpxq1ms0_seed7/config.yaml",
+    "axis1_finger/pxq1m/side0",
+    "axis1_finger/pxq1m/manifest.json",
+    "lewm_emb/s0_seed7/embed_manifest.json",
+    "lewm_data/finger_pxq1m_side0.manifest.json"
+   ],
+   "done_when": [
+    {
+     "exists": "DISTILL_DONE"
+    },
+    {
+     "exists": "ckpt/distill-0/agent.pkl"
+    },
+    {
+     "exists": "ckpt/distill-0/done"
+    },
+    {
+     "json_field_min": {
+      "file": "fidelity.json",
+      "field": "holdout_r2",
+      "min": 0.5
+     }
+    }
+   ]
+  },
+  {
+   "stage": "distill",
+   "kind": "distill",
+   "target": "vast",
+   "run_id": "lewm_distill_finger_s1_seed7",
+   "cmd": "python -m probing.distill_encoder train --platform gpu --ref_run \"$RUNROOT/ax1wm_finger_fpxpxq1ms1_seed7\" --side_dir \"$RUNROOT/axis1_finger/pxq1m/side1\" --emb_dir \"$RUNROOT/lewm_emb/s1_seed7\" --holdout_list \"$RUNROOT/lewm_data/finger_pxq1m_side1.manifest.json\" --output \"$RUNROOT/lewm_distill_finger_s1_seed7\"",
+   "vars": {
+    "seed": 7,
+    "side": 1,
+    "run_id": "lewm_distill_finger_s1_seed7"
+   },
+   "logdir": "lewm_distill_finger_s1_seed7",
+   "outputs": [
+    "lewm_distill_finger_s1_seed7"
+   ],
+   "inputs": [
+    "ax1wm_finger_fpxpxq1ms1_seed7/config.yaml",
+    "axis1_finger/pxq1m/side1",
+    "axis1_finger/pxq1m/manifest.json",
+    "lewm_emb/s1_seed7/embed_manifest.json",
+    "lewm_data/finger_pxq1m_side1.manifest.json"
+   ],
+   "done_when": [
+    {
+     "exists": "DISTILL_DONE"
+    },
+    {
+     "exists": "ckpt/distill-0/agent.pkl"
+    },
+    {
+     "exists": "ckpt/distill-0/done"
+    },
+    {
+     "json_field_min": {
+      "file": "fidelity.json",
+      "field": "holdout_r2",
+      "min": 0.5
+     }
+    }
+   ]
+  },
+  {
+   "stage": "distill",
+   "kind": "distill",
+   "target": "vast",
+   "run_id": "lewm_distill_finger_s0_seed8",
+   "cmd": "python -m probing.distill_encoder train --platform gpu --ref_run \"$RUNROOT/ax1wm_finger_fpxpxq1ms0_seed8\" --side_dir \"$RUNROOT/axis1_finger/pxq1m/side0\" --emb_dir \"$RUNROOT/lewm_emb/s0_seed8\" --holdout_list \"$RUNROOT/lewm_data/finger_pxq1m_side0.manifest.json\" --output \"$RUNROOT/lewm_distill_finger_s0_seed8\"",
+   "vars": {
+    "seed": 8,
+    "side": 0,
+    "run_id": "lewm_distill_finger_s0_seed8"
+   },
+   "logdir": "lewm_distill_finger_s0_seed8",
+   "outputs": [
+    "lewm_distill_finger_s0_seed8"
+   ],
+   "inputs": [
+    "ax1wm_finger_fpxpxq1ms0_seed8/config.yaml",
+    "axis1_finger/pxq1m/side0",
+    "axis1_finger/pxq1m/manifest.json",
+    "lewm_emb/s0_seed8/embed_manifest.json",
+    "lewm_data/finger_pxq1m_side0.manifest.json"
+   ],
+   "done_when": [
+    {
+     "exists": "DISTILL_DONE"
+    },
+    {
+     "exists": "ckpt/distill-0/agent.pkl"
+    },
+    {
+     "exists": "ckpt/distill-0/done"
+    },
+    {
+     "json_field_min": {
+      "file": "fidelity.json",
+      "field": "holdout_r2",
+      "min": 0.5
+     }
+    }
+   ]
+  },
+  {
+   "stage": "distill",
+   "kind": "distill",
+   "target": "vast",
+   "run_id": "lewm_distill_finger_s1_seed8",
+   "cmd": "python -m probing.distill_encoder train --platform gpu --ref_run \"$RUNROOT/ax1wm_finger_fpxpxq1ms1_seed8\" --side_dir \"$RUNROOT/axis1_finger/pxq1m/side1\" --emb_dir \"$RUNROOT/lewm_emb/s1_seed8\" --holdout_list \"$RUNROOT/lewm_data/finger_pxq1m_side1.manifest.json\" --output \"$RUNROOT/lewm_distill_finger_s1_seed8\"",
+   "vars": {
+    "seed": 8,
+    "side": 1,
+    "run_id": "lewm_distill_finger_s1_seed8"
+   },
+   "logdir": "lewm_distill_finger_s1_seed8",
+   "outputs": [
+    "lewm_distill_finger_s1_seed8"
+   ],
+   "inputs": [
+    "ax1wm_finger_fpxpxq1ms1_seed8/config.yaml",
+    "axis1_finger/pxq1m/side1",
+    "axis1_finger/pxq1m/manifest.json",
+    "lewm_emb/s1_seed8/embed_manifest.json",
+    "lewm_data/finger_pxq1m_side1.manifest.json"
+   ],
+   "done_when": [
+    {
+     "exists": "DISTILL_DONE"
+    },
+    {
+     "exists": "ckpt/distill-0/agent.pkl"
+    },
+    {
+     "exists": "ckpt/distill-0/done"
+    },
+    {
+     "json_field_min": {
+      "file": "fidelity.json",
+      "field": "holdout_r2",
+      "min": 0.5
+     }
+    }
+   ]
+  },
+  {
+   "stage": "graft_rcc",
+   "kind": "distill",
+   "target": "rcc-slurm",
+   "run_id": "adapt_ax1jppxq1ms0_finger_seed1_ckpt500000",
+   "cmd": "",
+   "vars": {
+    "seed": 1,
+    "side": 0,
+    "run_id": "adapt_ax1jppxq1ms0_finger_seed1_ckpt500000"
+   },
+   "logdir": "adapt_ax1jppxq1ms0_finger_seed1_ckpt500000",
+   "outputs": [
+    "adapt_ax1jppxq1ms0_finger_seed1_ckpt500000",
+    "ax1wm_finger_jppxq1ms0_seed1"
+   ],
+   "inputs": [],
+   "done_when": [
+    {
+     "exists": "ADAPT_DONE"
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 100
+     }
+    },
+    {
+     "ckpt_step_min": {
+      "dir": "../ax1wm_finger_jppxq1ms0_seed1",
+      "min": 500000
+     }
+    }
+   ]
+  },
+  {
+   "stage": "graft_rcc",
+   "kind": "distill",
+   "target": "rcc-slurm",
+   "run_id": "adapt_ax1jppxq1ms1_finger_seed1_ckpt500000",
+   "cmd": "",
+   "vars": {
+    "seed": 1,
+    "side": 1,
+    "run_id": "adapt_ax1jppxq1ms1_finger_seed1_ckpt500000"
+   },
+   "logdir": "adapt_ax1jppxq1ms1_finger_seed1_ckpt500000",
+   "outputs": [
+    "adapt_ax1jppxq1ms1_finger_seed1_ckpt500000",
+    "ax1wm_finger_jppxq1ms1_seed1"
+   ],
+   "inputs": [],
+   "done_when": [
+    {
+     "exists": "ADAPT_DONE"
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 100
+     }
+    },
+    {
+     "ckpt_step_min": {
+      "dir": "../ax1wm_finger_jppxq1ms1_seed1",
+      "min": 500000
+     }
+    }
+   ]
+  },
+  {
+   "stage": "graft_rcc",
+   "kind": "distill",
+   "target": "rcc-slurm",
+   "run_id": "adapt_ax1jppxq1ms0_finger_seed2_ckpt500000",
+   "cmd": "",
+   "vars": {
+    "seed": 2,
+    "side": 0,
+    "run_id": "adapt_ax1jppxq1ms0_finger_seed2_ckpt500000"
+   },
+   "logdir": "adapt_ax1jppxq1ms0_finger_seed2_ckpt500000",
+   "outputs": [
+    "adapt_ax1jppxq1ms0_finger_seed2_ckpt500000",
+    "ax1wm_finger_jppxq1ms0_seed2"
+   ],
+   "inputs": [],
+   "done_when": [
+    {
+     "exists": "ADAPT_DONE"
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 100
+     }
+    },
+    {
+     "ckpt_step_min": {
+      "dir": "../ax1wm_finger_jppxq1ms0_seed2",
+      "min": 500000
+     }
+    }
+   ]
+  },
+  {
+   "stage": "graft_rcc",
+   "kind": "distill",
+   "target": "rcc-slurm",
+   "run_id": "adapt_ax1jppxq1ms1_finger_seed2_ckpt500000",
+   "cmd": "",
+   "vars": {
+    "seed": 2,
+    "side": 1,
+    "run_id": "adapt_ax1jppxq1ms1_finger_seed2_ckpt500000"
+   },
+   "logdir": "adapt_ax1jppxq1ms1_finger_seed2_ckpt500000",
+   "outputs": [
+    "adapt_ax1jppxq1ms1_finger_seed2_ckpt500000",
+    "ax1wm_finger_jppxq1ms1_seed2"
+   ],
+   "inputs": [],
+   "done_when": [
+    {
+     "exists": "ADAPT_DONE"
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 100
+     }
+    },
+    {
+     "ckpt_step_min": {
+      "dir": "../ax1wm_finger_jppxq1ms1_seed2",
+      "min": 500000
+     }
+    }
+   ]
+  }
+ ]
+}

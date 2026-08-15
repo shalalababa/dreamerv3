@@ -1,0 +1,56 @@
+# Reference wave B: co-located pairs (per_gpu 2).
+# Transcribed from the hand-written submit_tm2_bridge_fit_2way_one() shell
+# function, which built pair commands with a bash slot/modulo loop.
+#
+# Shape exercised: three-arm expansion, homogeneous pairing, a separate conda
+# interpreter, no donors (data is a .pt file), long runtimes (5-5.7 h/task per
+# SU_usage.txt) where lane imbalance actually costs money.
+
+wave_id: tm2_bridge_fit2
+paper: paper2
+notes: >-
+  TD-MPC2 bridge offline fit, three arms (aware / free / rec) x 2 sides x 8
+  seeds = 48 runs. Runs two per GPU: measured GPU utilisation for this kind
+  leaves room, and the pair barrier keeps the co-residency homogeneous so the
+  footprint stays predictable. Pairs are the scheduling unit, not runs.
+
+defaults:
+  target: vast
+
+kinds:
+  tm2_bridge_fit:
+    per_gpu: 2
+    pairing: homogeneous
+
+stages:
+
+  - name: fit
+    kind: tm2_bridge_fit
+    # A pair fails as a unit, and same-kind members tend to fail for the same
+    # reason, so aborting the lane is informative rather than wasteful here.
+    on_failure: abort
+    expand:
+      arm:  [aware, free, rec]
+      side: [0, 1]
+      seed: [1, 2, 3, 4, 5, 6, 7, 8]
+    run_id: "tm2wm_finger_b${arm}q1s${side}_seed${seed}"
+    cmd: >-
+      TDMPC2_ROOT=/workspace/tdmpc2/tdmpc2
+      /workspace/conda_envs/tdmpc2/bin/python -m probing.tdmpc2_recon_fit
+      --tdmpc2_root /workspace/tdmpc2/tdmpc2
+      --data "$RUNROOT/tm2_data/finger_q1_side${side}.pt"
+      --logdir "$RUNROOT/${run_id}"
+      --arm ${arm} --task dmc_finger_turn_hard
+      --updates 500000 --seed ${seed}
+    inputs:
+      - "tm2_data/finger_q1_side${side}.pt"
+    done_when:
+      - exists: config.yaml
+      - ckpt_step_min: 500000
+
+bundle:
+  prefix: tm2_bridge
+  include_stages: [fit]
+  cloud_logs:
+    - "tm2wm_finger_b*_seed*.out"
+    - "worker_shard*.out"

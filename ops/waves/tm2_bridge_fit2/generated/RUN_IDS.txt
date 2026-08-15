@@ -1,0 +1,58 @@
+wave_id: tm2_bridge_fit2
+spec:    ops/waves/tm2_bridge_fit2/spec.yaml
+
+=== stage fit  [vast]  kind=tm2_bridge_fit  on_failure=abort  n=48 ===
+  tm2wm_finger_bawareq1s0_seed1
+  tm2wm_finger_bawareq1s0_seed2
+  tm2wm_finger_bawareq1s0_seed3
+  tm2wm_finger_bawareq1s0_seed4
+  tm2wm_finger_bawareq1s0_seed5
+  tm2wm_finger_bawareq1s0_seed6
+  tm2wm_finger_bawareq1s0_seed7
+  tm2wm_finger_bawareq1s0_seed8
+  tm2wm_finger_bawareq1s1_seed1
+  tm2wm_finger_bawareq1s1_seed2
+  tm2wm_finger_bawareq1s1_seed3
+  tm2wm_finger_bawareq1s1_seed4
+  tm2wm_finger_bawareq1s1_seed5
+  tm2wm_finger_bawareq1s1_seed6
+  tm2wm_finger_bawareq1s1_seed7
+  tm2wm_finger_bawareq1s1_seed8
+  tm2wm_finger_bfreeq1s0_seed1
+  tm2wm_finger_bfreeq1s0_seed2
+  tm2wm_finger_bfreeq1s0_seed3
+  tm2wm_finger_bfreeq1s0_seed4
+  tm2wm_finger_bfreeq1s0_seed5
+  tm2wm_finger_bfreeq1s0_seed6
+  tm2wm_finger_bfreeq1s0_seed7
+  tm2wm_finger_bfreeq1s0_seed8
+  tm2wm_finger_bfreeq1s1_seed1
+  tm2wm_finger_bfreeq1s1_seed2
+  tm2wm_finger_bfreeq1s1_seed3
+  tm2wm_finger_bfreeq1s1_seed4
+  tm2wm_finger_bfreeq1s1_seed5
+  tm2wm_finger_bfreeq1s1_seed6
+  tm2wm_finger_bfreeq1s1_seed7
+  tm2wm_finger_bfreeq1s1_seed8
+  tm2wm_finger_brecq1s0_seed1
+  tm2wm_finger_brecq1s0_seed2
+  tm2wm_finger_brecq1s0_seed3
+  tm2wm_finger_brecq1s0_seed4
+  tm2wm_finger_brecq1s0_seed5
+  tm2wm_finger_brecq1s0_seed6
+  tm2wm_finger_brecq1s0_seed7
+  tm2wm_finger_brecq1s0_seed8
+  tm2wm_finger_brecq1s1_seed1
+  tm2wm_finger_brecq1s1_seed2
+  tm2wm_finger_brecq1s1_seed3
+  tm2wm_finger_brecq1s1_seed4
+  tm2wm_finger_brecq1s1_seed5
+  tm2wm_finger_brecq1s1_seed6
+  tm2wm_finger_brecq1s1_seed7
+  tm2wm_finger_brecq1s1_seed8
+
+TOTAL RUNS: 48
+
+Check this list against the prereg before submitting. run_ids are
+consumed by frozen readers and the ledger; a wrong expansion here
+propagates into every downstream artifact.

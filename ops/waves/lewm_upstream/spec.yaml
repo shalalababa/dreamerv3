@@ -1,0 +1,94 @@
+# Reference wave D: the LeWM chain upstream of the graft, plus an RCC Slurm stage.
+# Transcribed from the 2026-08-13 hand-written submission (post-Hydra fixes:
+# wandb.enabled=false, not +wandb.enabled=false).
+
+wave_id: lewm_upstream
+paper: paper1
+notes: >-
+  lewm train -> distill -> (graft lives in ops/waves/lewm_graft). The train
+  stage's runner also relocates the trainer's checkpoint out of the
+  stable-pretraining cache into the run dir, which was a manual step.
+
+defaults: {target: vast}
+
+kinds:
+  lewm_train: {per_gpu: 2, pairing: homogeneous}   # ~19min solo, ~24min 2-way
+  distill:    {per_gpu: 1}                         # ~9min, 1- or 3-way alike
+
+stages:
+
+  - name: train
+    kind: lewm_train
+    on_failure: continue
+    expand: {seed: [1, 2, 3, 4, 5, 6, 7, 8], side: [0, 1]}
+    run_id: "lewm_finger_s${side}_seed${seed}"
+    cmd: 'bash "$REPO/scripts/ops/runners/lewm_train_one.sh" ${side} ${seed}'
+    inputs:
+      - "lewm_data/finger_pxq1m_side${side}.h5"
+      - "lewm_data/finger_pxq1m_side${side}.manifest.json"
+    done_when:
+      - exists: config.yaml
+      # The relocation contract. Before the runner existed this was the step
+      # that silently did not happen.
+      - exists: lewm_weights.ckpt
+
+  - name: distill
+    kind: distill
+    needs: train
+    on_failure: continue
+    expand: {seed: [1, 2, 3, 4, 5, 6, 7, 8], side: [0, 1]}
+    run_id: "lewm_distill_finger_s${side}_seed${seed}"
+    cmd: >-
+      python -m probing.distill_encoder train --platform gpu
+      --ref_run "$RUNROOT/ax1wm_finger_fpxpxq1ms${side}_seed${seed}"
+      --side_dir "$RUNROOT/axis1_finger/pxq1m/side${side}"
+      --emb_dir "$RUNROOT/lewm_emb/s${side}_seed${seed}"
+      --holdout_list "$RUNROOT/lewm_data/finger_pxq1m_side${side}.manifest.json"
+      --output "$RUNROOT/${run_id}"
+    inputs:
+      - "ax1wm_finger_fpxpxq1ms${side}_seed${seed}/config.yaml"
+      - "axis1_finger/pxq1m/side${side}"
+      - "axis1_finger/pxq1m/manifest.json"
+      - "lewm_emb/s${side}_seed${seed}/embed_manifest.json"
+      - "lewm_data/finger_pxq1m_side${side}.manifest.json"
+    done_when:
+      - exists: DISTILL_DONE
+      - exists: ckpt/distill-0/agent.pkl
+      - exists: ckpt/distill-0/done
+      - json_field_min: {file: fidelity.json, field: holdout_r2, min: 0.5}
+
+  # RCC Slurm variant of the graft: same science, submitted rather than queued.
+  # Transcribed from the hand-written `sbatch --export=ALL,...` invocation.
+  - name: graft_rcc
+    target: rcc-slurm
+    kind: distill
+    needs: distill
+    expand: {seed: [1, 2], side: [0, 1]}
+    run_id: "adapt_ax1jppxq1ms${side}_finger_seed${seed}_ckpt500000"
+    outputs:
+      - "adapt_ax1jppxq1ms${side}_finger_seed${seed}_ckpt500000"
+      - "ax1wm_finger_jppxq1ms${side}_seed${seed}"
+    sbatch:
+      script: scripts/axis1.sbatch
+      time: "12:00:00"
+      export:
+        RUN_ID: "${run_id}"
+        WM_RUN: "ax1wm_finger_jppxq1ms${side}_seed${seed}"
+        TASK: dmc_finger_turn_hard
+        SEED: "${seed}"
+        REPLAY: "$RUNROOT/axis1_finger/pxq1m/side${side}"
+        UPDATES: "500000"
+        STEPS: "1.25e5"
+        AXIS1_EXPL_MODE: task
+        AXIS1_BASE_CONFIG: pixel_wm
+        AXIS1_INIT_WM: "lewm_distill_finger_s${side}_seed${seed}"
+        DREAMER_DISABLE_GPUFLAGS: "1"
+    done_when:
+      - exists: ADAPT_DONE
+      - jsonl_min_lines: {file: scores.jsonl, n: 100}
+      - ckpt_step_min: {dir: "../ax1wm_finger_jppxq1ms${side}_seed${seed}", min: 500000}
+
+bundle:
+  prefix: lewm_upstream
+  include_stages: [train, distill, graft_rcc]
+  cloud_logs: ["lewm_finger_*.out", "lewm_distill_*.out", "worker_shard*.out"]

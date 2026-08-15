@@ -101,9 +101,32 @@ dv3_push_repo () {
   rsync "${DV3_RSYNC_OPTS[@]}" --delete "${DV3_REPO_EXCLUDES[@]}" \
     -e "ssh -p $(dv3_port "$n") ${DV3_SSH_OPTS[*]}" \
     "$DV3OPS_ROOT/" "root@$(dv3_ip "$n"):/workspace/dreamerv3/"
+  # Backfill notification config into /root/.dreamer_vast_env.
+  # An instance that predates the new onstart template -- or one that REBOOTED
+  # and re-ran the old template -- has no DV3_NTFY_* vars, so the watchdog comes
+  # up correctly and then reports to nobody. That failure is invisible by
+  # construction: silence is exactly what a healthy night looks like.
+  dv3_ssh_script "$n" '
+set -uo pipefail
+label="$1"; topic="$2"
+env_file=/root/.dreamer_vast_env
+for kv in "DV3_INSTANCE_LABEL=$label" "DV3_NTFY_TOPIC=$topic"; do
+  key="${kv%%=*}"
+  if grep -q "^export $key=..*" "$env_file" 2>/dev/null; then
+    echo "  keep $key (already set)"
+  else
+    sed -i "/^export $key=/d" "$env_file" 2>/dev/null || true
+    echo "export $kv" >> "$env_file"
+    echo "  set  $kv"
+  fi
+done
+grep -q "^export DV3_HC_URL=" "$env_file" 2>/dev/null || echo "export DV3_HC_URL=" >> "$env_file"
+' "inst${n}" "${DV3_NTFY_TOPIC:-dreamerv3_ops_notification}"
+
   dv3_ssh_dv3 "$n" '
-    chmod +x "$REPO"/scripts/ops/*.sh 2>/dev/null || true
+    chmod +x "$REPO"/scripts/ops/*.sh "$REPO"/scripts/ops/runners/*.sh 2>/dev/null || true
     echo "helpers: $(dv3_version)"
     bash "$REPO/scripts/ops/watchdog.sh" start || echo "WARN: watchdog did not start"
+    bash "$REPO/scripts/ops/watchdog.sh" status
   '
 }

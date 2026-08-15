@@ -232,10 +232,244 @@ chk "dv3ops help runs" "bash '$ROOT/scripts/ops/dv3ops' help"
 # NOTE: capture then grep. Piping a failing command into grep under `pipefail`
 # fails the pipeline even when grep matched -- which is what made this check
 # report a false failure on its first run.
-gen_out="$(bash "$ROOT/scripts/ops/dv3ops" gen 2>&1 || true)"
-case "$gen_out" in *P1*) ok "unbuilt verbs name their phase" ;;
+# Use a verb that is genuinely unbuilt; `gen` exists now and asks for --wave.
+gen_out="$(bash "$ROOT/scripts/ops/dv3ops" refresh 2>&1 || true)"
+case "$gen_out" in *P2*) ok "unbuilt verbs name their phase" ;;
                    *) bad "unbuilt verbs name their phase (got: $gen_out)" ;; esac
+wave_out="$(bash "$ROOT/scripts/ops/dv3ops" gen 2>&1 || true)"
+case "$wave_out" in *--wave*) ok "wave verbs demand --wave" ;;
+                    *) bad "wave verbs demand --wave (got: $wave_out)" ;; esac
 chk "unknown verb fails" "! bash '$ROOT/scripts/ops/dv3ops' bogusverb"
+
+echo
+echo "== P1: spec -> artifacts =="
+export RUNROOT_SAVE="$RUNROOT"
+WD="$TMP/wave"; mkdir -p "$WD"
+cat > "$WD/spec.yaml" <<'SPEC'
+wave_id: sc_wave
+kinds:
+  solo: {per_gpu: 1}
+  duo:  {per_gpu: 2, pairing: homogeneous}
+stages:
+  - name: fit
+    kind: duo
+    expand: {arm: [a, b], seed: [1, 2]}
+    run_id: "sc_fit_${arm}_seed${seed}"
+    cmd: 'echo fit ${arm} ${seed} > "$RUNROOT/${run_id}/out"'
+    inputs: ["donor_${arm}/ckpt", "donor_${arm}/config.yaml"]
+    done_when:
+      - exists: out
+      - jsonl_min_lines: {file: scores.jsonl, n: 10}
+  - name: probe
+    kind: solo
+    needs: fit
+    expand: {arm: [a, b]}
+    run_id: "sc_probe_${arm}"
+    cmd: 'echo probe ${arm}'
+    done_when: [{exists: PROBE_DONE}]
+bundle: {prefix: sc, include_stages: [fit], cloud_logs: ["sc_*.out"]}
+SPEC
+if python3 "$ROOT/scripts/ops/wavegen.py" "$WD" --lanes 0,1 --quiet 2>"$TMP/gen.err"; then
+  ok "wavegen runs"
+else
+  bad "wavegen runs ($(head -2 "$TMP/gen.err"))"
+fi
+G="$WD/generated"
+grep -q 'sc_fit_a_seed1' "$G/RUN_IDS.txt" 2>/dev/null \
+  && ok "RUN_IDS lists expanded ids" || bad "RUN_IDS lists expanded ids"
+grep -q 'TOTAL RUNS: 6' "$G/RUN_IDS.txt" 2>/dev/null \
+  && ok "expansion count correct (4 fit + 2 probe)" || bad "expansion count correct"
+# per_gpu 2 must collapse 4 runs into 2 queued tasks across 2 lanes
+[ "$(cat "$G"/lane_fit_*.cmds 2>/dev/null | grep -c '^DV3_TASK_NAME=')" = "2" ] \
+  && ok "per_gpu=2 yields 2 queued tasks for 4 runs" || bad "per_gpu=2 pairing"
+grep -q 'wait $p1; r1=\$\?' "$G"/lane_fit_0.cmds 2>/dev/null \
+  || grep -q 'wait \$p1' "$G"/lane_fit_0.cmds 2>/dev/null \
+  && ok "pair barrier waits on both members" || bad "pair barrier waits on both members"
+# Files vs directories: both include forms must be present (the config.yaml bug)
+grep -qE -- "--include=/donor_a/config\.yaml( |$|\\\\)" "$G/push_donors.sh" 2>/dev/null \
+  && ok "donor include covers plain files" || bad "donor include covers plain files"
+grep -q -- "--include='/donor_a/ckpt/\*\*\*'" "$G/push_donors.sh" 2>/dev/null \
+  && ok "donor include covers directory contents" || bad "donor include covers directory contents"
+# $RUNROOT must survive generation unexpanded: RCC and instance paths differ.
+grep -q '\$RUNROOT' "$G"/lane_fit_0.cmds 2>/dev/null \
+  && ok "\$RUNROOT left for the remote shell" || bad "\$RUNROOT was expanded at generation time"
+
+echo
+echo "== P1: checker =="
+FR="$TMP/fakerun"; mkdir -p "$FR"
+for a in a b; do for s in 1 2; do
+  d="$FR/sc_fit_${a}_seed${s}"; mkdir -p "$d"; echo x > "$d/out"
+  seq 1 50 > "$d/scores.jsonl"
+done; done
+seq 1 40 > "$FR/sc_fit_b_seed2/scores.jsonl"     # silently short: passes n>=10
+rm -rf "$FR/sc_fit_a_seed2"                       # never ran
+rep="$(python3 "$ROOT/scripts/ops/wavecheck.py" "$WD" --runroot "$FR" 2>&1)"
+case "$rep" in *"MISSING sc_fit_a_seed2"*) ok "checker reports a missing run" ;;
+               *) bad "checker reports a missing run" ;; esac
+case "$rep" in *"OUTLIER"*|*"outlier"*) ok "checker flags realized-training outlier" ;;
+               *) bad "checker flags realized-training outlier" ;; esac
+case "$rep" in *"sc_fit_b_seed2  n_scores=40 vs modal 50"*) ok "outlier names the run and both values" ;;
+               *) bad "outlier names the run and both values" ;; esac
+case "$rep" in *"PARTIAL sc_probe_a"*) ok "unstarted downstream stage is PARTIAL/MISSING" ;;
+               *"MISSING sc_probe_a"*) ok "unstarted downstream stage is PARTIAL/MISSING" ;;
+               *) bad "unstarted downstream stage reported" ;; esac
+pend="$(python3 "$ROOT/scripts/ops/wavecheck.py" "$WD" --runroot "$FR" --pending 2>/dev/null)"
+case "$pend" in *sc_fit_a_seed2*) ok "--pending lists the incomplete run" ;;
+                *) bad "--pending lists the incomplete run" ;; esac
+case "$pend" in *sc_fit_a_seed1*) bad "--pending wrongly lists a complete run" ;;
+                *) ok "--pending excludes complete runs" ;; esac
+
+echo
+echo "== P1: spec validation rejects bad specs =="
+mkbad () { mkdir -p "$TMP/bad"; printf '%s\n' "$1" > "$TMP/bad/spec.yaml"; }
+mkbad 'wave_id: b
+stages: [{name: s, run_id: "r_${nope}", cmd: "x"}]'
+chk "unknown \${var} rejected" "! python3 '$ROOT/scripts/ops/wavegen.py' '$TMP/bad' --quiet"
+mkbad 'wave_id: b
+stages: [{name: s, run_id: "r", cmd: "x", target: mars}]'
+chk "bad target rejected" "! python3 '$ROOT/scripts/ops/wavegen.py' '$TMP/bad' --quiet"
+mkbad 'wave_id: b
+kinds: {k: {per_gpu: 2, pairing: mixed}}
+stages: [{name: s, kind: k, run_id: "r", cmd: "x"}]'
+chk "heterogeneous co-residency rejected" "! python3 '$ROOT/scripts/ops/wavegen.py' '$TMP/bad' --quiet"
+mkbad 'wave_id: b
+stages: [{name: s, run_id: "same", cmd: "x", expand: {i: [1, 2]}}]'
+chk "duplicate run_ids rejected" "! python3 '$ROOT/scripts/ops/wavegen.py' '$TMP/bad' --quiet"
+mkbad 'wave_id: b
+stages: [{name: s, run_id: "r", cmd: "x", done_when: [{bogus_pred: 1}]}]'
+chk "unknown predicate rejected" "! python3 '$ROOT/scripts/ops/wavegen.py' '$TMP/bad' --quiet"
+
+echo
+echo "== P1: RCC Slurm backend =="
+mkdir -p "$TMP/rcc"
+cat > "$TMP/rcc/spec.yaml" <<'SPEC'
+wave_id: sc_rcc
+stages:
+  - name: fit
+    target: rcc-slurm
+    expand: {seed: [1, 2, 3]}
+    run_id: "sc_rcc_seed${seed}"
+    sbatch:
+      script: scripts/axis1.sbatch
+      time: "12:00:00"
+      export: {RUN_ID: "${run_id}", SEED: "${seed}", TASK: dmc_finger_turn_hard}
+    done_when: [{exists: ADAPT_DONE}]
+SPEC
+chk "rcc-slurm stage generates submit_rcc.sh" \
+    "python3 '$ROOT/scripts/ops/wavegen.py' '$TMP/rcc' --quiet --out '$TMP/rccgen' \
+     && test -f '$TMP/rccgen/submit_rcc.sh'"
+grep -q -- '--export=ALL,REPO=' "$TMP/rccgen/submit_rcc.sh" 2>/dev/null \
+  && ok "sbatch uses the canonical --export=ALL,... form" || bad "sbatch export form"
+grep -q 'MAX_JOBS:-12' "$TMP/rccgen/submit_rcc.sh" 2>/dev/null \
+  && ok "12-job cap respected" || bad "12-job cap respected"
+# The --export=ALL module-leakage segfault: refuse rather than inherit.
+out="$(LOADEDMODULES=cuda/12 bash "$TMP/rccgen/submit_rcc.sh" --dry-run 2>&1 || true)"
+case "$out" in *"REFUSING TO SUBMIT"*) ok "refuses to submit from a module-loaded shell" ;;
+               *) bad "module-leakage guard did not fire" ;; esac
+# A slurm target with no sbatch block would be expanded, checked and bundled
+# but never submitted -- silently doing nothing. That must be a spec error.
+mkbad2 () { mkdir -p "$TMP/bad2"; printf '%s\n' "$1" > "$TMP/bad2/spec.yaml"; }
+mkbad2 'wave_id: b
+stages: [{name: s, target: rcc-slurm, run_id: "r", cmd: "x"}]'
+chk "rcc-slurm without an sbatch block is rejected" \
+    "! python3 '$ROOT/scripts/ops/wavegen.py' '$TMP/bad2' --quiet"
+
+echo
+echo "== P1: generated scripts locate the repo =="
+# These previously counted "../" levels from generated/, which is wrong at the
+# default depth AND changes again under --out. Every generated script that runs
+# on RCC must resolve the root explicitly.
+# Point at committed generated output, not a dir produced later in this file:
+# a check that silently skips is worse than no check.
+for f in submit.sh push_donors.sh pull_results.sh bundle.sh; do
+  g="$ROOT/ops/waves/lewm_upstream/generated/$f"
+  if [ ! -f "$g" ]; then bad "$f missing from committed generated output"; continue; fi
+  grep -q 'DV3OPS_ROOT' "$g" \
+    && ok "$f resolves DV3OPS_ROOT explicitly" || bad "$f counts ../ levels"
+done
+# preflight_remote.sh is the exception: it runs ON an instance, where the repo
+# is $REPO from the instance env, not a path known at generation time.
+! grep -q 'DV3OPS_ROOT' "$ROOT/ops/waves/lewm_upstream/generated/preflight_remote.sh" \
+  && ok "preflight_remote.sh correctly uses the instance's \$REPO" \
+  || bad "preflight_remote.sh should not reference DV3OPS_ROOT"
+grep -q 'DV3OPS_ROOT' "$TMP/rccgen/submit_rcc.sh" 2>/dev/null \
+  && ok "submit_rcc.sh resolves DV3OPS_ROOT explicitly" || bad "submit_rcc.sh root"
+
+echo
+echo "== P1: reference waves reproduce real hand-written waves =="
+for w in turn_easy_poscontrol tm2_bridge_fit2 lewm_graft lewm_upstream; do
+  chk "reference wave loads: $w" \
+      "python3 '$ROOT/scripts/ops/wavegen.py' '$ROOT/ops/waves/$w' --quiet --out '$TMP/ref_$w'"
+done
+grep -q 'TOTAL RUNS: 21' "$TMP/ref_turn_easy_poscontrol/RUN_IDS.txt" 2>/dev/null \
+  && ok "turn_easy = 21 runs (16 adapt + 5 floor, as submitted by hand)" \
+  || bad "turn_easy run count"
+grep -q 'TOTAL RUNS: 48' "$TMP/ref_tm2_bridge_fit2/RUN_IDS.txt" 2>/dev/null \
+  && ok "tm2_bridge = 48 runs (3 arms x 2 sides x 8 seeds)" || bad "tm2_bridge run count"
+[ "$(cat "$TMP/ref_tm2_bridge_fit2"/lane_fit_*.cmds | grep -c '^DV3_TASK_NAME=')" = "24" ] \
+  && ok "tm2_bridge = 24 pairs" || bad "tm2_bridge pairing count"
+grep -q 'TOTAL RUNS: 32' "$TMP/ref_lewm_graft/RUN_IDS.txt" 2>/dev/null \
+  && ok "lewm_graft = 32 runs (16 graft + 16 probe)" || bad "lewm_graft run count"
+# The graft's fit half lives in a sibling dir the same task wrote; an adapt can
+# complete on top of a world model that stopped short.
+grep -q 'ckpt_step_min' "$TMP/ref_lewm_graft/runs.json" 2>/dev/null \
+  && ok "lewm_graft checks the fit half in its sibling dir" || bad "lewm_graft sibling check"
+[ -f "$TMP/ref_lewm_upstream/submit_rcc.sh" ] \
+  && ok "lewm_upstream mixes vast and rcc-slurm stages in one wave" \
+  || bad "lewm_upstream rcc stage"
+
+echo
+echo "== P2: durations, packing, board =="
+mkdir -p "$TMP/plogs"
+cat > "$TMP/plogs/worker_shard0.out" <<'LOG'
+[Wed Aug 13 01:00:00 CDT 2026] START lewm_finger_s0_seed1 gpu=0 log=/x
+[Wed Aug 13 01:19:00 CDT 2026] DONE lewm_finger_s0_seed1 log=/x
+[Wed Aug 13 02:00:00 CDT 2026] START adapt_ax1jppxq1ms0_finger_seed1_ckpt500000 gpu=0 log=/x
+[Wed Aug 13 09:00:00 CDT 2026] DONE adapt_ax1jppxq1ms0_finger_seed1_ckpt500000 log=/x elapsed=25200s
+[Wed Aug 13 09:10:00 CDT 2026] START lewm_finger_s1_seed1 gpu=0 log=/x
+[Wed Aug 13 09:30:00 CDT 2026] FAIL lewm_finger_s1_seed1 rc=1 log=/x elapsed=1200s
+LOG
+python3 "$ROOT/scripts/ops/durations.py" scan "$TMP/plogs" --gpu 5060Ti --out "$TMP/d.json" >/dev/null 2>&1
+tbl="$(python3 "$ROOT/scripts/ops/durations.py" show --out "$TMP/d.json" 2>/dev/null)"
+# Legacy logs have no elapsed=; the duration must come from the timestamps.
+case "$tbl" in *"lewm_train|5060Ti"*"19m"*) ok "legacy log (no elapsed=) timed from timestamps" ;;
+               *) bad "legacy log timing" ;; esac
+case "$tbl" in *"graft_fit_adapt|5060Ti"*"7.0h"*) ok "P0 log elapsed= parsed" ;;
+               *) bad "P0 log elapsed= parsed" ;; esac
+# A failed run's runtime predicts nothing about a successful one. The log has
+# one successful lewm_train (19m) and one FAILED lewm_train (20m), so a correct
+# aggregate has n=1; n=2 would mean the failure was folded in.
+n_train="$(printf '%s\n' "$tbl" | awk '$1 ~ /^lewm_train\|/ {print $2}')"
+[ "$n_train" = "1" ] && ok "failed runs excluded from aggregates (n=1, not 2)" \
+                     || bad "failed runs excluded from aggregates (got n=$n_train)"
+# run_id -> spec kind, so families are the same names the specs use.
+case "$tbl" in *"lewm_train"*) ok "families resolve to spec kinds" ;;
+               *) bad "families resolve to spec kinds" ;; esac
+chk "durations survives a corrupt db" \
+    "printf 'not json' > '$TMP/bad.json'; python3 '$ROOT/scripts/ops/durations.py' show --out '$TMP/bad.json'"
+
+pk="$(python3 "$ROOT/scripts/ops/packing.py" --wave lewm_upstream --lanes 0,1,2,3 \
+      --gpu 5060Ti --durations "$TMP/d.json" 2>&1)"
+case "$pk" in *"16 run(s) in 8 unit(s)"*) ok "packer treats a pair as one unit" ;;
+              *) bad "packer pair unit" ;; esac
+case "$pk" in *"spread 0s"*) ok "LPT balances lanes evenly on equal units" ;;
+              *) bad "LPT balance" ;; esac
+case "$pk" in *"23m"*) ok "co-location penalty applied to pairs (19m -> 23m)" ;;
+              *) bad "co-location penalty" ;; esac
+
+bd="$(printf '%s\n' \
+  '{"instance":"1","state":{"gpus":[{"index":0,"name":"x","util":98,"mem_used":1,"mem_total":2}],"lanes":[{"lane":"0","alive":true,"next":3,"total":8,"pending":6,"running_task":"lewm_finger_s0_seed3","aborted":false}]}}' \
+  '{"instance":"2","state":{"gpus":[],"lanes":[{"lane":"1","alive":false,"next":5,"total":9,"pending":5,"running_task":"z","aborted":false}]}}' \
+  '{"instance":"3","state":{"gpus":[],"lanes":[]}}' \
+  | python3 "$ROOT/scripts/ops/board.py" --gpu 5060Ti --durations "$TMP/d.json" 2>&1)"
+case "$bd" in *"DEAD supervisors: 2/lane1"*) ok "board flags a dead supervisor" ;;
+              *) bad "board flags a dead supervisor" ;; esac
+case "$bd" in *"IDLE and billing: instance(s) 3"*) ok "board flags an idle billing instance" ;;
+              *) bad "board flags idle instance" ;; esac
+case "$bd" in *"(+1.7h)"*) ok "board projects drain time from measurements" ;;
+              *) bad "board drain projection" ;; esac
+case "$bd" in *"??"*) ok "board marks unmeasured kinds rather than guessing" ;;
+              *) bad "board unmeasured marker" ;; esac
 
 echo
 echo "--------------------------------------------------------------"

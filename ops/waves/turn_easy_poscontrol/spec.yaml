@@ -1,0 +1,69 @@
+# Reference wave A: flat adapt grid + a baseline arm with a different command.
+# Transcribed from the hand-written 2026-08-13 turn_easy submission
+# (16 adapt + 5 rndte random-floor jobs on instance 9) to validate that the
+# spec format reproduces a real wave rather than an idealised one.
+#
+# Shape exercised: two stages, two kinds, one with donors and one without,
+# per_gpu=1, flat cartesian expansion.
+
+wave_id: turn_easy_poscontrol
+paper: paper1
+notes: >-
+  Positive control on dmc_finger_turn_easy. The rndte arm is the random floor:
+  no donor checkpoint, expl_random config, so it shares the task and step
+  budget but nothing else. Keeping it in the same wave is deliberate -- the
+  floor and the treatment must be bundled together or the comparison is
+  assembled after the fact.
+
+defaults:
+  target: vast
+
+kinds:
+  turn_easy_adapt: {per_gpu: 1}
+
+stages:
+
+  - name: adapt
+    kind: turn_easy_adapt
+    on_failure: continue      # independent cells: one OOM must not strand 15 others
+    expand:
+      arm:  [rgo, sgb]
+      side: [0, 1]
+      seed: [1, 2, 3, 4]
+    run_id: "adapt_ax1ter${arm}q1s${side}_finger_seed${seed}_ckpt500000"
+    cmd: >-
+      bash "$REPO/scripts/ops/runners/adapt_one.sh"
+      ${run_id} ${seed} frozen_readout dmc_finger_turn_easy 1.25e5
+      "$RUNROOT/ax1wm_finger_${arm}q1s${side}_seed${seed}/ckpt"
+    inputs:
+      - "ax1wm_finger_${arm}q1s${side}_seed${seed}/ckpt"
+      - "ax1wm_finger_${arm}q1s${side}_seed${seed}/config.yaml"
+    done_when:
+      - exists: ADAPT_DONE
+      - exists: config.yaml
+      - jsonl_min_lines: {file: scores.jsonl, n: 100}
+
+  - name: random_floor
+    kind: turn_easy_adapt
+    on_failure: continue
+    expand:
+      seed: [1, 2, 3, 4, 5]
+    run_id: "adapt_rndte_finger_seed${seed}_ckpt0"
+    cmd: >-
+      bash "$REPO/scripts/ops/runners/adapt_one.sh"
+      ${run_id} ${seed} expl_random dmc_finger_turn_easy 1.25e5 NONE
+    done_when:
+      - exists: ADAPT_DONE
+      - exists: config.yaml
+      - jsonl_min_lines: {file: scores.jsonl, n: 100}
+
+bundle:
+  prefix: turn_easy_pc
+  include_stages: [adapt, random_floor]
+  cloud_logs:
+    - "adapt_ax1ter*_seed*.out"
+    - "adapt_rndte_*_seed*.out"
+    - "worker_shard*.out"
+
+night:
+  auto_requeue_unaffected: true

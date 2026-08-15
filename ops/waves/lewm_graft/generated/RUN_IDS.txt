@@ -1,0 +1,44 @@
+wave_id: lewm_graft
+spec:    ops/waves/lewm_graft/spec.yaml
+
+=== stage graft  [vast]  kind=graft_fit_adapt  on_failure=abort  n=16 ===
+  adapt_ax1jppxq1ms0_finger_seed1_ckpt500000
+  adapt_ax1jppxq1ms1_finger_seed1_ckpt500000
+  adapt_ax1jppxq1ms0_finger_seed2_ckpt500000
+  adapt_ax1jppxq1ms1_finger_seed2_ckpt500000
+  adapt_ax1jppxq1ms0_finger_seed3_ckpt500000
+  adapt_ax1jppxq1ms1_finger_seed3_ckpt500000
+  adapt_ax1jppxq1ms0_finger_seed4_ckpt500000
+  adapt_ax1jppxq1ms1_finger_seed4_ckpt500000
+  adapt_ax1jppxq1ms0_finger_seed5_ckpt500000
+  adapt_ax1jppxq1ms1_finger_seed5_ckpt500000
+  adapt_ax1jppxq1ms0_finger_seed6_ckpt500000
+  adapt_ax1jppxq1ms1_finger_seed6_ckpt500000
+  adapt_ax1jppxq1ms0_finger_seed7_ckpt500000
+  adapt_ax1jppxq1ms1_finger_seed7_ckpt500000
+  adapt_ax1jppxq1ms0_finger_seed8_ckpt500000
+  adapt_ax1jppxq1ms1_finger_seed8_ckpt500000
+
+=== stage probe_e4  [vast]  kind=probe  on_failure=continue  n=16 ===
+  lewm_probe_e4_s0_seed1
+  lewm_probe_e4_s1_seed1
+  lewm_probe_e4_s0_seed2
+  lewm_probe_e4_s1_seed2
+  lewm_probe_e4_s0_seed3
+  lewm_probe_e4_s1_seed3
+  lewm_probe_e4_s0_seed4
+  lewm_probe_e4_s1_seed4
+  lewm_probe_e4_s0_seed5
+  lewm_probe_e4_s1_seed5
+  lewm_probe_e4_s0_seed6
+  lewm_probe_e4_s1_seed6
+  lewm_probe_e4_s0_seed7
+  lewm_probe_e4_s1_seed7
+  lewm_probe_e4_s0_seed8
+  lewm_probe_e4_s1_seed8
+
+TOTAL RUNS: 32
+
+Check this list against the prereg before submitting. run_ids are
+consumed by frozen readers and the ledger; a wrong expansion here
+propagates into every downstream artifact.
