@@ -1,0 +1,31 @@
+# dv3ops failure signatures  (P3, 2026-08-14)
+#
+# class <TAB> retry <TAB> extended-regex <TAB> what it means / what to do
+#
+# TSV rather than YAML on purpose: instance-side bash greps this file directly
+# with no parser, and RCC-side python reads the same file. One source, two
+# consumers, no generation step.
+#
+# `retry` is what a retry of the SAME command on the SAME hardware would do:
+#   same     -- transient; retrying as-is is reasonable
+#   other    -- deterministic here, may pass on different hardware (bigger GPU)
+#   never    -- retrying cannot help; something must change first
+#   unknown  -- not classified; escalate, never auto-act
+#
+# THIS FILE IS MEANT TO GROW. Every failure diagnosed once should be appended,
+# which is the whole point: the system's coverage increases monotonically
+# instead of each diagnosis being re-derived and forgotten.
+#
+# Order matters: first match wins, so put specific patterns above general ones.
+
+oom	other	RESOURCE_EXHAUSTED|Out of memory allocating|CUDA out of memory|OutOfMemoryError|cudaErrorMemoryAllocation	GPU ran out of VRAM. Retrying on the same card will fail again. Move the affected cells to a larger GPU, or reduce memory fraction (a knob change: your call, and it must apply to every cell in the arm or comparability breaks).
+disk_full	never	No space left on device|ENOSPC|Disk quota exceeded	Filesystem full. Checkpoints written during this period may be truncated but look complete -- verify realized counters before trusting any run from this window, not just the failed one.
+missing_donor	never	no done ckpt under|no donor checkpoint dir|ERROR: no done checkpoint under	A required input checkpoint is absent. Either the donor wave never finished or the donor sync missed it. Check the donor with dv3ops check, then push-donors again.
+missing_replay_manifest	never	no manifest.json beside|manifest.json BESIDE	Controlled replay was synced as a side dir without its parent manifest.json. axis1.sbatch requires it. Re-run push-donors: the spec declares the manifest as an input.
+missing_module	never	ModuleNotFoundError|MISSING adapter deps|ImportError: cannot import name	A python dependency is missing from the env this task ran in. For TD-MPC2 tasks a bare `python` means the Dreamer env, not TM2_CONDA_ENV -- check the interpreter before installing anything.
+hydra_override	never	Could not override|key .* is not in struct|ConfigAttributeError	Hydra config key error. An existing key takes `key=value`; only a genuinely new key takes `+key=value`. (wandb.enabled exists: no plus.)
+cuda_driver	same	CUDA error|no CUDA-capable device|CUDA driver version is insufficient|Failed to initialize NVML	Driver or device fault. Often transient after a reset, but a repeat on the same instance means the host is sick -- prefer re-renting over fighting it.
+rsync_broken	never	rsync: connection unexpectedly closed|/usr/bin/rsync: Permission denied	The REMOTE rsync binary is broken (seen 2026-08-13: a 0-byte non-executable stub after a full disk). The sender-side message is misleading. Reinstall rsync on the instance.
+killed_oom_host	other	Killed$|signal 9|out of memory: Killed process	Host OOM-killer took the process (system RAM, not VRAM). Reduce concurrent tasks per instance or move to a box with more RAM.
+timeout_slurm	other	DUE TO TIME LIMIT|CANCELLED AT .* DUE TO TIME	Slurm walltime exceeded. Raise --time (36h max on RCC) or split the work; the partial checkpoint is resumable but verify realized steps.
+nan_loss	never	loss is NaN|nan in loss|Invalid loss	Training diverged. Not an ops failure: retrying reproduces it. Needs a look at the run, not a requeue.

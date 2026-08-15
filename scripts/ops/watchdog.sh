@@ -16,7 +16,8 @@
 #   - disk near full                                            (silent loss)
 #   - heartbeat to the dead-man's switch
 #
-# DELIBERATELY NOT HERE (P3): auto-mitigation. This build only ever reports.
+# AUTO-MITIGATION (P3) is OFF by default and, when on, is limited to actions
+# that are identical in intent to what already ran. See wd_auto_restart below.
 #
 # Usage:  watchdog.sh start | stop | status | once
 # ---------------------------------------------------------------------------
@@ -33,9 +34,21 @@ WD_PID="$WD_DIR/watchdog.pid"
 WD_LOG="$RUNROOT/_cloud_logs/watchdog.out"
 WD_INTERVAL="${DV3_WATCHDOG_INTERVAL_SECONDS:-60}"
 WD_HEARTBEAT_EVERY="${DV3_HEARTBEAT_SECONDS:-300}"
-WD_IDLE_ALERT_AFTER="${DV3_IDLE_ALERT_SECONDS:-900}"     # 15 min of paid idle
+# 10 min, tuned 2026-08-14: instances are kept queued as a matter of habit, so
+# an idle one is an anomaly rather than a pause between waves. Effective lag is
+# ~15 min once the queue's own 300 s IDLE_GRACE is counted.
+WD_IDLE_ALERT_AFTER="${DV3_IDLE_ALERT_SECONDS:-600}"
 WD_IDLE_RENOTIFY="${DV3_IDLE_RENOTIFY_SECONDS:-10800}"   # then every 3 h
+# A flat percentage is the wrong unit in general (what matters is time-to-full,
+# which depends on the wave's write rate), but it is the right one HERE: 50 GB
+# per instance and no wave writes fast enough for 10% headroom to be minutes.
+# Do not "improve" this into a projection without re-checking that.
 WD_DISK_PCT="${DV3_DISK_ALERT_PCT:-90}"
+# Night auto-mitigation. OFF unless explicitly enabled per instance.
+# The ONLY permitted action is restarting a supervisor that died while its
+# queue still has work -- same queue, same tasks, same order, nothing
+# re-derived. It never changes a config, never rents, never touches science.
+WD_AUTO="${DV3_NIGHT_AUTO:-0}"
 
 mkdir -p "$WD_DIR" "$RUNROOT/_cloud_logs"
 
@@ -83,6 +96,12 @@ wd_check_dead_supervisors () {
     nxt="$(cat "$qdir/next_index" 2>/dev/null || echo 1)"
     total="$(wc -l < "$qdir/tasks.txt" 2>/dev/null || echo 0)"
     pending=$(( total - nxt + 1 )); [ "$pending" -lt 0 ] && pending=0
+    # Auto-restart before alerting: if it works, this is a 60-second gap
+    # instead of an idle lane until morning, and the digest still records it.
+    if [ "$WD_AUTO" = "1" ] && wd_auto_restart "$gpu" "$active" "$qdir" "$pending"; then
+      wd_clear_report "dead_lane_$gpu"
+      continue
+    fi
     if wd_should_report "dead_lane_$gpu" 10800; then
       dv3_event supervisor_dead high "lane $gpu supervisor DEAD — $pending stranded" \
         "$(printf 'Lane %s still claims queue %s as active, but its supervisor (pid %s) is gone.\nNothing is running; %s of %s task(s) never started.\nThe lane will not self-recover in this build: requeue after checking what the last task did.' \
@@ -90,6 +109,46 @@ wd_check_dead_supervisors () {
         "\"lane\":\"$gpu\",\"queue\":\"$(dv3_jesc "$active")\",\"stranded\":$pending"
     fi
   done
+}
+
+# Relaunch the supervisor for an existing queue. Deliberately narrow:
+#   * refuses if the child is still alive -- a supervisor can look dead while
+#     its task runs on, and starting a second one would run that task twice
+#   * refuses if the queue was aborted or cancelled -- those are decisions,
+#     not accidents, and undoing them silently would be worse than the stall
+#   * refuses after repeated attempts -- a lane that keeps losing its
+#     supervisor has a real problem that restarting will not fix
+wd_auto_restart () {
+  local gpu="$1" qid="$2" qdir="$3" pending="$4" cpid tries f
+  [ "$pending" -gt 0 ] || return 1
+  [ -f "$qdir/aborted" ] && return 1
+  [ -f "$qdir/cancelled" ] && return 1
+  cpid="$(cat "$qdir/child.pid" 2>/dev/null || true)"
+  if dv3_alive "$cpid"; then
+    return 1   # task still running; the supervisor is gone but the work is not
+  fi
+  f="$WD_DIR/restarts_${gpu}_${qid}"
+  tries="$(cat "$f" 2>/dev/null || echo 0)"
+  if [ "$tries" -ge 2 ]; then
+    return 1   # twice is enough to know restarting is not the answer
+  fi
+  printf '%s\n' "$(( tries + 1 ))" > "$f"
+
+  local shard; shard="$(cat "$qdir/shard" 2>/dev/null || echo "$gpu")"
+  setsid bash -c "source '$DV3_ENV_FILE' >/dev/null 2>&1 || true; \
+                  source '$DV3_HELPERS_FILE'; dv3_queue_supervisor '$gpu' '$qid'" \
+    >> "$RUNROOT/_cloud_logs/worker_shard${shard}.out" 2>&1 </dev/null &
+  local pid="$!"
+  sleep 3
+  if dv3_alive "$pid"; then
+    printf '%s\n' "$pid" > "$qdir/supervisor.pid"
+    dv3_event supervisor_restarted default "lane $gpu supervisor restarted" \
+      "$(printf 'Supervisor for queue %s on lane %s had died with %s task(s) pending; restarted it (attempt %s of 2).\nSame queue, same order, nothing re-derived. No task was running at the time.' \
+          "$qid" "$gpu" "$pending" "$(( tries + 1 ))")" \
+      "\"lane\":\"$gpu\",\"queue\":\"$(dv3_jesc "$qid")\",\"attempt\":$(( tries + 1 ))"
+    return 0
+  fi
+  return 1
 }
 
 wd_any_active_queue () {
@@ -208,6 +267,7 @@ case "${1:-start}" in
     else
       echo "watchdog NOT running"
     fi
+    echo "auto-restart: $([ "$WD_AUTO" = 1 ] && echo ENABLED || echo "off (set DV3_NIGHT_AUTO=1)")"
     echo "ntfy topic:   ${DV3_NTFY_TOPIC:-MISSING (alerts disabled)}"
     echo "healthchecks: ${DV3_HC_URL:-not configured (optional)}"
     echo "helpers:      $(dv3_version)"

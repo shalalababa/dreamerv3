@@ -333,6 +333,18 @@ def gen(spec: wavespec.WaveSpec, out: Path, lanes: list[str]) -> dict:
         'echo "== interpreter =="',
         '"${CONDA_ENV:-/venv/main}/bin/python" -c "import sys" 2>/dev/null \\',
         '  && ok "python in $CONDA_ENV" || bad "python broken in ${CONDA_ENV:-/venv/main}"', "",
+        # Instance 2, 2026-08-13: /usr/bin/rsync was a 0-byte non-executable
+        # stub (disk filled mid-write). ssh still worked, so it presented as
+        # "rsync: connection unexpectedly closed" from the RCC side -- a
+        # sender-side error message for a receiver-side broken binary.
+        'echo "== transfer tooling =="',
+        'for b in rsync tar; do',
+        '  p="$(command -v "$b" 2>/dev/null)"',
+        '  if [ -z "$p" ]; then bad "MISSING $b"',
+        '  elif [ ! -x "$p" ]; then bad "$b not executable ($p)"',
+        '  elif [ ! -s "$p" ]; then bad "$b is a 0-byte stub ($p) -- reinstall it"',
+        '  else ok "$b $(du -h "$p" | cut -f1)"; fi',
+        "done", "",
         'echo "== disk =="',
         'pct="$(df -P "$RUNROOT" | awk \'NR==2{gsub(/%/,"",$5); print $5}\')"',
         '[ "${pct:-100}" -lt 90 ] && ok "disk ${pct}% used" || bad "disk ${pct}% used"', ""]

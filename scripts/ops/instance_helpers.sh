@@ -98,6 +98,26 @@ dv3_event () {
   dv3_notify "$pri" "$title" "$msg" "${DV3_NTFY_TAGS:-}"
 }
 
+# --- failure classification -------------------------------------------------
+# Reads the same TSV that RCC-side triage.py reads, so an alert on your phone
+# already says "oom" rather than making you open a log to find out. Unmatched
+# stays unmatched: the alert says so instead of guessing.
+
+dv3_classify () {
+  local text="$1" f="${REPO:-/workspace/dreamerv3}/scripts/ops/failure_signatures.tsv"
+  [ -r "$f" ] || { printf 'unknown\tunknown\t\n'; return 0; }
+  local cls retry pat act
+  while IFS=$'\t' read -r cls retry pat act; do
+    case "$cls" in ''|'#'*) continue;; esac
+    [ -n "$pat" ] || continue
+    if printf '%s' "$text" | grep -qE "$pat" 2>/dev/null; then
+      printf '%s\t%s\t%s\n' "$cls" "$retry" "$act"
+      return 0
+    fi
+  done < "$f"
+  printf 'unknown\tunknown\tNot matched by any known signature; read the log tail.\n'
+}
+
 # --- stale queue handling ---------------------------------------------------
 
 dv3_clear_stale_locked () {
@@ -251,7 +271,12 @@ dv3_task_name () {
 
 dv3_wait_gpu_idle () {
   local gpu="${1:-0}" pids last=0 now start elapsed
-  local ceiling="${DV3_GPU_WAIT_CEILING_SECONDS:-7200}"
+  # 30 min, tuned 2026-08-14. Legitimate holds are short -- CUDA cleanup after
+  # a cancel, a process briefly in D-state. A hold that outlasts this is a
+  # leaked process from a killed task, and the lane is stuck until someone
+  # intervenes, so waiting longer only buys idle GPU-hours. Re-escalation stays
+  # at 2 h so a known stall does not nag.
+  local ceiling="${DV3_GPU_WAIT_CEILING_SECONDS:-1800}"
   local renotify="${DV3_GPU_WAIT_RENOTIFY_SECONDS:-7200}"
   local escalated=0 last_escalation=0
   [ "$gpu" = "none" ] && return 0
@@ -395,11 +420,15 @@ dv3_run_cmd () {
     echo "[$(date)] DONE $name log=$log elapsed=${elapsed}s ${summary}"
   else
     echo "[$(date)] FAIL $name rc=$rc log=$log elapsed=${elapsed}s ${summary}"
-    dv3_event task_fail default "task FAIL: $name" \
-      "$(printf 'rc=%s lane=%s after %sm\n%s\n\n--- last 12 log lines ---\n%s' \
-          "$rc" "$gpu" "$((elapsed/60))" "${summary:-no util samples}" \
+    local cls retry act
+    IFS=$'\t' read -r cls retry act < <(dv3_classify "$(tail -n 200 "$log" 2>/dev/null)")
+    echo "[$(date)] CLASS $name $cls retry=$retry"
+    dv3_event task_fail default "task FAIL [$cls]: $name" \
+      "$(printf 'rc=%s lane=%s after %sm\nclass=%s retry=%s\n%s\n%s\n\n--- last 12 log lines ---\n%s' \
+          "$rc" "$gpu" "$((elapsed/60))" "$cls" "$retry" "$act" \
+          "${summary:-no util samples}" \
           "$(tail -n 12 "$log" 2>/dev/null)")" \
-      "\"task\":\"$(dv3_jesc "$name")\",\"rc\":$rc,\"lane\":\"$gpu\",\"elapsed_s\":$elapsed"
+      "\"task\":\"$(dv3_jesc "$name")\",\"rc\":$rc,\"lane\":\"$gpu\",\"elapsed_s\":$elapsed,\"class\":\"$(dv3_jesc "$cls")\",\"retry\":\"$(dv3_jesc "$retry")\""
   fi
   return "$rc"
 }

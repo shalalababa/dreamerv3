@@ -1,0 +1,253 @@
+#!/usr/bin/env python3
+"""Instance inventory from the Vast CLI.  (dv3ops P2, 2026-08-14)
+
+Replaces the hand-edited IP/PORT block at the top of TASK MANAGER.txt and the
+committed instance_list.csv, which had already drifted (it listed 2x5090 while
+seven 5060Ti instances were live).
+
+STICKY INDICES. Your index 4 must stay index 4 across refreshes, because it is
+what you type and what alert titles say. Vast instance ids are the stable key,
+so the mapping id -> index is persisted and only ever extended; a destroyed
+instance frees nothing and a new one takes the next free number. Renumbering
+on every refresh would be worse than editing by hand.
+
+Read-only by design. This never creates or destroys anything: picking hardware
+is a price judgement, and destroying loses whatever has not been pulled.
+
+Runs on LOCAL WSL so the API key never lands on a shared cluster; the derived
+env file is pushed to RCC.
+
+Usage:
+  refresh.py [--state ops/state] [--push-to RCC_HOST:PATH] [--dry-run]
+"""
+from __future__ import annotations
+
+import argparse
+import json
+import os
+import shutil
+import subprocess
+import sys
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parent.parent.parent
+
+# Host and port must be chosen as a PAIR. Vast offers two distinct routes in
+# and their fields do NOT interleave:
+#
+#   direct : public_ipaddr  +  ports["22/tcp"][].HostPort   e.g. 1.2.3.4:13124
+#   proxy  : ssh_host       +  ssh_port                     e.g. ssh3.vast.ai:17836
+#
+# Pairing public_ipaddr with ssh_port produces a syntactically fine address
+# that nothing is listening on. It would present as a network fault rather than
+# a config bug, and it is the exact mistake this file made on 2026-08-14 before
+# the full JSON was available -- ssh_port and public_ipaddr had been reported
+# together and looked like a pair.
+#
+# Direct is preferred because that is what this fleet uses (TASK MANAGER ports
+# are in the 13xxx HostPort range, not the 17xxx proxy range).
+
+ID_KEYS = ("id", "instance_id", "machine_id")
+GPU_KEYS = ("gpu_name", "gpu_display_name")
+NGPU_KEYS = ("num_gpus", "gpus")
+
+
+def pick(d: dict, keys) -> object | None:
+  for k in keys:
+    v = d.get(k)
+    if v not in (None, "", 0):
+      return v
+  return None
+
+
+def direct_ssh_port(d: dict) -> int | None:
+  """The host-side port mapped to container port 22, from the `ports` block."""
+  mapping = d.get("ports") or {}
+  entries = mapping.get("22/tcp") or []
+  for e in entries:
+    hp = (e or {}).get("HostPort")
+    if hp:
+      try:
+        return int(hp)
+      except (TypeError, ValueError):
+        continue
+  return None
+
+
+def address(d: dict) -> tuple[str, int, str] | None:
+  """(host, port, how). Routes are tried whole; fields are never mixed."""
+  ip = d.get("public_ipaddr")
+  dp = direct_ssh_port(d)
+  if ip and dp:
+    return str(ip), dp, "direct(public_ipaddr+ports.22/tcp)"
+
+  host, port = d.get("ssh_host"), d.get("ssh_port")
+  if host and port:
+    try:
+      return str(host), int(port), "proxy(ssh_host+ssh_port)"
+    except (TypeError, ValueError):
+      pass
+
+  for hk, pk in (("ssh_addr", "ssh_port"), ("ipaddr", "port")):
+    h, p = d.get(hk), d.get(pk)
+    if h not in (None, "", 0) and p not in (None, "", 0):
+      try:
+        return str(h), int(p), f"{hk}+{pk}"
+      except (TypeError, ValueError):
+        continue
+  return None
+
+
+def fetch(cmd: list[str]) -> list[dict]:
+  if not shutil.which(cmd[0]):
+    sys.exit(f"ERROR: '{cmd[0]}' not found.\n"
+             "  pip install vastai   (then: vastai set api-key <KEY>)\n"
+             "  Install it on WSL, not on RCC: the key should not sit on a "
+             "shared cluster.")
+  res = subprocess.run(cmd, capture_output=True, text=True, timeout=120)
+  if res.returncode != 0:
+    sys.exit(f"ERROR: {' '.join(cmd)} failed:\n{res.stderr.strip()}")
+  try:
+    data = json.loads(res.stdout)
+  except json.JSONDecodeError:
+    sys.exit(f"ERROR: could not parse JSON from {' '.join(cmd)}.\n"
+             f"First 300 chars:\n{res.stdout[:300]}")
+  if isinstance(data, dict):
+    data = data.get("instances", [data])
+  return [d for d in data if isinstance(d, dict)]
+
+
+def main() -> int:
+  ap = argparse.ArgumentParser(description=__doc__,
+                               formatter_class=argparse.RawDescriptionHelpFormatter)
+  ap.add_argument("--state", default=str(ROOT / "ops" / "state"))
+  ap.add_argument("--from-json", default=None,
+                  help="read `vastai show instances --raw` output from a file "
+                       "instead of calling the CLI (useful for a dry check)")
+  ap.add_argument("--push-to", default=os.environ.get("DV3_RCC_TARGET", ""),
+                  help="scp the env file to e.g. user@host:~/projects/dreamerv3/ops/state/")
+  ap.add_argument("--verify", action="store_true",
+                  help="ssh to each resolved address; catches a wrong host/port "
+                       "pairing now instead of mid-wave")
+  ap.add_argument("--dry-run", action="store_true")
+  args = ap.parse_args()
+
+  state = Path(args.state)
+  state.mkdir(parents=True, exist_ok=True)
+  idx_file = state / "instances.json"
+
+  raw = (json.loads(Path(args.from_json).read_text()) if args.from_json
+         else fetch(["vastai", "show", "instances", "--raw"]))
+  if isinstance(raw, dict):
+    raw = raw.get("instances", [raw])
+
+  prior = {}
+  if idx_file.exists():
+    try:
+      prior = {str(e["vast_id"]): e["index"]
+               for e in json.loads(idx_file.read_text()).get("instances", [])}
+    except (json.JSONDecodeError, KeyError, OSError):
+      prior = {}
+
+  entries, unparsed, pairings = [], [], set()
+  for inst in raw:
+    vid = pick(inst, ID_KEYS)
+    addr = address(inst)
+    if not (vid and addr):
+      unparsed.append(sorted(inst.keys())[:14])
+      continue
+    host, port, how = addr
+    pairings.add(how)
+    entries.append({
+        "vast_id": str(vid), "ip": host, "port": port, "addr_from": how,
+        "gpu": str(pick(inst, GPU_KEYS) or "unknown"),
+        "n_gpu": int(pick(inst, NGPU_KEYS) or 1),
+        "status": str(inst.get("actual_status") or inst.get("cur_state") or "?"),
+        # Real $/hr, straight from the listing. Lets the digest report money
+        # burned rather than GPU-hours, which is the unit decisions are in.
+        "cost_hr": round(float((inst.get("search") or {}).get("totalHour")
+                               or inst.get("dph_total") or 0), 4),
+    })
+
+  if unparsed and not entries:
+    print("ERROR: could not find ssh host/port fields in the Vast output.",
+          file=sys.stderr)
+    print(f"Keys seen on the first instance: {unparsed[0]}", file=sys.stderr)
+    print("Extend address() in refresh.py with the right route.", file=sys.stderr)
+    return 2
+
+  # Sticky indices: keep what an id already had, then fill the lowest free slots.
+  used = set(prior.values())
+  nxt = 1
+  for e in sorted(entries, key=lambda e: e["vast_id"]):
+    if e["vast_id"] in prior:
+      e["index"] = prior[e["vast_id"]]
+    else:
+      while nxt in used:
+        nxt += 1
+      e["index"] = nxt
+      used.add(nxt)
+  entries.sort(key=lambda e: e["index"])
+
+  doc = {"instances": entries}
+  env_lines = ["# GENERATED by scripts/ops/refresh.py -- do not edit by hand.",
+               "# Machine-local state, not a record: gitignored on purpose."]
+  for e in entries:
+    env_lines += [f"export IP{e['index']}={e['ip']}",
+                  f"export PORT{e['index']}={e['port']}"]
+
+  print(f"{'IDX':<5} {'VAST ID':<12} {'GPU':<16} {'N':<3} {'$/HR':<8} "
+        f"{'STATUS':<10} ADDRESS")
+  for e in entries:
+    new = "" if e["vast_id"] in prior else "  (new)"
+    print(f"{e['index']:<5} {e['vast_id']:<12} {e['gpu'][:16]:<16} "
+          f"{e['n_gpu']:<3} {e['cost_hr']:<8.3f} {e['status'][:10]:<10} "
+          f"{e['ip']}:{e['port']}{new}")
+  tot = sum(e["cost_hr"] for e in entries)
+  if tot:
+    print(f"{'':<38} {tot:<8.3f} total, ${tot * 24:.2f}/day")
+  if pairings:
+    print(f"\naddress fields used: {', '.join(sorted(pairings))}")
+    if len(pairings) > 1:
+      print("WARN: instances resolved via different field pairs. That is legal "
+            "(some may be proxied) but check the odd one before trusting it.")
+  gone = sorted(set(prior) - {e["vast_id"] for e in entries})
+  if gone:
+    print(f"\n{len(gone)} previously-known instance(s) are no longer listed "
+          f"(indices stay reserved): {', '.join(gone)}")
+  if unparsed:
+    print(f"\nWARN: {len(unparsed)} entr(ies) had no usable ssh host/port and "
+          "were skipped.")
+
+  if args.verify:
+    print("\nverifying reachability (5s timeout each)")
+    for e in entries:
+      r = subprocess.run(
+          ["ssh", "-n", "-o", "BatchMode=yes", "-o", "ConnectTimeout=5",
+           "-o", "StrictHostKeyChecking=accept-new",
+           "-p", str(e["port"]), f"root@{e['ip']}", "true"],
+          capture_output=True, text=True)
+      e["reachable"] = (r.returncode == 0)
+      print(f"  {e['index']:<3} {e['ip']}:{e['port']:<6} "
+            f"{'ok' if e['reachable'] else 'UNREACHABLE  ' + r.stderr.strip()[:60]}")
+
+  if args.dry_run:
+    print("\n--dry-run: nothing written")
+    return 0
+
+  idx_file.write_text(json.dumps(doc, indent=1) + "\n")
+  (state / "instances.env").write_text("\n".join(env_lines) + "\n")
+  print(f"\nwrote {idx_file}")
+  print(f"wrote {state / 'instances.env'}   (source this, or let dv3ops load it)")
+
+  if args.push_to:
+    tgt = args.push_to
+    r = subprocess.run(["scp", str(state / "instances.env"), tgt],
+                       capture_output=True, text=True)
+    print(f"pushed to {tgt}" if r.returncode == 0
+          else f"WARN: push failed: {r.stderr.strip()}")
+  return 0
+
+
+if __name__ == "__main__":
+  sys.exit(main())

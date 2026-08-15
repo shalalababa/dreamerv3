@@ -245,10 +245,15 @@ chk "dv3ops help runs" "bash '$ROOT/scripts/ops/dv3ops' help"
 # NOTE: capture then grep. Piping a failing command into grep under `pipefail`
 # fails the pipeline even when grep matched -- which is what made this check
 # report a false failure on its first run.
-# Use a verb that is genuinely unbuilt; `gen` exists now and asks for --wave.
-gen_out="$(bash "$ROOT/scripts/ops/dv3ops" refresh 2>&1 || true)"
-case "$gen_out" in *P2*) ok "unbuilt verbs name their phase" ;;
-                   *) bad "unbuilt verbs name their phase (got: $gen_out)" ;; esac
+# Every phase is built, so there is no longer an unbuilt verb to test. What
+# still matters is that a verb blocked by a MISSING DEPENDENCY says how to fix
+# it rather than dying on a bare "command not found".
+dep_out="$(bash "$ROOT/scripts/ops/dv3ops" refresh 2>&1 || true)"
+case "$dep_out" in
+  *"pip install vastai"*) ok "a missing dependency names its own fix" ;;
+  *IDX*|*"VAST ID"*)      ok "vastai present; refresh ran" ;;
+  *) bad "missing-dependency error is not actionable (got: $dep_out)" ;;
+esac
 wave_out="$(bash "$ROOT/scripts/ops/dv3ops" gen 2>&1 || true)"
 case "$wave_out" in *--wave*) ok "wave verbs demand --wave" ;;
                     *) bad "wave verbs demand --wave (got: $wave_out)" ;; esac
@@ -483,6 +488,163 @@ case "$bd" in *"(+1.7h)"*) ok "board projects drain time from measurements" ;;
               *) bad "board drain projection" ;; esac
 case "$bd" in *"??"*) ok "board marks unmeasured kinds rather than guessing" ;;
               *) bad "board unmeasured marker" ;; esac
+
+echo
+echo "== P3: failure classification =="
+chk "signature table parses" "python3 '$ROOT/scripts/ops/triage.py' signatures"
+class_of () { printf '%s' "$1" > "$TMP/f.log"
+  python3 "$ROOT/scripts/ops/triage.py" classify "$TMP/f.log" 2>/dev/null | awk '{print $1}'; }
+[ "$(class_of 'RESOURCE_EXHAUSTED: Out of memory allocating 2147483648 bytes')" = oom ] \
+  && ok "classifies jax OOM" || bad "classifies jax OOM"
+[ "$(class_of 'OSError: [Errno 28] No space left on device')" = disk_full ] \
+  && ok "classifies a full disk" || bad "classifies a full disk"
+[ "$(class_of 'ERROR: no done ckpt under /r/lewm_distill_finger_s0_seed1/ckpt')" = missing_donor ] \
+  && ok "classifies a missing donor" || bad "classifies a missing donor"
+[ "$(class_of 'no manifest.json beside /r/axis1_finger/pxq1m/side0')" = missing_replay_manifest ] \
+  && ok "classifies the replay parent-manifest trap" || bad "classifies replay manifest trap"
+# The rule the whole night design rests on: never invent a cause.
+[ "$(class_of 'some entirely novel explosion nobody has seen before')" = unknown ] \
+  && ok "refuses to guess on an unmatched failure" || bad "guessed on an unmatched failure"
+# Instance-side bash classifier must agree with the RCC-side python one.
+bcls="$(dv3_classify 'RESOURCE_EXHAUSTED: Out of memory allocating 1 bytes' | cut -f1)"
+[ "$bcls" = oom ] && ok "instance-side bash classifier agrees with python" \
+                  || bad "bash/python classifiers disagree (bash said $bcls)"
+
+echo
+echo "== P3: digest =="
+NOWTS="$(date +%s)"
+python3 - "$NOWTS" > "$TMP/night.jsonl" <<'NIGHT'
+import json, sys
+now = int(sys.argv[1])
+def ev(dt, host, kind, title, **kw):
+    return json.dumps({"ts": now-dt, "host": host, "kind": kind, "title": title,
+                       "priority": "high", "message": "", **kw})
+print("\n".join([
+  ev(7*3600, "inst4", "task_fail", "FAIL", **{"class": "oom", "retry": "other"}),
+  ev(7*3600, "inst4", "queue_abort", "lane 2 ABORTED", lane="2", stranded=12),
+  ev(5*3600, "inst1", "supervisor_restarted", "restarted", lane="0"),
+  ev(4*3600, "inst4", "instance_idle", "idle", idle_s=7320, gpus=4),
+  ev(3*3600, "inst4", "instance_idle", "idle", idle_s=9000, gpus=4),
+]))
+NIGHT
+dg="$(python3 "$ROOT/scripts/ops/digest.py" --since 16 < "$TMP/night.jsonl" 2>&1)"
+case "$dg" in *"NEEDS YOU"*) ok "digest separates decisions from noise" ;;
+              *) bad "digest NEEDS YOU section" ;; esac
+case "$dg" in *"instance_idle (x2"*) ok "digest collapses repeat reminders" ;;
+              *) bad "digest collapses repeats" ;; esac
+case "$dg" in *"SELF-HEALED"*) ok "digest reports what fixed itself" ;;
+              *) bad "digest self-healed section" ;; esac
+case "$dg" in *"GPU-hours burned"*) ok "digest reports the idle-hours KPI" ;;
+              *) bad "digest KPI" ;; esac
+case "$dg" in *"lower bound"*) ok "digest states the KPI is a lower bound" ;;
+              *) bad "digest KPI caveat" ;; esac
+empty="$(printf '' | python3 "$ROOT/scripts/ops/digest.py" 2>&1)"
+case "$empty" in *"Silence is only good news"*) ok "empty digest questions the silence" ;;
+                 *) bad "empty digest should not read as all-clear" ;; esac
+
+echo
+echo "== P3: night auto-mitigation is narrow =="
+chk "auto-restart is off by default" \
+    "grep -q 'DV3_NIGHT_AUTO:-0' '$ROOT/scripts/ops/watchdog.sh'"
+chk "auto-restart refuses while the child still runs" \
+    "grep -q 'task still running' '$ROOT/scripts/ops/watchdog.sh'"
+chk "auto-restart refuses an aborted or cancelled queue" \
+    "grep -q 'aborted' '$ROOT/scripts/ops/watchdog.sh' && grep -q 'cancelled' '$ROOT/scripts/ops/watchdog.sh'"
+chk "auto-restart gives up after repeated attempts" \
+    "grep -q 'tries.*-ge 2' '$ROOT/scripts/ops/watchdog.sh'"
+chk "watchdog still mutates no queue contents" \
+    "! grep -qE 'dv3_(add_cmd_tasks|queue_or_add|cancel_queue|remove_tasks)' '$ROOT/scripts/ops/watchdog.sh'"
+
+echo
+echo "== P4: archive coverage =="
+AR="$TMP/arroot"; mkdir -p "$AR/run_archived" "$AR/run_bare" "$AR/_cloud_logs"
+head -c 3000 /dev/urandom > "$AR/run_archived/w"; head -c 6000 /dev/urandom > "$AR/run_bare/w"
+mkdir -p "$TMP/mans"; printf 'abc123  runroot/run_archived/w\n' > "$TMP/mans/bundle_x.sha256"
+ar="$(python3 "$ROOT/scripts/ops/archive_report.py" --runroot "$AR" --manifests "$TMP/mans" 2>&1)"
+case "$ar" in *"NO ARCHIVE"*run_bare*) ok "unarchived dirs are listed first" ;;
+              *) bad "archive report NO ARCHIVE" ;; esac
+case "$ar" in *ARCHIVED*run_archived*bundle_x*) ok "archived dirs cite their manifest" ;;
+              *) bad "archive report ARCHIVED" ;; esac
+case "$ar" in *"COMMITTED manifest"*) ok "report states a transfer is not evidence" ;;
+              *) bad "archive report evidence rule" ;; esac
+case "$ar" in *"delete"*"may"*) bad "report still frames things as delete-safety" ;;
+              *) ok "report is coverage-framed, not delete-framed" ;; esac
+
+echo
+echo "== refresh: sticky instance indices =="
+cat > "$TMP/v1.json" <<'J'
+[{"id":9911,"ssh_host":"1.2.3.4","ssh_port":41771,"gpu_name":"RTX 5060 Ti","num_gpus":4,"actual_status":"running"},
+ {"id":9922,"ssh_host":"5.6.7.8","ssh_port":13315,"gpu_name":"RTX 5060 Ti","num_gpus":2,"actual_status":"running"}]
+J
+cat > "$TMP/v2.json" <<'J'
+[{"id":9922,"ssh_host":"5.6.7.8","ssh_port":13315,"gpu_name":"RTX 5060 Ti","num_gpus":2,"actual_status":"running"},
+ {"id":9933,"ssh_host":"9.9.9.9","ssh_port":22222,"gpu_name":"RTX 5090","num_gpus":1,"actual_status":"running"}]
+J
+mkdir -p "$TMP/rst"
+python3 "$ROOT/scripts/ops/refresh.py" --state "$TMP/rst" --from-json "$TMP/v1.json" >/dev/null 2>&1
+python3 "$ROOT/scripts/ops/refresh.py" --state "$TMP/rst" --from-json "$TMP/v2.json" >/dev/null 2>&1
+# Index 2 must survive a refresh: it is what you type and what alerts say.
+grep -q '^export IP2=5.6.7.8$' "$TMP/rst/instances.env" \
+  && ok "an instance keeps its index across refreshes" \
+  || bad "index churned across refreshes"
+# A destroyed instance must not hand its number to a stranger.
+grep -q '^export IP1=' "$TMP/rst/instances.env" \
+  && bad "destroyed instance's index was reused" \
+  || ok "destroyed instance's index stays reserved"
+grep -q '^export IP3=9.9.9.9$' "$TMP/rst/instances.env" \
+  && ok "a new instance takes the next free index" || bad "new instance indexing"
+# Real field names, confirmed against a live instance 2026-08-14. The proxy
+# host (ssh_host) is present too: host and port must be taken as a PAIR, or a
+# proxy hostname gets glued to a direct port and the address silently does not
+# answer -- which looks like a network fault, not a config bug.
+cat > "$TMP/v_real.json" <<'J'
+[{"id":9911,"public_ipaddr":"113.177.120.190","ssh_host":"ssh3.vast.ai","ssh_port":17836,
+  "ports":{"22/tcp":[{"HostIp":"0.0.0.0","HostPort":"13124"},{"HostIp":"::","HostPort":"13124"}],
+           "8080/tcp":[{"HostIp":"0.0.0.0","HostPort":"13339"}]},
+  "gpu_name":"RTX 5060 Ti","num_gpus":4,"actual_status":"running",
+  "search":{"totalHour":0.3526851851851852}}]
+J
+mkdir -p "$TMP/rst2"
+rout="$(python3 "$ROOT/scripts/ops/refresh.py" --state "$TMP/rst2" --from-json "$TMP/v_real.json" 2>&1)"
+# The direct port lives in ports["22/tcp"], NOT in ssh_port -- ssh_port belongs
+# to the proxy host. Gluing public_ipaddr to ssh_port yields a valid-looking
+# address nothing listens on.
+case "$rout" in *"113.177.120.190:13124"*) ok "resolves the DIRECT ssh port from ports.22/tcp" ;;
+                *) bad "direct port resolution (got: $rout)" ;; esac
+case "$rout" in *":17836"*) bad "glued the proxy port onto the direct IP" ;;
+                *) ok "never pairs the direct IP with the proxy port" ;; esac
+case "$rout" in *ssh3.vast.ai*) bad "picked the proxy host over the direct IP" ;;
+                *) ok "prefers the direct IP over the proxy host" ;; esac
+case "$rout" in *"direct(public_ipaddr+ports.22/tcp)"*) ok "reports which route it used" ;;
+                *) bad "route not reported" ;; esac
+case "$rout" in *0.353*) ok "captures real \$/hr for the dollar threshold" ;;
+                *) bad "cost not captured" ;; esac
+# A proxy-only instance (no ports block) must still resolve, via the proxy.
+printf '[{"id":42,"ssh_host":"ssh3.vast.ai","ssh_port":17836,"gpu_name":"X","num_gpus":1}]\n' \
+  > "$TMP/v_proxy.json"
+pout="$(python3 "$ROOT/scripts/ops/refresh.py" --state "$TMP/rst2" --from-json "$TMP/v_proxy.json" 2>&1)"
+case "$pout" in *"proxy(ssh_host+ssh_port)"*) ok "proxy-only instance falls back to the proxy route" ;;
+                *) bad "proxy fallback (got: $pout)" ;; esac
+
+# Vast has changed its JSON shape before; an unusable payload must name the keys.
+printf '[{"weird":1,"other":2}]\n' > "$TMP/v3.json"
+out="$(python3 "$ROOT/scripts/ops/refresh.py" --state "$TMP/rst" --from-json "$TMP/v3.json" 2>&1 || true)"
+case "$out" in *"Keys seen"*) ok "unrecognised vast JSON reports the keys it saw" ;;
+               *) bad "unrecognised vast JSON should name the keys" ;; esac
+
+echo
+echo "== every advertised verb dispatches =="
+missing=""
+for v in push-repo versions status board-raw sh watch events migrate selfcheck \
+         gen preflight submit check requeue pull bundle pull-local \
+         durations refresh board pack triage digest archive-report; do
+  o="$(bash "$ROOT/scripts/ops/dv3ops" "$v" 2>&1 </dev/null | head -1)"
+  case "$o" in *"not built yet"*|*"unknown verb"*) missing="$missing $v" ;; esac
+done
+[ -z "$missing" ] && ok "all 24 verbs dispatch" || bad "verbs not dispatching:$missing"
+# `help` must not advertise anything that does not exist.
+bash "$ROOT/scripts/ops/dv3ops" help 2>&1 | grep -q "not built yet" \
+  && bad "help still lists unbuilt verbs" || ok "help lists no unbuilt verbs"
 
 echo
 echo "--------------------------------------------------------------"

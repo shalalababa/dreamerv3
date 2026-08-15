@@ -37,17 +37,24 @@ dv3ops <verb> [args]
     requeue --wave W N                retry exactly the runs the checker says are not done
     pull --wave W N...                two-pass result pull from instance(s) to RCC
     bundle --wave W                   bundle + COMPLETION.txt + sha256 manifest
+    pull-local --wave W               [WSL] bundle -> local_results, verify, stage manifest
 
   P2 -- built
     durations scan DIR...   backfill measured runtimes from _cloud_logs (--gpu 5060Ti)
     durations show          the measured table (derived twin of SU_usage.txt)
+    refresh                 [WSL] vastai inventory -> instances.json/.env (sticky indices)
     board                   fleet table: every lane, progress, re-projected drain time
     pack --wave W           LPT lane assignment over measured durations (advisory)
 
-  P1 -- not built yet: pull-local
-  P2 -- not built yet: refresh
-  P3 -- not built yet: digest
-  P4 -- not built yet: archive-report
+  P3 -- built
+    triage classify LOG...  match a failure log against failure_signatures.tsv
+    triage brief --wave W   decision-ready brief: what failed, why, retry cost
+    triage signatures       the signature table (append to it as you diagnose)
+    digest [N...]           overnight: what happened, what self-healed, what
+                            needs you, and idle GPU-hours burned
+
+  P4 -- built
+    archive-report          archive coverage + headroom (not delete-safety)
 
 Instances resolve from ops/state/instances.env if present, else from IP<N>/PORT<N>
 already exported in your shell.
@@ -247,10 +254,39 @@ case "$verb" in
     bash "$0" board-raw "$@" | python3 "$DV3OPS_ROOT/scripts/ops/board.py" ${GPU:+--gpu "$GPU"}
     ;;
 
-  pull-local)                                                not_yet "$verb" P1 ;;
-  refresh)                                                   not_yet "$verb" P2 ;;
-  digest)                                                    not_yet "$verb" P3 ;;
-  archive-report)                                            not_yet "$verb" P4 ;;
+  triage)
+    exec python3 "$DV3OPS_ROOT/scripts/ops/triage.py" "$@" ${WAVE:+--wave "$WAVE"}
+    ;;
+
+  digest)
+    # Gather events from every instance, merge, render. Instances keep their own
+    # events.jsonl, so a digest works even if ntfy dropped or you never looked.
+    dv3_load_instances
+    targets=("$@")
+    if [ ${#targets[@]} -eq 0 ]; then
+      mapfile -t targets < <(compgen -A variable | sed -n 's/^IP\([0-9]\+\)$/\1/p' | sort -n)
+    fi
+    {
+      for n in "${targets[@]}"; do
+        dv3_ssh_dv3 "$n" 'cat "$RUNROOT/_cloud_logs/events.jsonl" 2>/dev/null || true' 2>/dev/null
+      done
+    } | python3 "$DV3OPS_ROOT/scripts/ops/digest.py" ${SINCE:+--since "$SINCE"}
+    echo
+    echo "=== board ==="
+    bash "$0" board ${targets[@]+"${targets[@]}"} || true
+    ;;
+
+  archive-report)
+    exec python3 "$DV3OPS_ROOT/scripts/ops/archive_report.py" --runroot "$RUNROOT" "$@"
+    ;;
+
+  pull-local)
+    exec bash "$DV3OPS_ROOT/scripts/ops/pull_local.sh" ${WAVE:+--wave "$WAVE"} "$@"
+    ;;
+
+  refresh)
+    exec python3 "$DV3OPS_ROOT/scripts/ops/refresh.py" "$@"
+    ;;
 
   help|-h|--help) usage ;;
   *) usage; die "unknown verb: $verb" ;;
