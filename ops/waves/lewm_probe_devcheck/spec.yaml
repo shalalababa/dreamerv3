@@ -73,8 +73,42 @@ stages:
     done_when:
       - exists: "fpx_${cell}.json"
 
+  # -- the control the cross-device comparison is worthless without ----------
+  # devcheck alone cannot tell a DEVICE effect from ordinary run-to-run
+  # nondeterminism: it has one measurement per device, so any gap has two
+  # candidate explanations and no way to choose. This stage re-runs the same
+  # three cells on the SAME GPU with the SAME command, which prices the noise
+  # floor directly. Read them together:
+  #   |vast2 - vast1| ~= |vast1 - rcc|  -> the instrument is noisy at this
+  #                                        magnitude and the device is not
+  #                                        the story
+  #   |vast2 - vast1| << |vast1 - rcc|  -> the gap is the device, and the
+  #                                        panel must not mix them
+  # (Standing lesson from the Midway3 determinism probe, 1 Aug: run one cell
+  # twice before concluding anything from a cross-invocation difference.)
+  - name: devcheck_rep
+    kind: probe
+    on_failure: continue
+    expand:
+      cell: ["s0_seed6", "s1_seed1", "s1_seed3"]
+    run_id: "lewm_probe_devcheck_rep_${cell}"
+    logdir: "lewm_probe_devcheck_rep"
+    outputs:
+      - "lewm_probe_devcheck_rep/fpx_${cell}.json"
+    cmd: >-
+      DREAMER_DISABLE_GPUFLAGS=1 python -m probing.ridge_probe measure
+      --run_logdir "$RUNROOT/ax1wm_finger_fpxpxq1m${cell}"
+      --probeset "$RUNROOT/e4_probesets/fingerpx_v1"
+      --output "$RUNROOT/lewm_probe_devcheck_rep/fpx_${cell}.json"
+      --platform cuda --ep_batch 4
+    inputs:
+      - "e4_probesets/fingerpx_v1"
+      - "ax1wm_finger_fpxpxq1m${cell}"
+    done_when:
+      - exists: "fpx_${cell}.json"
+
 bundle:
   prefix: lewm_probe_devcheck
-  include_stages: [devcheck]
+  include_stages: [devcheck, devcheck_rep]
   cloud_logs:
     - "lewm_probe_devcheck_*.out"

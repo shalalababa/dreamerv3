@@ -1,0 +1,108 @@
+{
+ "wave_id": "lewm_probe_devcheck",
+ "spec": "ops/waves/lewm_probe_devcheck/spec.yaml",
+ "prereg": "prereg/PREREG_lewm_20260812.md",
+ "bundle": {
+  "prefix": "lewm_probe_devcheck",
+  "include_stages": [
+   "devcheck",
+   "devcheck_rep"
+  ],
+  "cloud_logs": [
+   "lewm_probe_devcheck_*.out"
+  ]
+ },
+ "stages": [
+  {
+   "name": "devcheck",
+   "target": "vast",
+   "kind": "probe",
+   "on_failure": "continue",
+   "needs": null
+  },
+  {
+   "name": "devcheck_rep",
+   "target": "vast",
+   "kind": "probe",
+   "on_failure": "continue",
+   "needs": null
+  }
+ ],
+ "runs": [
+  {
+   "stage": "devcheck_rep",
+   "kind": "probe",
+   "target": "vast",
+   "run_id": "lewm_probe_devcheck_rep_s0_seed6",
+   "cmd": "DREAMER_DISABLE_GPUFLAGS=1 python -m probing.ridge_probe measure --run_logdir \"$RUNROOT/ax1wm_finger_fpxpxq1ms0_seed6\" --probeset \"$RUNROOT/e4_probesets/fingerpx_v1\" --output \"$RUNROOT/lewm_probe_devcheck_rep/fpx_s0_seed6.json\" --platform cuda --ep_batch 4",
+   "vars": {
+    "cell": "s0_seed6",
+    "cmd": "DREAMER_DISABLE_GPUFLAGS=1 python -m probing.ridge_probe measure --run_logdir \"$RUNROOT/ax1wm_finger_fpxpxq1ms0_seed6\" --probeset \"$RUNROOT/e4_probesets/fingerpx_v1\" --output \"$RUNROOT/lewm_probe_devcheck_rep/fpx_s0_seed6.json\" --platform cuda --ep_batch 4",
+    "run_id": "lewm_probe_devcheck_rep_s0_seed6"
+   },
+   "logdir": "lewm_probe_devcheck_rep",
+   "outputs": [
+    "lewm_probe_devcheck_rep/fpx_s0_seed6.json"
+   ],
+   "inputs": [
+    "e4_probesets/fingerpx_v1",
+    "ax1wm_finger_fpxpxq1ms0_seed6"
+   ],
+   "done_when": [
+    {
+     "exists": "fpx_s0_seed6.json"
+    }
+   ]
+  },
+  {
+   "stage": "devcheck_rep",
+   "kind": "probe",
+   "target": "vast",
+   "run_id": "lewm_probe_devcheck_rep_s1_seed1",
+   "cmd": "DREAMER_DISABLE_GPUFLAGS=1 python -m probing.ridge_probe measure --run_logdir \"$RUNROOT/ax1wm_finger_fpxpxq1ms1_seed1\" --probeset \"$RUNROOT/e4_probesets/fingerpx_v1\" --output \"$RUNROOT/lewm_probe_devcheck_rep/fpx_s1_seed1.json\" --platform cuda --ep_batch 4",
+   "vars": {
+    "cell": "s1_seed1",
+    "cmd": "DREAMER_DISABLE_GPUFLAGS=1 python -m probing.ridge_probe measure --run_logdir \"$RUNROOT/ax1wm_finger_fpxpxq1ms1_seed1\" --probeset \"$RUNROOT/e4_probesets/fingerpx_v1\" --output \"$RUNROOT/lewm_probe_devcheck_rep/fpx_s1_seed1.json\" --platform cuda --ep_batch 4",
+    "run_id": "lewm_probe_devcheck_rep_s1_seed1"
+   },
+   "logdir": "lewm_probe_devcheck_rep",
+   "outputs": [
+    "lewm_probe_devcheck_rep/fpx_s1_seed1.json"
+   ],
+   "inputs": [
+    "e4_probesets/fingerpx_v1",
+    "ax1wm_finger_fpxpxq1ms1_seed1"
+   ],
+   "done_when": [
+    {
+     "exists": "fpx_s1_seed1.json"
+    }
+   ]
+  },
+  {
+   "stage": "devcheck_rep",
+   "kind": "probe",
+   "target": "vast",
+   "run_id": "lewm_probe_devcheck_rep_s1_seed3",
+   "cmd": "DREAMER_DISABLE_GPUFLAGS=1 python -m probing.ridge_probe measure --run_logdir \"$RUNROOT/ax1wm_finger_fpxpxq1ms1_seed3\" --probeset \"$RUNROOT/e4_probesets/fingerpx_v1\" --output \"$RUNROOT/lewm_probe_devcheck_rep/fpx_s1_seed3.json\" --platform cuda --ep_batch 4",
+   "vars": {
+    "cell": "s1_seed3",
+    "cmd": "DREAMER_DISABLE_GPUFLAGS=1 python -m probing.ridge_probe measure --run_logdir \"$RUNROOT/ax1wm_finger_fpxpxq1ms1_seed3\" --probeset \"$RUNROOT/e4_probesets/fingerpx_v1\" --output \"$RUNROOT/lewm_probe_devcheck_rep/fpx_s1_seed3.json\" --platform cuda --ep_batch 4",
+    "run_id": "lewm_probe_devcheck_rep_s1_seed3"
+   },
+   "logdir": "lewm_probe_devcheck_rep",
+   "outputs": [
+    "lewm_probe_devcheck_rep/fpx_s1_seed3.json"
+   ],
+   "inputs": [
+    "e4_probesets/fingerpx_v1",
+    "ax1wm_finger_fpxpxq1ms1_seed3"
+   ],
+   "done_when": [
+    {
+     "exists": "fpx_s1_seed3.json"
+    }
+   ]
+  }
+ ]
+}
