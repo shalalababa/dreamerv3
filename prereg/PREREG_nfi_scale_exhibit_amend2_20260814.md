@@ -190,3 +190,38 @@ Stage-2 adjudicates the separate behavioral-diversion question.
 of:** this file, `uncfield/se_m4_read.py`, `uncfield/se_donly_read.py`,
 `uncfield/se_m3_read.py`, `embodied/envs/distractor.py`,
 `dreamerv3/configs.yaml`, then submissions.
+
+---
+
+## Addendum (16 Aug 2026, pre-outcome) — producer extension + wave transcription VERIFIED
+
+The §4 launch specs are executed via the ops wave `se_arms`
+(`ops/waves/se_arms/spec.yaml`, commit 35a053ba). Verified against
+this amendment before any arm result exists:
+
+- **Producer change** (`scripts/uncfield_se.sbatch`, same commit): the
+  Stage-1 launcher hardcoded `--distractor.dim 8` and passed no
+  distractor gate flags, so the D-only and gated arms could not be
+  expressed. Four env overrides added, ALL defaulting to the Stage-1
+  values (`DISTRACTOR_DIM:-8`; gate triple `''`/`0`/`0.0` = the
+  configs.yaml defaults) — an unset environment reproduces the Stage-1
+  command byte-for-byte (the same inert-extension pattern as the
+  planted GATE_* flags). Precision note: the in-file comment calls all
+  four defaults "the config defaults"; DISTRACTOR_DIM's default 8 is
+  the STAGE-1 hardcoded value (the config default is 0) — the launcher
+  is Stage-1-preserving either way, which is the property that
+  matters. The launcher is a producer, not a frozen reader; no
+  registered statistic or reader is touched.
+- **Wave transcription**: 12 run_ids match §4 exactly (se_donly_s10..13
+  w/ single delta DISTRACTOR_DIM=0; se_gate_s20..23 w/ the gate triple
+  on BOTH wrappers at −0.13009691 exact; se_ungate_s24..27 verbatim);
+  pinned constants come from the script defaults, not re-derived.
+- **D-only mechanics**: `--distractor.dim 0` short-circuits the
+  wrapper at main.py:252 (never constructed; gate flags carried
+  unused); the planted wrapper's SeedSequence (0x5E) is independent of
+  the distractor's (0xD0), so removing N does not shift D/C streams.
+- Reminder pinned here for the bundles: D-only runs need their per-run
+  `se_probe` pass (final ckpt, frozen defaults, default output) AFTER
+  training, before bundling; Stage-2 bundles must include `replay/`
+  (M3 occupancy input) — the wave's done_when checks do not cover
+  either.
