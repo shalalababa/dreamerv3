@@ -172,10 +172,24 @@ def check(spec: wavespec.WaveSpec, runroot: Path, stages=None) -> dict:
   results = []
   for r in spec.runs(stages):
     rundir = runroot / (r.logdir or r.run_id)
-    obs = observe(rundir)
+    try:
+      obs = observe(rundir)
+    except OSError as e:
+      obs = {"exists": True, "ckpt_step": 0, "n_scores": 0, "markers": [],
+             "progress": None, "unreadable": f"{e.__class__.__name__}: {e.filename or e}"}
     checks = []
     for p in r.done_when:
-      passed, desc = evaluate(rundir, p.kind, p.arg)
+      # A predicate that cannot be READ is not a predicate that passed, and it
+      # is not a reason to abandon the whole wave either. A single
+      # mode-000 file under lewm_finger_s0_seed1 raised PermissionError out of
+      # Path.exists() and killed the entire lewm_upstream check
+      # (2026-08-16) -- 31 other runs went unreported because of one file.
+      # Unreadable is reported as NOT done, including for `absent`: an
+      # unreadable path is unknown, and unknown must never read as satisfied.
+      try:
+        passed, desc = evaluate(rundir, p.kind, p.arg)
+      except OSError as e:
+        passed, desc = False, f"UNREADABLE ({e.__class__.__name__}: {e.filename or e})"
       checks.append({"predicate": p.describe(), "passed": passed, "observed": desc})
     if not obs["exists"]:
       status = "MISSING"

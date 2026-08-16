@@ -530,6 +530,24 @@ import wavecheck; print(wavecheck.ckpt_step(Path('$CS/$1')))"; }
   && ok "ckpt_step still parses a plain step-named ckpt" \
   || bad "ckpt_step still parses a plain step-named ckpt: got $(step_of bare_num)"
 
+# One unreadable path must not take the whole wave down with it. A mode-000
+# run dir on RCC raised PermissionError out of Path.exists() and aborted the
+# entire lewm_upstream check, so 31 other runs went unreported (2026-08-16).
+# Unreadable is NOT done -- it is unknown, and unknown must never read as
+# satisfied.
+PB="$TMP/permblock"; mkdir -p "$PB/wave" "$PB/runs/blocked"
+touch "$PB/runs/blocked/secret"
+printf '%s\n' 'wave_id: permprobe' 'stages: [{name: s, run_id: "blocked", cmd: "true",' \
+              '  done_when: [{exists: secret}]}]' > "$PB/wave/spec.yaml"
+chmod 000 "$PB/runs/blocked"
+prep="$(python3 "$ROOT/scripts/ops/wavecheck.py" "$PB/wave" --runroot "$PB/runs" 2>&1)"
+chmod 755 "$PB/runs/blocked"
+case "$prep" in *Traceback*) bad "checker crashes on an unreadable path" ;;
+                *UNREADABLE*) ok "unreadable predicate reported, not raised" ;;
+                *) bad "unreadable predicate should be reported: $prep" ;; esac
+case "$prep" in *"SUMMARY 0/1"*) ok "unreadable counts as NOT done" ;;
+                *) bad "unreadable must not count as done" ;; esac
+
 echo
 echo "== P1: spec validation rejects bad specs =="
 mkbad () { mkdir -p "$TMP/bad"; printf '%s\n' "$1" > "$TMP/bad/spec.yaml"; }
@@ -898,6 +916,13 @@ chk "destroy refuses while work is in flight" \
     "grep -q 'refusing to destroy an instance with work in flight' '$D'"
 chk "destroy requires typing the vast id" \
     "grep -q 'Type the vast id' '$D'"
+# A killed job can leave the busy percentage latched at 100 with no process and
+# no memory (instance 4, 2026-08-16). Utilization alone must not stand in for
+# work, or a fully archived instance becomes undestroyable.
+chk "destroy counts compute processes, not just utilization" \
+    "grep -q 'query-compute-apps' '$D'"
+chk "destroy's utilization path also requires held GPU memory" \
+    "grep -q 'u_live:-0}\" -ge 20 \] && \[ \"\${m_live:-0}\" -ge 512' '$D'"
 chk "unsafe override needs a typed acknowledgement" \
     "grep -q 'DESTROY UNARCHIVED' '$D'"
 chk "destroy records the instance BEFORE calling vastai" \

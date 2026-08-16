@@ -81,13 +81,28 @@ busy="$(dv3_ssh_dv3 "$N" '
   done
   util=$(nvidia-smi --query-gpu=utilization.gpu --format=csv,noheader 2>/dev/null \
          | tr -d " %" | sort -rn | head -1)
-  echo "queues=$n util=${util:-0}"')"
+  procs=$(nvidia-smi --query-compute-apps=pid --format=csv,noheader 2>/dev/null \
+          | grep -c . || true)
+  mem=$(nvidia-smi --query-gpu=memory.used --format=csv,noheader 2>/dev/null \
+        | tr -d " MiB" | sort -rn | head -1)
+  echo "queues=$n procs=${procs:-0} util=${util:-0} mem=${mem:-0}"')"
 echo "  $busy"
 q_live="$(printf '%s' "$busy" | sed -n 's/.*queues=\([0-9]*\).*/\1/p')"
+p_live="$(printf '%s' "$busy" | sed -n 's/.*procs=\([0-9]*\).*/\1/p')"
 u_live="$(printf '%s' "$busy" | sed -n 's/.*util=\([0-9]*\).*/\1/p')"
+m_live="$(printf '%s' "$busy" | sed -n 's/.*mem=\([0-9]*\).*/\1/p')"
 in_flight=0
 [ "${q_live:-0}" -gt 0 ] && in_flight=1
-[ "${u_live:-0}" -ge 20 ] && in_flight=1
+[ "${p_live:-0}" -gt 0 ] && in_flight=1
+# Utilization ALONE is not evidence of work. Consumer cards leave the busy
+# percentage latched at 100 for minutes after a job is killed -- instance 4
+# reported GPUs 1 and 2 at 100% with 2 MiB allocated and zero compute
+# processes (2026-08-16), which blocked a destroy whose work was already
+# cancelled and archived. A real training job holds GPU memory, so utilization
+# only counts when memory is held too. Kept as a second path (rather than
+# dropping util entirely) because some container images hide the compute-apps
+# list, and there memory is the only witness left.
+[ "${u_live:-0}" -ge 20 ] && [ "${m_live:-0}" -ge 512 ] && in_flight=1
 if [ "$in_flight" -eq 1 ]; then
   echo "  WARNING: this instance is still working (live supervisors or a busy GPU)."
   [ "$FORCE" -eq 1 ] || die "refusing to destroy an instance with work in flight.
