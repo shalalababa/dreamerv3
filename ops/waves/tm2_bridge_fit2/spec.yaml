@@ -21,6 +21,10 @@ kinds:
   tm2_bridge_fit:
     per_gpu: 2
     pairing: homogeneous
+  # Adapts are single-occupancy: they run the MPPI planner at eval, which is
+  # not the fit's footprint, and they are already complete anyway.
+  tm2_bridge_adapt:
+    per_gpu: 1
 
 stages:
 
@@ -57,9 +61,53 @@ stages:
       - exists: tm2_ckpt.pt
       - file_contains: {file: TM2_FIT_PROGRESS, pattern: "update=500000/500000"}
 
+  # -- adapt: the half the P-F2 primary actually reads ----------------------
+  # TRANSCRIBED FROM DISK 2026-08-16, NOT AUTHORED, and NOT re-submitted:
+  # all 48 adapts already exist on RCC, complete (128 score rows + ADAPT_DONE
+  # each), produced 14 Aug by the hand-written adapt-only lane whose shell
+  # function was never kept. The wave spec was fits-only, so `check` and
+  # `bundle` could not see them and the 15-Aug bundle shipped 48 fits and
+  # nothing to read -- which is exactly the gap this stage closes.
+  #
+  # The command below is reconstructed from each run's own audit config.yaml
+  # (`pretrained`, `task`, `seed`, `steps` 125000, `eval_freq` 16000,
+  # `eval_episodes` 16, `seed_steps` 5000, `mpc` true) checked against
+  # probing/tdmpc2_adapt.py's argument table: every value except pretrained /
+  # logdir / task / seed is that parser's default, so they are left unstated
+  # rather than spelled out, which is what the producer must have done. It is
+  # here so a requeue is possible and so the run table is one table; it has
+  # not been executed from this spec.
+  #
+  # 128 score rows = eval_episodes 16 x 8 evals over 125k steps at eval_freq
+  # 16000. A run that stopped short cannot reach it.
+  - name: adapt
+    kind: tm2_bridge_adapt
+    on_failure: continue      # independent cells, unlike the paired fits
+    expand:
+      arm:  [aware, free, rec]
+      side: [0, 1]
+      seed: [1, 2, 3, 4, 5, 6, 7, 8]
+    run_id: "adapt_tm2b${arm}q1s${side}_finger_seed${seed}_ckpt500000"
+    cmd: >-
+      TDMPC2_ROOT=/workspace/tdmpc2/tdmpc2
+      /workspace/conda_envs/tdmpc2/bin/python -m probing.tdmpc2_adapt
+      --tdmpc2_root /workspace/tdmpc2/tdmpc2
+      --pretrained "$RUNROOT/tm2wm_finger_b${arm}q1s${side}_seed${seed}"
+      --logdir "$RUNROOT/${run_id}"
+      --task dmc_finger_turn_hard --seed ${seed}
+    inputs:
+      - "tm2wm_finger_b${arm}q1s${side}_seed${seed}/tm2_ckpt.pt"
+    outputs:
+      - "adapt_tm2b${arm}q1s${side}_finger_seed${seed}_ckpt500000"
+    done_when:
+      - exists: ADAPT_DONE
+      - exists: config.yaml
+      - jsonl_min_lines: {file: scores.jsonl, n: 128}
+
 bundle:
   prefix: tm2_bridge
-  include_stages: [fit]
+  include_stages: [fit, adapt]
   cloud_logs:
     - "tm2wm_finger_b*_seed*.out"
+    - "adapt_tm2b*_finger_seed*.out"
     - "worker_shard*.out"

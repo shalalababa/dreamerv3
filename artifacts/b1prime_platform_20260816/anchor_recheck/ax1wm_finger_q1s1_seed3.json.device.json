@@ -1,0 +1,13 @@
+{
+ "output": "/scratch/midway3/rickybao/dreamerv3_runs/b1p_anchor_recheck/ax1wm_finger_q1s1_seed3.json",
+ "run_logdir": "/scratch/midway3/rickybao/dreamerv3_runs/ax1wm_finger_q1s1_seed3",
+ "probeset": "/scratch/midway3/rickybao/dreamerv3_runs/e4_probesets/finger_v1",
+ "hostname": "midway3-0278.rcc.local",
+ "gpu_name": "Tesla V100-PCIE-16GB",
+ "driver_version": "535.216.03",
+ "slurm_job_id": "53420696",
+ "command": "python -m probing.ridge_probe measure --run_logdir /scratch/midway3/rickybao/dreamerv3_runs/ax1wm_finger_q1s1_seed3 --probeset /scratch/midway3/rickybao/dreamerv3_runs/e4_probesets/finger_v1 --output /scratch/midway3/rickybao/dreamerv3_runs/b1p_anchor_recheck/ax1wm_finger_q1s1_seed3.json --platform cuda",
+ "platform_flag": "cuda",
+ "platform_flag_reason": "registered conditional applied; default gpu alias unusable in this jaxlib build -- see b1prime_platform_decision_20260816.md",
+ "output_sha256": "e60977d14271ced201c9675a0fcd23a119bbe36acf718bf4cf0a3f5a4e02a3a7"
+}

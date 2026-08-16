@@ -1,0 +1,47 @@
+{
+  "exploratory": "ridge-probe exploratory instrument 2026-08-08; not frozen; no registered decision consumes this",
+  "run_logdir": "/scratch/midway3/rickybao/dreamerv3_runs/ax1wm_finger_fq1s0_seed4",
+  "run_id": "ax1wm_finger_fq1s0_seed4",
+  "checkpoint": "/scratch/midway3/rickybao/dreamerv3_runs/ax1wm_finger_fq1s0_seed4/ckpt",
+  "expl_mode": "apt",
+  "reward_aware": false,
+  "probeset_id": "finger_v1",
+  "probeset_sha256": "a78fe58ca526b51c9fd567b9627e6524eef9df55d918d49ac3f24994c452c786",
+  "reward_override": null,
+  "override_meta": null,
+  "k_folds": 5,
+  "alphas": [
+    0.0001,
+    0.001,
+    0.01
+  ],
+  "seed": 0,
+  "feat_dim": 640,
+  "probe": {
+    "alpha_0.0001": {
+      "r2": -0.29844238698049996,
+      "auroc": 0.4180176843485472,
+      "auroc_in_regime": 0.5713235294117647,
+      "auroc_out_regime": null,
+      "r2_in_regime": -834.8300581488658
+    },
+    "alpha_0.001": {
+      "r2": -0.2952561687024924,
+      "auroc": 0.4177901160693131,
+      "auroc_in_regime": 0.5762561274509804,
+      "auroc_out_regime": null,
+      "r2_in_regime": -834.3788845907384
+    },
+    "alpha_0.01": {
+      "r2": -0.27492833967722174,
+      "auroc": 0.416392000479247,
+      "auroc_in_regime": 0.5882046568627451,
+      "auroc_out_regime": null,
+      "r2_in_regime": -831.5323837352008
+    }
+  },
+  "head_panel": null,
+  "deter_std_recomputed": 0.12022495757570997,
+  "deter_std_summary": 0.12022613923477475,
+  "witness_match": true
+}
