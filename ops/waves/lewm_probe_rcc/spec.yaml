@@ -1,0 +1,62 @@
+# LeWM probe / E4 leg, on RCC Slurm.  PREREG_lewm_20260812 (line 106).
+#
+# Same measurement as lewm_graft's probe_e4 stage, routed through Slurm instead
+# of a Vast queue lane. Two reasons this leg belongs here rather than on a
+# rented box:
+#
+#   * the fpxpx WMs it probes already live on RCC, so nothing has to move; and
+#   * Slurm schedules each run as its OWN job, so one failure cannot strand the
+#     rest. The Vast lanes abort a whole lane on first failure -- which is what
+#     stranded 6 of 7 graft adapts on 2026-08-15.
+#
+# The command is copied from the prereg; --platform cuda is added because the
+# default `gpu` is not a backend name in this JAX build (confirmed by the
+# sigma-ladder smoke). ep_batch 4 is the panel-uniform value ridge_probe.py
+# documents -- never vary it per run.
+
+wave_id: lewm_probe_rcc
+paper: paper1
+prereg: prereg/PREREG_lewm_20260812.md
+notes: >-
+  16 ridge_probe measures (2 sides x 8 seeds) over the fpxpx donor WMs against
+  the frozen fingerpx_v1 probe set, one Slurm job each. Outputs are loose files
+  in the shared lewm_probe/ folder, named as the reader expects.
+
+defaults:
+  target: rcc-slurm
+
+kinds:
+  probe: {per_gpu: 1}
+
+stages:
+
+  - name: probe_e4
+    kind: probe
+    target: rcc-slurm
+    on_failure: continue
+    expand:
+      side: [0, 1]
+      seed: [1, 2, 3, 4, 5, 6, 7, 8]
+    run_id: "lewm_probe_e4_s${side}_seed${seed}"
+    logdir: "lewm_probe"
+    outputs:
+      - "lewm_probe/fpx_s${side}_seed${seed}.json"
+    sbatch:
+      script: scripts/lewm_probe.sbatch
+      time: "04:00:00"
+      export:
+        RUN_LOGDIR: "${RUNROOT}/ax1wm_finger_fpxpxq1ms${side}_seed${seed}"
+        PROBESET: "${RUNROOT}/e4_probesets/fingerpx_v1"
+        OUTPUT: "${RUNROOT}/lewm_probe/fpx_s${side}_seed${seed}.json"
+        EP_BATCH: "4"
+        PLATFORM: "cuda"
+    inputs:
+      - "e4_probesets/fingerpx_v1"
+      - "ax1wm_finger_fpxpxq1ms${side}_seed${seed}"
+    done_when:
+      - exists: "fpx_s${side}_seed${seed}.json"
+
+bundle:
+  prefix: lewm_probe
+  include_stages: [probe_e4]
+  cloud_logs: []

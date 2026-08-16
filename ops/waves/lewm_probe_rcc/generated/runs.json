@@ -1,0 +1,423 @@
+{
+ "wave_id": "lewm_probe_rcc",
+ "spec": "/home/rickybao/projects/dreamerv3/ops/waves/lewm_probe_rcc/spec.yaml",
+ "prereg": "prereg/PREREG_lewm_20260812.md",
+ "bundle": {
+  "prefix": "lewm_probe",
+  "include_stages": [
+   "probe_e4"
+  ],
+  "cloud_logs": []
+ },
+ "stages": [
+  {
+   "name": "probe_e4",
+   "target": "rcc-slurm",
+   "kind": "probe",
+   "on_failure": "continue",
+   "needs": null
+  }
+ ],
+ "runs": [
+  {
+   "stage": "probe_e4",
+   "kind": "probe",
+   "target": "rcc-slurm",
+   "run_id": "lewm_probe_e4_s0_seed1",
+   "cmd": "",
+   "vars": {
+    "side": 0,
+    "seed": 1,
+    "run_id": "lewm_probe_e4_s0_seed1"
+   },
+   "logdir": "lewm_probe",
+   "outputs": [
+    "lewm_probe/fpx_s0_seed1.json"
+   ],
+   "inputs": [
+    "e4_probesets/fingerpx_v1",
+    "ax1wm_finger_fpxpxq1ms0_seed1"
+   ],
+   "done_when": [
+    {
+     "exists": "fpx_s0_seed1.json"
+    }
+   ]
+  },
+  {
+   "stage": "probe_e4",
+   "kind": "probe",
+   "target": "rcc-slurm",
+   "run_id": "lewm_probe_e4_s0_seed2",
+   "cmd": "",
+   "vars": {
+    "side": 0,
+    "seed": 2,
+    "run_id": "lewm_probe_e4_s0_seed2"
+   },
+   "logdir": "lewm_probe",
+   "outputs": [
+    "lewm_probe/fpx_s0_seed2.json"
+   ],
+   "inputs": [
+    "e4_probesets/fingerpx_v1",
+    "ax1wm_finger_fpxpxq1ms0_seed2"
+   ],
+   "done_when": [
+    {
+     "exists": "fpx_s0_seed2.json"
+    }
+   ]
+  },
+  {
+   "stage": "probe_e4",
+   "kind": "probe",
+   "target": "rcc-slurm",
+   "run_id": "lewm_probe_e4_s0_seed3",
+   "cmd": "",
+   "vars": {
+    "side": 0,
+    "seed": 3,
+    "run_id": "lewm_probe_e4_s0_seed3"
+   },
+   "logdir": "lewm_probe",
+   "outputs": [
+    "lewm_probe/fpx_s0_seed3.json"
+   ],
+   "inputs": [
+    "e4_probesets/fingerpx_v1",
+    "ax1wm_finger_fpxpxq1ms0_seed3"
+   ],
+   "done_when": [
+    {
+     "exists": "fpx_s0_seed3.json"
+    }
+   ]
+  },
+  {
+   "stage": "probe_e4",
+   "kind": "probe",
+   "target": "rcc-slurm",
+   "run_id": "lewm_probe_e4_s0_seed4",
+   "cmd": "",
+   "vars": {
+    "side": 0,
+    "seed": 4,
+    "run_id": "lewm_probe_e4_s0_seed4"
+   },
+   "logdir": "lewm_probe",
+   "outputs": [
+    "lewm_probe/fpx_s0_seed4.json"
+   ],
+   "inputs": [
+    "e4_probesets/fingerpx_v1",
+    "ax1wm_finger_fpxpxq1ms0_seed4"
+   ],
+   "done_when": [
+    {
+     "exists": "fpx_s0_seed4.json"
+    }
+   ]
+  },
+  {
+   "stage": "probe_e4",
+   "kind": "probe",
+   "target": "rcc-slurm",
+   "run_id": "lewm_probe_e4_s0_seed5",
+   "cmd": "",
+   "vars": {
+    "side": 0,
+    "seed": 5,
+    "run_id": "lewm_probe_e4_s0_seed5"
+   },
+   "logdir": "lewm_probe",
+   "outputs": [
+    "lewm_probe/fpx_s0_seed5.json"
+   ],
+   "inputs": [
+    "e4_probesets/fingerpx_v1",
+    "ax1wm_finger_fpxpxq1ms0_seed5"
+   ],
+   "done_when": [
+    {
+     "exists": "fpx_s0_seed5.json"
+    }
+   ]
+  },
+  {
+   "stage": "probe_e4",
+   "kind": "probe",
+   "target": "rcc-slurm",
+   "run_id": "lewm_probe_e4_s0_seed6",
+   "cmd": "",
+   "vars": {
+    "side": 0,
+    "seed": 6,
+    "run_id": "lewm_probe_e4_s0_seed6"
+   },
+   "logdir": "lewm_probe",
+   "outputs": [
+    "lewm_probe/fpx_s0_seed6.json"
+   ],
+   "inputs": [
+    "e4_probesets/fingerpx_v1",
+    "ax1wm_finger_fpxpxq1ms0_seed6"
+   ],
+   "done_when": [
+    {
+     "exists": "fpx_s0_seed6.json"
+    }
+   ]
+  },
+  {
+   "stage": "probe_e4",
+   "kind": "probe",
+   "target": "rcc-slurm",
+   "run_id": "lewm_probe_e4_s0_seed7",
+   "cmd": "",
+   "vars": {
+    "side": 0,
+    "seed": 7,
+    "run_id": "lewm_probe_e4_s0_seed7"
+   },
+   "logdir": "lewm_probe",
+   "outputs": [
+    "lewm_probe/fpx_s0_seed7.json"
+   ],
+   "inputs": [
+    "e4_probesets/fingerpx_v1",
+    "ax1wm_finger_fpxpxq1ms0_seed7"
+   ],
+   "done_when": [
+    {
+     "exists": "fpx_s0_seed7.json"
+    }
+   ]
+  },
+  {
+   "stage": "probe_e4",
+   "kind": "probe",
+   "target": "rcc-slurm",
+   "run_id": "lewm_probe_e4_s0_seed8",
+   "cmd": "",
+   "vars": {
+    "side": 0,
+    "seed": 8,
+    "run_id": "lewm_probe_e4_s0_seed8"
+   },
+   "logdir": "lewm_probe",
+   "outputs": [
+    "lewm_probe/fpx_s0_seed8.json"
+   ],
+   "inputs": [
+    "e4_probesets/fingerpx_v1",
+    "ax1wm_finger_fpxpxq1ms0_seed8"
+   ],
+   "done_when": [
+    {
+     "exists": "fpx_s0_seed8.json"
+    }
+   ]
+  },
+  {
+   "stage": "probe_e4",
+   "kind": "probe",
+   "target": "rcc-slurm",
+   "run_id": "lewm_probe_e4_s1_seed1",
+   "cmd": "",
+   "vars": {
+    "side": 1,
+    "seed": 1,
+    "run_id": "lewm_probe_e4_s1_seed1"
+   },
+   "logdir": "lewm_probe",
+   "outputs": [
+    "lewm_probe/fpx_s1_seed1.json"
+   ],
+   "inputs": [
+    "e4_probesets/fingerpx_v1",
+    "ax1wm_finger_fpxpxq1ms1_seed1"
+   ],
+   "done_when": [
+    {
+     "exists": "fpx_s1_seed1.json"
+    }
+   ]
+  },
+  {
+   "stage": "probe_e4",
+   "kind": "probe",
+   "target": "rcc-slurm",
+   "run_id": "lewm_probe_e4_s1_seed2",
+   "cmd": "",
+   "vars": {
+    "side": 1,
+    "seed": 2,
+    "run_id": "lewm_probe_e4_s1_seed2"
+   },
+   "logdir": "lewm_probe",
+   "outputs": [
+    "lewm_probe/fpx_s1_seed2.json"
+   ],
+   "inputs": [
+    "e4_probesets/fingerpx_v1",
+    "ax1wm_finger_fpxpxq1ms1_seed2"
+   ],
+   "done_when": [
+    {
+     "exists": "fpx_s1_seed2.json"
+    }
+   ]
+  },
+  {
+   "stage": "probe_e4",
+   "kind": "probe",
+   "target": "rcc-slurm",
+   "run_id": "lewm_probe_e4_s1_seed3",
+   "cmd": "",
+   "vars": {
+    "side": 1,
+    "seed": 3,
+    "run_id": "lewm_probe_e4_s1_seed3"
+   },
+   "logdir": "lewm_probe",
+   "outputs": [
+    "lewm_probe/fpx_s1_seed3.json"
+   ],
+   "inputs": [
+    "e4_probesets/fingerpx_v1",
+    "ax1wm_finger_fpxpxq1ms1_seed3"
+   ],
+   "done_when": [
+    {
+     "exists": "fpx_s1_seed3.json"
+    }
+   ]
+  },
+  {
+   "stage": "probe_e4",
+   "kind": "probe",
+   "target": "rcc-slurm",
+   "run_id": "lewm_probe_e4_s1_seed4",
+   "cmd": "",
+   "vars": {
+    "side": 1,
+    "seed": 4,
+    "run_id": "lewm_probe_e4_s1_seed4"
+   },
+   "logdir": "lewm_probe",
+   "outputs": [
+    "lewm_probe/fpx_s1_seed4.json"
+   ],
+   "inputs": [
+    "e4_probesets/fingerpx_v1",
+    "ax1wm_finger_fpxpxq1ms1_seed4"
+   ],
+   "done_when": [
+    {
+     "exists": "fpx_s1_seed4.json"
+    }
+   ]
+  },
+  {
+   "stage": "probe_e4",
+   "kind": "probe",
+   "target": "rcc-slurm",
+   "run_id": "lewm_probe_e4_s1_seed5",
+   "cmd": "",
+   "vars": {
+    "side": 1,
+    "seed": 5,
+    "run_id": "lewm_probe_e4_s1_seed5"
+   },
+   "logdir": "lewm_probe",
+   "outputs": [
+    "lewm_probe/fpx_s1_seed5.json"
+   ],
+   "inputs": [
+    "e4_probesets/fingerpx_v1",
+    "ax1wm_finger_fpxpxq1ms1_seed5"
+   ],
+   "done_when": [
+    {
+     "exists": "fpx_s1_seed5.json"
+    }
+   ]
+  },
+  {
+   "stage": "probe_e4",
+   "kind": "probe",
+   "target": "rcc-slurm",
+   "run_id": "lewm_probe_e4_s1_seed6",
+   "cmd": "",
+   "vars": {
+    "side": 1,
+    "seed": 6,
+    "run_id": "lewm_probe_e4_s1_seed6"
+   },
+   "logdir": "lewm_probe",
+   "outputs": [
+    "lewm_probe/fpx_s1_seed6.json"
+   ],
+   "inputs": [
+    "e4_probesets/fingerpx_v1",
+    "ax1wm_finger_fpxpxq1ms1_seed6"
+   ],
+   "done_when": [
+    {
+     "exists": "fpx_s1_seed6.json"
+    }
+   ]
+  },
+  {
+   "stage": "probe_e4",
+   "kind": "probe",
+   "target": "rcc-slurm",
+   "run_id": "lewm_probe_e4_s1_seed7",
+   "cmd": "",
+   "vars": {
+    "side": 1,
+    "seed": 7,
+    "run_id": "lewm_probe_e4_s1_seed7"
+   },
+   "logdir": "lewm_probe",
+   "outputs": [
+    "lewm_probe/fpx_s1_seed7.json"
+   ],
+   "inputs": [
+    "e4_probesets/fingerpx_v1",
+    "ax1wm_finger_fpxpxq1ms1_seed7"
+   ],
+   "done_when": [
+    {
+     "exists": "fpx_s1_seed7.json"
+    }
+   ]
+  },
+  {
+   "stage": "probe_e4",
+   "kind": "probe",
+   "target": "rcc-slurm",
+   "run_id": "lewm_probe_e4_s1_seed8",
+   "cmd": "",
+   "vars": {
+    "side": 1,
+    "seed": 8,
+    "run_id": "lewm_probe_e4_s1_seed8"
+   },
+   "logdir": "lewm_probe",
+   "outputs": [
+    "lewm_probe/fpx_s1_seed8.json"
+   ],
+   "inputs": [
+    "e4_probesets/fingerpx_v1",
+    "ax1wm_finger_fpxpxq1ms1_seed8"
+   ],
+   "done_when": [
+    {
+     "exists": "fpx_s1_seed8.json"
+    }
+   ]
+  }
+ ]
+}

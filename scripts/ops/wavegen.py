@@ -213,7 +213,25 @@ submitted=0; skipped=0; left=0
 
   for r in runs:
     sb = r.sbatch
-    exports = ",".join(f"{k}={shlex.quote(str(v))}" for k, v in (sb.get("export") or {}).items())
+    # Export values are DOUBLE-quoted so the submitting shell expands $RUNROOT,
+    # $REPO and friends before sbatch sees them. shlex.quote would single-quote
+    # them, and `--export` values are not shell-expanded by sbatch -- nor does
+    # bash ever re-expand a variable's VALUE -- so the job would receive the
+    # literal string "${RUNROOT}/ax1wm_..." and fail its own directory check
+    # with a path that looks correct in every log (2026-08-15, first rcc-slurm
+    # wave). Specs write ${RUNROOT} exactly as they do for vast lanes; the
+    # difference is only WHICH shell expands it.
+    def _export_val(v: str) -> str:
+      v = str(v)
+      # Command substitution in an export value would run at submit time with
+      # the submitter's environment -- never intended, and hard to spot.
+      for bad in ("`", "$("):
+        if bad in v:
+          raise SpecError(f"sbatch export value may not contain {bad!r}: {v!r}")
+      return '"' + v.replace('"', r'\"') + '"'
+
+    exports = ",".join(f"{k}={_export_val(v)}"
+                       for k, v in (sb.get("export") or {}).items())
     opts = [
         f'--account="$SLURM_ACCOUNT"', f'--partition="$SLURM_PARTITION"',
         f'--gres={shlex.quote(str(sb.get("gres", "$SLURM_GRES")))}'.replace(

@@ -1,0 +1,27 @@
+wave_id: lewm_probe_rcc
+spec:    /home/rickybao/projects/dreamerv3/ops/waves/lewm_probe_rcc/spec.yaml
+prereg:  prereg/PREREG_lewm_20260812.md
+
+=== stage probe_e4  [rcc-slurm]  kind=probe  on_failure=continue  n=16 ===
+  lewm_probe_e4_s0_seed1
+  lewm_probe_e4_s0_seed2
+  lewm_probe_e4_s0_seed3
+  lewm_probe_e4_s0_seed4
+  lewm_probe_e4_s0_seed5
+  lewm_probe_e4_s0_seed6
+  lewm_probe_e4_s0_seed7
+  lewm_probe_e4_s0_seed8
+  lewm_probe_e4_s1_seed1
+  lewm_probe_e4_s1_seed2
+  lewm_probe_e4_s1_seed3
+  lewm_probe_e4_s1_seed4
+  lewm_probe_e4_s1_seed5
+  lewm_probe_e4_s1_seed6
+  lewm_probe_e4_s1_seed7
+  lewm_probe_e4_s1_seed8
+
+TOTAL RUNS: 16
+
+Check this list against the prereg before submitting. run_ids are
+consumed by frozen readers and the ledger; a wrong expansion here
+propagates into every downstream artifact.

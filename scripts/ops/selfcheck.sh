@@ -400,6 +400,27 @@ grep -q 'rc" -eq 24' "$G/pull_results.sh" 2>/dev/null \
 grep -q 'PULL INCOMPLETE for instance' "$G/pull_results.sh" 2>/dev/null \
   && ok "pull reports which instances it could not finish" \
   || bad "pull can skip instances silently"
+
+# sbatch --export values must be DOUBLE-quoted so the submitting shell expands
+# $RUNROOT/$REPO. Single-quoting passes the literal "${RUNROOT}/..." into the
+# job, which then fails its own path checks (2026-08-15, first rcc-slurm wave).
+SL="$TMP/slurmwave"; mkdir -p "$SL"
+cat > "$SL/spec.yaml" <<'SPEC'
+wave_id: sc_slurm
+stages:
+  - name: probe
+    target: rcc-slurm
+    expand: {seed: [1]}
+    run_id: "sc_slurm_seed${seed}"
+    sbatch:
+      script: scripts/x.sbatch
+      export: {RUN_LOGDIR: "${RUNROOT}/run_${seed}"}
+    done_when: [{exists: out.json}]
+SPEC
+python3 "$ROOT/scripts/ops/wavegen.py" "$SL" --quiet >/dev/null 2>&1
+grep -q 'RUN_LOGDIR="${RUNROOT}/run_1"' "$SL/generated/submit_rcc.sh" 2>/dev/null \
+  && ok "sbatch export lets the submitting shell expand \$RUNROOT" \
+  || bad "sbatch export single-quotes \$RUNROOT (job gets a literal)"
 # $RUNROOT must survive generation unexpanded: RCC and instance paths differ.
 grep -q '\$RUNROOT' "$G"/lane_fit_0.cmds 2>/dev/null \
   && ok "\$RUNROOT left for the remote shell" || bad "\$RUNROOT was expanded at generation time"
