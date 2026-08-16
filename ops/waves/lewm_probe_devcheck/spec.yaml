@@ -1,0 +1,80 @@
+# Device-sensitivity check for the E4 ridge probe. (2026-08-16)
+#
+# THE QUESTION. The fpx probe panel is being measured on two different GPUs:
+# 3 cells landed on RCC Slurm before cudnn 5003 killed the rest, and the
+# remaining 13 are running on a Vast 5060 Ti. Is a probe measured on one
+# comparable with a probe measured on the other?
+#
+# WHY IT IS NOT OBVIOUS EITHER WAY. Everything downstream of the forward pass
+# is device-independent by construction: episode_folds is `arange(N) % k` (no
+# RNG), and the ridge solve, AUROC, R2 and NLL are all float64 NumPy on the
+# CPU. But the forward pass that produces `feat` runs on the GPU under
+# `compute_dtype: bfloat16` (8-bit mantissa), through a RECURRENT
+# dyn.observe over T steps, and `post['stoch']` is a categorical sample
+# (stoch 32 x classes 4). Two amplifiers sit on top of bf16 rounding:
+# recurrence compounds it, and a near-tie logit can flip a one-hot category
+# outright -- a discrete change, not a small one. Whether any of that survives
+# into an R2 aggregated over N*T samples is an empirical question, not one to
+# settle by reasoning about epsilons.
+#
+# THE DESIGN. Re-measure, on the Vast box, the three cells RCC already
+# measured -- the only three where a same-cell cross-device pair can exist --
+# with the identical command and the identical ep_batch 4. Output goes to
+# lewm_probe_devcheck/, NEVER lewm_probe/, so neither the RCC values nor the
+# 13 Vast values can be overwritten by this check.
+#
+# READING IT. The comparison is against
+# lewm_probe_rcc_slurm/fpx_s<S>_seed<F>.json (the preserved RCC copies).
+# Note what a difference here would and would not mean: dv3 GPU jobs are
+# already not bitwise reproducible job-to-job on the SAME cluster (Midway3,
+# 1 Aug), so a small cross-device gap is not evidence that mixing devices is
+# uniquely unsafe -- it bounds run-to-run noise for this instrument. A LARGE
+# gap would mean the panel cannot mix devices and the 3 RCC cells must be
+# re-measured on Vast before any read consumes them.
+
+wave_id: lewm_probe_devcheck
+paper: paper1
+prereg: prereg/PREREG_lewm_20260812.md
+notes: >-
+  3 re-measures of already-measured fpx cells on a second GPU, to size the
+  cross-device gap in the E4 ridge probe. Diagnostic: no registered decision
+  consumes these outputs, and they are written to a side directory.
+
+defaults:
+  target: vast
+
+kinds:
+  probe: {per_gpu: 1}
+
+stages:
+
+  - name: devcheck
+    kind: probe
+    # A failure here is informative on its own and must not strand a lane.
+    on_failure: continue
+    # Exactly the cells RCC completed: s0/seed6, s1/seed1, s1/seed3. Written
+    # out rather than expanded, because the set is defined by which Slurm jobs
+    # happened to survive cudnn 5003 -- there is no factorial behind it.
+    expand:
+      cell: ["s0_seed6", "s1_seed1", "s1_seed3"]
+    run_id: "lewm_probe_devcheck_${cell}"
+    logdir: "lewm_probe_devcheck"
+    outputs:
+      - "lewm_probe_devcheck/fpx_${cell}.json"
+    cmd: >-
+      DREAMER_DISABLE_GPUFLAGS=1 python -m probing.ridge_probe measure
+      --run_logdir "$RUNROOT/ax1wm_finger_fpxpxq1m${cell}"
+      --probeset "$RUNROOT/e4_probesets/fingerpx_v1"
+      --output "$RUNROOT/lewm_probe_devcheck/fpx_${cell}.json"
+      --platform cuda --ep_batch 4
+    inputs:
+      - "e4_probesets/fingerpx_v1"
+      - "ax1wm_finger_fpxpxq1m${cell}"
+    done_when:
+      - exists: "fpx_${cell}.json"
+
+bundle:
+  prefix: lewm_probe_devcheck
+  include_stages: [devcheck]
+  cloud_logs:
+    - "lewm_probe_devcheck_*.out"
