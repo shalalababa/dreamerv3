@@ -74,6 +74,13 @@ stages:
       --platform cuda --ep_batch 4
     inputs:
       - "e4_probesets/fingerpx_v1"
+      # The donor WM is an INPUT, not an assumption. It was omitted here
+      # because this stage first ran on a box that had already fitted it; when
+      # the leg moved to instance 1 (2026-08-16) the fpxpx dirs there turned
+      # out to be 8 KB shells holding config.yaml and no ckpt, and push_donors
+      # had no reason to ship the real ones. A probe reads this dir, so it
+      # belongs in inputs.
+      - "ax1wm_finger_fpxpxq1ms${side}_seed${seed}"
     done_when:
       - exists: "fpx_s${side}_seed${seed}.json"
 
