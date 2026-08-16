@@ -41,6 +41,19 @@ kinds:
 
 stages:
 
+# COMPLETION PREDICATE, corrected 2026-08-16 after the instance-1 disk-full.
+# `TRAINING_DONE` IS A LYING MARKER for this producer: uncfield_se.sbatch does
+#   TRAIN_RC=0; wait "$TRAIN_PID" || TRAIN_RC=$?
+#   touch "$LOGDIR/TRAINING_DONE"
+# so the marker is touched unconditionally, on the failure path too. All four
+# D-only runs died at ~50% (248k-260k of 5e5 steps) when the disk filled, and
+# all four carried TRAINING_DONE. The original `n: 100` bound passed them.
+#
+# 496 is the realized count: every one of the eight completed Stage-1 runs
+# (se_cheetah_seed10..17) has EXACTLY 496 score rows at 5e5 steps. It is a
+# counter, not a marker, and a run that stopped at half the budget cannot
+# reach it.
+
   # -- D-only: the single registered delta is --distractor.dim 0 -----------
   # Needs a per-run se_probe pass afterwards (final checkpoint, frozen
   # defaults) -- amendment §4. That is a separate stage, not folded in here,
@@ -61,7 +74,7 @@ stages:
     done_when:
       - exists: TRAINING_DONE
       - exists: config.yaml
-      - jsonl_min_lines: {file: scores.jsonl, n: 100}
+      - jsonl_min_lines: {file: scores.jsonl, n: 496}
 
   # -- Stage-2 gated: the gate triple on BOTH wrappers ---------------------
   - name: gated
@@ -82,7 +95,7 @@ stages:
     done_when:
       - exists: TRAINING_DONE
       - exists: config.yaml
-      - jsonl_min_lines: {file: scores.jsonl, n: 100}
+      - jsonl_min_lines: {file: scores.jsonl, n: 496}
 
   # -- Stage-2 ungated: Stage-1 config verbatim ----------------------------
   - name: ungated
@@ -100,7 +113,7 @@ stages:
     done_when:
       - exists: TRAINING_DONE
       - exists: config.yaml
-      - jsonl_min_lines: {file: scores.jsonl, n: 100}
+      - jsonl_min_lines: {file: scores.jsonl, n: 496}
 
 bundle:
   prefix: se_arms
