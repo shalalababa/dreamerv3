@@ -1,12 +1,13 @@
 {
  "wave_id": "b1prime",
- "spec": "/home/rickybao/projects/dreamerv3/ops/waves/b1prime/spec.yaml",
+ "spec": "ops/waves/b1prime/spec.yaml",
  "prereg": "prereg/PREREG_b1prime_20260815.md",
  "bundle": {
   "prefix": "b1prime",
   "include_stages": [
    "fit_adapt_task",
-   "fit_adapt_apt"
+   "fit_adapt_apt",
+   "ridge"
   ],
   "cloud_logs": [
    "adapt_ax1sk6q1s*_finger_seed*.out",
@@ -28,6 +29,13 @@
    "kind": "axis1_fit_adapt",
    "on_failure": "abort",
    "needs": null
+  },
+  {
+   "name": "ridge",
+   "target": "rcc-slurm",
+   "kind": "ridge",
+   "on_failure": "continue",
+   "needs": "fit_adapt_task"
   }
  ],
  "runs": [
@@ -780,6 +788,422 @@
       "file": "../ax1wm_finger_fsk6q1s1_seed4/OFFLINE_FIT_PROGRESS",
       "pattern": "update=500000\ntotal_updates=500000"
      }
+    }
+   ]
+  },
+  {
+   "stage": "ridge",
+   "kind": "ridge",
+   "target": "rcc-slurm",
+   "run_id": "b1p_ridge_sk6q1s0_seed1",
+   "cmd": "",
+   "vars": {
+    "armp": "",
+    "side": 0,
+    "seed": 1,
+    "run_id": "b1p_ridge_sk6q1s0_seed1"
+   },
+   "logdir": "ax1wm_finger_sk6q1s0_seed1",
+   "outputs": [
+    "ax1wm_finger_sk6q1s0_seed1/ridge_probe_finger_v1.json"
+   ],
+   "inputs": [
+    "e4_probesets/finger_v1",
+    "ax1wm_finger_sk6q1s0_seed1"
+   ],
+   "done_when": [
+    {
+     "exists": "ridge_probe_finger_v1.json"
+    }
+   ]
+  },
+  {
+   "stage": "ridge",
+   "kind": "ridge",
+   "target": "rcc-slurm",
+   "run_id": "b1p_ridge_sk6q1s0_seed2",
+   "cmd": "",
+   "vars": {
+    "armp": "",
+    "side": 0,
+    "seed": 2,
+    "run_id": "b1p_ridge_sk6q1s0_seed2"
+   },
+   "logdir": "ax1wm_finger_sk6q1s0_seed2",
+   "outputs": [
+    "ax1wm_finger_sk6q1s0_seed2/ridge_probe_finger_v1.json"
+   ],
+   "inputs": [
+    "e4_probesets/finger_v1",
+    "ax1wm_finger_sk6q1s0_seed2"
+   ],
+   "done_when": [
+    {
+     "exists": "ridge_probe_finger_v1.json"
+    }
+   ]
+  },
+  {
+   "stage": "ridge",
+   "kind": "ridge",
+   "target": "rcc-slurm",
+   "run_id": "b1p_ridge_sk6q1s0_seed3",
+   "cmd": "",
+   "vars": {
+    "armp": "",
+    "side": 0,
+    "seed": 3,
+    "run_id": "b1p_ridge_sk6q1s0_seed3"
+   },
+   "logdir": "ax1wm_finger_sk6q1s0_seed3",
+   "outputs": [
+    "ax1wm_finger_sk6q1s0_seed3/ridge_probe_finger_v1.json"
+   ],
+   "inputs": [
+    "e4_probesets/finger_v1",
+    "ax1wm_finger_sk6q1s0_seed3"
+   ],
+   "done_when": [
+    {
+     "exists": "ridge_probe_finger_v1.json"
+    }
+   ]
+  },
+  {
+   "stage": "ridge",
+   "kind": "ridge",
+   "target": "rcc-slurm",
+   "run_id": "b1p_ridge_sk6q1s0_seed4",
+   "cmd": "",
+   "vars": {
+    "armp": "",
+    "side": 0,
+    "seed": 4,
+    "run_id": "b1p_ridge_sk6q1s0_seed4"
+   },
+   "logdir": "ax1wm_finger_sk6q1s0_seed4",
+   "outputs": [
+    "ax1wm_finger_sk6q1s0_seed4/ridge_probe_finger_v1.json"
+   ],
+   "inputs": [
+    "e4_probesets/finger_v1",
+    "ax1wm_finger_sk6q1s0_seed4"
+   ],
+   "done_when": [
+    {
+     "exists": "ridge_probe_finger_v1.json"
+    }
+   ]
+  },
+  {
+   "stage": "ridge",
+   "kind": "ridge",
+   "target": "rcc-slurm",
+   "run_id": "b1p_ridge_sk6q1s1_seed1",
+   "cmd": "",
+   "vars": {
+    "armp": "",
+    "side": 1,
+    "seed": 1,
+    "run_id": "b1p_ridge_sk6q1s1_seed1"
+   },
+   "logdir": "ax1wm_finger_sk6q1s1_seed1",
+   "outputs": [
+    "ax1wm_finger_sk6q1s1_seed1/ridge_probe_finger_v1.json"
+   ],
+   "inputs": [
+    "e4_probesets/finger_v1",
+    "ax1wm_finger_sk6q1s1_seed1"
+   ],
+   "done_when": [
+    {
+     "exists": "ridge_probe_finger_v1.json"
+    }
+   ]
+  },
+  {
+   "stage": "ridge",
+   "kind": "ridge",
+   "target": "rcc-slurm",
+   "run_id": "b1p_ridge_sk6q1s1_seed2",
+   "cmd": "",
+   "vars": {
+    "armp": "",
+    "side": 1,
+    "seed": 2,
+    "run_id": "b1p_ridge_sk6q1s1_seed2"
+   },
+   "logdir": "ax1wm_finger_sk6q1s1_seed2",
+   "outputs": [
+    "ax1wm_finger_sk6q1s1_seed2/ridge_probe_finger_v1.json"
+   ],
+   "inputs": [
+    "e4_probesets/finger_v1",
+    "ax1wm_finger_sk6q1s1_seed2"
+   ],
+   "done_when": [
+    {
+     "exists": "ridge_probe_finger_v1.json"
+    }
+   ]
+  },
+  {
+   "stage": "ridge",
+   "kind": "ridge",
+   "target": "rcc-slurm",
+   "run_id": "b1p_ridge_sk6q1s1_seed3",
+   "cmd": "",
+   "vars": {
+    "armp": "",
+    "side": 1,
+    "seed": 3,
+    "run_id": "b1p_ridge_sk6q1s1_seed3"
+   },
+   "logdir": "ax1wm_finger_sk6q1s1_seed3",
+   "outputs": [
+    "ax1wm_finger_sk6q1s1_seed3/ridge_probe_finger_v1.json"
+   ],
+   "inputs": [
+    "e4_probesets/finger_v1",
+    "ax1wm_finger_sk6q1s1_seed3"
+   ],
+   "done_when": [
+    {
+     "exists": "ridge_probe_finger_v1.json"
+    }
+   ]
+  },
+  {
+   "stage": "ridge",
+   "kind": "ridge",
+   "target": "rcc-slurm",
+   "run_id": "b1p_ridge_sk6q1s1_seed4",
+   "cmd": "",
+   "vars": {
+    "armp": "",
+    "side": 1,
+    "seed": 4,
+    "run_id": "b1p_ridge_sk6q1s1_seed4"
+   },
+   "logdir": "ax1wm_finger_sk6q1s1_seed4",
+   "outputs": [
+    "ax1wm_finger_sk6q1s1_seed4/ridge_probe_finger_v1.json"
+   ],
+   "inputs": [
+    "e4_probesets/finger_v1",
+    "ax1wm_finger_sk6q1s1_seed4"
+   ],
+   "done_when": [
+    {
+     "exists": "ridge_probe_finger_v1.json"
+    }
+   ]
+  },
+  {
+   "stage": "ridge",
+   "kind": "ridge",
+   "target": "rcc-slurm",
+   "run_id": "b1p_ridge_fsk6q1s0_seed1",
+   "cmd": "",
+   "vars": {
+    "armp": "f",
+    "side": 0,
+    "seed": 1,
+    "run_id": "b1p_ridge_fsk6q1s0_seed1"
+   },
+   "logdir": "ax1wm_finger_fsk6q1s0_seed1",
+   "outputs": [
+    "ax1wm_finger_fsk6q1s0_seed1/ridge_probe_finger_v1.json"
+   ],
+   "inputs": [
+    "e4_probesets/finger_v1",
+    "ax1wm_finger_fsk6q1s0_seed1"
+   ],
+   "done_when": [
+    {
+     "exists": "ridge_probe_finger_v1.json"
+    }
+   ]
+  },
+  {
+   "stage": "ridge",
+   "kind": "ridge",
+   "target": "rcc-slurm",
+   "run_id": "b1p_ridge_fsk6q1s0_seed2",
+   "cmd": "",
+   "vars": {
+    "armp": "f",
+    "side": 0,
+    "seed": 2,
+    "run_id": "b1p_ridge_fsk6q1s0_seed2"
+   },
+   "logdir": "ax1wm_finger_fsk6q1s0_seed2",
+   "outputs": [
+    "ax1wm_finger_fsk6q1s0_seed2/ridge_probe_finger_v1.json"
+   ],
+   "inputs": [
+    "e4_probesets/finger_v1",
+    "ax1wm_finger_fsk6q1s0_seed2"
+   ],
+   "done_when": [
+    {
+     "exists": "ridge_probe_finger_v1.json"
+    }
+   ]
+  },
+  {
+   "stage": "ridge",
+   "kind": "ridge",
+   "target": "rcc-slurm",
+   "run_id": "b1p_ridge_fsk6q1s0_seed3",
+   "cmd": "",
+   "vars": {
+    "armp": "f",
+    "side": 0,
+    "seed": 3,
+    "run_id": "b1p_ridge_fsk6q1s0_seed3"
+   },
+   "logdir": "ax1wm_finger_fsk6q1s0_seed3",
+   "outputs": [
+    "ax1wm_finger_fsk6q1s0_seed3/ridge_probe_finger_v1.json"
+   ],
+   "inputs": [
+    "e4_probesets/finger_v1",
+    "ax1wm_finger_fsk6q1s0_seed3"
+   ],
+   "done_when": [
+    {
+     "exists": "ridge_probe_finger_v1.json"
+    }
+   ]
+  },
+  {
+   "stage": "ridge",
+   "kind": "ridge",
+   "target": "rcc-slurm",
+   "run_id": "b1p_ridge_fsk6q1s0_seed4",
+   "cmd": "",
+   "vars": {
+    "armp": "f",
+    "side": 0,
+    "seed": 4,
+    "run_id": "b1p_ridge_fsk6q1s0_seed4"
+   },
+   "logdir": "ax1wm_finger_fsk6q1s0_seed4",
+   "outputs": [
+    "ax1wm_finger_fsk6q1s0_seed4/ridge_probe_finger_v1.json"
+   ],
+   "inputs": [
+    "e4_probesets/finger_v1",
+    "ax1wm_finger_fsk6q1s0_seed4"
+   ],
+   "done_when": [
+    {
+     "exists": "ridge_probe_finger_v1.json"
+    }
+   ]
+  },
+  {
+   "stage": "ridge",
+   "kind": "ridge",
+   "target": "rcc-slurm",
+   "run_id": "b1p_ridge_fsk6q1s1_seed1",
+   "cmd": "",
+   "vars": {
+    "armp": "f",
+    "side": 1,
+    "seed": 1,
+    "run_id": "b1p_ridge_fsk6q1s1_seed1"
+   },
+   "logdir": "ax1wm_finger_fsk6q1s1_seed1",
+   "outputs": [
+    "ax1wm_finger_fsk6q1s1_seed1/ridge_probe_finger_v1.json"
+   ],
+   "inputs": [
+    "e4_probesets/finger_v1",
+    "ax1wm_finger_fsk6q1s1_seed1"
+   ],
+   "done_when": [
+    {
+     "exists": "ridge_probe_finger_v1.json"
+    }
+   ]
+  },
+  {
+   "stage": "ridge",
+   "kind": "ridge",
+   "target": "rcc-slurm",
+   "run_id": "b1p_ridge_fsk6q1s1_seed2",
+   "cmd": "",
+   "vars": {
+    "armp": "f",
+    "side": 1,
+    "seed": 2,
+    "run_id": "b1p_ridge_fsk6q1s1_seed2"
+   },
+   "logdir": "ax1wm_finger_fsk6q1s1_seed2",
+   "outputs": [
+    "ax1wm_finger_fsk6q1s1_seed2/ridge_probe_finger_v1.json"
+   ],
+   "inputs": [
+    "e4_probesets/finger_v1",
+    "ax1wm_finger_fsk6q1s1_seed2"
+   ],
+   "done_when": [
+    {
+     "exists": "ridge_probe_finger_v1.json"
+    }
+   ]
+  },
+  {
+   "stage": "ridge",
+   "kind": "ridge",
+   "target": "rcc-slurm",
+   "run_id": "b1p_ridge_fsk6q1s1_seed3",
+   "cmd": "",
+   "vars": {
+    "armp": "f",
+    "side": 1,
+    "seed": 3,
+    "run_id": "b1p_ridge_fsk6q1s1_seed3"
+   },
+   "logdir": "ax1wm_finger_fsk6q1s1_seed3",
+   "outputs": [
+    "ax1wm_finger_fsk6q1s1_seed3/ridge_probe_finger_v1.json"
+   ],
+   "inputs": [
+    "e4_probesets/finger_v1",
+    "ax1wm_finger_fsk6q1s1_seed3"
+   ],
+   "done_when": [
+    {
+     "exists": "ridge_probe_finger_v1.json"
+    }
+   ]
+  },
+  {
+   "stage": "ridge",
+   "kind": "ridge",
+   "target": "rcc-slurm",
+   "run_id": "b1p_ridge_fsk6q1s1_seed4",
+   "cmd": "",
+   "vars": {
+    "armp": "f",
+    "side": 1,
+    "seed": 4,
+    "run_id": "b1p_ridge_fsk6q1s1_seed4"
+   },
+   "logdir": "ax1wm_finger_fsk6q1s1_seed4",
+   "outputs": [
+    "ax1wm_finger_fsk6q1s1_seed4/ridge_probe_finger_v1.json"
+   ],
+   "inputs": [
+    "e4_probesets/finger_v1",
+    "ax1wm_finger_fsk6q1s1_seed4"
+   ],
+   "done_when": [
+    {
+     "exists": "ridge_probe_finger_v1.json"
     }
    ]
   }

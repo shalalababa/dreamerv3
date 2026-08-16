@@ -106,9 +106,54 @@ stages:
           file: "../ax1wm_finger_fsk6q1s${side}_seed${seed}/OFFLINE_FIT_PROGRESS"
           pattern: "update=500000\ntotal_updates=500000"
 
+  # -- per-fit ridge measure, PINNED TO THE ANCHOR'S HARDWARE ----------------
+  # The primary compares these 16 fresh ridge AUROCs against the 16 pinned 1m
+  # anchor literals in the reader. That is exactly the device-fragile
+  # configuration: ridge AUROC moves up to 0.113 across GPU architectures
+  # (ops/waves/lewm_probe_devcheck/FINDING.md) while B1's MDE80 window is
+  # 0.06-0.20, so an unpinned panel could manufacture or mask the effect.
+  #
+  # The anchor bundle regen_ridge_e4_20260810_220849 carries its own producer
+  # logs (refit_ridge_panel_53243601_{0..3}.out), and sacct puts all four
+  # array tasks on midway3-0278 -- one node, a V100. So this stage pins
+  # --nodelist=midway3-0278: same hardware as the anchor BY CONSTRUCTION,
+  # which is stronger than --constraint=v100 and does not wait on the
+  # same-model-different-node measurement (job 53411135).
+  #
+  # Command is the registered per-fit form verbatim (prereg line 186), with
+  # no --platform and no --ep_batch: those are the Vast lane's additions, and
+  # the anchor was produced without them.
+  - name: ridge
+    kind: ridge
+    target: rcc-slurm
+    needs: fit_adapt_task
+    on_failure: continue
+    expand:
+      armp: ["", "f"]
+      side: [0, 1]
+      seed: [1, 2, 3, 4]
+    run_id: "b1p_ridge_${armp}sk6q1s${side}_seed${seed}"
+    logdir: "ax1wm_finger_${armp}sk6q1s${side}_seed${seed}"
+    outputs:
+      - "ax1wm_finger_${armp}sk6q1s${side}_seed${seed}/ridge_probe_finger_v1.json"
+    sbatch:
+      script: scripts/ridge_measure.sbatch
+      time: "02:00:00"
+      constraint: v100
+      options: ["--nodelist=midway3-0278"]
+      export:
+        RUN_LOGDIR: "${RUNROOT}/ax1wm_finger_${armp}sk6q1s${side}_seed${seed}"
+        PROBESET: "${RUNROOT}/e4_probesets/finger_v1"
+        OUTPUT: "${RUNROOT}/ax1wm_finger_${armp}sk6q1s${side}_seed${seed}/ridge_probe_finger_v1.json"
+    inputs:
+      - "e4_probesets/finger_v1"
+      - "ax1wm_finger_${armp}sk6q1s${side}_seed${seed}"
+    done_when:
+      - exists: "ridge_probe_finger_v1.json"
+
 bundle:
   prefix: b1prime
-  include_stages: [fit_adapt_task, fit_adapt_apt]
+  include_stages: [fit_adapt_task, fit_adapt_apt, ridge]
   cloud_logs:
     - "adapt_ax1sk6q1s*_finger_seed*.out"
     - "adapt_ax1fsk6q1s*_finger_seed*.out"
