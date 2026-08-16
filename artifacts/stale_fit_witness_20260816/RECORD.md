@@ -93,6 +93,54 @@ Neither counter is self-sufficient:
 `done` checkpoint it should dominate. A witness below such a checkpoint is
 evidence about the sync, not about the training.
 
+## The 2026-08-07 truncation disclosure sits on this same witness
+
+**Flagged for the owning chat (Papers 1–3). Ops does not adjudicate it.**
+
+The 08-07 realized-training addendum reports "12m: 15/32 full, 17 truncated
+(104,550–431,425)" and "25m: 22/32 full, 10 truncated (111,900–347,250)".
+Those endpoints are *exactly* the endpoints of today's stale-witness scan for
+the `s12`/`s25`/`fs12`/`fs25` families. Cross-checking
+`realized_training_sensitivity_20260807.json` against the scan, run by run:
+
+* **27 of 27** cells the addendum labels truncated still read below
+  `total_updates` today, at the identical value — the addendum and today's
+  scan are reading the same bytes.
+* **27 of 27** carry a completed `ckpt/<ts>-000000500000/done`.
+
+There is one alternative that would have preserved the addendum's reading:
+the 500000 checkpoint could be a leftover from an *earlier* run of the same
+`run_id`, admitted by the very `latest_ckpt()` + idempotent-fit-skip hole the
+addendum identifies. Under that story the capacity-wave fit really was killed
+at 104,550 and the checkpoint belongs to a different configuration.
+
+**That story predicts the checkpoint PREDATES the frozen witness.** It does
+not. Reading checkpoint directory names as UTC (the conservative direction —
+if they are CDT the gaps only widen):
+
+| done@500000 written | count |
+|---|---|
+| **after** the witness froze | **27** |
+| before the witness froze | **0** |
+
+Smallest gap 0.99 h (`s12q1s1_seed1`), median 4.97 h, largest 59.05 h
+(`fs12q1s0_seed8`). The fits kept running and kept checkpointing for hours
+after their progress files stopped advancing.
+
+So the more likely reading is that those 27 fits **completed**, and the
+addendum measured a sync artifact rather than walltime truncation. If that
+holds, the consequences run the other way from the disclosure as written: the
+"full-only" sensitivity analyses were re-running the primary on an arbitrary
+subset, and the disclosure carried in C1/C3/C4 and the figure captions
+describes something that did not happen.
+
+What I have not done, and cannot do from ops: check whether each of those
+500000 checkpoints carries the *capacity config the cell is supposed to have*.
+That is the one remaining way the addendum could still be right, and it is a
+read's job. Evidence for the check is in `capacity_ckpt_vs_witness.json`
+(all 64 capacity fit dirs, witness + every done checkpoint with timestamps)
+and `ckpt_vs_witness.py`.
+
 ## What was repaired, and what was not
 
 **Repaired (4).** The four `fsk6` witnesses were re-pulled from instance 1, the
