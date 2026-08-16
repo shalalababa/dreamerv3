@@ -1,0 +1,42 @@
+[Fri Aug 14 22:09:19 UTC 2026] QUEUE_START id=queue_gWS6KrEG lane=3 shard=3 tasks=8
+[Fri Aug 14 22:09:20 UTC 2026] START adapt_ax1fnzs2q1s1_finger_seed1_ckpt500000 gpu=3 log=/workspace/dreamerv3_runs/_cloud_logs/adapt_ax1fnzs2q1s1_finger_seed1_ckpt500000.out
+[Sat Aug 15 03:20:30 UTC 2026] DONE adapt_ax1fnzs2q1s1_finger_seed1_ckpt500000 log=/workspace/dreamerv3_runs/_cloud_logs/adapt_ax1fnzs2q1s1_finger_seed1_ckpt500000.out
+[Sat Aug 15 03:20:31 UTC 2026] START adapt_ax1nzs8q1s0_finger_seed1_ckpt500000 gpu=3 log=/workspace/dreamerv3_runs/_cloud_logs/adapt_ax1nzs8q1s0_finger_seed1_ckpt500000.out
+[Sat Aug 15 06:28:21 UTC 2026] DONE adapt_ax1nzs8q1s0_finger_seed1_ckpt500000 log=/workspace/dreamerv3_runs/_cloud_logs/adapt_ax1nzs8q1s0_finger_seed1_ckpt500000.out
+[Sat Aug 15 06:28:22 UTC 2026] START adapt_ax1fnzs2q1s0_finger_seed2_ckpt500000 gpu=3 log=/workspace/dreamerv3_runs/_cloud_logs/adapt_ax1fnzs2q1s0_finger_seed2_ckpt500000.out
+[Sat Aug 15 11:43:39 UTC 2026] DONE adapt_ax1fnzs2q1s0_finger_seed2_ckpt500000 log=/workspace/dreamerv3_runs/_cloud_logs/adapt_ax1fnzs2q1s0_finger_seed2_ckpt500000.out
+[Sat Aug 15 11:43:40 UTC 2026] START adapt_ax1nzs8q1s1_finger_seed2_ckpt500000 gpu=3 log=/workspace/dreamerv3_runs/_cloud_logs/adapt_ax1nzs8q1s1_finger_seed2_ckpt500000.out
+[Sat Aug 15 15:01:13 UTC 2026] DONE adapt_ax1nzs8q1s1_finger_seed2_ckpt500000 log=/workspace/dreamerv3_runs/_cloud_logs/adapt_ax1nzs8q1s1_finger_seed2_ckpt500000.out
+[Sat Aug 15 15:01:13 UTC 2026] QUEUE_IDLE id=queue_gWS6KrEG grace=300s
+[Sat Aug 15 15:06:13 UTC 2026] QUEUE_DONE id=queue_gWS6KrEG lane=3 failures=0
+[Sat Aug 15 16:45:08 UTC 2026] QUEUE_START id=queue_WPD0CX8S lane=3 shard=3 tasks=4
+[Sat Aug 15 16:45:08 UTC 2026] START sgl_ridge_fnzs2q1s0_seed2 gpu=3 log=/workspace/dreamerv3_runs/_cloud_logs/sgl_ridge_fnzs2q1s0_seed2.out
+[Sat Aug 15 16:45:08 UTC 2026] FAIL sgl_ridge_fnzs2q1s0_seed2 rc=2 log=/workspace/dreamerv3_runs/_cloud_logs/sgl_ridge_fnzs2q1s0_seed2.out elapsed=0s 
+[Sat Aug 15 16:45:08 UTC 2026] CLASS sgl_ridge_fnzs2q1s0_seed2 unknown retry=unknown
+[Sat Aug 15 16:45:10 UTC 2026] START sgl_ridge_fnzs2q1s1_seed2 gpu=3 log=/workspace/dreamerv3_runs/_cloud_logs/sgl_ridge_fnzs2q1s1_seed2.out
+[Sat Aug 15 16:45:10 UTC 2026] FAIL sgl_ridge_fnzs2q1s1_seed2 rc=2 log=/workspace/dreamerv3_runs/_cloud_logs/sgl_ridge_fnzs2q1s1_seed2.out elapsed=0s 
+[Sat Aug 15 16:45:10 UTC 2026] CLASS sgl_ridge_fnzs2q1s1_seed2 unknown retry=unknown
+[Sat Aug 15 16:45:11 UTC 2026] START sgl_ridge_fnzs8q1s0_seed2 gpu=3 log=/workspace/dreamerv3_runs/_cloud_logs/sgl_ridge_fnzs8q1s0_seed2.out
+[Sat Aug 15 16:45:11 UTC 2026] FAIL sgl_ridge_fnzs8q1s0_seed2 rc=2 log=/workspace/dreamerv3_runs/_cloud_logs/sgl_ridge_fnzs8q1s0_seed2.out elapsed=0s 
+[Sat Aug 15 16:45:11 UTC 2026] CLASS sgl_ridge_fnzs8q1s0_seed2 unknown retry=unknown
+[Sat Aug 15 16:45:13 UTC 2026] START sgl_ridge_fnzs8q1s1_seed2 gpu=3 log=/workspace/dreamerv3_runs/_cloud_logs/sgl_ridge_fnzs8q1s1_seed2.out
+[Sat Aug 15 16:45:13 UTC 2026] FAIL sgl_ridge_fnzs8q1s1_seed2 rc=2 log=/workspace/dreamerv3_runs/_cloud_logs/sgl_ridge_fnzs8q1s1_seed2.out elapsed=0s 
+[Sat Aug 15 16:45:13 UTC 2026] CLASS sgl_ridge_fnzs8q1s1_seed2 unknown retry=unknown
+[Sat Aug 15 16:45:14 UTC 2026] QUEUE_IDLE id=queue_WPD0CX8S grace=300s
+[Sat Aug 15 16:49:15 UTC 2026] QUEUE_ADD id=queue_WPD0CX8S lane=3 added=4 file=/workspace/dreamerv3_runs/_waves/sigma_ladder/lane_ridge_3.cmds
+[Sat Aug 15 16:49:45 UTC 2026] START sgl_ridge_fnzs2q1s0_seed2 gpu=3 log=/workspace/dreamerv3_runs/_cloud_logs/sgl_ridge_fnzs2q1s0_seed2.out
+[Sat Aug 15 16:58:52 UTC 2026] DONE sgl_ridge_fnzs2q1s0_seed2 log=/workspace/dreamerv3_runs/_cloud_logs/sgl_ridge_fnzs2q1s0_seed2.out elapsed=547s util_mean=0% util_peak=0% vram_mean=318MiB vram_peak=366MiB vram_total=16311MiB samples=10
+[Sat Aug 15 16:58:54 UTC 2026] START sgl_ridge_fnzs2q1s1_seed2 gpu=3 log=/workspace/dreamerv3_runs/_cloud_logs/sgl_ridge_fnzs2q1s1_seed2.out
+[Sat Aug 15 17:07:31 UTC 2026] DONE sgl_ridge_fnzs2q1s1_seed2 log=/workspace/dreamerv3_runs/_cloud_logs/sgl_ridge_fnzs2q1s1_seed2.out elapsed=517s util_mean=0% util_peak=0% vram_mean=313MiB vram_peak=366MiB vram_total=16311MiB samples=9
+[Sat Aug 15 17:07:33 UTC 2026] START sgl_ridge_fnzs8q1s0_seed2 gpu=3 log=/workspace/dreamerv3_runs/_cloud_logs/sgl_ridge_fnzs8q1s0_seed2.out
+[Sat Aug 15 17:11:43 UTC 2026] DONE sgl_ridge_fnzs8q1s0_seed2 log=/workspace/dreamerv3_runs/_cloud_logs/sgl_ridge_fnzs8q1s0_seed2.out elapsed=249s util_mean=0% util_peak=0% vram_mean=254MiB vram_peak=366MiB vram_total=16311MiB samples=5
+[Sat Aug 15 17:11:47 UTC 2026] START sgl_ridge_fnzs8q1s1_seed2 gpu=3 log=/workspace/dreamerv3_runs/_cloud_logs/sgl_ridge_fnzs8q1s1_seed2.out
+[Sat Aug 15 17:17:44 UTC 2026] DONE sgl_ridge_fnzs8q1s1_seed2 log=/workspace/dreamerv3_runs/_cloud_logs/sgl_ridge_fnzs8q1s1_seed2.out elapsed=357s util_mean=0% util_peak=0% vram_mean=273MiB vram_peak=366MiB vram_total=16311MiB samples=6
+[Sat Aug 15 17:17:44 UTC 2026] QUEUE_IDLE id=queue_WPD0CX8S grace=300s
+[Sat Aug 15 17:22:44 UTC 2026] QUEUE_DONE id=queue_WPD0CX8S lane=3 failures=4
+[Sat Aug 15 18:03:02 UTC 2026] QUEUE_START id=queue_mJ3PMgMR lane=3 shard=3 tasks=3
+[Sat Aug 15 18:03:03 UTC 2026] START adapt_ax1q1s1_reacher_seed12_ckpt500000 gpu=3 log=/workspace/dreamerv3_runs/_cloud_logs/adapt_ax1q1s1_reacher_seed12_ckpt500000.out
+[Sat Aug 15 18:03:19 UTC 2026] QUEUE_ADD id=queue_mJ3PMgMR lane=3 added=3 file=/workspace/dreamerv3_runs/_waves/reacher_domain/lane_fit_adapt_apt_3.cmds
+[Sat Aug 15 21:31:38 UTC 2026] DONE adapt_ax1q1s1_reacher_seed12_ckpt500000 log=/workspace/dreamerv3_runs/_cloud_logs/adapt_ax1q1s1_reacher_seed12_ckpt500000.out elapsed=12515s util_mean=96% util_peak=100% vram_mean=15228MiB vram_peak=15302MiB vram_total=16311MiB samples=209
+[Sat Aug 15 21:31:38 UTC 2026] START adapt_ax1q1s1_reacher_seed14_ckpt500000 gpu=3 log=/workspace/dreamerv3_runs/_cloud_logs/adapt_ax1q1s1_reacher_seed14_ckpt500000.out
+[Sat Aug 15 23:29:57 UTC 2026] QUEUE_ADD id=queue_mJ3PMgMR lane=3 added=2 file=/workspace/dreamerv3_runs/_waves/walker_domain/lane_fit_adapt_apt_3.cmds
