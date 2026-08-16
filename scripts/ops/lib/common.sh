@@ -25,7 +25,15 @@ DV3_SSH_OPTS=(-o ServerAliveInterval=30 -o ServerAliveCountMax=120
 #
 # PAYLOAD (checkpoints, replay, results): --append-verify is right. Transfers
 # are huge and resumable, and the files are immutable once written.
-DV3_RSYNC_OPTS=(-az --partial --append-verify --info=progress2 --stats)
+# --copy-unsafe-links: a symlink pointing OUTSIDE the synced tree is
+# meaningless on the destination, so copy what it points at instead of the
+# link. `lewm_train` writes its checkpoint into /root/.cache/... and links to
+# it from the run dir; without this, every pull re-planted 16 dangling links
+# into /root on RCC -- and on 2026-08-16 a routine re-pull did exactly that
+# ON TOP OF the dereferenced 3.46 GB archive, silently destroying it and
+# dropping lewm_upstream from 16/16 to 0/16. Copying the referent is also the
+# only behaviour that makes an archive an archive.
+DV3_RSYNC_OPTS=(-az --partial --append-verify --copy-unsafe-links --info=progress2 --stats)
 #
 # CODE: --append-verify is CATASTROPHIC here. It only ever appends to a file
 # that is SHORTER on the destination and skips it outright when the size

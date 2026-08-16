@@ -921,6 +921,20 @@ chk "destroy requires typing the vast id" \
 # work, or a fully archived instance becomes undestroyable.
 chk "destroy counts compute processes, not just utilization" \
     "grep -q 'query-compute-apps' '$D'"
+# A pull must never turn an archived FILE on the destination back into a
+# symlink pointing outside the tree. lewm_train links its checkpoint into
+# /root/.cache/...; a routine re-pull re-planted 16 dangling links on top of
+# the dereferenced 3.46 GB archive and dropped lewm_upstream 16/16 -> 0/16
+# (2026-08-16). An outside-the-tree link is meaningless on the destination.
+LT="$TMP/linkclobber"; mkdir -p "$LT"/{src/run1,dst/run1,outside}
+printf 'referent\n' > "$LT/outside/last.ckpt"
+ln -sf "$LT/outside/last.ckpt" "$LT/src/run1/w.ckpt"
+printf 'archived\n' > "$LT/dst/run1/w.ckpt"
+rsync "${DV3_RSYNC_OPTS[@]}" "$LT/src/run1" "$LT/dst/" >/dev/null 2>&1
+chk "a pull cannot replace an archived file with a dangling symlink" \
+    "[ ! -L '$LT/dst/run1/w.ckpt' ] && [ -f '$LT/dst/run1/w.ckpt' ]"
+chk "pull options deref links pointing outside the tree" \
+    "grep -q -- '--copy-unsafe-links' '$ROOT/scripts/ops/lib/common.sh'"
 # Midway3's gpu partition mixes v100 and a100. An unpinned panel gets split
 # across GPU models, and the E4 probe carries a device term of up to 0.113
 # AUROC (measured 2026-08-16). Slurm stages must pin a model by default.

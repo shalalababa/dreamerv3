@@ -1,0 +1,19 @@
+wave_id: walker_domain
+spec:    ops/waves/walker_domain/spec.yaml
+prereg:  prereg/PREREG_domains_20260812.md
+
+=== stage fit_adapt_task  [vast]  kind=axis1_fit_adapt  on_failure=abort  n=4 ===
+  adapt_ax1q1s1_walker_seed7_ckpt500000
+  adapt_ax1q1s1_walker_seed10_ckpt500000
+  adapt_ax1q1s1_walker_seed11_ckpt500000
+  adapt_ax1q1s1_walker_seed12_ckpt500000
+
+=== stage fit_adapt_apt  [vast]  kind=axis1_fit_adapt  on_failure=abort  n=2 ===
+  adapt_ax1fq1s1_walker_seed10_ckpt500000
+  adapt_ax1fq1s1_walker_seed11_ckpt500000
+
+TOTAL RUNS: 6
+
+Check this list against the prereg before submitting. run_ids are
+consumed by frozen readers and the ledger; a wrong expansion here
+propagates into every downstream artifact.
