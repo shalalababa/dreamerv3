@@ -123,6 +123,15 @@ stages:
   # Command is the registered per-fit form verbatim (prereg line 186), with
   # no --platform and no --ep_batch: those are the Vast lane's additions, and
   # the anchor was produced without them.
+  # SUBMISSION VEHICLE: `scripts/b1prime_ridge_bundle.sbatch`, NOT this
+  # stage's generated submit_rcc.sh. Sixteen one-cell jobs consume the entire
+  # 12-job QOS cap and still leave 4 behind (measured 2026-08-16); the local
+  # convention is to bundle short work, since the walltime limit is 36 h and a
+  # ridge measure is minutes. The bundle also puts all 16 cells on ONE GPU,
+  # which is the property this panel actually needs. This stage stays as the
+  # CHECKER's definition of done -- its done_when predicates are what
+  # `dv3ops check --wave b1prime` evaluates, and they hold however the work
+  # was submitted. Do not run submit_rcc.sh for this stage.
   - name: ridge
     kind: ridge
     target: rcc-slurm
