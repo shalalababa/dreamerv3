@@ -1,0 +1,83 @@
+{
+  "task": "dmc_reacher_hard",
+  "which": "q1",
+  "index": "/scratch/midway3/rickybao/dreamerv3_runs/axis1_reacher/episodes.json",
+  "pairs": "/scratch/midway3/rickybao/dreamerv3_runs/axis1_reacher/pairs.json",
+  "ep_len": 1001,
+  "chunk_contract": "one chunk per episode, succ=0; training windows never span episode boundaries (dropped on both sides of the pair)",
+  "note": "gradient-update count and model capacity are equalized at offline_fit time (same config/steps for both sides)",
+  "sides": [
+    {
+      "directory": "/scratch/midway3/rickybao/dreamerv3_runs/axis1_reacher/q1/side0",
+      "n_episodes": 200,
+      "n_transitions": 200200,
+      "occ_recomputed": 0.0,
+      "occ_search": 0.0,
+      "cov_search": 0.506454,
+      "mixture": {
+        "p2e3/zero": 200
+      },
+      "terminal_fraction": 0.0,
+      "action_stats": {
+        "mean": [
+          -0.01589,
+          -0.04926
+        ],
+        "std": [
+          0.89964,
+          0.7658
+        ]
+      }
+    },
+    {
+      "directory": "/scratch/midway3/rickybao/dreamerv3_runs/axis1_reacher/q1/side1",
+      "n_episodes": 200,
+      "n_transitions": 200200,
+      "occ_recomputed": 0.279481,
+      "occ_search": 0.279481,
+      "cov_search": 0.501829,
+      "mixture": {
+        "apt1/mid": 3,
+        "apt4/zero": 1,
+        "apt5/mid": 1,
+        "goal1/high": 40,
+        "goal1/mid": 1,
+        "goal2/mid": 2,
+        "goal2/zero": 19,
+        "goal3/high": 27,
+        "p2e1/mid": 3,
+        "p2e2/mid": 4,
+        "p2e3/mid": 2,
+        "p2e3/zero": 1,
+        "p2e4/zero": 15,
+        "p2e5/mid": 23,
+        "rnd1/zero": 4,
+        "rnd2/mid": 1,
+        "rnd2/zero": 17,
+        "rnd3/mid": 12,
+        "rnd3/zero": 17,
+        "rnd4/mid": 6,
+        "rnd5/mid": 1
+      },
+      "terminal_fraction": 0.0,
+      "action_stats": {
+        "mean": [
+          -0.02349,
+          0.03014
+        ],
+        "std": [
+          0.90355,
+          0.779
+        ]
+      }
+    }
+  ],
+  "confound_deltas": {
+    "n_transitions": 0,
+    "action_mean_maxabs": 0.0794,
+    "action_std_maxabs": 0.0132,
+    "terminal_fraction": 0.0,
+    "episode_length": 0,
+    "source_l1": 0.995
+  }
+}

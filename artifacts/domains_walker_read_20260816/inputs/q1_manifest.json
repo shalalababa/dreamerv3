@@ -1,0 +1,118 @@
+{
+  "task": "dmc_walker_walk",
+  "which": "q1",
+  "index": "/scratch/midway3/rickybao/dreamerv3_runs/axis1_walker/episodes.json",
+  "pairs": "/scratch/midway3/rickybao/dreamerv3_runs/axis1_walker/pairs.json",
+  "ep_len": 1001,
+  "chunk_contract": "one chunk per episode, succ=0; training windows never span episode boundaries (dropped on both sides of the pair)",
+  "note": "gradient-update count and model capacity are equalized at offline_fit time (same config/steps for both sides)",
+  "sides": [
+    {
+      "directory": "/scratch/midway3/rickybao/dreamerv3_runs/axis1_walker/q1/side0",
+      "n_episodes": 200,
+      "n_transitions": 200200,
+      "occ_recomputed": 0.0802,
+      "occ_search": 0.0802,
+      "cov_search": 1.277265,
+      "mixture": {
+        "apt1/mid": 1,
+        "apt2/mid": 7,
+        "apt2/zero": 1,
+        "apt3/mid": 1,
+        "apt4/mid": 1,
+        "apt5/mid": 35,
+        "apt5/zero": 3,
+        "goal2/mid": 1,
+        "p2e1/mid": 1,
+        "p2e2/mid": 1,
+        "p2e3/mid": 21,
+        "p2e4/mid": 3,
+        "p2e5/mid": 46,
+        "random1/mid": 2,
+        "random2/mid": 8,
+        "random4/mid": 54,
+        "random5/mid": 14
+      },
+      "terminal_fraction": 0.0,
+      "action_stats": {
+        "mean": [
+          0.03329,
+          -0.01759,
+          0.03056,
+          -0.00963,
+          -0.01911,
+          0.01124
+        ],
+        "std": [
+          0.73725,
+          0.77006,
+          0.69673,
+          0.73503,
+          0.75204,
+          0.71757
+        ]
+      }
+    },
+    {
+      "directory": "/scratch/midway3/rickybao/dreamerv3_runs/axis1_walker/q1/side1",
+      "n_episodes": 200,
+      "n_transitions": 200200,
+      "occ_recomputed": 0.154755,
+      "occ_search": 0.154755,
+      "cov_search": 1.285722,
+      "mixture": {
+        "apt1/mid": 4,
+        "apt2/mid": 1,
+        "apt2/zero": 1,
+        "apt3/mid": 2,
+        "apt4/mid": 6,
+        "apt4/zero": 2,
+        "apt5/mid": 1,
+        "apt5/zero": 4,
+        "goal1/high": 1,
+        "goal1/mid": 58,
+        "goal2/high": 8,
+        "goal2/mid": 15,
+        "goal3/high": 3,
+        "goal3/mid": 28,
+        "p2e1/mid": 2,
+        "p2e2/mid": 23,
+        "p2e3/mid": 11,
+        "p2e4/mid": 6,
+        "p2e5/mid": 1,
+        "random1/mid": 2,
+        "random2/mid": 16,
+        "random3/mid": 1,
+        "random4/mid": 3,
+        "random5/mid": 1
+      },
+      "terminal_fraction": 0.0,
+      "action_stats": {
+        "mean": [
+          -0.07539,
+          -0.05703,
+          -0.05277,
+          -0.05272,
+          0.02797,
+          -0.01837
+        ],
+        "std": [
+          0.76598,
+          0.71092,
+          0.66622,
+          0.73068,
+          0.7022,
+          0.66058
+        ]
+      }
+    }
+  ],
+  "confound_deltas": {
+    "n_transitions": 0,
+    "action_mean_maxabs": 0.10868,
+    "action_std_maxabs": 0.05914,
+    "terminal_fraction": 0.0,
+    "episode_length": 0,
+    "source_l1": 0.795
+  }
+}
