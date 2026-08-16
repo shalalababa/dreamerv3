@@ -1,0 +1,111 @@
+# SE amendment-2 triggered arms — PREREG_nfi_scale_exhibit_amend2_20260814 §4.
+#
+# Twelve runs in three arms, transcribed from the registered launch specs.
+# Every arm is the Stage-1 queue template (scripts/uncfield_se.sbatch, run
+# with bash on a Vast lane exactly as axis1.sbatch is) with ONLY the
+# registered delta applied:
+#
+#   D-only   seeds 10-13   the single delta `--distractor.dim 0`
+#   gated    seeds 20-23   the gate triple on BOTH wrappers
+#   ungated  seeds 24-27   Stage-1 config verbatim
+#
+# The pinned constants (SOURCE_KEY=position, BASESD_PLANTED=0.0976,
+# BASESD_N=1.215, TASK=dmc_cheetah_run, STEPS=5e5) are the Stage-1 values and
+# are NOT re-derived here -- the script defaults them, and re-deriving a
+# pinned constant is how a "verbatim" arm stops being verbatim.
+#
+# SEEDS ARE DISJOINT FROM STAGE-1 BY RUN_ID, NOT BY NUMBER: D-only uses seeds
+# 10-13, the same integers Stage-1 used, but writes to se_donly_s1x while
+# Stage-1 owns se_cheetah_seed1x. The prereg is explicit that arms are never
+# seed-paired, so this is intended; the run_id is what keeps them apart on
+# disk, which is why the run_id is spelled out per arm below.
+#
+# LANE PLACEMENT: one task per lane, and each INSTANCE gets a whole arm.
+# Grouping by arm rather than interleaving is what makes an instance's four
+# lanes finish together -- D-only carries 8 fewer observation dimensions than
+# the other two, so a mixed instance would finish its D-only lanes early and
+# sit on them.
+
+wave_id: se_arms
+paper: paper5
+prereg: prereg/PREREG_nfi_scale_exhibit_amend2_20260814.md
+notes: >-
+  12 SE arm runs (D-only x4, Stage-2 gated x4, Stage-2 ungated x4) on
+  dmc_cheetah_run at 5e5 steps. One arm per instance, one run per lane.
+
+defaults:
+  target: vast
+
+kinds:
+  se_run: {per_gpu: 1}
+
+stages:
+
+  # -- D-only: the single registered delta is --distractor.dim 0 -----------
+  # Needs a per-run se_probe pass afterwards (final checkpoint, frozen
+  # defaults) -- amendment §4. That is a separate stage, not folded in here,
+  # because the probe must see a FINISHED run.
+  - name: donly
+    kind: se_run
+    on_failure: continue
+    expand:
+      seed: [10, 11, 12, 13]
+    run_id: "se_donly_s${seed}"
+    logdir: "se_donly_s${seed}"
+    cmd: >-
+      RUN_ID=se_donly_s${seed} TASK=dmc_cheetah_run SEED=${seed}
+      DISTRACTOR_DIM=0
+      bash scripts/uncfield_se.sbatch
+    outputs:
+      - "se_donly_s${seed}"
+    done_when:
+      - exists: TRAINING_DONE
+      - exists: config.yaml
+      - jsonl_min_lines: {file: scores.jsonl, n: 100}
+
+  # -- Stage-2 gated: the gate triple on BOTH wrappers ---------------------
+  - name: gated
+    kind: se_run
+    on_failure: continue
+    expand:
+      seed: [20, 21, 22, 23]
+    run_id: "se_gate_s${seed}"
+    logdir: "se_gate_s${seed}"
+    cmd: >-
+      RUN_ID=se_gate_s${seed} TASK=dmc_cheetah_run SEED=${seed}
+      DISTRACTOR_GATE_KEY=position DISTRACTOR_GATE_INDEX=0
+      DISTRACTOR_GATE_THRESHOLD=-0.13009691
+      GATE_KEY=position GATE_INDEX=0 GATE_THRESHOLD=-0.13009691
+      bash scripts/uncfield_se.sbatch
+    outputs:
+      - "se_gate_s${seed}"
+    done_when:
+      - exists: TRAINING_DONE
+      - exists: config.yaml
+      - jsonl_min_lines: {file: scores.jsonl, n: 100}
+
+  # -- Stage-2 ungated: Stage-1 config verbatim ----------------------------
+  - name: ungated
+    kind: se_run
+    on_failure: continue
+    expand:
+      seed: [24, 25, 26, 27]
+    run_id: "se_ungate_s${seed}"
+    logdir: "se_ungate_s${seed}"
+    cmd: >-
+      RUN_ID=se_ungate_s${seed} TASK=dmc_cheetah_run SEED=${seed}
+      bash scripts/uncfield_se.sbatch
+    outputs:
+      - "se_ungate_s${seed}"
+    done_when:
+      - exists: TRAINING_DONE
+      - exists: config.yaml
+      - jsonl_min_lines: {file: scores.jsonl, n: 100}
+
+bundle:
+  prefix: se_arms
+  include_stages: [donly, gated, ungated]
+  cloud_logs:
+    - "se_donly_s*.out"
+    - "se_gate_s*.out"
+    - "se_ungate_s*.out"

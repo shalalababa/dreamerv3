@@ -27,6 +27,17 @@
 #   over 2000 random steps BEFORE training — fills SOURCE_KEY/BASESD),
 #   GATE_KEY/GATE_INDEX/GATE_THRESHOLD (Stage 2 only).
 #
+# Amendment-2 arm overrides (PREREG_nfi_scale_exhibit_amend2_20260814 §4).
+# ALL DEFAULT TO THE STAGE-1 VALUES, so an unset environment reproduces the
+# Stage-1 command exactly -- the defaults below are literally the config
+# defaults (`distractor: {dim: 0, gate_key: '', gate_index: 0,
+# gate_threshold: 0.0}` in configs.yaml), which is why adding the three
+# distractor gate flags is inert for Stage-1 rather than a silent change:
+#   DISTRACTOR_DIM             D-only arm sets 0 (the single registered delta)
+#   DISTRACTOR_GATE_KEY        Stage-2 GATED sets the gate triple on the
+#   DISTRACTOR_GATE_INDEX      distractor wrapper as well as the planted one
+#   DISTRACTOR_GATE_THRESHOLD  ("the gate triple on BOTH wrappers")
+#
 # GOTCHAS: clean shell (module purge; --export=ALL segfault rule);
 # submit from repo root. Wrapper streams are keyed to SEED via main.py's
 # SeedSequence blocks (0xD0 distractor, 0x5E planted).
@@ -91,7 +102,10 @@ STOP_STEP=$("$PYTHON" -c "print(int(float('$STEPS')))")
   --logdir "$LOGDIR" --configs dmc_proprio expl_p2e \
   --task "$TASK" --seed "$SEED" \
   --env.dmc.render False \
-  --distractor.dim 8 --distractor.scale 1.0 --distractor.basesd "$BASESD_N" \
+  --distractor.dim "${DISTRACTOR_DIM:-8}" --distractor.scale 1.0 --distractor.basesd "$BASESD_N" \
+  --distractor.gate_key "${DISTRACTOR_GATE_KEY:-}" \
+  --distractor.gate_index "${DISTRACTOR_GATE_INDEX:-0}" \
+  --distractor.gate_threshold "${DISTRACTOR_GATE_THRESHOLD:-0.0}" \
   --planted.source_key "$SOURCE_KEY" --planted.basesd "$BASESD_PLANTED" \
   --planted.gate_key "${GATE_KEY:-}" \
   --planted.gate_index "${GATE_INDEX:-0}" \

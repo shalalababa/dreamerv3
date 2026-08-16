@@ -1,0 +1,2 @@
+# se_arms / stage donly / lane 3 / 1 queued task(s), 1 run(s)
+DV3_TASK_NAME=se_donly_s13 bash -lc 'set -uo pipefail; source /root/.dreamer_vast_env; cd "$REPO"; mkdir -p "$RUNROOT/_cloud_logs"; ( set +e; echo "===== [$(date)] START se_donly_s13 ====="; RUN_ID=se_donly_s13 TASK=dmc_cheetah_run SEED=13 DISTRACTOR_DIM=0 bash scripts/uncfield_se.sbatch; rc=$?; echo "===== [$(date)] DONE rc=$rc se_donly_s13 ====="; exit $rc ) >> "$RUNROOT/_cloud_logs/se_donly_s13.out" 2>&1'

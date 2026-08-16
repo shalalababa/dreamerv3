@@ -1,0 +1,27 @@
+wave_id: se_arms
+spec:    ops/waves/se_arms/spec.yaml
+prereg:  prereg/PREREG_nfi_scale_exhibit_amend2_20260814.md
+
+=== stage donly  [vast]  kind=se_run  on_failure=continue  n=4 ===
+  se_donly_s10
+  se_donly_s11
+  se_donly_s12
+  se_donly_s13
+
+=== stage gated  [vast]  kind=se_run  on_failure=continue  n=4 ===
+  se_gate_s20
+  se_gate_s21
+  se_gate_s22
+  se_gate_s23
+
+=== stage ungated  [vast]  kind=se_run  on_failure=continue  n=4 ===
+  se_ungate_s24
+  se_ungate_s25
+  se_ungate_s26
+  se_ungate_s27
+
+TOTAL RUNS: 12
+
+Check this list against the prereg before submitting. run_ids are
+consumed by frozen readers and the ledger; a wrong expansion here
+propagates into every downstream artifact.
