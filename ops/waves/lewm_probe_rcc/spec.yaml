@@ -44,6 +44,15 @@ stages:
     sbatch:
       script: scripts/lewm_probe.sbatch
       time: "04:00:00"
+      # PIXEL WORK MUST NOT LAND ON A V100. The generated default is
+      # --constraint=v100 (correct for the proprio panels, and the model the
+      # B1' anchor was measured on), but these are pixel WMs and
+      # cudnnConvolutionForward fails on Volta in this JAX build. The 12 probe
+      # jobs of 2026-08-15 separate perfectly by architecture, not by node:
+      #   midway3-0280 (v100)     9/9 FAILED  <unknown cudnn status: 5003>
+      #   midway3-0282 (rtx6000)  3/3 COMPLETED clean
+      # So "RCC Slurm can't run pixel" was too broad -- rtx6000 runs it fine.
+      constraint: rtx6000
       export:
         RUN_LOGDIR: "${RUNROOT}/ax1wm_finger_fpxpxq1ms${side}_seed${seed}"
         PROBESET: "${RUNROOT}/e4_probesets/fingerpx_v1"

@@ -952,6 +952,12 @@ printf '%s\n' 'wave_id: slcon2' 'stages:' \
 python3 "$ROOT/scripts/ops/wavegen.py" "$SLW" --quiet >/dev/null 2>&1
 chk "a stage can pin a different GPU model" \
     "grep -q -- '--constraint=a100' '$SLW/generated/submit_rcc.sh'"
+# Midway3's gpu partition is THREE models, not two: 0277-0281 v100,
+# 0282-0286 rtx6000, 0294 a100. Pixel convolutions fail on the v100s
+# (cudnn 5003, 9/9) and run clean on rtx6000 (3/3), so the v100 default is
+# wrong for any pixel wave and that must not regress silently.
+chk "the pixel probe wave pins rtx6000, not the v100 default" \
+    "grep -q 'constraint: rtx6000' '$ROOT/ops/waves/lewm_probe_rcc/spec.yaml'"
 chk "destroy's utilization path also requires held GPU memory" \
     "grep -q 'u_live:-0}\" -ge 20 \] && \[ \"\${m_live:-0}\" -ge 512' '$D'"
 chk "unsafe override needs a typed acknowledgement" \

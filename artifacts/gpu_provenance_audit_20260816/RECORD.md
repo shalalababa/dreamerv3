@@ -7,12 +7,24 @@ already measured?
 
 ## The structural hazard
 
-Midway3's `gpu` partition is **heterogeneous**:
+Midway3's `gpu` partition is **heterogeneous — three models, not two**:
 
 | nodes | GPU |
 |---|---|
-| midway3-0277 … 0286 | **V100** |
+| midway3-0277 … 0281 | **V100** |
+| midway3-0282 … 0286 | **RTX6000** |
 | midway3-0294 | **A100** |
+
+> **CORRECTION (same day, before this record was used).** The first version of
+> this audit said "0277–0286 = V100". That came from spot-checking 0277 and
+> 0294 with `scontrol` and extrapolating across the `sinfo` grouping, whose
+> feature column was truncated in the output I read. Enumerating every node
+> (`sinfo -N -o '%N|%f'`) shows half that range is RTX6000. The audit's
+> conclusion is unchanged — the same four td panels are the only mixed ones —
+> but the second model in the td split is **RTX6000, not V100**, and the
+> figures below are the re-run with three classes. A spot check plus a range
+> assumption is not an enumeration; this is the second time in this audit that
+> the honest move was to enumerate rather than infer.
 
 No submission script in this repo has ever passed `--constraint`, so Slurm was
 free to scatter any panel across both models. Nothing recorded which it got:
@@ -38,10 +50,10 @@ V100-measured ones by this method.
 
 | panel | s1–s8 | s9–s16 |
 |---|---|---|
-| `ax1wm_finger_td0` | **A100** | V100 |
-| `ax1wm_finger_td1` | **A100** | V100 |
-| `ax1wm_finger_td2` | **A100** (s5,s6 non-Slurm) | V100 |
-| `ax1wm_finger_td3` | **A100** (s5,s6 non-Slurm) | V100 |
+| `ax1wm_finger_td0` | **A100** | **RTX6000** |
+| `ax1wm_finger_td1` | **A100** | **RTX6000** |
+| `ax1wm_finger_td2` | **A100** (s5,s6 non-Slurm) | **RTX6000** |
+| `ax1wm_finger_td3` | **A100** (s5,s6 non-Slurm) | **RTX6000** |
 
 Two jobs did it:
 
@@ -94,6 +106,54 @@ resolved here — worth checking the shard contents before either is leaned on.*
 Everything else on the A100 either FAILED or CANCELLED (`pixel_swamp_e4`,
 four `adapt_bundle_2026070*`, `tm2_diag`) and produced nothing, or was a
 seed99 smoke.
+
+## Follow-up 1 — the B1′ anchor's device is POSITIVELY established
+
+The earlier note recorded the anchor panel `regen_ridge_e4_20260810_220849` as
+"device not positively established; A100 excluded by enumeration, V100-vs-Vast
+undecidable by sacct". It is decidable, and it is decided: the bundle carries
+its own producer logs, `refit_ridge_panel_53243601_{0..3}.out`, i.e. a Slurm
+array job.
+
+```
+53243601_0..3   refit_ridge_panel   midway3-0278   COMPLETED   gpu
+                                    2026-08-10 20:32 → 20:45
+```
+
+**midway3-0278 is a V100, and all four array tasks ran on that one node**, so
+the anchor panel is internally device-uniform as well. B1′ therefore takes the
+cheap resolution — pin the fresh ridge panel to `--constraint=v100` (already
+the generated default) — rather than a 32-cell anchor re-measure, *provided*
+model-pinning is sufficient (see the open question below).
+
+## Follow-up 2 — cudnn 5003 is an ARCHITECTURE fact, not a broken node
+
+The 12 pixel probe jobs of 2026-08-15 separate perfectly:
+
+| node | model | outcome |
+|---|---|---|
+| midway3-0280 | V100 | **9/9 FAILED**, `<unknown cudnn status: 5003>` |
+| midway3-0282 | RTX6000 | **3/3 COMPLETED** clean |
+
+So "RCC Slurm cannot run pixel workloads" was too broad: `cudnnConvolutionForward`
+fails on Volta in this JAX build and runs fine on Turing. Pixel legs can stay on
+RCC pinned to `--constraint=rtx6000`; only the V100s are excluded.
+
+This also makes the blanket `--constraint=v100` default **wrong for pixel
+waves** — it would route them to the one architecture that fails. Fixed by
+pinning `constraint: rtx6000` on `lewm_probe_rcc`, with a selfcheck.
+
+## Open question (measurement queued)
+
+The devcheck established the ACROSS-ARCHITECTURE term (0.113) and a zero
+same-GPU noise floor. It never tested **same model, different node** — which is
+exactly what `--constraint=v100` buys B1′. Job `53411135`
+(`scripts/ridge_devnode_check.sbatch`) re-measures three anchor cells on a V100
+that is *not* 0278 and byte-compares against the anchor jsons:
+
+* **identical** → `--constraint=v100` is sufficient; B1′ pins and proceeds
+* **different** → model pinning is not enough; B1′ needs `--nodelist`, or the
+  anchor must be re-measured beside the new panel
 
 ## Fixes applied
 
