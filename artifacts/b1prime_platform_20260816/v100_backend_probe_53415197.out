@@ -1,0 +1,33 @@
+[node] midway3-0278.rcc.local
+Tesla V100-PCIE-16GB, 535.216.03, 7.0
+env JAX_PLATFORMS=<unset>
+jax 0.4.33 jaxlib 0.4.33
+
+--- as-is (whatever the env sets) ---
+  devices: [CudaDevice(id=0)]
+  matmul ok: 512.0
+
+--- JAX_PLATFORMS='' ---
+  devices: [CudaDevice(id=0)]
+  matmul ok: 512.0
+
+--- JAX_PLATFORMS=cuda ---
+  devices: [CudaDevice(id=0)]
+  matmul ok: 512.0
+
+--- JAX_PLATFORMS=cpu (sanity: must work) ---
+  devices: [CpuDevice(id=0)]
+  matmul ok: 512.0
+
+--- installed jax cuda plugins ---
+jax                        0.4.33
+jax-cuda12-pjrt            0.4.33
+jax-cuda12-plugin          0.4.33
+jaxlib                     0.4.33
+jaxtyping                  0.3.9
+ninjax                     3.6.3
+nvidia-cuda-cupti-cu12     12.9.79
+nvidia-cuda-nvcc-cu12      12.1.105
+nvidia-cuda-nvrtc-cu12     12.9.86
+nvidia-cuda-runtime-cu12   12.9.79
+nvidia-cudnn-cu12          9.22.0.52

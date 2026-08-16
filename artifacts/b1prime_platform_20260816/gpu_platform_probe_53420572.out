@@ -1,0 +1,26 @@
+[node] midway3-0278.rcc.local
+Tesla V100-PCIE-16GB, 535.216.03, 7.0
+jax 0.4.33 jaxlib 0.4.33
+
+--- jax.config jax_platforms=gpu ---
+  File "/scratch/midway3/rickybao/conda_envs/dreamerv3/lib/python3.11/site-packages/jax/_src/xla_bridge.py", line 901, in backends
+    raise RuntimeError(err_msg)
+RuntimeError: Unable to initialize backend 'rocm': module 'jaxlib.xla_extension' has no attribute 'GpuAllocatorConfig' (set JAX_PLATFORMS='' to automatically choose an available backend)
+
+--- jax.config jax_platforms=cuda ---
+  devices: [CudaDevice(id=0)]
+
+--- jax.config jax_platforms=<unset> ---
+  devices: [CudaDevice(id=0)]
+
+--- jax.config jax_platforms=rocm ---
+  File "/scratch/midway3/rickybao/conda_envs/dreamerv3/lib/python3.11/site-packages/jax/_src/xla_bridge.py", line 901, in backends
+    raise RuntimeError(err_msg)
+RuntimeError: Unable to initialize backend 'rocm': module 'jaxlib.xla_extension' has no attribute 'GpuAllocatorConfig' (set JAX_PLATFORMS='' to automatically choose an available backend)
+
+--- when were the jax wheels last written? ---
+  jax-0.4.33.dist-info                           2026-05-09 16:52
+  jaxlib-0.4.33.dist-info                        2026-05-09 16:52
+  jax_cuda12_plugin-0.4.33.dist-info             2026-05-09 16:52
+  jax_cuda12_pjrt-0.4.33.dist-info               2026-05-09 16:51
+  nvidia_cudnn_cu12-9.22.0.52.dist-info          2026-05-09 16:52

@@ -1,0 +1,1062 @@
+[device] host=midway3-0278.rcc.local gpu=Tesla V100-PCIE-16GB driver=535.216.03 job=53411405
+[device] every cell below is measured on THIS gpu
+
+[Sun Aug 16 11:13:40 CDT 2026] MEASURE ax1wm_finger_sk6q1s0_seed1
+Traceback (most recent call last):
+  File "/scratch/midway3/rickybao/conda_envs/dreamerv3/lib/python3.11/site-packages/jax/_src/xla_bridge.py", line 885, in backends
+    backend = _init_backend(platform)
+              ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/scratch/midway3/rickybao/conda_envs/dreamerv3/lib/python3.11/site-packages/jax/_src/xla_bridge.py", line 971, in _init_backend
+    backend = registration.factory()
+              ^^^^^^^^^^^^^^^^^^^^^^
+  File "/scratch/midway3/rickybao/conda_envs/dreamerv3/lib/python3.11/site-packages/jax/_src/xla_bridge.py", line 454, in make_gpu_client
+    return xla_client.make_gpu_client(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/scratch/midway3/rickybao/conda_envs/dreamerv3/lib/python3.11/site-packages/jaxlib/xla_client.py", line 96, in make_gpu_client
+    config = _xla.GpuAllocatorConfig()
+             ^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'jaxlib.xla_extension' has no attribute 'GpuAllocatorConfig'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "/home/rickybao/projects/dreamerv3/probing/ridge_probe.py", line 453, in <module>
+    main()
+  File "/home/rickybao/projects/dreamerv3/probing/ridge_probe.py", line 449, in main
+    args.fn(args)
+  File "/home/rickybao/projects/dreamerv3/probing/ridge_probe.py", line 183, in cmd_measure
+    agent = make_agent(config)
+            ^^^^^^^^^^^^^^^^^^
+  File "/home/rickybao/projects/dreamerv3/dreamerv3/main.py", line 138, in make_agent
+    return Agent(obs_space, act_space, elements.Config(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/rickybao/projects/dreamerv3/embodied/jax/agent.py", line 47, in __new__
+    outer.__init__(model, obs_space, act_space, config, jaxcfg)
+  File "/home/rickybao/projects/dreamerv3/embodied/jax/agent.py", line 72, in __init__
+    available = jax.devices()
+                ^^^^^^^^^^^^^
+  File "/scratch/midway3/rickybao/conda_envs/dreamerv3/lib/python3.11/site-packages/jax/_src/xla_bridge.py", line 1083, in devices
+    return get_backend(backend).devices()
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/scratch/midway3/rickybao/conda_envs/dreamerv3/lib/python3.11/site-packages/jax/_src/xla_bridge.py", line 1017, in get_backend
+    return _get_backend_uncached(platform)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/scratch/midway3/rickybao/conda_envs/dreamerv3/lib/python3.11/site-packages/jax/_src/xla_bridge.py", line 996, in _get_backend_uncached
+    bs = backends()
+         ^^^^^^^^^^
+  File "/scratch/midway3/rickybao/conda_envs/dreamerv3/lib/python3.11/site-packages/jax/_src/xla_bridge.py", line 901, in backends
+    raise RuntimeError(err_msg)
+RuntimeError: Unable to initialize backend 'rocm': module 'jaxlib.xla_extension' has no attribute 'GpuAllocatorConfig' (set JAX_PLATFORMS='' to automatically choose an available backend)
+Observations
+  reward           Space(float32, shape=(), low=-inf, high=inf)
+  is_first         Space(bool, shape=(), low=False, high=True)
+  is_last          Space(bool, shape=(), low=False, high=True)
+  is_terminal      Space(bool, shape=(), low=False, high=True)
+  position         Space(float32, shape=(4,), low=-inf, high=inf)
+  velocity         Space(float32, shape=(3,), low=-inf, high=inf)
+  touch            Space(float32, shape=(2,), low=-inf, high=inf)
+  target_position  Space(float32, shape=(2,), low=-inf, high=inf)
+  dist_to_target   Space(float32, shape=(), low=-inf, high=inf)
+Actions
+  action           Space(float32, shape=(2,), low=-1.0, high=1.0)
+Extras
+  consec           Space(int32, shape=(), low=-2147483648, high=2147483647)
+  stepid           Space(uint8, shape=(20,), low=0, high=255)
+  dyn/deter        Space(float32, shape=(384,), low=-inf, high=inf)
+  dyn/stoch        Space(float32, shape=(32, 4), low=-inf, high=inf)
+FAIL   ax1wm_finger_sk6q1s0_seed1 (rc=1)
+[Sun Aug 16 11:13:48 CDT 2026] MEASURE ax1wm_finger_sk6q1s0_seed2
+Traceback (most recent call last):
+  File "/scratch/midway3/rickybao/conda_envs/dreamerv3/lib/python3.11/site-packages/jax/_src/xla_bridge.py", line 885, in backends
+    backend = _init_backend(platform)
+              ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/scratch/midway3/rickybao/conda_envs/dreamerv3/lib/python3.11/site-packages/jax/_src/xla_bridge.py", line 971, in _init_backend
+    backend = registration.factory()
+              ^^^^^^^^^^^^^^^^^^^^^^
+  File "/scratch/midway3/rickybao/conda_envs/dreamerv3/lib/python3.11/site-packages/jax/_src/xla_bridge.py", line 454, in make_gpu_client
+    return xla_client.make_gpu_client(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/scratch/midway3/rickybao/conda_envs/dreamerv3/lib/python3.11/site-packages/jaxlib/xla_client.py", line 96, in make_gpu_client
+    config = _xla.GpuAllocatorConfig()
+             ^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'jaxlib.xla_extension' has no attribute 'GpuAllocatorConfig'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "/home/rickybao/projects/dreamerv3/probing/ridge_probe.py", line 453, in <module>
+    main()
+  File "/home/rickybao/projects/dreamerv3/probing/ridge_probe.py", line 449, in main
+    args.fn(args)
+  File "/home/rickybao/projects/dreamerv3/probing/ridge_probe.py", line 183, in cmd_measure
+    agent = make_agent(config)
+            ^^^^^^^^^^^^^^^^^^
+  File "/home/rickybao/projects/dreamerv3/dreamerv3/main.py", line 138, in make_agent
+    return Agent(obs_space, act_space, elements.Config(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/rickybao/projects/dreamerv3/embodied/jax/agent.py", line 47, in __new__
+    outer.__init__(model, obs_space, act_space, config, jaxcfg)
+  File "/home/rickybao/projects/dreamerv3/embodied/jax/agent.py", line 72, in __init__
+    available = jax.devices()
+                ^^^^^^^^^^^^^
+  File "/scratch/midway3/rickybao/conda_envs/dreamerv3/lib/python3.11/site-packages/jax/_src/xla_bridge.py", line 1083, in devices
+    return get_backend(backend).devices()
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/scratch/midway3/rickybao/conda_envs/dreamerv3/lib/python3.11/site-packages/jax/_src/xla_bridge.py", line 1017, in get_backend
+    return _get_backend_uncached(platform)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/scratch/midway3/rickybao/conda_envs/dreamerv3/lib/python3.11/site-packages/jax/_src/xla_bridge.py", line 996, in _get_backend_uncached
+    bs = backends()
+         ^^^^^^^^^^
+  File "/scratch/midway3/rickybao/conda_envs/dreamerv3/lib/python3.11/site-packages/jax/_src/xla_bridge.py", line 901, in backends
+    raise RuntimeError(err_msg)
+RuntimeError: Unable to initialize backend 'rocm': module 'jaxlib.xla_extension' has no attribute 'GpuAllocatorConfig' (set JAX_PLATFORMS='' to automatically choose an available backend)
+Observations
+  reward           Space(float32, shape=(), low=-inf, high=inf)
+  is_first         Space(bool, shape=(), low=False, high=True)
+  is_last          Space(bool, shape=(), low=False, high=True)
+  is_terminal      Space(bool, shape=(), low=False, high=True)
+  position         Space(float32, shape=(4,), low=-inf, high=inf)
+  velocity         Space(float32, shape=(3,), low=-inf, high=inf)
+  touch            Space(float32, shape=(2,), low=-inf, high=inf)
+  target_position  Space(float32, shape=(2,), low=-inf, high=inf)
+  dist_to_target   Space(float32, shape=(), low=-inf, high=inf)
+Actions
+  action           Space(float32, shape=(2,), low=-1.0, high=1.0)
+Extras
+  consec           Space(int32, shape=(), low=-2147483648, high=2147483647)
+  stepid           Space(uint8, shape=(20,), low=0, high=255)
+  dyn/deter        Space(float32, shape=(384,), low=-inf, high=inf)
+  dyn/stoch        Space(float32, shape=(32, 4), low=-inf, high=inf)
+FAIL   ax1wm_finger_sk6q1s0_seed2 (rc=1)
+[Sun Aug 16 11:13:50 CDT 2026] MEASURE ax1wm_finger_sk6q1s0_seed3
+Traceback (most recent call last):
+  File "/scratch/midway3/rickybao/conda_envs/dreamerv3/lib/python3.11/site-packages/jax/_src/xla_bridge.py", line 885, in backends
+    backend = _init_backend(platform)
+              ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/scratch/midway3/rickybao/conda_envs/dreamerv3/lib/python3.11/site-packages/jax/_src/xla_bridge.py", line 971, in _init_backend
+    backend = registration.factory()
+              ^^^^^^^^^^^^^^^^^^^^^^
+  File "/scratch/midway3/rickybao/conda_envs/dreamerv3/lib/python3.11/site-packages/jax/_src/xla_bridge.py", line 454, in make_gpu_client
+    return xla_client.make_gpu_client(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/scratch/midway3/rickybao/conda_envs/dreamerv3/lib/python3.11/site-packages/jaxlib/xla_client.py", line 96, in make_gpu_client
+    config = _xla.GpuAllocatorConfig()
+             ^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'jaxlib.xla_extension' has no attribute 'GpuAllocatorConfig'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "/home/rickybao/projects/dreamerv3/probing/ridge_probe.py", line 453, in <module>
+    main()
+  File "/home/rickybao/projects/dreamerv3/probing/ridge_probe.py", line 449, in main
+    args.fn(args)
+  File "/home/rickybao/projects/dreamerv3/probing/ridge_probe.py", line 183, in cmd_measure
+    agent = make_agent(config)
+            ^^^^^^^^^^^^^^^^^^
+  File "/home/rickybao/projects/dreamerv3/dreamerv3/main.py", line 138, in make_agent
+    return Agent(obs_space, act_space, elements.Config(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/rickybao/projects/dreamerv3/embodied/jax/agent.py", line 47, in __new__
+    outer.__init__(model, obs_space, act_space, config, jaxcfg)
+  File "/home/rickybao/projects/dreamerv3/embodied/jax/agent.py", line 72, in __init__
+    available = jax.devices()
+                ^^^^^^^^^^^^^
+  File "/scratch/midway3/rickybao/conda_envs/dreamerv3/lib/python3.11/site-packages/jax/_src/xla_bridge.py", line 1083, in devices
+    return get_backend(backend).devices()
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/scratch/midway3/rickybao/conda_envs/dreamerv3/lib/python3.11/site-packages/jax/_src/xla_bridge.py", line 1017, in get_backend
+    return _get_backend_uncached(platform)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/scratch/midway3/rickybao/conda_envs/dreamerv3/lib/python3.11/site-packages/jax/_src/xla_bridge.py", line 996, in _get_backend_uncached
+    bs = backends()
+         ^^^^^^^^^^
+  File "/scratch/midway3/rickybao/conda_envs/dreamerv3/lib/python3.11/site-packages/jax/_src/xla_bridge.py", line 901, in backends
+    raise RuntimeError(err_msg)
+RuntimeError: Unable to initialize backend 'rocm': module 'jaxlib.xla_extension' has no attribute 'GpuAllocatorConfig' (set JAX_PLATFORMS='' to automatically choose an available backend)
+Observations
+  reward           Space(float32, shape=(), low=-inf, high=inf)
+  is_first         Space(bool, shape=(), low=False, high=True)
+  is_last          Space(bool, shape=(), low=False, high=True)
+  is_terminal      Space(bool, shape=(), low=False, high=True)
+  position         Space(float32, shape=(4,), low=-inf, high=inf)
+  velocity         Space(float32, shape=(3,), low=-inf, high=inf)
+  touch            Space(float32, shape=(2,), low=-inf, high=inf)
+  target_position  Space(float32, shape=(2,), low=-inf, high=inf)
+  dist_to_target   Space(float32, shape=(), low=-inf, high=inf)
+Actions
+  action           Space(float32, shape=(2,), low=-1.0, high=1.0)
+Extras
+  consec           Space(int32, shape=(), low=-2147483648, high=2147483647)
+  stepid           Space(uint8, shape=(20,), low=0, high=255)
+  dyn/deter        Space(float32, shape=(384,), low=-inf, high=inf)
+  dyn/stoch        Space(float32, shape=(32, 4), low=-inf, high=inf)
+FAIL   ax1wm_finger_sk6q1s0_seed3 (rc=1)
+[Sun Aug 16 11:13:51 CDT 2026] MEASURE ax1wm_finger_sk6q1s0_seed4
+Traceback (most recent call last):
+  File "/scratch/midway3/rickybao/conda_envs/dreamerv3/lib/python3.11/site-packages/jax/_src/xla_bridge.py", line 885, in backends
+    backend = _init_backend(platform)
+              ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/scratch/midway3/rickybao/conda_envs/dreamerv3/lib/python3.11/site-packages/jax/_src/xla_bridge.py", line 971, in _init_backend
+    backend = registration.factory()
+              ^^^^^^^^^^^^^^^^^^^^^^
+  File "/scratch/midway3/rickybao/conda_envs/dreamerv3/lib/python3.11/site-packages/jax/_src/xla_bridge.py", line 454, in make_gpu_client
+    return xla_client.make_gpu_client(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/scratch/midway3/rickybao/conda_envs/dreamerv3/lib/python3.11/site-packages/jaxlib/xla_client.py", line 96, in make_gpu_client
+    config = _xla.GpuAllocatorConfig()
+             ^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'jaxlib.xla_extension' has no attribute 'GpuAllocatorConfig'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "/home/rickybao/projects/dreamerv3/probing/ridge_probe.py", line 453, in <module>
+    main()
+  File "/home/rickybao/projects/dreamerv3/probing/ridge_probe.py", line 449, in main
+    args.fn(args)
+  File "/home/rickybao/projects/dreamerv3/probing/ridge_probe.py", line 183, in cmd_measure
+    agent = make_agent(config)
+            ^^^^^^^^^^^^^^^^^^
+  File "/home/rickybao/projects/dreamerv3/dreamerv3/main.py", line 138, in make_agent
+    return Agent(obs_space, act_space, elements.Config(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/rickybao/projects/dreamerv3/embodied/jax/agent.py", line 47, in __new__
+    outer.__init__(model, obs_space, act_space, config, jaxcfg)
+  File "/home/rickybao/projects/dreamerv3/embodied/jax/agent.py", line 72, in __init__
+    available = jax.devices()
+                ^^^^^^^^^^^^^
+  File "/scratch/midway3/rickybao/conda_envs/dreamerv3/lib/python3.11/site-packages/jax/_src/xla_bridge.py", line 1083, in devices
+    return get_backend(backend).devices()
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/scratch/midway3/rickybao/conda_envs/dreamerv3/lib/python3.11/site-packages/jax/_src/xla_bridge.py", line 1017, in get_backend
+    return _get_backend_uncached(platform)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/scratch/midway3/rickybao/conda_envs/dreamerv3/lib/python3.11/site-packages/jax/_src/xla_bridge.py", line 996, in _get_backend_uncached
+    bs = backends()
+         ^^^^^^^^^^
+  File "/scratch/midway3/rickybao/conda_envs/dreamerv3/lib/python3.11/site-packages/jax/_src/xla_bridge.py", line 901, in backends
+    raise RuntimeError(err_msg)
+RuntimeError: Unable to initialize backend 'rocm': module 'jaxlib.xla_extension' has no attribute 'GpuAllocatorConfig' (set JAX_PLATFORMS='' to automatically choose an available backend)
+Observations
+  reward           Space(float32, shape=(), low=-inf, high=inf)
+  is_first         Space(bool, shape=(), low=False, high=True)
+  is_last          Space(bool, shape=(), low=False, high=True)
+  is_terminal      Space(bool, shape=(), low=False, high=True)
+  position         Space(float32, shape=(4,), low=-inf, high=inf)
+  velocity         Space(float32, shape=(3,), low=-inf, high=inf)
+  touch            Space(float32, shape=(2,), low=-inf, high=inf)
+  target_position  Space(float32, shape=(2,), low=-inf, high=inf)
+  dist_to_target   Space(float32, shape=(), low=-inf, high=inf)
+Actions
+  action           Space(float32, shape=(2,), low=-1.0, high=1.0)
+Extras
+  consec           Space(int32, shape=(), low=-2147483648, high=2147483647)
+  stepid           Space(uint8, shape=(20,), low=0, high=255)
+  dyn/deter        Space(float32, shape=(384,), low=-inf, high=inf)
+  dyn/stoch        Space(float32, shape=(32, 4), low=-inf, high=inf)
+FAIL   ax1wm_finger_sk6q1s0_seed4 (rc=1)
+[Sun Aug 16 11:13:53 CDT 2026] MEASURE ax1wm_finger_sk6q1s1_seed1
+Traceback (most recent call last):
+  File "/scratch/midway3/rickybao/conda_envs/dreamerv3/lib/python3.11/site-packages/jax/_src/xla_bridge.py", line 885, in backends
+    backend = _init_backend(platform)
+              ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/scratch/midway3/rickybao/conda_envs/dreamerv3/lib/python3.11/site-packages/jax/_src/xla_bridge.py", line 971, in _init_backend
+    backend = registration.factory()
+              ^^^^^^^^^^^^^^^^^^^^^^
+  File "/scratch/midway3/rickybao/conda_envs/dreamerv3/lib/python3.11/site-packages/jax/_src/xla_bridge.py", line 454, in make_gpu_client
+    return xla_client.make_gpu_client(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/scratch/midway3/rickybao/conda_envs/dreamerv3/lib/python3.11/site-packages/jaxlib/xla_client.py", line 96, in make_gpu_client
+    config = _xla.GpuAllocatorConfig()
+             ^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'jaxlib.xla_extension' has no attribute 'GpuAllocatorConfig'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "/home/rickybao/projects/dreamerv3/probing/ridge_probe.py", line 453, in <module>
+    main()
+  File "/home/rickybao/projects/dreamerv3/probing/ridge_probe.py", line 449, in main
+    args.fn(args)
+  File "/home/rickybao/projects/dreamerv3/probing/ridge_probe.py", line 183, in cmd_measure
+    agent = make_agent(config)
+            ^^^^^^^^^^^^^^^^^^
+  File "/home/rickybao/projects/dreamerv3/dreamerv3/main.py", line 138, in make_agent
+    return Agent(obs_space, act_space, elements.Config(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/rickybao/projects/dreamerv3/embodied/jax/agent.py", line 47, in __new__
+    outer.__init__(model, obs_space, act_space, config, jaxcfg)
+  File "/home/rickybao/projects/dreamerv3/embodied/jax/agent.py", line 72, in __init__
+    available = jax.devices()
+                ^^^^^^^^^^^^^
+  File "/scratch/midway3/rickybao/conda_envs/dreamerv3/lib/python3.11/site-packages/jax/_src/xla_bridge.py", line 1083, in devices
+    return get_backend(backend).devices()
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/scratch/midway3/rickybao/conda_envs/dreamerv3/lib/python3.11/site-packages/jax/_src/xla_bridge.py", line 1017, in get_backend
+    return _get_backend_uncached(platform)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/scratch/midway3/rickybao/conda_envs/dreamerv3/lib/python3.11/site-packages/jax/_src/xla_bridge.py", line 996, in _get_backend_uncached
+    bs = backends()
+         ^^^^^^^^^^
+  File "/scratch/midway3/rickybao/conda_envs/dreamerv3/lib/python3.11/site-packages/jax/_src/xla_bridge.py", line 901, in backends
+    raise RuntimeError(err_msg)
+RuntimeError: Unable to initialize backend 'rocm': module 'jaxlib.xla_extension' has no attribute 'GpuAllocatorConfig' (set JAX_PLATFORMS='' to automatically choose an available backend)
+Observations
+  reward           Space(float32, shape=(), low=-inf, high=inf)
+  is_first         Space(bool, shape=(), low=False, high=True)
+  is_last          Space(bool, shape=(), low=False, high=True)
+  is_terminal      Space(bool, shape=(), low=False, high=True)
+  position         Space(float32, shape=(4,), low=-inf, high=inf)
+  velocity         Space(float32, shape=(3,), low=-inf, high=inf)
+  touch            Space(float32, shape=(2,), low=-inf, high=inf)
+  target_position  Space(float32, shape=(2,), low=-inf, high=inf)
+  dist_to_target   Space(float32, shape=(), low=-inf, high=inf)
+Actions
+  action           Space(float32, shape=(2,), low=-1.0, high=1.0)
+Extras
+  consec           Space(int32, shape=(), low=-2147483648, high=2147483647)
+  stepid           Space(uint8, shape=(20,), low=0, high=255)
+  dyn/deter        Space(float32, shape=(384,), low=-inf, high=inf)
+  dyn/stoch        Space(float32, shape=(32, 4), low=-inf, high=inf)
+FAIL   ax1wm_finger_sk6q1s1_seed1 (rc=1)
+[Sun Aug 16 11:13:54 CDT 2026] MEASURE ax1wm_finger_sk6q1s1_seed2
+Traceback (most recent call last):
+  File "/scratch/midway3/rickybao/conda_envs/dreamerv3/lib/python3.11/site-packages/jax/_src/xla_bridge.py", line 885, in backends
+    backend = _init_backend(platform)
+              ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/scratch/midway3/rickybao/conda_envs/dreamerv3/lib/python3.11/site-packages/jax/_src/xla_bridge.py", line 971, in _init_backend
+    backend = registration.factory()
+              ^^^^^^^^^^^^^^^^^^^^^^
+  File "/scratch/midway3/rickybao/conda_envs/dreamerv3/lib/python3.11/site-packages/jax/_src/xla_bridge.py", line 454, in make_gpu_client
+    return xla_client.make_gpu_client(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/scratch/midway3/rickybao/conda_envs/dreamerv3/lib/python3.11/site-packages/jaxlib/xla_client.py", line 96, in make_gpu_client
+    config = _xla.GpuAllocatorConfig()
+             ^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'jaxlib.xla_extension' has no attribute 'GpuAllocatorConfig'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "/home/rickybao/projects/dreamerv3/probing/ridge_probe.py", line 453, in <module>
+    main()
+  File "/home/rickybao/projects/dreamerv3/probing/ridge_probe.py", line 449, in main
+    args.fn(args)
+  File "/home/rickybao/projects/dreamerv3/probing/ridge_probe.py", line 183, in cmd_measure
+    agent = make_agent(config)
+            ^^^^^^^^^^^^^^^^^^
+  File "/home/rickybao/projects/dreamerv3/dreamerv3/main.py", line 138, in make_agent
+    return Agent(obs_space, act_space, elements.Config(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/rickybao/projects/dreamerv3/embodied/jax/agent.py", line 47, in __new__
+    outer.__init__(model, obs_space, act_space, config, jaxcfg)
+  File "/home/rickybao/projects/dreamerv3/embodied/jax/agent.py", line 72, in __init__
+    available = jax.devices()
+                ^^^^^^^^^^^^^
+  File "/scratch/midway3/rickybao/conda_envs/dreamerv3/lib/python3.11/site-packages/jax/_src/xla_bridge.py", line 1083, in devices
+    return get_backend(backend).devices()
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/scratch/midway3/rickybao/conda_envs/dreamerv3/lib/python3.11/site-packages/jax/_src/xla_bridge.py", line 1017, in get_backend
+    return _get_backend_uncached(platform)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/scratch/midway3/rickybao/conda_envs/dreamerv3/lib/python3.11/site-packages/jax/_src/xla_bridge.py", line 996, in _get_backend_uncached
+    bs = backends()
+         ^^^^^^^^^^
+  File "/scratch/midway3/rickybao/conda_envs/dreamerv3/lib/python3.11/site-packages/jax/_src/xla_bridge.py", line 901, in backends
+    raise RuntimeError(err_msg)
+RuntimeError: Unable to initialize backend 'rocm': module 'jaxlib.xla_extension' has no attribute 'GpuAllocatorConfig' (set JAX_PLATFORMS='' to automatically choose an available backend)
+Observations
+  reward           Space(float32, shape=(), low=-inf, high=inf)
+  is_first         Space(bool, shape=(), low=False, high=True)
+  is_last          Space(bool, shape=(), low=False, high=True)
+  is_terminal      Space(bool, shape=(), low=False, high=True)
+  position         Space(float32, shape=(4,), low=-inf, high=inf)
+  velocity         Space(float32, shape=(3,), low=-inf, high=inf)
+  touch            Space(float32, shape=(2,), low=-inf, high=inf)
+  target_position  Space(float32, shape=(2,), low=-inf, high=inf)
+  dist_to_target   Space(float32, shape=(), low=-inf, high=inf)
+Actions
+  action           Space(float32, shape=(2,), low=-1.0, high=1.0)
+Extras
+  consec           Space(int32, shape=(), low=-2147483648, high=2147483647)
+  stepid           Space(uint8, shape=(20,), low=0, high=255)
+  dyn/deter        Space(float32, shape=(384,), low=-inf, high=inf)
+  dyn/stoch        Space(float32, shape=(32, 4), low=-inf, high=inf)
+FAIL   ax1wm_finger_sk6q1s1_seed2 (rc=1)
+[Sun Aug 16 11:13:56 CDT 2026] MEASURE ax1wm_finger_sk6q1s1_seed3
+Traceback (most recent call last):
+  File "/scratch/midway3/rickybao/conda_envs/dreamerv3/lib/python3.11/site-packages/jax/_src/xla_bridge.py", line 885, in backends
+    backend = _init_backend(platform)
+              ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/scratch/midway3/rickybao/conda_envs/dreamerv3/lib/python3.11/site-packages/jax/_src/xla_bridge.py", line 971, in _init_backend
+    backend = registration.factory()
+              ^^^^^^^^^^^^^^^^^^^^^^
+  File "/scratch/midway3/rickybao/conda_envs/dreamerv3/lib/python3.11/site-packages/jax/_src/xla_bridge.py", line 454, in make_gpu_client
+    return xla_client.make_gpu_client(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/scratch/midway3/rickybao/conda_envs/dreamerv3/lib/python3.11/site-packages/jaxlib/xla_client.py", line 96, in make_gpu_client
+    config = _xla.GpuAllocatorConfig()
+             ^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'jaxlib.xla_extension' has no attribute 'GpuAllocatorConfig'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "/home/rickybao/projects/dreamerv3/probing/ridge_probe.py", line 453, in <module>
+    main()
+  File "/home/rickybao/projects/dreamerv3/probing/ridge_probe.py", line 449, in main
+    args.fn(args)
+  File "/home/rickybao/projects/dreamerv3/probing/ridge_probe.py", line 183, in cmd_measure
+    agent = make_agent(config)
+            ^^^^^^^^^^^^^^^^^^
+  File "/home/rickybao/projects/dreamerv3/dreamerv3/main.py", line 138, in make_agent
+    return Agent(obs_space, act_space, elements.Config(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/rickybao/projects/dreamerv3/embodied/jax/agent.py", line 47, in __new__
+    outer.__init__(model, obs_space, act_space, config, jaxcfg)
+  File "/home/rickybao/projects/dreamerv3/embodied/jax/agent.py", line 72, in __init__
+    available = jax.devices()
+                ^^^^^^^^^^^^^
+  File "/scratch/midway3/rickybao/conda_envs/dreamerv3/lib/python3.11/site-packages/jax/_src/xla_bridge.py", line 1083, in devices
+    return get_backend(backend).devices()
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/scratch/midway3/rickybao/conda_envs/dreamerv3/lib/python3.11/site-packages/jax/_src/xla_bridge.py", line 1017, in get_backend
+    return _get_backend_uncached(platform)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/scratch/midway3/rickybao/conda_envs/dreamerv3/lib/python3.11/site-packages/jax/_src/xla_bridge.py", line 996, in _get_backend_uncached
+    bs = backends()
+         ^^^^^^^^^^
+  File "/scratch/midway3/rickybao/conda_envs/dreamerv3/lib/python3.11/site-packages/jax/_src/xla_bridge.py", line 901, in backends
+    raise RuntimeError(err_msg)
+RuntimeError: Unable to initialize backend 'rocm': module 'jaxlib.xla_extension' has no attribute 'GpuAllocatorConfig' (set JAX_PLATFORMS='' to automatically choose an available backend)
+Observations
+  reward           Space(float32, shape=(), low=-inf, high=inf)
+  is_first         Space(bool, shape=(), low=False, high=True)
+  is_last          Space(bool, shape=(), low=False, high=True)
+  is_terminal      Space(bool, shape=(), low=False, high=True)
+  position         Space(float32, shape=(4,), low=-inf, high=inf)
+  velocity         Space(float32, shape=(3,), low=-inf, high=inf)
+  touch            Space(float32, shape=(2,), low=-inf, high=inf)
+  target_position  Space(float32, shape=(2,), low=-inf, high=inf)
+  dist_to_target   Space(float32, shape=(), low=-inf, high=inf)
+Actions
+  action           Space(float32, shape=(2,), low=-1.0, high=1.0)
+Extras
+  consec           Space(int32, shape=(), low=-2147483648, high=2147483647)
+  stepid           Space(uint8, shape=(20,), low=0, high=255)
+  dyn/deter        Space(float32, shape=(384,), low=-inf, high=inf)
+  dyn/stoch        Space(float32, shape=(32, 4), low=-inf, high=inf)
+FAIL   ax1wm_finger_sk6q1s1_seed3 (rc=1)
+[Sun Aug 16 11:13:57 CDT 2026] MEASURE ax1wm_finger_sk6q1s1_seed4
+Traceback (most recent call last):
+  File "/scratch/midway3/rickybao/conda_envs/dreamerv3/lib/python3.11/site-packages/jax/_src/xla_bridge.py", line 885, in backends
+    backend = _init_backend(platform)
+              ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/scratch/midway3/rickybao/conda_envs/dreamerv3/lib/python3.11/site-packages/jax/_src/xla_bridge.py", line 971, in _init_backend
+    backend = registration.factory()
+              ^^^^^^^^^^^^^^^^^^^^^^
+  File "/scratch/midway3/rickybao/conda_envs/dreamerv3/lib/python3.11/site-packages/jax/_src/xla_bridge.py", line 454, in make_gpu_client
+    return xla_client.make_gpu_client(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/scratch/midway3/rickybao/conda_envs/dreamerv3/lib/python3.11/site-packages/jaxlib/xla_client.py", line 96, in make_gpu_client
+    config = _xla.GpuAllocatorConfig()
+             ^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'jaxlib.xla_extension' has no attribute 'GpuAllocatorConfig'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "/home/rickybao/projects/dreamerv3/probing/ridge_probe.py", line 453, in <module>
+    main()
+  File "/home/rickybao/projects/dreamerv3/probing/ridge_probe.py", line 449, in main
+    args.fn(args)
+  File "/home/rickybao/projects/dreamerv3/probing/ridge_probe.py", line 183, in cmd_measure
+    agent = make_agent(config)
+            ^^^^^^^^^^^^^^^^^^
+  File "/home/rickybao/projects/dreamerv3/dreamerv3/main.py", line 138, in make_agent
+    return Agent(obs_space, act_space, elements.Config(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/rickybao/projects/dreamerv3/embodied/jax/agent.py", line 47, in __new__
+    outer.__init__(model, obs_space, act_space, config, jaxcfg)
+  File "/home/rickybao/projects/dreamerv3/embodied/jax/agent.py", line 72, in __init__
+    available = jax.devices()
+                ^^^^^^^^^^^^^
+  File "/scratch/midway3/rickybao/conda_envs/dreamerv3/lib/python3.11/site-packages/jax/_src/xla_bridge.py", line 1083, in devices
+    return get_backend(backend).devices()
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/scratch/midway3/rickybao/conda_envs/dreamerv3/lib/python3.11/site-packages/jax/_src/xla_bridge.py", line 1017, in get_backend
+    return _get_backend_uncached(platform)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/scratch/midway3/rickybao/conda_envs/dreamerv3/lib/python3.11/site-packages/jax/_src/xla_bridge.py", line 996, in _get_backend_uncached
+    bs = backends()
+         ^^^^^^^^^^
+  File "/scratch/midway3/rickybao/conda_envs/dreamerv3/lib/python3.11/site-packages/jax/_src/xla_bridge.py", line 901, in backends
+    raise RuntimeError(err_msg)
+RuntimeError: Unable to initialize backend 'rocm': module 'jaxlib.xla_extension' has no attribute 'GpuAllocatorConfig' (set JAX_PLATFORMS='' to automatically choose an available backend)
+Observations
+  reward           Space(float32, shape=(), low=-inf, high=inf)
+  is_first         Space(bool, shape=(), low=False, high=True)
+  is_last          Space(bool, shape=(), low=False, high=True)
+  is_terminal      Space(bool, shape=(), low=False, high=True)
+  position         Space(float32, shape=(4,), low=-inf, high=inf)
+  velocity         Space(float32, shape=(3,), low=-inf, high=inf)
+  touch            Space(float32, shape=(2,), low=-inf, high=inf)
+  target_position  Space(float32, shape=(2,), low=-inf, high=inf)
+  dist_to_target   Space(float32, shape=(), low=-inf, high=inf)
+Actions
+  action           Space(float32, shape=(2,), low=-1.0, high=1.0)
+Extras
+  consec           Space(int32, shape=(), low=-2147483648, high=2147483647)
+  stepid           Space(uint8, shape=(20,), low=0, high=255)
+  dyn/deter        Space(float32, shape=(384,), low=-inf, high=inf)
+  dyn/stoch        Space(float32, shape=(32, 4), low=-inf, high=inf)
+FAIL   ax1wm_finger_sk6q1s1_seed4 (rc=1)
+[Sun Aug 16 11:13:59 CDT 2026] MEASURE ax1wm_finger_fsk6q1s0_seed1
+Traceback (most recent call last):
+  File "/scratch/midway3/rickybao/conda_envs/dreamerv3/lib/python3.11/site-packages/jax/_src/xla_bridge.py", line 885, in backends
+    backend = _init_backend(platform)
+              ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/scratch/midway3/rickybao/conda_envs/dreamerv3/lib/python3.11/site-packages/jax/_src/xla_bridge.py", line 971, in _init_backend
+    backend = registration.factory()
+              ^^^^^^^^^^^^^^^^^^^^^^
+  File "/scratch/midway3/rickybao/conda_envs/dreamerv3/lib/python3.11/site-packages/jax/_src/xla_bridge.py", line 454, in make_gpu_client
+    return xla_client.make_gpu_client(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/scratch/midway3/rickybao/conda_envs/dreamerv3/lib/python3.11/site-packages/jaxlib/xla_client.py", line 96, in make_gpu_client
+    config = _xla.GpuAllocatorConfig()
+             ^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'jaxlib.xla_extension' has no attribute 'GpuAllocatorConfig'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "/home/rickybao/projects/dreamerv3/probing/ridge_probe.py", line 453, in <module>
+    main()
+  File "/home/rickybao/projects/dreamerv3/probing/ridge_probe.py", line 449, in main
+    args.fn(args)
+  File "/home/rickybao/projects/dreamerv3/probing/ridge_probe.py", line 183, in cmd_measure
+    agent = make_agent(config)
+            ^^^^^^^^^^^^^^^^^^
+  File "/home/rickybao/projects/dreamerv3/dreamerv3/main.py", line 138, in make_agent
+    return Agent(obs_space, act_space, elements.Config(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/rickybao/projects/dreamerv3/embodied/jax/agent.py", line 47, in __new__
+    outer.__init__(model, obs_space, act_space, config, jaxcfg)
+  File "/home/rickybao/projects/dreamerv3/embodied/jax/agent.py", line 72, in __init__
+    available = jax.devices()
+                ^^^^^^^^^^^^^
+  File "/scratch/midway3/rickybao/conda_envs/dreamerv3/lib/python3.11/site-packages/jax/_src/xla_bridge.py", line 1083, in devices
+    return get_backend(backend).devices()
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/scratch/midway3/rickybao/conda_envs/dreamerv3/lib/python3.11/site-packages/jax/_src/xla_bridge.py", line 1017, in get_backend
+    return _get_backend_uncached(platform)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/scratch/midway3/rickybao/conda_envs/dreamerv3/lib/python3.11/site-packages/jax/_src/xla_bridge.py", line 996, in _get_backend_uncached
+    bs = backends()
+         ^^^^^^^^^^
+  File "/scratch/midway3/rickybao/conda_envs/dreamerv3/lib/python3.11/site-packages/jax/_src/xla_bridge.py", line 901, in backends
+    raise RuntimeError(err_msg)
+RuntimeError: Unable to initialize backend 'rocm': module 'jaxlib.xla_extension' has no attribute 'GpuAllocatorConfig' (set JAX_PLATFORMS='' to automatically choose an available backend)
+Observations
+  reward           Space(float32, shape=(), low=-inf, high=inf)
+  is_first         Space(bool, shape=(), low=False, high=True)
+  is_last          Space(bool, shape=(), low=False, high=True)
+  is_terminal      Space(bool, shape=(), low=False, high=True)
+  position         Space(float32, shape=(4,), low=-inf, high=inf)
+  velocity         Space(float32, shape=(3,), low=-inf, high=inf)
+  touch            Space(float32, shape=(2,), low=-inf, high=inf)
+  target_position  Space(float32, shape=(2,), low=-inf, high=inf)
+  dist_to_target   Space(float32, shape=(), low=-inf, high=inf)
+Actions
+  action           Space(float32, shape=(2,), low=-1.0, high=1.0)
+Extras
+  consec           Space(int32, shape=(), low=-2147483648, high=2147483647)
+  stepid           Space(uint8, shape=(20,), low=0, high=255)
+  dyn/deter        Space(float32, shape=(384,), low=-inf, high=inf)
+  dyn/stoch        Space(float32, shape=(32, 4), low=-inf, high=inf)
+FAIL   ax1wm_finger_fsk6q1s0_seed1 (rc=1)
+[Sun Aug 16 11:14:00 CDT 2026] MEASURE ax1wm_finger_fsk6q1s0_seed2
+Traceback (most recent call last):
+  File "/scratch/midway3/rickybao/conda_envs/dreamerv3/lib/python3.11/site-packages/jax/_src/xla_bridge.py", line 885, in backends
+    backend = _init_backend(platform)
+              ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/scratch/midway3/rickybao/conda_envs/dreamerv3/lib/python3.11/site-packages/jax/_src/xla_bridge.py", line 971, in _init_backend
+    backend = registration.factory()
+              ^^^^^^^^^^^^^^^^^^^^^^
+  File "/scratch/midway3/rickybao/conda_envs/dreamerv3/lib/python3.11/site-packages/jax/_src/xla_bridge.py", line 454, in make_gpu_client
+    return xla_client.make_gpu_client(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/scratch/midway3/rickybao/conda_envs/dreamerv3/lib/python3.11/site-packages/jaxlib/xla_client.py", line 96, in make_gpu_client
+    config = _xla.GpuAllocatorConfig()
+             ^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'jaxlib.xla_extension' has no attribute 'GpuAllocatorConfig'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "/home/rickybao/projects/dreamerv3/probing/ridge_probe.py", line 453, in <module>
+    main()
+  File "/home/rickybao/projects/dreamerv3/probing/ridge_probe.py", line 449, in main
+    args.fn(args)
+  File "/home/rickybao/projects/dreamerv3/probing/ridge_probe.py", line 183, in cmd_measure
+    agent = make_agent(config)
+            ^^^^^^^^^^^^^^^^^^
+  File "/home/rickybao/projects/dreamerv3/dreamerv3/main.py", line 138, in make_agent
+    return Agent(obs_space, act_space, elements.Config(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/rickybao/projects/dreamerv3/embodied/jax/agent.py", line 47, in __new__
+    outer.__init__(model, obs_space, act_space, config, jaxcfg)
+  File "/home/rickybao/projects/dreamerv3/embodied/jax/agent.py", line 72, in __init__
+    available = jax.devices()
+                ^^^^^^^^^^^^^
+  File "/scratch/midway3/rickybao/conda_envs/dreamerv3/lib/python3.11/site-packages/jax/_src/xla_bridge.py", line 1083, in devices
+    return get_backend(backend).devices()
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/scratch/midway3/rickybao/conda_envs/dreamerv3/lib/python3.11/site-packages/jax/_src/xla_bridge.py", line 1017, in get_backend
+    return _get_backend_uncached(platform)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/scratch/midway3/rickybao/conda_envs/dreamerv3/lib/python3.11/site-packages/jax/_src/xla_bridge.py", line 996, in _get_backend_uncached
+    bs = backends()
+         ^^^^^^^^^^
+  File "/scratch/midway3/rickybao/conda_envs/dreamerv3/lib/python3.11/site-packages/jax/_src/xla_bridge.py", line 901, in backends
+    raise RuntimeError(err_msg)
+RuntimeError: Unable to initialize backend 'rocm': module 'jaxlib.xla_extension' has no attribute 'GpuAllocatorConfig' (set JAX_PLATFORMS='' to automatically choose an available backend)
+Observations
+  reward           Space(float32, shape=(), low=-inf, high=inf)
+  is_first         Space(bool, shape=(), low=False, high=True)
+  is_last          Space(bool, shape=(), low=False, high=True)
+  is_terminal      Space(bool, shape=(), low=False, high=True)
+  position         Space(float32, shape=(4,), low=-inf, high=inf)
+  velocity         Space(float32, shape=(3,), low=-inf, high=inf)
+  touch            Space(float32, shape=(2,), low=-inf, high=inf)
+  target_position  Space(float32, shape=(2,), low=-inf, high=inf)
+  dist_to_target   Space(float32, shape=(), low=-inf, high=inf)
+Actions
+  action           Space(float32, shape=(2,), low=-1.0, high=1.0)
+Extras
+  consec           Space(int32, shape=(), low=-2147483648, high=2147483647)
+  stepid           Space(uint8, shape=(20,), low=0, high=255)
+  dyn/deter        Space(float32, shape=(384,), low=-inf, high=inf)
+  dyn/stoch        Space(float32, shape=(32, 4), low=-inf, high=inf)
+FAIL   ax1wm_finger_fsk6q1s0_seed2 (rc=1)
+[Sun Aug 16 11:14:02 CDT 2026] MEASURE ax1wm_finger_fsk6q1s0_seed3
+Traceback (most recent call last):
+  File "/scratch/midway3/rickybao/conda_envs/dreamerv3/lib/python3.11/site-packages/jax/_src/xla_bridge.py", line 885, in backends
+    backend = _init_backend(platform)
+              ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/scratch/midway3/rickybao/conda_envs/dreamerv3/lib/python3.11/site-packages/jax/_src/xla_bridge.py", line 971, in _init_backend
+    backend = registration.factory()
+              ^^^^^^^^^^^^^^^^^^^^^^
+  File "/scratch/midway3/rickybao/conda_envs/dreamerv3/lib/python3.11/site-packages/jax/_src/xla_bridge.py", line 454, in make_gpu_client
+    return xla_client.make_gpu_client(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/scratch/midway3/rickybao/conda_envs/dreamerv3/lib/python3.11/site-packages/jaxlib/xla_client.py", line 96, in make_gpu_client
+    config = _xla.GpuAllocatorConfig()
+             ^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'jaxlib.xla_extension' has no attribute 'GpuAllocatorConfig'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "/home/rickybao/projects/dreamerv3/probing/ridge_probe.py", line 453, in <module>
+    main()
+  File "/home/rickybao/projects/dreamerv3/probing/ridge_probe.py", line 449, in main
+    args.fn(args)
+  File "/home/rickybao/projects/dreamerv3/probing/ridge_probe.py", line 183, in cmd_measure
+    agent = make_agent(config)
+            ^^^^^^^^^^^^^^^^^^
+  File "/home/rickybao/projects/dreamerv3/dreamerv3/main.py", line 138, in make_agent
+    return Agent(obs_space, act_space, elements.Config(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/rickybao/projects/dreamerv3/embodied/jax/agent.py", line 47, in __new__
+    outer.__init__(model, obs_space, act_space, config, jaxcfg)
+  File "/home/rickybao/projects/dreamerv3/embodied/jax/agent.py", line 72, in __init__
+    available = jax.devices()
+                ^^^^^^^^^^^^^
+  File "/scratch/midway3/rickybao/conda_envs/dreamerv3/lib/python3.11/site-packages/jax/_src/xla_bridge.py", line 1083, in devices
+    return get_backend(backend).devices()
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/scratch/midway3/rickybao/conda_envs/dreamerv3/lib/python3.11/site-packages/jax/_src/xla_bridge.py", line 1017, in get_backend
+    return _get_backend_uncached(platform)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/scratch/midway3/rickybao/conda_envs/dreamerv3/lib/python3.11/site-packages/jax/_src/xla_bridge.py", line 996, in _get_backend_uncached
+    bs = backends()
+         ^^^^^^^^^^
+  File "/scratch/midway3/rickybao/conda_envs/dreamerv3/lib/python3.11/site-packages/jax/_src/xla_bridge.py", line 901, in backends
+    raise RuntimeError(err_msg)
+RuntimeError: Unable to initialize backend 'rocm': module 'jaxlib.xla_extension' has no attribute 'GpuAllocatorConfig' (set JAX_PLATFORMS='' to automatically choose an available backend)
+Observations
+  reward           Space(float32, shape=(), low=-inf, high=inf)
+  is_first         Space(bool, shape=(), low=False, high=True)
+  is_last          Space(bool, shape=(), low=False, high=True)
+  is_terminal      Space(bool, shape=(), low=False, high=True)
+  position         Space(float32, shape=(4,), low=-inf, high=inf)
+  velocity         Space(float32, shape=(3,), low=-inf, high=inf)
+  touch            Space(float32, shape=(2,), low=-inf, high=inf)
+  target_position  Space(float32, shape=(2,), low=-inf, high=inf)
+  dist_to_target   Space(float32, shape=(), low=-inf, high=inf)
+Actions
+  action           Space(float32, shape=(2,), low=-1.0, high=1.0)
+Extras
+  consec           Space(int32, shape=(), low=-2147483648, high=2147483647)
+  stepid           Space(uint8, shape=(20,), low=0, high=255)
+  dyn/deter        Space(float32, shape=(384,), low=-inf, high=inf)
+  dyn/stoch        Space(float32, shape=(32, 4), low=-inf, high=inf)
+FAIL   ax1wm_finger_fsk6q1s0_seed3 (rc=1)
+[Sun Aug 16 11:14:03 CDT 2026] MEASURE ax1wm_finger_fsk6q1s0_seed4
+Traceback (most recent call last):
+  File "/scratch/midway3/rickybao/conda_envs/dreamerv3/lib/python3.11/site-packages/jax/_src/xla_bridge.py", line 885, in backends
+    backend = _init_backend(platform)
+              ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/scratch/midway3/rickybao/conda_envs/dreamerv3/lib/python3.11/site-packages/jax/_src/xla_bridge.py", line 971, in _init_backend
+    backend = registration.factory()
+              ^^^^^^^^^^^^^^^^^^^^^^
+  File "/scratch/midway3/rickybao/conda_envs/dreamerv3/lib/python3.11/site-packages/jax/_src/xla_bridge.py", line 454, in make_gpu_client
+    return xla_client.make_gpu_client(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/scratch/midway3/rickybao/conda_envs/dreamerv3/lib/python3.11/site-packages/jaxlib/xla_client.py", line 96, in make_gpu_client
+    config = _xla.GpuAllocatorConfig()
+             ^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'jaxlib.xla_extension' has no attribute 'GpuAllocatorConfig'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "/home/rickybao/projects/dreamerv3/probing/ridge_probe.py", line 453, in <module>
+    main()
+  File "/home/rickybao/projects/dreamerv3/probing/ridge_probe.py", line 449, in main
+    args.fn(args)
+  File "/home/rickybao/projects/dreamerv3/probing/ridge_probe.py", line 183, in cmd_measure
+    agent = make_agent(config)
+            ^^^^^^^^^^^^^^^^^^
+  File "/home/rickybao/projects/dreamerv3/dreamerv3/main.py", line 138, in make_agent
+    return Agent(obs_space, act_space, elements.Config(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/rickybao/projects/dreamerv3/embodied/jax/agent.py", line 47, in __new__
+    outer.__init__(model, obs_space, act_space, config, jaxcfg)
+  File "/home/rickybao/projects/dreamerv3/embodied/jax/agent.py", line 72, in __init__
+    available = jax.devices()
+                ^^^^^^^^^^^^^
+  File "/scratch/midway3/rickybao/conda_envs/dreamerv3/lib/python3.11/site-packages/jax/_src/xla_bridge.py", line 1083, in devices
+    return get_backend(backend).devices()
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/scratch/midway3/rickybao/conda_envs/dreamerv3/lib/python3.11/site-packages/jax/_src/xla_bridge.py", line 1017, in get_backend
+    return _get_backend_uncached(platform)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/scratch/midway3/rickybao/conda_envs/dreamerv3/lib/python3.11/site-packages/jax/_src/xla_bridge.py", line 996, in _get_backend_uncached
+    bs = backends()
+         ^^^^^^^^^^
+  File "/scratch/midway3/rickybao/conda_envs/dreamerv3/lib/python3.11/site-packages/jax/_src/xla_bridge.py", line 901, in backends
+    raise RuntimeError(err_msg)
+RuntimeError: Unable to initialize backend 'rocm': module 'jaxlib.xla_extension' has no attribute 'GpuAllocatorConfig' (set JAX_PLATFORMS='' to automatically choose an available backend)
+Observations
+  reward           Space(float32, shape=(), low=-inf, high=inf)
+  is_first         Space(bool, shape=(), low=False, high=True)
+  is_last          Space(bool, shape=(), low=False, high=True)
+  is_terminal      Space(bool, shape=(), low=False, high=True)
+  position         Space(float32, shape=(4,), low=-inf, high=inf)
+  velocity         Space(float32, shape=(3,), low=-inf, high=inf)
+  touch            Space(float32, shape=(2,), low=-inf, high=inf)
+  target_position  Space(float32, shape=(2,), low=-inf, high=inf)
+  dist_to_target   Space(float32, shape=(), low=-inf, high=inf)
+Actions
+  action           Space(float32, shape=(2,), low=-1.0, high=1.0)
+Extras
+  consec           Space(int32, shape=(), low=-2147483648, high=2147483647)
+  stepid           Space(uint8, shape=(20,), low=0, high=255)
+  dyn/deter        Space(float32, shape=(384,), low=-inf, high=inf)
+  dyn/stoch        Space(float32, shape=(32, 4), low=-inf, high=inf)
+FAIL   ax1wm_finger_fsk6q1s0_seed4 (rc=1)
+[Sun Aug 16 11:14:05 CDT 2026] MEASURE ax1wm_finger_fsk6q1s1_seed1
+Traceback (most recent call last):
+  File "/scratch/midway3/rickybao/conda_envs/dreamerv3/lib/python3.11/site-packages/jax/_src/xla_bridge.py", line 885, in backends
+    backend = _init_backend(platform)
+              ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/scratch/midway3/rickybao/conda_envs/dreamerv3/lib/python3.11/site-packages/jax/_src/xla_bridge.py", line 971, in _init_backend
+    backend = registration.factory()
+              ^^^^^^^^^^^^^^^^^^^^^^
+  File "/scratch/midway3/rickybao/conda_envs/dreamerv3/lib/python3.11/site-packages/jax/_src/xla_bridge.py", line 454, in make_gpu_client
+    return xla_client.make_gpu_client(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/scratch/midway3/rickybao/conda_envs/dreamerv3/lib/python3.11/site-packages/jaxlib/xla_client.py", line 96, in make_gpu_client
+    config = _xla.GpuAllocatorConfig()
+             ^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'jaxlib.xla_extension' has no attribute 'GpuAllocatorConfig'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "/home/rickybao/projects/dreamerv3/probing/ridge_probe.py", line 453, in <module>
+    main()
+  File "/home/rickybao/projects/dreamerv3/probing/ridge_probe.py", line 449, in main
+    args.fn(args)
+  File "/home/rickybao/projects/dreamerv3/probing/ridge_probe.py", line 183, in cmd_measure
+    agent = make_agent(config)
+            ^^^^^^^^^^^^^^^^^^
+  File "/home/rickybao/projects/dreamerv3/dreamerv3/main.py", line 138, in make_agent
+    return Agent(obs_space, act_space, elements.Config(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/rickybao/projects/dreamerv3/embodied/jax/agent.py", line 47, in __new__
+    outer.__init__(model, obs_space, act_space, config, jaxcfg)
+  File "/home/rickybao/projects/dreamerv3/embodied/jax/agent.py", line 72, in __init__
+    available = jax.devices()
+                ^^^^^^^^^^^^^
+  File "/scratch/midway3/rickybao/conda_envs/dreamerv3/lib/python3.11/site-packages/jax/_src/xla_bridge.py", line 1083, in devices
+    return get_backend(backend).devices()
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/scratch/midway3/rickybao/conda_envs/dreamerv3/lib/python3.11/site-packages/jax/_src/xla_bridge.py", line 1017, in get_backend
+    return _get_backend_uncached(platform)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/scratch/midway3/rickybao/conda_envs/dreamerv3/lib/python3.11/site-packages/jax/_src/xla_bridge.py", line 996, in _get_backend_uncached
+    bs = backends()
+         ^^^^^^^^^^
+  File "/scratch/midway3/rickybao/conda_envs/dreamerv3/lib/python3.11/site-packages/jax/_src/xla_bridge.py", line 901, in backends
+    raise RuntimeError(err_msg)
+RuntimeError: Unable to initialize backend 'rocm': module 'jaxlib.xla_extension' has no attribute 'GpuAllocatorConfig' (set JAX_PLATFORMS='' to automatically choose an available backend)
+Observations
+  reward           Space(float32, shape=(), low=-inf, high=inf)
+  is_first         Space(bool, shape=(), low=False, high=True)
+  is_last          Space(bool, shape=(), low=False, high=True)
+  is_terminal      Space(bool, shape=(), low=False, high=True)
+  position         Space(float32, shape=(4,), low=-inf, high=inf)
+  velocity         Space(float32, shape=(3,), low=-inf, high=inf)
+  touch            Space(float32, shape=(2,), low=-inf, high=inf)
+  target_position  Space(float32, shape=(2,), low=-inf, high=inf)
+  dist_to_target   Space(float32, shape=(), low=-inf, high=inf)
+Actions
+  action           Space(float32, shape=(2,), low=-1.0, high=1.0)
+Extras
+  consec           Space(int32, shape=(), low=-2147483648, high=2147483647)
+  stepid           Space(uint8, shape=(20,), low=0, high=255)
+  dyn/deter        Space(float32, shape=(384,), low=-inf, high=inf)
+  dyn/stoch        Space(float32, shape=(32, 4), low=-inf, high=inf)
+FAIL   ax1wm_finger_fsk6q1s1_seed1 (rc=1)
+[Sun Aug 16 11:14:06 CDT 2026] MEASURE ax1wm_finger_fsk6q1s1_seed2
+Traceback (most recent call last):
+  File "/scratch/midway3/rickybao/conda_envs/dreamerv3/lib/python3.11/site-packages/jax/_src/xla_bridge.py", line 885, in backends
+    backend = _init_backend(platform)
+              ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/scratch/midway3/rickybao/conda_envs/dreamerv3/lib/python3.11/site-packages/jax/_src/xla_bridge.py", line 971, in _init_backend
+    backend = registration.factory()
+              ^^^^^^^^^^^^^^^^^^^^^^
+  File "/scratch/midway3/rickybao/conda_envs/dreamerv3/lib/python3.11/site-packages/jax/_src/xla_bridge.py", line 454, in make_gpu_client
+    return xla_client.make_gpu_client(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/scratch/midway3/rickybao/conda_envs/dreamerv3/lib/python3.11/site-packages/jaxlib/xla_client.py", line 96, in make_gpu_client
+    config = _xla.GpuAllocatorConfig()
+             ^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'jaxlib.xla_extension' has no attribute 'GpuAllocatorConfig'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "/home/rickybao/projects/dreamerv3/probing/ridge_probe.py", line 453, in <module>
+    main()
+  File "/home/rickybao/projects/dreamerv3/probing/ridge_probe.py", line 449, in main
+    args.fn(args)
+  File "/home/rickybao/projects/dreamerv3/probing/ridge_probe.py", line 183, in cmd_measure
+    agent = make_agent(config)
+            ^^^^^^^^^^^^^^^^^^
+  File "/home/rickybao/projects/dreamerv3/dreamerv3/main.py", line 138, in make_agent
+    return Agent(obs_space, act_space, elements.Config(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/rickybao/projects/dreamerv3/embodied/jax/agent.py", line 47, in __new__
+    outer.__init__(model, obs_space, act_space, config, jaxcfg)
+  File "/home/rickybao/projects/dreamerv3/embodied/jax/agent.py", line 72, in __init__
+    available = jax.devices()
+                ^^^^^^^^^^^^^
+  File "/scratch/midway3/rickybao/conda_envs/dreamerv3/lib/python3.11/site-packages/jax/_src/xla_bridge.py", line 1083, in devices
+    return get_backend(backend).devices()
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/scratch/midway3/rickybao/conda_envs/dreamerv3/lib/python3.11/site-packages/jax/_src/xla_bridge.py", line 1017, in get_backend
+    return _get_backend_uncached(platform)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/scratch/midway3/rickybao/conda_envs/dreamerv3/lib/python3.11/site-packages/jax/_src/xla_bridge.py", line 996, in _get_backend_uncached
+    bs = backends()
+         ^^^^^^^^^^
+  File "/scratch/midway3/rickybao/conda_envs/dreamerv3/lib/python3.11/site-packages/jax/_src/xla_bridge.py", line 901, in backends
+    raise RuntimeError(err_msg)
+RuntimeError: Unable to initialize backend 'rocm': module 'jaxlib.xla_extension' has no attribute 'GpuAllocatorConfig' (set JAX_PLATFORMS='' to automatically choose an available backend)
+Observations
+  reward           Space(float32, shape=(), low=-inf, high=inf)
+  is_first         Space(bool, shape=(), low=False, high=True)
+  is_last          Space(bool, shape=(), low=False, high=True)
+  is_terminal      Space(bool, shape=(), low=False, high=True)
+  position         Space(float32, shape=(4,), low=-inf, high=inf)
+  velocity         Space(float32, shape=(3,), low=-inf, high=inf)
+  touch            Space(float32, shape=(2,), low=-inf, high=inf)
+  target_position  Space(float32, shape=(2,), low=-inf, high=inf)
+  dist_to_target   Space(float32, shape=(), low=-inf, high=inf)
+Actions
+  action           Space(float32, shape=(2,), low=-1.0, high=1.0)
+Extras
+  consec           Space(int32, shape=(), low=-2147483648, high=2147483647)
+  stepid           Space(uint8, shape=(20,), low=0, high=255)
+  dyn/deter        Space(float32, shape=(384,), low=-inf, high=inf)
+  dyn/stoch        Space(float32, shape=(32, 4), low=-inf, high=inf)
+FAIL   ax1wm_finger_fsk6q1s1_seed2 (rc=1)
+[Sun Aug 16 11:14:08 CDT 2026] MEASURE ax1wm_finger_fsk6q1s1_seed3
+Traceback (most recent call last):
+  File "/scratch/midway3/rickybao/conda_envs/dreamerv3/lib/python3.11/site-packages/jax/_src/xla_bridge.py", line 885, in backends
+    backend = _init_backend(platform)
+              ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/scratch/midway3/rickybao/conda_envs/dreamerv3/lib/python3.11/site-packages/jax/_src/xla_bridge.py", line 971, in _init_backend
+    backend = registration.factory()
+              ^^^^^^^^^^^^^^^^^^^^^^
+  File "/scratch/midway3/rickybao/conda_envs/dreamerv3/lib/python3.11/site-packages/jax/_src/xla_bridge.py", line 454, in make_gpu_client
+    return xla_client.make_gpu_client(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/scratch/midway3/rickybao/conda_envs/dreamerv3/lib/python3.11/site-packages/jaxlib/xla_client.py", line 96, in make_gpu_client
+    config = _xla.GpuAllocatorConfig()
+             ^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'jaxlib.xla_extension' has no attribute 'GpuAllocatorConfig'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "/home/rickybao/projects/dreamerv3/probing/ridge_probe.py", line 453, in <module>
+    main()
+  File "/home/rickybao/projects/dreamerv3/probing/ridge_probe.py", line 449, in main
+    args.fn(args)
+  File "/home/rickybao/projects/dreamerv3/probing/ridge_probe.py", line 183, in cmd_measure
+    agent = make_agent(config)
+            ^^^^^^^^^^^^^^^^^^
+  File "/home/rickybao/projects/dreamerv3/dreamerv3/main.py", line 138, in make_agent
+    return Agent(obs_space, act_space, elements.Config(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/rickybao/projects/dreamerv3/embodied/jax/agent.py", line 47, in __new__
+    outer.__init__(model, obs_space, act_space, config, jaxcfg)
+  File "/home/rickybao/projects/dreamerv3/embodied/jax/agent.py", line 72, in __init__
+    available = jax.devices()
+                ^^^^^^^^^^^^^
+  File "/scratch/midway3/rickybao/conda_envs/dreamerv3/lib/python3.11/site-packages/jax/_src/xla_bridge.py", line 1083, in devices
+    return get_backend(backend).devices()
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/scratch/midway3/rickybao/conda_envs/dreamerv3/lib/python3.11/site-packages/jax/_src/xla_bridge.py", line 1017, in get_backend
+    return _get_backend_uncached(platform)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/scratch/midway3/rickybao/conda_envs/dreamerv3/lib/python3.11/site-packages/jax/_src/xla_bridge.py", line 996, in _get_backend_uncached
+    bs = backends()
+         ^^^^^^^^^^
+  File "/scratch/midway3/rickybao/conda_envs/dreamerv3/lib/python3.11/site-packages/jax/_src/xla_bridge.py", line 901, in backends
+    raise RuntimeError(err_msg)
+RuntimeError: Unable to initialize backend 'rocm': module 'jaxlib.xla_extension' has no attribute 'GpuAllocatorConfig' (set JAX_PLATFORMS='' to automatically choose an available backend)
+Observations
+  reward           Space(float32, shape=(), low=-inf, high=inf)
+  is_first         Space(bool, shape=(), low=False, high=True)
+  is_last          Space(bool, shape=(), low=False, high=True)
+  is_terminal      Space(bool, shape=(), low=False, high=True)
+  position         Space(float32, shape=(4,), low=-inf, high=inf)
+  velocity         Space(float32, shape=(3,), low=-inf, high=inf)
+  touch            Space(float32, shape=(2,), low=-inf, high=inf)
+  target_position  Space(float32, shape=(2,), low=-inf, high=inf)
+  dist_to_target   Space(float32, shape=(), low=-inf, high=inf)
+Actions
+  action           Space(float32, shape=(2,), low=-1.0, high=1.0)
+Extras
+  consec           Space(int32, shape=(), low=-2147483648, high=2147483647)
+  stepid           Space(uint8, shape=(20,), low=0, high=255)
+  dyn/deter        Space(float32, shape=(384,), low=-inf, high=inf)
+  dyn/stoch        Space(float32, shape=(32, 4), low=-inf, high=inf)
+FAIL   ax1wm_finger_fsk6q1s1_seed3 (rc=1)
+[Sun Aug 16 11:14:09 CDT 2026] MEASURE ax1wm_finger_fsk6q1s1_seed4
+Traceback (most recent call last):
+  File "/scratch/midway3/rickybao/conda_envs/dreamerv3/lib/python3.11/site-packages/jax/_src/xla_bridge.py", line 885, in backends
+    backend = _init_backend(platform)
+              ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/scratch/midway3/rickybao/conda_envs/dreamerv3/lib/python3.11/site-packages/jax/_src/xla_bridge.py", line 971, in _init_backend
+    backend = registration.factory()
+              ^^^^^^^^^^^^^^^^^^^^^^
+  File "/scratch/midway3/rickybao/conda_envs/dreamerv3/lib/python3.11/site-packages/jax/_src/xla_bridge.py", line 454, in make_gpu_client
+    return xla_client.make_gpu_client(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/scratch/midway3/rickybao/conda_envs/dreamerv3/lib/python3.11/site-packages/jaxlib/xla_client.py", line 96, in make_gpu_client
+    config = _xla.GpuAllocatorConfig()
+             ^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'jaxlib.xla_extension' has no attribute 'GpuAllocatorConfig'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "/home/rickybao/projects/dreamerv3/probing/ridge_probe.py", line 453, in <module>
+    main()
+  File "/home/rickybao/projects/dreamerv3/probing/ridge_probe.py", line 449, in main
+    args.fn(args)
+  File "/home/rickybao/projects/dreamerv3/probing/ridge_probe.py", line 183, in cmd_measure
+    agent = make_agent(config)
+            ^^^^^^^^^^^^^^^^^^
+  File "/home/rickybao/projects/dreamerv3/dreamerv3/main.py", line 138, in make_agent
+    return Agent(obs_space, act_space, elements.Config(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/rickybao/projects/dreamerv3/embodied/jax/agent.py", line 47, in __new__
+    outer.__init__(model, obs_space, act_space, config, jaxcfg)
+  File "/home/rickybao/projects/dreamerv3/embodied/jax/agent.py", line 72, in __init__
+    available = jax.devices()
+                ^^^^^^^^^^^^^
+  File "/scratch/midway3/rickybao/conda_envs/dreamerv3/lib/python3.11/site-packages/jax/_src/xla_bridge.py", line 1083, in devices
+    return get_backend(backend).devices()
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/scratch/midway3/rickybao/conda_envs/dreamerv3/lib/python3.11/site-packages/jax/_src/xla_bridge.py", line 1017, in get_backend
+    return _get_backend_uncached(platform)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/scratch/midway3/rickybao/conda_envs/dreamerv3/lib/python3.11/site-packages/jax/_src/xla_bridge.py", line 996, in _get_backend_uncached
+    bs = backends()
+         ^^^^^^^^^^
+  File "/scratch/midway3/rickybao/conda_envs/dreamerv3/lib/python3.11/site-packages/jax/_src/xla_bridge.py", line 901, in backends
+    raise RuntimeError(err_msg)
+RuntimeError: Unable to initialize backend 'rocm': module 'jaxlib.xla_extension' has no attribute 'GpuAllocatorConfig' (set JAX_PLATFORMS='' to automatically choose an available backend)
+Observations
+  reward           Space(float32, shape=(), low=-inf, high=inf)
+  is_first         Space(bool, shape=(), low=False, high=True)
+  is_last          Space(bool, shape=(), low=False, high=True)
+  is_terminal      Space(bool, shape=(), low=False, high=True)
+  position         Space(float32, shape=(4,), low=-inf, high=inf)
+  velocity         Space(float32, shape=(3,), low=-inf, high=inf)
+  touch            Space(float32, shape=(2,), low=-inf, high=inf)
+  target_position  Space(float32, shape=(2,), low=-inf, high=inf)
+  dist_to_target   Space(float32, shape=(), low=-inf, high=inf)
+Actions
+  action           Space(float32, shape=(2,), low=-1.0, high=1.0)
+Extras
+  consec           Space(int32, shape=(), low=-2147483648, high=2147483647)
+  stepid           Space(uint8, shape=(20,), low=0, high=255)
+  dyn/deter        Space(float32, shape=(384,), low=-inf, high=inf)
+  dyn/stoch        Space(float32, shape=(32, 4), low=-inf, high=inf)
+FAIL   ax1wm_finger_fsk6q1s1_seed4 (rc=1)
+
+[Sun Aug 16 11:14:11 CDT 2026] ridge bundle: ok=0 skipped=0 failed=16  (of 16)
+FAILED CELLS: ax1wm_finger_sk6q1s0_seed1 ax1wm_finger_sk6q1s0_seed2 ax1wm_finger_sk6q1s0_seed3 ax1wm_finger_sk6q1s0_seed4 ax1wm_finger_sk6q1s1_seed1 ax1wm_finger_sk6q1s1_seed2 ax1wm_finger_sk6q1s1_seed3 ax1wm_finger_sk6q1s1_seed4 ax1wm_finger_fsk6q1s0_seed1 ax1wm_finger_fsk6q1s0_seed2 ax1wm_finger_fsk6q1s0_seed3 ax1wm_finger_fsk6q1s0_seed4 ax1wm_finger_fsk6q1s1_seed1 ax1wm_finger_fsk6q1s1_seed2 ax1wm_finger_fsk6q1s1_seed3 ax1wm_finger_fsk6q1s1_seed4
