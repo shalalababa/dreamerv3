@@ -921,6 +921,23 @@ chk "destroy requires typing the vast id" \
 # work, or a fully archived instance becomes undestroyable.
 chk "destroy counts compute processes, not just utilization" \
     "grep -q 'query-compute-apps' '$D'"
+# Midway3's gpu partition mixes v100 and a100. An unpinned panel gets split
+# across GPU models, and the E4 probe carries a device term of up to 0.113
+# AUROC (measured 2026-08-16). Slurm stages must pin a model by default.
+SLW="$TMP/slurmcon"; mkdir -p "$SLW"
+printf '%s\n' 'wave_id: slcon' 'stages:' \
+  '  - {name: s, target: rcc-slurm, run_id: "r", expand: {i: [1]},' \
+  '     sbatch: {script: scripts/x.sbatch}, done_when: [{exists: o}]}' > "$SLW/spec.yaml"
+python3 "$ROOT/scripts/ops/wavegen.py" "$SLW" --quiet >/dev/null 2>&1
+chk "slurm stages pin a GPU model by default" \
+    "grep -q -- '--constraint=v100' '$SLW/generated/submit_rcc.sh'"
+printf '%s\n' 'wave_id: slcon2' 'stages:' \
+  '  - {name: s, target: rcc-slurm, run_id: "r", expand: {i: [1]},' \
+  '     sbatch: {script: scripts/x.sbatch, constraint: a100}, done_when: [{exists: o}]}' \
+  > "$SLW/spec.yaml"
+python3 "$ROOT/scripts/ops/wavegen.py" "$SLW" --quiet >/dev/null 2>&1
+chk "a stage can pin a different GPU model" \
+    "grep -q -- '--constraint=a100' '$SLW/generated/submit_rcc.sh'"
 chk "destroy's utilization path also requires held GPU memory" \
     "grep -q 'u_live:-0}\" -ge 20 \] && \[ \"\${m_live:-0}\" -ge 512' '$D'"
 chk "unsafe override needs a typed acknowledgement" \

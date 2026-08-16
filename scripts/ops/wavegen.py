@@ -262,6 +262,20 @@ submitted=0; skipped=0; left=0
         f'--time={shlex.quote(str(sb.get("time", "12:00:00")))}',
         f'--job-name={shlex.quote(r.run_id)}',
     ]
+    # PIN THE GPU MODEL. Midway3's `gpu` partition is HETEROGENEOUS --
+    # midway3-0277..0286 are v100, midway3-0294 is a100 -- and Slurm will
+    # scatter a panel across both. That is not a performance detail: the E4
+    # ridge probe re-run on the SAME gpu is byte-identical, but moves up to
+    # 0.113 AUROC across models (ops/waves/lewm_probe_devcheck/FINDING.md),
+    # because the RSSM forward runs at bfloat16 through a recurrent observe
+    # with a categorical stoch sample. It has already happened here: the td
+    # panel's e4 was measured with seeds 1-8 on the a100 and seeds 9-16 on a
+    # v100 (2026-08-16 audit), splitting a pooled panel down the middle.
+    # A panel must land on ONE model. Override per stage with
+    # `sbatch: {constraint: a100}`; set it to "" to opt out deliberately.
+    constraint = str(sb.get("constraint", "v100"))
+    if constraint:
+      opts.append(f'--constraint={shlex.quote(constraint)}')
     for extra in (sb.get("options") or []):
       opts.append(str(extra))
     base = "ALL,REPO=\"$REPO\",RUNROOT=\"$RUNROOT\",CONDA_ENV=\"$CONDA_ENV\",MANIFEST=\"$MANIFEST\""
