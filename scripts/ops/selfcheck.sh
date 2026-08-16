@@ -421,6 +421,16 @@ python3 "$ROOT/scripts/ops/wavegen.py" "$SL" --quiet >/dev/null 2>&1
 grep -q 'RUN_LOGDIR="${RUNROOT}/run_1"' "$SL/generated/submit_rcc.sh" 2>/dev/null \
   && ok "sbatch export lets the submitting shell expand \$RUNROOT" \
   || bad "sbatch export single-quotes \$RUNROOT (job gets a literal)"
+# The module guard must catch the modules that actually caused the 2026-07-07
+# segfaults (cuda/python shadowing the conda env's CUDA wheels) WITHOUT
+# refusing Midway3's default login set -- slurm is what provides sbatch, so a
+# guard that trips on it can never be satisfied.
+grep -q 'DV3_MODULE_BASELINE:-slurm rcc gcc node' "$SL/generated/submit_rcc.sh" 2>/dev/null \
+  && ok "module guard allows the default login module set" \
+  || bad "module guard would refuse every RCC shell"
+grep -q 'non-baseline modules loaded' "$SL/generated/submit_rcc.sh" 2>/dev/null \
+  && ok "module guard still refuses non-baseline modules" \
+  || bad "module guard no longer refuses cuda/python leakage"
 # $RUNROOT must survive generation unexpanded: RCC and instance paths differ.
 grep -q '\$RUNROOT' "$G"/lane_fit_0.cmds 2>/dev/null \
   && ok "\$RUNROOT left for the remote shell" || bad "\$RUNROOT was expanded at generation time"

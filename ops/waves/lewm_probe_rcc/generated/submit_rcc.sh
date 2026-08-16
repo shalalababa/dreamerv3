@@ -15,12 +15,35 @@ DRY=0; [ "${1:-}" = "--dry-run" ] && DRY=1
 MAX_JOBS="${MAX_JOBS:-12}"
 
 # (2) module leakage: --export=ALL carries this shell into every job.
-if [ -n "${LOADEDMODULES:-}" ] || [ -n "${_LMFILES_:-}" ]; then
-  echo "REFUSING TO SUBMIT: modules are loaded in this shell." >&2
-  echo "  LOADEDMODULES=${LOADEDMODULES:-}" >&2
-  echo "  --export=ALL would leak them into every job; this has segfaulted before." >&2
-  echo "  Open a clean login shell, 'source scripts/env.sh', and rerun." >&2
-  exit 2
+#
+# The 2026-07-07 incident (a day of rc=139 segfaults ~30s in, at the first JAX
+# GPU touch) was caused by `module load cuda/12.2` + `module load
+# python/miniforge` + `conda activate` in the submitting shell: their
+# PATH/LD_LIBRARY_PATH shadowed the conda env's pinned CUDA wheels.
+#
+# It was NOT caused by the modules Midway3 loads for every login shell --
+# slurm (which PROVIDES sbatch), rcc, gcc, node. Refusing on those made this
+# guard unpassable: there is no shell on this cluster without them.
+# So: refuse on anything OUTSIDE the baseline, and name it.
+MOD_BASELINE="${DV3_MODULE_BASELINE:-slurm rcc gcc node}"
+if [ -z "${DV3_SKIP_MODULE_GUARD:-}" ] && [ -n "${LOADEDMODULES:-}" ]; then
+  unexpected=""
+  IFS=':' read -ra _mods <<< "$LOADEDMODULES"
+  for m in "${_mods[@]}"; do
+    [ -n "$m" ] || continue
+    base="${m%%/*}"
+    case " $MOD_BASELINE " in *" $base "*) ;; *) unexpected="$unexpected $m" ;; esac
+  done
+  if [ -n "$unexpected" ]; then
+    echo "REFUSING TO SUBMIT: non-baseline modules loaded:$unexpected" >&2
+    echo "  LOADEDMODULES=$LOADEDMODULES" >&2
+    echo "  --export=ALL leaks these into every job. Loading cuda/python here" >&2
+    echo "  shadowed the conda env's pinned CUDA wheels and segfaulted every" >&2
+    echo "  GPU job (2026-07-07, cost a day)." >&2
+    echo "  Fix: 'module purge && module load slurm' in a fresh shell, then rerun." >&2
+    echo "  Override (only if you are sure): DV3_SKIP_MODULE_GUARD=1" >&2
+    exit 2
+  fi
 fi
 
 command -v squeue >/dev/null 2>&1 || {
