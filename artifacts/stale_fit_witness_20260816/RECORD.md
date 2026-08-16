@@ -134,12 +134,51 @@ holds, the consequences run the other way from the disclosure as written: the
 subset, and the disclosure carried in C1/C3/C4 and the figure captions
 describes something that did not happen.
 
-What I have not done, and cannot do from ops: check whether each of those
-500000 checkpoints carries the *capacity config the cell is supposed to have*.
-That is the one remaining way the addendum could still be right, and it is a
-read's job. Evidence for the check is in `capacity_ckpt_vs_witness.json`
-(all 64 capacity fit dirs, witness + every done checkpoint with timestamps)
-and `ckpt_vs_witness.py`.
+The one remaining way the addendum could still be right: those 500000
+checkpoints could carry the *wrong capacity* — a foreign restore admitted by
+the `latest_ckpt()` hole. Timestamp evidence for that check is in
+`capacity_ckpt_vs_witness.json` (all 64 capacity fit dirs, witness + every
+done checkpoint) and `ckpt_vs_witness.py`.
+
+### That escape hatch is now closed (checker run 16 Aug, ops)
+
+`capacity_ckpt_config_check.py` — built by the Papers-1–3 chat, value-blind
+(parameter *shapes* and counts only; no weights, no outcome quantities, no
+adapt scores) — was run on the RCC login node. Output:
+`capacity_ckpt_config_check.json`.
+
+**67 dirs scanned: 64 MATCH, 0 MISMATCH, 0 AMBIGUOUS, 3 NO-DONE-CKPT-AT-TOTAL.**
+The three are `s12q1s0_seed99`, `s12q1s1_seed99` (smoke seeds) and
+`speedtest_s12_inst6`; none has a progress witness or a `total_updates`, so
+none is in the 64-cell capacity panel.
+
+**All 27 disputed cells: MATCH.** Each carries a checkpoint whose weight
+shapes are the capacity its cell name requires, with the other preset's
+`deter` absent.
+
+The discriminator is not degenerate — it separates the two populations
+cleanly, which is the positive control a uniformly-MATCH result needs:
+
+| panel | n | contains its own `deter` | contains the other's |
+|---|---|---|---|
+| s12 (expect 2048) | 32 | **32/32** | 0/32 |
+| s25 (expect 3072) | 32 | **32/32** | 0/32 |
+
+`config.yaml` agrees with the checkpoint shapes in 64/64 (reported, not
+trusted — a foreign checkpoint under an authentic config is exactly the
+scenario under test, and the shapes are what rule it out).
+
+Parameter counts land on exactly four values in a perfect 16/16/16/16 split
+(s12: 27,875,638 / 30,039,859; s25: 62,456,758 / 67,177,267 — two sizes × two
+arms). That balance corroborates: a foreign checkpoint anywhere would show up
+as an uneven count.
+
+**Consequence.** No wrong-capacity checkpoint exists, so the last story under
+which the 08-07 addendum could stand is eliminated. The 27 fits ran to
+500,000 updates at the capacity their cells require; the addendum measured
+this sync artifact, not walltime truncation. Adjudication — and any
+retraction of the disclosure from the drafts — belongs to the Papers-1–3
+chat. Ops ran the instrument and reports the numbers.
 
 ## What was repaired, and what was not
 
