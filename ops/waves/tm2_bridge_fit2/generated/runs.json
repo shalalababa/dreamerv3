@@ -46,7 +46,16 @@
      "exists": "config.yaml"
     },
     {
-     "ckpt_step_min": 500000
+     "exists": "TM2_FIT_DONE"
+    },
+    {
+     "exists": "tm2_ckpt.pt"
+    },
+    {
+     "file_contains": {
+      "file": "TM2_FIT_PROGRESS",
+      "pattern": "update=500000/500000"
+     }
     }
    ]
   },
@@ -74,7 +83,16 @@
      "exists": "config.yaml"
     },
     {
-     "ckpt_step_min": 500000
+     "exists": "TM2_FIT_DONE"
+    },
+    {
+     "exists": "tm2_ckpt.pt"
+    },
+    {
+     "file_contains": {
+      "file": "TM2_FIT_PROGRESS",
+      "pattern": "update=500000/500000"
+     }
     }
    ]
   },
@@ -102,7 +120,16 @@
      "exists": "config.yaml"
     },
     {
-     "ckpt_step_min": 500000
+     "exists": "TM2_FIT_DONE"
+    },
+    {
+     "exists": "tm2_ckpt.pt"
+    },
+    {
+     "file_contains": {
+      "file": "TM2_FIT_PROGRESS",
+      "pattern": "update=500000/500000"
+     }
     }
    ]
   },
@@ -130,7 +157,16 @@
      "exists": "config.yaml"
     },
     {
-     "ckpt_step_min": 500000
+     "exists": "TM2_FIT_DONE"
+    },
+    {
+     "exists": "tm2_ckpt.pt"
+    },
+    {
+     "file_contains": {
+      "file": "TM2_FIT_PROGRESS",
+      "pattern": "update=500000/500000"
+     }
     }
    ]
   },
@@ -158,7 +194,16 @@
      "exists": "config.yaml"
     },
     {
-     "ckpt_step_min": 500000
+     "exists": "TM2_FIT_DONE"
+    },
+    {
+     "exists": "tm2_ckpt.pt"
+    },
+    {
+     "file_contains": {
+      "file": "TM2_FIT_PROGRESS",
+      "pattern": "update=500000/500000"
+     }
     }
    ]
   },
@@ -186,7 +231,16 @@
      "exists": "config.yaml"
     },
     {
-     "ckpt_step_min": 500000
+     "exists": "TM2_FIT_DONE"
+    },
+    {
+     "exists": "tm2_ckpt.pt"
+    },
+    {
+     "file_contains": {
+      "file": "TM2_FIT_PROGRESS",
+      "pattern": "update=500000/500000"
+     }
     }
    ]
   },
@@ -214,7 +268,16 @@
      "exists": "config.yaml"
     },
     {
-     "ckpt_step_min": 500000
+     "exists": "TM2_FIT_DONE"
+    },
+    {
+     "exists": "tm2_ckpt.pt"
+    },
+    {
+     "file_contains": {
+      "file": "TM2_FIT_PROGRESS",
+      "pattern": "update=500000/500000"
+     }
     }
    ]
   },
@@ -242,7 +305,16 @@
      "exists": "config.yaml"
     },
     {
-     "ckpt_step_min": 500000
+     "exists": "TM2_FIT_DONE"
+    },
+    {
+     "exists": "tm2_ckpt.pt"
+    },
+    {
+     "file_contains": {
+      "file": "TM2_FIT_PROGRESS",
+      "pattern": "update=500000/500000"
+     }
     }
    ]
   },
@@ -270,7 +342,16 @@
      "exists": "config.yaml"
     },
     {
-     "ckpt_step_min": 500000
+     "exists": "TM2_FIT_DONE"
+    },
+    {
+     "exists": "tm2_ckpt.pt"
+    },
+    {
+     "file_contains": {
+      "file": "TM2_FIT_PROGRESS",
+      "pattern": "update=500000/500000"
+     }
     }
    ]
   },
@@ -298,7 +379,16 @@
      "exists": "config.yaml"
     },
     {
-     "ckpt_step_min": 500000
+     "exists": "TM2_FIT_DONE"
+    },
+    {
+     "exists": "tm2_ckpt.pt"
+    },
+    {
+     "file_contains": {
+      "file": "TM2_FIT_PROGRESS",
+      "pattern": "update=500000/500000"
+     }
     }
    ]
   },
@@ -326,7 +416,16 @@
      "exists": "config.yaml"
     },
     {
-     "ckpt_step_min": 500000
+     "exists": "TM2_FIT_DONE"
+    },
+    {
+     "exists": "tm2_ckpt.pt"
+    },
+    {
+     "file_contains": {
+      "file": "TM2_FIT_PROGRESS",
+      "pattern": "update=500000/500000"
+     }
     }
    ]
   },
@@ -354,7 +453,16 @@
      "exists": "config.yaml"
     },
     {
-     "ckpt_step_min": 500000
+     "exists": "TM2_FIT_DONE"
+    },
+    {
+     "exists": "tm2_ckpt.pt"
+    },
+    {
+     "file_contains": {
+      "file": "TM2_FIT_PROGRESS",
+      "pattern": "update=500000/500000"
+     }
     }
    ]
   },
@@ -382,7 +490,16 @@
      "exists": "config.yaml"
     },
     {
-     "ckpt_step_min": 500000
+     "exists": "TM2_FIT_DONE"
+    },
+    {
+     "exists": "tm2_ckpt.pt"
+    },
+    {
+     "file_contains": {
+      "file": "TM2_FIT_PROGRESS",
+      "pattern": "update=500000/500000"
+     }
     }
    ]
   },
@@ -410,7 +527,16 @@
      "exists": "config.yaml"
     },
     {
-     "ckpt_step_min": 500000
+     "exists": "TM2_FIT_DONE"
+    },
+    {
+     "exists": "tm2_ckpt.pt"
+    },
+    {
+     "file_contains": {
+      "file": "TM2_FIT_PROGRESS",
+      "pattern": "update=500000/500000"
+     }
     }
    ]
   },
@@ -438,7 +564,16 @@
      "exists": "config.yaml"
     },
     {
-     "ckpt_step_min": 500000
+     "exists": "TM2_FIT_DONE"
+    },
+    {
+     "exists": "tm2_ckpt.pt"
+    },
+    {
+     "file_contains": {
+      "file": "TM2_FIT_PROGRESS",
+      "pattern": "update=500000/500000"
+     }
     }
    ]
   },
@@ -466,7 +601,16 @@
      "exists": "config.yaml"
     },
     {
-     "ckpt_step_min": 500000
+     "exists": "TM2_FIT_DONE"
+    },
+    {
+     "exists": "tm2_ckpt.pt"
+    },
+    {
+     "file_contains": {
+      "file": "TM2_FIT_PROGRESS",
+      "pattern": "update=500000/500000"
+     }
     }
    ]
   },
@@ -494,7 +638,16 @@
      "exists": "config.yaml"
     },
     {
-     "ckpt_step_min": 500000
+     "exists": "TM2_FIT_DONE"
+    },
+    {
+     "exists": "tm2_ckpt.pt"
+    },
+    {
+     "file_contains": {
+      "file": "TM2_FIT_PROGRESS",
+      "pattern": "update=500000/500000"
+     }
     }
    ]
   },
@@ -522,7 +675,16 @@
      "exists": "config.yaml"
     },
     {
-     "ckpt_step_min": 500000
+     "exists": "TM2_FIT_DONE"
+    },
+    {
+     "exists": "tm2_ckpt.pt"
+    },
+    {
+     "file_contains": {
+      "file": "TM2_FIT_PROGRESS",
+      "pattern": "update=500000/500000"
+     }
     }
    ]
   },
@@ -550,7 +712,16 @@
      "exists": "config.yaml"
     },
     {
-     "ckpt_step_min": 500000
+     "exists": "TM2_FIT_DONE"
+    },
+    {
+     "exists": "tm2_ckpt.pt"
+    },
+    {
+     "file_contains": {
+      "file": "TM2_FIT_PROGRESS",
+      "pattern": "update=500000/500000"
+     }
     }
    ]
   },
@@ -578,7 +749,16 @@
      "exists": "config.yaml"
     },
     {
-     "ckpt_step_min": 500000
+     "exists": "TM2_FIT_DONE"
+    },
+    {
+     "exists": "tm2_ckpt.pt"
+    },
+    {
+     "file_contains": {
+      "file": "TM2_FIT_PROGRESS",
+      "pattern": "update=500000/500000"
+     }
     }
    ]
   },
@@ -606,7 +786,16 @@
      "exists": "config.yaml"
     },
     {
-     "ckpt_step_min": 500000
+     "exists": "TM2_FIT_DONE"
+    },
+    {
+     "exists": "tm2_ckpt.pt"
+    },
+    {
+     "file_contains": {
+      "file": "TM2_FIT_PROGRESS",
+      "pattern": "update=500000/500000"
+     }
     }
    ]
   },
@@ -634,7 +823,16 @@
      "exists": "config.yaml"
     },
     {
-     "ckpt_step_min": 500000
+     "exists": "TM2_FIT_DONE"
+    },
+    {
+     "exists": "tm2_ckpt.pt"
+    },
+    {
+     "file_contains": {
+      "file": "TM2_FIT_PROGRESS",
+      "pattern": "update=500000/500000"
+     }
     }
    ]
   },
@@ -662,7 +860,16 @@
      "exists": "config.yaml"
     },
     {
-     "ckpt_step_min": 500000
+     "exists": "TM2_FIT_DONE"
+    },
+    {
+     "exists": "tm2_ckpt.pt"
+    },
+    {
+     "file_contains": {
+      "file": "TM2_FIT_PROGRESS",
+      "pattern": "update=500000/500000"
+     }
     }
    ]
   },
@@ -690,7 +897,16 @@
      "exists": "config.yaml"
     },
     {
-     "ckpt_step_min": 500000
+     "exists": "TM2_FIT_DONE"
+    },
+    {
+     "exists": "tm2_ckpt.pt"
+    },
+    {
+     "file_contains": {
+      "file": "TM2_FIT_PROGRESS",
+      "pattern": "update=500000/500000"
+     }
     }
    ]
   },
@@ -718,7 +934,16 @@
      "exists": "config.yaml"
     },
     {
-     "ckpt_step_min": 500000
+     "exists": "TM2_FIT_DONE"
+    },
+    {
+     "exists": "tm2_ckpt.pt"
+    },
+    {
+     "file_contains": {
+      "file": "TM2_FIT_PROGRESS",
+      "pattern": "update=500000/500000"
+     }
     }
    ]
   },
@@ -746,7 +971,16 @@
      "exists": "config.yaml"
     },
     {
-     "ckpt_step_min": 500000
+     "exists": "TM2_FIT_DONE"
+    },
+    {
+     "exists": "tm2_ckpt.pt"
+    },
+    {
+     "file_contains": {
+      "file": "TM2_FIT_PROGRESS",
+      "pattern": "update=500000/500000"
+     }
     }
    ]
   },
@@ -774,7 +1008,16 @@
      "exists": "config.yaml"
     },
     {
-     "ckpt_step_min": 500000
+     "exists": "TM2_FIT_DONE"
+    },
+    {
+     "exists": "tm2_ckpt.pt"
+    },
+    {
+     "file_contains": {
+      "file": "TM2_FIT_PROGRESS",
+      "pattern": "update=500000/500000"
+     }
     }
    ]
   },
@@ -802,7 +1045,16 @@
      "exists": "config.yaml"
     },
     {
-     "ckpt_step_min": 500000
+     "exists": "TM2_FIT_DONE"
+    },
+    {
+     "exists": "tm2_ckpt.pt"
+    },
+    {
+     "file_contains": {
+      "file": "TM2_FIT_PROGRESS",
+      "pattern": "update=500000/500000"
+     }
     }
    ]
   },
@@ -830,7 +1082,16 @@
      "exists": "config.yaml"
     },
     {
-     "ckpt_step_min": 500000
+     "exists": "TM2_FIT_DONE"
+    },
+    {
+     "exists": "tm2_ckpt.pt"
+    },
+    {
+     "file_contains": {
+      "file": "TM2_FIT_PROGRESS",
+      "pattern": "update=500000/500000"
+     }
     }
    ]
   },
@@ -858,7 +1119,16 @@
      "exists": "config.yaml"
     },
     {
-     "ckpt_step_min": 500000
+     "exists": "TM2_FIT_DONE"
+    },
+    {
+     "exists": "tm2_ckpt.pt"
+    },
+    {
+     "file_contains": {
+      "file": "TM2_FIT_PROGRESS",
+      "pattern": "update=500000/500000"
+     }
     }
    ]
   },
@@ -886,7 +1156,16 @@
      "exists": "config.yaml"
     },
     {
-     "ckpt_step_min": 500000
+     "exists": "TM2_FIT_DONE"
+    },
+    {
+     "exists": "tm2_ckpt.pt"
+    },
+    {
+     "file_contains": {
+      "file": "TM2_FIT_PROGRESS",
+      "pattern": "update=500000/500000"
+     }
     }
    ]
   },
@@ -914,7 +1193,16 @@
      "exists": "config.yaml"
     },
     {
-     "ckpt_step_min": 500000
+     "exists": "TM2_FIT_DONE"
+    },
+    {
+     "exists": "tm2_ckpt.pt"
+    },
+    {
+     "file_contains": {
+      "file": "TM2_FIT_PROGRESS",
+      "pattern": "update=500000/500000"
+     }
     }
    ]
   },
@@ -942,7 +1230,16 @@
      "exists": "config.yaml"
     },
     {
-     "ckpt_step_min": 500000
+     "exists": "TM2_FIT_DONE"
+    },
+    {
+     "exists": "tm2_ckpt.pt"
+    },
+    {
+     "file_contains": {
+      "file": "TM2_FIT_PROGRESS",
+      "pattern": "update=500000/500000"
+     }
     }
    ]
   },
@@ -970,7 +1267,16 @@
      "exists": "config.yaml"
     },
     {
-     "ckpt_step_min": 500000
+     "exists": "TM2_FIT_DONE"
+    },
+    {
+     "exists": "tm2_ckpt.pt"
+    },
+    {
+     "file_contains": {
+      "file": "TM2_FIT_PROGRESS",
+      "pattern": "update=500000/500000"
+     }
     }
    ]
   },
@@ -998,7 +1304,16 @@
      "exists": "config.yaml"
     },
     {
-     "ckpt_step_min": 500000
+     "exists": "TM2_FIT_DONE"
+    },
+    {
+     "exists": "tm2_ckpt.pt"
+    },
+    {
+     "file_contains": {
+      "file": "TM2_FIT_PROGRESS",
+      "pattern": "update=500000/500000"
+     }
     }
    ]
   },
@@ -1026,7 +1341,16 @@
      "exists": "config.yaml"
     },
     {
-     "ckpt_step_min": 500000
+     "exists": "TM2_FIT_DONE"
+    },
+    {
+     "exists": "tm2_ckpt.pt"
+    },
+    {
+     "file_contains": {
+      "file": "TM2_FIT_PROGRESS",
+      "pattern": "update=500000/500000"
+     }
     }
    ]
   },
@@ -1054,7 +1378,16 @@
      "exists": "config.yaml"
     },
     {
-     "ckpt_step_min": 500000
+     "exists": "TM2_FIT_DONE"
+    },
+    {
+     "exists": "tm2_ckpt.pt"
+    },
+    {
+     "file_contains": {
+      "file": "TM2_FIT_PROGRESS",
+      "pattern": "update=500000/500000"
+     }
     }
    ]
   },
@@ -1082,7 +1415,16 @@
      "exists": "config.yaml"
     },
     {
-     "ckpt_step_min": 500000
+     "exists": "TM2_FIT_DONE"
+    },
+    {
+     "exists": "tm2_ckpt.pt"
+    },
+    {
+     "file_contains": {
+      "file": "TM2_FIT_PROGRESS",
+      "pattern": "update=500000/500000"
+     }
     }
    ]
   },
@@ -1110,7 +1452,16 @@
      "exists": "config.yaml"
     },
     {
-     "ckpt_step_min": 500000
+     "exists": "TM2_FIT_DONE"
+    },
+    {
+     "exists": "tm2_ckpt.pt"
+    },
+    {
+     "file_contains": {
+      "file": "TM2_FIT_PROGRESS",
+      "pattern": "update=500000/500000"
+     }
     }
    ]
   },
@@ -1138,7 +1489,16 @@
      "exists": "config.yaml"
     },
     {
-     "ckpt_step_min": 500000
+     "exists": "TM2_FIT_DONE"
+    },
+    {
+     "exists": "tm2_ckpt.pt"
+    },
+    {
+     "file_contains": {
+      "file": "TM2_FIT_PROGRESS",
+      "pattern": "update=500000/500000"
+     }
     }
    ]
   },
@@ -1166,7 +1526,16 @@
      "exists": "config.yaml"
     },
     {
-     "ckpt_step_min": 500000
+     "exists": "TM2_FIT_DONE"
+    },
+    {
+     "exists": "tm2_ckpt.pt"
+    },
+    {
+     "file_contains": {
+      "file": "TM2_FIT_PROGRESS",
+      "pattern": "update=500000/500000"
+     }
     }
    ]
   },
@@ -1194,7 +1563,16 @@
      "exists": "config.yaml"
     },
     {
-     "ckpt_step_min": 500000
+     "exists": "TM2_FIT_DONE"
+    },
+    {
+     "exists": "tm2_ckpt.pt"
+    },
+    {
+     "file_contains": {
+      "file": "TM2_FIT_PROGRESS",
+      "pattern": "update=500000/500000"
+     }
     }
    ]
   },
@@ -1222,7 +1600,16 @@
      "exists": "config.yaml"
     },
     {
-     "ckpt_step_min": 500000
+     "exists": "TM2_FIT_DONE"
+    },
+    {
+     "exists": "tm2_ckpt.pt"
+    },
+    {
+     "file_contains": {
+      "file": "TM2_FIT_PROGRESS",
+      "pattern": "update=500000/500000"
+     }
     }
    ]
   },
@@ -1250,7 +1637,16 @@
      "exists": "config.yaml"
     },
     {
-     "ckpt_step_min": 500000
+     "exists": "TM2_FIT_DONE"
+    },
+    {
+     "exists": "tm2_ckpt.pt"
+    },
+    {
+     "file_contains": {
+      "file": "TM2_FIT_PROGRESS",
+      "pattern": "update=500000/500000"
+     }
     }
    ]
   },
@@ -1278,7 +1674,16 @@
      "exists": "config.yaml"
     },
     {
-     "ckpt_step_min": 500000
+     "exists": "TM2_FIT_DONE"
+    },
+    {
+     "exists": "tm2_ckpt.pt"
+    },
+    {
+     "file_contains": {
+      "file": "TM2_FIT_PROGRESS",
+      "pattern": "update=500000/500000"
+     }
     }
    ]
   },
@@ -1306,7 +1711,16 @@
      "exists": "config.yaml"
     },
     {
-     "ckpt_step_min": 500000
+     "exists": "TM2_FIT_DONE"
+    },
+    {
+     "exists": "tm2_ckpt.pt"
+    },
+    {
+     "file_contains": {
+      "file": "TM2_FIT_PROGRESS",
+      "pattern": "update=500000/500000"
+     }
     }
    ]
   },
@@ -1334,7 +1748,16 @@
      "exists": "config.yaml"
     },
     {
-     "ckpt_step_min": 500000
+     "exists": "TM2_FIT_DONE"
+    },
+    {
+     "exists": "tm2_ckpt.pt"
+    },
+    {
+     "file_contains": {
+      "file": "TM2_FIT_PROGRESS",
+      "pattern": "update=500000/500000"
+     }
     }
    ]
   },
@@ -1362,7 +1785,16 @@
      "exists": "config.yaml"
     },
     {
-     "ckpt_step_min": 500000
+     "exists": "TM2_FIT_DONE"
+    },
+    {
+     "exists": "tm2_ckpt.pt"
+    },
+    {
+     "file_contains": {
+      "file": "TM2_FIT_PROGRESS",
+      "pattern": "update=500000/500000"
+     }
     }
    ]
   }

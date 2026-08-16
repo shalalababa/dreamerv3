@@ -45,8 +45,17 @@ stages:
     inputs:
       - "tm2_data/finger_q1_side${side}.pt"
     done_when:
+      # TD-MPC2 does NOT write DreamerV3's ckpt/<timestamp>-<step>/done layout.
+      # It writes a single tm2_ckpt.pt plus TM2_FIT_DONE and TM2_FIT_PROGRESS,
+      # so `ckpt_step_min` could only ever read 0 and reported all 48 complete
+      # runs as PARTIAL (2026-08-15). These are that driver's own counters, not
+      # its markers: TM2_FIT_PROGRESS carries update/total on one line, so the
+      # pattern below is the same update==total dual witness the dreamer waves
+      # assert -- a run that stopped short cannot satisfy it.
       - exists: config.yaml
-      - ckpt_step_min: 500000
+      - exists: TM2_FIT_DONE
+      - exists: tm2_ckpt.pt
+      - file_contains: {file: TM2_FIT_PROGRESS, pattern: "update=500000/500000"}
 
 bundle:
   prefix: tm2_bridge
