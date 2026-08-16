@@ -59,11 +59,41 @@ anchor's backend, and the bare default form — which v1 (53411405) used and
 which crashed — is the one that would not have. The flag makes the new panel
 *more* faithful to the pinned literals, not less.
 
-Consistent with this: the anchor's producer (`refit_ridge_panel.sbatch`, no
-longer in the repo) printed `ridge amended default ep_batch` in its own logs,
-so that invocation was not bare. Note `internal.py:34` only fires when
-`platform` is truthy, so an empty platform string leaves `jax_platforms`
-unset — a sufficient explanation, though not one this evidence can single out.
+Note `internal.py:34` only fires when `platform` is truthy, so an empty
+platform string leaves `jax_platforms` unset — a sufficient explanation,
+though not one this evidence can single out.
+
+## The anchor used a non-default `ep_batch` — on every cell
+
+The anchor's producer (`refit_ridge_panel.sbatch`, no longer in the repo)
+prints `ridge amended default ep_batch: <run>` **43 times against 43 measured
+cells** — i.e. for *every* cell, not as an exception. Its logs never record
+the value, and the script is gone, so the amended value is **unrecoverable**.
+
+This contradicts the assumption written into the v1 producer's header ("no
+`--ep_batch` … the anchor had neither"). `ep_batch` controls how many episodes
+are pushed through the forward pass together, and under `compute_dtype:
+bfloat16` batching changes reduction order — the same amplifier that produces
+the ≤0.113 cross-device shift in this instrument. So it is a plausible source
+of a real difference between the pinned literals and any fresh measurement,
+and it cannot be matched by construction.
+
+**Consequence: the Phase-A anchor re-check is now more necessary, not less.**
+The wheel-dating result removed the *software-drift* reason for the gate, but
+this replaces it with a stronger one. The gate is the only empirical bridge
+between the fresh panel and the pinned literals, because the anchor's exact
+command cannot be reconstructed. Phase A measures the anchors with **our**
+form (no `--ep_batch`, `--platform cuda`), so:
+
+* re-measures **match** the pins ⇒ `ep_batch` and platform are both inert here,
+  the node/env terms are zero, and the panel is comparable as registered;
+* re-measures **differ** ⇒ the difference is attributable to command form
+  rather than to hardware or env, and the fallback (re-measure all anchors
+  under the current form, swap the pinned tuples by narrow dated amendment)
+  is exactly the right remedy — and Phase A has already produced 16 of the
+  cells it needs.
+
+Either way the gate must run before the panel is consumed.
 
 **Left open deliberately** (user's call, 16 Aug): the exact form the anchor's
 vanished producer used. It is harmless — every future ridge invocation passes
