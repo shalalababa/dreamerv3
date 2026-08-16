@@ -445,12 +445,28 @@ HERE="$(cd "$(dirname "${{BASH_SOURCE[0]}}")" && pwd)"
 {ROOT_PREAMBLE.format(root=shlex.quote(str(_repo_root())))}source "$DV3OPS_ROOT/scripts/ops/lib/common.sh"
 [ $# -gt 0 ] || {{ echo "usage: pull_results.sh <instance>..." >&2; exit 2; }}
 
+# rsync exit 24 is "some files vanished before they could be transferred". When
+# the source instance is still COMPUTING -- which is the normal case, and the
+# case worth pulling for -- checkpoints rotate mid-transfer and 24 is routine.
+# It is a warning, not a failure. Under `set -e` it aborted the whole script
+# after the first live instance, so every LATER instance was silently skipped
+# and the run still looked like it had merely "finished" (2026-08-15: a pull of
+# 1 2 3 7 stopped after 2, and only the log's missing "pulled" line showed it).
+# 23 (partial transfer / real error) is NOT tolerated.
+rs () {{
+  rsync "$@"; local rc=$?
+  [ "$rc" -eq 0 ] || [ "$rc" -eq 24 ] || return "$rc"
+  [ "$rc" -eq 24 ] && echo "  (rsync 24: files rotated mid-copy on a live instance -- expected)"
+  return 0
+}}
+
+failed=""
 for N in "$@"; do
   dv3_require_instance "$N"
   echo "-- pull from instance $N --"
 
   # Pass 1: payload. Large, resumable, size/mtime based.
-  rsync "${{DV3_RSYNC_OPTS[@]}}" \\
+  rs "${{DV3_RSYNC_OPTS[@]}}" \\
     -e "ssh -p $(dv3_port "$N") ${{DV3_SSH_OPTS[*]}}" \\
     {inc} \\
     --include='/_cloud_logs/' \\
@@ -464,7 +480,7 @@ for N in "$@"; do
   # can leave a stale progress/marker file that size+mtime will not correct,
   # and a stale witness is read as truth by the checker. Deliberately NOT
   # --append-verify, and deliberately scoped to tiny files.
-  rsync -az -c --ignore-times --info=progress2 \\
+  rs -az -c --ignore-times --info=progress2 \\
     -e "ssh -p $(dv3_port "$N") ${{DV3_SSH_OPTS[*]}}" \\
     --include='*/' \\
     --include='TRAINING_DONE' --include='ADAPT_DONE' --include='DISTILL_DONE' \\
@@ -472,8 +488,13 @@ for N in "$@"; do
     --include='scores.jsonl' --include='fidelity.json' --include='done' \\
     --exclude='*' \\
     {inc} \\
-    "root@$(dv3_ip "$N"):/workspace/dreamerv3_runs/" "$RUNROOT/"
+    "root@$(dv3_ip "$N"):/workspace/dreamerv3_runs/" "$RUNROOT/" || failed="$failed $N"
 done
+if [ -n "$failed" ]; then
+  echo "PULL INCOMPLETE for instance(s):$failed" >&2
+  echo "  the others were pulled; re-run for just these once reachable" >&2
+  exit 1
+fi
 echo "pulled. verify with: dv3ops check --wave {spec.wave_id}"
 """, executable=True)
 

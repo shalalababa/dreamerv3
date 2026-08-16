@@ -13,7 +13,9 @@ DV3OPS_ROOT="${DV3OPS_ROOT:-/home/rickybao/projects/dreamerv3}"
 
 source "$DV3OPS_ROOT/scripts/ops/lib/common.sh"
 dv3_require_instance "$N"
-REMOTE="$RUNROOT/_waves/sigma_ladder"
+REMOTE_ROOT="$(dv3_ssh_dv3 "$N" 'printf %s "$RUNROOT"')"
+[ -n "$REMOTE_ROOT" ] || { echo "ERROR: cannot read RUNROOT on instance $N" >&2; exit 1; }
+REMOTE="$REMOTE_ROOT/_waves/sigma_ladder"
 
 # rsync rather than heredoc: no quoting survives ssh reliably,
 # and it leaves the exact submitted commands on the instance.
@@ -25,28 +27,28 @@ rsync -az --checksum --info=progress2 \
   "$HERE/" "root@$(dv3_ip "$N"):$REMOTE/"
 
 echo "-- stage fit_adapt_task lane 0: 4 task(s) --"
-dv3_ssh_dv3 "$N" 'DV3_ABORT_ON_FAIL=1 dv3_queue_or_add "$REMOTE/lane_fit_adapt_task_0.cmds" 0'
+dv3_ssh_dv3 "$N" "DV3_ABORT_ON_FAIL=1 dv3_queue_or_add \"$REMOTE/lane_fit_adapt_task_0.cmds\" 0"
 echo "-- stage fit_adapt_task lane 1: 4 task(s) --"
-dv3_ssh_dv3 "$N" 'DV3_ABORT_ON_FAIL=1 dv3_queue_or_add "$REMOTE/lane_fit_adapt_task_1.cmds" 1'
+dv3_ssh_dv3 "$N" "DV3_ABORT_ON_FAIL=1 dv3_queue_or_add \"$REMOTE/lane_fit_adapt_task_1.cmds\" 1"
 echo "-- stage fit_adapt_task lane 2: 4 task(s) --"
-dv3_ssh_dv3 "$N" 'DV3_ABORT_ON_FAIL=1 dv3_queue_or_add "$REMOTE/lane_fit_adapt_task_2.cmds" 2'
+dv3_ssh_dv3 "$N" "DV3_ABORT_ON_FAIL=1 dv3_queue_or_add \"$REMOTE/lane_fit_adapt_task_2.cmds\" 2"
 echo "-- stage fit_adapt_task lane 3: 4 task(s) --"
-dv3_ssh_dv3 "$N" 'DV3_ABORT_ON_FAIL=1 dv3_queue_or_add "$REMOTE/lane_fit_adapt_task_3.cmds" 3'
+dv3_ssh_dv3 "$N" "DV3_ABORT_ON_FAIL=1 dv3_queue_or_add \"$REMOTE/lane_fit_adapt_task_3.cmds\" 3"
 echo "-- stage fit_adapt_apt lane 0: 4 task(s) --"
-dv3_ssh_dv3 "$N" 'DV3_ABORT_ON_FAIL=1 dv3_queue_or_add "$REMOTE/lane_fit_adapt_apt_0.cmds" 0'
+dv3_ssh_dv3 "$N" "DV3_ABORT_ON_FAIL=1 dv3_queue_or_add \"$REMOTE/lane_fit_adapt_apt_0.cmds\" 0"
 echo "-- stage fit_adapt_apt lane 1: 4 task(s) --"
-dv3_ssh_dv3 "$N" 'DV3_ABORT_ON_FAIL=1 dv3_queue_or_add "$REMOTE/lane_fit_adapt_apt_1.cmds" 1'
+dv3_ssh_dv3 "$N" "DV3_ABORT_ON_FAIL=1 dv3_queue_or_add \"$REMOTE/lane_fit_adapt_apt_1.cmds\" 1"
 echo "-- stage fit_adapt_apt lane 2: 4 task(s) --"
-dv3_ssh_dv3 "$N" 'DV3_ABORT_ON_FAIL=1 dv3_queue_or_add "$REMOTE/lane_fit_adapt_apt_2.cmds" 2'
+dv3_ssh_dv3 "$N" "DV3_ABORT_ON_FAIL=1 dv3_queue_or_add \"$REMOTE/lane_fit_adapt_apt_2.cmds\" 2"
 echo "-- stage fit_adapt_apt lane 3: 4 task(s) --"
-dv3_ssh_dv3 "$N" 'DV3_ABORT_ON_FAIL=1 dv3_queue_or_add "$REMOTE/lane_fit_adapt_apt_3.cmds" 3'
+dv3_ssh_dv3 "$N" "DV3_ABORT_ON_FAIL=1 dv3_queue_or_add \"$REMOTE/lane_fit_adapt_apt_3.cmds\" 3"
 echo "-- stage ridge lane 0: 8 task(s) --"
-dv3_ssh_dv3 "$N" 'DV3_ABORT_ON_FAIL=0 dv3_queue_or_add "$REMOTE/lane_ridge_0.cmds" 0'
+dv3_ssh_dv3 "$N" "DV3_ABORT_ON_FAIL=0 dv3_queue_or_add \"$REMOTE/lane_ridge_0.cmds\" 0"
 echo "-- stage ridge lane 1: 8 task(s) --"
-dv3_ssh_dv3 "$N" 'DV3_ABORT_ON_FAIL=0 dv3_queue_or_add "$REMOTE/lane_ridge_1.cmds" 1'
+dv3_ssh_dv3 "$N" "DV3_ABORT_ON_FAIL=0 dv3_queue_or_add \"$REMOTE/lane_ridge_1.cmds\" 1"
 echo "-- stage ridge lane 2: 8 task(s) --"
-dv3_ssh_dv3 "$N" 'DV3_ABORT_ON_FAIL=0 dv3_queue_or_add "$REMOTE/lane_ridge_2.cmds" 2'
+dv3_ssh_dv3 "$N" "DV3_ABORT_ON_FAIL=0 dv3_queue_or_add \"$REMOTE/lane_ridge_2.cmds\" 2"
 echo "-- stage ridge lane 3: 8 task(s) --"
-dv3_ssh_dv3 "$N" 'DV3_ABORT_ON_FAIL=0 dv3_queue_or_add "$REMOTE/lane_ridge_3.cmds" 3'
+dv3_ssh_dv3 "$N" "DV3_ABORT_ON_FAIL=0 dv3_queue_or_add \"$REMOTE/lane_ridge_3.cmds\" 3"
 
 echo "submitted. verify with: dv3ops status $N"

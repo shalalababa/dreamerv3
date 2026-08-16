@@ -390,6 +390,16 @@ grep -qE -- "--include=/donor_a/config\.yaml( |$|\\\\)" "$G/push_donors.sh" 2>/d
   && ok "donor include covers plain files" || bad "donor include covers plain files"
 grep -q -- "--include='/donor_a/ckpt/\*\*\*'" "$G/push_donors.sh" 2>/dev/null \
   && ok "donor include covers directory contents" || bad "donor include covers directory contents"
+# A pull runs against instances that are still COMPUTING, so rsync exit 24
+# ("some files vanished") is routine. Under set -e it aborted the whole pull
+# after the first live instance and silently skipped every later one
+# (2026-08-15: `pull 1 2 3 7` stopped after 2). 23 must still fail.
+grep -q 'rc" -eq 24' "$G/pull_results.sh" 2>/dev/null \
+  && ok "pull tolerates rsync 24 (files rotated mid-copy)" \
+  || bad "pull treats rsync 24 as fatal"
+grep -q 'PULL INCOMPLETE for instance' "$G/pull_results.sh" 2>/dev/null \
+  && ok "pull reports which instances it could not finish" \
+  || bad "pull can skip instances silently"
 # $RUNROOT must survive generation unexpanded: RCC and instance paths differ.
 grep -q '\$RUNROOT' "$G"/lane_fit_0.cmds 2>/dev/null \
   && ok "\$RUNROOT left for the remote shell" || bad "\$RUNROOT was expanded at generation time"
