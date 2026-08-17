@@ -67,12 +67,20 @@ def infer_task_z(agent, data_path, seed):
 
 
 def rollout(agent, meta, env, n_episodes):
+  # Amendment 1 (PREREG_fb_amend1_20260816): upstream act() never
+  # detaches and relies on the caller — all six upstream call sites
+  # wrap it in torch.no_grad() (+ eval mode, which load_agent already
+  # applies permanently). Calling it bare raises "Can't call numpy()
+  # on Tensor that requires grad" — caught by the registered cluster
+  # smoke gate with zero fits spent.
+  import torch
   returns = []
   for _ in range(n_episodes):
     ts = env.reset()
     total, steps = 0.0, 0
     while not ts.last():
-      action = agent.act(ts.observation, meta, step=0, eval_mode=True)
+      with torch.no_grad():
+        action = agent.act(ts.observation, meta, step=0, eval_mode=True)
       ts = env.step(np.asarray(action))
       total += float(ts.reward or 0.0)
       steps += 1
