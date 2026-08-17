@@ -1,0 +1,20 @@
+checkout pin: 5a9950b07f1edcb4bddd04f5819379541793d975
+/workspace/conda_envs/fb/lib/python3.10/site-packages/torch/jit/_script.py:1488: DeprecationWarning: `torch.jit.script` is deprecated. Please switch to `torch.compile` or `torch.export`.
+  warnings.warn(
+DONE 4 updates in 1s -> /tmp/fb_zs_sc_dz5gyauc/run/fb_ckpt.pt
+Traceback (most recent call last):
+  File "/workspace/conda_envs/fb/lib/python3.10/runpy.py", line 196, in _run_module_as_main
+    return _run_code(code, main_globals, None,
+  File "/workspace/conda_envs/fb/lib/python3.10/runpy.py", line 86, in _run_code
+    exec(code, run_globals)
+  File "/workspace/dreamerv3/probing/fb_zeroshot.py", line 234, in <module>
+    main()
+  File "/workspace/dreamerv3/probing/fb_zeroshot.py", line 225, in main
+    selfcheck()
+  File "/workspace/dreamerv3/probing/fb_zeroshot.py", line 201, in selfcheck
+    eps = rollout(agent, meta, _StubEnv(D), 3)
+  File "/workspace/dreamerv3/probing/fb_zeroshot.py", line 75, in rollout
+    action = agent.act(ts.observation, meta, step=0, eval_mode=True)
+  File "/workspace/controllable_agent/url_benchmark/agent/fb_ddpg.py", line 281, in act
+    return action.cpu().numpy()[0]
+RuntimeError: Can't call numpy() on Tensor that requires grad. Use tensor.detach().numpy() instead.
