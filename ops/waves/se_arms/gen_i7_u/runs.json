@@ -1,0 +1,105 @@
+{
+ "wave_id": "se_arms",
+ "spec": "ops/waves/se_arms/spec.yaml",
+ "prereg": "prereg/PREREG_nfi_scale_exhibit_amend2_20260814.md",
+ "bundle": {
+  "prefix": "se_arms",
+  "include_stages": [
+   "donly",
+   "gated",
+   "ungated"
+  ],
+  "cloud_logs": [
+   "se_donly_s*.out",
+   "se_gate_s*.out",
+   "se_ungate_s*.out"
+  ]
+ },
+ "stages": [
+  {
+   "name": "donly",
+   "target": "vast",
+   "kind": "se_run",
+   "on_failure": "continue",
+   "needs": null
+  },
+  {
+   "name": "gated",
+   "target": "vast",
+   "kind": "se_run",
+   "on_failure": "continue",
+   "needs": null
+  },
+  {
+   "name": "ungated",
+   "target": "vast",
+   "kind": "se_run",
+   "on_failure": "continue",
+   "needs": null
+  }
+ ],
+ "runs": [
+  {
+   "stage": "ungated",
+   "kind": "se_run",
+   "target": "vast",
+   "run_id": "se_ungate_s26",
+   "cmd": "RUN_ID=se_ungate_s26 TASK=dmc_cheetah_run SEED=26 bash scripts/uncfield_se.sbatch",
+   "vars": {
+    "seed": 26,
+    "cmd": "RUN_ID=se_ungate_s26 TASK=dmc_cheetah_run SEED=26 bash scripts/uncfield_se.sbatch",
+    "run_id": "se_ungate_s26"
+   },
+   "logdir": "se_ungate_s26",
+   "outputs": [
+    "se_ungate_s26"
+   ],
+   "inputs": [],
+   "done_when": [
+    {
+     "exists": "TRAINING_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 100
+     }
+    }
+   ]
+  },
+  {
+   "stage": "ungated",
+   "kind": "se_run",
+   "target": "vast",
+   "run_id": "se_ungate_s27",
+   "cmd": "RUN_ID=se_ungate_s27 TASK=dmc_cheetah_run SEED=27 bash scripts/uncfield_se.sbatch",
+   "vars": {
+    "seed": 27,
+    "cmd": "RUN_ID=se_ungate_s27 TASK=dmc_cheetah_run SEED=27 bash scripts/uncfield_se.sbatch",
+    "run_id": "se_ungate_s27"
+   },
+   "logdir": "se_ungate_s27",
+   "outputs": [
+    "se_ungate_s27"
+   ],
+   "inputs": [],
+   "done_when": [
+    {
+     "exists": "TRAINING_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 100
+     }
+    }
+   ]
+  }
+ ]
+}

@@ -1,6 +1,6 @@
 {
  "wave_id": "se_arms",
- "spec": "ops/waves/se_arms/spec.yaml",
+ "spec": "/home/rickybao/projects/dreamerv3/ops/waves/se_arms/spec.yaml",
  "prereg": "prereg/PREREG_nfi_scale_exhibit_amend2_20260814.md",
  "bundle": {
   "prefix": "se_arms",
@@ -62,9 +62,15 @@
      "exists": "config.yaml"
     },
     {
+     "file_contains": {
+      "file": "ckpt_snapshots/nearest.json",
+      "pattern": "\"milestone\": 500000,\\s+\"step\": (49\\d{4}|[5-9]\\d{5})"
+     }
+    },
+    {
      "jsonl_min_lines": {
       "file": "scores.jsonl",
-      "n": 100
+      "n": 464
      }
     }
    ]
@@ -92,9 +98,15 @@
      "exists": "config.yaml"
     },
     {
+     "file_contains": {
+      "file": "ckpt_snapshots/nearest.json",
+      "pattern": "\"milestone\": 500000,\\s+\"step\": (49\\d{4}|[5-9]\\d{5})"
+     }
+    },
+    {
      "jsonl_min_lines": {
       "file": "scores.jsonl",
-      "n": 100
+      "n": 464
      }
     }
    ]
@@ -122,9 +134,15 @@
      "exists": "config.yaml"
     },
     {
+     "file_contains": {
+      "file": "ckpt_snapshots/nearest.json",
+      "pattern": "\"milestone\": 500000,\\s+\"step\": (49\\d{4}|[5-9]\\d{5})"
+     }
+    },
+    {
      "jsonl_min_lines": {
       "file": "scores.jsonl",
-      "n": 100
+      "n": 464
      }
     }
    ]
@@ -152,9 +170,15 @@
      "exists": "config.yaml"
     },
     {
+     "file_contains": {
+      "file": "ckpt_snapshots/nearest.json",
+      "pattern": "\"milestone\": 500000,\\s+\"step\": (49\\d{4}|[5-9]\\d{5})"
+     }
+    },
+    {
      "jsonl_min_lines": {
       "file": "scores.jsonl",
-      "n": 100
+      "n": 464
      }
     }
    ]
@@ -182,9 +206,15 @@
      "exists": "config.yaml"
     },
     {
+     "file_contains": {
+      "file": "ckpt_snapshots/nearest.json",
+      "pattern": "\"milestone\": 500000,\\s+\"step\": (49\\d{4}|[5-9]\\d{5})"
+     }
+    },
+    {
      "jsonl_min_lines": {
       "file": "scores.jsonl",
-      "n": 100
+      "n": 464
      }
     }
    ]
@@ -212,9 +242,15 @@
      "exists": "config.yaml"
     },
     {
+     "file_contains": {
+      "file": "ckpt_snapshots/nearest.json",
+      "pattern": "\"milestone\": 500000,\\s+\"step\": (49\\d{4}|[5-9]\\d{5})"
+     }
+    },
+    {
      "jsonl_min_lines": {
       "file": "scores.jsonl",
-      "n": 100
+      "n": 464
      }
     }
    ]
@@ -242,9 +278,15 @@
      "exists": "config.yaml"
     },
     {
+     "file_contains": {
+      "file": "ckpt_snapshots/nearest.json",
+      "pattern": "\"milestone\": 500000,\\s+\"step\": (49\\d{4}|[5-9]\\d{5})"
+     }
+    },
+    {
      "jsonl_min_lines": {
       "file": "scores.jsonl",
-      "n": 100
+      "n": 464
      }
     }
    ]
@@ -272,9 +314,15 @@
      "exists": "config.yaml"
     },
     {
+     "file_contains": {
+      "file": "ckpt_snapshots/nearest.json",
+      "pattern": "\"milestone\": 500000,\\s+\"step\": (49\\d{4}|[5-9]\\d{5})"
+     }
+    },
+    {
      "jsonl_min_lines": {
       "file": "scores.jsonl",
-      "n": 100
+      "n": 464
      }
     }
    ]
@@ -302,9 +350,15 @@
      "exists": "config.yaml"
     },
     {
+     "file_contains": {
+      "file": "ckpt_snapshots/nearest.json",
+      "pattern": "\"milestone\": 500000,\\s+\"step\": (49\\d{4}|[5-9]\\d{5})"
+     }
+    },
+    {
      "jsonl_min_lines": {
       "file": "scores.jsonl",
-      "n": 100
+      "n": 464
      }
     }
    ]
@@ -332,9 +386,15 @@
      "exists": "config.yaml"
     },
     {
+     "file_contains": {
+      "file": "ckpt_snapshots/nearest.json",
+      "pattern": "\"milestone\": 500000,\\s+\"step\": (49\\d{4}|[5-9]\\d{5})"
+     }
+    },
+    {
      "jsonl_min_lines": {
       "file": "scores.jsonl",
-      "n": 100
+      "n": 464
      }
     }
    ]
@@ -362,9 +422,15 @@
      "exists": "config.yaml"
     },
     {
+     "file_contains": {
+      "file": "ckpt_snapshots/nearest.json",
+      "pattern": "\"milestone\": 500000,\\s+\"step\": (49\\d{4}|[5-9]\\d{5})"
+     }
+    },
+    {
      "jsonl_min_lines": {
       "file": "scores.jsonl",
-      "n": 100
+      "n": 464
      }
     }
    ]
@@ -392,9 +458,15 @@
      "exists": "config.yaml"
     },
     {
+     "file_contains": {
+      "file": "ckpt_snapshots/nearest.json",
+      "pattern": "\"milestone\": 500000,\\s+\"step\": (49\\d{4}|[5-9]\\d{5})"
+     }
+    },
+    {
      "jsonl_min_lines": {
       "file": "scores.jsonl",
-      "n": 100
+      "n": 464
      }
     }
    ]

@@ -1,0 +1,167 @@
+{
+ "wave_id": "se_arms",
+ "spec": "ops/waves/se_arms/spec.yaml",
+ "prereg": "prereg/PREREG_nfi_scale_exhibit_amend2_20260814.md",
+ "bundle": {
+  "prefix": "se_arms",
+  "include_stages": [
+   "donly",
+   "gated",
+   "ungated"
+  ],
+  "cloud_logs": [
+   "se_donly_s*.out",
+   "se_gate_s*.out",
+   "se_ungate_s*.out"
+  ]
+ },
+ "stages": [
+  {
+   "name": "donly",
+   "target": "vast",
+   "kind": "se_run",
+   "on_failure": "continue",
+   "needs": null
+  },
+  {
+   "name": "gated",
+   "target": "vast",
+   "kind": "se_run",
+   "on_failure": "continue",
+   "needs": null
+  },
+  {
+   "name": "ungated",
+   "target": "vast",
+   "kind": "se_run",
+   "on_failure": "continue",
+   "needs": null
+  }
+ ],
+ "runs": [
+  {
+   "stage": "donly",
+   "kind": "se_run",
+   "target": "vast",
+   "run_id": "se_donly_s10",
+   "cmd": "RUN_ID=se_donly_s10 TASK=dmc_cheetah_run SEED=10 DISTRACTOR_DIM=0 bash scripts/uncfield_se.sbatch",
+   "vars": {
+    "seed": 10,
+    "cmd": "RUN_ID=se_donly_s10 TASK=dmc_cheetah_run SEED=10 DISTRACTOR_DIM=0 bash scripts/uncfield_se.sbatch",
+    "run_id": "se_donly_s10"
+   },
+   "logdir": "se_donly_s10",
+   "outputs": [
+    "se_donly_s10"
+   ],
+   "inputs": [],
+   "done_when": [
+    {
+     "exists": "TRAINING_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 100
+     }
+    }
+   ]
+  },
+  {
+   "stage": "donly",
+   "kind": "se_run",
+   "target": "vast",
+   "run_id": "se_donly_s11",
+   "cmd": "RUN_ID=se_donly_s11 TASK=dmc_cheetah_run SEED=11 DISTRACTOR_DIM=0 bash scripts/uncfield_se.sbatch",
+   "vars": {
+    "seed": 11,
+    "cmd": "RUN_ID=se_donly_s11 TASK=dmc_cheetah_run SEED=11 DISTRACTOR_DIM=0 bash scripts/uncfield_se.sbatch",
+    "run_id": "se_donly_s11"
+   },
+   "logdir": "se_donly_s11",
+   "outputs": [
+    "se_donly_s11"
+   ],
+   "inputs": [],
+   "done_when": [
+    {
+     "exists": "TRAINING_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 100
+     }
+    }
+   ]
+  },
+  {
+   "stage": "donly",
+   "kind": "se_run",
+   "target": "vast",
+   "run_id": "se_donly_s12",
+   "cmd": "RUN_ID=se_donly_s12 TASK=dmc_cheetah_run SEED=12 DISTRACTOR_DIM=0 bash scripts/uncfield_se.sbatch",
+   "vars": {
+    "seed": 12,
+    "cmd": "RUN_ID=se_donly_s12 TASK=dmc_cheetah_run SEED=12 DISTRACTOR_DIM=0 bash scripts/uncfield_se.sbatch",
+    "run_id": "se_donly_s12"
+   },
+   "logdir": "se_donly_s12",
+   "outputs": [
+    "se_donly_s12"
+   ],
+   "inputs": [],
+   "done_when": [
+    {
+     "exists": "TRAINING_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 100
+     }
+    }
+   ]
+  },
+  {
+   "stage": "donly",
+   "kind": "se_run",
+   "target": "vast",
+   "run_id": "se_donly_s13",
+   "cmd": "RUN_ID=se_donly_s13 TASK=dmc_cheetah_run SEED=13 DISTRACTOR_DIM=0 bash scripts/uncfield_se.sbatch",
+   "vars": {
+    "seed": 13,
+    "cmd": "RUN_ID=se_donly_s13 TASK=dmc_cheetah_run SEED=13 DISTRACTOR_DIM=0 bash scripts/uncfield_se.sbatch",
+    "run_id": "se_donly_s13"
+   },
+   "logdir": "se_donly_s13",
+   "outputs": [
+    "se_donly_s13"
+   ],
+   "inputs": [],
+   "done_when": [
+    {
+     "exists": "TRAINING_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 100
+     }
+    }
+   ]
+  }
+ ]
+}

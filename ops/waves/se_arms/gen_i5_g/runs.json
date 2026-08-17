@@ -1,0 +1,105 @@
+{
+ "wave_id": "se_arms",
+ "spec": "ops/waves/se_arms/spec.yaml",
+ "prereg": "prereg/PREREG_nfi_scale_exhibit_amend2_20260814.md",
+ "bundle": {
+  "prefix": "se_arms",
+  "include_stages": [
+   "donly",
+   "gated",
+   "ungated"
+  ],
+  "cloud_logs": [
+   "se_donly_s*.out",
+   "se_gate_s*.out",
+   "se_ungate_s*.out"
+  ]
+ },
+ "stages": [
+  {
+   "name": "donly",
+   "target": "vast",
+   "kind": "se_run",
+   "on_failure": "continue",
+   "needs": null
+  },
+  {
+   "name": "gated",
+   "target": "vast",
+   "kind": "se_run",
+   "on_failure": "continue",
+   "needs": null
+  },
+  {
+   "name": "ungated",
+   "target": "vast",
+   "kind": "se_run",
+   "on_failure": "continue",
+   "needs": null
+  }
+ ],
+ "runs": [
+  {
+   "stage": "gated",
+   "kind": "se_run",
+   "target": "vast",
+   "run_id": "se_gate_s20",
+   "cmd": "RUN_ID=se_gate_s20 TASK=dmc_cheetah_run SEED=20 DISTRACTOR_GATE_KEY=position DISTRACTOR_GATE_INDEX=0 DISTRACTOR_GATE_THRESHOLD=-0.13009691 GATE_KEY=position GATE_INDEX=0 GATE_THRESHOLD=-0.13009691 bash scripts/uncfield_se.sbatch",
+   "vars": {
+    "seed": 20,
+    "cmd": "RUN_ID=se_gate_s20 TASK=dmc_cheetah_run SEED=20 DISTRACTOR_GATE_KEY=position DISTRACTOR_GATE_INDEX=0 DISTRACTOR_GATE_THRESHOLD=-0.13009691 GATE_KEY=position GATE_INDEX=0 GATE_THRESHOLD=-0.13009691 bash scripts/uncfield_se.sbatch",
+    "run_id": "se_gate_s20"
+   },
+   "logdir": "se_gate_s20",
+   "outputs": [
+    "se_gate_s20"
+   ],
+   "inputs": [],
+   "done_when": [
+    {
+     "exists": "TRAINING_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 100
+     }
+    }
+   ]
+  },
+  {
+   "stage": "gated",
+   "kind": "se_run",
+   "target": "vast",
+   "run_id": "se_gate_s21",
+   "cmd": "RUN_ID=se_gate_s21 TASK=dmc_cheetah_run SEED=21 DISTRACTOR_GATE_KEY=position DISTRACTOR_GATE_INDEX=0 DISTRACTOR_GATE_THRESHOLD=-0.13009691 GATE_KEY=position GATE_INDEX=0 GATE_THRESHOLD=-0.13009691 bash scripts/uncfield_se.sbatch",
+   "vars": {
+    "seed": 21,
+    "cmd": "RUN_ID=se_gate_s21 TASK=dmc_cheetah_run SEED=21 DISTRACTOR_GATE_KEY=position DISTRACTOR_GATE_INDEX=0 DISTRACTOR_GATE_THRESHOLD=-0.13009691 GATE_KEY=position GATE_INDEX=0 GATE_THRESHOLD=-0.13009691 bash scripts/uncfield_se.sbatch",
+    "run_id": "se_gate_s21"
+   },
+   "logdir": "se_gate_s21",
+   "outputs": [
+    "se_gate_s21"
+   ],
+   "inputs": [],
+   "done_when": [
+    {
+     "exists": "TRAINING_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 100
+     }
+    }
+   ]
+  }
+ ]
+}

@@ -49,10 +49,22 @@ stages:
 # D-only runs died at ~50% (248k-260k of 5e5 steps) when the disk filled, and
 # all four carried TRAINING_DONE. The original `n: 100` bound passed them.
 #
-# 496 is the realized count: every one of the eight completed Stage-1 runs
-# (se_cheetah_seed10..17) has EXACTLY 496 score rows at 5e5 steps. It is a
-# counter, not a marker, and a run that stopped at half the budget cannot
-# reach it.
+# CORRECTED AGAIN 2026-08-16 pm. The n:496 bound above was itself wrong --
+# right instinct (counter, not marker), wrong counter. scores.jsonl is
+# written in BURSTS of 16 rows (one per eval episode) every ~16001 steps,
+# so 496 = 31 bursts and the burst count depends on where the stop step
+# falls relative to an eval boundary. se_donly_s10 resumed from a slightly
+# earlier checkpoint after the disk-full, ended at agent step 497744, and
+# missed its 31st boundary -> 480 rows (30 bursts) while being FULLY
+# trained: clean rc=0 exit, all five milestone snapshots, monotonic scores
+# with zero duplicates and no interior gaps.
+#
+# The invariant is the STEP, not the row count. Measured across all 12 SE
+# runs the realized final-milestone step is 494240..499552 (s10 = 494704,
+# mid-pack -- se_gate_s23 is lower), whereas the disk-full truncation sat
+# near 250000. So the predicate below asserts the 500000-milestone
+# snapshot exists at a realized step >= 490000, and keeps a LOOSE row
+# floor (464 = 29 bursts) purely as a sanity check, not as the test.
 
   # -- D-only: the single registered delta is --distractor.dim 0 -----------
   # Needs a per-run se_probe pass afterwards (final checkpoint, frozen
@@ -74,7 +86,13 @@ stages:
     done_when:
       - exists: TRAINING_DONE
       - exists: config.yaml
-      - jsonl_min_lines: {file: scores.jsonl, n: 496}
+      # THE completion counter (see the note above stages): the final
+      # milestone snapshot exists at a realized step >= 490000.
+      - file_contains:
+          file: ckpt_snapshots/nearest.json
+          pattern: '"milestone": 500000,\s+"step": (49\d{4}|[5-9]\d{5})'
+      # Loose sanity floor only -- 29 eval bursts. NOT a completion test.
+      - jsonl_min_lines: {file: scores.jsonl, n: 464}
 
   # -- Stage-2 gated: the gate triple on BOTH wrappers ---------------------
   - name: gated
@@ -95,7 +113,13 @@ stages:
     done_when:
       - exists: TRAINING_DONE
       - exists: config.yaml
-      - jsonl_min_lines: {file: scores.jsonl, n: 496}
+      # THE completion counter (see the note above stages): the final
+      # milestone snapshot exists at a realized step >= 490000.
+      - file_contains:
+          file: ckpt_snapshots/nearest.json
+          pattern: '"milestone": 500000,\s+"step": (49\d{4}|[5-9]\d{5})'
+      # Loose sanity floor only -- 29 eval bursts. NOT a completion test.
+      - jsonl_min_lines: {file: scores.jsonl, n: 464}
 
   # -- Stage-2 ungated: Stage-1 config verbatim ----------------------------
   - name: ungated
@@ -113,7 +137,13 @@ stages:
     done_when:
       - exists: TRAINING_DONE
       - exists: config.yaml
-      - jsonl_min_lines: {file: scores.jsonl, n: 496}
+      # THE completion counter (see the note above stages): the final
+      # milestone snapshot exists at a realized step >= 490000.
+      - file_contains:
+          file: ckpt_snapshots/nearest.json
+          pattern: '"milestone": 500000,\s+"step": (49\d{4}|[5-9]\d{5})'
+      # Loose sanity floor only -- 29 eval bursts. NOT a completion test.
+      - jsonl_min_lines: {file: scores.jsonl, n: 464}
 
 bundle:
   prefix: se_arms
