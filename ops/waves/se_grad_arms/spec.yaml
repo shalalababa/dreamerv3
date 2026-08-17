@@ -1,0 +1,162 @@
+# SE amendment-3 GRADIENT ARM — PREREG_nfi_scale_exhibit_amend3_20260816 §3.
+#
+# TWELVE runs in THREE arms, transcribed from the prereg's §3 launch specs.
+#
+#   hetero    seeds 28-31   se_het_s28..31      mod quadruple, scale 1.0
+#   flat      seeds 36-39   se_flat_s36..39     scale 0.35891393, mod empty
+#   ungated2  seeds 32-35   se_ungate2_s32..35  Stage-1 verbatim
+#
+# NOTE FOR WHOEVER READS THE TODO FIRST: TODO row 126 lists only EIGHT runs
+# (hetero + ungated2) and omits the flat arm entirely. The prereg is the
+# authority and it registers twelve. The flat arm was added by review #24 M2
+# and is not optional -- the prereg's own words: "without it, gradient and
+# dose are confounded, since hetero also reduces mean amplitude ~2.8x vs
+# Stage-1". It is the PRIMARY's comparator: the registered primary is
+# occupancy(hetero) - occupancy(flat), exact one-sided over C(8,4)=70.
+# Submitting the TODO's eight runs would leave the primary with no
+# comparator at all.
+#
+# ===================== BLOCKED: the flat arm cannot launch =================
+# `scripts/uncfield_se.sbatch:109` hardcodes `--distractor.scale 1.0` and
+# forwards no "$@", so there is NO way to express the flat arm's
+# `--distractor.scale 0.35891393` through the registered producer. The other
+# three overrides the gradient arm needs (DISTRACTOR_MOD_*) were added; a
+# DISTRACTOR_SCALE override, defaulting to 1.0, was not -- consistent with
+# the flat arm having arrived later, in review #24, after the sbatch work.
+#
+# This spec is written against `DISTRACTOR_SCALE` (default 1.0, exactly the
+# existing pattern and Stage-1-inert). It is a ONE-LINE producer change that
+# belongs to the owning chat's pending freeze, NOT to ops -- the prereg gates
+# arm identity on `scale == 0.35891393` to 1e-9, so how that value reaches
+# the config is a registered-producer question.
+#
+# THE FAILURE MODE IS SILENT, WHICH IS WHY THIS IS GATED BELOW. An env var
+# the script does not read is not an error: `DISTRACTOR_SCALE=0.35891393`
+# would simply be IGNORED and all four flat runs would train at scale 1.0 --
+# i.e. as four more ungated2 runs, under flat run_ids. Nothing would complain
+# for 7.5 h per run. The prereg's identity gate (`flat: scale == 0.35891393`)
+# would then refuse the read, so no bad science escapes, but 30 GPU-hours
+# would be gone. `submit_gate.sh` in this directory asserts the override is
+# live on the instance BEFORE anything is queued; run it, do not skip it.
+# ==========================================================================
+#
+# LANE PLACEMENT — deliberately NOT one arm per stage. Instance 13 shares a
+# physical host with instance 12 (same public IP, different port), and 12 is
+# running the FB fits at 98-99% on four cards; that load ENDS partway through
+# this wave. So the execution environment is time-varying. With one stage per
+# arm, lane packing would give every lane hetero -> flat -> ungated2, i.e. all
+# four hetero runs in round 1 and all four flat runs in round 2 -- mapping
+# that drift directly onto the primary contrast. Since arms are never
+# seed-paired, ordering is free, so the explicit run list below interleaves:
+#
+#   lane 0: het28   flat36  ung32
+#   lane 1: flat37  het29   ung33
+#   lane 2: het30   flat38  ung34
+#   lane 3: flat39  het31   ung35
+#
+# Every lane carries exactly one run of each arm, and the hetero/flat primary
+# pair is balanced 2-2 in BOTH round 1 and round 2. Declaration order fixes
+# lane packing (wavespec.py:178-180), so this ordering is load-bearing --
+# reordering the list silently reassigns lanes.
+#
+# ALL TWELVE ON ONE INSTANCE, which is what the prereg's "SAME wave on the
+# SAME site" requires; the 1-Aug nondeterminism rule bars cross-site arm
+# comparisons, and a 4-vs-4 permutation primary is exactly where a device
+# confound would be indistinguishable from the effect.
+#
+# ===================== DISK: 12 runs DO NOT FIT ===========================
+# Measured on RCC: a completed SE run is 4.6 G (ckpt_snapshots 3.9 G,
+# replay 626 M). 12 x 4.6 = 55.2 G against instance 13's 50 G overlay.
+# The wave WILL hit disk-full during round 3 if nothing is evacuated --
+# which is precisely what truncated all four D-only runs on instance 1 at
+# ~50% while they carried a TRAINING_DONE marker.
+# Operational requirement: after round 1 completes, pull those four runs to
+# RCC, verify, and delete them from the instance while round 2 runs. Peak
+# instance usage then stays near 8 runs (~37 G). Do NOT solve this by
+# deleting ckpt_snapshots un-archived -- they are absent from the §5 bundle
+# spec but a later amendment may want a snapshot leg, exactly as was
+# preserved for the Amendment-2 arms.
+# ==========================================================================
+#
+# per_gpu: 1 -- measured vram_mean 15243 MiB of 16311 MiB (93% of the card).
+# These do not co-reside; the FB wave's 2-per-lane packing does not transfer.
+#
+# NOT COVERED HERE: the 8 se_probe passes (hetero + flat, per §5 -- flat gets
+# one too, for the amplitude-dose descriptive). se_probe defaults to
+# --platform cpu, so those run on RCC caslake exactly as the Amendment-2
+# probes did, which satisfies the "one device class across all probe passes"
+# rule trivially. They are owed work the wave checker cannot see.
+
+wave_id: se_grad_arms
+paper: paper5
+prereg: prereg/PREREG_nfi_scale_exhibit_amend3_20260816.md
+notes: >-
+  12 SE gradient-arm runs (hetero x4, flat x4, ungated2 x4) on
+  dmc_cheetah_run at 5e5 steps, all on ONE instance, arms interleaved
+  across lanes and rounds. BLOCKED until uncfield_se.sbatch gains a
+  DISTRACTOR_SCALE override for the flat arm.
+
+defaults:
+  target: vast
+
+kinds:
+  se_run: {per_gpu: 1}
+
+stages:
+
+  # COMPLETION PREDICATE — the corrected se_arms form, carried over verbatim.
+  # TRAINING_DONE is a LYING MARKER for this producer (uncfield_se.sbatch
+  # touches it unconditionally, on the failure path too), and the scores.jsonl
+  # row count is phase-dependent (bursts of 16 every ~16001 steps, so the
+  # burst count moves with where the stop step lands relative to an eval
+  # boundary -- se_donly_s10 finished fully with 30 bursts, not 31). The
+  # STEP is the invariant, so the milestone snapshot at a realized step
+  # >= 490000 is THE test and the row floor is a loose sanity check only.
+  - name: train
+    kind: se_run
+    on_failure: continue
+    runs:
+      # -- round 1 --
+      - {run_id: se_het_s28,     seed: 28, mod_key: position, mod_lo: "-0.32203162", mod_hi: "0.19711795", scale: "1.0"}
+      - {run_id: se_flat_s37,    seed: 37, mod_key: "",       mod_lo: "0.0",         mod_hi: "1.0",        scale: "0.35891393"}
+      - {run_id: se_het_s30,     seed: 30, mod_key: position, mod_lo: "-0.32203162", mod_hi: "0.19711795", scale: "1.0"}
+      - {run_id: se_flat_s39,    seed: 39, mod_key: "",       mod_lo: "0.0",         mod_hi: "1.0",        scale: "0.35891393"}
+      # -- round 2 --
+      - {run_id: se_flat_s36,    seed: 36, mod_key: "",       mod_lo: "0.0",         mod_hi: "1.0",        scale: "0.35891393"}
+      - {run_id: se_het_s29,     seed: 29, mod_key: position, mod_lo: "-0.32203162", mod_hi: "0.19711795", scale: "1.0"}
+      - {run_id: se_flat_s38,    seed: 38, mod_key: "",       mod_lo: "0.0",         mod_hi: "1.0",        scale: "0.35891393"}
+      - {run_id: se_het_s31,     seed: 31, mod_key: position, mod_lo: "-0.32203162", mod_hi: "0.19711795", scale: "1.0"}
+      # -- round 3 --
+      - {run_id: se_ungate2_s32, seed: 32, mod_key: "",       mod_lo: "0.0",         mod_hi: "1.0",        scale: "1.0"}
+      - {run_id: se_ungate2_s33, seed: 33, mod_key: "",       mod_lo: "0.0",         mod_hi: "1.0",        scale: "1.0"}
+      - {run_id: se_ungate2_s34, seed: 34, mod_key: "",       mod_lo: "0.0",         mod_hi: "1.0",        scale: "1.0"}
+      - {run_id: se_ungate2_s35, seed: 35, mod_key: "",       mod_lo: "0.0",         mod_hi: "1.0",        scale: "1.0"}
+    logdir: "${run_id}"
+    # Every arm passes the SAME variable set, including the inert values, so
+    # the generated command states each arm's identity explicitly rather than
+    # by omission -- the reader gates arm identity on these exact config
+    # fields, and an unset variable and a deliberately-default one are
+    # indistinguishable in a log. mod_index is 0 for every registered arm.
+    cmd: >-
+      RUN_ID=${run_id} TASK=dmc_cheetah_run SEED=${seed}
+      DISTRACTOR_MOD_KEY=${mod_key} DISTRACTOR_MOD_INDEX=0
+      DISTRACTOR_MOD_LO=${mod_lo} DISTRACTOR_MOD_HI=${mod_hi}
+      DISTRACTOR_SCALE=${scale}
+      bash scripts/uncfield_se.sbatch
+    outputs:
+      - "${run_id}"
+    done_when:
+      - exists: TRAINING_DONE
+      - exists: config.yaml
+      - file_contains:
+          file: ckpt_snapshots/nearest.json
+          pattern: '"milestone": 500000,\s+"step": (49\d{4}|[5-9]\d{5})'
+      - jsonl_min_lines: {file: scores.jsonl, n: 464}
+
+bundle:
+  prefix: se_grad_arms
+  include_stages: [train]
+  cloud_logs:
+    - "se_het_s*.out"
+    - "se_flat_s*.out"
+    - "se_ungate2_s*.out"

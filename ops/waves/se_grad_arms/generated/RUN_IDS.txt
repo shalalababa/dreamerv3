@@ -1,0 +1,23 @@
+wave_id: se_grad_arms
+spec:    /home/rickybao/projects/dreamerv3/ops/waves/se_grad_arms/spec.yaml
+prereg:  prereg/PREREG_nfi_scale_exhibit_amend3_20260816.md
+
+=== stage train  [vast]  kind=se_run  on_failure=continue  n=12 ===
+  se_het_s28
+  se_flat_s37
+  se_het_s30
+  se_flat_s39
+  se_flat_s36
+  se_het_s29
+  se_flat_s38
+  se_het_s31
+  se_ungate2_s32
+  se_ungate2_s33
+  se_ungate2_s34
+  se_ungate2_s35
+
+TOTAL RUNS: 12
+
+Check this list against the prereg before submitting. run_ids are
+consumed by frozen readers and the ledger; a wrong expansion here
+propagates into every downstream artifact.
