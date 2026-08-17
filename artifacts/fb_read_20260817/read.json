@@ -1,0 +1,299 @@
+{
+ "gates": {
+  "data_sha": {
+   "0": "63b84b1dc5c7dea8d500437ab7fe0a6c65baf7fd8a87c0f60c03287c66eb33e3",
+   "1": "60161287471a4eca71b798cd2d1ba4c8e013b3591991d5c742055e3833bde8ab"
+  },
+  "emb_panel_device": "NVIDIA GeForce RTX 5060 Ti",
+  "health": {
+   "fbwm_finger_q1s0_seed1": {
+    "in_band": false,
+    "tail_median": -1602.2760620117188
+   },
+   "fbwm_finger_q1s0_seed2": {
+    "in_band": false,
+    "tail_median": -1301.7383422851562
+   },
+   "fbwm_finger_q1s0_seed3": {
+    "in_band": false,
+    "tail_median": -1288.799560546875
+   },
+   "fbwm_finger_q1s0_seed4": {
+    "in_band": false,
+    "tail_median": -1467.981201171875
+   },
+   "fbwm_finger_q1s0_seed5": {
+    "in_band": false,
+    "tail_median": -625.8799743652344
+   },
+   "fbwm_finger_q1s0_seed6": {
+    "in_band": false,
+    "tail_median": -1477.5216674804688
+   },
+   "fbwm_finger_q1s0_seed7": {
+    "in_band": false,
+    "tail_median": -1643.6005859375
+   },
+   "fbwm_finger_q1s0_seed8": {
+    "in_band": false,
+    "tail_median": 1001.7135620117188
+   },
+   "fbwm_finger_q1s1_seed1": {
+    "in_band": false,
+    "tail_median": -2826.232666015625
+   },
+   "fbwm_finger_q1s1_seed2": {
+    "in_band": false,
+    "tail_median": -3221.7310791015625
+   },
+   "fbwm_finger_q1s1_seed3": {
+    "in_band": false,
+    "tail_median": -3373.89990234375
+   },
+   "fbwm_finger_q1s1_seed4": {
+    "in_band": false,
+    "tail_median": -3299.5498046875
+   },
+   "fbwm_finger_q1s1_seed5": {
+    "in_band": false,
+    "tail_median": -3609.4552001953125
+   },
+   "fbwm_finger_q1s1_seed6": {
+    "in_band": false,
+    "tail_median": -3679.38818359375
+   },
+   "fbwm_finger_q1s1_seed7": {
+    "in_band": false,
+    "tail_median": -3969.5511474609375
+   },
+   "fbwm_finger_q1s1_seed8": {
+    "in_band": false,
+    "tail_median": -3159.6005859375
+   }
+  },
+  "health_all_in_band": false,
+  "health_band": [
+   -455.1604080200195,
+   -4.551604080200195
+  ],
+  "random_floor_band": [
+   35.0,
+   110.0
+  ],
+  "random_floor_mean": 79.4,
+  "updates": 500000
+ },
+ "overall": "BEHAVIORAL-ESCAPE (qualified): the flagship consequential-level escape LANDS; the representation leg shows no separation from a NEAR-CEILING raw comparator (registered as weakly informative, honesty block M16a) \u2014 escape wording licensed at the behavioral level; the strongest bidirectional form is reserved for ESCAPE-CONFIRMED (review-2 M6)",
+ "p_fb1": {
+  "by_side": {
+   "0": 117.30000000000001,
+   "1": 242.27499999999998
+  },
+  "by_side_note": "side-stratified secondaries, n=8, labeled NON-DECISIONAL (review m24); a pooled fire carried entirely by one side is reported as such",
+  "by_side_secondary": {
+   "0": {
+    "ci": [
+     -11.769500000000003,
+     44.7082848289377
+    ],
+    "d_z": 0.10099067168436346,
+    "mean": 3.6179999999999986,
+    "n": 8,
+    "perm_p": 0.90625,
+    "sd": 35.82509096788371
+   },
+   "1": {
+    "ci": [
+     30.980499999999996,
+     199.19824835359148
+    ],
+    "d_z": 1.0151823874448176,
+    "mean": 128.593,
+    "n": 8,
+    "perm_p": 0.0390625,
+    "sd": 126.66984927079416
+   }
+  },
+  "floor": 113.682,
+  "floor_pins": {
+   "apt": 81.30111562500001,
+   "rif": 70.665375,
+   "scratch_auc": 147.6823
+  },
+  "mean_return": 179.7875,
+  "stats": {
+   "ci": [
+    21.03632783159827,
+    125.79645087566178
+   ],
+   "d_z": 0.5972264620540231,
+   "mean": 66.10549999999999,
+   "n": 16,
+   "perm_p": 0.02667236328125,
+   "sd": 110.68749327122131
+  },
+  "verdict": "ZERO-SHOT-ESCAPE"
+ },
+ "p_fb2": {
+  "by_side": {
+   "0": 0.8021936378279342,
+   "1": 0.7880334109024651
+  },
+  "estimand_note": "panel-conditional contrast: raw is treated as fixed by construction (same panel, same ridge folds); the interval does not propagate raw's own measurement error (review M16b)",
+  "fb_mean_auroc": 0.7951135243651997,
+  "mde_note": {
+   "basis": "noncentral-t approximation at n=16; decision rule is permutation+BCa",
+   "mde80_auroc_units": 0.04528032368907496
+  },
+  "raw_auroc": 0.9027636834439012,
+  "stats": {
+   "ci": [
+    -0.14535579367718168,
+    -0.08535144991078981
+   ],
+   "d_z": -1.781682983777465,
+   "mean": -0.10765015907870155,
+   "n": 16,
+   "perm_p": 3.0517578125e-05,
+   "sd": 0.060420490097775566
+  },
+  "verdict": "B-LESS-LEGIBLE"
+ },
+ "per_fit": {
+  "emb_auroc": {
+   "0|1": 0.8063213384722252,
+   "0|2": 0.8201604837971439,
+   "0|3": 0.8060855482800956,
+   "0|4": 0.8182337358918302,
+   "0|5": 0.7786106649955845,
+   "0|6": 0.7546106723996813,
+   "0|7": 0.8182305353027334,
+   "0|8": 0.8152961234841795,
+   "1|1": 0.8787823559028152,
+   "1|2": 0.7601708293396084,
+   "1|3": 0.7986150838951472,
+   "1|4": 0.8286450502940099,
+   "1|5": 0.8788683107351326,
+   "1|6": 0.7382452963792621,
+   "1|7": 0.8014678184300084,
+   "1|8": 0.6194725422437375
+  },
+  "z_inference": {
+   "0|1": {
+    "ckpt_sha256": "183bf521969719f3efa92a88a0c718ed8f0ab15769eb8f550fe6e22cb5947ff7",
+    "frac_pos": 0.0541015625,
+    "z_norm": 7.0710673332214355
+   },
+   "0|2": {
+    "ckpt_sha256": "9d3957777edef530ef387a8dba1b4cb1d02736674eb2093fbf90f940411b6f36",
+    "frac_pos": 0.0521484375,
+    "z_norm": 7.071068286895752
+   },
+   "0|3": {
+    "ckpt_sha256": "284b5650088e9b2076faabccb302c53f879a82ae97760f196b6c092eb290b101",
+    "frac_pos": 0.058203125,
+    "z_norm": 7.071068286895752
+   },
+   "0|4": {
+    "ckpt_sha256": "c67affee164c5d4d3559bd689a1fe9a95da258ed82582874992018253ab81618",
+    "frac_pos": 0.0568359375,
+    "z_norm": 7.071067810058594
+   },
+   "0|5": {
+    "ckpt_sha256": "e953074e1f3b848a975e1b7172595195bb17b7cd92d2ce2fa2452b0f274add52",
+    "frac_pos": 0.0576171875,
+    "z_norm": 7.0710673332214355
+   },
+   "0|6": {
+    "ckpt_sha256": "0767904d547f78c711e78664a0b314d690682c0b4696b554dcca92301b1d7c10",
+    "frac_pos": 0.0533203125,
+    "z_norm": 7.071068286895752
+   },
+   "0|7": {
+    "ckpt_sha256": "7d31cfb71f4ee6196f770f36d918360fa700147989ef15d59386bb1194a9952d",
+    "frac_pos": 0.0546875,
+    "z_norm": 7.071068286895752
+   },
+   "0|8": {
+    "ckpt_sha256": "29bf949f1773feb99783ae17417bc04cb969ec7345f79f6547f9749a2c7e3a1e",
+    "frac_pos": 0.0509765625,
+    "z_norm": 7.071068286895752
+   },
+   "1|1": {
+    "ckpt_sha256": "0c34c57f0124c62a9f024823ed8818d8e9ec86b70da236189f6cf98e01f02693",
+    "frac_pos": 0.310546875,
+    "z_norm": 7.0710673332214355
+   },
+   "1|2": {
+    "ckpt_sha256": "27d5a48c7db5cd1860d81aa32fc93a24dcb2e2fb0033d166e75d4b07900da9cb",
+    "frac_pos": 0.317578125,
+    "z_norm": 7.071068286895752
+   },
+   "1|3": {
+    "ckpt_sha256": "823418694188c2bd57f3d3559262593876fde529f112219e425a222a8255e3c5",
+    "frac_pos": 0.3251953125,
+    "z_norm": 7.071068286895752
+   },
+   "1|4": {
+    "ckpt_sha256": "83df501d53752725908a863c0509de8e740783bd37d3d308261fa0190dc47df7",
+    "frac_pos": 0.3189453125,
+    "z_norm": 7.0710673332214355
+   },
+   "1|5": {
+    "ckpt_sha256": "a550c4f1e781eba1194958b29924a53aebb56b6fbc14f3111c0a750b835990d2",
+    "frac_pos": 0.3302734375,
+    "z_norm": 7.071067810058594
+   },
+   "1|6": {
+    "ckpt_sha256": "09896e0b3eaedcbdbc18fac3ac614a7a400c60324a1929bc880773595c365522",
+    "frac_pos": 0.3216796875,
+    "z_norm": 7.071067810058594
+   },
+   "1|7": {
+    "ckpt_sha256": "aa27c14c2b4f69254f7d9d2f58be02114e44bedc320aa86495d3a8c2b4a56268",
+    "frac_pos": 0.31875,
+    "z_norm": 7.0710673332214355
+   },
+   "1|8": {
+    "ckpt_sha256": "8a5409df637bd177b86c6addca2681b0a0df57a8ddc0adca369d9e335c179285",
+    "frac_pos": 0.3263671875,
+    "z_norm": 7.071067810058594
+   }
+  },
+  "zeroshot": {
+   "0|1": 98.8,
+   "0|2": 97.8,
+   "0|3": 111.4,
+   "0|4": 200.1,
+   "0|5": 100.1,
+   "0|6": 98.2,
+   "0|7": 97.2,
+   "0|8": 134.8,
+   "1|1": 0.2,
+   "1|2": 197.3,
+   "1|3": 197.0,
+   "1|4": 394.3,
+   "1|5": 295.2,
+   "1|6": 269.9,
+   "1|7": 387.0,
+   "1|8": 197.3
+  }
+ },
+ "prereg": "PREREG_fb_20260817.md",
+ "side_control": {
+  "label": "CONTROL-OK",
+  "note": "labeled non-blocking control; CI-based labels, perm_p reported in stat (review-2 m4)",
+  "stat": {
+   "ci": [
+    26.074484087159085,
+    199.17503443994892
+   ],
+   "diff": 124.97499999999997,
+   "n": [
+    8,
+    8
+   ],
+   "perm_p": 0.023497650234976502
+  }
+ }
+}
