@@ -19,6 +19,13 @@
    "kind": "fb_fit",
    "on_failure": "continue",
    "needs": null
+  },
+  {
+   "name": "zeroshot",
+   "target": "vast",
+   "kind": "fb_zeroshot",
+   "on_failure": "continue",
+   "needs": null
   }
  ],
  "runs": [
@@ -754,6 +761,598 @@
      "file_contains": {
       "file": "FB_FIT_PROGRESS",
       "pattern": "total_updates=500000"
+     }
+    }
+   ]
+  },
+  {
+   "stage": "zeroshot",
+   "kind": "fb_zeroshot",
+   "target": "vast",
+   "run_id": "fbwm_finger_q1s0_seed1",
+   "cmd": "if [ ! -f \"$RUNROOT/fbwm_finger_q1s0_seed1/FB_FIT_DONE\" ]; then echo \"REFUSE fbwm_finger_q1s0_seed1: FB_FIT_DONE absent -- fit did not complete\"; exit 3; fi; MUJOCO_GL=disabled CONTROLLABLE_AGENT_ROOT=/workspace/controllable_agent /workspace/conda_envs/fb/bin/python -m probing.fb_zeroshot eval --ckpt \"$RUNROOT/fbwm_finger_q1s0_seed1/fb_ckpt.pt\" --data \"$RUNROOT/fb_data/finger_q1_side0.npz\" --seed 1 --output \"$RUNROOT/fbwm_finger_q1s0_seed1/zeroshot.json\"",
+   "vars": {
+    "side": 0,
+    "seed": 1,
+    "run_id": "fbwm_finger_q1s0_seed1"
+   },
+   "logdir": "fbwm_finger_q1s0_seed1",
+   "outputs": [
+    "fbwm_finger_q1s0_seed1/zeroshot.json"
+   ],
+   "inputs": [
+    "fbwm_finger_q1s0_seed1/fb_ckpt.pt",
+    "fb_data/finger_q1_side0.npz"
+   ],
+   "done_when": [
+    {
+     "exists": "zeroshot.json"
+    },
+    {
+     "file_contains": {
+      "file": "zeroshot.json",
+      "pattern": "\"tool\": \"fb_zeroshot_v1\""
+     }
+    },
+    {
+     "file_contains": {
+      "file": "zeroshot.json",
+      "pattern": "\"n_episodes\": 10"
+     }
+    }
+   ]
+  },
+  {
+   "stage": "zeroshot",
+   "kind": "fb_zeroshot",
+   "target": "vast",
+   "run_id": "fbwm_finger_q1s0_seed2",
+   "cmd": "if [ ! -f \"$RUNROOT/fbwm_finger_q1s0_seed2/FB_FIT_DONE\" ]; then echo \"REFUSE fbwm_finger_q1s0_seed2: FB_FIT_DONE absent -- fit did not complete\"; exit 3; fi; MUJOCO_GL=disabled CONTROLLABLE_AGENT_ROOT=/workspace/controllable_agent /workspace/conda_envs/fb/bin/python -m probing.fb_zeroshot eval --ckpt \"$RUNROOT/fbwm_finger_q1s0_seed2/fb_ckpt.pt\" --data \"$RUNROOT/fb_data/finger_q1_side0.npz\" --seed 2 --output \"$RUNROOT/fbwm_finger_q1s0_seed2/zeroshot.json\"",
+   "vars": {
+    "side": 0,
+    "seed": 2,
+    "run_id": "fbwm_finger_q1s0_seed2"
+   },
+   "logdir": "fbwm_finger_q1s0_seed2",
+   "outputs": [
+    "fbwm_finger_q1s0_seed2/zeroshot.json"
+   ],
+   "inputs": [
+    "fbwm_finger_q1s0_seed2/fb_ckpt.pt",
+    "fb_data/finger_q1_side0.npz"
+   ],
+   "done_when": [
+    {
+     "exists": "zeroshot.json"
+    },
+    {
+     "file_contains": {
+      "file": "zeroshot.json",
+      "pattern": "\"tool\": \"fb_zeroshot_v1\""
+     }
+    },
+    {
+     "file_contains": {
+      "file": "zeroshot.json",
+      "pattern": "\"n_episodes\": 10"
+     }
+    }
+   ]
+  },
+  {
+   "stage": "zeroshot",
+   "kind": "fb_zeroshot",
+   "target": "vast",
+   "run_id": "fbwm_finger_q1s0_seed3",
+   "cmd": "if [ ! -f \"$RUNROOT/fbwm_finger_q1s0_seed3/FB_FIT_DONE\" ]; then echo \"REFUSE fbwm_finger_q1s0_seed3: FB_FIT_DONE absent -- fit did not complete\"; exit 3; fi; MUJOCO_GL=disabled CONTROLLABLE_AGENT_ROOT=/workspace/controllable_agent /workspace/conda_envs/fb/bin/python -m probing.fb_zeroshot eval --ckpt \"$RUNROOT/fbwm_finger_q1s0_seed3/fb_ckpt.pt\" --data \"$RUNROOT/fb_data/finger_q1_side0.npz\" --seed 3 --output \"$RUNROOT/fbwm_finger_q1s0_seed3/zeroshot.json\"",
+   "vars": {
+    "side": 0,
+    "seed": 3,
+    "run_id": "fbwm_finger_q1s0_seed3"
+   },
+   "logdir": "fbwm_finger_q1s0_seed3",
+   "outputs": [
+    "fbwm_finger_q1s0_seed3/zeroshot.json"
+   ],
+   "inputs": [
+    "fbwm_finger_q1s0_seed3/fb_ckpt.pt",
+    "fb_data/finger_q1_side0.npz"
+   ],
+   "done_when": [
+    {
+     "exists": "zeroshot.json"
+    },
+    {
+     "file_contains": {
+      "file": "zeroshot.json",
+      "pattern": "\"tool\": \"fb_zeroshot_v1\""
+     }
+    },
+    {
+     "file_contains": {
+      "file": "zeroshot.json",
+      "pattern": "\"n_episodes\": 10"
+     }
+    }
+   ]
+  },
+  {
+   "stage": "zeroshot",
+   "kind": "fb_zeroshot",
+   "target": "vast",
+   "run_id": "fbwm_finger_q1s0_seed4",
+   "cmd": "if [ ! -f \"$RUNROOT/fbwm_finger_q1s0_seed4/FB_FIT_DONE\" ]; then echo \"REFUSE fbwm_finger_q1s0_seed4: FB_FIT_DONE absent -- fit did not complete\"; exit 3; fi; MUJOCO_GL=disabled CONTROLLABLE_AGENT_ROOT=/workspace/controllable_agent /workspace/conda_envs/fb/bin/python -m probing.fb_zeroshot eval --ckpt \"$RUNROOT/fbwm_finger_q1s0_seed4/fb_ckpt.pt\" --data \"$RUNROOT/fb_data/finger_q1_side0.npz\" --seed 4 --output \"$RUNROOT/fbwm_finger_q1s0_seed4/zeroshot.json\"",
+   "vars": {
+    "side": 0,
+    "seed": 4,
+    "run_id": "fbwm_finger_q1s0_seed4"
+   },
+   "logdir": "fbwm_finger_q1s0_seed4",
+   "outputs": [
+    "fbwm_finger_q1s0_seed4/zeroshot.json"
+   ],
+   "inputs": [
+    "fbwm_finger_q1s0_seed4/fb_ckpt.pt",
+    "fb_data/finger_q1_side0.npz"
+   ],
+   "done_when": [
+    {
+     "exists": "zeroshot.json"
+    },
+    {
+     "file_contains": {
+      "file": "zeroshot.json",
+      "pattern": "\"tool\": \"fb_zeroshot_v1\""
+     }
+    },
+    {
+     "file_contains": {
+      "file": "zeroshot.json",
+      "pattern": "\"n_episodes\": 10"
+     }
+    }
+   ]
+  },
+  {
+   "stage": "zeroshot",
+   "kind": "fb_zeroshot",
+   "target": "vast",
+   "run_id": "fbwm_finger_q1s0_seed5",
+   "cmd": "if [ ! -f \"$RUNROOT/fbwm_finger_q1s0_seed5/FB_FIT_DONE\" ]; then echo \"REFUSE fbwm_finger_q1s0_seed5: FB_FIT_DONE absent -- fit did not complete\"; exit 3; fi; MUJOCO_GL=disabled CONTROLLABLE_AGENT_ROOT=/workspace/controllable_agent /workspace/conda_envs/fb/bin/python -m probing.fb_zeroshot eval --ckpt \"$RUNROOT/fbwm_finger_q1s0_seed5/fb_ckpt.pt\" --data \"$RUNROOT/fb_data/finger_q1_side0.npz\" --seed 5 --output \"$RUNROOT/fbwm_finger_q1s0_seed5/zeroshot.json\"",
+   "vars": {
+    "side": 0,
+    "seed": 5,
+    "run_id": "fbwm_finger_q1s0_seed5"
+   },
+   "logdir": "fbwm_finger_q1s0_seed5",
+   "outputs": [
+    "fbwm_finger_q1s0_seed5/zeroshot.json"
+   ],
+   "inputs": [
+    "fbwm_finger_q1s0_seed5/fb_ckpt.pt",
+    "fb_data/finger_q1_side0.npz"
+   ],
+   "done_when": [
+    {
+     "exists": "zeroshot.json"
+    },
+    {
+     "file_contains": {
+      "file": "zeroshot.json",
+      "pattern": "\"tool\": \"fb_zeroshot_v1\""
+     }
+    },
+    {
+     "file_contains": {
+      "file": "zeroshot.json",
+      "pattern": "\"n_episodes\": 10"
+     }
+    }
+   ]
+  },
+  {
+   "stage": "zeroshot",
+   "kind": "fb_zeroshot",
+   "target": "vast",
+   "run_id": "fbwm_finger_q1s0_seed6",
+   "cmd": "if [ ! -f \"$RUNROOT/fbwm_finger_q1s0_seed6/FB_FIT_DONE\" ]; then echo \"REFUSE fbwm_finger_q1s0_seed6: FB_FIT_DONE absent -- fit did not complete\"; exit 3; fi; MUJOCO_GL=disabled CONTROLLABLE_AGENT_ROOT=/workspace/controllable_agent /workspace/conda_envs/fb/bin/python -m probing.fb_zeroshot eval --ckpt \"$RUNROOT/fbwm_finger_q1s0_seed6/fb_ckpt.pt\" --data \"$RUNROOT/fb_data/finger_q1_side0.npz\" --seed 6 --output \"$RUNROOT/fbwm_finger_q1s0_seed6/zeroshot.json\"",
+   "vars": {
+    "side": 0,
+    "seed": 6,
+    "run_id": "fbwm_finger_q1s0_seed6"
+   },
+   "logdir": "fbwm_finger_q1s0_seed6",
+   "outputs": [
+    "fbwm_finger_q1s0_seed6/zeroshot.json"
+   ],
+   "inputs": [
+    "fbwm_finger_q1s0_seed6/fb_ckpt.pt",
+    "fb_data/finger_q1_side0.npz"
+   ],
+   "done_when": [
+    {
+     "exists": "zeroshot.json"
+    },
+    {
+     "file_contains": {
+      "file": "zeroshot.json",
+      "pattern": "\"tool\": \"fb_zeroshot_v1\""
+     }
+    },
+    {
+     "file_contains": {
+      "file": "zeroshot.json",
+      "pattern": "\"n_episodes\": 10"
+     }
+    }
+   ]
+  },
+  {
+   "stage": "zeroshot",
+   "kind": "fb_zeroshot",
+   "target": "vast",
+   "run_id": "fbwm_finger_q1s0_seed7",
+   "cmd": "if [ ! -f \"$RUNROOT/fbwm_finger_q1s0_seed7/FB_FIT_DONE\" ]; then echo \"REFUSE fbwm_finger_q1s0_seed7: FB_FIT_DONE absent -- fit did not complete\"; exit 3; fi; MUJOCO_GL=disabled CONTROLLABLE_AGENT_ROOT=/workspace/controllable_agent /workspace/conda_envs/fb/bin/python -m probing.fb_zeroshot eval --ckpt \"$RUNROOT/fbwm_finger_q1s0_seed7/fb_ckpt.pt\" --data \"$RUNROOT/fb_data/finger_q1_side0.npz\" --seed 7 --output \"$RUNROOT/fbwm_finger_q1s0_seed7/zeroshot.json\"",
+   "vars": {
+    "side": 0,
+    "seed": 7,
+    "run_id": "fbwm_finger_q1s0_seed7"
+   },
+   "logdir": "fbwm_finger_q1s0_seed7",
+   "outputs": [
+    "fbwm_finger_q1s0_seed7/zeroshot.json"
+   ],
+   "inputs": [
+    "fbwm_finger_q1s0_seed7/fb_ckpt.pt",
+    "fb_data/finger_q1_side0.npz"
+   ],
+   "done_when": [
+    {
+     "exists": "zeroshot.json"
+    },
+    {
+     "file_contains": {
+      "file": "zeroshot.json",
+      "pattern": "\"tool\": \"fb_zeroshot_v1\""
+     }
+    },
+    {
+     "file_contains": {
+      "file": "zeroshot.json",
+      "pattern": "\"n_episodes\": 10"
+     }
+    }
+   ]
+  },
+  {
+   "stage": "zeroshot",
+   "kind": "fb_zeroshot",
+   "target": "vast",
+   "run_id": "fbwm_finger_q1s0_seed8",
+   "cmd": "if [ ! -f \"$RUNROOT/fbwm_finger_q1s0_seed8/FB_FIT_DONE\" ]; then echo \"REFUSE fbwm_finger_q1s0_seed8: FB_FIT_DONE absent -- fit did not complete\"; exit 3; fi; MUJOCO_GL=disabled CONTROLLABLE_AGENT_ROOT=/workspace/controllable_agent /workspace/conda_envs/fb/bin/python -m probing.fb_zeroshot eval --ckpt \"$RUNROOT/fbwm_finger_q1s0_seed8/fb_ckpt.pt\" --data \"$RUNROOT/fb_data/finger_q1_side0.npz\" --seed 8 --output \"$RUNROOT/fbwm_finger_q1s0_seed8/zeroshot.json\"",
+   "vars": {
+    "side": 0,
+    "seed": 8,
+    "run_id": "fbwm_finger_q1s0_seed8"
+   },
+   "logdir": "fbwm_finger_q1s0_seed8",
+   "outputs": [
+    "fbwm_finger_q1s0_seed8/zeroshot.json"
+   ],
+   "inputs": [
+    "fbwm_finger_q1s0_seed8/fb_ckpt.pt",
+    "fb_data/finger_q1_side0.npz"
+   ],
+   "done_when": [
+    {
+     "exists": "zeroshot.json"
+    },
+    {
+     "file_contains": {
+      "file": "zeroshot.json",
+      "pattern": "\"tool\": \"fb_zeroshot_v1\""
+     }
+    },
+    {
+     "file_contains": {
+      "file": "zeroshot.json",
+      "pattern": "\"n_episodes\": 10"
+     }
+    }
+   ]
+  },
+  {
+   "stage": "zeroshot",
+   "kind": "fb_zeroshot",
+   "target": "vast",
+   "run_id": "fbwm_finger_q1s1_seed1",
+   "cmd": "if [ ! -f \"$RUNROOT/fbwm_finger_q1s1_seed1/FB_FIT_DONE\" ]; then echo \"REFUSE fbwm_finger_q1s1_seed1: FB_FIT_DONE absent -- fit did not complete\"; exit 3; fi; MUJOCO_GL=disabled CONTROLLABLE_AGENT_ROOT=/workspace/controllable_agent /workspace/conda_envs/fb/bin/python -m probing.fb_zeroshot eval --ckpt \"$RUNROOT/fbwm_finger_q1s1_seed1/fb_ckpt.pt\" --data \"$RUNROOT/fb_data/finger_q1_side1.npz\" --seed 1 --output \"$RUNROOT/fbwm_finger_q1s1_seed1/zeroshot.json\"",
+   "vars": {
+    "side": 1,
+    "seed": 1,
+    "run_id": "fbwm_finger_q1s1_seed1"
+   },
+   "logdir": "fbwm_finger_q1s1_seed1",
+   "outputs": [
+    "fbwm_finger_q1s1_seed1/zeroshot.json"
+   ],
+   "inputs": [
+    "fbwm_finger_q1s1_seed1/fb_ckpt.pt",
+    "fb_data/finger_q1_side1.npz"
+   ],
+   "done_when": [
+    {
+     "exists": "zeroshot.json"
+    },
+    {
+     "file_contains": {
+      "file": "zeroshot.json",
+      "pattern": "\"tool\": \"fb_zeroshot_v1\""
+     }
+    },
+    {
+     "file_contains": {
+      "file": "zeroshot.json",
+      "pattern": "\"n_episodes\": 10"
+     }
+    }
+   ]
+  },
+  {
+   "stage": "zeroshot",
+   "kind": "fb_zeroshot",
+   "target": "vast",
+   "run_id": "fbwm_finger_q1s1_seed2",
+   "cmd": "if [ ! -f \"$RUNROOT/fbwm_finger_q1s1_seed2/FB_FIT_DONE\" ]; then echo \"REFUSE fbwm_finger_q1s1_seed2: FB_FIT_DONE absent -- fit did not complete\"; exit 3; fi; MUJOCO_GL=disabled CONTROLLABLE_AGENT_ROOT=/workspace/controllable_agent /workspace/conda_envs/fb/bin/python -m probing.fb_zeroshot eval --ckpt \"$RUNROOT/fbwm_finger_q1s1_seed2/fb_ckpt.pt\" --data \"$RUNROOT/fb_data/finger_q1_side1.npz\" --seed 2 --output \"$RUNROOT/fbwm_finger_q1s1_seed2/zeroshot.json\"",
+   "vars": {
+    "side": 1,
+    "seed": 2,
+    "run_id": "fbwm_finger_q1s1_seed2"
+   },
+   "logdir": "fbwm_finger_q1s1_seed2",
+   "outputs": [
+    "fbwm_finger_q1s1_seed2/zeroshot.json"
+   ],
+   "inputs": [
+    "fbwm_finger_q1s1_seed2/fb_ckpt.pt",
+    "fb_data/finger_q1_side1.npz"
+   ],
+   "done_when": [
+    {
+     "exists": "zeroshot.json"
+    },
+    {
+     "file_contains": {
+      "file": "zeroshot.json",
+      "pattern": "\"tool\": \"fb_zeroshot_v1\""
+     }
+    },
+    {
+     "file_contains": {
+      "file": "zeroshot.json",
+      "pattern": "\"n_episodes\": 10"
+     }
+    }
+   ]
+  },
+  {
+   "stage": "zeroshot",
+   "kind": "fb_zeroshot",
+   "target": "vast",
+   "run_id": "fbwm_finger_q1s1_seed3",
+   "cmd": "if [ ! -f \"$RUNROOT/fbwm_finger_q1s1_seed3/FB_FIT_DONE\" ]; then echo \"REFUSE fbwm_finger_q1s1_seed3: FB_FIT_DONE absent -- fit did not complete\"; exit 3; fi; MUJOCO_GL=disabled CONTROLLABLE_AGENT_ROOT=/workspace/controllable_agent /workspace/conda_envs/fb/bin/python -m probing.fb_zeroshot eval --ckpt \"$RUNROOT/fbwm_finger_q1s1_seed3/fb_ckpt.pt\" --data \"$RUNROOT/fb_data/finger_q1_side1.npz\" --seed 3 --output \"$RUNROOT/fbwm_finger_q1s1_seed3/zeroshot.json\"",
+   "vars": {
+    "side": 1,
+    "seed": 3,
+    "run_id": "fbwm_finger_q1s1_seed3"
+   },
+   "logdir": "fbwm_finger_q1s1_seed3",
+   "outputs": [
+    "fbwm_finger_q1s1_seed3/zeroshot.json"
+   ],
+   "inputs": [
+    "fbwm_finger_q1s1_seed3/fb_ckpt.pt",
+    "fb_data/finger_q1_side1.npz"
+   ],
+   "done_when": [
+    {
+     "exists": "zeroshot.json"
+    },
+    {
+     "file_contains": {
+      "file": "zeroshot.json",
+      "pattern": "\"tool\": \"fb_zeroshot_v1\""
+     }
+    },
+    {
+     "file_contains": {
+      "file": "zeroshot.json",
+      "pattern": "\"n_episodes\": 10"
+     }
+    }
+   ]
+  },
+  {
+   "stage": "zeroshot",
+   "kind": "fb_zeroshot",
+   "target": "vast",
+   "run_id": "fbwm_finger_q1s1_seed4",
+   "cmd": "if [ ! -f \"$RUNROOT/fbwm_finger_q1s1_seed4/FB_FIT_DONE\" ]; then echo \"REFUSE fbwm_finger_q1s1_seed4: FB_FIT_DONE absent -- fit did not complete\"; exit 3; fi; MUJOCO_GL=disabled CONTROLLABLE_AGENT_ROOT=/workspace/controllable_agent /workspace/conda_envs/fb/bin/python -m probing.fb_zeroshot eval --ckpt \"$RUNROOT/fbwm_finger_q1s1_seed4/fb_ckpt.pt\" --data \"$RUNROOT/fb_data/finger_q1_side1.npz\" --seed 4 --output \"$RUNROOT/fbwm_finger_q1s1_seed4/zeroshot.json\"",
+   "vars": {
+    "side": 1,
+    "seed": 4,
+    "run_id": "fbwm_finger_q1s1_seed4"
+   },
+   "logdir": "fbwm_finger_q1s1_seed4",
+   "outputs": [
+    "fbwm_finger_q1s1_seed4/zeroshot.json"
+   ],
+   "inputs": [
+    "fbwm_finger_q1s1_seed4/fb_ckpt.pt",
+    "fb_data/finger_q1_side1.npz"
+   ],
+   "done_when": [
+    {
+     "exists": "zeroshot.json"
+    },
+    {
+     "file_contains": {
+      "file": "zeroshot.json",
+      "pattern": "\"tool\": \"fb_zeroshot_v1\""
+     }
+    },
+    {
+     "file_contains": {
+      "file": "zeroshot.json",
+      "pattern": "\"n_episodes\": 10"
+     }
+    }
+   ]
+  },
+  {
+   "stage": "zeroshot",
+   "kind": "fb_zeroshot",
+   "target": "vast",
+   "run_id": "fbwm_finger_q1s1_seed5",
+   "cmd": "if [ ! -f \"$RUNROOT/fbwm_finger_q1s1_seed5/FB_FIT_DONE\" ]; then echo \"REFUSE fbwm_finger_q1s1_seed5: FB_FIT_DONE absent -- fit did not complete\"; exit 3; fi; MUJOCO_GL=disabled CONTROLLABLE_AGENT_ROOT=/workspace/controllable_agent /workspace/conda_envs/fb/bin/python -m probing.fb_zeroshot eval --ckpt \"$RUNROOT/fbwm_finger_q1s1_seed5/fb_ckpt.pt\" --data \"$RUNROOT/fb_data/finger_q1_side1.npz\" --seed 5 --output \"$RUNROOT/fbwm_finger_q1s1_seed5/zeroshot.json\"",
+   "vars": {
+    "side": 1,
+    "seed": 5,
+    "run_id": "fbwm_finger_q1s1_seed5"
+   },
+   "logdir": "fbwm_finger_q1s1_seed5",
+   "outputs": [
+    "fbwm_finger_q1s1_seed5/zeroshot.json"
+   ],
+   "inputs": [
+    "fbwm_finger_q1s1_seed5/fb_ckpt.pt",
+    "fb_data/finger_q1_side1.npz"
+   ],
+   "done_when": [
+    {
+     "exists": "zeroshot.json"
+    },
+    {
+     "file_contains": {
+      "file": "zeroshot.json",
+      "pattern": "\"tool\": \"fb_zeroshot_v1\""
+     }
+    },
+    {
+     "file_contains": {
+      "file": "zeroshot.json",
+      "pattern": "\"n_episodes\": 10"
+     }
+    }
+   ]
+  },
+  {
+   "stage": "zeroshot",
+   "kind": "fb_zeroshot",
+   "target": "vast",
+   "run_id": "fbwm_finger_q1s1_seed6",
+   "cmd": "if [ ! -f \"$RUNROOT/fbwm_finger_q1s1_seed6/FB_FIT_DONE\" ]; then echo \"REFUSE fbwm_finger_q1s1_seed6: FB_FIT_DONE absent -- fit did not complete\"; exit 3; fi; MUJOCO_GL=disabled CONTROLLABLE_AGENT_ROOT=/workspace/controllable_agent /workspace/conda_envs/fb/bin/python -m probing.fb_zeroshot eval --ckpt \"$RUNROOT/fbwm_finger_q1s1_seed6/fb_ckpt.pt\" --data \"$RUNROOT/fb_data/finger_q1_side1.npz\" --seed 6 --output \"$RUNROOT/fbwm_finger_q1s1_seed6/zeroshot.json\"",
+   "vars": {
+    "side": 1,
+    "seed": 6,
+    "run_id": "fbwm_finger_q1s1_seed6"
+   },
+   "logdir": "fbwm_finger_q1s1_seed6",
+   "outputs": [
+    "fbwm_finger_q1s1_seed6/zeroshot.json"
+   ],
+   "inputs": [
+    "fbwm_finger_q1s1_seed6/fb_ckpt.pt",
+    "fb_data/finger_q1_side1.npz"
+   ],
+   "done_when": [
+    {
+     "exists": "zeroshot.json"
+    },
+    {
+     "file_contains": {
+      "file": "zeroshot.json",
+      "pattern": "\"tool\": \"fb_zeroshot_v1\""
+     }
+    },
+    {
+     "file_contains": {
+      "file": "zeroshot.json",
+      "pattern": "\"n_episodes\": 10"
+     }
+    }
+   ]
+  },
+  {
+   "stage": "zeroshot",
+   "kind": "fb_zeroshot",
+   "target": "vast",
+   "run_id": "fbwm_finger_q1s1_seed7",
+   "cmd": "if [ ! -f \"$RUNROOT/fbwm_finger_q1s1_seed7/FB_FIT_DONE\" ]; then echo \"REFUSE fbwm_finger_q1s1_seed7: FB_FIT_DONE absent -- fit did not complete\"; exit 3; fi; MUJOCO_GL=disabled CONTROLLABLE_AGENT_ROOT=/workspace/controllable_agent /workspace/conda_envs/fb/bin/python -m probing.fb_zeroshot eval --ckpt \"$RUNROOT/fbwm_finger_q1s1_seed7/fb_ckpt.pt\" --data \"$RUNROOT/fb_data/finger_q1_side1.npz\" --seed 7 --output \"$RUNROOT/fbwm_finger_q1s1_seed7/zeroshot.json\"",
+   "vars": {
+    "side": 1,
+    "seed": 7,
+    "run_id": "fbwm_finger_q1s1_seed7"
+   },
+   "logdir": "fbwm_finger_q1s1_seed7",
+   "outputs": [
+    "fbwm_finger_q1s1_seed7/zeroshot.json"
+   ],
+   "inputs": [
+    "fbwm_finger_q1s1_seed7/fb_ckpt.pt",
+    "fb_data/finger_q1_side1.npz"
+   ],
+   "done_when": [
+    {
+     "exists": "zeroshot.json"
+    },
+    {
+     "file_contains": {
+      "file": "zeroshot.json",
+      "pattern": "\"tool\": \"fb_zeroshot_v1\""
+     }
+    },
+    {
+     "file_contains": {
+      "file": "zeroshot.json",
+      "pattern": "\"n_episodes\": 10"
+     }
+    }
+   ]
+  },
+  {
+   "stage": "zeroshot",
+   "kind": "fb_zeroshot",
+   "target": "vast",
+   "run_id": "fbwm_finger_q1s1_seed8",
+   "cmd": "if [ ! -f \"$RUNROOT/fbwm_finger_q1s1_seed8/FB_FIT_DONE\" ]; then echo \"REFUSE fbwm_finger_q1s1_seed8: FB_FIT_DONE absent -- fit did not complete\"; exit 3; fi; MUJOCO_GL=disabled CONTROLLABLE_AGENT_ROOT=/workspace/controllable_agent /workspace/conda_envs/fb/bin/python -m probing.fb_zeroshot eval --ckpt \"$RUNROOT/fbwm_finger_q1s1_seed8/fb_ckpt.pt\" --data \"$RUNROOT/fb_data/finger_q1_side1.npz\" --seed 8 --output \"$RUNROOT/fbwm_finger_q1s1_seed8/zeroshot.json\"",
+   "vars": {
+    "side": 1,
+    "seed": 8,
+    "run_id": "fbwm_finger_q1s1_seed8"
+   },
+   "logdir": "fbwm_finger_q1s1_seed8",
+   "outputs": [
+    "fbwm_finger_q1s1_seed8/zeroshot.json"
+   ],
+   "inputs": [
+    "fbwm_finger_q1s1_seed8/fb_ckpt.pt",
+    "fb_data/finger_q1_side1.npz"
+   ],
+   "done_when": [
+    {
+     "exists": "zeroshot.json"
+    },
+    {
+     "file_contains": {
+      "file": "zeroshot.json",
+      "pattern": "\"tool\": \"fb_zeroshot_v1\""
+     }
+    },
+    {
+     "file_contains": {
+      "file": "zeroshot.json",
+      "pattern": "\"n_episodes\": 10"
      }
     }
    ]

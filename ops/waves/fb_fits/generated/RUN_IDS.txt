@@ -20,7 +20,25 @@ prereg:  prereg/PREREG_fb_20260817.md
   fbwm_finger_q1s1_seed7
   fbwm_finger_q1s1_seed8
 
-TOTAL RUNS: 16
+=== stage zeroshot  [vast]  kind=fb_zeroshot  on_failure=continue  n=16 ===
+  fbwm_finger_q1s0_seed1
+  fbwm_finger_q1s0_seed2
+  fbwm_finger_q1s0_seed3
+  fbwm_finger_q1s0_seed4
+  fbwm_finger_q1s0_seed5
+  fbwm_finger_q1s0_seed6
+  fbwm_finger_q1s0_seed7
+  fbwm_finger_q1s0_seed8
+  fbwm_finger_q1s1_seed1
+  fbwm_finger_q1s1_seed2
+  fbwm_finger_q1s1_seed3
+  fbwm_finger_q1s1_seed4
+  fbwm_finger_q1s1_seed5
+  fbwm_finger_q1s1_seed6
+  fbwm_finger_q1s1_seed7
+  fbwm_finger_q1s1_seed8
+
+TOTAL RUNS: 32
 
 Check this list against the prereg before submitting. run_ids are
 consumed by frozen readers and the ledger; a wrong expansion here

@@ -47,6 +47,7 @@ defaults:
 
 kinds:
   fb_fit: {per_gpu: 2}
+  fb_zeroshot: {per_gpu: 2}
 
 stages:
 
@@ -78,6 +79,58 @@ stages:
       - exists: fb_metrics.json
       - file_contains: {file: FB_FIT_PROGRESS, pattern: "update=500000"}
       - file_contains: {file: FB_FIT_PROGRESS, pattern: "total_updates=500000"}
+
+  # Leg 1 (P-FB1, flagship). Appended to the LIVE lanes while the fits run
+  # (dv3_queue_or_add; the supervisor handles late adds -- "QUEUE_RESUME ...
+  # late adds found"). Dependency-safe WITHOUT a barrier because lanes are
+  # sequential and the lane map is per-seed: lane k runs seeds {k+1, k+5} on
+  # both sides for BOTH stages, so a lane's zeroshots sit behind that lane's
+  # own fits. per_gpu 2 is what reproduces that map -- it pairs the two sides
+  # of one seed into a task exactly as the fit stage does. VERIFY the map
+  # after `gen` rather than trusting this comment; a zeroshot that lands on a
+  # lane whose fit is elsewhere would run against a half-written ckpt.
+  #
+  # The guard is the real protection: FB_FIT_DONE is written only on fb_fit's
+  # success path, so a fit that died leaves its zeroshot REFUSING (exit 3)
+  # instead of writing a json the reader would then have to catch.
+  #
+  # run_id intentionally repeats the fit run_id -- wavespec scopes its
+  # duplicate check per stage (wavespec.py:206), so done_when resolves inside
+  # the fit's own run dir and the output lands where fb_zeroshot's own
+  # docstring puts it (<logdir>/zeroshot.json). The reader does NOT key on
+  # this filename: it keys on dirname(d['ckpt']) via RID_RE, and skips
+  # random_floor by tool == 'fb_random_floor_v1'.
+  #
+  # --task/--device left at parser defaults (finger_turn_hard / cuda), which
+  # are the registered values; MUJOCO_GL=disabled is review M18 (a states-only
+  # eval must not name a renderer backend).
+  - name: zeroshot
+    kind: fb_zeroshot
+    on_failure: continue
+    expand:
+      side: [0, 1]
+      seed: [1, 2, 3, 4, 5, 6, 7, 8]
+    run_id: "fbwm_finger_q1s${side}_seed${seed}"
+    logdir: "fbwm_finger_q1s${side}_seed${seed}"
+    cmd: >-
+      if [ ! -f "$RUNROOT/fbwm_finger_q1s${side}_seed${seed}/FB_FIT_DONE" ];
+      then echo "REFUSE fbwm_finger_q1s${side}_seed${seed}: FB_FIT_DONE absent -- fit did not complete"; exit 3; fi;
+      MUJOCO_GL=disabled
+      CONTROLLABLE_AGENT_ROOT=/workspace/controllable_agent
+      /workspace/conda_envs/fb/bin/python -m probing.fb_zeroshot eval
+      --ckpt "$RUNROOT/fbwm_finger_q1s${side}_seed${seed}/fb_ckpt.pt"
+      --data "$RUNROOT/fb_data/finger_q1_side${side}.npz"
+      --seed ${seed}
+      --output "$RUNROOT/fbwm_finger_q1s${side}_seed${seed}/zeroshot.json"
+    inputs:
+      - "fbwm_finger_q1s${side}_seed${seed}/fb_ckpt.pt"
+      - "fb_data/finger_q1_side${side}.npz"
+    outputs:
+      - "fbwm_finger_q1s${side}_seed${seed}/zeroshot.json"
+    done_when:
+      - exists: zeroshot.json
+      - file_contains: {file: zeroshot.json, pattern: '"tool": "fb_zeroshot_v1"'}
+      - file_contains: {file: zeroshot.json, pattern: '"n_episodes": 10'}
 
 bundle:
   prefix: fb_fits

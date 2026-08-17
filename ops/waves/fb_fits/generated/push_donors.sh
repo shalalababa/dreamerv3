@@ -15,7 +15,7 @@ dv3_require_instance "$N"
 # Fail before transferring rather than half way through: a missing donor is a
 # spec error, and discovering it after 40 minutes of rsync is expensive.
 missing=0
-for d in fb_data/finger_q1_side0.npz fb_data/finger_q1_side0.npz.manifest.json fb_data/finger_q1_side1.npz fb_data/finger_q1_side1.npz.manifest.json; do
+for d in fb_data/finger_q1_side0.npz fb_data/finger_q1_side0.npz.manifest.json fb_data/finger_q1_side1.npz fb_data/finger_q1_side1.npz.manifest.json fbwm_finger_q1s0_seed1/fb_ckpt.pt fbwm_finger_q1s0_seed2/fb_ckpt.pt fbwm_finger_q1s0_seed3/fb_ckpt.pt fbwm_finger_q1s0_seed4/fb_ckpt.pt fbwm_finger_q1s0_seed5/fb_ckpt.pt fbwm_finger_q1s0_seed6/fb_ckpt.pt fbwm_finger_q1s0_seed7/fb_ckpt.pt fbwm_finger_q1s0_seed8/fb_ckpt.pt fbwm_finger_q1s1_seed1/fb_ckpt.pt fbwm_finger_q1s1_seed2/fb_ckpt.pt fbwm_finger_q1s1_seed3/fb_ckpt.pt fbwm_finger_q1s1_seed4/fb_ckpt.pt fbwm_finger_q1s1_seed5/fb_ckpt.pt fbwm_finger_q1s1_seed6/fb_ckpt.pt fbwm_finger_q1s1_seed7/fb_ckpt.pt fbwm_finger_q1s1_seed8/fb_ckpt.pt; do
   [ -e "$RUNROOT/$d" ] || { echo "MISSING donor: $RUNROOT/$d" >&2; missing=1; }
 done
 [ "$missing" -eq 0 ] || { echo "ERROR: donors missing on RCC; nothing pushed" >&2; exit 1; }
@@ -32,5 +32,53 @@ rsync "${DV3_RSYNC_OPTS[@]}" \
   --include='/fb_data/finger_q1_side1.npz/***' \
   --include=/fb_data/finger_q1_side1.npz.manifest.json \
   --include='/fb_data/finger_q1_side1.npz.manifest.json/***' \
+  --include=/fbwm_finger_q1s0_seed1/ \
+  --include=/fbwm_finger_q1s0_seed1/fb_ckpt.pt \
+  --include='/fbwm_finger_q1s0_seed1/fb_ckpt.pt/***' \
+  --include=/fbwm_finger_q1s0_seed2/ \
+  --include=/fbwm_finger_q1s0_seed2/fb_ckpt.pt \
+  --include='/fbwm_finger_q1s0_seed2/fb_ckpt.pt/***' \
+  --include=/fbwm_finger_q1s0_seed3/ \
+  --include=/fbwm_finger_q1s0_seed3/fb_ckpt.pt \
+  --include='/fbwm_finger_q1s0_seed3/fb_ckpt.pt/***' \
+  --include=/fbwm_finger_q1s0_seed4/ \
+  --include=/fbwm_finger_q1s0_seed4/fb_ckpt.pt \
+  --include='/fbwm_finger_q1s0_seed4/fb_ckpt.pt/***' \
+  --include=/fbwm_finger_q1s0_seed5/ \
+  --include=/fbwm_finger_q1s0_seed5/fb_ckpt.pt \
+  --include='/fbwm_finger_q1s0_seed5/fb_ckpt.pt/***' \
+  --include=/fbwm_finger_q1s0_seed6/ \
+  --include=/fbwm_finger_q1s0_seed6/fb_ckpt.pt \
+  --include='/fbwm_finger_q1s0_seed6/fb_ckpt.pt/***' \
+  --include=/fbwm_finger_q1s0_seed7/ \
+  --include=/fbwm_finger_q1s0_seed7/fb_ckpt.pt \
+  --include='/fbwm_finger_q1s0_seed7/fb_ckpt.pt/***' \
+  --include=/fbwm_finger_q1s0_seed8/ \
+  --include=/fbwm_finger_q1s0_seed8/fb_ckpt.pt \
+  --include='/fbwm_finger_q1s0_seed8/fb_ckpt.pt/***' \
+  --include=/fbwm_finger_q1s1_seed1/ \
+  --include=/fbwm_finger_q1s1_seed1/fb_ckpt.pt \
+  --include='/fbwm_finger_q1s1_seed1/fb_ckpt.pt/***' \
+  --include=/fbwm_finger_q1s1_seed2/ \
+  --include=/fbwm_finger_q1s1_seed2/fb_ckpt.pt \
+  --include='/fbwm_finger_q1s1_seed2/fb_ckpt.pt/***' \
+  --include=/fbwm_finger_q1s1_seed3/ \
+  --include=/fbwm_finger_q1s1_seed3/fb_ckpt.pt \
+  --include='/fbwm_finger_q1s1_seed3/fb_ckpt.pt/***' \
+  --include=/fbwm_finger_q1s1_seed4/ \
+  --include=/fbwm_finger_q1s1_seed4/fb_ckpt.pt \
+  --include='/fbwm_finger_q1s1_seed4/fb_ckpt.pt/***' \
+  --include=/fbwm_finger_q1s1_seed5/ \
+  --include=/fbwm_finger_q1s1_seed5/fb_ckpt.pt \
+  --include='/fbwm_finger_q1s1_seed5/fb_ckpt.pt/***' \
+  --include=/fbwm_finger_q1s1_seed6/ \
+  --include=/fbwm_finger_q1s1_seed6/fb_ckpt.pt \
+  --include='/fbwm_finger_q1s1_seed6/fb_ckpt.pt/***' \
+  --include=/fbwm_finger_q1s1_seed7/ \
+  --include=/fbwm_finger_q1s1_seed7/fb_ckpt.pt \
+  --include='/fbwm_finger_q1s1_seed7/fb_ckpt.pt/***' \
+  --include=/fbwm_finger_q1s1_seed8/ \
+  --include=/fbwm_finger_q1s1_seed8/fb_ckpt.pt \
+  --include='/fbwm_finger_q1s1_seed8/fb_ckpt.pt/***' \
   --exclude='*' \
   "$RUNROOT/" "root@$(dv3_ip "$N"):/workspace/dreamerv3_runs/"
