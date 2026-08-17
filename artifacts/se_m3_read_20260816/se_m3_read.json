@@ -1,0 +1,170 @@
+{
+ "n_gated": 4,
+ "n_ungated": 4,
+ "invalid_runs": [],
+ "instrument_flag": "CLEAN",
+ "primary": {
+  "statement": "diversion toward the gate region: occupancy(gated) > occupancy(ungated), one-sided exact permutation",
+  "delta": -0.07908626451344769,
+  "p": 1.0,
+  "n_assignments": 70,
+  "fires": false,
+  "min_attainable_p": 0.014285714285714285
+ },
+ "occupancy_gated": {
+  "mean": 0.48097703305911665,
+  "bca": [
+   0.47035848055776014,
+   0.49016418608574397
+  ]
+ },
+ "occupancy_ungated": {
+  "mean": 0.5600632975725643,
+  "bca": [
+   0.5238854711907195,
+   0.6110559970502335
+  ]
+ },
+ "secondary_score": {
+  "delta": -4.322960243307463,
+  "p": 0.37142857142857144,
+  "note": "reporting only, two-sided"
+ },
+ "gate": {
+  "key": "position",
+  "index": 0,
+  "threshold": -0.13009691
+ },
+ "fit_counters": {
+  "/home/rickybao/projects/dreamerv3/local_results/uncfield_se_arms_20260816_224710/runroot/se_gate_s20": {
+   "expected": 500000.0,
+   "last_step": 499440,
+   "ratio": 0.99888,
+   "flag": "OK",
+   "config_steps": 500000.0
+  },
+  "/home/rickybao/projects/dreamerv3/local_results/uncfield_se_arms_20260816_224710/runroot/se_gate_s21": {
+   "expected": 500000.0,
+   "last_step": 499072,
+   "ratio": 0.998144,
+   "flag": "OK",
+   "config_steps": 500000.0
+  },
+  "/home/rickybao/projects/dreamerv3/local_results/uncfield_se_arms_20260816_224710/runroot/se_gate_s22": {
+   "expected": 500000.0,
+   "last_step": 498416,
+   "ratio": 0.996832,
+   "flag": "OK",
+   "config_steps": 500000.0
+  },
+  "/home/rickybao/projects/dreamerv3/local_results/uncfield_se_arms_20260816_224710/runroot/se_gate_s23": {
+   "expected": 500000.0,
+   "last_step": 498704,
+   "ratio": 0.997408,
+   "flag": "OK",
+   "config_steps": 500000.0
+  },
+  "/home/rickybao/projects/dreamerv3/local_results/uncfield_se_arms_20260816_224710/runroot/se_ungate_s24": {
+   "expected": 500000.0,
+   "last_step": 498304,
+   "ratio": 0.996608,
+   "flag": "OK",
+   "config_steps": 500000.0
+  },
+  "/home/rickybao/projects/dreamerv3/local_results/uncfield_se_arms_20260816_224710/runroot/se_ungate_s25": {
+   "expected": 500000.0,
+   "last_step": 498944,
+   "ratio": 0.997888,
+   "flag": "OK",
+   "config_steps": 500000.0
+  },
+  "/home/rickybao/projects/dreamerv3/local_results/uncfield_se_arms_20260816_224710/runroot/se_ungate_s26": {
+   "expected": 500000.0,
+   "last_step": 498272,
+   "ratio": 0.996544,
+   "flag": "OK",
+   "config_steps": 500000.0
+  },
+  "/home/rickybao/projects/dreamerv3/local_results/uncfield_se_arms_20260816_224710/runroot/se_ungate_s27": {
+   "expected": 500000.0,
+   "last_step": 498352,
+   "ratio": 0.996704,
+   "flag": "OK",
+   "config_steps": 500000.0
+  }
+ },
+ "per_run": [
+  {
+   "run_dir": "/home/rickybao/projects/dreamerv3/local_results/uncfield_se_arms_20260816_224710/runroot/se_gate_s20",
+   "train_seed": 20,
+   "gated": true,
+   "occupancy": 0.4813734002186636,
+   "n_steps": 497568,
+   "valid": true,
+   "score": 37.421990781958755
+  },
+  {
+   "run_dir": "/home/rickybao/projects/dreamerv3/local_results/uncfield_se_arms_20260816_224710/runroot/se_gate_s21",
+   "train_seed": 21,
+   "gated": true,
+   "occupancy": 0.4666868406707923,
+   "n_steps": 498992,
+   "valid": true,
+   "score": 42.16586943795059
+  },
+  {
+   "run_dir": "/home/rickybao/projects/dreamerv3/local_results/uncfield_se_arms_20260816_224710/runroot/se_gate_s22",
+   "train_seed": 22,
+   "gated": true,
+   "occupancy": 0.48275344330557335,
+   "n_steps": 499520,
+   "valid": true,
+   "score": 26.87265340101648
+  },
+  {
+   "run_dir": "/home/rickybao/projects/dreamerv3/local_results/uncfield_se_arms_20260816_224710/runroot/se_gate_s23",
+   "train_seed": 23,
+   "gated": true,
+   "occupancy": 0.49309444804143737,
+   "n_steps": 494240,
+   "valid": true,
+   "score": 33.920916839543395
+  },
+  {
+   "run_dir": "/home/rickybao/projects/dreamerv3/local_results/uncfield_se_arms_20260816_224710/runroot/se_ungate_s24",
+   "train_seed": 24,
+   "gated": false,
+   "occupancy": 0.5213694262400411,
+   "n_steps": 498048,
+   "valid": true,
+   "score": 36.586358142178234
+  },
+  {
+   "run_dir": "/home/rickybao/projects/dreamerv3/local_results/uncfield_se_arms_20260816_224710/runroot/se_ungate_s25",
+   "train_seed": 25,
+   "gated": false,
+   "occupancy": 0.6250321884958316,
+   "n_steps": 497072,
+   "valid": true,
+   "score": 36.149178117745585
+  },
+  {
+   "run_dir": "/home/rickybao/projects/dreamerv3/local_results/uncfield_se_arms_20260816_224710/runroot/se_ungate_s26",
+   "train_seed": 26,
+   "gated": false,
+   "occupancy": 0.5691274227134391,
+   "n_steps": 499440,
+   "valid": true,
+   "score": 37.90301117985041
+  },
+  {
+   "run_dir": "/home/rickybao/projects/dreamerv3/local_results/uncfield_se_arms_20260816_224710/runroot/se_ungate_s27",
+   "train_seed": 27,
+   "gated": false,
+   "occupancy": 0.5247241528409455,
+   "n_steps": 499552,
+   "valid": true,
+   "score": 47.03472399392487
+  }
+ ]
+}

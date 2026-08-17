@@ -1,0 +1,173 @@
+{
+ "n_registered": 4,
+ "n_loaded": 4,
+ "invalid_runs": [],
+ "seed_check": "OK",
+ "ckpt_flag": "UNVERIFIED (ckpt dir unreachable on some runs)",
+ "instrument_flag": "CLEAN",
+ "channels": {
+  "planted_dup0": {
+   "successes": 0,
+   "binom_p": 1.0,
+   "theta1_values": [
+    0.9986796311420376,
+    1.0004922008902772,
+    1.000393608859961,
+    1.000692578021637
+   ],
+   "theta1_mean": 1.0000645047284782,
+   "theta1_bca": [
+    0.9991081255715184,
+    1.000592389455957
+   ],
+   "theta1_minmax": [
+    0.9986796311420376,
+    1.000692578021637
+   ]
+  },
+  "planted_dup1": {
+   "successes": 0,
+   "binom_p": 1.0,
+   "theta1_values": [
+    0.9981492162098502,
+    0.9993240985404844,
+    0.9983291262381467,
+    0.9995109091425985
+   ],
+   "theta1_mean": 0.9988283375327699,
+   "theta1_bca": [
+    0.9982391712239984,
+    0.9994175038415415
+   ],
+   "theta1_minmax": [
+    0.9981492162098502,
+    0.9995109091425985
+   ]
+  },
+  "planted_dup2": {
+   "successes": 0,
+   "binom_p": 1.0,
+   "theta1_values": [
+    0.9808206407245078,
+    0.9835310981736666,
+    0.9821331083872217,
+    0.9815940884846605
+   ],
+   "theta1_mean": 0.9820197339425141,
+   "theta1_bca": [
+    0.9812073646045841,
+    0.9831816007270554
+   ],
+   "theta1_minmax": [
+    0.9808206407245078,
+    0.9835310981736666
+   ]
+  }
+ },
+ "verdict": "NO-INTERFERENCE",
+ "power_note": "n=4 robustness check; 4/4 exact binomial p=.0625 \u2014 not a confirmatory test",
+ "fit_counters": {
+  "/home/rickybao/projects/dreamerv3/local_results/uncfield_se_arms_20260816_224710/runroot/se_donly_s10": {
+   "expected": 500000.0,
+   "last_step": 497744,
+   "ratio": 0.995488,
+   "flag": "OK",
+   "config_steps": 500000.0
+  },
+  "/home/rickybao/projects/dreamerv3/local_results/uncfield_se_arms_20260816_224710/runroot/se_donly_s11": {
+   "expected": 500000.0,
+   "last_step": 498720,
+   "ratio": 0.99744,
+   "flag": "OK",
+   "config_steps": 500000.0
+  },
+  "/home/rickybao/projects/dreamerv3/local_results/uncfield_se_arms_20260816_224710/runroot/se_donly_s12": {
+   "expected": 500000.0,
+   "last_step": 499136,
+   "ratio": 0.998272,
+   "flag": "OK",
+   "config_steps": 500000.0
+  },
+  "/home/rickybao/projects/dreamerv3/local_results/uncfield_se_arms_20260816_224710/runroot/se_donly_s13": {
+   "expected": 500000.0,
+   "last_step": 499872,
+   "ratio": 0.999744,
+   "flag": "OK",
+   "config_steps": 500000.0
+  }
+ },
+ "per_run": [
+  {
+   "run_dir": "/home/rickybao/projects/dreamerv3/local_results/uncfield_se_arms_20260816_224710/runroot/se_donly_s10",
+   "train_seed": 10,
+   "n_eval": 512,
+   "valid": true,
+   "cal_real_max": 0.033657271414995193,
+   "ckpt_final_ok": null,
+   "indicators": {
+    "planted_dup0": false,
+    "planted_dup1": false,
+    "planted_dup2": false
+   },
+   "theta1": {
+    "planted_dup0": 0.9986796311420376,
+    "planted_dup1": 0.9981492162098502,
+    "planted_dup2": 0.9808206407245078
+   }
+  },
+  {
+   "run_dir": "/home/rickybao/projects/dreamerv3/local_results/uncfield_se_arms_20260816_224710/runroot/se_donly_s11",
+   "train_seed": 11,
+   "n_eval": 512,
+   "valid": true,
+   "cal_real_max": 0.03604511916637421,
+   "ckpt_final_ok": null,
+   "indicators": {
+    "planted_dup0": false,
+    "planted_dup1": false,
+    "planted_dup2": false
+   },
+   "theta1": {
+    "planted_dup0": 1.0004922008902772,
+    "planted_dup1": 0.9993240985404844,
+    "planted_dup2": 0.9835310981736666
+   }
+  },
+  {
+   "run_dir": "/home/rickybao/projects/dreamerv3/local_results/uncfield_se_arms_20260816_224710/runroot/se_donly_s12",
+   "train_seed": 12,
+   "n_eval": 512,
+   "valid": true,
+   "cal_real_max": 0.03553660959005356,
+   "ckpt_final_ok": null,
+   "indicators": {
+    "planted_dup0": false,
+    "planted_dup1": false,
+    "planted_dup2": false
+   },
+   "theta1": {
+    "planted_dup0": 1.000393608859961,
+    "planted_dup1": 0.9983291262381467,
+    "planted_dup2": 0.9821331083872217
+   }
+  },
+  {
+   "run_dir": "/home/rickybao/projects/dreamerv3/local_results/uncfield_se_arms_20260816_224710/runroot/se_donly_s13",
+   "train_seed": 13,
+   "n_eval": 512,
+   "valid": true,
+   "cal_real_max": 0.03296729549765587,
+   "ckpt_final_ok": null,
+   "indicators": {
+    "planted_dup0": false,
+    "planted_dup1": false,
+    "planted_dup2": false
+   },
+   "theta1": {
+    "planted_dup0": 1.000692578021637,
+    "planted_dup1": 0.9995109091425985,
+    "planted_dup2": 0.9815940884846605
+   }
+  }
+ ]
+}
