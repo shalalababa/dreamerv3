@@ -5,10 +5,12 @@
  "bundle": {
   "prefix": "tm2_bridge",
   "include_stages": [
-   "fit"
+   "fit",
+   "adapt"
   ],
   "cloud_logs": [
    "tm2wm_finger_b*_seed*.out",
+   "adapt_tm2b*_finger_seed*.out",
    "worker_shard*.out"
   ]
  },
@@ -18,6 +20,13 @@
    "target": "vast",
    "kind": "tm2_bridge_fit",
    "on_failure": "abort",
+   "needs": null
+  },
+  {
+   "name": "adapt",
+   "target": "vast",
+   "kind": "tm2_bridge_adapt",
+   "on_failure": "continue",
    "needs": null
   }
  ],
@@ -1794,6 +1803,1638 @@
      "file_contains": {
       "file": "TM2_FIT_PROGRESS",
       "pattern": "update=500000/500000"
+     }
+    }
+   ]
+  },
+  {
+   "stage": "adapt",
+   "kind": "tm2_bridge_adapt",
+   "target": "vast",
+   "run_id": "adapt_tm2bawareq1s0_finger_seed1_ckpt500000",
+   "cmd": "TDMPC2_ROOT=/workspace/tdmpc2/tdmpc2 /workspace/conda_envs/tdmpc2/bin/python -m probing.tdmpc2_adapt --tdmpc2_root /workspace/tdmpc2/tdmpc2 --pretrained \"$RUNROOT/tm2wm_finger_bawareq1s0_seed1\" --logdir \"$RUNROOT/adapt_tm2bawareq1s0_finger_seed1_ckpt500000\" --task dmc_finger_turn_hard --seed 1",
+   "vars": {
+    "arm": "aware",
+    "side": 0,
+    "seed": 1,
+    "run_id": "adapt_tm2bawareq1s0_finger_seed1_ckpt500000"
+   },
+   "logdir": "adapt_tm2bawareq1s0_finger_seed1_ckpt500000",
+   "outputs": [
+    "adapt_tm2bawareq1s0_finger_seed1_ckpt500000"
+   ],
+   "inputs": [
+    "tm2wm_finger_bawareq1s0_seed1/tm2_ckpt.pt"
+   ],
+   "done_when": [
+    {
+     "exists": "ADAPT_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 128
+     }
+    }
+   ]
+  },
+  {
+   "stage": "adapt",
+   "kind": "tm2_bridge_adapt",
+   "target": "vast",
+   "run_id": "adapt_tm2bawareq1s0_finger_seed2_ckpt500000",
+   "cmd": "TDMPC2_ROOT=/workspace/tdmpc2/tdmpc2 /workspace/conda_envs/tdmpc2/bin/python -m probing.tdmpc2_adapt --tdmpc2_root /workspace/tdmpc2/tdmpc2 --pretrained \"$RUNROOT/tm2wm_finger_bawareq1s0_seed2\" --logdir \"$RUNROOT/adapt_tm2bawareq1s0_finger_seed2_ckpt500000\" --task dmc_finger_turn_hard --seed 2",
+   "vars": {
+    "arm": "aware",
+    "side": 0,
+    "seed": 2,
+    "run_id": "adapt_tm2bawareq1s0_finger_seed2_ckpt500000"
+   },
+   "logdir": "adapt_tm2bawareq1s0_finger_seed2_ckpt500000",
+   "outputs": [
+    "adapt_tm2bawareq1s0_finger_seed2_ckpt500000"
+   ],
+   "inputs": [
+    "tm2wm_finger_bawareq1s0_seed2/tm2_ckpt.pt"
+   ],
+   "done_when": [
+    {
+     "exists": "ADAPT_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 128
+     }
+    }
+   ]
+  },
+  {
+   "stage": "adapt",
+   "kind": "tm2_bridge_adapt",
+   "target": "vast",
+   "run_id": "adapt_tm2bawareq1s0_finger_seed3_ckpt500000",
+   "cmd": "TDMPC2_ROOT=/workspace/tdmpc2/tdmpc2 /workspace/conda_envs/tdmpc2/bin/python -m probing.tdmpc2_adapt --tdmpc2_root /workspace/tdmpc2/tdmpc2 --pretrained \"$RUNROOT/tm2wm_finger_bawareq1s0_seed3\" --logdir \"$RUNROOT/adapt_tm2bawareq1s0_finger_seed3_ckpt500000\" --task dmc_finger_turn_hard --seed 3",
+   "vars": {
+    "arm": "aware",
+    "side": 0,
+    "seed": 3,
+    "run_id": "adapt_tm2bawareq1s0_finger_seed3_ckpt500000"
+   },
+   "logdir": "adapt_tm2bawareq1s0_finger_seed3_ckpt500000",
+   "outputs": [
+    "adapt_tm2bawareq1s0_finger_seed3_ckpt500000"
+   ],
+   "inputs": [
+    "tm2wm_finger_bawareq1s0_seed3/tm2_ckpt.pt"
+   ],
+   "done_when": [
+    {
+     "exists": "ADAPT_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 128
+     }
+    }
+   ]
+  },
+  {
+   "stage": "adapt",
+   "kind": "tm2_bridge_adapt",
+   "target": "vast",
+   "run_id": "adapt_tm2bawareq1s0_finger_seed4_ckpt500000",
+   "cmd": "TDMPC2_ROOT=/workspace/tdmpc2/tdmpc2 /workspace/conda_envs/tdmpc2/bin/python -m probing.tdmpc2_adapt --tdmpc2_root /workspace/tdmpc2/tdmpc2 --pretrained \"$RUNROOT/tm2wm_finger_bawareq1s0_seed4\" --logdir \"$RUNROOT/adapt_tm2bawareq1s0_finger_seed4_ckpt500000\" --task dmc_finger_turn_hard --seed 4",
+   "vars": {
+    "arm": "aware",
+    "side": 0,
+    "seed": 4,
+    "run_id": "adapt_tm2bawareq1s0_finger_seed4_ckpt500000"
+   },
+   "logdir": "adapt_tm2bawareq1s0_finger_seed4_ckpt500000",
+   "outputs": [
+    "adapt_tm2bawareq1s0_finger_seed4_ckpt500000"
+   ],
+   "inputs": [
+    "tm2wm_finger_bawareq1s0_seed4/tm2_ckpt.pt"
+   ],
+   "done_when": [
+    {
+     "exists": "ADAPT_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 128
+     }
+    }
+   ]
+  },
+  {
+   "stage": "adapt",
+   "kind": "tm2_bridge_adapt",
+   "target": "vast",
+   "run_id": "adapt_tm2bawareq1s0_finger_seed5_ckpt500000",
+   "cmd": "TDMPC2_ROOT=/workspace/tdmpc2/tdmpc2 /workspace/conda_envs/tdmpc2/bin/python -m probing.tdmpc2_adapt --tdmpc2_root /workspace/tdmpc2/tdmpc2 --pretrained \"$RUNROOT/tm2wm_finger_bawareq1s0_seed5\" --logdir \"$RUNROOT/adapt_tm2bawareq1s0_finger_seed5_ckpt500000\" --task dmc_finger_turn_hard --seed 5",
+   "vars": {
+    "arm": "aware",
+    "side": 0,
+    "seed": 5,
+    "run_id": "adapt_tm2bawareq1s0_finger_seed5_ckpt500000"
+   },
+   "logdir": "adapt_tm2bawareq1s0_finger_seed5_ckpt500000",
+   "outputs": [
+    "adapt_tm2bawareq1s0_finger_seed5_ckpt500000"
+   ],
+   "inputs": [
+    "tm2wm_finger_bawareq1s0_seed5/tm2_ckpt.pt"
+   ],
+   "done_when": [
+    {
+     "exists": "ADAPT_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 128
+     }
+    }
+   ]
+  },
+  {
+   "stage": "adapt",
+   "kind": "tm2_bridge_adapt",
+   "target": "vast",
+   "run_id": "adapt_tm2bawareq1s0_finger_seed6_ckpt500000",
+   "cmd": "TDMPC2_ROOT=/workspace/tdmpc2/tdmpc2 /workspace/conda_envs/tdmpc2/bin/python -m probing.tdmpc2_adapt --tdmpc2_root /workspace/tdmpc2/tdmpc2 --pretrained \"$RUNROOT/tm2wm_finger_bawareq1s0_seed6\" --logdir \"$RUNROOT/adapt_tm2bawareq1s0_finger_seed6_ckpt500000\" --task dmc_finger_turn_hard --seed 6",
+   "vars": {
+    "arm": "aware",
+    "side": 0,
+    "seed": 6,
+    "run_id": "adapt_tm2bawareq1s0_finger_seed6_ckpt500000"
+   },
+   "logdir": "adapt_tm2bawareq1s0_finger_seed6_ckpt500000",
+   "outputs": [
+    "adapt_tm2bawareq1s0_finger_seed6_ckpt500000"
+   ],
+   "inputs": [
+    "tm2wm_finger_bawareq1s0_seed6/tm2_ckpt.pt"
+   ],
+   "done_when": [
+    {
+     "exists": "ADAPT_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 128
+     }
+    }
+   ]
+  },
+  {
+   "stage": "adapt",
+   "kind": "tm2_bridge_adapt",
+   "target": "vast",
+   "run_id": "adapt_tm2bawareq1s0_finger_seed7_ckpt500000",
+   "cmd": "TDMPC2_ROOT=/workspace/tdmpc2/tdmpc2 /workspace/conda_envs/tdmpc2/bin/python -m probing.tdmpc2_adapt --tdmpc2_root /workspace/tdmpc2/tdmpc2 --pretrained \"$RUNROOT/tm2wm_finger_bawareq1s0_seed7\" --logdir \"$RUNROOT/adapt_tm2bawareq1s0_finger_seed7_ckpt500000\" --task dmc_finger_turn_hard --seed 7",
+   "vars": {
+    "arm": "aware",
+    "side": 0,
+    "seed": 7,
+    "run_id": "adapt_tm2bawareq1s0_finger_seed7_ckpt500000"
+   },
+   "logdir": "adapt_tm2bawareq1s0_finger_seed7_ckpt500000",
+   "outputs": [
+    "adapt_tm2bawareq1s0_finger_seed7_ckpt500000"
+   ],
+   "inputs": [
+    "tm2wm_finger_bawareq1s0_seed7/tm2_ckpt.pt"
+   ],
+   "done_when": [
+    {
+     "exists": "ADAPT_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 128
+     }
+    }
+   ]
+  },
+  {
+   "stage": "adapt",
+   "kind": "tm2_bridge_adapt",
+   "target": "vast",
+   "run_id": "adapt_tm2bawareq1s0_finger_seed8_ckpt500000",
+   "cmd": "TDMPC2_ROOT=/workspace/tdmpc2/tdmpc2 /workspace/conda_envs/tdmpc2/bin/python -m probing.tdmpc2_adapt --tdmpc2_root /workspace/tdmpc2/tdmpc2 --pretrained \"$RUNROOT/tm2wm_finger_bawareq1s0_seed8\" --logdir \"$RUNROOT/adapt_tm2bawareq1s0_finger_seed8_ckpt500000\" --task dmc_finger_turn_hard --seed 8",
+   "vars": {
+    "arm": "aware",
+    "side": 0,
+    "seed": 8,
+    "run_id": "adapt_tm2bawareq1s0_finger_seed8_ckpt500000"
+   },
+   "logdir": "adapt_tm2bawareq1s0_finger_seed8_ckpt500000",
+   "outputs": [
+    "adapt_tm2bawareq1s0_finger_seed8_ckpt500000"
+   ],
+   "inputs": [
+    "tm2wm_finger_bawareq1s0_seed8/tm2_ckpt.pt"
+   ],
+   "done_when": [
+    {
+     "exists": "ADAPT_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 128
+     }
+    }
+   ]
+  },
+  {
+   "stage": "adapt",
+   "kind": "tm2_bridge_adapt",
+   "target": "vast",
+   "run_id": "adapt_tm2bawareq1s1_finger_seed1_ckpt500000",
+   "cmd": "TDMPC2_ROOT=/workspace/tdmpc2/tdmpc2 /workspace/conda_envs/tdmpc2/bin/python -m probing.tdmpc2_adapt --tdmpc2_root /workspace/tdmpc2/tdmpc2 --pretrained \"$RUNROOT/tm2wm_finger_bawareq1s1_seed1\" --logdir \"$RUNROOT/adapt_tm2bawareq1s1_finger_seed1_ckpt500000\" --task dmc_finger_turn_hard --seed 1",
+   "vars": {
+    "arm": "aware",
+    "side": 1,
+    "seed": 1,
+    "run_id": "adapt_tm2bawareq1s1_finger_seed1_ckpt500000"
+   },
+   "logdir": "adapt_tm2bawareq1s1_finger_seed1_ckpt500000",
+   "outputs": [
+    "adapt_tm2bawareq1s1_finger_seed1_ckpt500000"
+   ],
+   "inputs": [
+    "tm2wm_finger_bawareq1s1_seed1/tm2_ckpt.pt"
+   ],
+   "done_when": [
+    {
+     "exists": "ADAPT_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 128
+     }
+    }
+   ]
+  },
+  {
+   "stage": "adapt",
+   "kind": "tm2_bridge_adapt",
+   "target": "vast",
+   "run_id": "adapt_tm2bawareq1s1_finger_seed2_ckpt500000",
+   "cmd": "TDMPC2_ROOT=/workspace/tdmpc2/tdmpc2 /workspace/conda_envs/tdmpc2/bin/python -m probing.tdmpc2_adapt --tdmpc2_root /workspace/tdmpc2/tdmpc2 --pretrained \"$RUNROOT/tm2wm_finger_bawareq1s1_seed2\" --logdir \"$RUNROOT/adapt_tm2bawareq1s1_finger_seed2_ckpt500000\" --task dmc_finger_turn_hard --seed 2",
+   "vars": {
+    "arm": "aware",
+    "side": 1,
+    "seed": 2,
+    "run_id": "adapt_tm2bawareq1s1_finger_seed2_ckpt500000"
+   },
+   "logdir": "adapt_tm2bawareq1s1_finger_seed2_ckpt500000",
+   "outputs": [
+    "adapt_tm2bawareq1s1_finger_seed2_ckpt500000"
+   ],
+   "inputs": [
+    "tm2wm_finger_bawareq1s1_seed2/tm2_ckpt.pt"
+   ],
+   "done_when": [
+    {
+     "exists": "ADAPT_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 128
+     }
+    }
+   ]
+  },
+  {
+   "stage": "adapt",
+   "kind": "tm2_bridge_adapt",
+   "target": "vast",
+   "run_id": "adapt_tm2bawareq1s1_finger_seed3_ckpt500000",
+   "cmd": "TDMPC2_ROOT=/workspace/tdmpc2/tdmpc2 /workspace/conda_envs/tdmpc2/bin/python -m probing.tdmpc2_adapt --tdmpc2_root /workspace/tdmpc2/tdmpc2 --pretrained \"$RUNROOT/tm2wm_finger_bawareq1s1_seed3\" --logdir \"$RUNROOT/adapt_tm2bawareq1s1_finger_seed3_ckpt500000\" --task dmc_finger_turn_hard --seed 3",
+   "vars": {
+    "arm": "aware",
+    "side": 1,
+    "seed": 3,
+    "run_id": "adapt_tm2bawareq1s1_finger_seed3_ckpt500000"
+   },
+   "logdir": "adapt_tm2bawareq1s1_finger_seed3_ckpt500000",
+   "outputs": [
+    "adapt_tm2bawareq1s1_finger_seed3_ckpt500000"
+   ],
+   "inputs": [
+    "tm2wm_finger_bawareq1s1_seed3/tm2_ckpt.pt"
+   ],
+   "done_when": [
+    {
+     "exists": "ADAPT_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 128
+     }
+    }
+   ]
+  },
+  {
+   "stage": "adapt",
+   "kind": "tm2_bridge_adapt",
+   "target": "vast",
+   "run_id": "adapt_tm2bawareq1s1_finger_seed4_ckpt500000",
+   "cmd": "TDMPC2_ROOT=/workspace/tdmpc2/tdmpc2 /workspace/conda_envs/tdmpc2/bin/python -m probing.tdmpc2_adapt --tdmpc2_root /workspace/tdmpc2/tdmpc2 --pretrained \"$RUNROOT/tm2wm_finger_bawareq1s1_seed4\" --logdir \"$RUNROOT/adapt_tm2bawareq1s1_finger_seed4_ckpt500000\" --task dmc_finger_turn_hard --seed 4",
+   "vars": {
+    "arm": "aware",
+    "side": 1,
+    "seed": 4,
+    "run_id": "adapt_tm2bawareq1s1_finger_seed4_ckpt500000"
+   },
+   "logdir": "adapt_tm2bawareq1s1_finger_seed4_ckpt500000",
+   "outputs": [
+    "adapt_tm2bawareq1s1_finger_seed4_ckpt500000"
+   ],
+   "inputs": [
+    "tm2wm_finger_bawareq1s1_seed4/tm2_ckpt.pt"
+   ],
+   "done_when": [
+    {
+     "exists": "ADAPT_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 128
+     }
+    }
+   ]
+  },
+  {
+   "stage": "adapt",
+   "kind": "tm2_bridge_adapt",
+   "target": "vast",
+   "run_id": "adapt_tm2bawareq1s1_finger_seed5_ckpt500000",
+   "cmd": "TDMPC2_ROOT=/workspace/tdmpc2/tdmpc2 /workspace/conda_envs/tdmpc2/bin/python -m probing.tdmpc2_adapt --tdmpc2_root /workspace/tdmpc2/tdmpc2 --pretrained \"$RUNROOT/tm2wm_finger_bawareq1s1_seed5\" --logdir \"$RUNROOT/adapt_tm2bawareq1s1_finger_seed5_ckpt500000\" --task dmc_finger_turn_hard --seed 5",
+   "vars": {
+    "arm": "aware",
+    "side": 1,
+    "seed": 5,
+    "run_id": "adapt_tm2bawareq1s1_finger_seed5_ckpt500000"
+   },
+   "logdir": "adapt_tm2bawareq1s1_finger_seed5_ckpt500000",
+   "outputs": [
+    "adapt_tm2bawareq1s1_finger_seed5_ckpt500000"
+   ],
+   "inputs": [
+    "tm2wm_finger_bawareq1s1_seed5/tm2_ckpt.pt"
+   ],
+   "done_when": [
+    {
+     "exists": "ADAPT_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 128
+     }
+    }
+   ]
+  },
+  {
+   "stage": "adapt",
+   "kind": "tm2_bridge_adapt",
+   "target": "vast",
+   "run_id": "adapt_tm2bawareq1s1_finger_seed6_ckpt500000",
+   "cmd": "TDMPC2_ROOT=/workspace/tdmpc2/tdmpc2 /workspace/conda_envs/tdmpc2/bin/python -m probing.tdmpc2_adapt --tdmpc2_root /workspace/tdmpc2/tdmpc2 --pretrained \"$RUNROOT/tm2wm_finger_bawareq1s1_seed6\" --logdir \"$RUNROOT/adapt_tm2bawareq1s1_finger_seed6_ckpt500000\" --task dmc_finger_turn_hard --seed 6",
+   "vars": {
+    "arm": "aware",
+    "side": 1,
+    "seed": 6,
+    "run_id": "adapt_tm2bawareq1s1_finger_seed6_ckpt500000"
+   },
+   "logdir": "adapt_tm2bawareq1s1_finger_seed6_ckpt500000",
+   "outputs": [
+    "adapt_tm2bawareq1s1_finger_seed6_ckpt500000"
+   ],
+   "inputs": [
+    "tm2wm_finger_bawareq1s1_seed6/tm2_ckpt.pt"
+   ],
+   "done_when": [
+    {
+     "exists": "ADAPT_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 128
+     }
+    }
+   ]
+  },
+  {
+   "stage": "adapt",
+   "kind": "tm2_bridge_adapt",
+   "target": "vast",
+   "run_id": "adapt_tm2bawareq1s1_finger_seed7_ckpt500000",
+   "cmd": "TDMPC2_ROOT=/workspace/tdmpc2/tdmpc2 /workspace/conda_envs/tdmpc2/bin/python -m probing.tdmpc2_adapt --tdmpc2_root /workspace/tdmpc2/tdmpc2 --pretrained \"$RUNROOT/tm2wm_finger_bawareq1s1_seed7\" --logdir \"$RUNROOT/adapt_tm2bawareq1s1_finger_seed7_ckpt500000\" --task dmc_finger_turn_hard --seed 7",
+   "vars": {
+    "arm": "aware",
+    "side": 1,
+    "seed": 7,
+    "run_id": "adapt_tm2bawareq1s1_finger_seed7_ckpt500000"
+   },
+   "logdir": "adapt_tm2bawareq1s1_finger_seed7_ckpt500000",
+   "outputs": [
+    "adapt_tm2bawareq1s1_finger_seed7_ckpt500000"
+   ],
+   "inputs": [
+    "tm2wm_finger_bawareq1s1_seed7/tm2_ckpt.pt"
+   ],
+   "done_when": [
+    {
+     "exists": "ADAPT_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 128
+     }
+    }
+   ]
+  },
+  {
+   "stage": "adapt",
+   "kind": "tm2_bridge_adapt",
+   "target": "vast",
+   "run_id": "adapt_tm2bawareq1s1_finger_seed8_ckpt500000",
+   "cmd": "TDMPC2_ROOT=/workspace/tdmpc2/tdmpc2 /workspace/conda_envs/tdmpc2/bin/python -m probing.tdmpc2_adapt --tdmpc2_root /workspace/tdmpc2/tdmpc2 --pretrained \"$RUNROOT/tm2wm_finger_bawareq1s1_seed8\" --logdir \"$RUNROOT/adapt_tm2bawareq1s1_finger_seed8_ckpt500000\" --task dmc_finger_turn_hard --seed 8",
+   "vars": {
+    "arm": "aware",
+    "side": 1,
+    "seed": 8,
+    "run_id": "adapt_tm2bawareq1s1_finger_seed8_ckpt500000"
+   },
+   "logdir": "adapt_tm2bawareq1s1_finger_seed8_ckpt500000",
+   "outputs": [
+    "adapt_tm2bawareq1s1_finger_seed8_ckpt500000"
+   ],
+   "inputs": [
+    "tm2wm_finger_bawareq1s1_seed8/tm2_ckpt.pt"
+   ],
+   "done_when": [
+    {
+     "exists": "ADAPT_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 128
+     }
+    }
+   ]
+  },
+  {
+   "stage": "adapt",
+   "kind": "tm2_bridge_adapt",
+   "target": "vast",
+   "run_id": "adapt_tm2bfreeq1s0_finger_seed1_ckpt500000",
+   "cmd": "TDMPC2_ROOT=/workspace/tdmpc2/tdmpc2 /workspace/conda_envs/tdmpc2/bin/python -m probing.tdmpc2_adapt --tdmpc2_root /workspace/tdmpc2/tdmpc2 --pretrained \"$RUNROOT/tm2wm_finger_bfreeq1s0_seed1\" --logdir \"$RUNROOT/adapt_tm2bfreeq1s0_finger_seed1_ckpt500000\" --task dmc_finger_turn_hard --seed 1",
+   "vars": {
+    "arm": "free",
+    "side": 0,
+    "seed": 1,
+    "run_id": "adapt_tm2bfreeq1s0_finger_seed1_ckpt500000"
+   },
+   "logdir": "adapt_tm2bfreeq1s0_finger_seed1_ckpt500000",
+   "outputs": [
+    "adapt_tm2bfreeq1s0_finger_seed1_ckpt500000"
+   ],
+   "inputs": [
+    "tm2wm_finger_bfreeq1s0_seed1/tm2_ckpt.pt"
+   ],
+   "done_when": [
+    {
+     "exists": "ADAPT_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 128
+     }
+    }
+   ]
+  },
+  {
+   "stage": "adapt",
+   "kind": "tm2_bridge_adapt",
+   "target": "vast",
+   "run_id": "adapt_tm2bfreeq1s0_finger_seed2_ckpt500000",
+   "cmd": "TDMPC2_ROOT=/workspace/tdmpc2/tdmpc2 /workspace/conda_envs/tdmpc2/bin/python -m probing.tdmpc2_adapt --tdmpc2_root /workspace/tdmpc2/tdmpc2 --pretrained \"$RUNROOT/tm2wm_finger_bfreeq1s0_seed2\" --logdir \"$RUNROOT/adapt_tm2bfreeq1s0_finger_seed2_ckpt500000\" --task dmc_finger_turn_hard --seed 2",
+   "vars": {
+    "arm": "free",
+    "side": 0,
+    "seed": 2,
+    "run_id": "adapt_tm2bfreeq1s0_finger_seed2_ckpt500000"
+   },
+   "logdir": "adapt_tm2bfreeq1s0_finger_seed2_ckpt500000",
+   "outputs": [
+    "adapt_tm2bfreeq1s0_finger_seed2_ckpt500000"
+   ],
+   "inputs": [
+    "tm2wm_finger_bfreeq1s0_seed2/tm2_ckpt.pt"
+   ],
+   "done_when": [
+    {
+     "exists": "ADAPT_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 128
+     }
+    }
+   ]
+  },
+  {
+   "stage": "adapt",
+   "kind": "tm2_bridge_adapt",
+   "target": "vast",
+   "run_id": "adapt_tm2bfreeq1s0_finger_seed3_ckpt500000",
+   "cmd": "TDMPC2_ROOT=/workspace/tdmpc2/tdmpc2 /workspace/conda_envs/tdmpc2/bin/python -m probing.tdmpc2_adapt --tdmpc2_root /workspace/tdmpc2/tdmpc2 --pretrained \"$RUNROOT/tm2wm_finger_bfreeq1s0_seed3\" --logdir \"$RUNROOT/adapt_tm2bfreeq1s0_finger_seed3_ckpt500000\" --task dmc_finger_turn_hard --seed 3",
+   "vars": {
+    "arm": "free",
+    "side": 0,
+    "seed": 3,
+    "run_id": "adapt_tm2bfreeq1s0_finger_seed3_ckpt500000"
+   },
+   "logdir": "adapt_tm2bfreeq1s0_finger_seed3_ckpt500000",
+   "outputs": [
+    "adapt_tm2bfreeq1s0_finger_seed3_ckpt500000"
+   ],
+   "inputs": [
+    "tm2wm_finger_bfreeq1s0_seed3/tm2_ckpt.pt"
+   ],
+   "done_when": [
+    {
+     "exists": "ADAPT_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 128
+     }
+    }
+   ]
+  },
+  {
+   "stage": "adapt",
+   "kind": "tm2_bridge_adapt",
+   "target": "vast",
+   "run_id": "adapt_tm2bfreeq1s0_finger_seed4_ckpt500000",
+   "cmd": "TDMPC2_ROOT=/workspace/tdmpc2/tdmpc2 /workspace/conda_envs/tdmpc2/bin/python -m probing.tdmpc2_adapt --tdmpc2_root /workspace/tdmpc2/tdmpc2 --pretrained \"$RUNROOT/tm2wm_finger_bfreeq1s0_seed4\" --logdir \"$RUNROOT/adapt_tm2bfreeq1s0_finger_seed4_ckpt500000\" --task dmc_finger_turn_hard --seed 4",
+   "vars": {
+    "arm": "free",
+    "side": 0,
+    "seed": 4,
+    "run_id": "adapt_tm2bfreeq1s0_finger_seed4_ckpt500000"
+   },
+   "logdir": "adapt_tm2bfreeq1s0_finger_seed4_ckpt500000",
+   "outputs": [
+    "adapt_tm2bfreeq1s0_finger_seed4_ckpt500000"
+   ],
+   "inputs": [
+    "tm2wm_finger_bfreeq1s0_seed4/tm2_ckpt.pt"
+   ],
+   "done_when": [
+    {
+     "exists": "ADAPT_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 128
+     }
+    }
+   ]
+  },
+  {
+   "stage": "adapt",
+   "kind": "tm2_bridge_adapt",
+   "target": "vast",
+   "run_id": "adapt_tm2bfreeq1s0_finger_seed5_ckpt500000",
+   "cmd": "TDMPC2_ROOT=/workspace/tdmpc2/tdmpc2 /workspace/conda_envs/tdmpc2/bin/python -m probing.tdmpc2_adapt --tdmpc2_root /workspace/tdmpc2/tdmpc2 --pretrained \"$RUNROOT/tm2wm_finger_bfreeq1s0_seed5\" --logdir \"$RUNROOT/adapt_tm2bfreeq1s0_finger_seed5_ckpt500000\" --task dmc_finger_turn_hard --seed 5",
+   "vars": {
+    "arm": "free",
+    "side": 0,
+    "seed": 5,
+    "run_id": "adapt_tm2bfreeq1s0_finger_seed5_ckpt500000"
+   },
+   "logdir": "adapt_tm2bfreeq1s0_finger_seed5_ckpt500000",
+   "outputs": [
+    "adapt_tm2bfreeq1s0_finger_seed5_ckpt500000"
+   ],
+   "inputs": [
+    "tm2wm_finger_bfreeq1s0_seed5/tm2_ckpt.pt"
+   ],
+   "done_when": [
+    {
+     "exists": "ADAPT_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 128
+     }
+    }
+   ]
+  },
+  {
+   "stage": "adapt",
+   "kind": "tm2_bridge_adapt",
+   "target": "vast",
+   "run_id": "adapt_tm2bfreeq1s0_finger_seed6_ckpt500000",
+   "cmd": "TDMPC2_ROOT=/workspace/tdmpc2/tdmpc2 /workspace/conda_envs/tdmpc2/bin/python -m probing.tdmpc2_adapt --tdmpc2_root /workspace/tdmpc2/tdmpc2 --pretrained \"$RUNROOT/tm2wm_finger_bfreeq1s0_seed6\" --logdir \"$RUNROOT/adapt_tm2bfreeq1s0_finger_seed6_ckpt500000\" --task dmc_finger_turn_hard --seed 6",
+   "vars": {
+    "arm": "free",
+    "side": 0,
+    "seed": 6,
+    "run_id": "adapt_tm2bfreeq1s0_finger_seed6_ckpt500000"
+   },
+   "logdir": "adapt_tm2bfreeq1s0_finger_seed6_ckpt500000",
+   "outputs": [
+    "adapt_tm2bfreeq1s0_finger_seed6_ckpt500000"
+   ],
+   "inputs": [
+    "tm2wm_finger_bfreeq1s0_seed6/tm2_ckpt.pt"
+   ],
+   "done_when": [
+    {
+     "exists": "ADAPT_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 128
+     }
+    }
+   ]
+  },
+  {
+   "stage": "adapt",
+   "kind": "tm2_bridge_adapt",
+   "target": "vast",
+   "run_id": "adapt_tm2bfreeq1s0_finger_seed7_ckpt500000",
+   "cmd": "TDMPC2_ROOT=/workspace/tdmpc2/tdmpc2 /workspace/conda_envs/tdmpc2/bin/python -m probing.tdmpc2_adapt --tdmpc2_root /workspace/tdmpc2/tdmpc2 --pretrained \"$RUNROOT/tm2wm_finger_bfreeq1s0_seed7\" --logdir \"$RUNROOT/adapt_tm2bfreeq1s0_finger_seed7_ckpt500000\" --task dmc_finger_turn_hard --seed 7",
+   "vars": {
+    "arm": "free",
+    "side": 0,
+    "seed": 7,
+    "run_id": "adapt_tm2bfreeq1s0_finger_seed7_ckpt500000"
+   },
+   "logdir": "adapt_tm2bfreeq1s0_finger_seed7_ckpt500000",
+   "outputs": [
+    "adapt_tm2bfreeq1s0_finger_seed7_ckpt500000"
+   ],
+   "inputs": [
+    "tm2wm_finger_bfreeq1s0_seed7/tm2_ckpt.pt"
+   ],
+   "done_when": [
+    {
+     "exists": "ADAPT_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 128
+     }
+    }
+   ]
+  },
+  {
+   "stage": "adapt",
+   "kind": "tm2_bridge_adapt",
+   "target": "vast",
+   "run_id": "adapt_tm2bfreeq1s0_finger_seed8_ckpt500000",
+   "cmd": "TDMPC2_ROOT=/workspace/tdmpc2/tdmpc2 /workspace/conda_envs/tdmpc2/bin/python -m probing.tdmpc2_adapt --tdmpc2_root /workspace/tdmpc2/tdmpc2 --pretrained \"$RUNROOT/tm2wm_finger_bfreeq1s0_seed8\" --logdir \"$RUNROOT/adapt_tm2bfreeq1s0_finger_seed8_ckpt500000\" --task dmc_finger_turn_hard --seed 8",
+   "vars": {
+    "arm": "free",
+    "side": 0,
+    "seed": 8,
+    "run_id": "adapt_tm2bfreeq1s0_finger_seed8_ckpt500000"
+   },
+   "logdir": "adapt_tm2bfreeq1s0_finger_seed8_ckpt500000",
+   "outputs": [
+    "adapt_tm2bfreeq1s0_finger_seed8_ckpt500000"
+   ],
+   "inputs": [
+    "tm2wm_finger_bfreeq1s0_seed8/tm2_ckpt.pt"
+   ],
+   "done_when": [
+    {
+     "exists": "ADAPT_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 128
+     }
+    }
+   ]
+  },
+  {
+   "stage": "adapt",
+   "kind": "tm2_bridge_adapt",
+   "target": "vast",
+   "run_id": "adapt_tm2bfreeq1s1_finger_seed1_ckpt500000",
+   "cmd": "TDMPC2_ROOT=/workspace/tdmpc2/tdmpc2 /workspace/conda_envs/tdmpc2/bin/python -m probing.tdmpc2_adapt --tdmpc2_root /workspace/tdmpc2/tdmpc2 --pretrained \"$RUNROOT/tm2wm_finger_bfreeq1s1_seed1\" --logdir \"$RUNROOT/adapt_tm2bfreeq1s1_finger_seed1_ckpt500000\" --task dmc_finger_turn_hard --seed 1",
+   "vars": {
+    "arm": "free",
+    "side": 1,
+    "seed": 1,
+    "run_id": "adapt_tm2bfreeq1s1_finger_seed1_ckpt500000"
+   },
+   "logdir": "adapt_tm2bfreeq1s1_finger_seed1_ckpt500000",
+   "outputs": [
+    "adapt_tm2bfreeq1s1_finger_seed1_ckpt500000"
+   ],
+   "inputs": [
+    "tm2wm_finger_bfreeq1s1_seed1/tm2_ckpt.pt"
+   ],
+   "done_when": [
+    {
+     "exists": "ADAPT_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 128
+     }
+    }
+   ]
+  },
+  {
+   "stage": "adapt",
+   "kind": "tm2_bridge_adapt",
+   "target": "vast",
+   "run_id": "adapt_tm2bfreeq1s1_finger_seed2_ckpt500000",
+   "cmd": "TDMPC2_ROOT=/workspace/tdmpc2/tdmpc2 /workspace/conda_envs/tdmpc2/bin/python -m probing.tdmpc2_adapt --tdmpc2_root /workspace/tdmpc2/tdmpc2 --pretrained \"$RUNROOT/tm2wm_finger_bfreeq1s1_seed2\" --logdir \"$RUNROOT/adapt_tm2bfreeq1s1_finger_seed2_ckpt500000\" --task dmc_finger_turn_hard --seed 2",
+   "vars": {
+    "arm": "free",
+    "side": 1,
+    "seed": 2,
+    "run_id": "adapt_tm2bfreeq1s1_finger_seed2_ckpt500000"
+   },
+   "logdir": "adapt_tm2bfreeq1s1_finger_seed2_ckpt500000",
+   "outputs": [
+    "adapt_tm2bfreeq1s1_finger_seed2_ckpt500000"
+   ],
+   "inputs": [
+    "tm2wm_finger_bfreeq1s1_seed2/tm2_ckpt.pt"
+   ],
+   "done_when": [
+    {
+     "exists": "ADAPT_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 128
+     }
+    }
+   ]
+  },
+  {
+   "stage": "adapt",
+   "kind": "tm2_bridge_adapt",
+   "target": "vast",
+   "run_id": "adapt_tm2bfreeq1s1_finger_seed3_ckpt500000",
+   "cmd": "TDMPC2_ROOT=/workspace/tdmpc2/tdmpc2 /workspace/conda_envs/tdmpc2/bin/python -m probing.tdmpc2_adapt --tdmpc2_root /workspace/tdmpc2/tdmpc2 --pretrained \"$RUNROOT/tm2wm_finger_bfreeq1s1_seed3\" --logdir \"$RUNROOT/adapt_tm2bfreeq1s1_finger_seed3_ckpt500000\" --task dmc_finger_turn_hard --seed 3",
+   "vars": {
+    "arm": "free",
+    "side": 1,
+    "seed": 3,
+    "run_id": "adapt_tm2bfreeq1s1_finger_seed3_ckpt500000"
+   },
+   "logdir": "adapt_tm2bfreeq1s1_finger_seed3_ckpt500000",
+   "outputs": [
+    "adapt_tm2bfreeq1s1_finger_seed3_ckpt500000"
+   ],
+   "inputs": [
+    "tm2wm_finger_bfreeq1s1_seed3/tm2_ckpt.pt"
+   ],
+   "done_when": [
+    {
+     "exists": "ADAPT_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 128
+     }
+    }
+   ]
+  },
+  {
+   "stage": "adapt",
+   "kind": "tm2_bridge_adapt",
+   "target": "vast",
+   "run_id": "adapt_tm2bfreeq1s1_finger_seed4_ckpt500000",
+   "cmd": "TDMPC2_ROOT=/workspace/tdmpc2/tdmpc2 /workspace/conda_envs/tdmpc2/bin/python -m probing.tdmpc2_adapt --tdmpc2_root /workspace/tdmpc2/tdmpc2 --pretrained \"$RUNROOT/tm2wm_finger_bfreeq1s1_seed4\" --logdir \"$RUNROOT/adapt_tm2bfreeq1s1_finger_seed4_ckpt500000\" --task dmc_finger_turn_hard --seed 4",
+   "vars": {
+    "arm": "free",
+    "side": 1,
+    "seed": 4,
+    "run_id": "adapt_tm2bfreeq1s1_finger_seed4_ckpt500000"
+   },
+   "logdir": "adapt_tm2bfreeq1s1_finger_seed4_ckpt500000",
+   "outputs": [
+    "adapt_tm2bfreeq1s1_finger_seed4_ckpt500000"
+   ],
+   "inputs": [
+    "tm2wm_finger_bfreeq1s1_seed4/tm2_ckpt.pt"
+   ],
+   "done_when": [
+    {
+     "exists": "ADAPT_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 128
+     }
+    }
+   ]
+  },
+  {
+   "stage": "adapt",
+   "kind": "tm2_bridge_adapt",
+   "target": "vast",
+   "run_id": "adapt_tm2bfreeq1s1_finger_seed5_ckpt500000",
+   "cmd": "TDMPC2_ROOT=/workspace/tdmpc2/tdmpc2 /workspace/conda_envs/tdmpc2/bin/python -m probing.tdmpc2_adapt --tdmpc2_root /workspace/tdmpc2/tdmpc2 --pretrained \"$RUNROOT/tm2wm_finger_bfreeq1s1_seed5\" --logdir \"$RUNROOT/adapt_tm2bfreeq1s1_finger_seed5_ckpt500000\" --task dmc_finger_turn_hard --seed 5",
+   "vars": {
+    "arm": "free",
+    "side": 1,
+    "seed": 5,
+    "run_id": "adapt_tm2bfreeq1s1_finger_seed5_ckpt500000"
+   },
+   "logdir": "adapt_tm2bfreeq1s1_finger_seed5_ckpt500000",
+   "outputs": [
+    "adapt_tm2bfreeq1s1_finger_seed5_ckpt500000"
+   ],
+   "inputs": [
+    "tm2wm_finger_bfreeq1s1_seed5/tm2_ckpt.pt"
+   ],
+   "done_when": [
+    {
+     "exists": "ADAPT_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 128
+     }
+    }
+   ]
+  },
+  {
+   "stage": "adapt",
+   "kind": "tm2_bridge_adapt",
+   "target": "vast",
+   "run_id": "adapt_tm2bfreeq1s1_finger_seed6_ckpt500000",
+   "cmd": "TDMPC2_ROOT=/workspace/tdmpc2/tdmpc2 /workspace/conda_envs/tdmpc2/bin/python -m probing.tdmpc2_adapt --tdmpc2_root /workspace/tdmpc2/tdmpc2 --pretrained \"$RUNROOT/tm2wm_finger_bfreeq1s1_seed6\" --logdir \"$RUNROOT/adapt_tm2bfreeq1s1_finger_seed6_ckpt500000\" --task dmc_finger_turn_hard --seed 6",
+   "vars": {
+    "arm": "free",
+    "side": 1,
+    "seed": 6,
+    "run_id": "adapt_tm2bfreeq1s1_finger_seed6_ckpt500000"
+   },
+   "logdir": "adapt_tm2bfreeq1s1_finger_seed6_ckpt500000",
+   "outputs": [
+    "adapt_tm2bfreeq1s1_finger_seed6_ckpt500000"
+   ],
+   "inputs": [
+    "tm2wm_finger_bfreeq1s1_seed6/tm2_ckpt.pt"
+   ],
+   "done_when": [
+    {
+     "exists": "ADAPT_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 128
+     }
+    }
+   ]
+  },
+  {
+   "stage": "adapt",
+   "kind": "tm2_bridge_adapt",
+   "target": "vast",
+   "run_id": "adapt_tm2bfreeq1s1_finger_seed7_ckpt500000",
+   "cmd": "TDMPC2_ROOT=/workspace/tdmpc2/tdmpc2 /workspace/conda_envs/tdmpc2/bin/python -m probing.tdmpc2_adapt --tdmpc2_root /workspace/tdmpc2/tdmpc2 --pretrained \"$RUNROOT/tm2wm_finger_bfreeq1s1_seed7\" --logdir \"$RUNROOT/adapt_tm2bfreeq1s1_finger_seed7_ckpt500000\" --task dmc_finger_turn_hard --seed 7",
+   "vars": {
+    "arm": "free",
+    "side": 1,
+    "seed": 7,
+    "run_id": "adapt_tm2bfreeq1s1_finger_seed7_ckpt500000"
+   },
+   "logdir": "adapt_tm2bfreeq1s1_finger_seed7_ckpt500000",
+   "outputs": [
+    "adapt_tm2bfreeq1s1_finger_seed7_ckpt500000"
+   ],
+   "inputs": [
+    "tm2wm_finger_bfreeq1s1_seed7/tm2_ckpt.pt"
+   ],
+   "done_when": [
+    {
+     "exists": "ADAPT_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 128
+     }
+    }
+   ]
+  },
+  {
+   "stage": "adapt",
+   "kind": "tm2_bridge_adapt",
+   "target": "vast",
+   "run_id": "adapt_tm2bfreeq1s1_finger_seed8_ckpt500000",
+   "cmd": "TDMPC2_ROOT=/workspace/tdmpc2/tdmpc2 /workspace/conda_envs/tdmpc2/bin/python -m probing.tdmpc2_adapt --tdmpc2_root /workspace/tdmpc2/tdmpc2 --pretrained \"$RUNROOT/tm2wm_finger_bfreeq1s1_seed8\" --logdir \"$RUNROOT/adapt_tm2bfreeq1s1_finger_seed8_ckpt500000\" --task dmc_finger_turn_hard --seed 8",
+   "vars": {
+    "arm": "free",
+    "side": 1,
+    "seed": 8,
+    "run_id": "adapt_tm2bfreeq1s1_finger_seed8_ckpt500000"
+   },
+   "logdir": "adapt_tm2bfreeq1s1_finger_seed8_ckpt500000",
+   "outputs": [
+    "adapt_tm2bfreeq1s1_finger_seed8_ckpt500000"
+   ],
+   "inputs": [
+    "tm2wm_finger_bfreeq1s1_seed8/tm2_ckpt.pt"
+   ],
+   "done_when": [
+    {
+     "exists": "ADAPT_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 128
+     }
+    }
+   ]
+  },
+  {
+   "stage": "adapt",
+   "kind": "tm2_bridge_adapt",
+   "target": "vast",
+   "run_id": "adapt_tm2brecq1s0_finger_seed1_ckpt500000",
+   "cmd": "TDMPC2_ROOT=/workspace/tdmpc2/tdmpc2 /workspace/conda_envs/tdmpc2/bin/python -m probing.tdmpc2_adapt --tdmpc2_root /workspace/tdmpc2/tdmpc2 --pretrained \"$RUNROOT/tm2wm_finger_brecq1s0_seed1\" --logdir \"$RUNROOT/adapt_tm2brecq1s0_finger_seed1_ckpt500000\" --task dmc_finger_turn_hard --seed 1",
+   "vars": {
+    "arm": "rec",
+    "side": 0,
+    "seed": 1,
+    "run_id": "adapt_tm2brecq1s0_finger_seed1_ckpt500000"
+   },
+   "logdir": "adapt_tm2brecq1s0_finger_seed1_ckpt500000",
+   "outputs": [
+    "adapt_tm2brecq1s0_finger_seed1_ckpt500000"
+   ],
+   "inputs": [
+    "tm2wm_finger_brecq1s0_seed1/tm2_ckpt.pt"
+   ],
+   "done_when": [
+    {
+     "exists": "ADAPT_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 128
+     }
+    }
+   ]
+  },
+  {
+   "stage": "adapt",
+   "kind": "tm2_bridge_adapt",
+   "target": "vast",
+   "run_id": "adapt_tm2brecq1s0_finger_seed2_ckpt500000",
+   "cmd": "TDMPC2_ROOT=/workspace/tdmpc2/tdmpc2 /workspace/conda_envs/tdmpc2/bin/python -m probing.tdmpc2_adapt --tdmpc2_root /workspace/tdmpc2/tdmpc2 --pretrained \"$RUNROOT/tm2wm_finger_brecq1s0_seed2\" --logdir \"$RUNROOT/adapt_tm2brecq1s0_finger_seed2_ckpt500000\" --task dmc_finger_turn_hard --seed 2",
+   "vars": {
+    "arm": "rec",
+    "side": 0,
+    "seed": 2,
+    "run_id": "adapt_tm2brecq1s0_finger_seed2_ckpt500000"
+   },
+   "logdir": "adapt_tm2brecq1s0_finger_seed2_ckpt500000",
+   "outputs": [
+    "adapt_tm2brecq1s0_finger_seed2_ckpt500000"
+   ],
+   "inputs": [
+    "tm2wm_finger_brecq1s0_seed2/tm2_ckpt.pt"
+   ],
+   "done_when": [
+    {
+     "exists": "ADAPT_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 128
+     }
+    }
+   ]
+  },
+  {
+   "stage": "adapt",
+   "kind": "tm2_bridge_adapt",
+   "target": "vast",
+   "run_id": "adapt_tm2brecq1s0_finger_seed3_ckpt500000",
+   "cmd": "TDMPC2_ROOT=/workspace/tdmpc2/tdmpc2 /workspace/conda_envs/tdmpc2/bin/python -m probing.tdmpc2_adapt --tdmpc2_root /workspace/tdmpc2/tdmpc2 --pretrained \"$RUNROOT/tm2wm_finger_brecq1s0_seed3\" --logdir \"$RUNROOT/adapt_tm2brecq1s0_finger_seed3_ckpt500000\" --task dmc_finger_turn_hard --seed 3",
+   "vars": {
+    "arm": "rec",
+    "side": 0,
+    "seed": 3,
+    "run_id": "adapt_tm2brecq1s0_finger_seed3_ckpt500000"
+   },
+   "logdir": "adapt_tm2brecq1s0_finger_seed3_ckpt500000",
+   "outputs": [
+    "adapt_tm2brecq1s0_finger_seed3_ckpt500000"
+   ],
+   "inputs": [
+    "tm2wm_finger_brecq1s0_seed3/tm2_ckpt.pt"
+   ],
+   "done_when": [
+    {
+     "exists": "ADAPT_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 128
+     }
+    }
+   ]
+  },
+  {
+   "stage": "adapt",
+   "kind": "tm2_bridge_adapt",
+   "target": "vast",
+   "run_id": "adapt_tm2brecq1s0_finger_seed4_ckpt500000",
+   "cmd": "TDMPC2_ROOT=/workspace/tdmpc2/tdmpc2 /workspace/conda_envs/tdmpc2/bin/python -m probing.tdmpc2_adapt --tdmpc2_root /workspace/tdmpc2/tdmpc2 --pretrained \"$RUNROOT/tm2wm_finger_brecq1s0_seed4\" --logdir \"$RUNROOT/adapt_tm2brecq1s0_finger_seed4_ckpt500000\" --task dmc_finger_turn_hard --seed 4",
+   "vars": {
+    "arm": "rec",
+    "side": 0,
+    "seed": 4,
+    "run_id": "adapt_tm2brecq1s0_finger_seed4_ckpt500000"
+   },
+   "logdir": "adapt_tm2brecq1s0_finger_seed4_ckpt500000",
+   "outputs": [
+    "adapt_tm2brecq1s0_finger_seed4_ckpt500000"
+   ],
+   "inputs": [
+    "tm2wm_finger_brecq1s0_seed4/tm2_ckpt.pt"
+   ],
+   "done_when": [
+    {
+     "exists": "ADAPT_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 128
+     }
+    }
+   ]
+  },
+  {
+   "stage": "adapt",
+   "kind": "tm2_bridge_adapt",
+   "target": "vast",
+   "run_id": "adapt_tm2brecq1s0_finger_seed5_ckpt500000",
+   "cmd": "TDMPC2_ROOT=/workspace/tdmpc2/tdmpc2 /workspace/conda_envs/tdmpc2/bin/python -m probing.tdmpc2_adapt --tdmpc2_root /workspace/tdmpc2/tdmpc2 --pretrained \"$RUNROOT/tm2wm_finger_brecq1s0_seed5\" --logdir \"$RUNROOT/adapt_tm2brecq1s0_finger_seed5_ckpt500000\" --task dmc_finger_turn_hard --seed 5",
+   "vars": {
+    "arm": "rec",
+    "side": 0,
+    "seed": 5,
+    "run_id": "adapt_tm2brecq1s0_finger_seed5_ckpt500000"
+   },
+   "logdir": "adapt_tm2brecq1s0_finger_seed5_ckpt500000",
+   "outputs": [
+    "adapt_tm2brecq1s0_finger_seed5_ckpt500000"
+   ],
+   "inputs": [
+    "tm2wm_finger_brecq1s0_seed5/tm2_ckpt.pt"
+   ],
+   "done_when": [
+    {
+     "exists": "ADAPT_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 128
+     }
+    }
+   ]
+  },
+  {
+   "stage": "adapt",
+   "kind": "tm2_bridge_adapt",
+   "target": "vast",
+   "run_id": "adapt_tm2brecq1s0_finger_seed6_ckpt500000",
+   "cmd": "TDMPC2_ROOT=/workspace/tdmpc2/tdmpc2 /workspace/conda_envs/tdmpc2/bin/python -m probing.tdmpc2_adapt --tdmpc2_root /workspace/tdmpc2/tdmpc2 --pretrained \"$RUNROOT/tm2wm_finger_brecq1s0_seed6\" --logdir \"$RUNROOT/adapt_tm2brecq1s0_finger_seed6_ckpt500000\" --task dmc_finger_turn_hard --seed 6",
+   "vars": {
+    "arm": "rec",
+    "side": 0,
+    "seed": 6,
+    "run_id": "adapt_tm2brecq1s0_finger_seed6_ckpt500000"
+   },
+   "logdir": "adapt_tm2brecq1s0_finger_seed6_ckpt500000",
+   "outputs": [
+    "adapt_tm2brecq1s0_finger_seed6_ckpt500000"
+   ],
+   "inputs": [
+    "tm2wm_finger_brecq1s0_seed6/tm2_ckpt.pt"
+   ],
+   "done_when": [
+    {
+     "exists": "ADAPT_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 128
+     }
+    }
+   ]
+  },
+  {
+   "stage": "adapt",
+   "kind": "tm2_bridge_adapt",
+   "target": "vast",
+   "run_id": "adapt_tm2brecq1s0_finger_seed7_ckpt500000",
+   "cmd": "TDMPC2_ROOT=/workspace/tdmpc2/tdmpc2 /workspace/conda_envs/tdmpc2/bin/python -m probing.tdmpc2_adapt --tdmpc2_root /workspace/tdmpc2/tdmpc2 --pretrained \"$RUNROOT/tm2wm_finger_brecq1s0_seed7\" --logdir \"$RUNROOT/adapt_tm2brecq1s0_finger_seed7_ckpt500000\" --task dmc_finger_turn_hard --seed 7",
+   "vars": {
+    "arm": "rec",
+    "side": 0,
+    "seed": 7,
+    "run_id": "adapt_tm2brecq1s0_finger_seed7_ckpt500000"
+   },
+   "logdir": "adapt_tm2brecq1s0_finger_seed7_ckpt500000",
+   "outputs": [
+    "adapt_tm2brecq1s0_finger_seed7_ckpt500000"
+   ],
+   "inputs": [
+    "tm2wm_finger_brecq1s0_seed7/tm2_ckpt.pt"
+   ],
+   "done_when": [
+    {
+     "exists": "ADAPT_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 128
+     }
+    }
+   ]
+  },
+  {
+   "stage": "adapt",
+   "kind": "tm2_bridge_adapt",
+   "target": "vast",
+   "run_id": "adapt_tm2brecq1s0_finger_seed8_ckpt500000",
+   "cmd": "TDMPC2_ROOT=/workspace/tdmpc2/tdmpc2 /workspace/conda_envs/tdmpc2/bin/python -m probing.tdmpc2_adapt --tdmpc2_root /workspace/tdmpc2/tdmpc2 --pretrained \"$RUNROOT/tm2wm_finger_brecq1s0_seed8\" --logdir \"$RUNROOT/adapt_tm2brecq1s0_finger_seed8_ckpt500000\" --task dmc_finger_turn_hard --seed 8",
+   "vars": {
+    "arm": "rec",
+    "side": 0,
+    "seed": 8,
+    "run_id": "adapt_tm2brecq1s0_finger_seed8_ckpt500000"
+   },
+   "logdir": "adapt_tm2brecq1s0_finger_seed8_ckpt500000",
+   "outputs": [
+    "adapt_tm2brecq1s0_finger_seed8_ckpt500000"
+   ],
+   "inputs": [
+    "tm2wm_finger_brecq1s0_seed8/tm2_ckpt.pt"
+   ],
+   "done_when": [
+    {
+     "exists": "ADAPT_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 128
+     }
+    }
+   ]
+  },
+  {
+   "stage": "adapt",
+   "kind": "tm2_bridge_adapt",
+   "target": "vast",
+   "run_id": "adapt_tm2brecq1s1_finger_seed1_ckpt500000",
+   "cmd": "TDMPC2_ROOT=/workspace/tdmpc2/tdmpc2 /workspace/conda_envs/tdmpc2/bin/python -m probing.tdmpc2_adapt --tdmpc2_root /workspace/tdmpc2/tdmpc2 --pretrained \"$RUNROOT/tm2wm_finger_brecq1s1_seed1\" --logdir \"$RUNROOT/adapt_tm2brecq1s1_finger_seed1_ckpt500000\" --task dmc_finger_turn_hard --seed 1",
+   "vars": {
+    "arm": "rec",
+    "side": 1,
+    "seed": 1,
+    "run_id": "adapt_tm2brecq1s1_finger_seed1_ckpt500000"
+   },
+   "logdir": "adapt_tm2brecq1s1_finger_seed1_ckpt500000",
+   "outputs": [
+    "adapt_tm2brecq1s1_finger_seed1_ckpt500000"
+   ],
+   "inputs": [
+    "tm2wm_finger_brecq1s1_seed1/tm2_ckpt.pt"
+   ],
+   "done_when": [
+    {
+     "exists": "ADAPT_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 128
+     }
+    }
+   ]
+  },
+  {
+   "stage": "adapt",
+   "kind": "tm2_bridge_adapt",
+   "target": "vast",
+   "run_id": "adapt_tm2brecq1s1_finger_seed2_ckpt500000",
+   "cmd": "TDMPC2_ROOT=/workspace/tdmpc2/tdmpc2 /workspace/conda_envs/tdmpc2/bin/python -m probing.tdmpc2_adapt --tdmpc2_root /workspace/tdmpc2/tdmpc2 --pretrained \"$RUNROOT/tm2wm_finger_brecq1s1_seed2\" --logdir \"$RUNROOT/adapt_tm2brecq1s1_finger_seed2_ckpt500000\" --task dmc_finger_turn_hard --seed 2",
+   "vars": {
+    "arm": "rec",
+    "side": 1,
+    "seed": 2,
+    "run_id": "adapt_tm2brecq1s1_finger_seed2_ckpt500000"
+   },
+   "logdir": "adapt_tm2brecq1s1_finger_seed2_ckpt500000",
+   "outputs": [
+    "adapt_tm2brecq1s1_finger_seed2_ckpt500000"
+   ],
+   "inputs": [
+    "tm2wm_finger_brecq1s1_seed2/tm2_ckpt.pt"
+   ],
+   "done_when": [
+    {
+     "exists": "ADAPT_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 128
+     }
+    }
+   ]
+  },
+  {
+   "stage": "adapt",
+   "kind": "tm2_bridge_adapt",
+   "target": "vast",
+   "run_id": "adapt_tm2brecq1s1_finger_seed3_ckpt500000",
+   "cmd": "TDMPC2_ROOT=/workspace/tdmpc2/tdmpc2 /workspace/conda_envs/tdmpc2/bin/python -m probing.tdmpc2_adapt --tdmpc2_root /workspace/tdmpc2/tdmpc2 --pretrained \"$RUNROOT/tm2wm_finger_brecq1s1_seed3\" --logdir \"$RUNROOT/adapt_tm2brecq1s1_finger_seed3_ckpt500000\" --task dmc_finger_turn_hard --seed 3",
+   "vars": {
+    "arm": "rec",
+    "side": 1,
+    "seed": 3,
+    "run_id": "adapt_tm2brecq1s1_finger_seed3_ckpt500000"
+   },
+   "logdir": "adapt_tm2brecq1s1_finger_seed3_ckpt500000",
+   "outputs": [
+    "adapt_tm2brecq1s1_finger_seed3_ckpt500000"
+   ],
+   "inputs": [
+    "tm2wm_finger_brecq1s1_seed3/tm2_ckpt.pt"
+   ],
+   "done_when": [
+    {
+     "exists": "ADAPT_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 128
+     }
+    }
+   ]
+  },
+  {
+   "stage": "adapt",
+   "kind": "tm2_bridge_adapt",
+   "target": "vast",
+   "run_id": "adapt_tm2brecq1s1_finger_seed4_ckpt500000",
+   "cmd": "TDMPC2_ROOT=/workspace/tdmpc2/tdmpc2 /workspace/conda_envs/tdmpc2/bin/python -m probing.tdmpc2_adapt --tdmpc2_root /workspace/tdmpc2/tdmpc2 --pretrained \"$RUNROOT/tm2wm_finger_brecq1s1_seed4\" --logdir \"$RUNROOT/adapt_tm2brecq1s1_finger_seed4_ckpt500000\" --task dmc_finger_turn_hard --seed 4",
+   "vars": {
+    "arm": "rec",
+    "side": 1,
+    "seed": 4,
+    "run_id": "adapt_tm2brecq1s1_finger_seed4_ckpt500000"
+   },
+   "logdir": "adapt_tm2brecq1s1_finger_seed4_ckpt500000",
+   "outputs": [
+    "adapt_tm2brecq1s1_finger_seed4_ckpt500000"
+   ],
+   "inputs": [
+    "tm2wm_finger_brecq1s1_seed4/tm2_ckpt.pt"
+   ],
+   "done_when": [
+    {
+     "exists": "ADAPT_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 128
+     }
+    }
+   ]
+  },
+  {
+   "stage": "adapt",
+   "kind": "tm2_bridge_adapt",
+   "target": "vast",
+   "run_id": "adapt_tm2brecq1s1_finger_seed5_ckpt500000",
+   "cmd": "TDMPC2_ROOT=/workspace/tdmpc2/tdmpc2 /workspace/conda_envs/tdmpc2/bin/python -m probing.tdmpc2_adapt --tdmpc2_root /workspace/tdmpc2/tdmpc2 --pretrained \"$RUNROOT/tm2wm_finger_brecq1s1_seed5\" --logdir \"$RUNROOT/adapt_tm2brecq1s1_finger_seed5_ckpt500000\" --task dmc_finger_turn_hard --seed 5",
+   "vars": {
+    "arm": "rec",
+    "side": 1,
+    "seed": 5,
+    "run_id": "adapt_tm2brecq1s1_finger_seed5_ckpt500000"
+   },
+   "logdir": "adapt_tm2brecq1s1_finger_seed5_ckpt500000",
+   "outputs": [
+    "adapt_tm2brecq1s1_finger_seed5_ckpt500000"
+   ],
+   "inputs": [
+    "tm2wm_finger_brecq1s1_seed5/tm2_ckpt.pt"
+   ],
+   "done_when": [
+    {
+     "exists": "ADAPT_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 128
+     }
+    }
+   ]
+  },
+  {
+   "stage": "adapt",
+   "kind": "tm2_bridge_adapt",
+   "target": "vast",
+   "run_id": "adapt_tm2brecq1s1_finger_seed6_ckpt500000",
+   "cmd": "TDMPC2_ROOT=/workspace/tdmpc2/tdmpc2 /workspace/conda_envs/tdmpc2/bin/python -m probing.tdmpc2_adapt --tdmpc2_root /workspace/tdmpc2/tdmpc2 --pretrained \"$RUNROOT/tm2wm_finger_brecq1s1_seed6\" --logdir \"$RUNROOT/adapt_tm2brecq1s1_finger_seed6_ckpt500000\" --task dmc_finger_turn_hard --seed 6",
+   "vars": {
+    "arm": "rec",
+    "side": 1,
+    "seed": 6,
+    "run_id": "adapt_tm2brecq1s1_finger_seed6_ckpt500000"
+   },
+   "logdir": "adapt_tm2brecq1s1_finger_seed6_ckpt500000",
+   "outputs": [
+    "adapt_tm2brecq1s1_finger_seed6_ckpt500000"
+   ],
+   "inputs": [
+    "tm2wm_finger_brecq1s1_seed6/tm2_ckpt.pt"
+   ],
+   "done_when": [
+    {
+     "exists": "ADAPT_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 128
+     }
+    }
+   ]
+  },
+  {
+   "stage": "adapt",
+   "kind": "tm2_bridge_adapt",
+   "target": "vast",
+   "run_id": "adapt_tm2brecq1s1_finger_seed7_ckpt500000",
+   "cmd": "TDMPC2_ROOT=/workspace/tdmpc2/tdmpc2 /workspace/conda_envs/tdmpc2/bin/python -m probing.tdmpc2_adapt --tdmpc2_root /workspace/tdmpc2/tdmpc2 --pretrained \"$RUNROOT/tm2wm_finger_brecq1s1_seed7\" --logdir \"$RUNROOT/adapt_tm2brecq1s1_finger_seed7_ckpt500000\" --task dmc_finger_turn_hard --seed 7",
+   "vars": {
+    "arm": "rec",
+    "side": 1,
+    "seed": 7,
+    "run_id": "adapt_tm2brecq1s1_finger_seed7_ckpt500000"
+   },
+   "logdir": "adapt_tm2brecq1s1_finger_seed7_ckpt500000",
+   "outputs": [
+    "adapt_tm2brecq1s1_finger_seed7_ckpt500000"
+   ],
+   "inputs": [
+    "tm2wm_finger_brecq1s1_seed7/tm2_ckpt.pt"
+   ],
+   "done_when": [
+    {
+     "exists": "ADAPT_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 128
+     }
+    }
+   ]
+  },
+  {
+   "stage": "adapt",
+   "kind": "tm2_bridge_adapt",
+   "target": "vast",
+   "run_id": "adapt_tm2brecq1s1_finger_seed8_ckpt500000",
+   "cmd": "TDMPC2_ROOT=/workspace/tdmpc2/tdmpc2 /workspace/conda_envs/tdmpc2/bin/python -m probing.tdmpc2_adapt --tdmpc2_root /workspace/tdmpc2/tdmpc2 --pretrained \"$RUNROOT/tm2wm_finger_brecq1s1_seed8\" --logdir \"$RUNROOT/adapt_tm2brecq1s1_finger_seed8_ckpt500000\" --task dmc_finger_turn_hard --seed 8",
+   "vars": {
+    "arm": "rec",
+    "side": 1,
+    "seed": 8,
+    "run_id": "adapt_tm2brecq1s1_finger_seed8_ckpt500000"
+   },
+   "logdir": "adapt_tm2brecq1s1_finger_seed8_ckpt500000",
+   "outputs": [
+    "adapt_tm2brecq1s1_finger_seed8_ckpt500000"
+   ],
+   "inputs": [
+    "tm2wm_finger_brecq1s1_seed8/tm2_ckpt.pt"
+   ],
+   "done_when": [
+    {
+     "exists": "ADAPT_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 128
      }
     }
    ]
