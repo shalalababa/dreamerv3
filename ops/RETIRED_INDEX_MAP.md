@@ -32,3 +32,14 @@ must survive belongs here.
 
 Indices 1–11 pre-date `destroyed.jsonl`; their vast ids are preserved here even
 though the per-run archive detail was never recorded.
+## Not maintained — do not keep this current
+
+Frozen one-off, 17 Aug 2026. Per the user: index/doc inconsistency is fine, and
+precise instance-index bookkeeping is not worth effort. **The invariant is that
+every file is synced from the instance to RCC and verified before the instance
+dies** — after that, instance identity is disposable, because runs live on RCC
+under their own run_ids and that is what the readers and the ledger key on.
+
+Kept only because releasing all 17 indices at once would otherwise have erased
+the vast ids for 1–11, which existed nowhere else. Future sessions: do not
+extend or refresh this file, and do not treat index reuse as a problem.
