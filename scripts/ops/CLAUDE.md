@@ -81,3 +81,33 @@ comparison that depends on bitwise pairing across invocations.
 Keep code edits out of this session unless they are in `scripts/ops/`; two
 writers on the same repo produce conflicts, and the analysis session owns the
 scientific code.
+
+## Bundle AFTER the pull, never before (17 Aug 2026)
+
+**Full pull instance → RCC first, then build the bundle on RCC.** Never build
+a bundle on the instance and sync only that bundle.
+
+Read bundles are deliberately a SUBSET of the runroot. `runroot_light` specs
+ship no checkpoint bytes at all — FB carries checkpoint identity through
+`ckpt_sha256` linkage gates instead. So if the bundle is the only thing that
+ever leaves the instance, everything outside the bundle spec dies with the
+instance, and every check still reads green: the bundle verifies perfectly
+against its own manifest.
+
+This happened. The FB wave was bundled instance-side, so RCC held a 1 MB
+bundle while 16 trained `fb_ckpt.pt`, 17 embedding dirs and 2 exports (584 MB)
+existed nowhere else. It surfaced only because the user asked whether
+everything was synced before destroying the instance. The same prereg holds a
+graft/distill leg open as a future registration, and that leg needs exactly
+those checkpoints.
+
+`ops/waves/se_arms/build_read_bundle.sh` is the correct shape: it reads
+`$RUNROOT` on RCC. `ops/waves/fb_fits/run_emb_panel.sh` and its bundle builder
+ran instance-side and are the exception to fix, not the pattern to copy.
+
+**Verify transfers on FILE bytes, not `du -sb`.** Directory apparent size is
+filesystem-dependent (instance overlayfs vs GPFS), so a whole-tree `du -sb`
+reports a mismatch on every run even when the data is identical — it compares
+filesystems, not contents. Use `find . -type f | wc -l` plus
+`find . -type f -printf '%s\n' | awk '{s+=$1} END{print s}'` on both sides,
+with shas on the small witnesses. Reserve full-tree sha for small archives.
