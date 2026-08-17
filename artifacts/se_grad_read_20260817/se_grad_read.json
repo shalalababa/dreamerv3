@@ -1,0 +1,390 @@
+{
+ "n_hetero": 4,
+ "n_flat": 4,
+ "n_ungated2": 4,
+ "invalid_runs": [],
+ "instrument_flag": "CLEAN",
+ "probe_ckpt_flag": "UNVERIFIED (ckpt dirs unreachable on some probed runs)",
+ "occupancy_hetero": {
+  "mean": 0.47212054740841997,
+  "bca": [
+   0.46569370531469617,
+   0.48281076096465986
+  ]
+ },
+ "occupancy_flat": {
+  "mean": 0.523805751011333,
+  "bca": [
+   0.5050247904160077,
+   0.5388770574683943
+  ]
+ },
+ "occupancy_ungated2": {
+  "mean": 0.5526554288375276,
+  "bca": [
+   0.5372816461563713,
+   0.5780486054382116
+  ]
+ },
+ "ungated2_vs_prior_ungated": {
+  "prior": 0.56,
+  "this_wave": 0.5526554288375276,
+  "note": "cross-wave DESCRIPTIVE replication reference only"
+ },
+ "manipulation_check": {
+  "rule": "distractor p_perm < .05 in >= 3/4 hetero runs, counted among VALID probes",
+  "successes": 4,
+  "n_valid_probes": 4,
+  "n": 4,
+  "per_run": [
+   {
+    "seed": 28,
+    "p_perm": 0.000999000999000999,
+    "share_vs_real": 0.6631914973258972,
+    "theta1": 7.372420716693615,
+    "probe_valid": true,
+    "gate_all_p_one": false,
+    "ckpt_final_ok": null
+   },
+   {
+    "seed": 29,
+    "p_perm": 0.000999000999000999,
+    "share_vs_real": 0.654375433921814,
+    "theta1": 6.443369506796867,
+    "probe_valid": true,
+    "gate_all_p_one": false,
+    "ckpt_final_ok": null
+   },
+   {
+    "seed": 30,
+    "p_perm": 0.000999000999000999,
+    "share_vs_real": 0.6786173582077026,
+    "theta1": 7.008678826343871,
+    "probe_valid": true,
+    "gate_all_p_one": false,
+    "ckpt_final_ok": null
+   },
+   {
+    "seed": 31,
+    "p_perm": 0.000999000999000999,
+    "share_vs_real": 0.6818907260894775,
+    "theta1": 6.820719590756561,
+    "probe_valid": true,
+    "gate_all_p_one": false,
+    "ckpt_final_ok": null
+   }
+  ],
+  "passes": true
+ },
+ "primary": {
+  "statement": "gradient-following: occupancy(hetero) > occupancy(flat amplitude-matched) in the high-amplitude region, one-sided exact permutation",
+  "delta": -0.05168520360291301,
+  "p": 1.0,
+  "n_assignments": 70,
+  "fires": false,
+  "min_attainable_p": 0.014285714285714285
+ },
+ "outcome_cell": "ii",
+ "dose_hetero_vs_ungated2": {
+  "delta": -0.08053488142910764,
+  "p": 0.02857142857142857,
+  "note": "DESCRIPTIVE (dose axis)"
+ },
+ "dose_flat_vs_ungated2": {
+  "delta": -0.02884967782619463,
+  "p": 0.14285714285714285,
+  "note": "DESCRIPTIVE (dose axis)"
+ },
+ "secondary_score": {
+  "delta": 0.11796653270160107,
+  "p": 1.0,
+  "note": "reporting only, two-sided"
+ },
+ "gate_region": {
+  "key": "position",
+  "index": 0,
+  "threshold": -0.13009691
+ },
+ "mod_range": [
+  -0.32203162,
+  0.19711795
+ ],
+ "flat_scale": 0.35891393,
+ "n_perm": 1000,
+ "fit_counters": {
+  "/home/rickybao/projects/dreamerv3/local_results/uncfield_se_grad_20260817_101139/runroot/se_het_s28": {
+   "expected": 500000.0,
+   "last_step": 498176,
+   "ratio": 0.996352,
+   "flag": "OK",
+   "config_steps": 500000.0
+  },
+  "/home/rickybao/projects/dreamerv3/local_results/uncfield_se_grad_20260817_101139/runroot/se_het_s29": {
+   "expected": 500000.0,
+   "last_step": 499568,
+   "ratio": 0.999136,
+   "flag": "OK",
+   "config_steps": 500000.0
+  },
+  "/home/rickybao/projects/dreamerv3/local_results/uncfield_se_grad_20260817_101139/runroot/se_het_s30": {
+   "expected": 500000.0,
+   "last_step": 498352,
+   "ratio": 0.996704,
+   "flag": "OK",
+   "config_steps": 500000.0
+  },
+  "/home/rickybao/projects/dreamerv3/local_results/uncfield_se_grad_20260817_101139/runroot/se_het_s31": {
+   "expected": 500000.0,
+   "last_step": 499296,
+   "ratio": 0.998592,
+   "flag": "OK",
+   "config_steps": 500000.0
+  },
+  "/home/rickybao/projects/dreamerv3/local_results/uncfield_se_grad_20260817_101139/runroot/se_flat_s36": {
+   "expected": 500000.0,
+   "last_step": 498512,
+   "ratio": 0.997024,
+   "flag": "OK",
+   "config_steps": 500000.0
+  },
+  "/home/rickybao/projects/dreamerv3/local_results/uncfield_se_grad_20260817_101139/runroot/se_flat_s37": {
+   "expected": 500000.0,
+   "last_step": 498928,
+   "ratio": 0.997856,
+   "flag": "OK",
+   "config_steps": 500000.0
+  },
+  "/home/rickybao/projects/dreamerv3/local_results/uncfield_se_grad_20260817_101139/runroot/se_flat_s38": {
+   "expected": 500000.0,
+   "last_step": 499792,
+   "ratio": 0.999584,
+   "flag": "OK",
+   "config_steps": 500000.0
+  },
+  "/home/rickybao/projects/dreamerv3/local_results/uncfield_se_grad_20260817_101139/runroot/se_flat_s39": {
+   "expected": 500000.0,
+   "last_step": 498336,
+   "ratio": 0.996672,
+   "flag": "OK",
+   "config_steps": 500000.0
+  },
+  "/home/rickybao/projects/dreamerv3/local_results/uncfield_se_grad_20260817_101139/runroot/se_ungate2_s32": {
+   "expected": 500000.0,
+   "last_step": 499072,
+   "ratio": 0.998144,
+   "flag": "OK",
+   "config_steps": 500000.0
+  },
+  "/home/rickybao/projects/dreamerv3/local_results/uncfield_se_grad_20260817_101139/runroot/se_ungate2_s33": {
+   "expected": 500000.0,
+   "last_step": 498048,
+   "ratio": 0.996096,
+   "flag": "OK",
+   "config_steps": 500000.0
+  },
+  "/home/rickybao/projects/dreamerv3/local_results/uncfield_se_grad_20260817_101139/runroot/se_ungate2_s34": {
+   "expected": 500000.0,
+   "last_step": 497680,
+   "ratio": 0.99536,
+   "flag": "OK",
+   "config_steps": 500000.0
+  },
+  "/home/rickybao/projects/dreamerv3/local_results/uncfield_se_grad_20260817_101139/runroot/se_ungate2_s35": {
+   "expected": 500000.0,
+   "last_step": 498608,
+   "ratio": 0.997216,
+   "flag": "OK",
+   "config_steps": 500000.0
+  }
+ },
+ "per_run": [
+  {
+   "run_dir": "/home/rickybao/projects/dreamerv3/local_results/uncfield_se_grad_20260817_101139/runroot/se_het_s28",
+   "train_seed": 28,
+   "arm": "hetero",
+   "occupancy": 0.4661460002563938,
+   "n_steps": 499232,
+   "valid": true,
+   "score": 39.50886657883959,
+   "n_score_entries": 496,
+   "probe": {
+    "p_perm": 0.000999000999000999,
+    "share_vs_real": 0.6631914973258972,
+    "theta1": 7.372420716693615,
+    "probe_valid": true,
+    "gate_all_p_one": false,
+    "ckpt_final_ok": null
+   }
+  },
+  {
+   "run_dir": "/home/rickybao/projects/dreamerv3/local_results/uncfield_se_grad_20260817_101139/runroot/se_het_s29",
+   "train_seed": 29,
+   "arm": "hetero",
+   "occupancy": 0.46433682048960323,
+   "n_steps": 494768,
+   "valid": true,
+   "score": 49.170027745504704,
+   "n_score_entries": 496,
+   "probe": {
+    "p_perm": 0.000999000999000999,
+    "share_vs_real": 0.654375433921814,
+    "theta1": 6.443369506796867,
+    "probe_valid": true,
+    "gate_all_p_one": false,
+    "ckpt_final_ok": null
+   }
+  },
+  {
+   "run_dir": "/home/rickybao/projects/dreamerv3/local_results/uncfield_se_grad_20260817_101139/runroot/se_het_s30",
+   "train_seed": 30,
+   "arm": "hetero",
+   "occupancy": 0.47137753140220456,
+   "n_steps": 499328,
+   "valid": true,
+   "score": 35.71705818990566,
+   "n_score_entries": 496,
+   "probe": {
+    "p_perm": 0.000999000999000999,
+    "share_vs_real": 0.6786173582077026,
+    "theta1": 7.008678826343871,
+    "probe_valid": true,
+    "gate_all_p_one": false,
+    "ckpt_final_ok": null
+   }
+  },
+  {
+   "run_dir": "/home/rickybao/projects/dreamerv3/local_results/uncfield_se_grad_20260817_101139/runroot/se_het_s31",
+   "train_seed": 31,
+   "arm": "hetero",
+   "occupancy": 0.48662183748547827,
+   "n_steps": 495808,
+   "valid": true,
+   "score": 50.44411725238895,
+   "n_score_entries": 496,
+   "probe": {
+    "p_perm": 0.000999000999000999,
+    "share_vs_real": 0.6818907260894775,
+    "theta1": 6.820719590756561,
+    "probe_valid": true,
+    "gate_all_p_one": false,
+    "ckpt_final_ok": null
+   }
+  },
+  {
+   "run_dir": "/home/rickybao/projects/dreamerv3/local_results/uncfield_se_grad_20260817_101139/runroot/se_flat_s36",
+   "train_seed": 36,
+   "arm": "flat",
+   "occupancy": 0.5351058745382671,
+   "n_steps": 493792,
+   "valid": true,
+   "score": 34.564641825890796,
+   "n_score_entries": 496,
+   "probe": {
+    "p_perm": 0.000999000999000999,
+    "share_vs_real": 0.6905161738395691,
+    "theta1": 6.927263499299069,
+    "probe_valid": true,
+    "gate_all_p_one": false,
+    "ckpt_final_ok": null
+   }
+  },
+  {
+   "run_dir": "/home/rickybao/projects/dreamerv3/local_results/uncfield_se_grad_20260817_101139/runroot/se_flat_s37",
+   "train_seed": 37,
+   "arm": "flat",
+   "occupancy": 0.5161537528307991,
+   "n_steps": 494560,
+   "valid": true,
+   "score": 65.92326215426473,
+   "n_score_entries": 496,
+   "probe": {
+    "p_perm": 0.000999000999000999,
+    "share_vs_real": 0.6903820633888245,
+    "theta1": 7.293340033602673,
+    "probe_valid": true,
+    "gate_all_p_one": false,
+    "ckpt_final_ok": null
+   }
+  },
+  {
+   "run_dir": "/home/rickybao/projects/dreamerv3/local_results/uncfield_se_grad_20260817_101139/runroot/se_flat_s38",
+   "train_seed": 38,
+   "arm": "flat",
+   "occupancy": 0.5426482403985217,
+   "n_steps": 497840,
+   "valid": true,
+   "score": 36.873684621452774,
+   "n_score_entries": 496,
+   "probe": {
+    "p_perm": 0.000999000999000999,
+    "share_vs_real": 0.6907483339309692,
+    "theta1": 7.162181942115385,
+    "probe_valid": true,
+    "gate_all_p_one": false,
+    "ckpt_final_ok": null
+   }
+  },
+  {
+   "run_dir": "/home/rickybao/projects/dreamerv3/local_results/uncfield_se_grad_20260817_101139/runroot/se_flat_s39",
+   "train_seed": 39,
+   "arm": "flat",
+   "occupancy": 0.5013151362777439,
+   "n_steps": 499568,
+   "valid": true,
+   "score": 37.006615034224225,
+   "n_score_entries": 496,
+   "probe": {
+    "p_perm": 0.000999000999000999,
+    "share_vs_real": 0.6909127831459045,
+    "theta1": 7.0049285172044495,
+    "probe_valid": true,
+    "gate_all_p_one": false,
+    "ckpt_final_ok": null
+   }
+  },
+  {
+   "run_dir": "/home/rickybao/projects/dreamerv3/local_results/uncfield_se_grad_20260817_101139/runroot/se_ungate2_s32",
+   "train_seed": 32,
+   "arm": "ungated2",
+   "occupancy": 0.5880679993577392,
+   "n_steps": 498240,
+   "valid": true,
+   "score": 36.763055279732924,
+   "n_score_entries": 496,
+   "probe": null
+  },
+  {
+   "run_dir": "/home/rickybao/projects/dreamerv3/local_results/uncfield_se_grad_20260817_101139/runroot/se_ungate2_s33",
+   "train_seed": 33,
+   "arm": "ungated2",
+   "occupancy": 0.5414432403880014,
+   "n_steps": 499792,
+   "valid": true,
+   "score": 42.579818055894414,
+   "n_score_entries": 496,
+   "probe": null
+  },
+  {
+   "run_dir": "/home/rickybao/projects/dreamerv3/local_results/uncfield_se_grad_20260817_101139/runroot/se_ungate2_s34",
+   "train_seed": 34,
+   "arm": "ungated2",
+   "occupancy": 0.5331200519247412,
+   "n_steps": 499184,
+   "valid": true,
+   "score": 48.14504198713927,
+   "n_score_entries": 496,
+   "probe": null
+  },
+  {
+   "run_dir": "/home/rickybao/projects/dreamerv3/local_results/uncfield_se_grad_20260817_101139/runroot/se_ungate2_s35",
+   "train_seed": 35,
+   "arm": "ungated2",
+   "occupancy": 0.5479904236796286,
+   "n_steps": 496224,
+   "valid": true,
+   "score": 23.786554539953467,
+   "n_score_entries": 496,
+   "probe": null
+  }
+ ]
+}

@@ -156,7 +156,7 @@ Root: `README.md` (layout + conventions), `PATHMAP.md` (reorg
 redirects), `TODO.md` (shared working list), `Roadmap_20260718.md` (the
 live status board, bands A–D + standing tracks, updated every read).
 
-- `paper1_wm_transfer/` — `Paper1_FullRecord_20260816.md` (complete
+- `paper1_wm_transfer/` — `Paper1_FullRecord_20260817.md` (complete
   research record; entry doc). `plan/` = `Research_Plan_v4_20260711.tex`
   (plan of record). `theory/` = `Theory_SpectralTransfer_20260717.tex`
   + decoder-free addendum 18 Jul + `Theory_HighFR_Prediction_20260730.md`
