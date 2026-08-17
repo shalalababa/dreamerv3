@@ -31,3 +31,35 @@ available (search invocation / pairs.json constraints) — otherwise the
 same result recurs. If side1 is kept byte-identical, the rebuild costs
 one re-curation + 32 fits + 32 adapts (RCC background, no rented
 instances) + a fresh read attempt (the ONE execution was not consumed).
+
+---
+
+## SUPERSESSION NOTE (16 Aug night, owning chat)
+
+The headline above — "COMPLIANCE IS TRIVIALLY ACHIEVABLE; the pool was
+never the problem" — is **WRONG as stated** and superseded by
+`DIAGNOSIS.md` (ops): it was computed on the MARGINAL per-episode
+distribution, ignoring the composed constraints. Under the registered
+criteria (200-episode candidates, coverage matching, separation,
+overlap cap) the reachable low-side floor is **0.05318** — zero of
+2715 accepted pairs meet the 0.05 bar — because occupancy and coverage
+are coupled in this pool (r = +0.522; the low-occupancy `random`
+family is also the lowest-coverage material). The scan's numbers stand
+as facts about the marginal distribution; the feasibility conclusion
+drawn from them does not survive the constraint set.
+
+**DECISION (owning chat, 16 Aug): P-D2 carried as
+MEASURED-INFEASIBLE-AT-SPEC** — no rebuild, no criterion relaxation,
+no pool re-sampling. Rationale: (a) re-sampling until a pair clears
+the bar is selection-on-the-gate; (b) even the best available pair
+(docc 0.0254 ≈ ⅓ of the built pair, ~11× below reacher's realized
+0.279 dose) would make the wave near-certainly an uninterpretable
+under-dosed null; (c) relaxing coverage matching would re-admit the
+confound the matched-pair design exists to kill. The paper's walker
+sentence upgrades from "refused at the gate" to "refused at the gate,
+with an archived constrained enumeration proving no compliant pair
+exists in the collected pool — a domain-structural occupancy–coverage
+coupling", and reacher carries the third-domain generality leg alone.
+Lesson recorded to memory: marginal feasibility ≠ constrained
+feasibility — enumerate under the full constraint set before
+concluding a curation target is reachable.

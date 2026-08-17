@@ -32,8 +32,10 @@ from analysis.unfrozen_stress_read import load_cells
 SEEDS = tuple(range(1, 9))
 SIDES = ('0', '1')
 # pe per-cell e4 csv, read 2026-08-02 (value-aware, disclosed) — pinned:
-PE_E4_SHA256 = ('9907d7337a84c02c0820473c0455cd033dce200f5fde069bfde119d'
-                '6892cc6e8')
+PE_E4_SHA256 = ('8bd7a68389a1f05cc78fc4b6f3b4be41fb1cdbfa348f305c8e8e1a86'
+                'd7f8c112')  # Amendment 2 (PREREG_lewm_amend2_20260816):
+# same-device (rtx6000) pe anchor panel replacing the historical csv
+# (9907d733..., device unrecoverable; full-panel diff mean -0.172 sd 0.32)
 FIDELITY_FLOOR = 0.5
 THRESH_SWAMP = 2.0        # PREREG_pixel_swamping_20260724
 SW_BASE_LO = 19.41        # committed swamping band lower edge
@@ -375,7 +377,7 @@ def selfcheck():
   base = tempfile.mkdtemp(prefix='lewm_selfcheck_')
   keep_sha, keep_x2 = PE_E4_SHA256, X2_BASELINE
   try:
-    assert PE_E4_SHA256.startswith('9907d733') and FIDELITY_FLOOR == 0.5
+    assert PE_E4_SHA256.startswith('8bd7a683') and FIDELITY_FLOOR == 0.5
 
     def run_fx(name, **kw):
       tmp = os.path.join(base, name)

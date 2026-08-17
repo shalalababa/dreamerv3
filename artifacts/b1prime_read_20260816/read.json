@@ -1,0 +1,100 @@
+{
+ "apt_control": {
+  "label": "CONTROL-OK",
+  "margin": 0.1,
+  "stat": {
+   "ci": [
+    0.0078146998715726,
+    0.02740620654376387
+   ],
+   "d_z": 1.2521018318663262,
+   "mean": 0.01880706591126932,
+   "n": 8,
+   "perm_p": 0.0234375,
+   "sd": 0.015020396450691524
+  }
+ },
+ "fired": {
+  "declines": [],
+  "rises": []
+ },
+ "interaction_descriptive": {
+  "i600k": {
+   "ci": [
+    -27.129805946342827,
+    53.688287964540905
+   ],
+   "diff": 7.890649999999994,
+   "n": [
+    8,
+    8
+   ],
+   "perm_p": 0.7110288971102889
+  },
+  "note": "descriptive only; executed anchors (value-aware): 1m task ~188.2 / apt ~79.9; 300k task 73.6 (floor-FAIL)"
+ },
+ "mde_note": {
+  "note": "includes anchor-sample uncertainty (review B3); executed per-fit sds ran 0.05 (1m) to 0.20 (300k) - under 300k-like dispersion this wave is unpowered for a sub-collapse decline (disclosed in the prereg honesty block)",
+  "per_side": {
+   "0": {
+    "mde80": 0.05263637929484639,
+    "sd_anchor": 0.05085330273198354,
+    "sd_new": 0.010978903575586814,
+    "se": 0.018798706891016568
+   },
+   "1": {
+    "mde80": 0.03100196850926043,
+    "sd_anchor": 0.030925663315373126,
+    "sd_new": 0.0034885624329529415,
+    "se": 0.011072131610450155
+   }
+  }
+ },
+ "modal_n_ep": 96,
+ "p_c1_by_side": {
+  "0": {
+   "ci": [
+    -0.0017011872658778226,
+    0.07082800700866425
+   ],
+   "diff": 0.025425823487006505,
+   "n": [
+    4,
+    8
+   ],
+   "perm_p": 0.39676032396760325
+  },
+  "1": {
+   "ci": [
+    0.009038629864331599,
+    0.05598449015741964
+   ],
+   "diff": 0.022141767502611653,
+   "n": [
+    4,
+    8
+   ],
+   "perm_p": 0.1620837916208379
+  }
+ },
+ "p_c2_floor": {
+  "floor": 113.682,
+  "passed": false,
+  "task_mean": 101.0677125
+ },
+ "panel_means": {
+  "apt_auc": 93.1770625,
+  "apt_leg": 0.4198770659112693,
+  "task_auc": 101.0677125,
+  "task_leg_s0": 0.928135518024264,
+  "task_leg_s1": 0.9889684065508756
+ },
+ "pins": {
+  "anchor_s0_mean": 0.9027096945372575,
+  "anchor_s1_mean": 0.9668266390482639,
+  "apt_leg_anchor": 0.40107,
+  "floor_auc": 113.682
+ },
+ "prereg": "PREREG_b1prime_20260815.md",
+ "verdict": "DISSOCIATION-REPEATS: behavior floors while legibility is not significantly declined - the B1-300k shape recurs at 600k; cliff in (600k, 1m]; no ordering claim"
+}

@@ -1,0 +1,53 @@
+{
+  "exploratory": "ridge-probe exploratory instrument 2026-08-08; not frozen; no registered decision consumes this",
+  "run_logdir": "/scratch/midway3/rickybao/dreamerv3_runs/ax1wm_finger_sk6q1s0_seed4",
+  "run_id": "ax1wm_finger_sk6q1s0_seed4",
+  "checkpoint": "/scratch/midway3/rickybao/dreamerv3_runs/ax1wm_finger_sk6q1s0_seed4/ckpt",
+  "expl_mode": "task",
+  "reward_aware": true,
+  "probeset_id": "finger_v1",
+  "probeset_sha256": "a78fe58ca526b51c9fd567b9627e6524eef9df55d918d49ac3f24994c452c786",
+  "reward_override": null,
+  "override_meta": null,
+  "k_folds": 5,
+  "alphas": [
+    0.0001,
+    0.001,
+    0.01
+  ],
+  "seed": 0,
+  "feat_dim": 512,
+  "probe": {
+    "alpha_0.0001": {
+      "r2": 0.35491184012557464,
+      "auroc": 0.9367117531285675,
+      "auroc_in_regime": 0.9839460784313725,
+      "auroc_out_regime": null,
+      "r2_in_regime": -325.4171153408253
+    },
+    "alpha_0.001": {
+      "r2": 0.3587583712615624,
+      "auroc": 0.9385926292889913,
+      "auroc_in_regime": 0.985202205882353,
+      "auroc_out_regime": null,
+      "r2_in_regime": -324.22288350130526
+    },
+    "alpha_0.01": {
+      "r2": 0.3723191391492122,
+      "auroc": 0.9448352285577358,
+      "auroc_in_regime": 0.9887867647058823,
+      "auroc_out_regime": null,
+      "r2_in_regime": -321.0746953506554
+    }
+  },
+  "head_panel": {
+    "auroc": 0.9883858093081612,
+    "auroc_in_regime": 0.14448529411764705,
+    "recal_nll_all": 0.11684441371127727,
+    "recal_nll_in_regime": 0.7728033989955584,
+    "recal_nll_out_regime": 0.051433481828276666
+  },
+  "deter_std_recomputed": 0.16976509168529016,
+  "deter_std_summary": null,
+  "witness_match": null
+}

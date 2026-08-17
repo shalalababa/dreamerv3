@@ -1,0 +1,124 @@
+{
+ "fidelity": {
+  "values": {
+   "s0_seed1": 0.7522104709338295,
+   "s0_seed2": 0.7618879830932697,
+   "s0_seed3": 0.6739702481122861,
+   "s0_seed4": 0.6730471897420064,
+   "s0_seed5": 0.7435866873457913,
+   "s0_seed6": 0.7262566713479577,
+   "s0_seed7": 0.7721803282483323,
+   "s0_seed8": 0.7743029147521747,
+   "s1_seed1": 0.8598156662639493,
+   "s1_seed2": 0.8540220749069025,
+   "s1_seed3": 0.8380254796138359,
+   "s1_seed4": 0.8542011869797989,
+   "s1_seed5": 0.8722966060601318,
+   "s1_seed6": 0.8518534984209339,
+   "s1_seed7": 0.843176636117236,
+   "s1_seed8": 0.8368437043358329
+  },
+  "floor": 0.5,
+  "all_pass": true
+ },
+ "p_j1_rep": {
+  "stats": {
+   "mean": -0.9047020403882935,
+   "ci": [
+    -4.610325616205481,
+    3.275930527766822
+   ],
+   "perm_p": 0.6875,
+   "d_z": -0.14959444615727466,
+   "sd": 6.047698050482061,
+   "n": 8
+  },
+  "verdict": "NO-SEPARATION",
+  "pe_anchor": {
+   "point": 23.032351416154537,
+   "ci": [
+    20.142859778988182,
+    25.676290912420605
+   ]
+  },
+  "jp_seed_cluster": {
+   "point": 23.76480802931998,
+   "ci": [
+    21.89680649627451,
+    25.9066464840309
+   ]
+  },
+  "bands": {
+   "inclusion_restored": false,
+   "below_swamping_band": false
+  },
+  "mde_note": {
+   "mde80_units": 6.991138946357262,
+   "basis": "noncentral-t approximation; decision rule is permutation+BCa"
+  }
+ },
+ "p_j1_emb": {
+  "stats": {
+   "mean": 0.029727273592967125,
+   "ci": [
+    0.00826544311597843,
+    0.05703308561259999
+   ],
+   "perm_p": 0.03192138671875,
+   "d_z": 0.5825302453948529,
+   "sd": 0.051031296362676025,
+   "n": 16
+  },
+  "verdict": "EMB-MORE-LEGIBLE",
+  "lewm_mean": 0.5325767024155509,
+  "fpx_mean": 0.5028494288225838,
+  "alpha_sensitivity": {
+   "lewm": {
+    "alpha_0.0001": 0.5324914030441152,
+    "alpha_0.001": 0.5325767024155509,
+    "alpha_0.01": 0.5226018185376589
+   },
+   "fpx": {
+    "alpha_0.0001": 0.5028545592347577,
+    "alpha_0.001": 0.5028494288225838,
+    "alpha_0.01": 0.5036722309474931
+   }
+  }
+ },
+ "p_j1_beh": {
+  "stats": {
+   "mean": -15.377625,
+   "ci": [
+    -32.54164982662411,
+    2.4010437499999995
+   ],
+   "perm_p": 0.1796875,
+   "d_z": -0.5698979218008716,
+   "sd": 26.983121734164012,
+   "n": 8
+  },
+  "verdict": "FLOOR-CONSISTENT",
+  "pe_beh_anchor": {
+   "point": -8.541818750000004,
+   "ci": [
+    -25.96698234375,
+    9.620574843749994
+   ]
+  },
+  "cell_means": {
+   "s0": 70.04035,
+   "s1": 58.97785
+  }
+ },
+ "overall": "P-J1 PARTIAL (exactly one representation leg fires: emb)",
+ "embed_control": {
+  "preproc": "imagenet",
+  "preprocessor_symbol": "utils.get_img_preprocessor",
+  "episode": "/workspace/dreamerv3_runs/axis1_finger/pxq1m/side0/20260719T213258F245873-3kxGsirBNQ7oGN34exrWf8-0000000000000000000000-1001.npz",
+  "img_size": 64,
+  "spt_version": "0.1.8",
+  "max_abs_diff": 4.76837158203125e-07,
+  "threshold": 1e-05,
+  "pass": true
+ }
+}
