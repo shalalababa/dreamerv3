@@ -1,0 +1,762 @@
+{
+ "wave_id": "fb_fits",
+ "spec": "/home/rickybao/projects/dreamerv3/ops/waves/fb_fits/spec.yaml",
+ "prereg": "prereg/PREREG_fb_20260817.md",
+ "bundle": {
+  "prefix": "fb_fits",
+  "include_stages": [
+   "fit"
+  ],
+  "cloud_logs": [
+   "fbwm_finger_q1s*_seed*.out",
+   "worker_shard*.out"
+  ]
+ },
+ "stages": [
+  {
+   "name": "fit",
+   "target": "vast",
+   "kind": "fb_fit",
+   "on_failure": "continue",
+   "needs": null
+  }
+ ],
+ "runs": [
+  {
+   "stage": "fit",
+   "kind": "fb_fit",
+   "target": "vast",
+   "run_id": "fbwm_finger_q1s0_seed1",
+   "cmd": "MUJOCO_GL=disabled CONTROLLABLE_AGENT_ROOT=/workspace/controllable_agent /workspace/conda_envs/fb/bin/python -m probing.fb_fit fit --data \"$RUNROOT/fb_data/finger_q1_side0.npz\" --logdir \"$RUNROOT/fbwm_finger_q1s0_seed1\" --seed 1 --updates 500000",
+   "vars": {
+    "side": 0,
+    "seed": 1,
+    "run_id": "fbwm_finger_q1s0_seed1"
+   },
+   "logdir": "fbwm_finger_q1s0_seed1",
+   "outputs": [
+    "fbwm_finger_q1s0_seed1"
+   ],
+   "inputs": [
+    "fb_data/finger_q1_side0.npz",
+    "fb_data/finger_q1_side0.npz.manifest.json"
+   ],
+   "done_when": [
+    {
+     "exists": "FB_FIT_DONE"
+    },
+    {
+     "exists": "fb_ckpt.pt"
+    },
+    {
+     "exists": "fb_config.json"
+    },
+    {
+     "exists": "fb_metrics.json"
+    },
+    {
+     "file_contains": {
+      "file": "FB_FIT_PROGRESS",
+      "pattern": "update=500000"
+     }
+    },
+    {
+     "file_contains": {
+      "file": "FB_FIT_PROGRESS",
+      "pattern": "total_updates=500000"
+     }
+    }
+   ]
+  },
+  {
+   "stage": "fit",
+   "kind": "fb_fit",
+   "target": "vast",
+   "run_id": "fbwm_finger_q1s0_seed2",
+   "cmd": "MUJOCO_GL=disabled CONTROLLABLE_AGENT_ROOT=/workspace/controllable_agent /workspace/conda_envs/fb/bin/python -m probing.fb_fit fit --data \"$RUNROOT/fb_data/finger_q1_side0.npz\" --logdir \"$RUNROOT/fbwm_finger_q1s0_seed2\" --seed 2 --updates 500000",
+   "vars": {
+    "side": 0,
+    "seed": 2,
+    "run_id": "fbwm_finger_q1s0_seed2"
+   },
+   "logdir": "fbwm_finger_q1s0_seed2",
+   "outputs": [
+    "fbwm_finger_q1s0_seed2"
+   ],
+   "inputs": [
+    "fb_data/finger_q1_side0.npz",
+    "fb_data/finger_q1_side0.npz.manifest.json"
+   ],
+   "done_when": [
+    {
+     "exists": "FB_FIT_DONE"
+    },
+    {
+     "exists": "fb_ckpt.pt"
+    },
+    {
+     "exists": "fb_config.json"
+    },
+    {
+     "exists": "fb_metrics.json"
+    },
+    {
+     "file_contains": {
+      "file": "FB_FIT_PROGRESS",
+      "pattern": "update=500000"
+     }
+    },
+    {
+     "file_contains": {
+      "file": "FB_FIT_PROGRESS",
+      "pattern": "total_updates=500000"
+     }
+    }
+   ]
+  },
+  {
+   "stage": "fit",
+   "kind": "fb_fit",
+   "target": "vast",
+   "run_id": "fbwm_finger_q1s0_seed3",
+   "cmd": "MUJOCO_GL=disabled CONTROLLABLE_AGENT_ROOT=/workspace/controllable_agent /workspace/conda_envs/fb/bin/python -m probing.fb_fit fit --data \"$RUNROOT/fb_data/finger_q1_side0.npz\" --logdir \"$RUNROOT/fbwm_finger_q1s0_seed3\" --seed 3 --updates 500000",
+   "vars": {
+    "side": 0,
+    "seed": 3,
+    "run_id": "fbwm_finger_q1s0_seed3"
+   },
+   "logdir": "fbwm_finger_q1s0_seed3",
+   "outputs": [
+    "fbwm_finger_q1s0_seed3"
+   ],
+   "inputs": [
+    "fb_data/finger_q1_side0.npz",
+    "fb_data/finger_q1_side0.npz.manifest.json"
+   ],
+   "done_when": [
+    {
+     "exists": "FB_FIT_DONE"
+    },
+    {
+     "exists": "fb_ckpt.pt"
+    },
+    {
+     "exists": "fb_config.json"
+    },
+    {
+     "exists": "fb_metrics.json"
+    },
+    {
+     "file_contains": {
+      "file": "FB_FIT_PROGRESS",
+      "pattern": "update=500000"
+     }
+    },
+    {
+     "file_contains": {
+      "file": "FB_FIT_PROGRESS",
+      "pattern": "total_updates=500000"
+     }
+    }
+   ]
+  },
+  {
+   "stage": "fit",
+   "kind": "fb_fit",
+   "target": "vast",
+   "run_id": "fbwm_finger_q1s0_seed4",
+   "cmd": "MUJOCO_GL=disabled CONTROLLABLE_AGENT_ROOT=/workspace/controllable_agent /workspace/conda_envs/fb/bin/python -m probing.fb_fit fit --data \"$RUNROOT/fb_data/finger_q1_side0.npz\" --logdir \"$RUNROOT/fbwm_finger_q1s0_seed4\" --seed 4 --updates 500000",
+   "vars": {
+    "side": 0,
+    "seed": 4,
+    "run_id": "fbwm_finger_q1s0_seed4"
+   },
+   "logdir": "fbwm_finger_q1s0_seed4",
+   "outputs": [
+    "fbwm_finger_q1s0_seed4"
+   ],
+   "inputs": [
+    "fb_data/finger_q1_side0.npz",
+    "fb_data/finger_q1_side0.npz.manifest.json"
+   ],
+   "done_when": [
+    {
+     "exists": "FB_FIT_DONE"
+    },
+    {
+     "exists": "fb_ckpt.pt"
+    },
+    {
+     "exists": "fb_config.json"
+    },
+    {
+     "exists": "fb_metrics.json"
+    },
+    {
+     "file_contains": {
+      "file": "FB_FIT_PROGRESS",
+      "pattern": "update=500000"
+     }
+    },
+    {
+     "file_contains": {
+      "file": "FB_FIT_PROGRESS",
+      "pattern": "total_updates=500000"
+     }
+    }
+   ]
+  },
+  {
+   "stage": "fit",
+   "kind": "fb_fit",
+   "target": "vast",
+   "run_id": "fbwm_finger_q1s0_seed5",
+   "cmd": "MUJOCO_GL=disabled CONTROLLABLE_AGENT_ROOT=/workspace/controllable_agent /workspace/conda_envs/fb/bin/python -m probing.fb_fit fit --data \"$RUNROOT/fb_data/finger_q1_side0.npz\" --logdir \"$RUNROOT/fbwm_finger_q1s0_seed5\" --seed 5 --updates 500000",
+   "vars": {
+    "side": 0,
+    "seed": 5,
+    "run_id": "fbwm_finger_q1s0_seed5"
+   },
+   "logdir": "fbwm_finger_q1s0_seed5",
+   "outputs": [
+    "fbwm_finger_q1s0_seed5"
+   ],
+   "inputs": [
+    "fb_data/finger_q1_side0.npz",
+    "fb_data/finger_q1_side0.npz.manifest.json"
+   ],
+   "done_when": [
+    {
+     "exists": "FB_FIT_DONE"
+    },
+    {
+     "exists": "fb_ckpt.pt"
+    },
+    {
+     "exists": "fb_config.json"
+    },
+    {
+     "exists": "fb_metrics.json"
+    },
+    {
+     "file_contains": {
+      "file": "FB_FIT_PROGRESS",
+      "pattern": "update=500000"
+     }
+    },
+    {
+     "file_contains": {
+      "file": "FB_FIT_PROGRESS",
+      "pattern": "total_updates=500000"
+     }
+    }
+   ]
+  },
+  {
+   "stage": "fit",
+   "kind": "fb_fit",
+   "target": "vast",
+   "run_id": "fbwm_finger_q1s0_seed6",
+   "cmd": "MUJOCO_GL=disabled CONTROLLABLE_AGENT_ROOT=/workspace/controllable_agent /workspace/conda_envs/fb/bin/python -m probing.fb_fit fit --data \"$RUNROOT/fb_data/finger_q1_side0.npz\" --logdir \"$RUNROOT/fbwm_finger_q1s0_seed6\" --seed 6 --updates 500000",
+   "vars": {
+    "side": 0,
+    "seed": 6,
+    "run_id": "fbwm_finger_q1s0_seed6"
+   },
+   "logdir": "fbwm_finger_q1s0_seed6",
+   "outputs": [
+    "fbwm_finger_q1s0_seed6"
+   ],
+   "inputs": [
+    "fb_data/finger_q1_side0.npz",
+    "fb_data/finger_q1_side0.npz.manifest.json"
+   ],
+   "done_when": [
+    {
+     "exists": "FB_FIT_DONE"
+    },
+    {
+     "exists": "fb_ckpt.pt"
+    },
+    {
+     "exists": "fb_config.json"
+    },
+    {
+     "exists": "fb_metrics.json"
+    },
+    {
+     "file_contains": {
+      "file": "FB_FIT_PROGRESS",
+      "pattern": "update=500000"
+     }
+    },
+    {
+     "file_contains": {
+      "file": "FB_FIT_PROGRESS",
+      "pattern": "total_updates=500000"
+     }
+    }
+   ]
+  },
+  {
+   "stage": "fit",
+   "kind": "fb_fit",
+   "target": "vast",
+   "run_id": "fbwm_finger_q1s0_seed7",
+   "cmd": "MUJOCO_GL=disabled CONTROLLABLE_AGENT_ROOT=/workspace/controllable_agent /workspace/conda_envs/fb/bin/python -m probing.fb_fit fit --data \"$RUNROOT/fb_data/finger_q1_side0.npz\" --logdir \"$RUNROOT/fbwm_finger_q1s0_seed7\" --seed 7 --updates 500000",
+   "vars": {
+    "side": 0,
+    "seed": 7,
+    "run_id": "fbwm_finger_q1s0_seed7"
+   },
+   "logdir": "fbwm_finger_q1s0_seed7",
+   "outputs": [
+    "fbwm_finger_q1s0_seed7"
+   ],
+   "inputs": [
+    "fb_data/finger_q1_side0.npz",
+    "fb_data/finger_q1_side0.npz.manifest.json"
+   ],
+   "done_when": [
+    {
+     "exists": "FB_FIT_DONE"
+    },
+    {
+     "exists": "fb_ckpt.pt"
+    },
+    {
+     "exists": "fb_config.json"
+    },
+    {
+     "exists": "fb_metrics.json"
+    },
+    {
+     "file_contains": {
+      "file": "FB_FIT_PROGRESS",
+      "pattern": "update=500000"
+     }
+    },
+    {
+     "file_contains": {
+      "file": "FB_FIT_PROGRESS",
+      "pattern": "total_updates=500000"
+     }
+    }
+   ]
+  },
+  {
+   "stage": "fit",
+   "kind": "fb_fit",
+   "target": "vast",
+   "run_id": "fbwm_finger_q1s0_seed8",
+   "cmd": "MUJOCO_GL=disabled CONTROLLABLE_AGENT_ROOT=/workspace/controllable_agent /workspace/conda_envs/fb/bin/python -m probing.fb_fit fit --data \"$RUNROOT/fb_data/finger_q1_side0.npz\" --logdir \"$RUNROOT/fbwm_finger_q1s0_seed8\" --seed 8 --updates 500000",
+   "vars": {
+    "side": 0,
+    "seed": 8,
+    "run_id": "fbwm_finger_q1s0_seed8"
+   },
+   "logdir": "fbwm_finger_q1s0_seed8",
+   "outputs": [
+    "fbwm_finger_q1s0_seed8"
+   ],
+   "inputs": [
+    "fb_data/finger_q1_side0.npz",
+    "fb_data/finger_q1_side0.npz.manifest.json"
+   ],
+   "done_when": [
+    {
+     "exists": "FB_FIT_DONE"
+    },
+    {
+     "exists": "fb_ckpt.pt"
+    },
+    {
+     "exists": "fb_config.json"
+    },
+    {
+     "exists": "fb_metrics.json"
+    },
+    {
+     "file_contains": {
+      "file": "FB_FIT_PROGRESS",
+      "pattern": "update=500000"
+     }
+    },
+    {
+     "file_contains": {
+      "file": "FB_FIT_PROGRESS",
+      "pattern": "total_updates=500000"
+     }
+    }
+   ]
+  },
+  {
+   "stage": "fit",
+   "kind": "fb_fit",
+   "target": "vast",
+   "run_id": "fbwm_finger_q1s1_seed1",
+   "cmd": "MUJOCO_GL=disabled CONTROLLABLE_AGENT_ROOT=/workspace/controllable_agent /workspace/conda_envs/fb/bin/python -m probing.fb_fit fit --data \"$RUNROOT/fb_data/finger_q1_side1.npz\" --logdir \"$RUNROOT/fbwm_finger_q1s1_seed1\" --seed 1 --updates 500000",
+   "vars": {
+    "side": 1,
+    "seed": 1,
+    "run_id": "fbwm_finger_q1s1_seed1"
+   },
+   "logdir": "fbwm_finger_q1s1_seed1",
+   "outputs": [
+    "fbwm_finger_q1s1_seed1"
+   ],
+   "inputs": [
+    "fb_data/finger_q1_side1.npz",
+    "fb_data/finger_q1_side1.npz.manifest.json"
+   ],
+   "done_when": [
+    {
+     "exists": "FB_FIT_DONE"
+    },
+    {
+     "exists": "fb_ckpt.pt"
+    },
+    {
+     "exists": "fb_config.json"
+    },
+    {
+     "exists": "fb_metrics.json"
+    },
+    {
+     "file_contains": {
+      "file": "FB_FIT_PROGRESS",
+      "pattern": "update=500000"
+     }
+    },
+    {
+     "file_contains": {
+      "file": "FB_FIT_PROGRESS",
+      "pattern": "total_updates=500000"
+     }
+    }
+   ]
+  },
+  {
+   "stage": "fit",
+   "kind": "fb_fit",
+   "target": "vast",
+   "run_id": "fbwm_finger_q1s1_seed2",
+   "cmd": "MUJOCO_GL=disabled CONTROLLABLE_AGENT_ROOT=/workspace/controllable_agent /workspace/conda_envs/fb/bin/python -m probing.fb_fit fit --data \"$RUNROOT/fb_data/finger_q1_side1.npz\" --logdir \"$RUNROOT/fbwm_finger_q1s1_seed2\" --seed 2 --updates 500000",
+   "vars": {
+    "side": 1,
+    "seed": 2,
+    "run_id": "fbwm_finger_q1s1_seed2"
+   },
+   "logdir": "fbwm_finger_q1s1_seed2",
+   "outputs": [
+    "fbwm_finger_q1s1_seed2"
+   ],
+   "inputs": [
+    "fb_data/finger_q1_side1.npz",
+    "fb_data/finger_q1_side1.npz.manifest.json"
+   ],
+   "done_when": [
+    {
+     "exists": "FB_FIT_DONE"
+    },
+    {
+     "exists": "fb_ckpt.pt"
+    },
+    {
+     "exists": "fb_config.json"
+    },
+    {
+     "exists": "fb_metrics.json"
+    },
+    {
+     "file_contains": {
+      "file": "FB_FIT_PROGRESS",
+      "pattern": "update=500000"
+     }
+    },
+    {
+     "file_contains": {
+      "file": "FB_FIT_PROGRESS",
+      "pattern": "total_updates=500000"
+     }
+    }
+   ]
+  },
+  {
+   "stage": "fit",
+   "kind": "fb_fit",
+   "target": "vast",
+   "run_id": "fbwm_finger_q1s1_seed3",
+   "cmd": "MUJOCO_GL=disabled CONTROLLABLE_AGENT_ROOT=/workspace/controllable_agent /workspace/conda_envs/fb/bin/python -m probing.fb_fit fit --data \"$RUNROOT/fb_data/finger_q1_side1.npz\" --logdir \"$RUNROOT/fbwm_finger_q1s1_seed3\" --seed 3 --updates 500000",
+   "vars": {
+    "side": 1,
+    "seed": 3,
+    "run_id": "fbwm_finger_q1s1_seed3"
+   },
+   "logdir": "fbwm_finger_q1s1_seed3",
+   "outputs": [
+    "fbwm_finger_q1s1_seed3"
+   ],
+   "inputs": [
+    "fb_data/finger_q1_side1.npz",
+    "fb_data/finger_q1_side1.npz.manifest.json"
+   ],
+   "done_when": [
+    {
+     "exists": "FB_FIT_DONE"
+    },
+    {
+     "exists": "fb_ckpt.pt"
+    },
+    {
+     "exists": "fb_config.json"
+    },
+    {
+     "exists": "fb_metrics.json"
+    },
+    {
+     "file_contains": {
+      "file": "FB_FIT_PROGRESS",
+      "pattern": "update=500000"
+     }
+    },
+    {
+     "file_contains": {
+      "file": "FB_FIT_PROGRESS",
+      "pattern": "total_updates=500000"
+     }
+    }
+   ]
+  },
+  {
+   "stage": "fit",
+   "kind": "fb_fit",
+   "target": "vast",
+   "run_id": "fbwm_finger_q1s1_seed4",
+   "cmd": "MUJOCO_GL=disabled CONTROLLABLE_AGENT_ROOT=/workspace/controllable_agent /workspace/conda_envs/fb/bin/python -m probing.fb_fit fit --data \"$RUNROOT/fb_data/finger_q1_side1.npz\" --logdir \"$RUNROOT/fbwm_finger_q1s1_seed4\" --seed 4 --updates 500000",
+   "vars": {
+    "side": 1,
+    "seed": 4,
+    "run_id": "fbwm_finger_q1s1_seed4"
+   },
+   "logdir": "fbwm_finger_q1s1_seed4",
+   "outputs": [
+    "fbwm_finger_q1s1_seed4"
+   ],
+   "inputs": [
+    "fb_data/finger_q1_side1.npz",
+    "fb_data/finger_q1_side1.npz.manifest.json"
+   ],
+   "done_when": [
+    {
+     "exists": "FB_FIT_DONE"
+    },
+    {
+     "exists": "fb_ckpt.pt"
+    },
+    {
+     "exists": "fb_config.json"
+    },
+    {
+     "exists": "fb_metrics.json"
+    },
+    {
+     "file_contains": {
+      "file": "FB_FIT_PROGRESS",
+      "pattern": "update=500000"
+     }
+    },
+    {
+     "file_contains": {
+      "file": "FB_FIT_PROGRESS",
+      "pattern": "total_updates=500000"
+     }
+    }
+   ]
+  },
+  {
+   "stage": "fit",
+   "kind": "fb_fit",
+   "target": "vast",
+   "run_id": "fbwm_finger_q1s1_seed5",
+   "cmd": "MUJOCO_GL=disabled CONTROLLABLE_AGENT_ROOT=/workspace/controllable_agent /workspace/conda_envs/fb/bin/python -m probing.fb_fit fit --data \"$RUNROOT/fb_data/finger_q1_side1.npz\" --logdir \"$RUNROOT/fbwm_finger_q1s1_seed5\" --seed 5 --updates 500000",
+   "vars": {
+    "side": 1,
+    "seed": 5,
+    "run_id": "fbwm_finger_q1s1_seed5"
+   },
+   "logdir": "fbwm_finger_q1s1_seed5",
+   "outputs": [
+    "fbwm_finger_q1s1_seed5"
+   ],
+   "inputs": [
+    "fb_data/finger_q1_side1.npz",
+    "fb_data/finger_q1_side1.npz.manifest.json"
+   ],
+   "done_when": [
+    {
+     "exists": "FB_FIT_DONE"
+    },
+    {
+     "exists": "fb_ckpt.pt"
+    },
+    {
+     "exists": "fb_config.json"
+    },
+    {
+     "exists": "fb_metrics.json"
+    },
+    {
+     "file_contains": {
+      "file": "FB_FIT_PROGRESS",
+      "pattern": "update=500000"
+     }
+    },
+    {
+     "file_contains": {
+      "file": "FB_FIT_PROGRESS",
+      "pattern": "total_updates=500000"
+     }
+    }
+   ]
+  },
+  {
+   "stage": "fit",
+   "kind": "fb_fit",
+   "target": "vast",
+   "run_id": "fbwm_finger_q1s1_seed6",
+   "cmd": "MUJOCO_GL=disabled CONTROLLABLE_AGENT_ROOT=/workspace/controllable_agent /workspace/conda_envs/fb/bin/python -m probing.fb_fit fit --data \"$RUNROOT/fb_data/finger_q1_side1.npz\" --logdir \"$RUNROOT/fbwm_finger_q1s1_seed6\" --seed 6 --updates 500000",
+   "vars": {
+    "side": 1,
+    "seed": 6,
+    "run_id": "fbwm_finger_q1s1_seed6"
+   },
+   "logdir": "fbwm_finger_q1s1_seed6",
+   "outputs": [
+    "fbwm_finger_q1s1_seed6"
+   ],
+   "inputs": [
+    "fb_data/finger_q1_side1.npz",
+    "fb_data/finger_q1_side1.npz.manifest.json"
+   ],
+   "done_when": [
+    {
+     "exists": "FB_FIT_DONE"
+    },
+    {
+     "exists": "fb_ckpt.pt"
+    },
+    {
+     "exists": "fb_config.json"
+    },
+    {
+     "exists": "fb_metrics.json"
+    },
+    {
+     "file_contains": {
+      "file": "FB_FIT_PROGRESS",
+      "pattern": "update=500000"
+     }
+    },
+    {
+     "file_contains": {
+      "file": "FB_FIT_PROGRESS",
+      "pattern": "total_updates=500000"
+     }
+    }
+   ]
+  },
+  {
+   "stage": "fit",
+   "kind": "fb_fit",
+   "target": "vast",
+   "run_id": "fbwm_finger_q1s1_seed7",
+   "cmd": "MUJOCO_GL=disabled CONTROLLABLE_AGENT_ROOT=/workspace/controllable_agent /workspace/conda_envs/fb/bin/python -m probing.fb_fit fit --data \"$RUNROOT/fb_data/finger_q1_side1.npz\" --logdir \"$RUNROOT/fbwm_finger_q1s1_seed7\" --seed 7 --updates 500000",
+   "vars": {
+    "side": 1,
+    "seed": 7,
+    "run_id": "fbwm_finger_q1s1_seed7"
+   },
+   "logdir": "fbwm_finger_q1s1_seed7",
+   "outputs": [
+    "fbwm_finger_q1s1_seed7"
+   ],
+   "inputs": [
+    "fb_data/finger_q1_side1.npz",
+    "fb_data/finger_q1_side1.npz.manifest.json"
+   ],
+   "done_when": [
+    {
+     "exists": "FB_FIT_DONE"
+    },
+    {
+     "exists": "fb_ckpt.pt"
+    },
+    {
+     "exists": "fb_config.json"
+    },
+    {
+     "exists": "fb_metrics.json"
+    },
+    {
+     "file_contains": {
+      "file": "FB_FIT_PROGRESS",
+      "pattern": "update=500000"
+     }
+    },
+    {
+     "file_contains": {
+      "file": "FB_FIT_PROGRESS",
+      "pattern": "total_updates=500000"
+     }
+    }
+   ]
+  },
+  {
+   "stage": "fit",
+   "kind": "fb_fit",
+   "target": "vast",
+   "run_id": "fbwm_finger_q1s1_seed8",
+   "cmd": "MUJOCO_GL=disabled CONTROLLABLE_AGENT_ROOT=/workspace/controllable_agent /workspace/conda_envs/fb/bin/python -m probing.fb_fit fit --data \"$RUNROOT/fb_data/finger_q1_side1.npz\" --logdir \"$RUNROOT/fbwm_finger_q1s1_seed8\" --seed 8 --updates 500000",
+   "vars": {
+    "side": 1,
+    "seed": 8,
+    "run_id": "fbwm_finger_q1s1_seed8"
+   },
+   "logdir": "fbwm_finger_q1s1_seed8",
+   "outputs": [
+    "fbwm_finger_q1s1_seed8"
+   ],
+   "inputs": [
+    "fb_data/finger_q1_side1.npz",
+    "fb_data/finger_q1_side1.npz.manifest.json"
+   ],
+   "done_when": [
+    {
+     "exists": "FB_FIT_DONE"
+    },
+    {
+     "exists": "fb_ckpt.pt"
+    },
+    {
+     "exists": "fb_config.json"
+    },
+    {
+     "exists": "fb_metrics.json"
+    },
+    {
+     "file_contains": {
+      "file": "FB_FIT_PROGRESS",
+      "pattern": "update=500000"
+     }
+    },
+    {
+     "file_contains": {
+      "file": "FB_FIT_PROGRESS",
+      "pattern": "total_updates=500000"
+     }
+    }
+   ]
+  }
+ ]
+}
