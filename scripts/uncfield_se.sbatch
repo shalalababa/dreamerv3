@@ -37,6 +37,12 @@
 #   DISTRACTOR_GATE_KEY        Stage-2 GATED sets the gate triple on the
 #   DISTRACTOR_GATE_INDEX      distractor wrapper as well as the planted one
 #   DISTRACTOR_GATE_THRESHOLD  ("the gate triple on BOTH wrappers")
+#   DISTRACTOR_MOD_KEY         gradient arm (amendment 3): amplitude
+#   DISTRACTOR_MOD_INDEX       modulation m = clip((x-lo)/(hi-lo),0,1);
+#   DISTRACTOR_MOD_LO          defaults ''/0/0.0/1.0 = m==1 = the
+#   DISTRACTOR_MOD_HI          config defaults, Stage-1-inert
+#   DISTRACTOR_SCALE           flat arm (amendment 3): 0.35891393;
+#                              default 1.0 = the Stage-1 hardcoded value
 #
 # GOTCHAS: clean shell (module purge; --export=ALL segfault rule);
 # submit from repo root. Wrapper streams are keyed to SEED via main.py's
@@ -102,10 +108,14 @@ STOP_STEP=$("$PYTHON" -c "print(int(float('$STEPS')))")
   --logdir "$LOGDIR" --configs dmc_proprio expl_p2e \
   --task "$TASK" --seed "$SEED" \
   --env.dmc.render False \
-  --distractor.dim "${DISTRACTOR_DIM:-8}" --distractor.scale 1.0 --distractor.basesd "$BASESD_N" \
+  --distractor.dim "${DISTRACTOR_DIM:-8}" --distractor.scale "${DISTRACTOR_SCALE:-1.0}" --distractor.basesd "$BASESD_N" \
   --distractor.gate_key "${DISTRACTOR_GATE_KEY:-}" \
   --distractor.gate_index "${DISTRACTOR_GATE_INDEX:-0}" \
   --distractor.gate_threshold "${DISTRACTOR_GATE_THRESHOLD:-0.0}" \
+  --distractor.mod_key "${DISTRACTOR_MOD_KEY:-}" \
+  --distractor.mod_index "${DISTRACTOR_MOD_INDEX:-0}" \
+  --distractor.mod_lo "${DISTRACTOR_MOD_LO:-0.0}" \
+  --distractor.mod_hi "${DISTRACTOR_MOD_HI:-1.0}" \
   --planted.source_key "$SOURCE_KEY" --planted.basesd "$BASESD_PLANTED" \
   --planted.gate_key "${GATE_KEY:-}" \
   --planted.gate_index "${GATE_INDEX:-0}" \
