@@ -46,9 +46,13 @@ for r in "${ALL[@]}"; do
   need "$RUNROOT/$r/ckpt/latest"
   n=$(ls "$RUNROOT/$r"/replay/*.npz 2>/dev/null | wc -l)
   [ "$n" -ge 1000 ] || { echo "REPLAY TOO SMALL: $r has $n chunks (expected >1000)" >&2; fail=1; }
-  # realized-step witness: the phase-invariant completion fact
-  grep -qE '"milestone": 500000,[[:space:]]*"step": (49[0-9]{4}|[5-9][0-9]{5})' \
-    "$RUNROOT/$r/ckpt_snapshots/nearest.json" 2>/dev/null \
+  # Realized-step witness: the phase-invariant completion fact. nearest.json is
+  # pretty-printed, so "milestone" and "step" land on SEPARATE lines and a
+  # line-wise grep can never match them together -- the wave checker gets away
+  # with the same pattern only because Python's \s+ spans newlines. Flatten
+  # first, or this refuses every run that is in fact complete.
+  tr -d '\n' < "$RUNROOT/$r/ckpt_snapshots/nearest.json" 2>/dev/null \
+    | grep -qE '"milestone": 500000,[[:space:]]*"step": (49[0-9]{4}|[5-9][0-9]{5})' \
     || { echo "STEP WITNESS FAILS: $r" >&2; fail=1; }
 done
 for r in "${PROBED[@]}"; do
