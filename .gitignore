@@ -29,5 +29,10 @@ report/*.synctex.gz
 report/*.toc
 
 # dv3ops machine-local state (regenerated; never a record)
-ops/state/
+ops/state/*
+# destroyed.jsonl is append-only provenance (index -> vast_id -> archived runs),
+# not volatile machine state like instances.json/env -- keep it versioned.
+# NOTE: the rule above must be `ops/state/*`, not `ops/state/` -- git does not
+# descend into an excluded DIRECTORY, so this negation would never apply.
+!ops/state/destroyed.jsonl
 scripts/ops/VERSION
