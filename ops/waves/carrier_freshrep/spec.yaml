@@ -1,0 +1,228 @@
+# Carrier fresh replication -- PREREG_carrier_freshrep_20260820 (frozen d2247e96).
+#
+# 160 fit+adapt cells: arms {rgo, sgb} x sides {0,1} x seeds 17-56, on the
+# frozen finger q1 substrate. vgo is EXCLUDED by the registration (stated
+# before any new data existed) -- do not add it back.
+#
+# Cell command transcribed from scripts/submit_all.sh's axis1-factorial-bundles
+# branch (the path Amendment 1 ran), NOT re-derived: run_id
+# adapt_ax1<arm>q1s<side>_finger_seed<k>_ckpt500000, wm_run
+# ax1wm_finger_<arm>q1s<side>_seed<k>, UPDATES 500000, STEPS 1.25e5,
+# AXIS1_EXPL_MODE=task, adapt config left at axis1.sbatch's frozen_readout
+# default. Nothing else is set: the prereg requires byte-identity with the
+# Amendment-1 arm configs except the seed, so every knob NOT in that command
+# must stay unset here.
+#
+# SIX STAGES, ONE PER INSTANCE -- this is a science decision, not packing
+# convenience. The primary is a per-seed double difference
+# [B_rgo - B_sgb] where B_arm(seed) = AUC100k(side1) - AUC100k(side0)
+# (analysis/p3_factorial_read.py:108). All FOUR cells of a seed therefore
+# enter one datum, so a seed is kept whole on one machine: device variance
+# lands on seeds as a random effect instead of inside the contrast. GPU jobs
+# are not job-to-job deterministic on any of our hardware, so this is the
+# only way the pairing is device-clean. Blocks are 7/7/7/7/6/6 seeds; the
+# 6-seed instances finish ~6 h earlier and take the next wave first.
+#
+# per_gpu: 1 -- axis1 fit+adapt is a full 1m model plus a live env; the
+# rescue_load wave used the same setting on the same hardware.
+
+wave_id: carrier_freshrep
+paper: paper1
+prereg: prereg/PREREG_carrier_freshrep_20260820.md
+notes: >-
+  160 fit+adapt cells (rgo/sgb x 2 sides x seeds 17-56) on axis1_finger/q1.
+  One stage per instance; a seed's four cells never split across machines.
+
+defaults:
+  target: vast
+
+kinds:
+  axis1_fit_adapt: {per_gpu: 1}
+
+stages:
+
+  - name: blk1
+    kind: axis1_fit_adapt
+    on_failure: continue
+    expand:
+      arm:  [rgo, sgb]
+      side: [0, 1]
+      seed: [17, 18, 19, 20, 21, 22, 23]
+    run_id: "adapt_ax1${arm}q1s${side}_finger_seed${seed}_ckpt500000"
+    cmd: >-
+      DV3_TASK_NAME=${run_id} RUN_ID=${run_id}
+      WM_RUN=ax1wm_finger_${arm}q1s${side}_seed${seed}
+      TASK=dmc_finger_turn_hard SEED=${seed}
+      REPLAY=${RUNROOT}/axis1_finger/q1/side${side}
+      UPDATES=500000 STEPS=1.25e5 AXIS1_EXPL_MODE=task
+      AXIS1_ARM=${arm}
+      DREAMER_DISABLE_GPUFLAGS=1 bash scripts/axis1.sbatch
+    outputs:
+      - "adapt_ax1${arm}q1s${side}_finger_seed${seed}_ckpt500000"
+      - "ax1wm_finger_${arm}q1s${side}_seed${seed}"
+    inputs:
+      - "axis1_finger/q1/side${side}"
+      - "axis1_finger/q1/manifest.json"
+    done_when:
+      - exists: ADAPT_DONE
+      - exists: config.yaml
+      - jsonl_min_lines: {file: scores.jsonl, n: 100}
+      - ckpt_step_min: {dir: "../ax1wm_finger_${arm}q1s${side}_seed${seed}", min: 500000}
+      - file_contains:
+          file: "../ax1wm_finger_${arm}q1s${side}_seed${seed}/OFFLINE_FIT_PROGRESS"
+          pattern: "update=500000\ntotal_updates=500000"
+
+  - name: blk2
+    kind: axis1_fit_adapt
+    on_failure: continue
+    expand:
+      arm:  [rgo, sgb]
+      side: [0, 1]
+      seed: [24, 25, 26, 27, 28, 29, 30]
+    run_id: "adapt_ax1${arm}q1s${side}_finger_seed${seed}_ckpt500000"
+    cmd: >-
+      DV3_TASK_NAME=${run_id} RUN_ID=${run_id}
+      WM_RUN=ax1wm_finger_${arm}q1s${side}_seed${seed}
+      TASK=dmc_finger_turn_hard SEED=${seed}
+      REPLAY=${RUNROOT}/axis1_finger/q1/side${side}
+      UPDATES=500000 STEPS=1.25e5 AXIS1_EXPL_MODE=task
+      AXIS1_ARM=${arm}
+      DREAMER_DISABLE_GPUFLAGS=1 bash scripts/axis1.sbatch
+    outputs:
+      - "adapt_ax1${arm}q1s${side}_finger_seed${seed}_ckpt500000"
+      - "ax1wm_finger_${arm}q1s${side}_seed${seed}"
+    inputs:
+      - "axis1_finger/q1/side${side}"
+      - "axis1_finger/q1/manifest.json"
+    done_when:
+      - exists: ADAPT_DONE
+      - exists: config.yaml
+      - jsonl_min_lines: {file: scores.jsonl, n: 100}
+      - ckpt_step_min: {dir: "../ax1wm_finger_${arm}q1s${side}_seed${seed}", min: 500000}
+      - file_contains:
+          file: "../ax1wm_finger_${arm}q1s${side}_seed${seed}/OFFLINE_FIT_PROGRESS"
+          pattern: "update=500000\ntotal_updates=500000"
+
+  - name: blk3
+    kind: axis1_fit_adapt
+    on_failure: continue
+    expand:
+      arm:  [rgo, sgb]
+      side: [0, 1]
+      seed: [31, 32, 33, 34, 35, 36, 37]
+    run_id: "adapt_ax1${arm}q1s${side}_finger_seed${seed}_ckpt500000"
+    cmd: >-
+      DV3_TASK_NAME=${run_id} RUN_ID=${run_id}
+      WM_RUN=ax1wm_finger_${arm}q1s${side}_seed${seed}
+      TASK=dmc_finger_turn_hard SEED=${seed}
+      REPLAY=${RUNROOT}/axis1_finger/q1/side${side}
+      UPDATES=500000 STEPS=1.25e5 AXIS1_EXPL_MODE=task
+      AXIS1_ARM=${arm}
+      DREAMER_DISABLE_GPUFLAGS=1 bash scripts/axis1.sbatch
+    outputs:
+      - "adapt_ax1${arm}q1s${side}_finger_seed${seed}_ckpt500000"
+      - "ax1wm_finger_${arm}q1s${side}_seed${seed}"
+    inputs:
+      - "axis1_finger/q1/side${side}"
+      - "axis1_finger/q1/manifest.json"
+    done_when:
+      - exists: ADAPT_DONE
+      - exists: config.yaml
+      - jsonl_min_lines: {file: scores.jsonl, n: 100}
+      - ckpt_step_min: {dir: "../ax1wm_finger_${arm}q1s${side}_seed${seed}", min: 500000}
+      - file_contains:
+          file: "../ax1wm_finger_${arm}q1s${side}_seed${seed}/OFFLINE_FIT_PROGRESS"
+          pattern: "update=500000\ntotal_updates=500000"
+
+  - name: blk4
+    kind: axis1_fit_adapt
+    on_failure: continue
+    expand:
+      arm:  [rgo, sgb]
+      side: [0, 1]
+      seed: [38, 39, 40, 41, 42, 43, 44]
+    run_id: "adapt_ax1${arm}q1s${side}_finger_seed${seed}_ckpt500000"
+    cmd: >-
+      DV3_TASK_NAME=${run_id} RUN_ID=${run_id}
+      WM_RUN=ax1wm_finger_${arm}q1s${side}_seed${seed}
+      TASK=dmc_finger_turn_hard SEED=${seed}
+      REPLAY=${RUNROOT}/axis1_finger/q1/side${side}
+      UPDATES=500000 STEPS=1.25e5 AXIS1_EXPL_MODE=task
+      AXIS1_ARM=${arm}
+      DREAMER_DISABLE_GPUFLAGS=1 bash scripts/axis1.sbatch
+    outputs:
+      - "adapt_ax1${arm}q1s${side}_finger_seed${seed}_ckpt500000"
+      - "ax1wm_finger_${arm}q1s${side}_seed${seed}"
+    inputs:
+      - "axis1_finger/q1/side${side}"
+      - "axis1_finger/q1/manifest.json"
+    done_when:
+      - exists: ADAPT_DONE
+      - exists: config.yaml
+      - jsonl_min_lines: {file: scores.jsonl, n: 100}
+      - ckpt_step_min: {dir: "../ax1wm_finger_${arm}q1s${side}_seed${seed}", min: 500000}
+      - file_contains:
+          file: "../ax1wm_finger_${arm}q1s${side}_seed${seed}/OFFLINE_FIT_PROGRESS"
+          pattern: "update=500000\ntotal_updates=500000"
+
+  - name: blk5
+    kind: axis1_fit_adapt
+    on_failure: continue
+    expand:
+      arm:  [rgo, sgb]
+      side: [0, 1]
+      seed: [45, 46, 47, 48, 49, 50]
+    run_id: "adapt_ax1${arm}q1s${side}_finger_seed${seed}_ckpt500000"
+    cmd: >-
+      DV3_TASK_NAME=${run_id} RUN_ID=${run_id}
+      WM_RUN=ax1wm_finger_${arm}q1s${side}_seed${seed}
+      TASK=dmc_finger_turn_hard SEED=${seed}
+      REPLAY=${RUNROOT}/axis1_finger/q1/side${side}
+      UPDATES=500000 STEPS=1.25e5 AXIS1_EXPL_MODE=task
+      AXIS1_ARM=${arm}
+      DREAMER_DISABLE_GPUFLAGS=1 bash scripts/axis1.sbatch
+    outputs:
+      - "adapt_ax1${arm}q1s${side}_finger_seed${seed}_ckpt500000"
+      - "ax1wm_finger_${arm}q1s${side}_seed${seed}"
+    inputs:
+      - "axis1_finger/q1/side${side}"
+      - "axis1_finger/q1/manifest.json"
+    done_when:
+      - exists: ADAPT_DONE
+      - exists: config.yaml
+      - jsonl_min_lines: {file: scores.jsonl, n: 100}
+      - ckpt_step_min: {dir: "../ax1wm_finger_${arm}q1s${side}_seed${seed}", min: 500000}
+      - file_contains:
+          file: "../ax1wm_finger_${arm}q1s${side}_seed${seed}/OFFLINE_FIT_PROGRESS"
+          pattern: "update=500000\ntotal_updates=500000"
+
+  - name: blk6
+    kind: axis1_fit_adapt
+    on_failure: continue
+    expand:
+      arm:  [rgo, sgb]
+      side: [0, 1]
+      seed: [51, 52, 53, 54, 55, 56]
+    run_id: "adapt_ax1${arm}q1s${side}_finger_seed${seed}_ckpt500000"
+    cmd: >-
+      DV3_TASK_NAME=${run_id} RUN_ID=${run_id}
+      WM_RUN=ax1wm_finger_${arm}q1s${side}_seed${seed}
+      TASK=dmc_finger_turn_hard SEED=${seed}
+      REPLAY=${RUNROOT}/axis1_finger/q1/side${side}
+      UPDATES=500000 STEPS=1.25e5 AXIS1_EXPL_MODE=task
+      AXIS1_ARM=${arm}
+      DREAMER_DISABLE_GPUFLAGS=1 bash scripts/axis1.sbatch
+    outputs:
+      - "adapt_ax1${arm}q1s${side}_finger_seed${seed}_ckpt500000"
+      - "ax1wm_finger_${arm}q1s${side}_seed${seed}"
+    inputs:
+      - "axis1_finger/q1/side${side}"
+      - "axis1_finger/q1/manifest.json"
+    done_when:
+      - exists: ADAPT_DONE
+      - exists: config.yaml
+      - jsonl_min_lines: {file: scores.jsonl, n: 100}
+      - ckpt_step_min: {dir: "../ax1wm_finger_${arm}q1s${side}_seed${seed}", min: 500000}
+      - file_contains:
+          file: "../ax1wm_finger_${arm}q1s${side}_seed${seed}/OFFLINE_FIT_PROGRESS"
+          pattern: "update=500000\ntotal_updates=500000"
