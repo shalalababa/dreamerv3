@@ -1,0 +1,68 @@
+{
+  "_meta": {
+    "amendments": [
+      "PREREG_routedrepair_amend1_20260820.md",
+      "PREREG_routedrepair_amend2_20260820.md"
+    ],
+    "ckpt_latest_file_note": "The per-run ckpt/latest FILE disagrees with latest_ckpt() for all 8 donors (it still names the July entries, and for seed5 an aborted 200000). axis1.sbatch resolves AXIS1_INIT_WM through latest_ckpt(), which is what these shas record. The producer-written file is left untouched rather than hand-edited.",
+    "donor_generation": "REFIT_20260808+seed5_completion_20260820",
+    "donor_generation_semantics": "Names the RESOLVED checkpoint set that latest_ckpt() returns, not a fresh-training claim. Verified 20 Aug by byte-compare: the August entries for seeds 1-4 are bitwise identical to their July originals (re-saves under August names, per PREREG_refit_reads_amend2_20260810); seeds 6-8 are genuinely fresh August refits; seed 5 completed by re-saving its own July 500000 checkpoint (amend 2), byte-identical to source. Recorded, not gated -- donor_sha already pins the exact bytes.",
+    "donor_provenance_counts": {
+      "fresh_aug_refit": 3,
+      "july_resave": 5
+    },
+    "latest_ckpt_500k_8of8": true,
+    "prereg": "prereg/PREREG_routedrepair_20260820.md",
+    "wave": "routedrepair"
+  },
+  "donors": {
+    "ax1wm_finger_fq1s1_seed1": {
+      "ckpt": "20260809T201250F943253-000000500000",
+      "donor_provenance": "july_resave",
+      "donor_sha": "ea6da3e32fdeccd321083fb5b6d190e1f1e388a1841ae6f385866b26446cc713",
+      "step": 500000
+    },
+    "ax1wm_finger_fq1s1_seed2": {
+      "ckpt": "20260809T202112F758701-000000500000",
+      "donor_provenance": "july_resave",
+      "donor_sha": "fa1ec1eeab4810f49c2e36f548d581429ac73f1f04954a3939ac0392f5a63d0b",
+      "step": 500000
+    },
+    "ax1wm_finger_fq1s1_seed3": {
+      "ckpt": "20260810T005732F503482-000000500000",
+      "donor_provenance": "july_resave",
+      "donor_sha": "6235894bc6b0818ad154ed85ab307cef47124256b38826454456f1f213e7a92b",
+      "step": 500000
+    },
+    "ax1wm_finger_fq1s1_seed4": {
+      "ckpt": "20260810T011342F589350-000000500000",
+      "donor_provenance": "july_resave",
+      "donor_sha": "24771b51f1f7ea46e1eebd9802917ff4e8fc4544604e3ecad443871f2649f1db",
+      "step": 500000
+    },
+    "ax1wm_finger_fq1s1_seed5": {
+      "ckpt": "20260820T131504F142372-000000500000",
+      "donor_provenance": "july_resave",
+      "donor_sha": "ecb9af9568fb5e1a0d4162b028b9d091840f54c969da789bcb20060a670240b5",
+      "step": 500000
+    },
+    "ax1wm_finger_fq1s1_seed6": {
+      "ckpt": "20260810T135338F393951-000000500000",
+      "donor_provenance": "fresh_aug_refit",
+      "donor_sha": "03f98e9b11bf6e6515d5bf060318c59b80e60929d9001a07e3349a360a43dc60",
+      "step": 500000
+    },
+    "ax1wm_finger_fq1s1_seed7": {
+      "ckpt": "20260810T133640F733701-000000500000",
+      "donor_provenance": "fresh_aug_refit",
+      "donor_sha": "881ffad1c0339e15f02061d1e6235260884172d915d772f76a410bdcadbaa094",
+      "step": 500000
+    },
+    "ax1wm_finger_fq1s1_seed8": {
+      "ckpt": "20260810T135931F583341-000000500000",
+      "donor_provenance": "fresh_aug_refit",
+      "donor_sha": "46673aec3e890d22fd02bf72c6443afb98d2b80693f14ef230a921a743df1d03",
+      "step": 500000
+    }
+  }
+}
