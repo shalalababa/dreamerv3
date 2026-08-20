@@ -27,13 +27,23 @@ source "$REPO/scripts/env.sh"
 activate_env
 cd "$REPO"
 
+# ARMS is an OPS scoping knob, not a science knob: the default is the
+# panel exactly as specified. It exists because the fq1 (reward-free) arm
+# is STRUCTURALLY undumpable -- 20 Aug, job 53738652: apt-mode fits carry
+# NO reward head at all (273 ckpt entries vs 288; zero /rew/ entries), so
+# the posterior rhat path tries to CREATE rew/mlp/linear0/kernel (640,64)
+# inside a pure function and nj refuses. That is a property of the
+# checkpoints, not a config that can be flipped. Narrowing ARMS is how ops
+# runs the dumpable panel without editing the panel definition; whether
+# fq1 leaves the family is the instrument author's call.
+ARMS="${ARMS:-q1 fq1 rlq1 srd0q1 srd1q1}"
 PROBESET="${PROBESET:-$RUNROOT/e4_probesets/finger_v1}"
 EP_BATCH="${EP_BATCH:-8}"
 [ -f "$PROBESET/FROZEN" ] || { echo "ERROR: $PROBESET is not FROZEN"; exit 2; }
 PROBESET_ID="$(basename "$PROBESET")"
 
 n_run=0; n_done=0; n_skip=0
-for arm in q1 fq1 rlq1 srd0q1 srd1q1; do
+for arm in $ARMS; do
   for logdir in "$RUNROOT"/ax1wm_finger_${arm}s[01]_seed[1-8]; do
     [ -d "$logdir/ckpt" ] || { echo "SKIP no ckpt: $logdir"; n_skip=$((n_skip+1)); continue; }
     run_id="$(basename "$logdir")"
@@ -47,6 +57,6 @@ for arm in q1 fq1 rlq1 srd0q1 srd1q1; do
     n_run=$((n_run+1))
   done
 done
-echo "[$(date)] dumped $n_run new, $n_done already done, $n_skip skipped"
+echo "[$(date)] dumped $n_run new, $n_done already done, $n_skip skipped (arms: $ARMS)"
 echo "Pull with: rsync the probe_family_${PROBESET_ID} dirs, then run"
 echo "  python -m analysis.tier0_probe_family --dumps '<local>/ax1wm_finger_*/probe_family_${PROBESET_ID}' --output artifacts/algo_tier0_20260820/probe_family"
