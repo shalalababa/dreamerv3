@@ -151,11 +151,15 @@ else
   # donor fit run; the fit loads ONLY '^enc/' from its latest ckpt and
   # freezes the encoder (agent.frozen_enc). Coupled by design — a frozen
   # RANDOM encoder control would pass the flags explicitly instead.
+  # AXIS1_INIT_FROZEN_ENC (added 20 Aug, PREREG_routedrepair_20260820
+  # amend1: the repair init loads the whole sunk trunk UNFROZEN): unset
+  # keeps the default 'True' and the emitted flags BYTE-IDENTICAL for
+  # every existing wave; routed repair sets it to False explicitly.
   if [ -n "${AXIS1_INIT_WM:-}" ]; then
     INIT_CKPT="$(latest_ckpt "$RUNROOT/$AXIS1_INIT_WM" || true)"
     [ -n "$INIT_CKPT" ] || { echo "ERROR: no done ckpt under $RUNROOT/$AXIS1_INIT_WM/ckpt"; exit 2; }
-    AXIS1_FIT_FLAGS="${AXIS1_FIT_FLAGS:-} --run.from_checkpoint $INIT_CKPT --run.from_checkpoint_regex ${AXIS1_INIT_REGEX:-^enc/} --agent.frozen_enc True"
-    echo "[$(date)] partial-init: enc from $INIT_CKPT (regex ${AXIS1_INIT_REGEX:-^enc/}), frozen_enc True"
+    AXIS1_FIT_FLAGS="${AXIS1_FIT_FLAGS:-} --run.from_checkpoint $INIT_CKPT --run.from_checkpoint_regex ${AXIS1_INIT_REGEX:-^enc/} --agent.frozen_enc ${AXIS1_INIT_FROZEN_ENC:-True}"
+    echo "[$(date)] partial-init: enc from $INIT_CKPT (regex ${AXIS1_INIT_REGEX:-^enc/}), frozen_enc ${AXIS1_INIT_FROZEN_ENC:-True}"
   fi
   # s x w_r wave (PREREG_swave_theory_correction_20260808 constraint 1):
   # AXIS1_WR overrides the reward-head loss scale (pure fit-pressure
