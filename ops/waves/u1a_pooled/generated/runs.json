@@ -45,20 +45,6 @@
    "kind": "axis1_fit_adapt",
    "on_failure": "continue",
    "needs": null
-  },
-  {
-   "name": "blk4_task",
-   "target": "vast",
-   "kind": "axis1_fit_adapt",
-   "on_failure": "continue",
-   "needs": null
-  },
-  {
-   "name": "blk4_apt",
-   "target": "vast",
-   "kind": "axis1_fit_adapt",
-   "on_failure": "continue",
-   "needs": null
   }
  ],
  "runs": [
@@ -536,6 +522,53 @@
    "stage": "blk2_task",
    "kind": "axis1_fit_adapt",
    "target": "vast",
+   "run_id": "adapt_ax1uzq1s0_finger_seed13_ckpt500000",
+   "cmd": "DV3_TASK_NAME=adapt_ax1uzq1s0_finger_seed13_ckpt500000 RUN_ID=adapt_ax1uzq1s0_finger_seed13_ckpt500000 WM_RUN=ax1wm_finger_q1s0_seed13 TASK=dmc_finger_turn_hard SEED=13 REPLAY=${RUNROOT}/axis1_finger/q1/side0 UPDATES=500000 STEPS=1.25e5 AXIS1_EXPL_MODE=task AXIS1_ADAPT_CONFIG=unfrozen_readout DREAMER_DISABLE_GPUFLAGS=1 bash scripts/axis1.sbatch",
+   "vars": {
+    "side": 0,
+    "seed": 13,
+    "run_id": "adapt_ax1uzq1s0_finger_seed13_ckpt500000"
+   },
+   "logdir": "adapt_ax1uzq1s0_finger_seed13_ckpt500000",
+   "outputs": [
+    "adapt_ax1uzq1s0_finger_seed13_ckpt500000",
+    "ax1wm_finger_q1s0_seed13"
+   ],
+   "inputs": [
+    "axis1_finger/q1/side0",
+    "axis1_finger/q1/manifest.json"
+   ],
+   "done_when": [
+    {
+     "exists": "ADAPT_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 100
+     }
+    },
+    {
+     "ckpt_step_min": {
+      "dir": "../ax1wm_finger_q1s0_seed13",
+      "min": 500000
+     }
+    },
+    {
+     "file_contains": {
+      "file": "../ax1wm_finger_q1s0_seed13/OFFLINE_FIT_PROGRESS",
+      "pattern": "update=500000\ntotal_updates=500000"
+     }
+    }
+   ]
+  },
+  {
+   "stage": "blk2_task",
+   "kind": "axis1_fit_adapt",
+   "target": "vast",
    "run_id": "adapt_ax1uzq1s1_finger_seed11_ckpt500000",
    "cmd": "DV3_TASK_NAME=adapt_ax1uzq1s1_finger_seed11_ckpt500000 RUN_ID=adapt_ax1uzq1s1_finger_seed11_ckpt500000 WM_RUN=ax1wm_finger_q1s1_seed11 TASK=dmc_finger_turn_hard SEED=11 REPLAY=${RUNROOT}/axis1_finger/q1/side1 UPDATES=500000 STEPS=1.25e5 AXIS1_EXPL_MODE=task AXIS1_ADAPT_CONFIG=unfrozen_readout DREAMER_DISABLE_GPUFLAGS=1 bash scripts/axis1.sbatch",
    "vars": {
@@ -621,6 +654,53 @@
     {
      "file_contains": {
       "file": "../ax1wm_finger_q1s1_seed12/OFFLINE_FIT_PROGRESS",
+      "pattern": "update=500000\ntotal_updates=500000"
+     }
+    }
+   ]
+  },
+  {
+   "stage": "blk2_task",
+   "kind": "axis1_fit_adapt",
+   "target": "vast",
+   "run_id": "adapt_ax1uzq1s1_finger_seed13_ckpt500000",
+   "cmd": "DV3_TASK_NAME=adapt_ax1uzq1s1_finger_seed13_ckpt500000 RUN_ID=adapt_ax1uzq1s1_finger_seed13_ckpt500000 WM_RUN=ax1wm_finger_q1s1_seed13 TASK=dmc_finger_turn_hard SEED=13 REPLAY=${RUNROOT}/axis1_finger/q1/side1 UPDATES=500000 STEPS=1.25e5 AXIS1_EXPL_MODE=task AXIS1_ADAPT_CONFIG=unfrozen_readout DREAMER_DISABLE_GPUFLAGS=1 bash scripts/axis1.sbatch",
+   "vars": {
+    "side": 1,
+    "seed": 13,
+    "run_id": "adapt_ax1uzq1s1_finger_seed13_ckpt500000"
+   },
+   "logdir": "adapt_ax1uzq1s1_finger_seed13_ckpt500000",
+   "outputs": [
+    "adapt_ax1uzq1s1_finger_seed13_ckpt500000",
+    "ax1wm_finger_q1s1_seed13"
+   ],
+   "inputs": [
+    "axis1_finger/q1/side1",
+    "axis1_finger/q1/manifest.json"
+   ],
+   "done_when": [
+    {
+     "exists": "ADAPT_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 100
+     }
+    },
+    {
+     "ckpt_step_min": {
+      "dir": "../ax1wm_finger_q1s1_seed13",
+      "min": 500000
+     }
+    },
+    {
+     "file_contains": {
+      "file": "../ax1wm_finger_q1s1_seed13/OFFLINE_FIT_PROGRESS",
       "pattern": "update=500000\ntotal_updates=500000"
      }
     }
@@ -724,6 +804,53 @@
    "stage": "blk2_apt",
    "kind": "axis1_fit_adapt",
    "target": "vast",
+   "run_id": "adapt_ax1uzfq1s0_finger_seed13_ckpt500000",
+   "cmd": "DV3_TASK_NAME=adapt_ax1uzfq1s0_finger_seed13_ckpt500000 RUN_ID=adapt_ax1uzfq1s0_finger_seed13_ckpt500000 WM_RUN=ax1wm_finger_fq1s0_seed13 TASK=dmc_finger_turn_hard SEED=13 REPLAY=${RUNROOT}/axis1_finger/q1/side0 UPDATES=500000 STEPS=1.25e5 AXIS1_EXPL_MODE=apt AXIS1_ADAPT_CONFIG=unfrozen_readout DREAMER_DISABLE_GPUFLAGS=1 bash scripts/axis1.sbatch",
+   "vars": {
+    "side": 0,
+    "seed": 13,
+    "run_id": "adapt_ax1uzfq1s0_finger_seed13_ckpt500000"
+   },
+   "logdir": "adapt_ax1uzfq1s0_finger_seed13_ckpt500000",
+   "outputs": [
+    "adapt_ax1uzfq1s0_finger_seed13_ckpt500000",
+    "ax1wm_finger_fq1s0_seed13"
+   ],
+   "inputs": [
+    "axis1_finger/q1/side0",
+    "axis1_finger/q1/manifest.json"
+   ],
+   "done_when": [
+    {
+     "exists": "ADAPT_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 100
+     }
+    },
+    {
+     "ckpt_step_min": {
+      "dir": "../ax1wm_finger_fq1s0_seed13",
+      "min": 500000
+     }
+    },
+    {
+     "file_contains": {
+      "file": "../ax1wm_finger_fq1s0_seed13/OFFLINE_FIT_PROGRESS",
+      "pattern": "update=500000\ntotal_updates=500000"
+     }
+    }
+   ]
+  },
+  {
+   "stage": "blk2_apt",
+   "kind": "axis1_fit_adapt",
+   "target": "vast",
    "run_id": "adapt_ax1uzfq1s1_finger_seed11_ckpt500000",
    "cmd": "DV3_TASK_NAME=adapt_ax1uzfq1s1_finger_seed11_ckpt500000 RUN_ID=adapt_ax1uzfq1s1_finger_seed11_ckpt500000 WM_RUN=ax1wm_finger_fq1s1_seed11 TASK=dmc_finger_turn_hard SEED=11 REPLAY=${RUNROOT}/axis1_finger/q1/side1 UPDATES=500000 STEPS=1.25e5 AXIS1_EXPL_MODE=apt AXIS1_ADAPT_CONFIG=unfrozen_readout DREAMER_DISABLE_GPUFLAGS=1 bash scripts/axis1.sbatch",
    "vars": {
@@ -815,23 +942,23 @@
    ]
   },
   {
-   "stage": "blk3_task",
+   "stage": "blk2_apt",
    "kind": "axis1_fit_adapt",
    "target": "vast",
-   "run_id": "adapt_ax1uzq1s0_finger_seed13_ckpt500000",
-   "cmd": "DV3_TASK_NAME=adapt_ax1uzq1s0_finger_seed13_ckpt500000 RUN_ID=adapt_ax1uzq1s0_finger_seed13_ckpt500000 WM_RUN=ax1wm_finger_q1s0_seed13 TASK=dmc_finger_turn_hard SEED=13 REPLAY=${RUNROOT}/axis1_finger/q1/side0 UPDATES=500000 STEPS=1.25e5 AXIS1_EXPL_MODE=task AXIS1_ADAPT_CONFIG=unfrozen_readout DREAMER_DISABLE_GPUFLAGS=1 bash scripts/axis1.sbatch",
+   "run_id": "adapt_ax1uzfq1s1_finger_seed13_ckpt500000",
+   "cmd": "DV3_TASK_NAME=adapt_ax1uzfq1s1_finger_seed13_ckpt500000 RUN_ID=adapt_ax1uzfq1s1_finger_seed13_ckpt500000 WM_RUN=ax1wm_finger_fq1s1_seed13 TASK=dmc_finger_turn_hard SEED=13 REPLAY=${RUNROOT}/axis1_finger/q1/side1 UPDATES=500000 STEPS=1.25e5 AXIS1_EXPL_MODE=apt AXIS1_ADAPT_CONFIG=unfrozen_readout DREAMER_DISABLE_GPUFLAGS=1 bash scripts/axis1.sbatch",
    "vars": {
-    "side": 0,
+    "side": 1,
     "seed": 13,
-    "run_id": "adapt_ax1uzq1s0_finger_seed13_ckpt500000"
+    "run_id": "adapt_ax1uzfq1s1_finger_seed13_ckpt500000"
    },
-   "logdir": "adapt_ax1uzq1s0_finger_seed13_ckpt500000",
+   "logdir": "adapt_ax1uzfq1s1_finger_seed13_ckpt500000",
    "outputs": [
-    "adapt_ax1uzq1s0_finger_seed13_ckpt500000",
-    "ax1wm_finger_q1s0_seed13"
+    "adapt_ax1uzfq1s1_finger_seed13_ckpt500000",
+    "ax1wm_finger_fq1s1_seed13"
    ],
    "inputs": [
-    "axis1_finger/q1/side0",
+    "axis1_finger/q1/side1",
     "axis1_finger/q1/manifest.json"
    ],
    "done_when": [
@@ -849,13 +976,13 @@
     },
     {
      "ckpt_step_min": {
-      "dir": "../ax1wm_finger_q1s0_seed13",
+      "dir": "../ax1wm_finger_fq1s1_seed13",
       "min": 500000
      }
     },
     {
      "file_contains": {
-      "file": "../ax1wm_finger_q1s0_seed13/OFFLINE_FIT_PROGRESS",
+      "file": "../ax1wm_finger_fq1s1_seed13/OFFLINE_FIT_PROGRESS",
       "pattern": "update=500000\ntotal_updates=500000"
      }
     }
@@ -912,20 +1039,20 @@
    "stage": "blk3_task",
    "kind": "axis1_fit_adapt",
    "target": "vast",
-   "run_id": "adapt_ax1uzq1s1_finger_seed13_ckpt500000",
-   "cmd": "DV3_TASK_NAME=adapt_ax1uzq1s1_finger_seed13_ckpt500000 RUN_ID=adapt_ax1uzq1s1_finger_seed13_ckpt500000 WM_RUN=ax1wm_finger_q1s1_seed13 TASK=dmc_finger_turn_hard SEED=13 REPLAY=${RUNROOT}/axis1_finger/q1/side1 UPDATES=500000 STEPS=1.25e5 AXIS1_EXPL_MODE=task AXIS1_ADAPT_CONFIG=unfrozen_readout DREAMER_DISABLE_GPUFLAGS=1 bash scripts/axis1.sbatch",
+   "run_id": "adapt_ax1uzq1s0_finger_seed15_ckpt500000",
+   "cmd": "DV3_TASK_NAME=adapt_ax1uzq1s0_finger_seed15_ckpt500000 RUN_ID=adapt_ax1uzq1s0_finger_seed15_ckpt500000 WM_RUN=ax1wm_finger_q1s0_seed15 TASK=dmc_finger_turn_hard SEED=15 REPLAY=${RUNROOT}/axis1_finger/q1/side0 UPDATES=500000 STEPS=1.25e5 AXIS1_EXPL_MODE=task AXIS1_ADAPT_CONFIG=unfrozen_readout DREAMER_DISABLE_GPUFLAGS=1 bash scripts/axis1.sbatch",
    "vars": {
-    "side": 1,
-    "seed": 13,
-    "run_id": "adapt_ax1uzq1s1_finger_seed13_ckpt500000"
+    "side": 0,
+    "seed": 15,
+    "run_id": "adapt_ax1uzq1s0_finger_seed15_ckpt500000"
    },
-   "logdir": "adapt_ax1uzq1s1_finger_seed13_ckpt500000",
+   "logdir": "adapt_ax1uzq1s0_finger_seed15_ckpt500000",
    "outputs": [
-    "adapt_ax1uzq1s1_finger_seed13_ckpt500000",
-    "ax1wm_finger_q1s1_seed13"
+    "adapt_ax1uzq1s0_finger_seed15_ckpt500000",
+    "ax1wm_finger_q1s0_seed15"
    ],
    "inputs": [
-    "axis1_finger/q1/side1",
+    "axis1_finger/q1/side0",
     "axis1_finger/q1/manifest.json"
    ],
    "done_when": [
@@ -943,13 +1070,60 @@
     },
     {
      "ckpt_step_min": {
-      "dir": "../ax1wm_finger_q1s1_seed13",
+      "dir": "../ax1wm_finger_q1s0_seed15",
       "min": 500000
      }
     },
     {
      "file_contains": {
-      "file": "../ax1wm_finger_q1s1_seed13/OFFLINE_FIT_PROGRESS",
+      "file": "../ax1wm_finger_q1s0_seed15/OFFLINE_FIT_PROGRESS",
+      "pattern": "update=500000\ntotal_updates=500000"
+     }
+    }
+   ]
+  },
+  {
+   "stage": "blk3_task",
+   "kind": "axis1_fit_adapt",
+   "target": "vast",
+   "run_id": "adapt_ax1uzq1s0_finger_seed16_ckpt500000",
+   "cmd": "DV3_TASK_NAME=adapt_ax1uzq1s0_finger_seed16_ckpt500000 RUN_ID=adapt_ax1uzq1s0_finger_seed16_ckpt500000 WM_RUN=ax1wm_finger_q1s0_seed16 TASK=dmc_finger_turn_hard SEED=16 REPLAY=${RUNROOT}/axis1_finger/q1/side0 UPDATES=500000 STEPS=1.25e5 AXIS1_EXPL_MODE=task AXIS1_ADAPT_CONFIG=unfrozen_readout DREAMER_DISABLE_GPUFLAGS=1 bash scripts/axis1.sbatch",
+   "vars": {
+    "side": 0,
+    "seed": 16,
+    "run_id": "adapt_ax1uzq1s0_finger_seed16_ckpt500000"
+   },
+   "logdir": "adapt_ax1uzq1s0_finger_seed16_ckpt500000",
+   "outputs": [
+    "adapt_ax1uzq1s0_finger_seed16_ckpt500000",
+    "ax1wm_finger_q1s0_seed16"
+   ],
+   "inputs": [
+    "axis1_finger/q1/side0",
+    "axis1_finger/q1/manifest.json"
+   ],
+   "done_when": [
+    {
+     "exists": "ADAPT_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 100
+     }
+    },
+    {
+     "ckpt_step_min": {
+      "dir": "../ax1wm_finger_q1s0_seed16",
+      "min": 500000
+     }
+    },
+    {
+     "file_contains": {
+      "file": "../ax1wm_finger_q1s0_seed16/OFFLINE_FIT_PROGRESS",
       "pattern": "update=500000\ntotal_updates=500000"
      }
     }
@@ -1003,23 +1177,23 @@
    ]
   },
   {
-   "stage": "blk3_apt",
+   "stage": "blk3_task",
    "kind": "axis1_fit_adapt",
    "target": "vast",
-   "run_id": "adapt_ax1uzfq1s0_finger_seed13_ckpt500000",
-   "cmd": "DV3_TASK_NAME=adapt_ax1uzfq1s0_finger_seed13_ckpt500000 RUN_ID=adapt_ax1uzfq1s0_finger_seed13_ckpt500000 WM_RUN=ax1wm_finger_fq1s0_seed13 TASK=dmc_finger_turn_hard SEED=13 REPLAY=${RUNROOT}/axis1_finger/q1/side0 UPDATES=500000 STEPS=1.25e5 AXIS1_EXPL_MODE=apt AXIS1_ADAPT_CONFIG=unfrozen_readout DREAMER_DISABLE_GPUFLAGS=1 bash scripts/axis1.sbatch",
+   "run_id": "adapt_ax1uzq1s1_finger_seed15_ckpt500000",
+   "cmd": "DV3_TASK_NAME=adapt_ax1uzq1s1_finger_seed15_ckpt500000 RUN_ID=adapt_ax1uzq1s1_finger_seed15_ckpt500000 WM_RUN=ax1wm_finger_q1s1_seed15 TASK=dmc_finger_turn_hard SEED=15 REPLAY=${RUNROOT}/axis1_finger/q1/side1 UPDATES=500000 STEPS=1.25e5 AXIS1_EXPL_MODE=task AXIS1_ADAPT_CONFIG=unfrozen_readout DREAMER_DISABLE_GPUFLAGS=1 bash scripts/axis1.sbatch",
    "vars": {
-    "side": 0,
-    "seed": 13,
-    "run_id": "adapt_ax1uzfq1s0_finger_seed13_ckpt500000"
+    "side": 1,
+    "seed": 15,
+    "run_id": "adapt_ax1uzq1s1_finger_seed15_ckpt500000"
    },
-   "logdir": "adapt_ax1uzfq1s0_finger_seed13_ckpt500000",
+   "logdir": "adapt_ax1uzq1s1_finger_seed15_ckpt500000",
    "outputs": [
-    "adapt_ax1uzfq1s0_finger_seed13_ckpt500000",
-    "ax1wm_finger_fq1s0_seed13"
+    "adapt_ax1uzq1s1_finger_seed15_ckpt500000",
+    "ax1wm_finger_q1s1_seed15"
    ],
    "inputs": [
-    "axis1_finger/q1/side0",
+    "axis1_finger/q1/side1",
     "axis1_finger/q1/manifest.json"
    ],
    "done_when": [
@@ -1037,13 +1211,60 @@
     },
     {
      "ckpt_step_min": {
-      "dir": "../ax1wm_finger_fq1s0_seed13",
+      "dir": "../ax1wm_finger_q1s1_seed15",
       "min": 500000
      }
     },
     {
      "file_contains": {
-      "file": "../ax1wm_finger_fq1s0_seed13/OFFLINE_FIT_PROGRESS",
+      "file": "../ax1wm_finger_q1s1_seed15/OFFLINE_FIT_PROGRESS",
+      "pattern": "update=500000\ntotal_updates=500000"
+     }
+    }
+   ]
+  },
+  {
+   "stage": "blk3_task",
+   "kind": "axis1_fit_adapt",
+   "target": "vast",
+   "run_id": "adapt_ax1uzq1s1_finger_seed16_ckpt500000",
+   "cmd": "DV3_TASK_NAME=adapt_ax1uzq1s1_finger_seed16_ckpt500000 RUN_ID=adapt_ax1uzq1s1_finger_seed16_ckpt500000 WM_RUN=ax1wm_finger_q1s1_seed16 TASK=dmc_finger_turn_hard SEED=16 REPLAY=${RUNROOT}/axis1_finger/q1/side1 UPDATES=500000 STEPS=1.25e5 AXIS1_EXPL_MODE=task AXIS1_ADAPT_CONFIG=unfrozen_readout DREAMER_DISABLE_GPUFLAGS=1 bash scripts/axis1.sbatch",
+   "vars": {
+    "side": 1,
+    "seed": 16,
+    "run_id": "adapt_ax1uzq1s1_finger_seed16_ckpt500000"
+   },
+   "logdir": "adapt_ax1uzq1s1_finger_seed16_ckpt500000",
+   "outputs": [
+    "adapt_ax1uzq1s1_finger_seed16_ckpt500000",
+    "ax1wm_finger_q1s1_seed16"
+   ],
+   "inputs": [
+    "axis1_finger/q1/side1",
+    "axis1_finger/q1/manifest.json"
+   ],
+   "done_when": [
+    {
+     "exists": "ADAPT_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 100
+     }
+    },
+    {
+     "ckpt_step_min": {
+      "dir": "../ax1wm_finger_q1s1_seed16",
+      "min": 500000
+     }
+    },
+    {
+     "file_contains": {
+      "file": "../ax1wm_finger_q1s1_seed16/OFFLINE_FIT_PROGRESS",
       "pattern": "update=500000\ntotal_updates=500000"
      }
     }
@@ -1100,20 +1321,20 @@
    "stage": "blk3_apt",
    "kind": "axis1_fit_adapt",
    "target": "vast",
-   "run_id": "adapt_ax1uzfq1s1_finger_seed13_ckpt500000",
-   "cmd": "DV3_TASK_NAME=adapt_ax1uzfq1s1_finger_seed13_ckpt500000 RUN_ID=adapt_ax1uzfq1s1_finger_seed13_ckpt500000 WM_RUN=ax1wm_finger_fq1s1_seed13 TASK=dmc_finger_turn_hard SEED=13 REPLAY=${RUNROOT}/axis1_finger/q1/side1 UPDATES=500000 STEPS=1.25e5 AXIS1_EXPL_MODE=apt AXIS1_ADAPT_CONFIG=unfrozen_readout DREAMER_DISABLE_GPUFLAGS=1 bash scripts/axis1.sbatch",
+   "run_id": "adapt_ax1uzfq1s0_finger_seed15_ckpt500000",
+   "cmd": "DV3_TASK_NAME=adapt_ax1uzfq1s0_finger_seed15_ckpt500000 RUN_ID=adapt_ax1uzfq1s0_finger_seed15_ckpt500000 WM_RUN=ax1wm_finger_fq1s0_seed15 TASK=dmc_finger_turn_hard SEED=15 REPLAY=${RUNROOT}/axis1_finger/q1/side0 UPDATES=500000 STEPS=1.25e5 AXIS1_EXPL_MODE=apt AXIS1_ADAPT_CONFIG=unfrozen_readout DREAMER_DISABLE_GPUFLAGS=1 bash scripts/axis1.sbatch",
    "vars": {
-    "side": 1,
-    "seed": 13,
-    "run_id": "adapt_ax1uzfq1s1_finger_seed13_ckpt500000"
+    "side": 0,
+    "seed": 15,
+    "run_id": "adapt_ax1uzfq1s0_finger_seed15_ckpt500000"
    },
-   "logdir": "adapt_ax1uzfq1s1_finger_seed13_ckpt500000",
+   "logdir": "adapt_ax1uzfq1s0_finger_seed15_ckpt500000",
    "outputs": [
-    "adapt_ax1uzfq1s1_finger_seed13_ckpt500000",
-    "ax1wm_finger_fq1s1_seed13"
+    "adapt_ax1uzfq1s0_finger_seed15_ckpt500000",
+    "ax1wm_finger_fq1s0_seed15"
    ],
    "inputs": [
-    "axis1_finger/q1/side1",
+    "axis1_finger/q1/side0",
     "axis1_finger/q1/manifest.json"
    ],
    "done_when": [
@@ -1131,13 +1352,60 @@
     },
     {
      "ckpt_step_min": {
-      "dir": "../ax1wm_finger_fq1s1_seed13",
+      "dir": "../ax1wm_finger_fq1s0_seed15",
       "min": 500000
      }
     },
     {
      "file_contains": {
-      "file": "../ax1wm_finger_fq1s1_seed13/OFFLINE_FIT_PROGRESS",
+      "file": "../ax1wm_finger_fq1s0_seed15/OFFLINE_FIT_PROGRESS",
+      "pattern": "update=500000\ntotal_updates=500000"
+     }
+    }
+   ]
+  },
+  {
+   "stage": "blk3_apt",
+   "kind": "axis1_fit_adapt",
+   "target": "vast",
+   "run_id": "adapt_ax1uzfq1s0_finger_seed16_ckpt500000",
+   "cmd": "DV3_TASK_NAME=adapt_ax1uzfq1s0_finger_seed16_ckpt500000 RUN_ID=adapt_ax1uzfq1s0_finger_seed16_ckpt500000 WM_RUN=ax1wm_finger_fq1s0_seed16 TASK=dmc_finger_turn_hard SEED=16 REPLAY=${RUNROOT}/axis1_finger/q1/side0 UPDATES=500000 STEPS=1.25e5 AXIS1_EXPL_MODE=apt AXIS1_ADAPT_CONFIG=unfrozen_readout DREAMER_DISABLE_GPUFLAGS=1 bash scripts/axis1.sbatch",
+   "vars": {
+    "side": 0,
+    "seed": 16,
+    "run_id": "adapt_ax1uzfq1s0_finger_seed16_ckpt500000"
+   },
+   "logdir": "adapt_ax1uzfq1s0_finger_seed16_ckpt500000",
+   "outputs": [
+    "adapt_ax1uzfq1s0_finger_seed16_ckpt500000",
+    "ax1wm_finger_fq1s0_seed16"
+   ],
+   "inputs": [
+    "axis1_finger/q1/side0",
+    "axis1_finger/q1/manifest.json"
+   ],
+   "done_when": [
+    {
+     "exists": "ADAPT_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 100
+     }
+    },
+    {
+     "ckpt_step_min": {
+      "dir": "../ax1wm_finger_fq1s0_seed16",
+      "min": 500000
+     }
+    },
+    {
+     "file_contains": {
+      "file": "../ax1wm_finger_fq1s0_seed16/OFFLINE_FIT_PROGRESS",
       "pattern": "update=500000\ntotal_updates=500000"
      }
     }
@@ -1191,289 +1459,7 @@
    ]
   },
   {
-   "stage": "blk4_task",
-   "kind": "axis1_fit_adapt",
-   "target": "vast",
-   "run_id": "adapt_ax1uzq1s0_finger_seed15_ckpt500000",
-   "cmd": "DV3_TASK_NAME=adapt_ax1uzq1s0_finger_seed15_ckpt500000 RUN_ID=adapt_ax1uzq1s0_finger_seed15_ckpt500000 WM_RUN=ax1wm_finger_q1s0_seed15 TASK=dmc_finger_turn_hard SEED=15 REPLAY=${RUNROOT}/axis1_finger/q1/side0 UPDATES=500000 STEPS=1.25e5 AXIS1_EXPL_MODE=task AXIS1_ADAPT_CONFIG=unfrozen_readout DREAMER_DISABLE_GPUFLAGS=1 bash scripts/axis1.sbatch",
-   "vars": {
-    "side": 0,
-    "seed": 15,
-    "run_id": "adapt_ax1uzq1s0_finger_seed15_ckpt500000"
-   },
-   "logdir": "adapt_ax1uzq1s0_finger_seed15_ckpt500000",
-   "outputs": [
-    "adapt_ax1uzq1s0_finger_seed15_ckpt500000",
-    "ax1wm_finger_q1s0_seed15"
-   ],
-   "inputs": [
-    "axis1_finger/q1/side0",
-    "axis1_finger/q1/manifest.json"
-   ],
-   "done_when": [
-    {
-     "exists": "ADAPT_DONE"
-    },
-    {
-     "exists": "config.yaml"
-    },
-    {
-     "jsonl_min_lines": {
-      "file": "scores.jsonl",
-      "n": 100
-     }
-    },
-    {
-     "ckpt_step_min": {
-      "dir": "../ax1wm_finger_q1s0_seed15",
-      "min": 500000
-     }
-    },
-    {
-     "file_contains": {
-      "file": "../ax1wm_finger_q1s0_seed15/OFFLINE_FIT_PROGRESS",
-      "pattern": "update=500000\ntotal_updates=500000"
-     }
-    }
-   ]
-  },
-  {
-   "stage": "blk4_task",
-   "kind": "axis1_fit_adapt",
-   "target": "vast",
-   "run_id": "adapt_ax1uzq1s0_finger_seed16_ckpt500000",
-   "cmd": "DV3_TASK_NAME=adapt_ax1uzq1s0_finger_seed16_ckpt500000 RUN_ID=adapt_ax1uzq1s0_finger_seed16_ckpt500000 WM_RUN=ax1wm_finger_q1s0_seed16 TASK=dmc_finger_turn_hard SEED=16 REPLAY=${RUNROOT}/axis1_finger/q1/side0 UPDATES=500000 STEPS=1.25e5 AXIS1_EXPL_MODE=task AXIS1_ADAPT_CONFIG=unfrozen_readout DREAMER_DISABLE_GPUFLAGS=1 bash scripts/axis1.sbatch",
-   "vars": {
-    "side": 0,
-    "seed": 16,
-    "run_id": "adapt_ax1uzq1s0_finger_seed16_ckpt500000"
-   },
-   "logdir": "adapt_ax1uzq1s0_finger_seed16_ckpt500000",
-   "outputs": [
-    "adapt_ax1uzq1s0_finger_seed16_ckpt500000",
-    "ax1wm_finger_q1s0_seed16"
-   ],
-   "inputs": [
-    "axis1_finger/q1/side0",
-    "axis1_finger/q1/manifest.json"
-   ],
-   "done_when": [
-    {
-     "exists": "ADAPT_DONE"
-    },
-    {
-     "exists": "config.yaml"
-    },
-    {
-     "jsonl_min_lines": {
-      "file": "scores.jsonl",
-      "n": 100
-     }
-    },
-    {
-     "ckpt_step_min": {
-      "dir": "../ax1wm_finger_q1s0_seed16",
-      "min": 500000
-     }
-    },
-    {
-     "file_contains": {
-      "file": "../ax1wm_finger_q1s0_seed16/OFFLINE_FIT_PROGRESS",
-      "pattern": "update=500000\ntotal_updates=500000"
-     }
-    }
-   ]
-  },
-  {
-   "stage": "blk4_task",
-   "kind": "axis1_fit_adapt",
-   "target": "vast",
-   "run_id": "adapt_ax1uzq1s1_finger_seed15_ckpt500000",
-   "cmd": "DV3_TASK_NAME=adapt_ax1uzq1s1_finger_seed15_ckpt500000 RUN_ID=adapt_ax1uzq1s1_finger_seed15_ckpt500000 WM_RUN=ax1wm_finger_q1s1_seed15 TASK=dmc_finger_turn_hard SEED=15 REPLAY=${RUNROOT}/axis1_finger/q1/side1 UPDATES=500000 STEPS=1.25e5 AXIS1_EXPL_MODE=task AXIS1_ADAPT_CONFIG=unfrozen_readout DREAMER_DISABLE_GPUFLAGS=1 bash scripts/axis1.sbatch",
-   "vars": {
-    "side": 1,
-    "seed": 15,
-    "run_id": "adapt_ax1uzq1s1_finger_seed15_ckpt500000"
-   },
-   "logdir": "adapt_ax1uzq1s1_finger_seed15_ckpt500000",
-   "outputs": [
-    "adapt_ax1uzq1s1_finger_seed15_ckpt500000",
-    "ax1wm_finger_q1s1_seed15"
-   ],
-   "inputs": [
-    "axis1_finger/q1/side1",
-    "axis1_finger/q1/manifest.json"
-   ],
-   "done_when": [
-    {
-     "exists": "ADAPT_DONE"
-    },
-    {
-     "exists": "config.yaml"
-    },
-    {
-     "jsonl_min_lines": {
-      "file": "scores.jsonl",
-      "n": 100
-     }
-    },
-    {
-     "ckpt_step_min": {
-      "dir": "../ax1wm_finger_q1s1_seed15",
-      "min": 500000
-     }
-    },
-    {
-     "file_contains": {
-      "file": "../ax1wm_finger_q1s1_seed15/OFFLINE_FIT_PROGRESS",
-      "pattern": "update=500000\ntotal_updates=500000"
-     }
-    }
-   ]
-  },
-  {
-   "stage": "blk4_task",
-   "kind": "axis1_fit_adapt",
-   "target": "vast",
-   "run_id": "adapt_ax1uzq1s1_finger_seed16_ckpt500000",
-   "cmd": "DV3_TASK_NAME=adapt_ax1uzq1s1_finger_seed16_ckpt500000 RUN_ID=adapt_ax1uzq1s1_finger_seed16_ckpt500000 WM_RUN=ax1wm_finger_q1s1_seed16 TASK=dmc_finger_turn_hard SEED=16 REPLAY=${RUNROOT}/axis1_finger/q1/side1 UPDATES=500000 STEPS=1.25e5 AXIS1_EXPL_MODE=task AXIS1_ADAPT_CONFIG=unfrozen_readout DREAMER_DISABLE_GPUFLAGS=1 bash scripts/axis1.sbatch",
-   "vars": {
-    "side": 1,
-    "seed": 16,
-    "run_id": "adapt_ax1uzq1s1_finger_seed16_ckpt500000"
-   },
-   "logdir": "adapt_ax1uzq1s1_finger_seed16_ckpt500000",
-   "outputs": [
-    "adapt_ax1uzq1s1_finger_seed16_ckpt500000",
-    "ax1wm_finger_q1s1_seed16"
-   ],
-   "inputs": [
-    "axis1_finger/q1/side1",
-    "axis1_finger/q1/manifest.json"
-   ],
-   "done_when": [
-    {
-     "exists": "ADAPT_DONE"
-    },
-    {
-     "exists": "config.yaml"
-    },
-    {
-     "jsonl_min_lines": {
-      "file": "scores.jsonl",
-      "n": 100
-     }
-    },
-    {
-     "ckpt_step_min": {
-      "dir": "../ax1wm_finger_q1s1_seed16",
-      "min": 500000
-     }
-    },
-    {
-     "file_contains": {
-      "file": "../ax1wm_finger_q1s1_seed16/OFFLINE_FIT_PROGRESS",
-      "pattern": "update=500000\ntotal_updates=500000"
-     }
-    }
-   ]
-  },
-  {
-   "stage": "blk4_apt",
-   "kind": "axis1_fit_adapt",
-   "target": "vast",
-   "run_id": "adapt_ax1uzfq1s0_finger_seed15_ckpt500000",
-   "cmd": "DV3_TASK_NAME=adapt_ax1uzfq1s0_finger_seed15_ckpt500000 RUN_ID=adapt_ax1uzfq1s0_finger_seed15_ckpt500000 WM_RUN=ax1wm_finger_fq1s0_seed15 TASK=dmc_finger_turn_hard SEED=15 REPLAY=${RUNROOT}/axis1_finger/q1/side0 UPDATES=500000 STEPS=1.25e5 AXIS1_EXPL_MODE=apt AXIS1_ADAPT_CONFIG=unfrozen_readout DREAMER_DISABLE_GPUFLAGS=1 bash scripts/axis1.sbatch",
-   "vars": {
-    "side": 0,
-    "seed": 15,
-    "run_id": "adapt_ax1uzfq1s0_finger_seed15_ckpt500000"
-   },
-   "logdir": "adapt_ax1uzfq1s0_finger_seed15_ckpt500000",
-   "outputs": [
-    "adapt_ax1uzfq1s0_finger_seed15_ckpt500000",
-    "ax1wm_finger_fq1s0_seed15"
-   ],
-   "inputs": [
-    "axis1_finger/q1/side0",
-    "axis1_finger/q1/manifest.json"
-   ],
-   "done_when": [
-    {
-     "exists": "ADAPT_DONE"
-    },
-    {
-     "exists": "config.yaml"
-    },
-    {
-     "jsonl_min_lines": {
-      "file": "scores.jsonl",
-      "n": 100
-     }
-    },
-    {
-     "ckpt_step_min": {
-      "dir": "../ax1wm_finger_fq1s0_seed15",
-      "min": 500000
-     }
-    },
-    {
-     "file_contains": {
-      "file": "../ax1wm_finger_fq1s0_seed15/OFFLINE_FIT_PROGRESS",
-      "pattern": "update=500000\ntotal_updates=500000"
-     }
-    }
-   ]
-  },
-  {
-   "stage": "blk4_apt",
-   "kind": "axis1_fit_adapt",
-   "target": "vast",
-   "run_id": "adapt_ax1uzfq1s0_finger_seed16_ckpt500000",
-   "cmd": "DV3_TASK_NAME=adapt_ax1uzfq1s0_finger_seed16_ckpt500000 RUN_ID=adapt_ax1uzfq1s0_finger_seed16_ckpt500000 WM_RUN=ax1wm_finger_fq1s0_seed16 TASK=dmc_finger_turn_hard SEED=16 REPLAY=${RUNROOT}/axis1_finger/q1/side0 UPDATES=500000 STEPS=1.25e5 AXIS1_EXPL_MODE=apt AXIS1_ADAPT_CONFIG=unfrozen_readout DREAMER_DISABLE_GPUFLAGS=1 bash scripts/axis1.sbatch",
-   "vars": {
-    "side": 0,
-    "seed": 16,
-    "run_id": "adapt_ax1uzfq1s0_finger_seed16_ckpt500000"
-   },
-   "logdir": "adapt_ax1uzfq1s0_finger_seed16_ckpt500000",
-   "outputs": [
-    "adapt_ax1uzfq1s0_finger_seed16_ckpt500000",
-    "ax1wm_finger_fq1s0_seed16"
-   ],
-   "inputs": [
-    "axis1_finger/q1/side0",
-    "axis1_finger/q1/manifest.json"
-   ],
-   "done_when": [
-    {
-     "exists": "ADAPT_DONE"
-    },
-    {
-     "exists": "config.yaml"
-    },
-    {
-     "jsonl_min_lines": {
-      "file": "scores.jsonl",
-      "n": 100
-     }
-    },
-    {
-     "ckpt_step_min": {
-      "dir": "../ax1wm_finger_fq1s0_seed16",
-      "min": 500000
-     }
-    },
-    {
-     "file_contains": {
-      "file": "../ax1wm_finger_fq1s0_seed16/OFFLINE_FIT_PROGRESS",
-      "pattern": "update=500000\ntotal_updates=500000"
-     }
-    }
-   ]
-  },
-  {
-   "stage": "blk4_apt",
+   "stage": "blk3_apt",
    "kind": "axis1_fit_adapt",
    "target": "vast",
    "run_id": "adapt_ax1uzfq1s1_finger_seed15_ckpt500000",
@@ -1520,7 +1506,7 @@
    ]
   },
   {
-   "stage": "blk4_apt",
+   "stage": "blk3_apt",
    "kind": "axis1_fit_adapt",
    "target": "vast",
    "run_id": "adapt_ax1uzfq1s1_finger_seed16_ckpt500000",

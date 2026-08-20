@@ -13,11 +13,13 @@
 # ax1wm_finger_fq1s* apt) -- those dirs do not exist yet and this wave creates
 # them.
 #
-# FOUR BLOCKS OF TWO SEEDS, one block per instance, for the same reason the
+# BLOCKS ARE SEED-WHOLE AND SIZED TO THE MACHINE, for the same reason the
 # carrier wave uses seed-whole blocks: the primary is a per-seed interaction
 # [task_hi - task_lo] - [apt_hi - apt_lo], so all FOUR cells of a seed feed
-# one datum and must not straddle machines. Each block is 8 cells ~ 40 GPU-h
-# ~ 20 h on two lanes.
+# one datum and must not straddle machines. blk1 = seeds 9,10 (8 cells) went
+# to a 2-lane box; blk2 = 11,12,13 and blk3 = 14,15,16 (12 cells each) are
+# sized for the 4-lane boxes -- 60 GPU-h over four lanes is ~15 h, so both
+# finish together. Block SIZE is packing; block WHOLENESS is the science.
 #
 # The apt arm is the expensive half: its offline fit computes intrinsic
 # rewards every update (~5 h/cell on a 5060 Ti vs ~2.5 h for task), so a
@@ -106,7 +108,7 @@ stages:
     on_failure: continue
     expand:
       side: [0, 1]
-      seed: [11, 12]
+      seed: [11, 12, 13]
     run_id: "adapt_ax1uzq1s${side}_finger_seed${seed}_ckpt500000"
     cmd: >-
       DV3_TASK_NAME=${run_id} RUN_ID=${run_id}
@@ -136,7 +138,7 @@ stages:
     on_failure: continue
     expand:
       side: [0, 1]
-      seed: [11, 12]
+      seed: [11, 12, 13]
     run_id: "adapt_ax1uzfq1s${side}_finger_seed${seed}_ckpt500000"
     cmd: >-
       DV3_TASK_NAME=${run_id} RUN_ID=${run_id}
@@ -166,7 +168,7 @@ stages:
     on_failure: continue
     expand:
       side: [0, 1]
-      seed: [13, 14]
+      seed: [14, 15, 16]
     run_id: "adapt_ax1uzq1s${side}_finger_seed${seed}_ckpt500000"
     cmd: >-
       DV3_TASK_NAME=${run_id} RUN_ID=${run_id}
@@ -196,67 +198,7 @@ stages:
     on_failure: continue
     expand:
       side: [0, 1]
-      seed: [13, 14]
-    run_id: "adapt_ax1uzfq1s${side}_finger_seed${seed}_ckpt500000"
-    cmd: >-
-      DV3_TASK_NAME=${run_id} RUN_ID=${run_id}
-      WM_RUN=ax1wm_finger_fq1s${side}_seed${seed}
-      TASK=dmc_finger_turn_hard SEED=${seed}
-      REPLAY=${RUNROOT}/axis1_finger/q1/side${side}
-      UPDATES=500000 STEPS=1.25e5 AXIS1_EXPL_MODE=apt
-      AXIS1_ADAPT_CONFIG=unfrozen_readout
-      DREAMER_DISABLE_GPUFLAGS=1 bash scripts/axis1.sbatch
-    outputs:
-      - "adapt_ax1uzfq1s${side}_finger_seed${seed}_ckpt500000"
-      - "ax1wm_finger_fq1s${side}_seed${seed}"
-    inputs:
-      - "axis1_finger/q1/side${side}"
-      - "axis1_finger/q1/manifest.json"
-    done_when:
-      - exists: ADAPT_DONE
-      - exists: config.yaml
-      - jsonl_min_lines: {file: scores.jsonl, n: 100}
-      - ckpt_step_min: {dir: "../ax1wm_finger_fq1s${side}_seed${seed}", min: 500000}
-      - file_contains:
-          file: "../ax1wm_finger_fq1s${side}_seed${seed}/OFFLINE_FIT_PROGRESS"
-          pattern: "update=500000\ntotal_updates=500000"
-
-  - name: blk4_task
-    kind: axis1_fit_adapt
-    on_failure: continue
-    expand:
-      side: [0, 1]
-      seed: [15, 16]
-    run_id: "adapt_ax1uzq1s${side}_finger_seed${seed}_ckpt500000"
-    cmd: >-
-      DV3_TASK_NAME=${run_id} RUN_ID=${run_id}
-      WM_RUN=ax1wm_finger_q1s${side}_seed${seed}
-      TASK=dmc_finger_turn_hard SEED=${seed}
-      REPLAY=${RUNROOT}/axis1_finger/q1/side${side}
-      UPDATES=500000 STEPS=1.25e5 AXIS1_EXPL_MODE=task
-      AXIS1_ADAPT_CONFIG=unfrozen_readout
-      DREAMER_DISABLE_GPUFLAGS=1 bash scripts/axis1.sbatch
-    outputs:
-      - "adapt_ax1uzq1s${side}_finger_seed${seed}_ckpt500000"
-      - "ax1wm_finger_q1s${side}_seed${seed}"
-    inputs:
-      - "axis1_finger/q1/side${side}"
-      - "axis1_finger/q1/manifest.json"
-    done_when:
-      - exists: ADAPT_DONE
-      - exists: config.yaml
-      - jsonl_min_lines: {file: scores.jsonl, n: 100}
-      - ckpt_step_min: {dir: "../ax1wm_finger_q1s${side}_seed${seed}", min: 500000}
-      - file_contains:
-          file: "../ax1wm_finger_q1s${side}_seed${seed}/OFFLINE_FIT_PROGRESS"
-          pattern: "update=500000\ntotal_updates=500000"
-
-  - name: blk4_apt
-    kind: axis1_fit_adapt
-    on_failure: continue
-    expand:
-      side: [0, 1]
-      seed: [15, 16]
+      seed: [14, 15, 16]
     run_id: "adapt_ax1uzfq1s${side}_finger_seed${seed}_ckpt500000"
     cmd: >-
       DV3_TASK_NAME=${run_id} RUN_ID=${run_id}

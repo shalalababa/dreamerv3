@@ -14,39 +14,35 @@ prereg:  prereg/PREREG_u1a_pooled_20260820.md
   adapt_ax1uzfq1s1_finger_seed9_ckpt500000
   adapt_ax1uzfq1s1_finger_seed10_ckpt500000
 
-=== stage blk2_task  [vast]  kind=axis1_fit_adapt  on_failure=continue  n=4 ===
+=== stage blk2_task  [vast]  kind=axis1_fit_adapt  on_failure=continue  n=6 ===
   adapt_ax1uzq1s0_finger_seed11_ckpt500000
   adapt_ax1uzq1s0_finger_seed12_ckpt500000
+  adapt_ax1uzq1s0_finger_seed13_ckpt500000
   adapt_ax1uzq1s1_finger_seed11_ckpt500000
   adapt_ax1uzq1s1_finger_seed12_ckpt500000
+  adapt_ax1uzq1s1_finger_seed13_ckpt500000
 
-=== stage blk2_apt  [vast]  kind=axis1_fit_adapt  on_failure=continue  n=4 ===
+=== stage blk2_apt  [vast]  kind=axis1_fit_adapt  on_failure=continue  n=6 ===
   adapt_ax1uzfq1s0_finger_seed11_ckpt500000
   adapt_ax1uzfq1s0_finger_seed12_ckpt500000
+  adapt_ax1uzfq1s0_finger_seed13_ckpt500000
   adapt_ax1uzfq1s1_finger_seed11_ckpt500000
   adapt_ax1uzfq1s1_finger_seed12_ckpt500000
-
-=== stage blk3_task  [vast]  kind=axis1_fit_adapt  on_failure=continue  n=4 ===
-  adapt_ax1uzq1s0_finger_seed13_ckpt500000
-  adapt_ax1uzq1s0_finger_seed14_ckpt500000
-  adapt_ax1uzq1s1_finger_seed13_ckpt500000
-  adapt_ax1uzq1s1_finger_seed14_ckpt500000
-
-=== stage blk3_apt  [vast]  kind=axis1_fit_adapt  on_failure=continue  n=4 ===
-  adapt_ax1uzfq1s0_finger_seed13_ckpt500000
-  adapt_ax1uzfq1s0_finger_seed14_ckpt500000
   adapt_ax1uzfq1s1_finger_seed13_ckpt500000
-  adapt_ax1uzfq1s1_finger_seed14_ckpt500000
 
-=== stage blk4_task  [vast]  kind=axis1_fit_adapt  on_failure=continue  n=4 ===
+=== stage blk3_task  [vast]  kind=axis1_fit_adapt  on_failure=continue  n=6 ===
+  adapt_ax1uzq1s0_finger_seed14_ckpt500000
   adapt_ax1uzq1s0_finger_seed15_ckpt500000
   adapt_ax1uzq1s0_finger_seed16_ckpt500000
+  adapt_ax1uzq1s1_finger_seed14_ckpt500000
   adapt_ax1uzq1s1_finger_seed15_ckpt500000
   adapt_ax1uzq1s1_finger_seed16_ckpt500000
 
-=== stage blk4_apt  [vast]  kind=axis1_fit_adapt  on_failure=continue  n=4 ===
+=== stage blk3_apt  [vast]  kind=axis1_fit_adapt  on_failure=continue  n=6 ===
+  adapt_ax1uzfq1s0_finger_seed14_ckpt500000
   adapt_ax1uzfq1s0_finger_seed15_ckpt500000
   adapt_ax1uzfq1s0_finger_seed16_ckpt500000
+  adapt_ax1uzfq1s1_finger_seed14_ckpt500000
   adapt_ax1uzfq1s1_finger_seed15_ckpt500000
   adapt_ax1uzfq1s1_finger_seed16_ckpt500000
 
