@@ -12,11 +12,15 @@ Family (all fit on TRAIN episodes only; evaluation episodes held out):
   mlp           2-layer MLP on [rhat, in_regime] (sklearn; skipped with a
                 note if sklearn is absent)
 
-Prediction under test (Algorithm_Ideation §3.3, honest prior ~0.30): the
-`rl` arm (LEARNED-BUT-UNALIGNED, polarity-flipped regime indicator) should
-move toward the task anchor under recoding, while the random-stamp arms
-(srd0/srd1) and the reward-free arm (fq1 — untrained head) should NOT: their
-reward information is absent, so no recoding can help.
+Prediction under test (Algorithm_Ideation §3.3, honest prior ~0.30;
+REVISED 20 Aug pre-outcome — only q1 dumps existed when fq1 proved
+structurally undumpable and shq1 replaced it): the `rl` arm
+(LEARNED-BUT-UNALIGNED, polarity-flipped regime indicator) should move
+toward the task anchor under recoding; the random-stamp arms (srd0/srd1)
+and the shuffled-label arm (shq1 — trained head, binding destroyed)
+should NOT: their true-reward information is absent or destroyed, so no
+recoding can help. fq1 is structural-NA (no reward head exists — a
+finding about the screen's premise, not a measurable control).
 
 Scoring currency is the family's own (Gaussian, fitted sigma) — NOT the
 house symlog-NLL band; comparisons are cross-arm within this currency, with

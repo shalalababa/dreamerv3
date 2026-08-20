@@ -15,8 +15,8 @@
 # ONE job = ONE GPU for the WHOLE 80-run panel — the single-device probe
 # discipline (probe-panels-single-gpu). Do not split across jobs.
 #
-# Panel: finger q1 task / fq1 reward-free / rlq1 own-label / srd0q1+srd1q1
-# random stamps, both sides, seeds 1-8 (80 runs). Resumable: runs with an
+# Panel: finger q1 task / rlq1 own-label / srd0q1+srd1q1 random stamps /
+# shq1 shuffled-label, both sides, seeds 1-8 (80 runs; fq1 structural-NA). Resumable: runs with an
 # existing dump are skipped.
 #
 # Optional env: EP_BATCH (default 8), PROBESET (default finger_v1).
@@ -34,9 +34,16 @@ cd "$REPO"
 # the posterior rhat path tries to CREATE rew/mlp/linear0/kernel (640,64)
 # inside a pure function and nj refuses. That is a property of the
 # checkpoints, not a config that can be flipped. Narrowing ARMS is how ops
-# runs the dumpable panel without editing the panel definition; whether
-# fq1 leaves the family is the instrument author's call.
-ARMS="${ARMS:-q1 fq1 rlq1 srd0q1 srd1q1}"
+# runs the dumpable panel without editing the panel definition.
+# AUTHOR DECISION 20 Aug (pre-outcome for every discriminating arm — only
+# the q1 dumps existed when this was made): fq1 LEAVES the panel as
+# structural-NA (no head exists ⇒ "cannot recode" is true by structure,
+# not measurement — itself a finding: the screen's premise is absent for
+# reward-free fits). shq1 ENTERS as the second negative control: a
+# TRAINED head on shuffled (mis-bound) labels — recoding should not
+# recover true reward there either, and unlike fq1 that is an empirical
+# claim. srd0/srd1 remain the primary no-information controls.
+ARMS="${ARMS:-q1 rlq1 srd0q1 srd1q1 shq1}"
 PROBESET="${PROBESET:-$RUNROOT/e4_probesets/finger_v1}"
 EP_BATCH="${EP_BATCH:-8}"
 [ -f "$PROBESET/FROZEN" ] || { echo "ERROR: $PROBESET is not FROZEN"; exit 2; }

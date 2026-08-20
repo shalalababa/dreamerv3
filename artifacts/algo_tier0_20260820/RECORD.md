@@ -72,14 +72,30 @@ Instruments built + selfchecked:
   Synthetic selfcheck PASS: aligned +8.84 / sign-flipped +1.58 (recodes) /
   noise +0.001 (nothing to recode).
 - `scripts/probe_family_panel.sbatch` — ONE job = ONE GPU for the whole
-  80-run panel (q1, fq1, rlq1, srd0q1, srd1q1 × 2 sides × seeds 1–8; all
+  80-run panel (q1, rlq1, srd0q1, srd1q1, shq1 × 2 sides × seeds 1–8; all
   verified present with ckpts on RCC 20 Aug). Resumable.
 
-Prediction on file before the panel runs: rl recodes toward the task
-anchor (info_gain up, driven by sign/regime members); srd0/srd1 and fq1
-do not (info_gain ≈ 0). Honest prior ~0.30 (the own-label read already
-shows the most favorable recoding failing to clear the house band; this
-family is richer, in its own currency).
+**Panel revision 20 Aug (pre-outcome — only the q1 dumps existed):** the
+first panel attempt (job 53738652) died on its first fq1 run —
+**reward-free (apt-mode) fits carry NO reward head at all** (0 `/rew/`
+ckpt entries vs 15 in every reward-bearing arm; lazy ninjax params + the
+rew loss never runs under reward_free), so the rhat path would need to
+create params inside a pure function, which nj refuses. My dump script's
+premise ("the untrained head is the control") was structurally wrong.
+Decision: **fq1 leaves the panel as structural-NA** — "cannot recode" is
+true by construction there, which is itself a finding (the screen's
+premise, a head to probe, does not exist for reward-free fits) but not a
+measurable control; **shq1 enters as the second negative control** (a
+TRAINED head on shuffled/mis-bound labels — recoding should not recover
+true reward, and unlike fq1 that is an empirical claim). srd0/srd1 remain
+the primary no-information controls; srd1 retained per the user's
+instruction.
+
+Prediction on file before the discriminating arms run: rl recodes toward
+the task anchor (info_gain up, driven by sign/regime members); srd0/srd1
+and shq1 do not (info_gain ≈ 0). Honest prior ~0.30 (the own-label read
+already shows the most favorable recoding failing to clear the house
+band; this family is richer, in its own currency).
 
 ## 4. Pixel-parity cell (ideation §4.1) — **SPEC READY, needs one GPU job**
 

@@ -16,9 +16,13 @@ cmd_measure (h=0 only) and writes per-frame arrays:
   + probe_family_manifest.json (run_id, ckpt path, probeset sha,
     expl_mode, gpu_name — single-GPU panel discipline applies).
 
-Unlike cmd_measure, rhat/nll_id are computed for EVERY arm including
-reward_free ones (the untrained head is the control the family test
-needs; its NLL is meaningless-by-design and labeled so).
+Reward-free (apt-mode) fits are STRUCTURALLY undumpable — the reward
+head's params are never created during training (lazy ninjax params +
+the rew loss never runs under reward_free; verified 20 Aug: fq1 ckpts
+carry 0 /rew/ entries vs 15 in every reward-bearing arm), so the rhat
+path would require creating params inside a pure function, which nj
+refuses. fq1 is therefore recorded structural-NA in the panel (see
+scripts/probe_family_panel.sbatch); only reward-bearing arms dump.
 
 The recoding family itself is fit CPU-side by analysis/tier0_probe_family.py
 on these dumps. No registered instrument is modified; this file is additive.
