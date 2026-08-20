@@ -1,0 +1,57 @@
+wave_id: u1a_pooled
+spec:    /home/rickybao/projects/dreamerv3/ops/waves/u1a_pooled/spec.yaml
+prereg:  prereg/PREREG_u1a_pooled_20260820.md
+
+=== stage blk1_task  [vast]  kind=axis1_fit_adapt  on_failure=continue  n=4 ===
+  adapt_ax1uzq1s0_finger_seed9_ckpt500000
+  adapt_ax1uzq1s0_finger_seed10_ckpt500000
+  adapt_ax1uzq1s1_finger_seed9_ckpt500000
+  adapt_ax1uzq1s1_finger_seed10_ckpt500000
+
+=== stage blk1_apt  [vast]  kind=axis1_fit_adapt  on_failure=continue  n=4 ===
+  adapt_ax1uzfq1s0_finger_seed9_ckpt500000
+  adapt_ax1uzfq1s0_finger_seed10_ckpt500000
+  adapt_ax1uzfq1s1_finger_seed9_ckpt500000
+  adapt_ax1uzfq1s1_finger_seed10_ckpt500000
+
+=== stage blk2_task  [vast]  kind=axis1_fit_adapt  on_failure=continue  n=4 ===
+  adapt_ax1uzq1s0_finger_seed11_ckpt500000
+  adapt_ax1uzq1s0_finger_seed12_ckpt500000
+  adapt_ax1uzq1s1_finger_seed11_ckpt500000
+  adapt_ax1uzq1s1_finger_seed12_ckpt500000
+
+=== stage blk2_apt  [vast]  kind=axis1_fit_adapt  on_failure=continue  n=4 ===
+  adapt_ax1uzfq1s0_finger_seed11_ckpt500000
+  adapt_ax1uzfq1s0_finger_seed12_ckpt500000
+  adapt_ax1uzfq1s1_finger_seed11_ckpt500000
+  adapt_ax1uzfq1s1_finger_seed12_ckpt500000
+
+=== stage blk3_task  [vast]  kind=axis1_fit_adapt  on_failure=continue  n=4 ===
+  adapt_ax1uzq1s0_finger_seed13_ckpt500000
+  adapt_ax1uzq1s0_finger_seed14_ckpt500000
+  adapt_ax1uzq1s1_finger_seed13_ckpt500000
+  adapt_ax1uzq1s1_finger_seed14_ckpt500000
+
+=== stage blk3_apt  [vast]  kind=axis1_fit_adapt  on_failure=continue  n=4 ===
+  adapt_ax1uzfq1s0_finger_seed13_ckpt500000
+  adapt_ax1uzfq1s0_finger_seed14_ckpt500000
+  adapt_ax1uzfq1s1_finger_seed13_ckpt500000
+  adapt_ax1uzfq1s1_finger_seed14_ckpt500000
+
+=== stage blk4_task  [vast]  kind=axis1_fit_adapt  on_failure=continue  n=4 ===
+  adapt_ax1uzq1s0_finger_seed15_ckpt500000
+  adapt_ax1uzq1s0_finger_seed16_ckpt500000
+  adapt_ax1uzq1s1_finger_seed15_ckpt500000
+  adapt_ax1uzq1s1_finger_seed16_ckpt500000
+
+=== stage blk4_apt  [vast]  kind=axis1_fit_adapt  on_failure=continue  n=4 ===
+  adapt_ax1uzfq1s0_finger_seed15_ckpt500000
+  adapt_ax1uzfq1s0_finger_seed16_ckpt500000
+  adapt_ax1uzfq1s1_finger_seed15_ckpt500000
+  adapt_ax1uzfq1s1_finger_seed16_ckpt500000
+
+TOTAL RUNS: 32
+
+Check this list against the prereg before submitting. run_ids are
+consumed by frozen readers and the ledger; a wrong expansion here
+propagates into every downstream artifact.

@@ -1,0 +1,282 @@
+# U1a pooled re-test -- PREREG_u1a_pooled_20260820 (+amend1), frozen 116d506f.
+#
+# 32 fit+adapt cells: {task, apt} x sides {0,1} x seeds 9-16 on the frozen
+# finger q1 substrate. This is the REBUILD branch -- the 20 Aug inventory
+# found 0/16 of the seeds 9-16 fits surviving, so axis1.sbatch runs BOTH
+# stages per cell (500000-update offline fit, then the UNFROZEN adapt).
+#
+# run_ids and modes are transcribed from the frozen reader
+# (analysis/u1a_pooled_read.py:43-45), not re-derived: task -> ax1uzq1s{side},
+# apt -> ax1uzfq1s{side}. These differ from the U1 look-1 wave's ax1uzt*/
+# ax1uzf* strings; the reader is what consumes these rows, so the reader wins.
+# Donor WM names follow the U1 registration verbatim (ax1wm_finger_q1s* task,
+# ax1wm_finger_fq1s* apt) -- those dirs do not exist yet and this wave creates
+# them.
+#
+# FOUR BLOCKS OF TWO SEEDS, one block per instance, for the same reason the
+# carrier wave uses seed-whole blocks: the primary is a per-seed interaction
+# [task_hi - task_lo] - [apt_hi - apt_lo], so all FOUR cells of a seed feed
+# one datum and must not straddle machines. Each block is 8 cells ~ 40 GPU-h
+# ~ 20 h on two lanes.
+#
+# The apt arm is the expensive half: its offline fit computes intrinsic
+# rewards every update (~5 h/cell on a 5060 Ti vs ~2.5 h for task), so a
+# block is 2x(3.75 + 6.25) GPU-h rather than 4x3.75.
+#
+# per_gpu: 1 -- full 1m model plus a live env, same as every other axis1 wave.
+
+wave_id: u1a_pooled
+paper: paper1
+prereg: prereg/PREREG_u1a_pooled_20260820.md
+notes: >-
+  32 fit+adapt cells (task/apt x 2 sides x seeds 9-16) on axis1_finger/q1,
+  unfrozen adapts. Four two-seed blocks; a seed's four cells stay on one
+  machine.
+
+defaults:
+  target: vast
+
+kinds:
+  axis1_fit_adapt: {per_gpu: 1}
+
+stages:
+
+  - name: blk1_task
+    kind: axis1_fit_adapt
+    on_failure: continue
+    expand:
+      side: [0, 1]
+      seed: [9, 10]
+    run_id: "adapt_ax1uzq1s${side}_finger_seed${seed}_ckpt500000"
+    cmd: >-
+      DV3_TASK_NAME=${run_id} RUN_ID=${run_id}
+      WM_RUN=ax1wm_finger_q1s${side}_seed${seed}
+      TASK=dmc_finger_turn_hard SEED=${seed}
+      REPLAY=${RUNROOT}/axis1_finger/q1/side${side}
+      UPDATES=500000 STEPS=1.25e5 AXIS1_EXPL_MODE=task
+      AXIS1_ADAPT_CONFIG=unfrozen_readout
+      DREAMER_DISABLE_GPUFLAGS=1 bash scripts/axis1.sbatch
+    outputs:
+      - "adapt_ax1uzq1s${side}_finger_seed${seed}_ckpt500000"
+      - "ax1wm_finger_q1s${side}_seed${seed}"
+    inputs:
+      - "axis1_finger/q1/side${side}"
+      - "axis1_finger/q1/manifest.json"
+    done_when:
+      - exists: ADAPT_DONE
+      - exists: config.yaml
+      - jsonl_min_lines: {file: scores.jsonl, n: 100}
+      - ckpt_step_min: {dir: "../ax1wm_finger_q1s${side}_seed${seed}", min: 500000}
+      - file_contains:
+          file: "../ax1wm_finger_q1s${side}_seed${seed}/OFFLINE_FIT_PROGRESS"
+          pattern: "update=500000\ntotal_updates=500000"
+
+  - name: blk1_apt
+    kind: axis1_fit_adapt
+    on_failure: continue
+    expand:
+      side: [0, 1]
+      seed: [9, 10]
+    run_id: "adapt_ax1uzfq1s${side}_finger_seed${seed}_ckpt500000"
+    cmd: >-
+      DV3_TASK_NAME=${run_id} RUN_ID=${run_id}
+      WM_RUN=ax1wm_finger_fq1s${side}_seed${seed}
+      TASK=dmc_finger_turn_hard SEED=${seed}
+      REPLAY=${RUNROOT}/axis1_finger/q1/side${side}
+      UPDATES=500000 STEPS=1.25e5 AXIS1_EXPL_MODE=apt
+      AXIS1_ADAPT_CONFIG=unfrozen_readout
+      DREAMER_DISABLE_GPUFLAGS=1 bash scripts/axis1.sbatch
+    outputs:
+      - "adapt_ax1uzfq1s${side}_finger_seed${seed}_ckpt500000"
+      - "ax1wm_finger_fq1s${side}_seed${seed}"
+    inputs:
+      - "axis1_finger/q1/side${side}"
+      - "axis1_finger/q1/manifest.json"
+    done_when:
+      - exists: ADAPT_DONE
+      - exists: config.yaml
+      - jsonl_min_lines: {file: scores.jsonl, n: 100}
+      - ckpt_step_min: {dir: "../ax1wm_finger_fq1s${side}_seed${seed}", min: 500000}
+      - file_contains:
+          file: "../ax1wm_finger_fq1s${side}_seed${seed}/OFFLINE_FIT_PROGRESS"
+          pattern: "update=500000\ntotal_updates=500000"
+
+  - name: blk2_task
+    kind: axis1_fit_adapt
+    on_failure: continue
+    expand:
+      side: [0, 1]
+      seed: [11, 12]
+    run_id: "adapt_ax1uzq1s${side}_finger_seed${seed}_ckpt500000"
+    cmd: >-
+      DV3_TASK_NAME=${run_id} RUN_ID=${run_id}
+      WM_RUN=ax1wm_finger_q1s${side}_seed${seed}
+      TASK=dmc_finger_turn_hard SEED=${seed}
+      REPLAY=${RUNROOT}/axis1_finger/q1/side${side}
+      UPDATES=500000 STEPS=1.25e5 AXIS1_EXPL_MODE=task
+      AXIS1_ADAPT_CONFIG=unfrozen_readout
+      DREAMER_DISABLE_GPUFLAGS=1 bash scripts/axis1.sbatch
+    outputs:
+      - "adapt_ax1uzq1s${side}_finger_seed${seed}_ckpt500000"
+      - "ax1wm_finger_q1s${side}_seed${seed}"
+    inputs:
+      - "axis1_finger/q1/side${side}"
+      - "axis1_finger/q1/manifest.json"
+    done_when:
+      - exists: ADAPT_DONE
+      - exists: config.yaml
+      - jsonl_min_lines: {file: scores.jsonl, n: 100}
+      - ckpt_step_min: {dir: "../ax1wm_finger_q1s${side}_seed${seed}", min: 500000}
+      - file_contains:
+          file: "../ax1wm_finger_q1s${side}_seed${seed}/OFFLINE_FIT_PROGRESS"
+          pattern: "update=500000\ntotal_updates=500000"
+
+  - name: blk2_apt
+    kind: axis1_fit_adapt
+    on_failure: continue
+    expand:
+      side: [0, 1]
+      seed: [11, 12]
+    run_id: "adapt_ax1uzfq1s${side}_finger_seed${seed}_ckpt500000"
+    cmd: >-
+      DV3_TASK_NAME=${run_id} RUN_ID=${run_id}
+      WM_RUN=ax1wm_finger_fq1s${side}_seed${seed}
+      TASK=dmc_finger_turn_hard SEED=${seed}
+      REPLAY=${RUNROOT}/axis1_finger/q1/side${side}
+      UPDATES=500000 STEPS=1.25e5 AXIS1_EXPL_MODE=apt
+      AXIS1_ADAPT_CONFIG=unfrozen_readout
+      DREAMER_DISABLE_GPUFLAGS=1 bash scripts/axis1.sbatch
+    outputs:
+      - "adapt_ax1uzfq1s${side}_finger_seed${seed}_ckpt500000"
+      - "ax1wm_finger_fq1s${side}_seed${seed}"
+    inputs:
+      - "axis1_finger/q1/side${side}"
+      - "axis1_finger/q1/manifest.json"
+    done_when:
+      - exists: ADAPT_DONE
+      - exists: config.yaml
+      - jsonl_min_lines: {file: scores.jsonl, n: 100}
+      - ckpt_step_min: {dir: "../ax1wm_finger_fq1s${side}_seed${seed}", min: 500000}
+      - file_contains:
+          file: "../ax1wm_finger_fq1s${side}_seed${seed}/OFFLINE_FIT_PROGRESS"
+          pattern: "update=500000\ntotal_updates=500000"
+
+  - name: blk3_task
+    kind: axis1_fit_adapt
+    on_failure: continue
+    expand:
+      side: [0, 1]
+      seed: [13, 14]
+    run_id: "adapt_ax1uzq1s${side}_finger_seed${seed}_ckpt500000"
+    cmd: >-
+      DV3_TASK_NAME=${run_id} RUN_ID=${run_id}
+      WM_RUN=ax1wm_finger_q1s${side}_seed${seed}
+      TASK=dmc_finger_turn_hard SEED=${seed}
+      REPLAY=${RUNROOT}/axis1_finger/q1/side${side}
+      UPDATES=500000 STEPS=1.25e5 AXIS1_EXPL_MODE=task
+      AXIS1_ADAPT_CONFIG=unfrozen_readout
+      DREAMER_DISABLE_GPUFLAGS=1 bash scripts/axis1.sbatch
+    outputs:
+      - "adapt_ax1uzq1s${side}_finger_seed${seed}_ckpt500000"
+      - "ax1wm_finger_q1s${side}_seed${seed}"
+    inputs:
+      - "axis1_finger/q1/side${side}"
+      - "axis1_finger/q1/manifest.json"
+    done_when:
+      - exists: ADAPT_DONE
+      - exists: config.yaml
+      - jsonl_min_lines: {file: scores.jsonl, n: 100}
+      - ckpt_step_min: {dir: "../ax1wm_finger_q1s${side}_seed${seed}", min: 500000}
+      - file_contains:
+          file: "../ax1wm_finger_q1s${side}_seed${seed}/OFFLINE_FIT_PROGRESS"
+          pattern: "update=500000\ntotal_updates=500000"
+
+  - name: blk3_apt
+    kind: axis1_fit_adapt
+    on_failure: continue
+    expand:
+      side: [0, 1]
+      seed: [13, 14]
+    run_id: "adapt_ax1uzfq1s${side}_finger_seed${seed}_ckpt500000"
+    cmd: >-
+      DV3_TASK_NAME=${run_id} RUN_ID=${run_id}
+      WM_RUN=ax1wm_finger_fq1s${side}_seed${seed}
+      TASK=dmc_finger_turn_hard SEED=${seed}
+      REPLAY=${RUNROOT}/axis1_finger/q1/side${side}
+      UPDATES=500000 STEPS=1.25e5 AXIS1_EXPL_MODE=apt
+      AXIS1_ADAPT_CONFIG=unfrozen_readout
+      DREAMER_DISABLE_GPUFLAGS=1 bash scripts/axis1.sbatch
+    outputs:
+      - "adapt_ax1uzfq1s${side}_finger_seed${seed}_ckpt500000"
+      - "ax1wm_finger_fq1s${side}_seed${seed}"
+    inputs:
+      - "axis1_finger/q1/side${side}"
+      - "axis1_finger/q1/manifest.json"
+    done_when:
+      - exists: ADAPT_DONE
+      - exists: config.yaml
+      - jsonl_min_lines: {file: scores.jsonl, n: 100}
+      - ckpt_step_min: {dir: "../ax1wm_finger_fq1s${side}_seed${seed}", min: 500000}
+      - file_contains:
+          file: "../ax1wm_finger_fq1s${side}_seed${seed}/OFFLINE_FIT_PROGRESS"
+          pattern: "update=500000\ntotal_updates=500000"
+
+  - name: blk4_task
+    kind: axis1_fit_adapt
+    on_failure: continue
+    expand:
+      side: [0, 1]
+      seed: [15, 16]
+    run_id: "adapt_ax1uzq1s${side}_finger_seed${seed}_ckpt500000"
+    cmd: >-
+      DV3_TASK_NAME=${run_id} RUN_ID=${run_id}
+      WM_RUN=ax1wm_finger_q1s${side}_seed${seed}
+      TASK=dmc_finger_turn_hard SEED=${seed}
+      REPLAY=${RUNROOT}/axis1_finger/q1/side${side}
+      UPDATES=500000 STEPS=1.25e5 AXIS1_EXPL_MODE=task
+      AXIS1_ADAPT_CONFIG=unfrozen_readout
+      DREAMER_DISABLE_GPUFLAGS=1 bash scripts/axis1.sbatch
+    outputs:
+      - "adapt_ax1uzq1s${side}_finger_seed${seed}_ckpt500000"
+      - "ax1wm_finger_q1s${side}_seed${seed}"
+    inputs:
+      - "axis1_finger/q1/side${side}"
+      - "axis1_finger/q1/manifest.json"
+    done_when:
+      - exists: ADAPT_DONE
+      - exists: config.yaml
+      - jsonl_min_lines: {file: scores.jsonl, n: 100}
+      - ckpt_step_min: {dir: "../ax1wm_finger_q1s${side}_seed${seed}", min: 500000}
+      - file_contains:
+          file: "../ax1wm_finger_q1s${side}_seed${seed}/OFFLINE_FIT_PROGRESS"
+          pattern: "update=500000\ntotal_updates=500000"
+
+  - name: blk4_apt
+    kind: axis1_fit_adapt
+    on_failure: continue
+    expand:
+      side: [0, 1]
+      seed: [15, 16]
+    run_id: "adapt_ax1uzfq1s${side}_finger_seed${seed}_ckpt500000"
+    cmd: >-
+      DV3_TASK_NAME=${run_id} RUN_ID=${run_id}
+      WM_RUN=ax1wm_finger_fq1s${side}_seed${seed}
+      TASK=dmc_finger_turn_hard SEED=${seed}
+      REPLAY=${RUNROOT}/axis1_finger/q1/side${side}
+      UPDATES=500000 STEPS=1.25e5 AXIS1_EXPL_MODE=apt
+      AXIS1_ADAPT_CONFIG=unfrozen_readout
+      DREAMER_DISABLE_GPUFLAGS=1 bash scripts/axis1.sbatch
+    outputs:
+      - "adapt_ax1uzfq1s${side}_finger_seed${seed}_ckpt500000"
+      - "ax1wm_finger_fq1s${side}_seed${seed}"
+    inputs:
+      - "axis1_finger/q1/side${side}"
+      - "axis1_finger/q1/manifest.json"
+    done_when:
+      - exists: ADAPT_DONE
+      - exists: config.yaml
+      - jsonl_min_lines: {file: scores.jsonl, n: 100}
+      - ckpt_step_min: {dir: "../ax1wm_finger_fq1s${side}_seed${seed}", min: 500000}
+      - file_contains:
+          file: "../ax1wm_finger_fq1s${side}_seed${seed}/OFFLINE_FIT_PROGRESS"
+          pattern: "update=500000\ntotal_updates=500000"
