@@ -129,8 +129,11 @@ def side_auc(rows, mode, seeds, domain, field='auc100k'):
   return out
 
 
-def check_modal_nep(rows, modes, seeds, domain, field='n_ep_100k'):
-  """STRICT modal n_ep: every counted row must equal the modal value."""
+def check_modal_nep(rows, modes, seeds, domain, field='n_ep_100k',
+                    expected=None):
+  """STRICT modal n_ep: every counted row must equal the modal value; if
+  `expected` is given (a pinned look-1 modal), the modal must equal it —
+  otherwise pooling would silently mix estimand windows (carrier B3)."""
   vals = [int(r[field]) for r in rows
           if r['mode'] in modes and r['domain'] == domain
           and int(r['seed']) in seeds]
@@ -140,6 +143,8 @@ def check_modal_nep(rows, modes, seeds, domain, field='n_ep_100k'):
   bad = [v for v in vals if v != modal]
   if bad:
     refuse(f'modal n_ep violation: modal {modal}, deviants {sorted(set(bad))}')
+  if expected is not None and modal != expected:
+    refuse(f'modal n_ep {modal} != pinned look-1 modal {expected}')
   return modal
 
 
