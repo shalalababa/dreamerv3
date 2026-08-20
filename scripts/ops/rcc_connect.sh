@@ -43,6 +43,39 @@ chmod 700 "$CTL_DIR" 2>/dev/null || true
 
 alive () { ssh -O check -o "ControlPath=$CTL" "$RCC_HOST" >/dev/null 2>&1; }
 
+# A dead master routinely leaves its socket FILE behind -- WSL sleeping, the
+# network changing, a server-side timeout, or the master being SIGKILLed. The
+# process may even linger while its connection is gone. `ssh -O check` then
+# fails (Connection refused) while the file is still on disk, and ssh REFUSES
+# to create a new master over an existing socket path: it prints
+#   ControlSocket ... already exists, disabling multiplexing
+# then connects WITHOUT a master, backgrounds via -f, and exits 0. The caller
+# sees rc=0 and no connection, which reads like a credentials problem and is
+# not one. So clear the corpse before trying to open.
+sock_path () {
+  local u h
+  case "$RCC_HOST" in
+    *@*) u="${RCC_HOST%%@*}"; h="${RCC_HOST#*@}" ;;
+    *)   u="${USER:-$(id -un)}"; h="$RCC_HOST" ;;
+  esac
+  ls -1 "$CTL_DIR/$u@$h:"* 2>/dev/null   # glob the port: non-22 sockets count
+}
+
+reap_stale () {
+  local s
+  while IFS= read -r s; do
+    [ -n "$s" ] || continue
+    echo "rcc: stale control socket ($s) -- removing"
+    rm -f "$s"
+  done < <(sock_path)
+  # A master whose socket is dead holds nothing worth keeping.
+  if pkill -f "ssh -MNf.*ControlPersist.*$RCC_HOST" 2>/dev/null; then
+    echo "rcc: reaped a defunct master process"
+    sleep 1
+  fi
+  return 0
+}
+
 case "$MODE" in
   status)
     if alive; then echo "rcc: CONNECTED  $RCC_HOST"; exit 0
@@ -52,6 +85,12 @@ case "$MODE" in
     if alive; then
       ssh -O exit -o "ControlPath=$CTL" "$RCC_HOST" >/dev/null 2>&1
       echo "rcc: closed $RCC_HOST"
+    elif [ -n "$(sock_path)" ]; then
+      # Not alive, but a socket file remains -- this is exactly the state that
+      # makes a later `rcc-connect` fail with rc=0, so --close must clear it
+      # rather than report "nothing to close".
+      reap_stale
+      echo "rcc: cleared a stale socket (there was no live connection)"
     else
       echo "rcc: nothing to close"
     fi
@@ -64,6 +103,7 @@ if alive; then
   exit 0
 fi
 
+reap_stale   # otherwise ssh declines to multiplex and exits 0
 echo "rcc: opening a shared connection to $RCC_HOST (persists ${PERSIST})"
 echo "     you will be asked for your password + 2FA once"
 # -M master, -N no command, -f background AFTER authenticating (so the prompt
@@ -81,6 +121,10 @@ if [ "$rc" -ne 0 ] || ! alive; then
   echo "rcc: FAILED to open a shared connection (ssh rc=$rc)" >&2
   echo "     try plain 'ssh $RCC_HOST' first -- if that works, the problem is" >&2
   echo "     the socket path, not your credentials: $CTL_DIR" >&2
+  if [ "$rc" -eq 0 ]; then
+    echo "     rc=0 with no connection means ssh declined to multiplex over an" >&2
+    echo "     existing socket file. Clear it with: dv3ops rcc-connect --close" >&2
+  fi
   exit 1
 fi
 
