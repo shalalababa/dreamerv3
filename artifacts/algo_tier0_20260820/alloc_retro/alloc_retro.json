@@ -1,0 +1,285 @@
+{
+ "label": "EXPLORATORY (post-read; no registered estimand consumed)",
+ "n_pairs": 27,
+ "n_competitive": 13,
+ "scratch_anchor": 147.6823,
+ "unmatched_modes": [],
+ "spearman_all": 0.7008547008547008,
+ "spearman_competitive": 0.24175824175824176,
+ "spearman_note": "rank corr of probe NLL with NEGATIVE transfer: positive = legible arms transfer better",
+ "sim_all": {
+  "gated_spend": 1,
+  "random_median": 14.0,
+  "random_iqr": [
+   7,
+   21
+  ]
+ },
+ "sim_competitive": {
+  "gated_spend": 1,
+  "random_median": 7.0,
+  "random_iqr": [
+   4,
+   10
+  ]
+ },
+ "sim_drop_best_probe": {
+  "gated_spend": 2,
+  "random_median": 8.0,
+  "random_iqr": [
+   4,
+   13
+  ]
+ },
+ "criteria": {
+  "SC1": true,
+  "SC2_competitive": true,
+  "SC3_drop_best": true
+ },
+ "verdict": "PROCEED",
+ "pairs": [
+  {
+   "arm": "ax1q1s0",
+   "probe": 1.8072642268386563,
+   "transfer": 296.33151,
+   "n_probe": 8,
+   "n_auc": 40,
+   "reward_aware": 1,
+   "src": "e4_goodhart_20260714/e4_finger_v1.csv"
+  },
+  {
+   "arm": "ax1q1s1",
+   "probe": 1.0225983502475318,
+   "transfer": 365.11874750000004,
+   "n_probe": 8,
+   "n_auc": 40,
+   "reward_aware": 1,
+   "src": "e4_goodhart_20260714/e4_finger_v1.csv"
+  },
+  {
+   "arm": "ax1q2s0",
+   "probe": 2.821163062315422,
+   "transfer": 411.82225625,
+   "n_probe": 8,
+   "n_auc": 32,
+   "reward_aware": 1,
+   "src": "e4_goodhart_20260714/e4_finger_v1.csv"
+  },
+  {
+   "arm": "ax1q2s1",
+   "probe": 2.5611171867237386,
+   "transfer": 373.777334375,
+   "n_probe": 8,
+   "n_auc": 32,
+   "reward_aware": 1,
+   "src": "e4_goodhart_20260714/e4_finger_v1.csv"
+  },
+  {
+   "arm": "ax1rgoq1s0",
+   "probe": 1.81024890246155,
+   "transfer": 99.45246875000001,
+   "n_probe": 16,
+   "n_auc": 16,
+   "reward_aware": 1,
+   "src": "e4_amend1_optionc_20260723/e4_finger_v1_p3amend1_rgo.csv"
+  },
+  {
+   "arm": "ax1rgoq1s1",
+   "probe": 1.1427472334401632,
+   "transfer": 156.14712500000002,
+   "n_probe": 16,
+   "n_auc": 16,
+   "reward_aware": 1,
+   "src": "e4_amend1_optionc_20260723/e4_finger_v1_p3amend1_rgo.csv"
+  },
+  {
+   "arm": "ax1rlq1s0",
+   "probe": 4.4104371233308,
+   "transfer": 73.6510375,
+   "n_probe": 8,
+   "n_auc": 8,
+   "reward_aware": 1,
+   "src": "p3_wave_20260717/e4_factorial_finger_v1.csv"
+  },
+  {
+   "arm": "ax1rlq1s1",
+   "probe": 3.4315837561287976,
+   "transfer": 126.4531125,
+   "n_probe": 8,
+   "n_auc": 8,
+   "reward_aware": 1,
+   "src": "p3_wave_20260717/e4_factorial_finger_v1.csv"
+  },
+  {
+   "arm": "ax1s12q1s0",
+   "probe": 5.77202459165072,
+   "transfer": 118.39815555555555,
+   "n_probe": 8,
+   "n_auc": 9,
+   "reward_aware": 1,
+   "src": "scaling_optionb_20260726/e4_finger_v1_scaling_b.csv"
+  },
+  {
+   "arm": "ax1s12q1s1",
+   "probe": 1.3038448766941015,
+   "transfer": 220.63542222222225,
+   "n_probe": 8,
+   "n_auc": 9,
+   "reward_aware": 1,
+   "src": "scaling_optionb_20260726/e4_finger_v1_scaling_b.csv"
+  },
+  {
+   "arm": "ax1sgbq1s0",
+   "probe": 4.0345840077249395,
+   "transfer": 80.17123749999999,
+   "n_probe": 16,
+   "n_auc": 16,
+   "reward_aware": 1,
+   "src": "e4_amend1_optionc_20260723/e4_finger_v1_sgbq1_full_20260724.csv"
+  },
+  {
+   "arm": "ax1sgbq1s1",
+   "probe": 2.16852452956192,
+   "transfer": 85.40625625,
+   "n_probe": 16,
+   "n_auc": 16,
+   "reward_aware": 1,
+   "src": "e4_amend1_optionc_20260723/e4_finger_v1_sgbq1_full_20260724.csv"
+  },
+  {
+   "arm": "ax1shq1s0",
+   "probe": 4.6202990894961395,
+   "transfer": 149.89388125,
+   "n_probe": 8,
+   "n_auc": 16,
+   "reward_aware": 1,
+   "src": "p3_wave_20260717/e4_factorial_finger_v1.csv"
+  },
+  {
+   "arm": "ax1shq1s1",
+   "probe": 2.0251103207083183,
+   "transfer": 80.701175,
+   "n_probe": 8,
+   "n_auc": 16,
+   "reward_aware": 1,
+   "src": "p3_wave_20260717/e4_factorial_finger_v1.csv"
+  },
+  {
+   "arm": "ax1srd0q1s0",
+   "probe": 15.086522694053269,
+   "transfer": 75.173175,
+   "n_probe": 8,
+   "n_auc": 8,
+   "reward_aware": 1,
+   "src": "stamping_20260718/e4_stamping_true_label_finger_v1.csv"
+  },
+  {
+   "arm": "ax1srd0q1s1",
+   "probe": 4.100504871448239,
+   "transfer": 92.075525,
+   "n_probe": 8,
+   "n_auc": 8,
+   "reward_aware": 1,
+   "src": "stamping_20260718/e4_stamping_true_label_finger_v1.csv"
+  },
+  {
+   "arm": "ax1srd1q1s0",
+   "probe": 10.769422175366127,
+   "transfer": 76.9205875,
+   "n_probe": 8,
+   "n_auc": 8,
+   "reward_aware": 1,
+   "src": "stamping_20260718/e4_stamping_true_label_finger_v1.csv"
+  },
+  {
+   "arm": "ax1srd1q1s1",
+   "probe": 3.919857740340658,
+   "transfer": 92.97005,
+   "n_probe": 8,
+   "n_auc": 8,
+   "reward_aware": 1,
+   "src": "stamping_20260718/e4_stamping_true_label_finger_v1.csv"
+  },
+  {
+   "arm": "ax1v2q1v200s1",
+   "probe": 0.8272661014813107,
+   "transfer": 204.27776666666668,
+   "n_probe": 6,
+   "n_auc": 6,
+   "reward_aware": 1,
+   "src": "e4_amend1_optionc_20260723/e4_finger_v1_optionc_volume.csv"
+  },
+  {
+   "arm": "ax1v4q1v400s0",
+   "probe": 0.732699334187291,
+   "transfer": 456.20486666666665,
+   "n_probe": 6,
+   "n_auc": 6,
+   "reward_aware": 1,
+   "src": "e4_amend1_optionc_20260723/e4_finger_v1_optionc_volume.csv"
+  },
+  {
+   "arm": "ax1v4q1v400s1",
+   "probe": 0.9390921154889327,
+   "transfer": 432.89928333333336,
+   "n_probe": 6,
+   "n_auc": 6,
+   "reward_aware": 1,
+   "src": "e4_amend1_optionc_20260723/e4_finger_v1_optionc_volume.csv"
+  },
+  {
+   "arm": "ax1vgoq1s0",
+   "probe": 3.9351357042165613,
+   "transfer": 82.440125,
+   "n_probe": 8,
+   "n_auc": 8,
+   "reward_aware": 1,
+   "src": "p3_wave_20260717/e4_factorial_finger_v1.csv"
+  },
+  {
+   "arm": "ax1vgoq1s1",
+   "probe": 2.3058359367684695,
+   "transfer": 81.4427125,
+   "n_probe": 8,
+   "n_auc": 8,
+   "reward_aware": 1,
+   "src": "p3_wave_20260717/e4_factorial_finger_v1.csv"
+  },
+  {
+   "arm": "dose_level_0",
+   "probe": 1.5209875851171861,
+   "transfer": 146.49087500000002,
+   "n_probe": 8,
+   "n_auc": 8,
+   "reward_aware": 1,
+   "src": "dose_task_read_20260811/dose_task.json"
+  },
+  {
+   "arm": "dose_level_1",
+   "probe": 1.6164023419226108,
+   "transfer": 282.4609375,
+   "n_probe": 9,
+   "n_auc": 8,
+   "reward_aware": 1,
+   "src": "dose_task_read_20260811/dose_task.json"
+  },
+  {
+   "arm": "dose_level_2",
+   "probe": 0.9936691942558737,
+   "transfer": 273.0820125,
+   "n_probe": 8,
+   "n_auc": 8,
+   "reward_aware": 1,
+   "src": "dose_task_read_20260811/dose_task.json"
+  },
+  {
+   "arm": "dose_level_3",
+   "probe": 1.0368721325209025,
+   "transfer": 304.0598875,
+   "n_probe": 8,
+   "n_auc": 8,
+   "reward_aware": 1,
+   "src": "dose_task_read_20260811/dose_task.json"
+  }
+ ]
+}
