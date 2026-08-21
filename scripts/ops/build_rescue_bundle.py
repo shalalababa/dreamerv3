@@ -185,6 +185,67 @@ def config_sha_excl(path):
   return hashlib.sha256(config_bytes_excl(path)).hexdigest()
 
 
+def _flat(d, prefix=''):
+  out = {}
+  for k, v in (d or {}).items():
+    key = f'{prefix}{k}'
+    if isinstance(v, dict):
+      out.update(_flat(v, key + '.'))
+    else:
+      out[key] = v
+  return out
+
+
+FLAT_EXCEPTIONS = ('seed', 'logdir')     # amend1 M5 / amend2
+_REPO_DEFAULTS = None
+
+
+def repo_defaults_flat():
+  global _REPO_DEFAULTS
+  if _REPO_DEFAULTS is None:
+    import ruamel.yaml as yaml
+    path = os.path.join(os.path.dirname(os.path.dirname(
+        os.path.dirname(os.path.abspath(__file__)))),
+        'dreamerv3', 'configs.yaml')
+    with open(path) as f:
+      _REPO_DEFAULTS = _flat(yaml.YAML(typ='safe').load(f)['defaults'])
+  return _REPO_DEFAULTS
+
+
+def flat_config(path):
+  import ruamel.yaml as yaml
+  with open(path) as f:
+    cfg = _flat(yaml.YAML(typ='safe').load(f))
+  for exc in FLAT_EXCEPTIONS:
+    cfg.pop(exc, None)
+  return cfg
+
+
+def schema_normalized_match(fresh_flat, ref_flat, defaults):
+  """Amendment-2 comparison (PREREG_carrier_freshrep_amend2_20260821):
+  shared keys value-identical; no reference key removed; every ADDED
+  key's value equals the current repo default (the schema's own
+  backfill value, never a set dial). Returns (ok, reasons, added)."""
+  reasons, added = [], {}
+  for k in ref_flat:
+    if k not in fresh_flat:
+      reasons.append(f'removed key {k}')
+    elif fresh_flat[k] != ref_flat[k]:
+      reasons.append(f'shared-key value differs: {k} '
+                     f'({fresh_flat[k]!r} != {ref_flat[k]!r})')
+  for k in fresh_flat:
+    if k in ref_flat:
+      continue
+    added[k] = fresh_flat[k]
+    if k not in defaults:
+      reasons.append(f'added key {k} has no repo default')
+    elif fresh_flat[k] != defaults[k]:
+      reasons.append(f'added key {k} = {fresh_flat[k]!r} != repo '
+                     f'default {defaults[k]!r} (a SET dial, not '
+                     'schema backfill)')
+  return not reasons, reasons, added
+
+
 HOST_RE = re.compile(r'\bhost=(\S+)')
 REPLAY_RE = re.compile(r'\bREPLAY=(\S+)')
 ADAPT_CKPT_RE = re.compile(r'adapt RUN_ID=\S+ .*?\bCKPT=(\S+)')
@@ -259,7 +320,7 @@ def _load_refs(ref_configs, problems, meta, wave):
       for sd in ('0', '1'):
         p = os.path.join(ref_configs, f'{a}s{sd}.yaml')
         if os.path.exists(p):
-          refs[f'{a}s{sd}'] = config_bytes_excl(p)
+          refs[f'{a}s{sd}'] = flat_config(p)
         else:
           problems.append(f'reference config missing: {p}')
   return refs
@@ -269,6 +330,10 @@ def build_witness(runroot, spec, wave, ref_configs=None, lane_dir=None):
   w, problems = {}, []
   meta = dict(builder='scripts/ops/build_rescue_bundle.py', wave=wave,
               config_exceptions=list(CONFIG_EXCEPTIONS),
+              comparison_mode='schema_normalized_v2 '
+              '(PREREG_carrier_freshrep_amend2_20260821: shared keys '
+              'value-identical; no removals; additions must equal repo '
+              'defaults; exceptions seed/logdir)',
               progress_update_note='audit only; clobberable by stale '
               'cross-instance copies (stale_fit_witness_20260816)')
   refs = (_load_refs(ref_configs, problems, meta, wave)
@@ -318,11 +383,14 @@ def build_witness(runroot, spec, wave, ref_configs=None, lane_dir=None):
       key = ('rgo' if 'rgo' in fit else 'sgb') + 's' + \
           fit.split('q1s')[1][0]
       if key in refs:
-        if config_bytes_excl(cfg) != refs[key]:
+        ok, reasons, added = schema_normalized_match(
+            flat_config(cfg), refs[key], repo_defaults_flat())
+        if added and 'added_keys' not in meta:
+          meta['added_keys'] = added        # uniform across the wave
+        if not ok:
           all_match = False
-          problems.append(f'{fit}: config differs from Amendment-1 '
-                          f'reference {key} (registered exceptions '
-                          'excluded)')
+          problems.append(f'{fit}: Amendment-2 config match failed vs '
+                          f'{key}: {reasons[:3]}')
       else:
         all_match = False
     else:
@@ -619,12 +687,40 @@ def selfcheck():
     assert lk2['_sources'][fit] == 'lane_cmds'
     _mk_cloud_log(root, adapt, fit, 17, '0')   # restore
 
-    # --- non-seed/logdir config drift flips the flag; missing refs too
+    # --- amend2 schema normalization: an added key AT the repo default
+    # keeps match True and is recorded; a non-default value, an added
+    # key with no default, or a removed key flips it False
     with open(os.path.join(root, fit, 'config.yaml'), 'a') as f:
-      f.write('drift: 1\n')
+      f.write("orthreward: {task: ''}\n")
+    w2a = build_witness(root, wave_spec('carrier', seeds=seeds),
+                        'carrier', ref_configs=refdir, lane_dir=lane_dir)
+    assert w2a['_meta']['amend1_config_match'] is True, \
+        w2a['_meta']['problems']
+    assert w2a['_meta']['added_keys'] == {'orthreward.task': ''}
+    with open(os.path.join(root, fit, 'config.yaml'), 'a') as f:
+      f.write("planted: {source_key: oops}\n")
+    w2b = build_witness(root, wave_spec('carrier', seeds=seeds),
+                        'carrier', ref_configs=refdir, lane_dir=lane_dir)
+    assert w2b['_meta']['amend1_config_match'] is False
+    assert any('SET dial' in p for p in w2b['_meta']['problems'])
+    _mk_fit(root, fit, 500000, 500000, 17, extra='arm: rgo\n')
+    with open(os.path.join(root, fit, 'config.yaml'), 'a') as f:
+      f.write('drift: 1\n')   # added key with NO repo default
     w3 = build_witness(root, wave_spec('carrier', seeds=seeds),
                        'carrier', ref_configs=refdir, lane_dir=lane_dir)
     assert w3['_meta']['amend1_config_match'] is False
+    assert any('no repo default' in p for p in w3['_meta']['problems'])
+    # removed key
+    cfgp = os.path.join(root, fit, 'config.yaml')
+    _mk_fit(root, fit, 500000, 500000, 17, extra='arm: rgo\n')
+    with open(cfgp) as f:
+      body = f.read().replace('z: 2\n', '')
+    with open(cfgp, 'w') as f:
+      f.write(body)
+    w3b = build_witness(root, wave_spec('carrier', seeds=seeds),
+                        'carrier', ref_configs=refdir, lane_dir=lane_dir)
+    assert w3b['_meta']['amend1_config_match'] is False
+    assert any('removed key z' in p for p in w3b['_meta']['problems'])
     _mk_fit(root, fit, 500000, 500000, 17, extra='arm: rgo\n')
     w4 = build_witness(root, wave_spec('carrier', seeds=seeds),
                        'carrier', ref_configs=None, lane_dir=lane_dir)
