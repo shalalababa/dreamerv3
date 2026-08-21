@@ -67,6 +67,7 @@ def main() -> int:
     return 2
 
   db = durations.load(Path(args.durations))
+  spec_index = durations.build_spec_index()
   lanes = [x.strip() for x in args.lanes.split(",") if x.strip()]
 
   for st in spec.stages:
@@ -78,7 +79,12 @@ def main() -> int:
 
     units = []
     for g in groups:
-      secs, _ = durations.predict(db, st.kind, args.gpu)
+      # Predict per RUN, not per stage kind. One kind covers arms that differ by
+      # 8x (scratch 0.77h .. uzf 6.28h), so a kind-level estimate hands every
+      # lane the same number and they finish hours apart -- which is the whole
+      # failure packing exists to prevent.
+      secs, _ = durations.predict(
+          db, durations.family_of(g[0].run_id, spec_index), args.gpu)
       # A pair runs concurrently, so the unit costs about one member's runtime
       # (co-located tasks contend, hence the observed ~25% penalty in the
       # 2-way LeWM numbers -- applied here rather than assuming free parallelism).

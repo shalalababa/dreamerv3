@@ -36,6 +36,38 @@ got="$(dv3_ssh_dv3 "$DST" "cat /workspace/dreamerv3_runs/_queue_control/lane_*/q
 [ "${got:-0}" -ge 2 ] || { echo "REFUSE to remove from source: destination holds ${got:-0} cell(s) for seed $S" >&2; rm -f "$tmp"; exit 1; }
 echo "  destination holds $got cell(s) for seed $S"
 
+# ---- source-side occupancy -------------------------------------------------
+# Gating only the DESTINATION is what left instance 8 lane 3 idle for 7h on
+# 2026-08-21: the cells arrived safely, nothing noticed the source lane had
+# nothing behind them, and the box kept billing 4 GPUs to run 2. A box costs
+# the same whether one lane or all of them are busy, so the thing to protect is
+# not "no cell is lost" but "no lane goes dark while its siblings still work".
+# Pending means NOT YET STARTED: while a task runs, next_index == running_index,
+# so pending is strictly idx > next_index.
+# Override with DV3_ALLOW_SOURCE_DRAIN=1 when the source is about to be
+# destroyed anyway -- draining it deliberately is the whole point then.
+occ="$(dv3_ssh_dv3 "$SRC" "
+  for l in 0 1 2 3 4 5 6 7; do
+    qc=/workspace/dreamerv3_runs/_queue_control/lane_\$l
+    [ -f \"\$qc/active_queue\" ] || continue
+    qd=\"\$qc/\$(cat \$qc/active_queue)\"
+    nx=\$(cat \$qd/next_index 2>/dev/null || echo 1)
+    pend=\$(awk -v n=\"\$nx\" 'NR>n && \$0 !~ /^#removed#/ && \$0 !~ /_seed${S}_ckpt/ && NF' \"\$qd/tasks.txt\" | wc -l)
+    echo \"\$l \$pend\"
+  done")"
+[ -n "$occ" ] || { echo "REFUSE: instance $SRC reported no active lanes" >&2; rm -f "$tmp"; exit 2; }
+echo "  source instance $SRC, pending per lane AFTER this move:"
+echo "$occ" | while read -r l pend; do echo "    lane $l: $pend"; done
+dark=$(echo "$occ" | awk '$2==0' | wc -l)
+busy=$(echo "$occ" | awk '$2>0'  | wc -l)
+if [ "$dark" -gt 0 ] && [ "$busy" -gt 0 ] && [ "${DV3_ALLOW_SOURCE_DRAIN:-0}" != 1 ]; then
+  echo "REFUSE: this move leaves $dark lane(s) with nothing queued on instance $SRC" >&2
+  echo "        while $busy lane(s) keep running -- that is a half-empty billed box." >&2
+  echo "        Move the rest of $SRC's work out too, or set DV3_ALLOW_SOURCE_DRAIN=1" >&2
+  echo "        if $SRC is being destroyed once its current tasks finish." >&2
+  rm -f "$tmp"; exit 3
+fi
+
 # only now remove from the source, and only pending indices
 dv3_ssh_dv3 "$SRC" "
   source /root/dreamer_instance_helpers.sh

@@ -71,7 +71,9 @@ def main() -> int:
     for ln in lanes:
       pending = ln.get("pending", 0)
       running = ln.get("running_task", "")
-      fam = spec_index.get(running) or durations.family_of(running or "", spec_index)
+      # family_of() applies the same kind/arm refinement the durations DB
+      # is keyed by; the bare spec kind would miss every bucket.
+      fam = durations.family_of(running or "", spec_index)
       per, why = durations.predict(db, fam, args.gpu)
       if per is None:
         unmeasured += 1

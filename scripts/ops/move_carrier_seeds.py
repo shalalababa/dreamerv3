@@ -73,6 +73,43 @@ def seed_of(text):
   return int(m.group(1)) if m else None
 
 
+def source_occupancy(plan, lanes_by_src, allow_drain):
+  """Refuse a move that leaves a lane dark on a box that keeps running.
+
+  Gating only the destination protects against LOSING a cell, which is the
+  correctness property. It says nothing about the cost property: an instance
+  bills for the whole box, so a move that empties two of four lanes halves the
+  work while the rent stays flat, and the box still cannot be destroyed until
+  its longest lane drains. On 2026-08-21 that left six instances half empty at
+  once, 33.4 idle GPU-hours.
+
+  Pending means NOT YET STARTED. While a task runs, next_index == running_index,
+  so pending is strictly idx > next_index.
+  """
+  removed = {(p['src'], p['lane'], p['idx']) for p in plan}
+  bad = []
+  for src in sorted({p['src'] for p in plan}):
+    after = {}
+    for l, st in sorted(lanes_by_src[src].items()):
+      after[l] = sum(
+          1 for idx, text in st['tasks']
+          if idx > st['next'] and not text.startswith('#removed#')
+          and (src, l, idx) not in removed)
+    dark = [l for l, n in after.items() if n == 0]
+    busy = [l for l, n in after.items() if n > 0]
+    print(f'  inst {src} pending per lane after the move: '
+          + ', '.join(f'lane {l}={n}' for l, n in sorted(after.items())))
+    if dark and busy:
+      bad.append((src, dark, busy))
+  if bad and not allow_drain:
+    for src, dark, busy in bad:
+      print(f'REFUSE: instance {src} would keep running on lane(s) '
+            f'{",".join(busy)} while lane(s) {",".join(dark)} sit idle -- '
+            f'a half-empty billed box.', file=sys.stderr)
+    sys.exit('       Move the rest of that instance out too, or pass '
+             '--allow-source-drain if it is being destroyed.')
+
+
 def main():
   ap = argparse.ArgumentParser()
   ap.add_argument('--target', required=True)
@@ -80,13 +117,17 @@ def main():
   ap.add_argument('--moves', nargs='+', required=True,
                   help='src:seed,seed,...')
   ap.add_argument('--commit', action='store_true')
+  ap.add_argument('--allow-source-drain', action='store_true',
+                  help='permit a move that leaves a source lane with nothing '
+                       'queued -- only when that source is being destroyed')
   a = ap.parse_args()
 
-  plan, moved = [], []
+  plan, moved, lanes_by_src = [], [], {}
   for spec in a.moves:
     src, seeds = spec.split(':')
     seeds = {int(x) for x in seeds.split(',')}
     lanes = lane_state(src)
+    lanes_by_src[src] = lanes
     if not lanes:
       sys.exit(f'instance {src}: no active queues')
     for l, st in sorted(lanes.items()):
@@ -114,6 +155,7 @@ def main():
   bad = [s for s, v in by_seed.items() if len(v) != 4]
   if bad:
     sys.exit(f'REFUSE: seeds {bad} would move partially; a seed moves whole or not at all')
+  source_occupancy(plan, lanes_by_src, a.allow_source_drain)
   if not a.commit:
     print('\nDRY RUN -- nothing queued, nothing removed. Re-run with --commit.')
     return

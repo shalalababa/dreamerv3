@@ -661,19 +661,47 @@ LOG
 python3 "$ROOT/scripts/ops/durations.py" scan "$TMP/plogs" --gpu 5060Ti --out "$TMP/d.json" >/dev/null 2>&1
 tbl="$(python3 "$ROOT/scripts/ops/durations.py" show --out "$TMP/d.json" 2>/dev/null)"
 # Legacy logs have no elapsed=; the duration must come from the timestamps.
-case "$tbl" in *"lewm_train|5060Ti"*"19m"*) ok "legacy log (no elapsed=) timed from timestamps" ;;
+# Keys are kind/ARM, not kind alone: arms of one kind differ by up to 8x, and
+# pooling them predicts 3.0h for a 6.3h cell.
+case "$tbl" in *"lewm_train/lewm_finger|5060Ti"*"19m"*) ok "legacy log (no elapsed=) timed from timestamps" ;;
                *) bad "legacy log timing" ;; esac
-case "$tbl" in *"graft_fit_adapt|5060Ti"*"7.0h"*) ok "P0 log elapsed= parsed" ;;
+case "$tbl" in *"graft_fit_adapt/adapt_ax1jppx_finger|5060Ti"*"7.0h"*) ok "P0 log elapsed= parsed" ;;
                *) bad "P0 log elapsed= parsed" ;; esac
 # A failed run's runtime predicts nothing about a successful one. The log has
 # one successful lewm_train (19m) and one FAILED lewm_train (20m), so a correct
 # aggregate has n=1; n=2 would mean the failure was folded in.
-n_train="$(printf '%s\n' "$tbl" | awk '$1 ~ /^lewm_train\|/ {print $2}')"
+n_train="$(printf '%s\n' "$tbl" | awk '$1 ~ /^lewm_train\// {print $2}')"
 [ "$n_train" = "1" ] && ok "failed runs excluded from aggregates (n=1, not 2)" \
                      || bad "failed runs excluded from aggregates (got n=$n_train)"
 # run_id -> spec kind, so families are the same names the specs use.
 case "$tbl" in *"lewm_train"*) ok "families resolve to spec kinds" ;;
                *) bad "families resolve to spec kinds" ;; esac
+# The side token is a position in the design, not a cost: s0 and s1 of one arm
+# must pool, or every two-sided wave halves its own sample.
+python3 - "$TMP" <<'PYEOF'
+import sys, importlib.util
+spec = importlib.util.spec_from_file_location('d', 'scripts/ops/durations.py')
+d = importlib.util.module_from_spec(spec); spec.loader.exec_module(d)
+si = {'a_q1s0_finger_seed1_ckpt500000': 'k', 'a_q1s1_finger_seed2_ckpt500000': 'k'}
+f0 = d.family_of('a_q1s0_finger_seed1_ckpt500000', si)
+f1 = d.family_of('a_q1s1_finger_seed2_ckpt500000', si)
+sys.exit(0 if f0 == f1 else 1)
+PYEOF
+[ $? -eq 0 ] && ok "both sides of an arm pool into one family" \
+             || bad "side token splits an arm's family"
+# Two arms of ONE kind must NOT pool -- this is the defect the key change fixed.
+python3 - <<'PYEOF'
+import sys, importlib.util
+spec = importlib.util.spec_from_file_location('d', 'scripts/ops/durations.py')
+d = importlib.util.module_from_spec(spec); spec.loader.exec_module(d)
+si = {'adapt_scratch_reacher_seed1_ckpt0': 'axis1_fit_adapt',
+      'adapt_ax1uzf_finger_seed1_ckpt500000': 'axis1_fit_adapt'}
+a = d.family_of('adapt_scratch_reacher_seed1_ckpt0', si)
+b = d.family_of('adapt_ax1uzf_finger_seed1_ckpt500000', si)
+sys.exit(0 if a != b else 1)
+PYEOF
+[ $? -eq 0 ] && ok "arms of one kind stay separate families" \
+             || bad "arms of one kind collapsed into one family"
 chk "durations survives a corrupt db" \
     "printf 'not json' > '$TMP/bad.json'; python3 '$ROOT/scripts/ops/durations.py' show --out '$TMP/bad.json'"
 

@@ -50,12 +50,32 @@ def parse_ts(s: str) -> float | None:
     return None
 
 
-def family_of(run_id: str, spec_index: dict[str, str]) -> str:
-  """Spec kind when known; otherwise a stripped prefix, clearly marked."""
-  if run_id in spec_index:
-    return spec_index[run_id]
+# The side token q<N>s<M> is a *position* in the design, not a cost: s0 and s1
+# cells of the same arm run within 2% of each other. Strip it wherever it sits
+# so both sides pool into one estimate.
+SIDE = re.compile(r"q\d+m?s\d+")
+
+
+def variant_of(run_id: str) -> str:
+  """The part of a run_id that actually predicts runtime: arm and task."""
   base = TRAILING.sub("", run_id).rstrip("_")
-  return f"~{base}" if base else "~unknown"
+  base = SIDE.sub("", base).replace("__", "_").strip("_")
+  return base or "unknown"
+
+
+def family_of(run_id: str, spec_index: dict[str, str]) -> str:
+  """Spec kind REFINED BY ARM; otherwise a stripped prefix, clearly marked.
+
+  The kind alone is too coarse to schedule on. Five distinct arms declare kind
+  `axis1_fit_adapt` and cost 0.77h (scratch), 2.94h (sgb), 3.01h (rgo), 3.72h
+  (uz/mdd1) and 6.28h (uzf) -- a 8x range that the kind's median reports as one
+  3.0h number. Predicting 3.0h for a 6.3h cell is exactly how lanes on the same
+  box end up finishing hours apart, which is the thing packing must avoid.
+  Within an arm the spread is under 3%, so arm x gpu is the key that predicts.
+  """
+  if run_id in spec_index:
+    return f"{spec_index[run_id]}/{variant_of(run_id)}"
+  return f"~{variant_of(run_id)}"
 
 
 def build_spec_index() -> dict[str, str]:
@@ -167,6 +187,16 @@ def predict(db: dict, family: str, gpu: str) -> tuple[int | None, str]:
   if hits:
     best = max(hits, key=lambda kv: kv[1]["n"])
     return best[1]["median_s"], f"n={best[1]['n']} on {best[0].split('|')[1]} (other GPU)"
+  # Same KIND, different arm. Coarse on purpose and labelled as such: it is the
+  # estimate that pools arms costing 0.77h and 6.28h, so it is a last resort
+  # before "??" -- never a number to pack lanes on.
+  kind = family.split("/", 1)[0]
+  pooled = [v for k, v in agg.items()
+            if k.split("|")[0].split("/", 1)[0] == kind and k.split("|")[1] == gpu]
+  if pooled:
+    vals = sorted(v["median_s"] for v in pooled)
+    n = sum(v["n"] for v in pooled)
+    return vals[len(vals) // 2], f"n={n} across {len(pooled)} arm(s) of kind {kind} -- COARSE"
   return None, "no measurement"
 
 
