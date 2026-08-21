@@ -1,0 +1,33 @@
+wave_id: mindose_reacher
+spec:    /home/rickybao/projects/dreamerv3/ops/waves/mindose_reacher/spec.yaml
+prereg:  prereg/PREREG_mindose_reacher_20260820.md
+
+=== stage blkA_dose  [vast]  kind=axis1_fit_adapt  on_failure=continue  n=4 ===
+  adapt_ax1mdd1_reacher_seed1_ckpt500000
+  adapt_ax1mdd1_reacher_seed2_ckpt500000
+  adapt_ax1mdd1_reacher_seed3_ckpt500000
+  adapt_ax1mdd1_reacher_seed4_ckpt500000
+
+=== stage blkA_scratch  [vast]  kind=scratch_adapt  on_failure=continue  n=4 ===
+  adapt_scratch_reacher_seed1_ckpt0
+  adapt_scratch_reacher_seed2_ckpt0
+  adapt_scratch_reacher_seed3_ckpt0
+  adapt_scratch_reacher_seed4_ckpt0
+
+=== stage blkB_dose  [vast]  kind=axis1_fit_adapt  on_failure=continue  n=4 ===
+  adapt_ax1mdd1_reacher_seed5_ckpt500000
+  adapt_ax1mdd1_reacher_seed6_ckpt500000
+  adapt_ax1mdd1_reacher_seed7_ckpt500000
+  adapt_ax1mdd1_reacher_seed8_ckpt500000
+
+=== stage blkB_scratch  [vast]  kind=scratch_adapt  on_failure=continue  n=4 ===
+  adapt_scratch_reacher_seed5_ckpt0
+  adapt_scratch_reacher_seed6_ckpt0
+  adapt_scratch_reacher_seed7_ckpt0
+  adapt_scratch_reacher_seed8_ckpt0
+
+TOTAL RUNS: 16
+
+Check this list against the prereg before submitting. run_ids are
+consumed by frozen readers and the ledger; a wrong expansion here
+propagates into every downstream artifact.

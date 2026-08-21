@@ -1,0 +1,58 @@
+# NOBOOT arm -- PREREG_nfi_scale_exhibit_amend4_20260820 (frozen 818a3f7a).
+#
+# Four runs, seeds 40-43, Stage-1 config VERBATIM except
+# --agent.expl.disag_bootstrap False (members then differ by initialization
+# only -- the published P2E convention). The override reaches the trainer
+# through DISAG_BOOTSTRAP, whose default is True, so every arm already run
+# emits a byte-identical command line.
+#
+# The command is the Stage-1-shaped `se_ungate` cell from ops/waves/se_arms
+# plus that one variable -- transcribed, not re-derived. No distractor mod
+# vars: the amendment says VERBATIM.
+#
+# NOTE the capitalization: elements flags reject lowercase `false`, and an
+# unread env var is not an error -- a lowercase value would fail loudly, but
+# a MISSPELLED var name would silently run the bootstrapped arm under the
+# noboot run_id. The reader's config pin (disag_bootstrap == False) is the
+# backstop, and the wave checker asserts the same string in config.yaml.
+#
+# per_gpu: 1 -- SE runs measured 15243 MiB of a 16311 MiB card.
+# se_probe passes are NOT part of this wave (post-training, one device class,
+# per the amendment's bundle spec).
+
+wave_id: se_noboot
+paper: paper5
+prereg: prereg/PREREG_nfi_scale_exhibit_amend4_20260820.md
+notes: >-
+  4 SE runs (cheetah, seeds 40-43) with disag_bootstrap False, 5e5 steps,
+  ~7 h each. One run per lane.
+
+defaults:
+  target: vast
+
+kinds:
+  se_run: {per_gpu: 1}
+
+stages:
+
+  - name: train
+    kind: se_run
+    on_failure: continue
+    expand:
+      seed: [40, 41, 42, 43]
+    run_id: "se_noboot_s${seed}"
+    logdir: "se_noboot_s${seed}"
+    cmd: >-
+      RUN_ID=se_noboot_s${seed} TASK=dmc_cheetah_run SEED=${seed}
+      DISAG_BOOTSTRAP=False
+      bash scripts/uncfield_se.sbatch
+    outputs:
+      - "se_noboot_s${seed}"
+    done_when:
+      - exists: TRAINING_DONE
+      - exists: config.yaml
+      - file_contains: {file: config.yaml, pattern: "disag_bootstrap: false"}
+      - file_contains:
+          file: ckpt_snapshots/nearest.json
+          pattern: '"milestone": 500000,\s+"step": (49\d{4}|[5-9]\d{5})'
+      - jsonl_min_lines: {file: scores.jsonl, n: 464}

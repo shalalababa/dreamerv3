@@ -1,0 +1,185 @@
+{
+ "wave_id": "se_noboot",
+ "spec": "/home/rickybao/projects/dreamerv3/ops/waves/se_noboot/spec.yaml",
+ "prereg": "prereg/PREREG_nfi_scale_exhibit_amend4_20260820.md",
+ "bundle": null,
+ "stages": [
+  {
+   "name": "train",
+   "target": "vast",
+   "kind": "se_run",
+   "on_failure": "continue",
+   "needs": null
+  }
+ ],
+ "runs": [
+  {
+   "stage": "train",
+   "kind": "se_run",
+   "target": "vast",
+   "run_id": "se_noboot_s40",
+   "cmd": "RUN_ID=se_noboot_s40 TASK=dmc_cheetah_run SEED=40 DISAG_BOOTSTRAP=False bash scripts/uncfield_se.sbatch",
+   "vars": {
+    "seed": 40,
+    "run_id": "se_noboot_s40"
+   },
+   "logdir": "se_noboot_s40",
+   "outputs": [
+    "se_noboot_s40"
+   ],
+   "inputs": [],
+   "done_when": [
+    {
+     "exists": "TRAINING_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "file_contains": {
+      "file": "config.yaml",
+      "pattern": "disag_bootstrap: false"
+     }
+    },
+    {
+     "file_contains": {
+      "file": "ckpt_snapshots/nearest.json",
+      "pattern": "\"milestone\": 500000,\\s+\"step\": (49\\d{4}|[5-9]\\d{5})"
+     }
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 464
+     }
+    }
+   ]
+  },
+  {
+   "stage": "train",
+   "kind": "se_run",
+   "target": "vast",
+   "run_id": "se_noboot_s41",
+   "cmd": "RUN_ID=se_noboot_s41 TASK=dmc_cheetah_run SEED=41 DISAG_BOOTSTRAP=False bash scripts/uncfield_se.sbatch",
+   "vars": {
+    "seed": 41,
+    "run_id": "se_noboot_s41"
+   },
+   "logdir": "se_noboot_s41",
+   "outputs": [
+    "se_noboot_s41"
+   ],
+   "inputs": [],
+   "done_when": [
+    {
+     "exists": "TRAINING_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "file_contains": {
+      "file": "config.yaml",
+      "pattern": "disag_bootstrap: false"
+     }
+    },
+    {
+     "file_contains": {
+      "file": "ckpt_snapshots/nearest.json",
+      "pattern": "\"milestone\": 500000,\\s+\"step\": (49\\d{4}|[5-9]\\d{5})"
+     }
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 464
+     }
+    }
+   ]
+  },
+  {
+   "stage": "train",
+   "kind": "se_run",
+   "target": "vast",
+   "run_id": "se_noboot_s42",
+   "cmd": "RUN_ID=se_noboot_s42 TASK=dmc_cheetah_run SEED=42 DISAG_BOOTSTRAP=False bash scripts/uncfield_se.sbatch",
+   "vars": {
+    "seed": 42,
+    "run_id": "se_noboot_s42"
+   },
+   "logdir": "se_noboot_s42",
+   "outputs": [
+    "se_noboot_s42"
+   ],
+   "inputs": [],
+   "done_when": [
+    {
+     "exists": "TRAINING_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "file_contains": {
+      "file": "config.yaml",
+      "pattern": "disag_bootstrap: false"
+     }
+    },
+    {
+     "file_contains": {
+      "file": "ckpt_snapshots/nearest.json",
+      "pattern": "\"milestone\": 500000,\\s+\"step\": (49\\d{4}|[5-9]\\d{5})"
+     }
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 464
+     }
+    }
+   ]
+  },
+  {
+   "stage": "train",
+   "kind": "se_run",
+   "target": "vast",
+   "run_id": "se_noboot_s43",
+   "cmd": "RUN_ID=se_noboot_s43 TASK=dmc_cheetah_run SEED=43 DISAG_BOOTSTRAP=False bash scripts/uncfield_se.sbatch",
+   "vars": {
+    "seed": 43,
+    "run_id": "se_noboot_s43"
+   },
+   "logdir": "se_noboot_s43",
+   "outputs": [
+    "se_noboot_s43"
+   ],
+   "inputs": [],
+   "done_when": [
+    {
+     "exists": "TRAINING_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "file_contains": {
+      "file": "config.yaml",
+      "pattern": "disag_bootstrap: false"
+     }
+    },
+    {
+     "file_contains": {
+      "file": "ckpt_snapshots/nearest.json",
+      "pattern": "\"milestone\": 500000,\\s+\"step\": (49\\d{4}|[5-9]\\d{5})"
+     }
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 464
+     }
+    }
+   ]
+  }
+ ]
+}

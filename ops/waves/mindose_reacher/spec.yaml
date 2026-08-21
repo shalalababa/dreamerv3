@@ -1,0 +1,140 @@
+# MIN-DOSE reacher kill -- PREREG_mindose_reacher_20260820 + amend1,
+# occupancy FILL dated 20 Aug (level-1 occ 0.097837, INSIDE [0.08, 0.20],
+# so the wave does NOT refuse pre-outcome).
+#
+# 16 cells: 8 dose + 8 scratch, seeds 1-8, reacher.
+#   dose     level-1 curated buffer, task-mode fit, UNFROZEN adapt
+#            -> mode ax1mdd1, WM ax1wm_reacher_mdd1_seed<s>
+#   scratch  same adaptation protocol from random init
+#            -> mode scratch, milestone 0 (the finger scratch-anchor shape:
+#               scripts/pilot.sbatch MODE=goal, plain dmc_proprio, nothing
+#               frozen, no checkpoint loaded)
+# run_ids and modes are transcribed from the frozen reader
+# (analysis/mindose_reacher_read.py:40-41), not re-derived.
+#
+# TWO BLOCKS, EACH CARRYING BOTH ARMS. The primary is the two-sample
+# [dose1 - scratch] contrast, so what matters is that the two arms are not
+# split across device classes: blkA (seeds 1-4) and blkB (seeds 5-8) each
+# hold 4 dose + 4 scratch cells, so every block computes the contrast on one
+# machine. Same reasoning as the crowding bundles; the seeds themselves need
+# no pairing here because the estimand is unpaired.
+#
+# The scratch arm is load-bearing, not filler: the 20 Aug inventory found NO
+# reacher scratch anchor anywhere (148 reacher dirs, zero scratch-named, no
+# csv row), so this wave has to measure its own baseline.
+#
+# ADAPT_DONE is touched by the wave for scratch cells because pilot.sbatch
+# does not write one (the finger anchor's registration did the same by hand);
+# it is touched ONLY on rc=0, so it cannot lie about a failed run.
+
+wave_id: mindose_reacher
+paper: paper1
+prereg: prereg/PREREG_mindose_reacher_20260820.md
+notes: >-
+  8 dose (level-1 buffer, unfrozen adapt) + 8 scratch cells on reacher.
+  Two blocks, each carrying both arms.
+
+defaults:
+  target: vast
+
+kinds:
+  axis1_fit_adapt: {per_gpu: 1}
+  scratch_adapt:   {per_gpu: 1}
+
+stages:
+
+  - name: blkA_dose
+    kind: axis1_fit_adapt
+    on_failure: continue
+    expand:
+      seed: [1, 2, 3, 4]
+    run_id: "adapt_ax1mdd1_reacher_seed${seed}_ckpt500000"
+    cmd: >-
+      DV3_TASK_NAME=${run_id} RUN_ID=${run_id}
+      WM_RUN=ax1wm_reacher_mdd1_seed${seed}
+      TASK=dmc_reacher_hard SEED=${seed}
+      REPLAY=${RUNROOT}/axis1_reacher/dose/level1
+      UPDATES=500000 STEPS=1.25e5 AXIS1_EXPL_MODE=task
+      AXIS1_ADAPT_CONFIG=unfrozen_readout
+      DREAMER_DISABLE_GPUFLAGS=1 bash scripts/axis1.sbatch
+    outputs:
+      - "adapt_ax1mdd1_reacher_seed${seed}_ckpt500000"
+      - "ax1wm_reacher_mdd1_seed${seed}"
+    inputs:
+      - "axis1_reacher/dose/level1"
+      - "axis1_reacher/dose/manifest.json"
+    done_when:
+      - exists: ADAPT_DONE
+      - exists: config.yaml
+      - jsonl_min_lines: {file: scores.jsonl, n: 100}
+      - ckpt_step_min: {dir: "../ax1wm_reacher_mdd1_seed${seed}", min: 500000}
+      - file_contains:
+          file: "../ax1wm_reacher_mdd1_seed${seed}/OFFLINE_FIT_PROGRESS"
+          pattern: "update=500000\ntotal_updates=500000"
+
+  - name: blkA_scratch
+    kind: scratch_adapt
+    on_failure: continue
+    expand:
+      seed: [1, 2, 3, 4]
+    run_id: "adapt_scratch_reacher_seed${seed}_ckpt0"
+    cmd: >-
+      DV3_TASK_NAME=${run_id} RUN_ID=${run_id}
+      TASK=dmc_reacher_hard MODE=goal SEED=${seed}
+      STEPS=1.25e5 SAVE_EVERY=900
+      DREAMER_DISABLE_GPUFLAGS=1 bash scripts/pilot.sbatch
+      && touch ${RUNROOT}/adapt_scratch_reacher_seed${seed}_ckpt0/ADAPT_DONE
+    outputs:
+      - "adapt_scratch_reacher_seed${seed}_ckpt0"
+    done_when:
+      - exists: ADAPT_DONE
+      - exists: config.yaml
+      - jsonl_min_lines: {file: scores.jsonl, n: 100}
+
+  - name: blkB_dose
+    kind: axis1_fit_adapt
+    on_failure: continue
+    expand:
+      seed: [5, 6, 7, 8]
+    run_id: "adapt_ax1mdd1_reacher_seed${seed}_ckpt500000"
+    cmd: >-
+      DV3_TASK_NAME=${run_id} RUN_ID=${run_id}
+      WM_RUN=ax1wm_reacher_mdd1_seed${seed}
+      TASK=dmc_reacher_hard SEED=${seed}
+      REPLAY=${RUNROOT}/axis1_reacher/dose/level1
+      UPDATES=500000 STEPS=1.25e5 AXIS1_EXPL_MODE=task
+      AXIS1_ADAPT_CONFIG=unfrozen_readout
+      DREAMER_DISABLE_GPUFLAGS=1 bash scripts/axis1.sbatch
+    outputs:
+      - "adapt_ax1mdd1_reacher_seed${seed}_ckpt500000"
+      - "ax1wm_reacher_mdd1_seed${seed}"
+    inputs:
+      - "axis1_reacher/dose/level1"
+      - "axis1_reacher/dose/manifest.json"
+    done_when:
+      - exists: ADAPT_DONE
+      - exists: config.yaml
+      - jsonl_min_lines: {file: scores.jsonl, n: 100}
+      - ckpt_step_min: {dir: "../ax1wm_reacher_mdd1_seed${seed}", min: 500000}
+      - file_contains:
+          file: "../ax1wm_reacher_mdd1_seed${seed}/OFFLINE_FIT_PROGRESS"
+          pattern: "update=500000\ntotal_updates=500000"
+
+  - name: blkB_scratch
+    kind: scratch_adapt
+    on_failure: continue
+    expand:
+      seed: [5, 6, 7, 8]
+    run_id: "adapt_scratch_reacher_seed${seed}_ckpt0"
+    cmd: >-
+      DV3_TASK_NAME=${run_id} RUN_ID=${run_id}
+      TASK=dmc_reacher_hard MODE=goal SEED=${seed}
+      STEPS=1.25e5 SAVE_EVERY=900
+      DREAMER_DISABLE_GPUFLAGS=1 bash scripts/pilot.sbatch
+      && touch ${RUNROOT}/adapt_scratch_reacher_seed${seed}_ckpt0/ADAPT_DONE
+    outputs:
+      - "adapt_scratch_reacher_seed${seed}_ckpt0"
+    done_when:
+      - exists: ADAPT_DONE
+      - exists: config.yaml
+      - jsonl_min_lines: {file: scores.jsonl, n: 100}

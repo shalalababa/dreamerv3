@@ -1,0 +1,646 @@
+{
+ "wave_id": "mindose_reacher",
+ "spec": "/home/rickybao/projects/dreamerv3/ops/waves/mindose_reacher/spec.yaml",
+ "prereg": "prereg/PREREG_mindose_reacher_20260820.md",
+ "bundle": null,
+ "stages": [
+  {
+   "name": "blkA_dose",
+   "target": "vast",
+   "kind": "axis1_fit_adapt",
+   "on_failure": "continue",
+   "needs": null
+  },
+  {
+   "name": "blkA_scratch",
+   "target": "vast",
+   "kind": "scratch_adapt",
+   "on_failure": "continue",
+   "needs": null
+  },
+  {
+   "name": "blkB_dose",
+   "target": "vast",
+   "kind": "axis1_fit_adapt",
+   "on_failure": "continue",
+   "needs": null
+  },
+  {
+   "name": "blkB_scratch",
+   "target": "vast",
+   "kind": "scratch_adapt",
+   "on_failure": "continue",
+   "needs": null
+  }
+ ],
+ "runs": [
+  {
+   "stage": "blkA_dose",
+   "kind": "axis1_fit_adapt",
+   "target": "vast",
+   "run_id": "adapt_ax1mdd1_reacher_seed1_ckpt500000",
+   "cmd": "DV3_TASK_NAME=adapt_ax1mdd1_reacher_seed1_ckpt500000 RUN_ID=adapt_ax1mdd1_reacher_seed1_ckpt500000 WM_RUN=ax1wm_reacher_mdd1_seed1 TASK=dmc_reacher_hard SEED=1 REPLAY=${RUNROOT}/axis1_reacher/dose/level1 UPDATES=500000 STEPS=1.25e5 AXIS1_EXPL_MODE=task AXIS1_ADAPT_CONFIG=unfrozen_readout DREAMER_DISABLE_GPUFLAGS=1 bash scripts/axis1.sbatch",
+   "vars": {
+    "seed": 1,
+    "run_id": "adapt_ax1mdd1_reacher_seed1_ckpt500000"
+   },
+   "logdir": "adapt_ax1mdd1_reacher_seed1_ckpt500000",
+   "outputs": [
+    "adapt_ax1mdd1_reacher_seed1_ckpt500000",
+    "ax1wm_reacher_mdd1_seed1"
+   ],
+   "inputs": [
+    "axis1_reacher/dose/level1",
+    "axis1_reacher/dose/manifest.json"
+   ],
+   "done_when": [
+    {
+     "exists": "ADAPT_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 100
+     }
+    },
+    {
+     "ckpt_step_min": {
+      "dir": "../ax1wm_reacher_mdd1_seed1",
+      "min": 500000
+     }
+    },
+    {
+     "file_contains": {
+      "file": "../ax1wm_reacher_mdd1_seed1/OFFLINE_FIT_PROGRESS",
+      "pattern": "update=500000\ntotal_updates=500000"
+     }
+    }
+   ]
+  },
+  {
+   "stage": "blkA_dose",
+   "kind": "axis1_fit_adapt",
+   "target": "vast",
+   "run_id": "adapt_ax1mdd1_reacher_seed2_ckpt500000",
+   "cmd": "DV3_TASK_NAME=adapt_ax1mdd1_reacher_seed2_ckpt500000 RUN_ID=adapt_ax1mdd1_reacher_seed2_ckpt500000 WM_RUN=ax1wm_reacher_mdd1_seed2 TASK=dmc_reacher_hard SEED=2 REPLAY=${RUNROOT}/axis1_reacher/dose/level1 UPDATES=500000 STEPS=1.25e5 AXIS1_EXPL_MODE=task AXIS1_ADAPT_CONFIG=unfrozen_readout DREAMER_DISABLE_GPUFLAGS=1 bash scripts/axis1.sbatch",
+   "vars": {
+    "seed": 2,
+    "run_id": "adapt_ax1mdd1_reacher_seed2_ckpt500000"
+   },
+   "logdir": "adapt_ax1mdd1_reacher_seed2_ckpt500000",
+   "outputs": [
+    "adapt_ax1mdd1_reacher_seed2_ckpt500000",
+    "ax1wm_reacher_mdd1_seed2"
+   ],
+   "inputs": [
+    "axis1_reacher/dose/level1",
+    "axis1_reacher/dose/manifest.json"
+   ],
+   "done_when": [
+    {
+     "exists": "ADAPT_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 100
+     }
+    },
+    {
+     "ckpt_step_min": {
+      "dir": "../ax1wm_reacher_mdd1_seed2",
+      "min": 500000
+     }
+    },
+    {
+     "file_contains": {
+      "file": "../ax1wm_reacher_mdd1_seed2/OFFLINE_FIT_PROGRESS",
+      "pattern": "update=500000\ntotal_updates=500000"
+     }
+    }
+   ]
+  },
+  {
+   "stage": "blkA_dose",
+   "kind": "axis1_fit_adapt",
+   "target": "vast",
+   "run_id": "adapt_ax1mdd1_reacher_seed3_ckpt500000",
+   "cmd": "DV3_TASK_NAME=adapt_ax1mdd1_reacher_seed3_ckpt500000 RUN_ID=adapt_ax1mdd1_reacher_seed3_ckpt500000 WM_RUN=ax1wm_reacher_mdd1_seed3 TASK=dmc_reacher_hard SEED=3 REPLAY=${RUNROOT}/axis1_reacher/dose/level1 UPDATES=500000 STEPS=1.25e5 AXIS1_EXPL_MODE=task AXIS1_ADAPT_CONFIG=unfrozen_readout DREAMER_DISABLE_GPUFLAGS=1 bash scripts/axis1.sbatch",
+   "vars": {
+    "seed": 3,
+    "run_id": "adapt_ax1mdd1_reacher_seed3_ckpt500000"
+   },
+   "logdir": "adapt_ax1mdd1_reacher_seed3_ckpt500000",
+   "outputs": [
+    "adapt_ax1mdd1_reacher_seed3_ckpt500000",
+    "ax1wm_reacher_mdd1_seed3"
+   ],
+   "inputs": [
+    "axis1_reacher/dose/level1",
+    "axis1_reacher/dose/manifest.json"
+   ],
+   "done_when": [
+    {
+     "exists": "ADAPT_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 100
+     }
+    },
+    {
+     "ckpt_step_min": {
+      "dir": "../ax1wm_reacher_mdd1_seed3",
+      "min": 500000
+     }
+    },
+    {
+     "file_contains": {
+      "file": "../ax1wm_reacher_mdd1_seed3/OFFLINE_FIT_PROGRESS",
+      "pattern": "update=500000\ntotal_updates=500000"
+     }
+    }
+   ]
+  },
+  {
+   "stage": "blkA_dose",
+   "kind": "axis1_fit_adapt",
+   "target": "vast",
+   "run_id": "adapt_ax1mdd1_reacher_seed4_ckpt500000",
+   "cmd": "DV3_TASK_NAME=adapt_ax1mdd1_reacher_seed4_ckpt500000 RUN_ID=adapt_ax1mdd1_reacher_seed4_ckpt500000 WM_RUN=ax1wm_reacher_mdd1_seed4 TASK=dmc_reacher_hard SEED=4 REPLAY=${RUNROOT}/axis1_reacher/dose/level1 UPDATES=500000 STEPS=1.25e5 AXIS1_EXPL_MODE=task AXIS1_ADAPT_CONFIG=unfrozen_readout DREAMER_DISABLE_GPUFLAGS=1 bash scripts/axis1.sbatch",
+   "vars": {
+    "seed": 4,
+    "run_id": "adapt_ax1mdd1_reacher_seed4_ckpt500000"
+   },
+   "logdir": "adapt_ax1mdd1_reacher_seed4_ckpt500000",
+   "outputs": [
+    "adapt_ax1mdd1_reacher_seed4_ckpt500000",
+    "ax1wm_reacher_mdd1_seed4"
+   ],
+   "inputs": [
+    "axis1_reacher/dose/level1",
+    "axis1_reacher/dose/manifest.json"
+   ],
+   "done_when": [
+    {
+     "exists": "ADAPT_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 100
+     }
+    },
+    {
+     "ckpt_step_min": {
+      "dir": "../ax1wm_reacher_mdd1_seed4",
+      "min": 500000
+     }
+    },
+    {
+     "file_contains": {
+      "file": "../ax1wm_reacher_mdd1_seed4/OFFLINE_FIT_PROGRESS",
+      "pattern": "update=500000\ntotal_updates=500000"
+     }
+    }
+   ]
+  },
+  {
+   "stage": "blkA_scratch",
+   "kind": "scratch_adapt",
+   "target": "vast",
+   "run_id": "adapt_scratch_reacher_seed1_ckpt0",
+   "cmd": "DV3_TASK_NAME=adapt_scratch_reacher_seed1_ckpt0 RUN_ID=adapt_scratch_reacher_seed1_ckpt0 TASK=dmc_reacher_hard MODE=goal SEED=1 STEPS=1.25e5 SAVE_EVERY=900 DREAMER_DISABLE_GPUFLAGS=1 bash scripts/pilot.sbatch && touch ${RUNROOT}/adapt_scratch_reacher_seed1_ckpt0/ADAPT_DONE",
+   "vars": {
+    "seed": 1,
+    "run_id": "adapt_scratch_reacher_seed1_ckpt0"
+   },
+   "logdir": "adapt_scratch_reacher_seed1_ckpt0",
+   "outputs": [
+    "adapt_scratch_reacher_seed1_ckpt0"
+   ],
+   "inputs": [],
+   "done_when": [
+    {
+     "exists": "ADAPT_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 100
+     }
+    }
+   ]
+  },
+  {
+   "stage": "blkA_scratch",
+   "kind": "scratch_adapt",
+   "target": "vast",
+   "run_id": "adapt_scratch_reacher_seed2_ckpt0",
+   "cmd": "DV3_TASK_NAME=adapt_scratch_reacher_seed2_ckpt0 RUN_ID=adapt_scratch_reacher_seed2_ckpt0 TASK=dmc_reacher_hard MODE=goal SEED=2 STEPS=1.25e5 SAVE_EVERY=900 DREAMER_DISABLE_GPUFLAGS=1 bash scripts/pilot.sbatch && touch ${RUNROOT}/adapt_scratch_reacher_seed2_ckpt0/ADAPT_DONE",
+   "vars": {
+    "seed": 2,
+    "run_id": "adapt_scratch_reacher_seed2_ckpt0"
+   },
+   "logdir": "adapt_scratch_reacher_seed2_ckpt0",
+   "outputs": [
+    "adapt_scratch_reacher_seed2_ckpt0"
+   ],
+   "inputs": [],
+   "done_when": [
+    {
+     "exists": "ADAPT_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 100
+     }
+    }
+   ]
+  },
+  {
+   "stage": "blkA_scratch",
+   "kind": "scratch_adapt",
+   "target": "vast",
+   "run_id": "adapt_scratch_reacher_seed3_ckpt0",
+   "cmd": "DV3_TASK_NAME=adapt_scratch_reacher_seed3_ckpt0 RUN_ID=adapt_scratch_reacher_seed3_ckpt0 TASK=dmc_reacher_hard MODE=goal SEED=3 STEPS=1.25e5 SAVE_EVERY=900 DREAMER_DISABLE_GPUFLAGS=1 bash scripts/pilot.sbatch && touch ${RUNROOT}/adapt_scratch_reacher_seed3_ckpt0/ADAPT_DONE",
+   "vars": {
+    "seed": 3,
+    "run_id": "adapt_scratch_reacher_seed3_ckpt0"
+   },
+   "logdir": "adapt_scratch_reacher_seed3_ckpt0",
+   "outputs": [
+    "adapt_scratch_reacher_seed3_ckpt0"
+   ],
+   "inputs": [],
+   "done_when": [
+    {
+     "exists": "ADAPT_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 100
+     }
+    }
+   ]
+  },
+  {
+   "stage": "blkA_scratch",
+   "kind": "scratch_adapt",
+   "target": "vast",
+   "run_id": "adapt_scratch_reacher_seed4_ckpt0",
+   "cmd": "DV3_TASK_NAME=adapt_scratch_reacher_seed4_ckpt0 RUN_ID=adapt_scratch_reacher_seed4_ckpt0 TASK=dmc_reacher_hard MODE=goal SEED=4 STEPS=1.25e5 SAVE_EVERY=900 DREAMER_DISABLE_GPUFLAGS=1 bash scripts/pilot.sbatch && touch ${RUNROOT}/adapt_scratch_reacher_seed4_ckpt0/ADAPT_DONE",
+   "vars": {
+    "seed": 4,
+    "run_id": "adapt_scratch_reacher_seed4_ckpt0"
+   },
+   "logdir": "adapt_scratch_reacher_seed4_ckpt0",
+   "outputs": [
+    "adapt_scratch_reacher_seed4_ckpt0"
+   ],
+   "inputs": [],
+   "done_when": [
+    {
+     "exists": "ADAPT_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 100
+     }
+    }
+   ]
+  },
+  {
+   "stage": "blkB_dose",
+   "kind": "axis1_fit_adapt",
+   "target": "vast",
+   "run_id": "adapt_ax1mdd1_reacher_seed5_ckpt500000",
+   "cmd": "DV3_TASK_NAME=adapt_ax1mdd1_reacher_seed5_ckpt500000 RUN_ID=adapt_ax1mdd1_reacher_seed5_ckpt500000 WM_RUN=ax1wm_reacher_mdd1_seed5 TASK=dmc_reacher_hard SEED=5 REPLAY=${RUNROOT}/axis1_reacher/dose/level1 UPDATES=500000 STEPS=1.25e5 AXIS1_EXPL_MODE=task AXIS1_ADAPT_CONFIG=unfrozen_readout DREAMER_DISABLE_GPUFLAGS=1 bash scripts/axis1.sbatch",
+   "vars": {
+    "seed": 5,
+    "run_id": "adapt_ax1mdd1_reacher_seed5_ckpt500000"
+   },
+   "logdir": "adapt_ax1mdd1_reacher_seed5_ckpt500000",
+   "outputs": [
+    "adapt_ax1mdd1_reacher_seed5_ckpt500000",
+    "ax1wm_reacher_mdd1_seed5"
+   ],
+   "inputs": [
+    "axis1_reacher/dose/level1",
+    "axis1_reacher/dose/manifest.json"
+   ],
+   "done_when": [
+    {
+     "exists": "ADAPT_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 100
+     }
+    },
+    {
+     "ckpt_step_min": {
+      "dir": "../ax1wm_reacher_mdd1_seed5",
+      "min": 500000
+     }
+    },
+    {
+     "file_contains": {
+      "file": "../ax1wm_reacher_mdd1_seed5/OFFLINE_FIT_PROGRESS",
+      "pattern": "update=500000\ntotal_updates=500000"
+     }
+    }
+   ]
+  },
+  {
+   "stage": "blkB_dose",
+   "kind": "axis1_fit_adapt",
+   "target": "vast",
+   "run_id": "adapt_ax1mdd1_reacher_seed6_ckpt500000",
+   "cmd": "DV3_TASK_NAME=adapt_ax1mdd1_reacher_seed6_ckpt500000 RUN_ID=adapt_ax1mdd1_reacher_seed6_ckpt500000 WM_RUN=ax1wm_reacher_mdd1_seed6 TASK=dmc_reacher_hard SEED=6 REPLAY=${RUNROOT}/axis1_reacher/dose/level1 UPDATES=500000 STEPS=1.25e5 AXIS1_EXPL_MODE=task AXIS1_ADAPT_CONFIG=unfrozen_readout DREAMER_DISABLE_GPUFLAGS=1 bash scripts/axis1.sbatch",
+   "vars": {
+    "seed": 6,
+    "run_id": "adapt_ax1mdd1_reacher_seed6_ckpt500000"
+   },
+   "logdir": "adapt_ax1mdd1_reacher_seed6_ckpt500000",
+   "outputs": [
+    "adapt_ax1mdd1_reacher_seed6_ckpt500000",
+    "ax1wm_reacher_mdd1_seed6"
+   ],
+   "inputs": [
+    "axis1_reacher/dose/level1",
+    "axis1_reacher/dose/manifest.json"
+   ],
+   "done_when": [
+    {
+     "exists": "ADAPT_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 100
+     }
+    },
+    {
+     "ckpt_step_min": {
+      "dir": "../ax1wm_reacher_mdd1_seed6",
+      "min": 500000
+     }
+    },
+    {
+     "file_contains": {
+      "file": "../ax1wm_reacher_mdd1_seed6/OFFLINE_FIT_PROGRESS",
+      "pattern": "update=500000\ntotal_updates=500000"
+     }
+    }
+   ]
+  },
+  {
+   "stage": "blkB_dose",
+   "kind": "axis1_fit_adapt",
+   "target": "vast",
+   "run_id": "adapt_ax1mdd1_reacher_seed7_ckpt500000",
+   "cmd": "DV3_TASK_NAME=adapt_ax1mdd1_reacher_seed7_ckpt500000 RUN_ID=adapt_ax1mdd1_reacher_seed7_ckpt500000 WM_RUN=ax1wm_reacher_mdd1_seed7 TASK=dmc_reacher_hard SEED=7 REPLAY=${RUNROOT}/axis1_reacher/dose/level1 UPDATES=500000 STEPS=1.25e5 AXIS1_EXPL_MODE=task AXIS1_ADAPT_CONFIG=unfrozen_readout DREAMER_DISABLE_GPUFLAGS=1 bash scripts/axis1.sbatch",
+   "vars": {
+    "seed": 7,
+    "run_id": "adapt_ax1mdd1_reacher_seed7_ckpt500000"
+   },
+   "logdir": "adapt_ax1mdd1_reacher_seed7_ckpt500000",
+   "outputs": [
+    "adapt_ax1mdd1_reacher_seed7_ckpt500000",
+    "ax1wm_reacher_mdd1_seed7"
+   ],
+   "inputs": [
+    "axis1_reacher/dose/level1",
+    "axis1_reacher/dose/manifest.json"
+   ],
+   "done_when": [
+    {
+     "exists": "ADAPT_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 100
+     }
+    },
+    {
+     "ckpt_step_min": {
+      "dir": "../ax1wm_reacher_mdd1_seed7",
+      "min": 500000
+     }
+    },
+    {
+     "file_contains": {
+      "file": "../ax1wm_reacher_mdd1_seed7/OFFLINE_FIT_PROGRESS",
+      "pattern": "update=500000\ntotal_updates=500000"
+     }
+    }
+   ]
+  },
+  {
+   "stage": "blkB_dose",
+   "kind": "axis1_fit_adapt",
+   "target": "vast",
+   "run_id": "adapt_ax1mdd1_reacher_seed8_ckpt500000",
+   "cmd": "DV3_TASK_NAME=adapt_ax1mdd1_reacher_seed8_ckpt500000 RUN_ID=adapt_ax1mdd1_reacher_seed8_ckpt500000 WM_RUN=ax1wm_reacher_mdd1_seed8 TASK=dmc_reacher_hard SEED=8 REPLAY=${RUNROOT}/axis1_reacher/dose/level1 UPDATES=500000 STEPS=1.25e5 AXIS1_EXPL_MODE=task AXIS1_ADAPT_CONFIG=unfrozen_readout DREAMER_DISABLE_GPUFLAGS=1 bash scripts/axis1.sbatch",
+   "vars": {
+    "seed": 8,
+    "run_id": "adapt_ax1mdd1_reacher_seed8_ckpt500000"
+   },
+   "logdir": "adapt_ax1mdd1_reacher_seed8_ckpt500000",
+   "outputs": [
+    "adapt_ax1mdd1_reacher_seed8_ckpt500000",
+    "ax1wm_reacher_mdd1_seed8"
+   ],
+   "inputs": [
+    "axis1_reacher/dose/level1",
+    "axis1_reacher/dose/manifest.json"
+   ],
+   "done_when": [
+    {
+     "exists": "ADAPT_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 100
+     }
+    },
+    {
+     "ckpt_step_min": {
+      "dir": "../ax1wm_reacher_mdd1_seed8",
+      "min": 500000
+     }
+    },
+    {
+     "file_contains": {
+      "file": "../ax1wm_reacher_mdd1_seed8/OFFLINE_FIT_PROGRESS",
+      "pattern": "update=500000\ntotal_updates=500000"
+     }
+    }
+   ]
+  },
+  {
+   "stage": "blkB_scratch",
+   "kind": "scratch_adapt",
+   "target": "vast",
+   "run_id": "adapt_scratch_reacher_seed5_ckpt0",
+   "cmd": "DV3_TASK_NAME=adapt_scratch_reacher_seed5_ckpt0 RUN_ID=adapt_scratch_reacher_seed5_ckpt0 TASK=dmc_reacher_hard MODE=goal SEED=5 STEPS=1.25e5 SAVE_EVERY=900 DREAMER_DISABLE_GPUFLAGS=1 bash scripts/pilot.sbatch && touch ${RUNROOT}/adapt_scratch_reacher_seed5_ckpt0/ADAPT_DONE",
+   "vars": {
+    "seed": 5,
+    "run_id": "adapt_scratch_reacher_seed5_ckpt0"
+   },
+   "logdir": "adapt_scratch_reacher_seed5_ckpt0",
+   "outputs": [
+    "adapt_scratch_reacher_seed5_ckpt0"
+   ],
+   "inputs": [],
+   "done_when": [
+    {
+     "exists": "ADAPT_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 100
+     }
+    }
+   ]
+  },
+  {
+   "stage": "blkB_scratch",
+   "kind": "scratch_adapt",
+   "target": "vast",
+   "run_id": "adapt_scratch_reacher_seed6_ckpt0",
+   "cmd": "DV3_TASK_NAME=adapt_scratch_reacher_seed6_ckpt0 RUN_ID=adapt_scratch_reacher_seed6_ckpt0 TASK=dmc_reacher_hard MODE=goal SEED=6 STEPS=1.25e5 SAVE_EVERY=900 DREAMER_DISABLE_GPUFLAGS=1 bash scripts/pilot.sbatch && touch ${RUNROOT}/adapt_scratch_reacher_seed6_ckpt0/ADAPT_DONE",
+   "vars": {
+    "seed": 6,
+    "run_id": "adapt_scratch_reacher_seed6_ckpt0"
+   },
+   "logdir": "adapt_scratch_reacher_seed6_ckpt0",
+   "outputs": [
+    "adapt_scratch_reacher_seed6_ckpt0"
+   ],
+   "inputs": [],
+   "done_when": [
+    {
+     "exists": "ADAPT_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 100
+     }
+    }
+   ]
+  },
+  {
+   "stage": "blkB_scratch",
+   "kind": "scratch_adapt",
+   "target": "vast",
+   "run_id": "adapt_scratch_reacher_seed7_ckpt0",
+   "cmd": "DV3_TASK_NAME=adapt_scratch_reacher_seed7_ckpt0 RUN_ID=adapt_scratch_reacher_seed7_ckpt0 TASK=dmc_reacher_hard MODE=goal SEED=7 STEPS=1.25e5 SAVE_EVERY=900 DREAMER_DISABLE_GPUFLAGS=1 bash scripts/pilot.sbatch && touch ${RUNROOT}/adapt_scratch_reacher_seed7_ckpt0/ADAPT_DONE",
+   "vars": {
+    "seed": 7,
+    "run_id": "adapt_scratch_reacher_seed7_ckpt0"
+   },
+   "logdir": "adapt_scratch_reacher_seed7_ckpt0",
+   "outputs": [
+    "adapt_scratch_reacher_seed7_ckpt0"
+   ],
+   "inputs": [],
+   "done_when": [
+    {
+     "exists": "ADAPT_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 100
+     }
+    }
+   ]
+  },
+  {
+   "stage": "blkB_scratch",
+   "kind": "scratch_adapt",
+   "target": "vast",
+   "run_id": "adapt_scratch_reacher_seed8_ckpt0",
+   "cmd": "DV3_TASK_NAME=adapt_scratch_reacher_seed8_ckpt0 RUN_ID=adapt_scratch_reacher_seed8_ckpt0 TASK=dmc_reacher_hard MODE=goal SEED=8 STEPS=1.25e5 SAVE_EVERY=900 DREAMER_DISABLE_GPUFLAGS=1 bash scripts/pilot.sbatch && touch ${RUNROOT}/adapt_scratch_reacher_seed8_ckpt0/ADAPT_DONE",
+   "vars": {
+    "seed": 8,
+    "run_id": "adapt_scratch_reacher_seed8_ckpt0"
+   },
+   "logdir": "adapt_scratch_reacher_seed8_ckpt0",
+   "outputs": [
+    "adapt_scratch_reacher_seed8_ckpt0"
+   ],
+   "inputs": [],
+   "done_when": [
+    {
+     "exists": "ADAPT_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 100
+     }
+    }
+   ]
+  }
+ ]
+}

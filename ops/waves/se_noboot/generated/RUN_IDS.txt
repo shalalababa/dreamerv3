@@ -1,0 +1,15 @@
+wave_id: se_noboot
+spec:    /home/rickybao/projects/dreamerv3/ops/waves/se_noboot/spec.yaml
+prereg:  prereg/PREREG_nfi_scale_exhibit_amend4_20260820.md
+
+=== stage train  [vast]  kind=se_run  on_failure=continue  n=4 ===
+  se_noboot_s40
+  se_noboot_s41
+  se_noboot_s42
+  se_noboot_s43
+
+TOTAL RUNS: 4
+
+Check this list against the prereg before submitting. run_ids are
+consumed by frozen readers and the ledger; a wrong expansion here
+propagates into every downstream artifact.
