@@ -20,11 +20,18 @@
 # cross-site rule says a fresh cohort should not straddle hosts when the thing
 # being tested is whether the original number reproduces.
 #
-# per_gpu is deliberately 1 until MEASURED. tm2_bridge_fit2 runs TD-MPC2 at
-# per_gpu 2 ("measured GPU utilisation for this kind leaves room"), but that
-# was the OFFLINE recon fit, not this online trainer with an MPPI planner in
-# the loop -- a different footprint. Measure a live cell with nvidia-smi and
-# raise this to 2 if it fits; do not assume the bridge number transfers.
+# per_gpu 4, MEASURED on instance 9 (21 Aug 2026) rather than assumed: a live
+# r3 trainer holds 466 MiB of a 16311 MiB card at ~24% utilisation, against
+# 15304 MiB / 92-100% for a DreamerV3 SE or carrier cell -- a 33x smaller
+# footprint. VRAM would allow ~30 co-residents; UTILISATION is the binding
+# limit, and 4 x 24% fills the card. tm2_bridge_fit2 used per_gpu 2 for the
+# OFFLINE recon fit; that number was not assumed to transfer to this online
+# trainer with an MPPI planner in the loop, it was re-measured.
+#
+# A unit of 4 is ONE queued task: all four start together and the lane does
+# not advance until all four finish, so a unit's members should not be a
+# single condition -- see the ordering note below, which keeps conditions
+# spread across units as well as lanes.
 #
 # DISK is not a constraint here: the r3_local cohort measured ~178 MB/run
 # (5.7 G for 32), unlike the 4.6 G DreamerV3 SE runs.
@@ -41,7 +48,9 @@ defaults:
   target: vast
 
 kinds:
-  tm2r3_train: {per_gpu: 1}
+  tm2r3_train:
+    per_gpu: 4
+    pairing: homogeneous
 
 stages:
 
