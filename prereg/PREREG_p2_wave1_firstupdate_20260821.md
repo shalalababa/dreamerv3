@@ -126,9 +126,21 @@ pass and still has no archive fallback, so a scratch loss before that
 archive lands costs the 32 TM2 trainings (≈ Wave 2's own 101–184 GPU-h
 budget) and leaves this wave's labels unverifiable against their source.
 
-Then: 2 `--wv1_dup` CRN gate passes →
-4-cell pilot → --pilot dispersion look → 28 remaining cells → bundle +
-sha manifest → **[ME] ONE read**. GPU-h note (review M5): the 34–51 GPU-h
-figure is an UNVERIFIED planning estimate (no realized per-pass
-wall-clock exists in any relevant artifact); ops re-derives the budget
-from the first measured pass and records it in the bundle NOTES.
+**Submission vehicle (added 21 Aug pre-freeze — ops flagged that the
+wv1 path existed only in the labeler)**: `scripts/tm2r3.sbatch` stages
+`wv1dup` (one job: both registered CRN gate cells, then the WV1_DUP_OK
+marker) and `wv1` (one cell/job; refuses before WV1_DUP_OK; refuses
+seeds outside 51–58; LATE only; the registered dials `--states 400
+--horizon 100 --label_every 25 --actions 8 --seed 0 --ref_stride 5
+--wv1_repeats 4 --env_seed 20260821` hardcoded; outputs to
+$TM2R3_ROOT/wave1_labels/). The 4-cell pilot is procedural: submit
+cup_e1_seed51, cup_e4_seed52, finger_e1_seed53, finger_e4_seed54
+first, run the --pilot dispersion look, then the remaining 28.
+
+Then: 2 `--wv1_dup` CRN gate passes (stage wv1dup) →
+4-cell pilot → --pilot dispersion look → 28 remaining cells (stage
+wv1) → bundle + sha manifest → **[ME] ONE read**. GPU-h note (review
+M5): the 34–51 GPU-h figure is an UNVERIFIED planning estimate (no
+realized per-pass wall-clock exists in any relevant artifact); ops
+re-derives the budget from the first measured pass and records it in
+the bundle NOTES.

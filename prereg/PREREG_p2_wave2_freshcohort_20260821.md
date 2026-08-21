@@ -16,8 +16,11 @@ user pre-approved, triggered at build.
   **seeds 59–66**, LATE checkpoints only. Pipeline (review B5): the ops
   submit guard `scripts/tm2r3.sbatch` seed case is WIDENED
   5[1-8] → 5[1-8]|59|6[0-6] (an ops script, not a frozen instrument;
-  post-edit sha256 6393fcf59b4fdd9154536c8f…); everything else in the
-  training pipeline is unchanged.
+  sha256 39f96ecb8d58c2c04a7208492… — updated 21 Aug when the Wave-1
+  wv1/wv1dup submission stages were added to the same script; the
+  train/labels stages this registration uses are unchanged, and the
+  new wv1 stage hard-refuses seeds 59–66, so the two waves cannot
+  cross); everything else in the training pipeline is unchanged.
 - **Labeling exactly per PREREG_w1_wave_20260809**: same flags, same
   `--w1_repeats`, same dup-gate passes, same `--env_seed 20260809`
   (LOAD-BEARING, not cosmetic — review M2: w1_read.py:67 pins

@@ -43,6 +43,9 @@ defaults:
   # Gate D0 E2 arm: OU distractor observations (dim 0 disables the wrapper).
   distractor: {dim: 0, scale: 1.0, theta: 0.1, basesd: 0.0, calib: 1000, gate_key: '', gate_index: 0, gate_threshold: 0.0, mod_key: '', mod_index: 0, mod_lo: 0.0, mod_hi: 1.0}
   planted: {source_key: '', basesd: 0.0, const_dim: 4, gate_key: '', gate_index: 0, gate_threshold: 0.0}
+  # HiddenStakes: reward-relevant hidden-hazard channel (dim 0 disables;
+  # new-paper track, embodied/envs/hiddenstakes.py).
+  hiddenstakes: {dim: 0, p_stay: 0.95, scale: 1.0, cost: 0.0, signal: 1.0, obs_noise: 0.5}
 
   # Orthogonal-objective reward override (empty task disables the wrapper).
   orthreward: {task: ''}
@@ -153,7 +156,9 @@ defaults:
     # Gate D0 critic-head ensemble (k=0 disables; note App. A.4).
     valens: {k: 0, bootstrap: True, bootstrap_prob: 0.8}
     # Gate D0 per-state signal outputs from the policy path (sweep-time only).
-    d0: {signals: False, actions: 8, rollouts: 16}
+    # cem_*: MPC consumer over the frozen RSSM (PREREG_p2_cem_consumer_20260821;
+    # cem_iters 0 disables — default path unchanged).
+    d0: {signals: False, actions: 8, rollouts: 16, cem_iters: 0, cem_samples: 64, cem_horizon: 6, cem_elites: 8, cem_std: 0.5}
 
 size1m: &size1m
   .*\.rssm: {deter: 512, hidden: 64, classes: 4}

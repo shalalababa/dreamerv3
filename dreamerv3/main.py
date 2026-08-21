@@ -256,6 +256,13 @@ def make_env(config, index, **overrides):
     seed = int(np.random.SeedSequence(
         [config.seed, index, 0xD0]).generate_state(1)[0])
     env = distractor.Distractor(env, **dict(distractor_cfg), seed=seed)
+  hs_cfg = config.get('hiddenstakes', {})
+  if hs_cfg.get('dim', 0):
+    from embodied.envs import hiddenstakes
+    # SeedSequence, same irreproducibility rationale as the distractor.
+    seed = int(np.random.SeedSequence(
+        [config.seed, index, 0x45]).generate_state(1)[0])
+    env = hiddenstakes.HiddenStakes(env, **dict(hs_cfg), seed=seed)
   planted_cfg = config.get('planted', {})
   if planted_cfg.get('source_key', ''):
     from embodied.envs import planted

@@ -123,6 +123,16 @@ def load_config(args, out_dir):
       'agent.d0.rollouts': args.rollouts,
       'seed': args.seed,
   }
+  if getattr(args, 'cem_consumer', False):
+    # WCEM consumer pins (PREREG_p2_cem_consumer_20260821); the labeler
+    # meta records them and the frozen reader refuses any other values.
+    updates.update({
+        'agent.d0.cem_iters': 4,
+        'agent.d0.cem_samples': 64,
+        'agent.d0.cem_horizon': 6,
+        'agent.d0.cem_elites': 8,
+        'agent.d0.cem_std': 0.5,
+    })
   if args.platform:
     updates['jax'] = {'platform': args.platform}
   return config.update(updates), train_seed

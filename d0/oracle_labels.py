@@ -223,15 +223,24 @@ class AgentOracle:
     carry, acts, out = self.agent.policy(carry, aobs, mode=mode)
     return carry, acts, out
 
-  def d0_eval(self, carry, obs):
+  def d0_eval(self, carry, obs, mode='eval'):
     """One d0 policy evaluation:
-    (carry, qfull [K,M], cands [M,A], act dict, extras)."""
-    carry2, acts, out = self.policy(carry, obs)
+    (carry, qfull [K,M], cands [M,A], act dict, extras). mode='cemplan'
+    (wcem labeled states only) additionally computes the CEM plan —
+    every other call site keeps the default and pays nothing."""
+    carry2, acts, out = self.policy(carry, obs, mode=mode)
     q = np.asarray(out['d0/qfull'][0], np.float32)
     cands = np.asarray(out['d0/cands'][0], np.float32)
     act = {k: np.asarray(acts[k][0]) for k in self.act_keys}
     extras = dict(udyn=float(np.asarray(out['d0/udyn'][0])),
                   deter=self.latent_of(carry2))
+    if 'd0/cem_act' in out:
+      # wcem consumer wave (PREREG_p2_cem_consumer_20260821): the CEM
+      # plan computed in the same policy call. Absent unless
+      # config.agent.d0.cem_iters > 0 AND mode == 'cemplan' — default
+      # path byte-identical.
+      extras['cem_act'] = np.asarray(out['d0/cem_act'][0], np.float32)
+      extras['cem_score'] = float(np.asarray(out['d0/cem_score'][0]))
     return carry2, q, cands, act, extras
 
   def latent_of(self, carry):
@@ -273,6 +282,26 @@ class AgentOracle:
     trajectory: the eval agent's own sampled action is counterfactual
     there, and beliefs must be conditioned on the executed action."""
     return (*carry[:3], {k: np.asarray(acts[k]) for k in self.act_keys})
+
+
+class CEMOracle(AgentOracle):
+  """AgentOracle whose EXECUTED action is the CEM plan ('d0/cem_act'):
+  the follower for the wcem consumer branch
+  (PREREG_p2_cem_consumer_20260821). Shares the underlying agent (and
+  therefore the n_actions RNG counter) with the eval oracle, so W1
+  marks give the CEM follower the same CRN discipline as policy
+  sampling. The belief carry's prevact slot is replaced by the CEM
+  action actually executed."""
+
+  def policy(self, carry, obs, mode='eval'):
+    # Always plan: the CEM follower re-plans at every step (mode
+    # 'cemplan' is what unlocks _cem_signals in the jitted policy —
+    # review finding 2).
+    carry, acts, out = super().policy(carry, obs, 'cemplan')
+    assert 'd0/cem_act' in out, (
+        'CEMOracle requires config.agent.d0.cem_iters > 0')
+    cem = {self.act_key: np.asarray(out['d0/cem_act'], np.float32)}
+    return (*carry[:3], cem), cem, out
 
 
 def plugin_choice(qfull):
@@ -460,9 +489,161 @@ def _w1_label_state(env, oracle, carry_post, obs, qfull, cands, snap,
       cost_real_calls=cost_real['policy_calls'])
 
 
+def _wdc_label_state(env, oracle, carry_post, obs, qfull, cands, snap,
+                     m_now, extras, horizon, run_id, ep, t, w1, act0):
+  """WDC diverse-candidate labeling of ONE state
+  (PREREG_p2_dcand_20260821). Additive on the W1 protocol (same mark
+  discipline, same probe, same actor branch, same dup semantics), plus:
+
+  - U UNIFORM candidates dcands ~ U[-1,1]^A drawn from the pinned
+    per-state stream default_rng([env_seed, ep, t]) — deterministic and
+    reproducible by the reader (a wiring gate recomputes them);
+  - each uniform candidate is evaluated under the SAME repeat marks as
+    the policy candidates (CRN across ALL branches within a repeat);
+  - a candidate-0 WITNESS re-run per repeat: the same action under the
+    same mark and snapshot must reproduce g_all_rep[:, 0] bit-exactly,
+    else CRN is broken and the pass aborts (fail-fast; the reader
+    re-checks the stored arrays).
+
+  Under dup_cand the uniform set is ALSO replaced by copies of the
+  plug-in candidate, so every estimand is exactly zero (the W1
+  duplicate-null gate extends to the diverse set)."""
+  base = oracle.rng_mark()
+  oracle.rng_reset(base)
+  actor_vec = np.asarray(act0[oracle.act_key], np.float32).reshape(-1)
+  cands_eval = np.asarray(cands, np.float32)
+  if w1.get('dup_cand'):
+    cands_eval = np.tile(cands_eval[m_now:m_now + 1],
+                         (cands_eval.shape[0], 1))
+  m_count = cands_eval.shape[0]
+  n_uni = int(w1['dcand_uniform'])
+  drng = np.random.default_rng(
+      [int(w1['env_seed']), int(ep), int(t)])
+  dcands = drng.uniform(-1.0, 1.0,
+                        (n_uni, cands_eval.shape[1])).astype(np.float32)
+  if w1.get('dup_cand'):
+    dcands = np.tile(cands_eval[:1], (n_uni, 1))
+  m_real, cost_real, real_scores, r_real = op_real(
+      env, oracle, carry_post, obs, qfull, cands_eval, snap,
+      rng_mark=base + W1_PROBE_OFFSET, return_rewards=True)
+  repeats = int(w1['repeats'])
+  g_rep = np.zeros((repeats, m_count), np.float32)
+  g_actor_rep = np.zeros(repeats, np.float32)
+  g_dcand_rep = np.zeros((repeats, n_uni), np.float32)
+  g_wit_rep = np.zeros(repeats, np.float32)
+  for r in range(repeats):
+    mark_r = base + (r + 1) * W1_MARK_OFFSET
+    for m in range(m_count):
+      g_rep[r, m] = rollout_return(
+          env, oracle, oracle.branch_carry(carry_post, cands_eval[m]),
+          oracle.vec2act(cands_eval[m]), horizon, snap,
+          rng_mark=mark_r)[0]
+    g_actor_rep[r] = rollout_return(
+        env, oracle, oracle.branch_carry(carry_post, actor_vec),
+        oracle.vec2act(actor_vec), horizon, snap, rng_mark=mark_r)[0]
+    for u in range(n_uni):
+      g_dcand_rep[r, u] = rollout_return(
+          env, oracle, oracle.branch_carry(carry_post, dcands[u]),
+          oracle.vec2act(dcands[u]), horizon, snap, rng_mark=mark_r)[0]
+    g_wit_rep[r] = rollout_return(
+        env, oracle, oracle.branch_carry(carry_post, cands_eval[0]),
+        oracle.vec2act(cands_eval[0]), horizon, snap, rng_mark=mark_r)[0]
+    if g_wit_rep[r] != g_rep[r, 0]:
+      raise SystemExit(
+          f'WDC CRN WITNESS VIOLATION at episode {ep} step {t} repeat '
+          f'{r}: candidate-0 re-run {g_wit_rep[r]} != g_all_rep '
+          f'{g_rep[r, 0]} — same action/mark/snapshot must be '
+          'bit-identical; pass aborts')
+  oracle.rng_reset(base + (repeats + 1) * W1_MARK_OFFSET)
+  return dict(
+      run_id=run_id, episode=ep, step=t,
+      qfull=qfull, cands=cands_eval,
+      g_all_rep=g_rep, g_actor_rep=g_actor_rep, actor_act=actor_vec,
+      dcands=dcands, g_dcand_rep=g_dcand_rep, g_wit_rep=g_wit_rep,
+      udyn=np.float32(extras['udyn']),
+      deter=np.asarray(extras['deter'], np.float16),
+      m_now=m_now, m_real=m_real,
+      real_scores=np.asarray(real_scores, np.float32),
+      r_real=np.asarray(r_real, np.float32),
+      dup_cand=bool(w1.get('dup_cand', False)),
+      cost_real_env=cost_real['env_steps'],
+      cost_real_calls=cost_real['policy_calls'])
+
+
+def _wcem_label_state(env, oracle, cem_oracle, carry_post, obs, qfull,
+                      cands, snap, m_now, extras, horizon, run_id, ep, t,
+                      w1, act0):
+  """WCEM consumer labeling of ONE state
+  (PREREG_p2_cem_consumer_20260821). The W1 protocol plus one extra
+  branch per repeat: the CEM CONSUMER — first action = the CEM plan
+  computed at the labeled state (extras['cem_act'], same policy call as
+  qfull), followers = the CEM oracle (re-plans every step) — under the
+  SAME repeat marks as every other branch, so g_cem_rep − g_actor_rep
+  is a CRN-paired consumer contrast."""
+  base = oracle.rng_mark()
+  oracle.rng_reset(base)
+  actor_vec = np.asarray(act0[oracle.act_key], np.float32).reshape(-1)
+  cem_vec = np.asarray(extras['cem_act'], np.float32).reshape(-1)
+  cands_eval = np.asarray(cands, np.float32)
+  if w1.get('dup_cand'):
+    cands_eval = np.tile(cands_eval[m_now:m_now + 1],
+                         (cands_eval.shape[0], 1))
+  m_count = cands_eval.shape[0]
+  m_real, cost_real, real_scores, r_real = op_real(
+      env, oracle, carry_post, obs, qfull, cands_eval, snap,
+      rng_mark=base + W1_PROBE_OFFSET, return_rewards=True)
+  repeats = int(w1['repeats'])
+  g_rep = np.zeros((repeats, m_count), np.float32)
+  g_actor_rep = np.zeros(repeats, np.float32)
+  g_cem_rep = np.zeros(repeats, np.float32)
+  g_wit_rep = np.zeros(repeats, np.float32)
+  for r in range(repeats):
+    mark_r = base + (r + 1) * W1_MARK_OFFSET
+    for m in range(m_count):
+      g_rep[r, m] = rollout_return(
+          env, oracle, oracle.branch_carry(carry_post, cands_eval[m]),
+          oracle.vec2act(cands_eval[m]), horizon, snap,
+          rng_mark=mark_r)[0]
+    g_actor_rep[r] = rollout_return(
+        env, oracle, oracle.branch_carry(carry_post, actor_vec),
+        oracle.vec2act(actor_vec), horizon, snap, rng_mark=mark_r)[0]
+    g_cem_rep[r] = rollout_return(
+        env, cem_oracle, cem_oracle.branch_carry(carry_post, cem_vec),
+        cem_oracle.vec2act(cem_vec), horizon, snap, rng_mark=mark_r)[0]
+    # CRN witness (review finding 6, mirroring _wdc_label_state): the
+    # CEM path introduces new XLA work inside follower calls — this
+    # clears it: same action/mark/snapshot must be bit-identical.
+    g_wit_rep[r] = rollout_return(
+        env, oracle, oracle.branch_carry(carry_post, cands_eval[0]),
+        oracle.vec2act(cands_eval[0]), horizon, snap,
+        rng_mark=mark_r)[0]
+    if g_wit_rep[r] != g_rep[r, 0]:
+      raise SystemExit(
+          f'WCEM CRN WITNESS VIOLATION at episode {ep} step {t} repeat '
+          f'{r}: candidate-0 re-run {g_wit_rep[r]} != g_all_rep '
+          f'{g_rep[r, 0]} — pass aborts')
+  oracle.rng_reset(base + (repeats + 1) * W1_MARK_OFFSET)
+  return dict(
+      run_id=run_id, episode=ep, step=t,
+      qfull=qfull, cands=cands_eval,
+      g_all_rep=g_rep, g_actor_rep=g_actor_rep, actor_act=actor_vec,
+      g_cem_rep=g_cem_rep, cem_act=cem_vec, g_wit_rep=g_wit_rep,
+      cem_score=np.float32(extras['cem_score']),
+      q_best=np.float32(qfull.mean(0).max()),
+      udyn=np.float32(extras['udyn']),
+      deter=np.asarray(extras['deter'], np.float16),
+      m_now=m_now, m_real=m_real,
+      real_scores=np.asarray(real_scores, np.float32),
+      r_real=np.asarray(r_real, np.float32),
+      dup_cand=bool(w1.get('dup_cand', False)),
+      cost_real_env=cost_real['env_steps'],
+      cost_real_calls=cost_real['policy_calls'])
+
+
 def label_run(env, oracle, n_states, horizon, label_every, max_steps,
               rng, run_id, oracle_all=False, ref_stride=5,
-              behavior=None, consumer=None, dual=None, w1=None):
+              behavior=None, consumer=None, dual=None, w1=None,
+              cem_oracle=None):
   """behavior: optional second AgentOracle that DRIVES the base
   trajectory (state visitation) while `oracle` remains the evaluation
   agent for beliefs, d0 evals, operations, and rollouts — the
@@ -511,7 +692,9 @@ def label_run(env, oracle, n_states, horizon, label_every, max_steps,
       snap = snapshot_env(env)
       carry_s = carry  # jax pytrees are immutable: safe belief snapshot
       c0 = oracle.rng_mark() if dual is not None else None
-      carry_post, qfull, cands, act0, extras = oracle.d0_eval(carry_s, obs)
+      carry_post, qfull, cands, act0, extras = oracle.d0_eval(
+          carry_s, obs,
+          mode='cemplan' if (w1 or {}).get('cem') else 'eval')
       # determinism assert: restore must reproduce the same next obs
       restore_env(env, snap)
       probe1 = env.step({**oracle.vec2act(cands[0]), 'reset': np.array(False)})
@@ -527,9 +710,18 @@ def label_run(env, oracle, n_states, horizon, label_every, max_steps,
             'W1 passes are registered standalone (PREREG_w1_'
             'adjudication_constraints_20260809): no dual/consumer/'
             'behavior overlay')
-        rows.append(_w1_label_state(
-            env, oracle, carry_post, obs, qfull, cands, snap, m_now,
-            extras, horizon, run_id, ep, t, w1, act0))
+        assert bool(w1.get('cem')) == (cem_oracle is not None), (
+            'w1.cem and cem_oracle must be set together')
+        if w1.get('cem'):
+          rows.append(_wcem_label_state(
+              env, oracle, cem_oracle, carry_post, obs, qfull, cands,
+              snap, m_now, extras, horizon, run_id, ep, t, w1, act0))
+        else:
+          w1_fn = (_wdc_label_state if w1.get('dcand_uniform')
+                   else _w1_label_state)
+          rows.append(w1_fn(
+              env, oracle, carry_post, obs, qfull, cands, snap, m_now,
+              extras, horizon, run_id, ep, t, w1, act0))
         restore_env(env, snap)  # resume the base trajectory untouched
       else:
         if dual is not None:
@@ -677,12 +869,19 @@ def save_rows(rows, output, meta, extra_arrays=None):
   # registered per-state achieved, and paired stdout means would reveal
   # the primaries before the ONE read. Default path byte-identical.
   version = str(meta.get('labeler_version', ''))
-  if version.endswith(('_xc1', '_xc2', '_cm1', '_w1', '_w2', '_wv1')):
+  if version.endswith(('_xc1', '_xc2', '_cm1', '_w1', '_w2', '_wv1',
+                       '_wdc', '_w1sb', '_wcem')):
     # '_wv1' added 21 Aug (PREREG_p2_wave1_firstupdate build-review B1):
     # wv1 rows carry no delta_real, so the else-branch both crashes AND
     # would be the exact leak this guard exists for. Additive: no
-    # pre-existing version string ends '_wv1'; default path byte-identical.
+    # pre-existing version string ends '_wv1'. '_wdc' (diverse-candidate
+    # wave, PREREG_p2_dcand_20260821) and '_w1sb' (Stage B stamped wave,
+    # PREREG_p2_stageb_injection_20260821) added 21 Aug for the same two
+    # reasons. Default path byte-identical.
     reason = ('WAVE-1 pass' if version.endswith('_wv1') else
+              'WDC pass' if version.endswith('_wdc') else
+              'WCEM pass' if version.endswith('_wcem') else
+              'Stage-B stamped pass' if version.endswith('_w1sb') else
               'W1 pass' if version.endswith('_w1') else
               'W2 pass' if version.endswith('_w2') else 'consumer arm')
     print(f'wrote {output}: {len(rows)} labeled states '
@@ -1019,9 +1218,37 @@ def main_real(args):
         'W1 passes are registered standalone')
     w1 = dict(repeats=int(args.w1_repeats),
               dup_cand=bool(args.w1_dup_cand))
+    if getattr(args, 'dcand_uniform', 0):
+      assert not getattr(args, 'stamp_delta', 0.0), (
+          'dcand + stamp composition is unregistered; refusing')
+      assert not getattr(args, 'cem_consumer', False), (
+          'dcand + cem composition is unregistered; refusing')
+      w1.update(dcand_uniform=int(args.dcand_uniform),
+                env_seed=int(args.env_seed))
+    if getattr(args, 'cem_consumer', False):
+      assert not getattr(args, 'stamp_delta', 0.0), (
+          'cem + stamp composition is unregistered; refusing')
+      w1.update(cem=True)
   else:
     assert not getattr(args, 'w1_dup_cand', False), (
         '--w1_dup_cand requires --w1_repeats > 0')
+    assert not getattr(args, 'dcand_uniform', 0), (
+        '--dcand_uniform requires --w1_repeats > 0 (WDC rides the W1 '
+        'protocol; PREREG_p2_dcand_20260821)')
+    assert not getattr(args, 'stamp_delta', 0.0), (
+        '--stamp_delta requires --w1_repeats > 0 (Stage B rides the W1 '
+        'protocol; PREREG_p2_stageb_injection_20260821)')
+    assert not getattr(args, 'cem_consumer', False), (
+        '--cem_consumer requires --w1_repeats > 0 '
+        '(PREREG_p2_cem_consumer_20260821)')
+  stampenv = None
+  if getattr(args, 'stamp_delta', 0.0):
+    from embodied.envs.rewardstamp import RewardStamp
+    act_keys = sorted(k for k in env.act_space if k != 'reset')
+    assert len(act_keys) == 1, act_keys
+    stampenv = RewardStamp(env, delta=float(args.stamp_delta),
+                           act_key=act_keys[0])
+    env = stampenv
   if args.env_seed is not None:
     seed_env_task(env, args.env_seed)
   apply_mass_scale(env, args.mass_scale)
@@ -1058,6 +1285,8 @@ def main_real(args):
   disc = (1.0 if config.agent.contdisc else
           1 - 1 / config.agent.horizon)
   oracle = AgentOracle(agent, env.act_space, disc)
+  cem_oracle = (CEMOracle(agent, env.act_space, disc)
+                if (w1 or {}).get('cem') else None)
   behavior = None
   if args.behavior_checkpoint:
     assert os.path.abspath(args.behavior_checkpoint) != os.path.abspath(
@@ -1075,15 +1304,20 @@ def main_real(args):
       args.label_every, args.max_steps, rng,
       run_id=os.path.basename(args.run_logdir.rstrip('/')),
       oracle_all=args.oracle_all, ref_stride=args.ref_stride,
-      behavior=behavior, consumer=consumer, dual=dual, w1=w1)
+      behavior=behavior, consumer=consumer, dual=dual, w1=w1,
+      cem_oracle=cem_oracle)
   meta = dict(
       run_logdir=args.run_logdir, checkpoint=str(ckpt),
       states=args.states, horizon=args.horizon,
       label_every=args.label_every, seed=args.seed,
       train_seed=train_seed, actions=args.actions, rollouts=args.rollouts,
       ref_stride=args.ref_stride,
-      labeler_version=('d1fix_20260724_w1' if w1 is not None
-                       else 'd1fix_20260724'),
+      labeler_version=(
+          'd1fix_20260724_wdc' if (w1 or {}).get('dcand_uniform') else
+          'd1fix_20260724_wcem' if (w1 or {}).get('cem') else
+          'd1fix_20260724_w1sb' if (w1 is not None and
+                                    stampenv is not None) else
+          'd1fix_20260724_w1' if w1 is not None else 'd1fix_20260724'),
       dose=dict(config.distractor),
       behavior_checkpoint=str(args.behavior_checkpoint or ''),
       mass_scale=float(args.mass_scale),
@@ -1094,6 +1328,17 @@ def main_real(args):
                 w1_mark_offset=W1_MARK_OFFSET)
   elif args.env_seed is not None:
     meta.update(env_seed=int(args.env_seed))
+  if stampenv is not None:
+    meta.update(stamp=dict(delta=float(args.stamp_delta),
+                           kind='first_step_dim0_clip',
+                           stamped_steps=int(stampenv.stamp_count)))
+  if (w1 or {}).get('cem'):
+    d0cfg = config.agent.d0
+    meta.update(cem=dict(iters=int(d0cfg.cem_iters),
+                         samples=int(d0cfg.cem_samples),
+                         horizon=int(d0cfg.cem_horizon),
+                         elites=int(d0cfg.cem_elites),
+                         std=float(d0cfg.cem_std)))
   meta = stamp_consumer(meta, args.consumer_checkpoint,
                         max_steps=args.max_steps,
                         dual=bool(args.dual_chooser),
@@ -1241,7 +1486,7 @@ class _W1Oracle(AgentOracle):
     self._ctr += 1
     return carry, {'action': np.asarray([[a]], np.float32)}, {}
 
-  def d0_eval(self, carry, obs):
+  def d0_eval(self, carry, obs, mode='eval'):
     cands = np.linspace(0.1, 0.4, self.M,
                         dtype=np.float32)[:, None]
     q = np.tile(np.arange(self.M, dtype=np.float32)[None], (3, 1))
@@ -1337,6 +1582,11 @@ def selfcheck_w1():
     for key in ('g_all_rep', 'g_actor_rep', 'actor_act', 'r_real',
                 'dup_cand'):
       assert key in z.files, key
+    # Stage-B redaction branch (build-review 2.1): W1-shaped rows under
+    # the '_w1sb' version must ALSO take the redacted path (the
+    # else-branch would KeyError on the absent delta_real)
+    save_rows(rows2, os.path.join(tmp, 'w1sb.npz'),
+              meta=dict(labeler_version='d1fix_20260724_w1sb'))
   # --- flag guards: w1 with dual/consumer/behavior must refuse
   try:
     label_run(_W1Env(), _W1Oracle(), n_states=1, horizon=12,
@@ -2192,6 +2442,161 @@ def selfcheck():
         'discipline (no composition, oracle_all required), _cm1 stamping '
         'byte-identical default, unknown-run guard)')
   selfcheck_w1()
+  selfcheck_wdc()
+  selfcheck_wcem()
+
+
+def selfcheck_wdc():
+  """WDC diverse-candidate legs (PREREG_p2_dcand_20260821)."""
+  env, oracle = _W1Env(), _W1Oracle()
+  rows, _ = label_run(env, oracle, n_states=10, horizon=12,
+                      label_every=7, max_steps=400,
+                      rng=np.random.default_rng(0), run_id='wdcsynth',
+                      oracle_all=True,
+                      w1=dict(repeats=4, dcand_uniform=3, env_seed=123))
+  for r in rows:
+    assert r['dcands'].shape == (3, 1), r['dcands'].shape
+    assert r['g_dcand_rep'].shape == (4, 3)
+    assert r['g_wit_rep'].shape == (4,)
+    # CRN witness: candidate-0 re-run bit-identical to g_all_rep[:, 0]
+    assert np.array_equal(r['g_wit_rep'], r['g_all_rep'][:, 0]), (
+        r['g_wit_rep'], r['g_all_rep'][:, 0])
+    # pinned per-state uniform stream: reproducible from (env_seed,ep,t)
+    drng = np.random.default_rng([123, int(r['episode']), int(r['step'])])
+    want = drng.uniform(-1.0, 1.0, (3, 1)).astype(np.float32)
+    assert np.array_equal(r['dcands'], want), (r['dcands'], want)
+    # uniform branches genuinely evaluated (chaotic env: distinct
+    # actions give distinct returns within a repeat)
+    assert float(np.ptp(np.concatenate(
+        [r['g_dcand_rep'][0], r['g_all_rep'][0, :1]]))) > 1e-6
+  # dup composition: uniform set collapses to the plug-in candidate too
+  # — every diverse estimand exactly zero
+  env2, oracle2 = _W1Env(), _W1Oracle()
+  rows2, _ = label_run(env2, oracle2, n_states=4, horizon=12,
+                       label_every=7, max_steps=400,
+                       rng=np.random.default_rng(0), run_id='wdcdup',
+                       oracle_all=True,
+                       w1=dict(repeats=3, dcand_uniform=3, env_seed=123,
+                               dup_cand=True))
+  for r in rows2:
+    assert np.all(r['dcands'] == r['cands'][0]), r['dcands']
+    assert np.all(r['g_dcand_rep'] == r['g_all_rep'][:, :1]), (
+        r['g_dcand_rep'], r['g_all_rep'])
+    assert r['dup_cand']
+  # save/reload round-trip under the redacted '_wdc' print path
+  import tempfile
+  with tempfile.TemporaryDirectory() as tmp:
+    out = os.path.join(tmp, 'wdc.npz')
+    save_rows(rows, out, meta=dict(labeler_version='d1fix_20260724_wdc'))
+    z = np.load(out, allow_pickle=True)
+    for key in ('dcands', 'g_dcand_rep', 'g_wit_rep', 'g_all_rep'):
+      assert key in z.files, key
+  print('SELFCHECK PASS (WDC: uniform candidates pinned-stream '
+        'reproducible + genuinely evaluated; candidate-0 CRN witness '
+        'bit-identical; dup composition exactly zero on the diverse '
+        'set; _wdc redacted save round-trip)')
+
+
+class _W1CEMEvalOracle(_W1Oracle):
+  """Eval oracle exposing a constant CEM plan in extras — but ONLY
+  under mode='cemplan' (mirroring the real mode gate, review
+  finding 2)."""
+
+  CEM_ACT = 0.35
+  CEM_SCORE = 1.5
+  modes_seen = None
+
+  def d0_eval(self, carry, obs, mode='eval'):
+    carry, q, cands, act, extras = super().d0_eval(carry, obs, mode)
+    if self.modes_seen is not None:
+      self.modes_seen.append(mode)
+    if mode == 'cemplan':
+      extras['cem_act'] = np.asarray([self.CEM_ACT], np.float32)
+      extras['cem_score'] = float(self.CEM_SCORE)
+    return carry, q, cands, act, extras
+
+
+class _W1CEMFollower(_W1Oracle):
+  """CEM follower sharing the eval oracle's RNG counter (the real
+  CEMOracle shares the agent's n_actions counter the same way) but
+  acting through a DIFFERENT deterministic counter function."""
+
+  def __init__(self, main):
+    super().__init__()
+    self._main = main
+
+  def rng_mark(self):
+    return self._main.rng_mark()
+
+  def rng_reset(self, mark):
+    self._main.rng_reset(mark)
+
+  def policy(self, carry, obs, mode='eval'):
+    a = np.float32(np.cos(self._main._ctr * 3.7) * 0.3)
+    self._main._ctr += 1
+    return carry, {'action': np.asarray([[a]], np.float32)}, {}
+
+
+def selfcheck_wcem():
+  """WCEM consumer legs (PREREG_p2_cem_consumer_20260821)."""
+  def run(seed_env):
+    env, oracle = _W1Env(), _W1CEMEvalOracle()
+    oracle.modes_seen = []
+    cem = _W1CEMFollower(oracle)
+    rows, _ = label_run(env, oracle, n_states=8, horizon=12,
+                        label_every=7, max_steps=400,
+                        rng=np.random.default_rng(0), run_id='wcemsynth',
+                        oracle_all=True, w1=dict(repeats=4, cem=True),
+                        cem_oracle=cem)
+    return rows, oracle
+  rows, oracle0 = run(0)
+  # mode gate: cemplan only at labeled states, never in op_real's or
+  # rollout_return's bootstrap d0_evals (review finding 2)
+  assert oracle0.modes_seen.count('cemplan') == len(rows), (
+      oracle0.modes_seen.count('cemplan'), len(rows))
+  assert 'eval' in oracle0.modes_seen
+  for r in rows:
+    assert r['cem_act'].shape == (1,) and r['cem_act'][0] == np.float32(
+        _W1CEMEvalOracle.CEM_ACT)
+    assert r['g_cem_rep'].shape == (4,)
+    # competence diagnostics stored (review finding 1)
+    assert r['cem_score'] == np.float32(_W1CEMEvalOracle.CEM_SCORE)
+    assert r['q_best'] == np.float32(3.0)   # fixture qfull.mean(0).max()
+    # CRN witness bit-identity (review finding 6)
+    assert np.array_equal(r['g_wit_rep'], r['g_all_rep'][:, 0])
+    # distinct consumer: different first action + follower stream must
+    # decorrelate from the actor branch under the chaotic env
+    assert float(np.ptp(r['g_cem_rep'] - r['g_actor_rep'])) > 1e-6 or (
+        float(abs(r['g_cem_rep'][0] - r['g_actor_rep'][0])) > 1e-6)
+  # counter-CRN determinism: a fresh identical run reproduces g_cem_rep
+  rows2, _ = run(0)
+  for a, b in zip(rows, rows2):
+    assert np.array_equal(a['g_cem_rep'], b['g_cem_rep'])
+    assert np.array_equal(a['g_all_rep'], b['g_all_rep'])
+  # guard: w1.cem without cem_oracle refuses
+  try:
+    label_run(_W1Env(), _W1CEMEvalOracle(), n_states=1, horizon=12,
+              label_every=7, max_steps=400,
+              rng=np.random.default_rng(0), run_id='wcembad',
+              oracle_all=True, w1=dict(repeats=2, cem=True))
+    raise SystemExit('selfcheck FAIL: cem without cem_oracle not refused')
+  except AssertionError:
+    pass
+  # save/reload round-trip under the redacted '_wcem' print path
+  import tempfile
+  with tempfile.TemporaryDirectory() as tmp:
+    out = os.path.join(tmp, 'wcem.npz')
+    save_rows(rows, out,
+              meta=dict(labeler_version='d1fix_20260724_wcem'))
+    z = np.load(out, allow_pickle=True)
+    for key in ('g_cem_rep', 'cem_act', 'g_all_rep', 'g_actor_rep',
+                'g_wit_rep', 'cem_score', 'q_best'):
+      assert key in z.files, key
+  print('SELFCHECK PASS (WCEM: cem branch stored + distinct from actor '
+        'under shared marks; mode gate = cemplan at labeled states '
+        'only; competence diagnostics (cem_score/q_best) stored; CRN '
+        'witness bit-identical; counter-CRN reproduction; '
+        'cem-without-oracle guard; _wcem redacted save round-trip)')
 
 
 def main():
@@ -2266,6 +2671,27 @@ def main():
   p.add_argument('--env_seed', type=int, default=None,
                  help='Seed the dm_control task RNG explicitly (W1 '
                       'constraint 6). REQUIRED for W1 passes.')
+  p.add_argument('--dcand_uniform', type=int, default=0,
+                 help='WDC diverse-candidate wave (PREREG_p2_dcand_'
+                      '20260821): additionally evaluate N uniform '
+                      'U[-1,1]^A candidates per state under the W1 '
+                      'repeat marks, plus a candidate-0 CRN witness '
+                      're-run per repeat. Requires --w1_repeats > 0; '
+                      '0 = off (default path byte-identical).')
+  p.add_argument('--stamp_delta', type=float, default=0.0,
+                 help='Stage B certified injection (PREREG_p2_stageb_'
+                      'injection_20260821): wrap the env in RewardStamp '
+                      '(arm-on-restore one-step reward bonus delta * '
+                      'clip(a[0])). Requires --w1_repeats > 0; 0.0 = '
+                      'off (default path byte-identical).')
+  p.add_argument('--cem_consumer', action='store_true',
+                 help='WCEM consumer wave (PREREG_p2_cem_consumer_'
+                      '20260821): enable the CEM planner over the '
+                      'frozen RSSM (agent.d0.cem_* pins via '
+                      'load_config) and evaluate a CEM consumer branch '
+                      'per repeat alongside the actor branch. Requires '
+                      '--w1_repeats > 0; off = default path '
+                      'byte-identical.')
   args = p.parse_args()
   if args.selfcheck:
     selfcheck()

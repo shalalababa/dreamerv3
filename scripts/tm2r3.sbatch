@@ -30,6 +30,21 @@
 # Then ONE read:
 #   python -m analysis.tm2_r3_read --labels $TM2R3_ROOT/labels --output ...
 #
+# WAVE-1 first-update stages (PREREG_p2_wave1_firstupdate_20260821;
+# LATE ckpts, seeds 51-58 ONLY, outputs to $TM2R3_ROOT/wave1_labels):
+#   wv1dup   once:          the 2 registered CRN null gates
+#                           (finger_e1_seed51 + cup_e4_seed58) ->
+#                           wv1dup_*_late.npz + WV1_DUP_OK marker
+#   wv1      one pass/job:  TM2R3_DOM, TM2R3_DOSE, TM2R3_SEED
+#                           (refuses before WV1_DUP_OK)
+# Registered ordering (procedural, prereg Ops): submit the 4 PILOT
+# cells first (cup_e1_seed51 cup_e4_seed52 finger_e1_seed53
+# finger_e4_seed54), let the analyst run
+#   python -m analysis.p2_wave1_read --pilot ...   (dispersion-only)
+# and record it, then submit the remaining 28. The wave proceeds
+# regardless of the pilot unless the registered re-power trigger fires.
+# Then ONE read: python -m analysis.p2_wave1_read --labels ... .
+#
 # Submit-all examples (login node, clean shell — module-leakage gotcha):
 #   for d in cup finger; do for e in e1 e4; do for k in $(seq 51 58); do
 #     TM2R3_STAGE=train TM2R3_DOM=$d TM2R3_DOSE=$e TM2R3_SEED=$k \
@@ -42,8 +57,15 @@
 #       TM2R3_STAGE=labels TM2R3_DOM=$d TM2R3_DOSE=$e TM2R3_SEED=$k \
 #         TM2R3_MAT=$m sbatch scripts/tm2r3.sbatch
 #   done; done; done; done
+#   TM2R3_STAGE=wv1dup sbatch scripts/tm2r3.sbatch
+#   # pilot 4 first, then the rest:
+#   for cell in cup:e1:51 cup:e4:52 finger:e1:53 finger:e4:54; do
+#     IFS=: read d e k <<<"$cell"
+#     TM2R3_STAGE=wv1 TM2R3_DOM=$d TM2R3_DOSE=$e TM2R3_SEED=$k \
+#       sbatch scripts/tm2r3.sbatch
+#   done
 #
-# All labeling dials pinned by the prereg — do not override.
+# All labeling dials pinned by the preregs — do not override.
 # ---------------------------------------------------------------------------
 set -euo pipefail
 REPO="${REPO:-${SLURM_SUBMIT_DIR:-$PWD}}"
@@ -64,8 +86,9 @@ HEAD="$(git -C "$TDMPC2_CHECKOUT" rev-parse HEAD)"
 
 TM2R3_ROOT="${TM2R3_ROOT:-$RUNROOT/tm2r3}"
 LABELS="$TM2R3_ROOT/labels"
+WV1_LABELS="$TM2R3_ROOT/wave1_labels"
 mkdir -p "$TM2R3_ROOT" "$LABELS"
-STAGE="${TM2R3_STAGE:?train|apismoke|smoke|labels}"
+STAGE="${TM2R3_STAGE:?train|apismoke|smoke|labels|wv1dup|wv1}"
 
 DIALS="--states 200 --horizon 100 --label_every 25 --actions 8 --seed 0 --ref_stride 5 --oracle_all"
 task_of() { case "$1" in cup) echo dmc_cup_catch;; finger) echo dmc_finger_turn_hard;; *) echo "ERROR: dom $1" >&2; exit 2;; esac; }
@@ -137,6 +160,54 @@ elif [ "$STAGE" = labels ]; then
       --run_logdir "$LOG" --checkpoint "$LOG/ckpt_${TM2R3_MAT}.pt" \
       $DIALS --output "$OUT"
   echo "[$(date)] label $RUN $TM2R3_MAT rc=0 status=DONE"
+
+elif [ "$STAGE" = wv1dup ]; then
+  # WAVE-1 CRN null gates (PREREG_p2_wave1_firstupdate_20260821): the 2
+  # registered pinned cells, act_cold1 := act_mode, every paired
+  # quantity exactly zero (the frozen reader refuses otherwise). Runs
+  # on trained LATE checkpoints; both smoke gates must have passed.
+  [ -f "$LABELS/SMOKE_OK" ] || { echo "run smoke first"; exit 1; }
+  mkdir -p "$WV1_LABELS"
+  for cell in finger:e1:51 cup:e4:58; do
+    IFS=: read -r dom dose k <<<"$cell"
+    RUN="tm2r3_${dom}_${dose}_seed${k}"
+    LOG="$TM2R3_ROOT/$RUN"
+    OUT="$WV1_LABELS/wv1dup_${dom}_${dose}_seed${k}_late.npz"
+    [ -f "$LOG/TM2R3_TRAIN_DONE" ] || { echo "ERROR: $RUN not trained"; exit 1; }
+    [ -f "$OUT" ] && { echo "skip $OUT (exists)"; continue; }
+    echo "[$(date)] wv1dup $RUN"
+    python -m probing.tdmpc2_oracle_labels \
+        --run_logdir "$LOG" --checkpoint "$LOG/ckpt_late.pt" \
+        --states 400 --horizon 100 --label_every 25 --actions 8 \
+        --seed 0 --ref_stride 5 \
+        --wv1_repeats 4 --wv1_dup --env_seed 20260821 \
+        --output "$OUT"
+  done
+  touch "$WV1_LABELS/WV1_DUP_OK"
+  echo "[$(date)] wv1dup OK (finger_e1_seed51 + cup_e4_seed58)"
+
+elif [ "$STAGE" = wv1 ]; then
+  # WAVE-1 first-update cell pass (PREREG_p2_wave1_firstupdate_20260821):
+  # LATE checkpoints, seeds 51-58 ONLY (the fresh cohort 59-66 belongs
+  # to Wave 2's W1-protocol labeling, never to wv1), 400 states,
+  # repeats 4, env_seed 20260821 — all reader-pinned.
+  [ -f "$WV1_LABELS/WV1_DUP_OK" ] || { echo "run wv1dup first (registered ordering)"; exit 1; }
+  : "${TM2R3_DOM:?cup|finger}"; : "${TM2R3_DOSE:?e1|e4}"; : "${TM2R3_SEED:?51..58}"
+  check_cell
+  case "$TM2R3_SEED" in 5[1-8]) ;; *) echo "ERROR: wv1 seeds are 51-58 only (PREREG_p2_wave1_firstupdate_20260821; 59-66 = Wave 2, not wv1)"; exit 2;; esac
+  RUN="tm2r3_${TM2R3_DOM}_${TM2R3_DOSE}_seed${TM2R3_SEED}"
+  LOG="$TM2R3_ROOT/$RUN"
+  OUT="$WV1_LABELS/wv1tm2_${RUN#tm2r3_}_late.npz"
+  [ -f "$OUT" ] && { echo "skip $OUT (exists)"; exit 0; }
+  [ -f "$LOG/TM2R3_TRAIN_DONE" ] || { echo "ERROR: $RUN not trained"; exit 1; }
+  echo "[$(date)] wv1 $RUN"
+  python -m probing.tdmpc2_oracle_labels \
+      --run_logdir "$LOG" --checkpoint "$LOG/ckpt_late.pt" \
+      --states 400 --horizon 100 --label_every 25 --actions 8 \
+      --seed 0 --ref_stride 5 \
+      --wv1_repeats 4 --env_seed 20260821 \
+      --output "$OUT"
+  echo "[$(date)] wv1 $RUN rc=0 status=DONE"
 
 else
   echo "unknown stage $STAGE"; exit 1

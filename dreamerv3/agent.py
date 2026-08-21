@@ -160,7 +160,7 @@ class Agent(embodied.jax.Agent):
 
   @property
   def policy_keys(self):
-    if self.config.d0.signals:
+    if self.config.d0.signals or self.config.d0.cem_iters:
       # Sweep-time signal extraction runs through the policy path and needs
       # the reward/continuation heads, critic ensemble, and disag ensemble.
       return r'^(enc|dyn|dec|pol|rew|con|val|valens\d+|disag)/'
@@ -213,9 +213,20 @@ class Agent(embodied.jax.Agent):
     out = {}
     if self.config.d0.signals:
       out.update(self._d0_signals(dyn_carry, feat, act))
+    if self.config.d0.cem_iters and mode == 'cemplan':
+      # WCEM review finding 2: CEM is expensive (K*H imagined steps per
+      # call) and only the CEM oracle's own calls need it — gate on the
+      # static `mode` so candidate/actor branches and non-cem d0_evals
+      # pay nothing. CRN unaffected: _cem_signals runs AFTER
+      # sample(policy), so the sampled action at a given counter value
+      # is byte-identical with or without the cem block.
+      out.update(self._cem_signals(dyn_carry))
+    finite_tree = dict(obs=obs, carry=carry, tokens=tokens, feat=feat,
+                       act=act)
+    if 'd0/cem_act' in out:
+      finite_tree['cem'] = out['d0/cem_act']
     out['finite'] = elements.tree.flatdict(jax.tree.map(
-        lambda x: jnp.isfinite(x).all(range(1, x.ndim)),
-        dict(obs=obs, carry=carry, tokens=tokens, feat=feat, act=act)))
+        lambda x: jnp.isfinite(x).all(range(1, x.ndim)), finite_tree))
     carry = (enc_carry, dyn_carry, dec_carry, act)
     if self.config.replay_context:
       out.update(elements.tree.flatdict(dict(
@@ -589,6 +600,64 @@ class Agent(embodied.jax.Agent):
         'd0/cands': f32(cand_vec),
     }
     return out
+
+  def _cem_signals(self, dyn_carry):
+    """MPC consumer over the frozen RSSM (PREREG_p2_cem_consumer_20260821).
+
+    CEM over H-step action sequences imagined through the prior, scored
+    with the same head convention as _d0_signals' one-step Q generalized
+    to H steps: ret = sum_t w_t rew_t + w_{H+1} valens-mean_H with
+    w_1 = 1, w_{t+1} = w_t * disc * con_t. Emits the final elite-mean
+    first action as 'd0/cem_act'; the labeler's CEM oracle executes it
+    as the consumer action. cem_iters 0 disables (default path
+    unchanged); sampling draws from nj.seed(), so the labeler's
+    n_actions counter marks give CEM the same CRN discipline as policy
+    sampling."""
+    cfg = self.config.d0
+    iters, K = int(cfg.cem_iters), int(cfg.cem_samples)
+    H, E = int(cfg.cem_horizon), int(cfg.cem_elites)
+    assert self.valens, 'd0.cem requires valens.k > 0'
+    assert all(not s.discrete for s in self.act_space.values()), (
+        'd0.cem assumes continuous action spaces (DMC)')
+    keys = sorted(self.act_space)
+    dims = [int(np.prod(self.act_space[k].shape)) for k in keys]
+    A = sum(dims)
+    B = dyn_carry['deter'].shape[0]
+    disc = 1.0 if self.config.contdisc else 1 - 1 / self.config.horizon
+    voffset, vscale = self.valnorm.stats()
+    start = jax.tree.map(lambda x: jnp.repeat(x, K, 0), dyn_carry)
+    mean = jnp.zeros((B, H, A), f32)
+    std = jnp.full((B, H, A), float(cfg.cem_std), f32)
+    best_score = jnp.zeros((B,), f32)
+    for _ in range(iters):
+      eps = jax.random.normal(nj.seed(), (B, K, H, A), f32)
+      seqs = jnp.clip(mean[:, None] + std[:, None] * eps, -1.0, 1.0)
+      flat = seqs.reshape((B * K, H, A))
+      acts, offset = {}, 0
+      for k, d in zip(keys, dims):
+        acts[k] = nn.cast(flat[..., offset:offset + d].reshape(
+            (B * K, H, *self.act_space[k].shape)))
+        offset += d
+      _, feats, _ = self.dyn.imagine(start, acts, length=H, training=False)
+      inp = self.feat2tensor(feats)
+      rew = f32(self.rew(inp, bdims=2).pred())                 # (B*K, H)
+      con = f32(self.con(inp, bdims=2).prob(1))
+      val = jnp.stack([
+          f32(head(inp, bdims=2).pred()) * vscale + voffset
+          for head in self.valens], 0).mean(0)                 # (B*K, H)
+      w = jnp.concatenate([
+          jnp.ones((B * K, 1), f32),
+          jnp.cumprod(disc * con, axis=1)], axis=1)            # (B*K, H+1)
+      ret = (w[:, :H] * rew).sum(1) + w[:, H] * val[:, -1]
+      score = ret.reshape((B, K))
+      elite = jnp.argsort(score, axis=1)[:, -E:]               # (B, E)
+      esel = jnp.take_along_axis(
+          seqs, elite[:, :, None, None], axis=1)               # (B,E,H,A)
+      mean = esel.mean(1)
+      std = jnp.maximum(esel.std(1), 0.05)
+      best_score = jnp.take_along_axis(score, elite[:, -1:], 1)[:, 0]
+    return {'d0/cem_act': f32(mean[:, 0]),
+            'd0/cem_score': f32(best_score)}
 
   def _act2tensor(self, act):
     return jnp.concatenate([
