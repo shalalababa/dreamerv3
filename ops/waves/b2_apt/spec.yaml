@@ -1,0 +1,86 @@
+# B2 APT taxonomy column -- PREREG_nfi_apt_20260821.md (frozen 771445ab)
+# + PREREG_nfi_apt_amend1_20260821.md (smoke gate PASS w/ disclosed scale
+# artifact; wave GO; the SIGN fire rule stands, control-relative comparator
+# formally closed).
+#
+# 8 runs, seeds 68-75, dmc_cheetah_run, 5e5 steps, EXPL_CONFIG=expl_apt.
+# Stage-1 planted environment UNCHANGED (dim 8, basesd 1.215, scale 1.0, no
+# gates/mod) -- APT is the only thing that moves versus Stage 1.
+#
+# ONE SITE (prereg S1: "8 runs x 5e5 steps, one wave/site"). All 8 land on one
+# instance; the cross-run primary compares per-run deltas, and the 1-Aug
+# nondeterminism finding makes a split host unrecoverable rather than noisy.
+#
+# BIND-CHECK IS THE REASON THIS WAVE NEEDS A CURRENT CHECKOUT. The producer
+# guard (committed 6d46384a) asserts agent.expl.mode == apt actually bound in
+# the composed config within minutes of launch, and kills the run otherwise.
+# This wave is the exact analogue of the NOBOOT incident: a single env override
+# (EXPL_CONFIG) carries the entire experimental contrast, and a stale producer
+# would silently train p2e under se_apt_* run_ids. Preflight's repo-SHA gate is
+# the stale-checkout defense; BIND-CHECK is the in-run backstop.
+#
+# MASK RIDES WITH THE RUN. se_apt_read consumes <run>/se_apt_mask/{json,npz}
+# and does NOT compute them, so each cell runs its own mask pass on completion
+# -- on the SAME host, from the run's own replay/ and final ckpt. Measured 32 s
+# on the seed-9 smoke (CPU platform, parser defaults). Doing it here rather
+# than post-pull also keeps the whole panel on one device class for free.
+# Frozen defaults: every knob except --run_logdir stays at the parser default
+# (n_eval 512 IS the prereg's hard S pin) and --output is omitted so the tool
+# writes <run>/se_apt_mask.
+#
+# per_gpu: 1 -- SE runs measured 15243-15312 MiB of a 16311 MiB card.
+# DISK: 8 x ~4.3 G = ~34 G. Verified 46 G free on instance 11 before submit.
+
+wave_id: b2_apt
+paper: paper5
+prereg: prereg/PREREG_nfi_apt_20260821.md
+notes: >-
+  8 APT SE runs (dmc_cheetah_run, 5e5 steps, ~6.3 h each) + a per-run
+  se_apt_mask pass. One site. Requires a checkout at or past 6d46384a so the
+  producer BIND-CHECK is present.
+
+defaults:
+  target: vast
+
+kinds:
+  se_run: {per_gpu: 1}
+
+stages:
+
+  - name: train
+    kind: se_run
+    on_failure: continue
+    runs:
+      - {run_id: se_apt_s68, seed: 68}
+      - {run_id: se_apt_s69, seed: 69}
+      - {run_id: se_apt_s70, seed: 70}
+      - {run_id: se_apt_s71, seed: 71}
+      - {run_id: se_apt_s72, seed: 72}
+      - {run_id: se_apt_s73, seed: 73}
+      - {run_id: se_apt_s74, seed: 74}
+      - {run_id: se_apt_s75, seed: 75}
+    logdir: "${run_id}"
+    cmd: >-
+      RUN_ID=${run_id} TASK=dmc_cheetah_run SEED=${seed}
+      EXPL_CONFIG=expl_apt
+      DISTRACTOR_MOD_KEY= DISTRACTOR_MOD_INDEX=0
+      DISTRACTOR_MOD_LO=0.0 DISTRACTOR_MOD_HI=1.0
+      DISTRACTOR_SCALE=1.0
+      bash scripts/uncfield_se.sbatch
+      && python -m uncfield.se_apt_mask --run_logdir "$RUNROOT/${run_id}"
+    outputs:
+      - "${run_id}"
+    done_when:
+      - exists: TRAINING_DONE
+      - exists: config.yaml
+      - exists: se_apt_mask/se_apt_mask.json
+      - file_contains:
+          file: ckpt_snapshots/nearest.json
+          pattern: '"milestone": 500000,\s+"step": (49\d{4}|[5-9]\d{5})'
+      - jsonl_min_lines: {file: scores.jsonl, n: 464}
+
+bundle:
+  prefix: b2_apt
+  include_stages: [train]
+  cloud_logs:
+    - "se_apt_s*.out"
