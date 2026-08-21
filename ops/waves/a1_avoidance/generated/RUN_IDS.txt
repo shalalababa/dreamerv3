@@ -1,0 +1,19 @@
+wave_id: a1_avoidance
+spec:    /home/rickybao/projects/dreamerv3/ops/waves/a1_avoidance/spec.yaml
+prereg:  prereg/PREREG_nfi_avoidance_20260821.md
+
+=== stage train  [vast]  kind=se_run  on_failure=continue  n=8 ===
+  se_avoid_het_s44
+  se_avoid_flat_s48
+  se_avoid_het_s45
+  se_avoid_flat_s49
+  se_avoid_het_s46
+  se_avoid_flat_s50
+  se_avoid_het_s47
+  se_avoid_flat_s51
+
+TOTAL RUNS: 8
+
+Check this list against the prereg before submitting. run_ids are
+consumed by frozen readers and the ledger; a wrong expansion here
+propagates into every downstream artifact.

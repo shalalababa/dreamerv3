@@ -1,0 +1,92 @@
+# A1 avoidance-confirmatory -- PREREG_nfi_avoidance_20260821.md (frozen 771445ab).
+#
+# 8 runs: hetero2 seeds 44-47, flat2 seeds 48-51, dmc_cheetah_run, 5e5 steps.
+#
+# ONE INSTANCE, NON-NEGOTIABLE. The primary is a 4-vs-4 exact label
+# permutation over C(8,4)=70. The 1-Aug rule (GPU jobs are not job-to-job
+# deterministic across hosts) bars cross-site arm comparison, and a 4-vs-4
+# permutation is precisely where a device confound is indistinguishable from
+# the effect. The prereg says "fresh seeds, same wave, same site".
+#
+# Arms are INTERLEAVED in declaration order, which is what fixes lane packing
+# (wavespec.py:178-180). Every lane carries exactly one run, so each arm gets
+# four distinct lanes and no lane is arm-pure across rounds -- there is only
+# one round. Reordering this list silently reassigns lanes.
+#
+# The arm cells are transcribed VERBATIM from ops/waves/se_grad_arms (the
+# Amendment-3 hetero/flat configs), not re-derived: hetero carries the mod
+# quadruple at scale 1.0, flat carries an empty mod at scale 0.35891393.
+# Every arm passes the SAME variable set including inert values, so arm
+# identity is stated explicitly rather than by omission -- the frozen reader
+# gates on these exact config fields and cannot tell an unset variable from a
+# deliberately-default one.
+#
+# Stage-1 pins (#27 B3) ride the producer defaults and are asserted by the
+# reader: task dmc_cheetah_run, expl.mode p2e, disag_bootstrap True,
+# disag_ens 8, disag_scale 1000.0, planted.source_key position,
+# planted.basesd 0.0976. DISAG_BOOTSTRAP and EXPL_CONFIG are deliberately
+# UNSET so the emitted command is byte-identical to Stage-1's.
+#
+# DISK: a completed SE run measured 4.6 G (ckpt_snapshots 3.9 G, replay
+# 626 M). 8 x 4.6 = 36.8 G against ~44 G free on an 8-GPU box. It fits with
+# ~7 G of headroom ONLY if the box's finished carrier runs are pulled and
+# removed first. Verify free space before submitting.
+#
+# per_gpu: 1 -- SE runs measured 15243 MiB of a 16311 MiB card.
+# The 2 se_probe passes are NOT in this wave (post-training, one device
+# class, scripts/se_avoid_probe.sbatch, per #27 M7).
+
+wave_id: a1_avoidance
+paper: paper5
+prereg: prereg/PREREG_nfi_avoidance_20260821.md
+notes: >-
+  8 SE runs (dmc_cheetah_run, 5e5 steps, ~7.5 h each) -- hetero2 x4 seeds
+  44-47 and flat2 x4 seeds 48-51 -- ALL ON ONE INSTANCE, one run per lane.
+
+defaults:
+  target: vast
+
+kinds:
+  se_run: {per_gpu: 1}
+
+stages:
+
+  - name: train
+    kind: se_run
+    on_failure: continue
+    runs:
+      - {run_id: se_avoid_het_s44,  seed: 44, mod_key: position, mod_lo: "-0.32203162", mod_hi: "0.19711795", scale: "1.0"}
+      - {run_id: se_avoid_flat_s48, seed: 48, mod_key: "",       mod_lo: "0.0",         mod_hi: "1.0",        scale: "0.35891393"}
+      - {run_id: se_avoid_het_s45,  seed: 45, mod_key: position, mod_lo: "-0.32203162", mod_hi: "0.19711795", scale: "1.0"}
+      - {run_id: se_avoid_flat_s49, seed: 49, mod_key: "",       mod_lo: "0.0",         mod_hi: "1.0",        scale: "0.35891393"}
+      - {run_id: se_avoid_het_s46,  seed: 46, mod_key: position, mod_lo: "-0.32203162", mod_hi: "0.19711795", scale: "1.0"}
+      - {run_id: se_avoid_flat_s50, seed: 50, mod_key: "",       mod_lo: "0.0",         mod_hi: "1.0",        scale: "0.35891393"}
+      - {run_id: se_avoid_het_s47,  seed: 47, mod_key: position, mod_lo: "-0.32203162", mod_hi: "0.19711795", scale: "1.0"}
+      - {run_id: se_avoid_flat_s51, seed: 51, mod_key: "",       mod_lo: "0.0",         mod_hi: "1.0",        scale: "0.35891393"}
+    logdir: "${run_id}"
+    cmd: >-
+      RUN_ID=${run_id} TASK=dmc_cheetah_run SEED=${seed}
+      DISTRACTOR_MOD_KEY=${mod_key} DISTRACTOR_MOD_INDEX=0
+      DISTRACTOR_MOD_LO=${mod_lo} DISTRACTOR_MOD_HI=${mod_hi}
+      DISTRACTOR_SCALE=${scale}
+      bash scripts/uncfield_se.sbatch
+    outputs:
+      - "${run_id}"
+    # TRAINING_DONE is a LYING MARKER for this producer (touched on the
+    # failure path too) and the scores.jsonl burst count is phase-dependent.
+    # The realized STEP in the milestone snapshot is the invariant test; the
+    # row floor is a loose sanity check only.
+    done_when:
+      - exists: TRAINING_DONE
+      - exists: config.yaml
+      - file_contains:
+          file: ckpt_snapshots/nearest.json
+          pattern: '"milestone": 500000,\s+"step": (49\d{4}|[5-9]\d{5})'
+      - jsonl_min_lines: {file: scores.jsonl, n: 464}
+
+bundle:
+  prefix: a1_avoidance
+  include_stages: [train]
+  cloud_logs:
+    - "se_avoid_het_s*.out"
+    - "se_avoid_flat_s*.out"

@@ -1,0 +1,27 @@
+wave_id: b1_dose
+spec:    /home/rickybao/projects/dreamerv3/ops/waves/b1_dose/spec.yaml
+prereg:  prereg/PREREG_nfi_dose_20260821.md
+
+=== stage train  [vast]  kind=se_run  on_failure=continue  n=16 ===
+  se_dose10_s52
+  se_dose25_s56
+  se_dose50_s60
+  se_dose75_s64
+  se_dose10_s53
+  se_dose25_s57
+  se_dose50_s61
+  se_dose75_s65
+  se_dose50_s62
+  se_dose75_s66
+  se_dose10_s54
+  se_dose25_s58
+  se_dose50_s63
+  se_dose75_s67
+  se_dose10_s55
+  se_dose25_s59
+
+TOTAL RUNS: 16
+
+Check this list against the prereg before submitting. run_ids are
+consumed by frozen readers and the ledger; a wrong expansion here
+propagates into every downstream artifact.

@@ -1,0 +1,101 @@
+# B1 dose ladder -- PREREG_nfi_dose_20260821.md (frozen 771445ab).
+#
+# 16 runs: scales {0.10, 0.25, 0.50, 0.75} x 4 seeds each (52-67),
+# dmc_cheetah_run, 5e5 steps. The dose axis moves AMPLITUDE AND NOTHING ELSE.
+#
+# ONE INSTANCE, NON-NEGOTIABLE (#28 M7). Dose is confounded with seed block by
+# construction (0.10 -> 52-55, 0.25 -> 56-59, ...), so splitting hosts would
+# confound DEVICE with the tested axis exactly. The 1-Aug nondeterminism rule
+# makes that unrecoverable, not merely noisy.
+#
+# LANE LAYOUT. Declaration order fixes packing (wavespec.py:178-180): with 16
+# runs over 8 lanes, entries 1-8 are round 1 and 9-16 are round 2. The order
+# below satisfies two constraints at once:
+#   - each ROUND holds exactly two runs of every dose (so a round-wide
+#     disturbance cannot masquerade as a dose trend), and
+#   - each LANE holds two DIFFERENT doses (so a slow or hot GPU cannot load
+#     onto one dose).
+# The naive seed-ordered layout fails the second: lane 0 would draw dose10
+# twice. Reordering this list silently breaks both properties.
+#
+# NO mod quadruple on any cell: amplitude is the only thing that moves, so the
+# mod variables carry their inert values explicitly (stated, not omitted --
+# the reader cannot distinguish unset from deliberately-default).
+# distractor.theta stays 0.1: the producer never passes --distractor.theta,
+# and configs.yaml:44 has theta 0.1, so the #28 M1 pin holds BY OMISSION and
+# the reader gates it. disag_bootstrap stays True (Stage-1 default; the
+# bootstrap axis belongs to NOBOOT) -- DISAG_BOOTSTRAP deliberately UNSET.
+#
+# DISK -- THIS WAVE DOES NOT FIT. 16 x 4.6 G = 73.6 G against ~44 G free on an
+# 8-GPU box. Round 1 alone is 36.8 G and fits; round 2 starts on each lane the
+# moment that lane's round-1 run ends, so peak usage climbs past the overlay
+# mid-wave. OPERATIONAL REQUIREMENT (the se_grad_arms protocol): pull each
+# round-1 run to RCC, VERIFY it, and delete it from the instance while round 2
+# runs. Do NOT solve this by deleting ckpt_snapshots un-archived -- the
+# degeneracy gate reads per-run levels, and `replay/` is REQUIRED in this
+# wave's bundle (#28 B1), so neither is disposable.
+#
+# per_gpu: 1 -- SE runs measured 15243 MiB of a 16311 MiB card.
+# The 16 se_probe passes are NOT in this wave: ALL of them run in ONE CPU job
+# via scripts/se_dose_probe.sbatch (#28 M7, same reason as the host rule).
+
+wave_id: b1_dose
+paper: paper5
+prereg: prereg/PREREG_nfi_dose_20260821.md
+notes: >-
+  16 SE runs (dmc_cheetah_run, 5e5 steps, ~7.5 h each) across four distractor
+  scales -- ALL ON ONE INSTANCE, 8 lanes x 2 rounds. Requires mid-wave
+  evacuation of round 1; see the DISK note.
+
+defaults:
+  target: vast
+
+kinds:
+  se_run: {per_gpu: 1}
+
+stages:
+
+  - name: train
+    kind: se_run
+    on_failure: continue
+    runs:
+      # -- round 1: two of every dose; lanes 0-7 --
+      - {run_id: se_dose10_s52, seed: 52, scale: "0.10"}
+      - {run_id: se_dose25_s56, seed: 56, scale: "0.25"}
+      - {run_id: se_dose50_s60, seed: 60, scale: "0.50"}
+      - {run_id: se_dose75_s64, seed: 64, scale: "0.75"}
+      - {run_id: se_dose10_s53, seed: 53, scale: "0.10"}
+      - {run_id: se_dose25_s57, seed: 57, scale: "0.25"}
+      - {run_id: se_dose50_s61, seed: 61, scale: "0.50"}
+      - {run_id: se_dose75_s65, seed: 65, scale: "0.75"}
+      # -- round 2: two of every dose, rotated so no lane repeats a dose --
+      - {run_id: se_dose50_s62, seed: 62, scale: "0.50"}
+      - {run_id: se_dose75_s66, seed: 66, scale: "0.75"}
+      - {run_id: se_dose10_s54, seed: 54, scale: "0.10"}
+      - {run_id: se_dose25_s58, seed: 58, scale: "0.25"}
+      - {run_id: se_dose50_s63, seed: 63, scale: "0.50"}
+      - {run_id: se_dose75_s67, seed: 67, scale: "0.75"}
+      - {run_id: se_dose10_s55, seed: 55, scale: "0.10"}
+      - {run_id: se_dose25_s59, seed: 59, scale: "0.25"}
+    logdir: "${run_id}"
+    cmd: >-
+      RUN_ID=${run_id} TASK=dmc_cheetah_run SEED=${seed}
+      DISTRACTOR_MOD_KEY= DISTRACTOR_MOD_INDEX=0
+      DISTRACTOR_MOD_LO=0.0 DISTRACTOR_MOD_HI=1.0
+      DISTRACTOR_SCALE=${scale}
+      bash scripts/uncfield_se.sbatch
+    outputs:
+      - "${run_id}"
+    done_when:
+      - exists: TRAINING_DONE
+      - exists: config.yaml
+      - file_contains:
+          file: ckpt_snapshots/nearest.json
+          pattern: '"milestone": 500000,\s+"step": (49\d{4}|[5-9]\d{5})'
+      - jsonl_min_lines: {file: scores.jsonl, n: 464}
+
+bundle:
+  prefix: b1_dose
+  include_stages: [train]
+  cloud_logs:
+    - "se_dose*_s*.out"

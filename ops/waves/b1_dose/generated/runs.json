@@ -1,0 +1,617 @@
+{
+ "wave_id": "b1_dose",
+ "spec": "/home/rickybao/projects/dreamerv3/ops/waves/b1_dose/spec.yaml",
+ "prereg": "prereg/PREREG_nfi_dose_20260821.md",
+ "bundle": {
+  "prefix": "b1_dose",
+  "include_stages": [
+   "train"
+  ],
+  "cloud_logs": [
+   "se_dose*_s*.out"
+  ]
+ },
+ "stages": [
+  {
+   "name": "train",
+   "target": "vast",
+   "kind": "se_run",
+   "on_failure": "continue",
+   "needs": null
+  }
+ ],
+ "runs": [
+  {
+   "stage": "train",
+   "kind": "se_run",
+   "target": "vast",
+   "run_id": "se_dose10_s52",
+   "cmd": "RUN_ID=se_dose10_s52 TASK=dmc_cheetah_run SEED=52 DISTRACTOR_MOD_KEY= DISTRACTOR_MOD_INDEX=0 DISTRACTOR_MOD_LO=0.0 DISTRACTOR_MOD_HI=1.0 DISTRACTOR_SCALE=0.10 bash scripts/uncfield_se.sbatch",
+   "vars": {
+    "seed": 52,
+    "scale": "0.10",
+    "run_id": "se_dose10_s52"
+   },
+   "logdir": "se_dose10_s52",
+   "outputs": [
+    "se_dose10_s52"
+   ],
+   "inputs": [],
+   "done_when": [
+    {
+     "exists": "TRAINING_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "file_contains": {
+      "file": "ckpt_snapshots/nearest.json",
+      "pattern": "\"milestone\": 500000,\\s+\"step\": (49\\d{4}|[5-9]\\d{5})"
+     }
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 464
+     }
+    }
+   ]
+  },
+  {
+   "stage": "train",
+   "kind": "se_run",
+   "target": "vast",
+   "run_id": "se_dose25_s56",
+   "cmd": "RUN_ID=se_dose25_s56 TASK=dmc_cheetah_run SEED=56 DISTRACTOR_MOD_KEY= DISTRACTOR_MOD_INDEX=0 DISTRACTOR_MOD_LO=0.0 DISTRACTOR_MOD_HI=1.0 DISTRACTOR_SCALE=0.25 bash scripts/uncfield_se.sbatch",
+   "vars": {
+    "seed": 56,
+    "scale": "0.25",
+    "run_id": "se_dose25_s56"
+   },
+   "logdir": "se_dose25_s56",
+   "outputs": [
+    "se_dose25_s56"
+   ],
+   "inputs": [],
+   "done_when": [
+    {
+     "exists": "TRAINING_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "file_contains": {
+      "file": "ckpt_snapshots/nearest.json",
+      "pattern": "\"milestone\": 500000,\\s+\"step\": (49\\d{4}|[5-9]\\d{5})"
+     }
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 464
+     }
+    }
+   ]
+  },
+  {
+   "stage": "train",
+   "kind": "se_run",
+   "target": "vast",
+   "run_id": "se_dose50_s60",
+   "cmd": "RUN_ID=se_dose50_s60 TASK=dmc_cheetah_run SEED=60 DISTRACTOR_MOD_KEY= DISTRACTOR_MOD_INDEX=0 DISTRACTOR_MOD_LO=0.0 DISTRACTOR_MOD_HI=1.0 DISTRACTOR_SCALE=0.50 bash scripts/uncfield_se.sbatch",
+   "vars": {
+    "seed": 60,
+    "scale": "0.50",
+    "run_id": "se_dose50_s60"
+   },
+   "logdir": "se_dose50_s60",
+   "outputs": [
+    "se_dose50_s60"
+   ],
+   "inputs": [],
+   "done_when": [
+    {
+     "exists": "TRAINING_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "file_contains": {
+      "file": "ckpt_snapshots/nearest.json",
+      "pattern": "\"milestone\": 500000,\\s+\"step\": (49\\d{4}|[5-9]\\d{5})"
+     }
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 464
+     }
+    }
+   ]
+  },
+  {
+   "stage": "train",
+   "kind": "se_run",
+   "target": "vast",
+   "run_id": "se_dose75_s64",
+   "cmd": "RUN_ID=se_dose75_s64 TASK=dmc_cheetah_run SEED=64 DISTRACTOR_MOD_KEY= DISTRACTOR_MOD_INDEX=0 DISTRACTOR_MOD_LO=0.0 DISTRACTOR_MOD_HI=1.0 DISTRACTOR_SCALE=0.75 bash scripts/uncfield_se.sbatch",
+   "vars": {
+    "seed": 64,
+    "scale": "0.75",
+    "run_id": "se_dose75_s64"
+   },
+   "logdir": "se_dose75_s64",
+   "outputs": [
+    "se_dose75_s64"
+   ],
+   "inputs": [],
+   "done_when": [
+    {
+     "exists": "TRAINING_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "file_contains": {
+      "file": "ckpt_snapshots/nearest.json",
+      "pattern": "\"milestone\": 500000,\\s+\"step\": (49\\d{4}|[5-9]\\d{5})"
+     }
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 464
+     }
+    }
+   ]
+  },
+  {
+   "stage": "train",
+   "kind": "se_run",
+   "target": "vast",
+   "run_id": "se_dose10_s53",
+   "cmd": "RUN_ID=se_dose10_s53 TASK=dmc_cheetah_run SEED=53 DISTRACTOR_MOD_KEY= DISTRACTOR_MOD_INDEX=0 DISTRACTOR_MOD_LO=0.0 DISTRACTOR_MOD_HI=1.0 DISTRACTOR_SCALE=0.10 bash scripts/uncfield_se.sbatch",
+   "vars": {
+    "seed": 53,
+    "scale": "0.10",
+    "run_id": "se_dose10_s53"
+   },
+   "logdir": "se_dose10_s53",
+   "outputs": [
+    "se_dose10_s53"
+   ],
+   "inputs": [],
+   "done_when": [
+    {
+     "exists": "TRAINING_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "file_contains": {
+      "file": "ckpt_snapshots/nearest.json",
+      "pattern": "\"milestone\": 500000,\\s+\"step\": (49\\d{4}|[5-9]\\d{5})"
+     }
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 464
+     }
+    }
+   ]
+  },
+  {
+   "stage": "train",
+   "kind": "se_run",
+   "target": "vast",
+   "run_id": "se_dose25_s57",
+   "cmd": "RUN_ID=se_dose25_s57 TASK=dmc_cheetah_run SEED=57 DISTRACTOR_MOD_KEY= DISTRACTOR_MOD_INDEX=0 DISTRACTOR_MOD_LO=0.0 DISTRACTOR_MOD_HI=1.0 DISTRACTOR_SCALE=0.25 bash scripts/uncfield_se.sbatch",
+   "vars": {
+    "seed": 57,
+    "scale": "0.25",
+    "run_id": "se_dose25_s57"
+   },
+   "logdir": "se_dose25_s57",
+   "outputs": [
+    "se_dose25_s57"
+   ],
+   "inputs": [],
+   "done_when": [
+    {
+     "exists": "TRAINING_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "file_contains": {
+      "file": "ckpt_snapshots/nearest.json",
+      "pattern": "\"milestone\": 500000,\\s+\"step\": (49\\d{4}|[5-9]\\d{5})"
+     }
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 464
+     }
+    }
+   ]
+  },
+  {
+   "stage": "train",
+   "kind": "se_run",
+   "target": "vast",
+   "run_id": "se_dose50_s61",
+   "cmd": "RUN_ID=se_dose50_s61 TASK=dmc_cheetah_run SEED=61 DISTRACTOR_MOD_KEY= DISTRACTOR_MOD_INDEX=0 DISTRACTOR_MOD_LO=0.0 DISTRACTOR_MOD_HI=1.0 DISTRACTOR_SCALE=0.50 bash scripts/uncfield_se.sbatch",
+   "vars": {
+    "seed": 61,
+    "scale": "0.50",
+    "run_id": "se_dose50_s61"
+   },
+   "logdir": "se_dose50_s61",
+   "outputs": [
+    "se_dose50_s61"
+   ],
+   "inputs": [],
+   "done_when": [
+    {
+     "exists": "TRAINING_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "file_contains": {
+      "file": "ckpt_snapshots/nearest.json",
+      "pattern": "\"milestone\": 500000,\\s+\"step\": (49\\d{4}|[5-9]\\d{5})"
+     }
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 464
+     }
+    }
+   ]
+  },
+  {
+   "stage": "train",
+   "kind": "se_run",
+   "target": "vast",
+   "run_id": "se_dose75_s65",
+   "cmd": "RUN_ID=se_dose75_s65 TASK=dmc_cheetah_run SEED=65 DISTRACTOR_MOD_KEY= DISTRACTOR_MOD_INDEX=0 DISTRACTOR_MOD_LO=0.0 DISTRACTOR_MOD_HI=1.0 DISTRACTOR_SCALE=0.75 bash scripts/uncfield_se.sbatch",
+   "vars": {
+    "seed": 65,
+    "scale": "0.75",
+    "run_id": "se_dose75_s65"
+   },
+   "logdir": "se_dose75_s65",
+   "outputs": [
+    "se_dose75_s65"
+   ],
+   "inputs": [],
+   "done_when": [
+    {
+     "exists": "TRAINING_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "file_contains": {
+      "file": "ckpt_snapshots/nearest.json",
+      "pattern": "\"milestone\": 500000,\\s+\"step\": (49\\d{4}|[5-9]\\d{5})"
+     }
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 464
+     }
+    }
+   ]
+  },
+  {
+   "stage": "train",
+   "kind": "se_run",
+   "target": "vast",
+   "run_id": "se_dose50_s62",
+   "cmd": "RUN_ID=se_dose50_s62 TASK=dmc_cheetah_run SEED=62 DISTRACTOR_MOD_KEY= DISTRACTOR_MOD_INDEX=0 DISTRACTOR_MOD_LO=0.0 DISTRACTOR_MOD_HI=1.0 DISTRACTOR_SCALE=0.50 bash scripts/uncfield_se.sbatch",
+   "vars": {
+    "seed": 62,
+    "scale": "0.50",
+    "run_id": "se_dose50_s62"
+   },
+   "logdir": "se_dose50_s62",
+   "outputs": [
+    "se_dose50_s62"
+   ],
+   "inputs": [],
+   "done_when": [
+    {
+     "exists": "TRAINING_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "file_contains": {
+      "file": "ckpt_snapshots/nearest.json",
+      "pattern": "\"milestone\": 500000,\\s+\"step\": (49\\d{4}|[5-9]\\d{5})"
+     }
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 464
+     }
+    }
+   ]
+  },
+  {
+   "stage": "train",
+   "kind": "se_run",
+   "target": "vast",
+   "run_id": "se_dose75_s66",
+   "cmd": "RUN_ID=se_dose75_s66 TASK=dmc_cheetah_run SEED=66 DISTRACTOR_MOD_KEY= DISTRACTOR_MOD_INDEX=0 DISTRACTOR_MOD_LO=0.0 DISTRACTOR_MOD_HI=1.0 DISTRACTOR_SCALE=0.75 bash scripts/uncfield_se.sbatch",
+   "vars": {
+    "seed": 66,
+    "scale": "0.75",
+    "run_id": "se_dose75_s66"
+   },
+   "logdir": "se_dose75_s66",
+   "outputs": [
+    "se_dose75_s66"
+   ],
+   "inputs": [],
+   "done_when": [
+    {
+     "exists": "TRAINING_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "file_contains": {
+      "file": "ckpt_snapshots/nearest.json",
+      "pattern": "\"milestone\": 500000,\\s+\"step\": (49\\d{4}|[5-9]\\d{5})"
+     }
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 464
+     }
+    }
+   ]
+  },
+  {
+   "stage": "train",
+   "kind": "se_run",
+   "target": "vast",
+   "run_id": "se_dose10_s54",
+   "cmd": "RUN_ID=se_dose10_s54 TASK=dmc_cheetah_run SEED=54 DISTRACTOR_MOD_KEY= DISTRACTOR_MOD_INDEX=0 DISTRACTOR_MOD_LO=0.0 DISTRACTOR_MOD_HI=1.0 DISTRACTOR_SCALE=0.10 bash scripts/uncfield_se.sbatch",
+   "vars": {
+    "seed": 54,
+    "scale": "0.10",
+    "run_id": "se_dose10_s54"
+   },
+   "logdir": "se_dose10_s54",
+   "outputs": [
+    "se_dose10_s54"
+   ],
+   "inputs": [],
+   "done_when": [
+    {
+     "exists": "TRAINING_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "file_contains": {
+      "file": "ckpt_snapshots/nearest.json",
+      "pattern": "\"milestone\": 500000,\\s+\"step\": (49\\d{4}|[5-9]\\d{5})"
+     }
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 464
+     }
+    }
+   ]
+  },
+  {
+   "stage": "train",
+   "kind": "se_run",
+   "target": "vast",
+   "run_id": "se_dose25_s58",
+   "cmd": "RUN_ID=se_dose25_s58 TASK=dmc_cheetah_run SEED=58 DISTRACTOR_MOD_KEY= DISTRACTOR_MOD_INDEX=0 DISTRACTOR_MOD_LO=0.0 DISTRACTOR_MOD_HI=1.0 DISTRACTOR_SCALE=0.25 bash scripts/uncfield_se.sbatch",
+   "vars": {
+    "seed": 58,
+    "scale": "0.25",
+    "run_id": "se_dose25_s58"
+   },
+   "logdir": "se_dose25_s58",
+   "outputs": [
+    "se_dose25_s58"
+   ],
+   "inputs": [],
+   "done_when": [
+    {
+     "exists": "TRAINING_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "file_contains": {
+      "file": "ckpt_snapshots/nearest.json",
+      "pattern": "\"milestone\": 500000,\\s+\"step\": (49\\d{4}|[5-9]\\d{5})"
+     }
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 464
+     }
+    }
+   ]
+  },
+  {
+   "stage": "train",
+   "kind": "se_run",
+   "target": "vast",
+   "run_id": "se_dose50_s63",
+   "cmd": "RUN_ID=se_dose50_s63 TASK=dmc_cheetah_run SEED=63 DISTRACTOR_MOD_KEY= DISTRACTOR_MOD_INDEX=0 DISTRACTOR_MOD_LO=0.0 DISTRACTOR_MOD_HI=1.0 DISTRACTOR_SCALE=0.50 bash scripts/uncfield_se.sbatch",
+   "vars": {
+    "seed": 63,
+    "scale": "0.50",
+    "run_id": "se_dose50_s63"
+   },
+   "logdir": "se_dose50_s63",
+   "outputs": [
+    "se_dose50_s63"
+   ],
+   "inputs": [],
+   "done_when": [
+    {
+     "exists": "TRAINING_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "file_contains": {
+      "file": "ckpt_snapshots/nearest.json",
+      "pattern": "\"milestone\": 500000,\\s+\"step\": (49\\d{4}|[5-9]\\d{5})"
+     }
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 464
+     }
+    }
+   ]
+  },
+  {
+   "stage": "train",
+   "kind": "se_run",
+   "target": "vast",
+   "run_id": "se_dose75_s67",
+   "cmd": "RUN_ID=se_dose75_s67 TASK=dmc_cheetah_run SEED=67 DISTRACTOR_MOD_KEY= DISTRACTOR_MOD_INDEX=0 DISTRACTOR_MOD_LO=0.0 DISTRACTOR_MOD_HI=1.0 DISTRACTOR_SCALE=0.75 bash scripts/uncfield_se.sbatch",
+   "vars": {
+    "seed": 67,
+    "scale": "0.75",
+    "run_id": "se_dose75_s67"
+   },
+   "logdir": "se_dose75_s67",
+   "outputs": [
+    "se_dose75_s67"
+   ],
+   "inputs": [],
+   "done_when": [
+    {
+     "exists": "TRAINING_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "file_contains": {
+      "file": "ckpt_snapshots/nearest.json",
+      "pattern": "\"milestone\": 500000,\\s+\"step\": (49\\d{4}|[5-9]\\d{5})"
+     }
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 464
+     }
+    }
+   ]
+  },
+  {
+   "stage": "train",
+   "kind": "se_run",
+   "target": "vast",
+   "run_id": "se_dose10_s55",
+   "cmd": "RUN_ID=se_dose10_s55 TASK=dmc_cheetah_run SEED=55 DISTRACTOR_MOD_KEY= DISTRACTOR_MOD_INDEX=0 DISTRACTOR_MOD_LO=0.0 DISTRACTOR_MOD_HI=1.0 DISTRACTOR_SCALE=0.10 bash scripts/uncfield_se.sbatch",
+   "vars": {
+    "seed": 55,
+    "scale": "0.10",
+    "run_id": "se_dose10_s55"
+   },
+   "logdir": "se_dose10_s55",
+   "outputs": [
+    "se_dose10_s55"
+   ],
+   "inputs": [],
+   "done_when": [
+    {
+     "exists": "TRAINING_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "file_contains": {
+      "file": "ckpt_snapshots/nearest.json",
+      "pattern": "\"milestone\": 500000,\\s+\"step\": (49\\d{4}|[5-9]\\d{5})"
+     }
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 464
+     }
+    }
+   ]
+  },
+  {
+   "stage": "train",
+   "kind": "se_run",
+   "target": "vast",
+   "run_id": "se_dose25_s59",
+   "cmd": "RUN_ID=se_dose25_s59 TASK=dmc_cheetah_run SEED=59 DISTRACTOR_MOD_KEY= DISTRACTOR_MOD_INDEX=0 DISTRACTOR_MOD_LO=0.0 DISTRACTOR_MOD_HI=1.0 DISTRACTOR_SCALE=0.25 bash scripts/uncfield_se.sbatch",
+   "vars": {
+    "seed": 59,
+    "scale": "0.25",
+    "run_id": "se_dose25_s59"
+   },
+   "logdir": "se_dose25_s59",
+   "outputs": [
+    "se_dose25_s59"
+   ],
+   "inputs": [],
+   "done_when": [
+    {
+     "exists": "TRAINING_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "file_contains": {
+      "file": "ckpt_snapshots/nearest.json",
+      "pattern": "\"milestone\": 500000,\\s+\"step\": (49\\d{4}|[5-9]\\d{5})"
+     }
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 464
+     }
+    }
+   ]
+  }
+ ]
+}
