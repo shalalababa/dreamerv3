@@ -135,6 +135,54 @@ TRAIN_PID=$!
   --stop_file "$LOGDIR/TRAINING_DONE" --poll_seconds 60 &
 WATCH_PID=$!
 
+# --- BIND-CHECK (incident 21 Aug: the NOBOOT wave's DISAG_BOOTSTRAP=False
+# was silently unread by a STALE producer checkout on the instances — 4 runs
+# / ~25 GPU-h produced the bootstrapped arm under noboot run_ids; the
+# reader's config pin caught it only post-hoc). Assert that every
+# wave-critical env override actually bound in the composed config, within
+# minutes of launch; kill the run on any mismatch. NOTE this guard rides in
+# the producer, so it cannot protect against a checkout that predates it —
+# the wave preflight's repo-SHA + override-read content check is the
+# stale-checkout defense.
+for _i in $(seq 1 90); do [ -f "$LOGDIR/config.yaml" ] && break; sleep 10; done
+if [ ! -f "$LOGDIR/config.yaml" ]; then
+  echo "BIND-CHECK: config.yaml never appeared"; kill "$TRAIN_PID" "$WATCH_PID" 2>/dev/null; exit 90
+fi
+if ! "$PYTHON" - "$LOGDIR/config.yaml" <<'PY'
+import os, sys, yaml
+cfg = yaml.safe_load(open(sys.argv[1]))
+env = os.environ
+def want(path, val):
+    node = cfg
+    for p in path.split('.'):
+        try:
+            node = node[p]
+        except (KeyError, TypeError):
+            raise AssertionError(
+                f"BIND-CHECK FAIL {path}: key missing from the "
+                f"composed config — stale configs.yaml/producer "
+                f"checkout?")
+    assert node == val, (
+        f"BIND-CHECK FAIL {path}: config={node!r} != wave={val!r}")
+want('agent.expl.disag_bootstrap',
+     env.get('DISAG_BOOTSTRAP', 'True') == 'True')
+want('distractor.dim', int(env.get('DISTRACTOR_DIM', '8')))
+want('distractor.scale', float(env.get('DISTRACTOR_SCALE', '1.0')))
+want('distractor.mod_key', env.get('DISTRACTOR_MOD_KEY', ''))
+want('distractor.gate_key', env.get('DISTRACTOR_GATE_KEY', ''))
+want('planted.gate_key', env.get('GATE_KEY', ''))
+want('agent.expl.mode',
+     {'expl_p2e': 'p2e', 'expl_apt': 'apt'}[
+         env.get('EXPL_CONFIG', 'expl_p2e')])
+print('BIND-CHECK PASS: all wave-critical overrides bound')
+PY
+then
+  echo "BIND-CHECK FAILED — killing the run before it burns GPU-hours"
+  kill "$TRAIN_PID" "$WATCH_PID" 2>/dev/null
+  exit 90
+fi
+# --- end BIND-CHECK
+
 TRAIN_RC=0; wait "$TRAIN_PID" || TRAIN_RC=$?
 touch "$LOGDIR/TRAINING_DONE"
 wait "$WATCH_PID" || true
