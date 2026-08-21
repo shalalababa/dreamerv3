@@ -66,7 +66,7 @@ def count_lines(path: str) -> int:
     return 0
 
 
-def walk(d: str) -> tuple[int, int, float]:
+def walk(d: str, shallow: bool = False) -> tuple[int, int, float]:
   """(file count, total bytes, newest mtime). Symlinks counted, never followed.
 
   The newest mtime is what tells a caller the subtree is still being written.
@@ -76,6 +76,8 @@ def walk(d: str) -> tuple[int, int, float]:
   n = size = 0
   newest = 0.0
   for root, dirs, files in os.walk(d, followlinks=False):
+    if shallow:
+      dirs[:] = []
     for f in files:
       p = os.path.join(root, f)
       n += 1
@@ -96,46 +98,68 @@ def walk(d: str) -> tuple[int, int, float]:
 # re-run, identical in size, opposite in `disag_bootstrap`. Hashing ~10 MB of
 # configs across a 591 GB tree costs 0.03 s; hashing the tree costs 28 min and
 # would catch nothing this does not.
-IDENTITY_FILES = ("config.yaml", "config.json")
+IDENTITY_FILES = ("config.yaml", "config.json", "manifest.json", "MANIFEST.sha256")
+
+WITNESS_ERROR = "ERROR"
 
 
-def witness_sha(d: str) -> str:
-  """sha256 over the run's identity files, or "" when it has none.
+def witness(d: str) -> dict:
+  """{filename: sha256} over the run's identity files.
 
-  Empty is NOT a match: a caller must treat an absent witness as "cannot
-  compare", never as "same". Silence is the failure mode this whole file
-  exists to avoid."""
-  h = hashlib.sha256()
-  found = False
+  A MAP, not one hash over the concatenation: RCC is allowed to hold MORE than
+  an instance (a bundle may add files), so the comparison must be "same hash on
+  every file both sides have, and RCC is not missing any" -- concatenating made
+  an extra config.json on one side read as a hard mismatch and would have
+  trained the operator to type the unsafe override past real ones.
+
+  An unreadable file yields WITNESS_ERROR for that name, never "": in a safety
+  gate "cannot compare" and "I/O failed" must not be the same value."""
+  out = {}
   for nm in IDENTITY_FILES:
     p = os.path.join(d, nm)
     if not os.path.isfile(p):
       continue
-    found = True
-    h.update(nm.encode() + b"\0")
+    h = hashlib.sha256()
     try:
       with open(p, "rb") as fh:
         for chunk in iter(lambda: fh.read(1 << 20), b""):
           h.update(chunk)
+      out[nm] = h.hexdigest()
     except OSError:
-      return ""
-  return h.hexdigest() if found else ""
+      out[nm] = WITNESS_ERROR
+  return out
 
 
 # A run dir carries its own producer output. An entry with none of these is a
 # CONTAINER holding other runs (e.g. `tm2r3/<run_id>/`), and its name says
 # nothing about its contents -- two directories can share a name on two hosts
 # and hold entirely different data.
-RUN_MARKS = ("scores.jsonl", "config.yaml", "config.json", "metrics.jsonl", "ckpt")
+# What a PRODUCER leaves behind. `config.yaml` alone is deliberately NOT here:
+# a wave-level config sitting in a container would otherwise make the container
+# read as a run, its children would never be compared, and two unrelated trees
+# sharing that generator-written config would compare as COVERED -- the 21 Aug
+# incident one directory deeper, with the witness actively confirming it.
+PRODUCER_MARKS = ("scores.jsonl", "metrics.jsonl", "ckpt")
+
+
+def _looks_like_run(d: str) -> bool:
+  if any(os.path.exists(os.path.join(d, m)) for m in PRODUCER_MARKS):
+    return True
+  return any(os.path.isfile(os.path.join(d, m)) for m in IDENTITY_FILES)
 
 
 def is_container(d: str) -> bool:
-  if any(os.path.exists(os.path.join(d, m)) for m in RUN_MARKS):
-    return False
+  """Structure decides, not marks: a dir holding run-shaped children is a
+  namespace even if it also carries a file that looks like a mark."""
   try:
-    return any(os.path.isdir(os.path.join(d, e)) for e in os.listdir(d))
+    kids = [e for e in os.listdir(d) if os.path.isdir(os.path.join(d, e))]
   except OSError:
     return False
+  if any(_looks_like_run(os.path.join(d, k)) for k in kids):
+    return True
+  if any(os.path.exists(os.path.join(d, m)) for m in PRODUCER_MARKS):
+    return False
+  return bool(kids)
 
 
 def main() -> None:
@@ -175,6 +199,12 @@ def main() -> None:
         if kids:
           for k in kids:
             yield f"{nm}/{k}", os.path.join(pp, k)
+          # Files sitting DIRECTLY in the container (a manifest beside its
+          # sibling run dirs) belong to nobody once the kids are keyed
+          # separately, so they would be neither compared nor missable. Keep
+          # the container as its own shallow entry for exactly those bytes.
+          if any(os.path.isfile(os.path.join(pp, e)) for e in os.listdir(pp)):
+            yield nm, pp, True          # shallow=True
           continue
       yield nm, pp
   # --only is a filter, never a source: a requested name that is absent stays
@@ -182,12 +212,14 @@ def main() -> None:
   # rather than silently treating it as covered.
   want = set(a.only) if a.only is not None else None
   out = {}
-  for name, p in entries_under(root):
+  for item in entries_under(root):
+    shallow = len(item) == 3
+    name, p = item[0], item[1]
     # --only may name either a container or a specific run; accept both so a
     # caller that knows only the top-level name still gets its children.
     if want is not None and not (name in want or name.split("/", 1)[0] in want):
       continue
-    n_files, n_bytes, newest = walk(p)
+    n_files, n_bytes, newest = walk(p, shallow=shallow)
     out[name] = {
         "ckpt_step": ckpt_step(p),
         "n_scores": count_lines(os.path.join(p, "scores.jsonl")),
@@ -197,9 +229,13 @@ def main() -> None:
         "bytes": n_bytes,
         "newest_mtime": newest,
         "is_container": is_container(p),
-        "witness_sha": witness_sha(p),
+        "witness": witness(p),
+        "shallow": shallow,
     }
-  print(json.dumps({"runroot": root, "now": time.time(), "entries": out}))
+  # Schema version: a consumer given an older inventory would silently skip
+  # the container / witness / freshness guards and still print SAFE.
+  print(json.dumps({"schema": 3, "runroot": root, "now": time.time(),
+                    "entries": out}))
 
 
 if __name__ == "__main__":

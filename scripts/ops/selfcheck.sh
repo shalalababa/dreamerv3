@@ -750,31 +750,35 @@ import json, os, subprocess, sys, tempfile, time
 now = time.time()
 mk = lambda **kw: dict({"ckpt_step":0,"n_scores":0,"n_files":1,"bytes":1,
                         "newest_mtime":now-99999,"is_container":False,
-                        "witness_sha":""}, **kw)
-inst = {"now": now, "entries": {
-    "same":    mk(witness_sha="a"*64),
-    "differs": mk(witness_sha="a"*64),          # same counters, other content
+                        "witness":{},"shallow":False}, **kw)
+W = lambda h: {"config.yaml": h*64}
+inst = {"schema":3, "now": now, "entries": {
+    "same":    mk(witness=W("a")),
+    "differs": mk(witness=W("a")),              # same counters, other content
     "nowit":   mk(),
-    "live":    mk(newest_mtime=now),            # written just now
-    "box":     mk(is_container=True)}}
-rcc = {"entries": {
-    "same":    mk(witness_sha="a"*64),
-    "differs": mk(witness_sha="b"*64),
+    "live":    mk(newest_mtime=now, witness=W("a")),
+    "box":     mk(is_container=True, witness=W("a")),
+    "wave/run": mk(witness=W("d"))}}            # nested key, run_id passed alone
+rcc = {"schema":3, "entries": {
+    "same":    mk(witness=W("a")),
+    "differs": mk(witness=W("b")),
     "nowit":   mk(),
-    "live":    mk(witness_sha="a"*64),
-    "box":     mk(witness_sha="a"*64)}}
+    "live":    mk(witness=W("a")),
+    "box":     mk(witness=W("a")),
+    "wave/run": mk(witness=W("d"))}}
 d = tempfile.mkdtemp(); a=os.path.join(d,"i"); b=os.path.join(d,"r"); m=os.path.join(d,"m")
 json.dump(inst, open(a,"w")); json.dump(rcc, open(b,"w"))
 json.dump({k:v["newest_mtime"] for k,v in inst["entries"].items()}, open(m,"w"))
 out = subprocess.run([sys.executable, "scripts/ops/free_space.py", "--inst-json", a,
-                      "--rcc-json", b, "--mtime-json", m],
+                      "--rcc-json", b, "--running", "run"],
                      capture_output=True, text=True).stdout
 safe = out.split("HELD")[0]
 checks = [("only the true match is reclaimable", "same" in safe),
           ("same counters + different config is refused", "differs" not in safe),
           ("no-witness dir is not called safe", "nowit" not in safe),
           ("freshly-written dir is refused", "live" not in safe),
-          ("container is refused", "box" not in safe)]
+          ("container is refused", "box" not in safe),
+          ("--running matches a nested key's run-id tail", "wave/run" not in safe)]
 for name, good in checks:
     print(("  PASS " if good else "  FAIL ") + name)
 sys.exit(0 if all(g for _, g in checks) else 1)
@@ -800,7 +804,7 @@ buf2 = io.StringIO()
 with contextlib.redirect_stdout(buf2):
     inv.main()
 e2 = json.loads(buf2.getvalue())["entries"]
-ok2 = e2["box/run1"]["witness_sha"] != e["box/run1"]["witness_sha"]
+ok2 = e2["box/run1"]["witness"] != e["box/run1"]["witness"]
 print("  PASS container is keyed per run, not by its own name" if ok1 else
       "  FAIL container not descended")
 print("  PASS witness sha tracks config content" if ok2 else

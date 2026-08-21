@@ -118,7 +118,10 @@ INV="$DV3OPS_ROOT/scripts/ops/runroot_inventory.py"
 inst_json="$(dv3_ssh_dv3 "$N" "python3 - \"\$RUNROOT\" <<'PYEOF'
 $(cat "$INV")
 PYEOF" 2>/dev/null | tail -1)"
-case "$inst_json" in '{'*) ;; *) die "could not inventory instance $N (got: ${inst_json:0:120})" ;; esac
+# '{'* is NOT enough: runroot_inventory.py emits {"error": ...} for a bad
+# runroot, which starts with '{' and sails through. Require the payload we
+# actually consume.
+case "$inst_json" in *'"entries"'*) ;; *) die "could not inventory instance $N (got: ${inst_json:0:160})" ;; esac
 
 # Ask RCC only about the names THIS INSTANCE holds. The question is "is what
 # lives here also safe there?", so RCC's other ~2260 dirs are irrelevant --
@@ -134,7 +137,7 @@ print(" ".join(shlex.quote(k) for k in sorted(json.load(sys.stdin)["entries"])))
 rcc_json="$(ssh "${RCC_SSH[@]}" "$RCC_HOST" "python3 - '$RCC_RUNROOT' --only $INST_NAMES <<'PYEOF'
 $(cat "$INV")
 PYEOF" 2>/dev/null | tail -1)"
-case "$rcc_json" in '{'*) ;; *) die "could not inventory RCC at $RCC_RUNROOT.
+case "$rcc_json" in *'"entries"'*) ;; *) die "could not inventory RCC at $RCC_RUNROOT (got: ${rcc_json:0:160}).
        Is the shared connection up?  dv3ops rcc-connect" ;; esac
 
 printf '%s' "$inst_json" > /tmp/dv3_inv_inst_$$.json
@@ -146,32 +149,36 @@ import json, sys
 inst = json.load(open(sys.argv[1]))["entries"]
 rcc  = json.load(open(sys.argv[2]))["entries"]
 FIELDS = ("ckpt_step", "n_scores", "n_files", "bytes")
-covered, missing, short, differ, unverifiable = [], [], [], [], []
+covered, missing, short, differ, unverifiable, boxes = [], [], [], [], [], []
 for name, a in sorted(inst.items()):
     b = rcc.get(name)
     if b is None:
         missing.append(name); continue
+    # A container is a NAMESPACE, not a unit. Comparing one against a same-named
+    # namespace on the other host is exactly how 16 live runs were deleted on
+    # 21 Aug; the descent normally prevents it, and this refuses whatever the
+    # descent could not flatten (deeper nesting, unreadable dirs).
+    if a.get("is_container") or b.get("is_container"):
+        boxes.append((name, "container -- compare its runs, not its name")); continue
     bad = [f for f in FIELDS if b.get(f, 0) < a.get(f, 0)]
     if bad:
         short.append((name, ", ".join(f"{f} {a.get(f,0)}>{b.get(f,0)}" for f in bad)))
         continue
-    # Counters say RCC holds at least as much. That does not say it holds the
-    # SAME run: two runs of one shape under one name (the spoiled NOBOOT arm
-    # and its re-run) are identical in size and opposite in config. Only
-    # content separates them. An absent witness means CANNOT COMPARE and is
-    # reported, never silently treated as a match.
-    wa, wb = a.get("witness_sha", ""), b.get("witness_sha", "")
-    if wa and wb:
-        (covered if wa == wb else differ).append(
-            (name, "" if wa == wb else
-             "config differs: inst %s vs rcc %s" % (wa[:12], wb[:12])))
+    wa, wb = a.get("witness", {}) or {}, b.get("witness", {}) or {}
+    if "ERROR" in wa.values() or "ERROR" in wb.values():
+        differ.append((name, "identity file unreadable -- cannot verify")); continue
+    shared = set(wa) & set(wb)
+    if not wa or not wb or not shared:
+        unverifiable.append((name, "no identity file to compare"))
+    elif any(wa[k] != wb[k] for k in shared):
+        k = next(k for k in sorted(shared) if wa[k] != wb[k])
+        differ.append((name, f"{k} differs: inst {wa[k][:12]} vs rcc {wb[k][:12]}"))
+    elif set(wa) - set(wb):
+        # RCC is allowed to hold MORE, never less.
+        differ.append((name, "RCC missing identity file(s): "
+                             + ",".join(sorted(set(wa) - set(wb)))))
     else:
-        # 146 of 2291 real dirs carry no config (analysis outputs, crashed
-        # adapts). Absent is NOT a match, but it is also not evidence of a
-        # mismatch, so it gets its own verdict: counters still cover it, and
-        # the operator decides. Collapsing it into DIFFERENT would block 6% of
-        # the tree on dirs that were never at risk.
-        unverifiable.append((name, "no config on %s" % ("instance" if not wa else "RCC")))
+        covered.append((name, ""))
 print(json.dumps({
     "n_inst": len(inst),
     "covered": [c[0] for c in covered],
@@ -179,6 +186,7 @@ print(json.dumps({
     "short": short,
     "differ": differ,
     "unverifiable": unverifiable,
+    "boxes": boxes,
 }))
 PY
 )"
@@ -192,6 +200,8 @@ for n, why in r["short"]:
     print(f"  SHORT ON RCC   {n}   ({why})")
 for n, why in r.get("differ", []):
     print(f"  DIFFERENT      {n}   ({why})")
+for n, why in r.get("boxes", []):
+    print(f"  CONTAINER      {n}   ({why})")
 for n, why in r.get("unverifiable", []):
     print(f"  UNVERIFIABLE   {n}   ({why}; counters cover it)")
 PY
@@ -207,7 +217,13 @@ if [ "$unsafe" -gt 0 ]; then
     die "refusing to destroy: unarchived data (standing rule, 2026-08-08)"
   fi
 else
-  echo "  ALL CLEAR: every run dir on instance $N is on RCC with >= counters."
+  ncov="$(python3 -c "import json,sys;r=json.loads(sys.argv[1]);print(len(r['covered']))" "$report" 2>/dev/null || echo 0)"
+  ninst="$(python3 -c "import json,sys;r=json.loads(sys.argv[1]);print(r['n_inst'])" "$report" 2>/dev/null || echo -1)"
+  if [ "$ncov" = "$ninst" ]; then
+    echo "  ALL CLEAR: all $ncov run dir(s) on instance $N are on RCC, counters and identity verified."
+  else
+    echo "  PROCEEDING: $ncov/$ninst verified; the rest were accepted by override."
+  fi
 fi
 
 # -- report-only unless --yes ----------------------------------------------

@@ -51,19 +51,39 @@ def main():
   ap.add_argument("--fresh-min", type=int, default=120)
   ap.add_argument("--now", type=float, default=None, help="instance clock, epoch")
   a = ap.parse_args()
-  inst = json.load(open(a.inst_json))["entries"]
-  rcc = json.load(open(a.rcc_json))["entries"]
+  inst_doc = json.load(open(a.inst_json))
+  rcc_doc = json.load(open(a.rcc_json))
+  for label, doc in (("instance", inst_doc), ("rcc", rcc_doc)):
+    if doc.get("schema", 0) < 3:
+      raise SystemExit(
+          f"REFUSE: {label} inventory is schema {doc.get('schema', 0)}, need >= 3. "
+          "An older inventory silently disables the container, witness and "
+          "freshness guards while still printing SAFE. Regenerate it.")
+  inst = inst_doc["entries"]
+  rcc = rcc_doc["entries"]
+  # Nested keys are "<container>/<run_id>" but the only string an operator has
+  # is the run_id. Matching only the whole key is the SAME defect this file's
+  # header describes -- it survived the granularity fix and had to be found by
+  # review, not by the guard itself.
   running = set(a.running)
+  def is_running(key: str) -> bool:
+    return key in running or key.rsplit("/", 1)[-1] in running
 
   import time
-  mt = json.load(open(a.mtime_json)) if a.mtime_json else {}
-  now = a.now if a.now is not None else time.time()
+  # Freshness is the guard that does not depend on names lining up, so it is
+  # ON by default, sourced from the inventory itself rather than an optional
+  # side file. And it uses the INSTANCE clock: comparing a remote mtime to the
+  # local wall clock reports a file written seconds ago as hours old.
+  mt = json.load(open(a.mtime_json)) if a.mtime_json else {
+      k: v.get("newest_mtime", 0) for k, v in inst.items()}
+  inst_now = json.load(open(a.inst_json)).get("now")
+  now = a.now if a.now is not None else (inst_now or time.time())
 
   safe, held, risky = [], [], []
   for name, x in sorted(inst.items()):
     y = rcc.get(name)
     age_min = (now - mt[name]) / 60 if name in mt else None
-    if name in running:
+    if is_running(name):
       held.append((name, x["bytes"], "RUNNING -- counters still moving"))
     elif x.get("is_container"):
       held.append((name, x["bytes"],
@@ -77,14 +97,21 @@ def main():
       risky.append((name, x["bytes"], "NOT on RCC"))
     else:
       short = [f for f in FIELDS if y.get(f, -1) < x.get(f, 0)]
-      wa, wb = x.get("witness_sha", ""), y.get("witness_sha", "")
+      wa, wb = x.get("witness", {}) or {}, y.get("witness", {}) or {}
+      shared = set(wa) & set(wb)
       if short:
         risky.append((name, x["bytes"], "SHORT on RCC: " + ",".join(short)))
-      elif wa and wb and wa != wb:
+      elif "ERROR" in wa.values() or "ERROR" in wb.values():
+        risky.append((name, x["bytes"], "identity file unreadable -- cannot verify"))
+      elif shared and any(wa[k] != wb[k] for k in shared):
+        k = next(k for k in sorted(shared) if wa[k] != wb[k])
         risky.append((name, x["bytes"],
-                      f"COVERED BUT DIFFERENT: config {wa[:12]} vs rcc {wb[:12]} "
+                      f"COVERED BUT DIFFERENT: {k} {wa[k][:12]} vs rcc {wb[k][:12]} "
                       "-- same name, same size, not the same run"))
-      elif not wa or not wb:
+      elif shared and (set(wa) - set(wb)):
+        risky.append((name, x["bytes"], "RCC missing identity file(s): "
+                                        + ",".join(sorted(set(wa) - set(wb)))))
+      elif not shared:
         # No config to compare (analysis outputs, crashed adapts: ~6% of the
         # tree). Counters cover it; say so rather than implying content proof.
         held.append((name, x["bytes"],
