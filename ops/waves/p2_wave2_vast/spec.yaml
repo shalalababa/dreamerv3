@@ -1,0 +1,128 @@
+# P2 Wave 2 -- fresh-cohort TM2 training ON INSTANCES.
+# prereg/PREREG_p2_wave2_freshcohort_20260821.md (frozen 74bfeb7a).
+#
+# WHY NOT RCC: TD-MPC2 has never run on RCC. There is no tdmpc2 conda env and
+# no pinned checkout there -- `/scratch/midway3/$USER/conda_envs/` holds only
+# `dreamerv3`. On 21 Aug all 32 cells were submitted to Slurm and every one
+# died in 1-4 s with `EnvironmentLocationNotFound`. TD-MPC2 lives on instances
+# (ops/waves/tm2_bridge_fit2 uses /workspace/conda_envs/tdmpc2), and RCC is for
+# CPU / light-GPU / specific-reason work.
+#
+# The producer is invoked DIRECTLY rather than through scripts/tm2r3.sbatch,
+# exactly as tm2_bridge_fit2 does: that sbatch sources scripts/env.sh and
+# activates a conda env by RCC path, none of which applies here. Everything the
+# sbatch contributes is preserved explicitly -- the pinned TDMPC2_ROOT, the
+# separate interpreter, and the same --steps/--early_steps the W1 cohort used.
+# The seed guard it also carries is not needed here because the run list below
+# IS the registered grid; the guard existed to stop a hand-typed seed.
+#
+# ONE INSTANCE: this is a replication of a 32-cluster cohort, and the 1-Aug
+# cross-site rule says a fresh cohort should not straddle hosts when the thing
+# being tested is whether the original number reproduces.
+#
+# per_gpu is deliberately 1 until MEASURED. tm2_bridge_fit2 runs TD-MPC2 at
+# per_gpu 2 ("measured GPU utilisation for this kind leaves room"), but that
+# was the OFFLINE recon fit, not this online trainer with an MPPI planner in
+# the loop -- a different footprint. Measure a live cell with nvidia-smi and
+# raise this to 2 if it fits; do not assume the bridge number transfers.
+#
+# DISK is not a constraint here: the r3_local cohort measured ~178 MB/run
+# (5.7 G for 32), unlike the 4.6 G DreamerV3 SE runs.
+
+wave_id: p2_wave2_vast
+paper: paper2
+prereg: prereg/PREREG_p2_wave2_freshcohort_20260821.md
+notes: >-
+  32 fresh TM2 trainings, {cup,finger} x {e1,e4} x seeds 59-66, 100k steps
+  with an early snapshot at 25k. ONE INSTANCE. Requires the tdmpc2 env at
+  /workspace/conda_envs/tdmpc2 and the pinned checkout at /workspace/tdmpc2.
+
+defaults:
+  target: vast
+
+kinds:
+  tm2r3_train: {per_gpu: 1}
+
+stages:
+
+  - name: train
+    kind: tm2r3_train
+    on_failure: continue
+    # Explicit runs, not `expand`: the trainer needs --task, which is a
+    # FUNCTION of dom (cup -> dmc_cup_catch, finger -> dmc_finger_turn_hard)
+    # and cannot be produced by a cartesian expansion.
+    #
+    # ORDER IS LOAD-BEARING. Lane i takes entries i, i+4, i+8... so a
+    # seed-major listing would hand lane 0 every cup/e1 cell and lane 3 every
+    # finger/e4 cell -- mapping CONDITION onto LANE, i.e. onto GPU. The combo
+    # list is rotated by one position per seed, so each lane cycles through
+    # all four dom x dose conditions across its eight rounds.
+    runs:
+      # -- round 1 (lanes 0-3), combos rotated by 0 --
+      - {run_id: tm2r3_cup_e1_seed59, dom: cup, dose: e1, task: dmc_cup_catch, seed: 59}
+      - {run_id: tm2r3_cup_e4_seed59, dom: cup, dose: e4, task: dmc_cup_catch, seed: 59}
+      - {run_id: tm2r3_finger_e1_seed59, dom: finger, dose: e1, task: dmc_finger_turn_hard, seed: 59}
+      - {run_id: tm2r3_finger_e4_seed59, dom: finger, dose: e4, task: dmc_finger_turn_hard, seed: 59}
+      # -- round 2 (lanes 0-3), combos rotated by 1 --
+      - {run_id: tm2r3_cup_e4_seed60, dom: cup, dose: e4, task: dmc_cup_catch, seed: 60}
+      - {run_id: tm2r3_finger_e1_seed60, dom: finger, dose: e1, task: dmc_finger_turn_hard, seed: 60}
+      - {run_id: tm2r3_finger_e4_seed60, dom: finger, dose: e4, task: dmc_finger_turn_hard, seed: 60}
+      - {run_id: tm2r3_cup_e1_seed60, dom: cup, dose: e1, task: dmc_cup_catch, seed: 60}
+      # -- round 3 (lanes 0-3), combos rotated by 2 --
+      - {run_id: tm2r3_finger_e1_seed61, dom: finger, dose: e1, task: dmc_finger_turn_hard, seed: 61}
+      - {run_id: tm2r3_finger_e4_seed61, dom: finger, dose: e4, task: dmc_finger_turn_hard, seed: 61}
+      - {run_id: tm2r3_cup_e1_seed61, dom: cup, dose: e1, task: dmc_cup_catch, seed: 61}
+      - {run_id: tm2r3_cup_e4_seed61, dom: cup, dose: e4, task: dmc_cup_catch, seed: 61}
+      # -- round 4 (lanes 0-3), combos rotated by 3 --
+      - {run_id: tm2r3_finger_e4_seed62, dom: finger, dose: e4, task: dmc_finger_turn_hard, seed: 62}
+      - {run_id: tm2r3_cup_e1_seed62, dom: cup, dose: e1, task: dmc_cup_catch, seed: 62}
+      - {run_id: tm2r3_cup_e4_seed62, dom: cup, dose: e4, task: dmc_cup_catch, seed: 62}
+      - {run_id: tm2r3_finger_e1_seed62, dom: finger, dose: e1, task: dmc_finger_turn_hard, seed: 62}
+      # -- round 5 (lanes 0-3), combos rotated by 4 --
+      - {run_id: tm2r3_cup_e1_seed63, dom: cup, dose: e1, task: dmc_cup_catch, seed: 63}
+      - {run_id: tm2r3_cup_e4_seed63, dom: cup, dose: e4, task: dmc_cup_catch, seed: 63}
+      - {run_id: tm2r3_finger_e1_seed63, dom: finger, dose: e1, task: dmc_finger_turn_hard, seed: 63}
+      - {run_id: tm2r3_finger_e4_seed63, dom: finger, dose: e4, task: dmc_finger_turn_hard, seed: 63}
+      # -- round 6 (lanes 0-3), combos rotated by 5 --
+      - {run_id: tm2r3_cup_e4_seed64, dom: cup, dose: e4, task: dmc_cup_catch, seed: 64}
+      - {run_id: tm2r3_finger_e1_seed64, dom: finger, dose: e1, task: dmc_finger_turn_hard, seed: 64}
+      - {run_id: tm2r3_finger_e4_seed64, dom: finger, dose: e4, task: dmc_finger_turn_hard, seed: 64}
+      - {run_id: tm2r3_cup_e1_seed64, dom: cup, dose: e1, task: dmc_cup_catch, seed: 64}
+      # -- round 7 (lanes 0-3), combos rotated by 6 --
+      - {run_id: tm2r3_finger_e1_seed65, dom: finger, dose: e1, task: dmc_finger_turn_hard, seed: 65}
+      - {run_id: tm2r3_finger_e4_seed65, dom: finger, dose: e4, task: dmc_finger_turn_hard, seed: 65}
+      - {run_id: tm2r3_cup_e1_seed65, dom: cup, dose: e1, task: dmc_cup_catch, seed: 65}
+      - {run_id: tm2r3_cup_e4_seed65, dom: cup, dose: e4, task: dmc_cup_catch, seed: 65}
+      # -- round 8 (lanes 0-3), combos rotated by 7 --
+      - {run_id: tm2r3_finger_e4_seed66, dom: finger, dose: e4, task: dmc_finger_turn_hard, seed: 66}
+      - {run_id: tm2r3_cup_e1_seed66, dom: cup, dose: e1, task: dmc_cup_catch, seed: 66}
+      - {run_id: tm2r3_cup_e4_seed66, dom: cup, dose: e4, task: dmc_cup_catch, seed: 66}
+      - {run_id: tm2r3_finger_e1_seed66, dom: finger, dose: e1, task: dmc_finger_turn_hard, seed: 66}
+    logdir: "tm2r3/tm2r3_${dom}_${dose}_seed${seed}"
+    cmd: >-
+      TDMPC2_ROOT=/workspace/tdmpc2/tdmpc2
+      /workspace/conda_envs/tdmpc2/bin/python -m probing.tdmpc2_r3_train
+      --tdmpc2_root /workspace/tdmpc2/tdmpc2
+      --logdir "$RUNROOT/tm2r3/tm2r3_${dom}_${dose}_seed${seed}"
+      --task ${task} --dose ${dose} --seed ${seed}
+      --steps 100000 --early_steps 25000
+    outputs:
+      - "tm2r3/tm2r3_${dom}_${dose}_seed${seed}"
+    # REALIZED COUNTERS, not the marker. TM2R3_TRAIN_DONE is written by the
+    # trainer and is not by itself evidence. ckpt_late.STEP carries the
+    # realized step, and it lands BELOW the 100000 target because snapshots
+    # happen on episode boundaries every 1000 steps -- the existing r3_local
+    # cohort realized 99392 late / 24656 early. A gate demanding exactly
+    # 100000 would mark every correct run incomplete.
+    done_when:
+      - exists: config.json
+      - exists: ckpt_early.pt
+      - exists: ckpt_late.pt
+      - file_contains: {file: ckpt_late.STEP, pattern: '^(9[0-9]{4}|[1-9][0-9]{5,})'}
+      - file_contains: {file: ckpt_early.STEP, pattern: '^(2[4-9][0-9]{3}|[3-9][0-9]{4}|[1-9][0-9]{5,})'}
+
+bundle:
+  prefix: p2_wave2_vast
+  include_stages: [train]
+  cloud_logs:
+    - "tm2r3_*_seed*.out"
