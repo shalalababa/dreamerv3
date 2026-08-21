@@ -26,13 +26,9 @@ rsync -az --checksum --info=progress2 \
   -e "ssh -p $(dv3_port "$N") ${DV3_SSH_OPTS[*]}" \
   "$HERE/" "root@$(dv3_ip "$N"):$REMOTE/"
 
-echo "-- stage train lane 0: 1 task(s) --"
+echo "-- stage train lane 0: 2 task(s) --"
 dv3_ssh_dv3 "$N" "DV3_ABORT_ON_FAIL=0 dv3_queue_or_add \"$REMOTE/lane_train_0.cmds\" 0"
-echo "-- stage train lane 1: 1 task(s) --"
+echo "-- stage train lane 1: 2 task(s) --"
 dv3_ssh_dv3 "$N" "DV3_ABORT_ON_FAIL=0 dv3_queue_or_add \"$REMOTE/lane_train_1.cmds\" 1"
-echo "-- stage train lane 2: 1 task(s) --"
-dv3_ssh_dv3 "$N" "DV3_ABORT_ON_FAIL=0 dv3_queue_or_add \"$REMOTE/lane_train_2.cmds\" 2"
-echo "-- stage train lane 3: 1 task(s) --"
-dv3_ssh_dv3 "$N" "DV3_ABORT_ON_FAIL=0 dv3_queue_or_add \"$REMOTE/lane_train_3.cmds\" 3"
 
 echo "submitted. verify with: dv3ops status $N"

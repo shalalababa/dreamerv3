@@ -26,7 +26,9 @@ import argparse
 import json
 import os
 import shlex
+import re
 import stat
+import subprocess
 import sys
 from pathlib import Path
 
@@ -305,11 +307,36 @@ echo "submitted=$submitted skipped=$skipped left=$left"
   return "\n".join(lines) + "\n"
 
 
+def _producer_vars(cmd: str) -> tuple[str, set[str]]:
+  """(repo-relative producer, variables the command sets) for one lane command.
+
+  Only shell producers are returned: a `python -m pkg.mod` invocation has no
+  file to grep for `$VAR`, and guessing one would turn a real gate into a
+  guess."""
+  m = re.search(r"\bbash\s+(scripts/[\w./-]+)", cmd)
+  if not m:
+    return "", set()
+  names = set(re.findall(r"(?:^|[;&\s(])([A-Z][A-Z0-9_]{2,})=", cmd))
+  # Set by the queue wrapper, not by the wave; the producer need not read them.
+  names -= {"DV3_TASK_NAME", "DV3_ABORT_ON_FAIL", "PYTHONPATH", "REPO", "RUNROOT"}
+  return m.group(1), names
+
+
 def gen(spec: wavespec.WaveSpec, out: Path, lanes: list[str]) -> dict:
   out.mkdir(parents=True, exist_ok=True)
   hdr = HEADER.format(spec=spec.path)
   all_runs = spec.runs()
   summary: dict = {"wave_id": spec.wave_id, "stages": {}, "lane_files": []}
+  producer_vars: dict[str, set[str]] = {}
+  try:
+    repo_sha = subprocess.run(
+        ["git", "-C", str(_repo_root()), "rev-parse", "--short", "HEAD"],
+        capture_output=True, text=True, timeout=20).stdout.strip()
+  except Exception as e:
+    print(f"WARN: could not read repo HEAD for the generation stamp: {e}",
+          file=sys.stderr)
+    repo_sha = ""
+  repo_sha = repo_sha or "unknown"
 
   # -- RUN_IDS.txt : the approval gate --------------------------------------
   lines = [f"wave_id: {spec.wave_id}", f"spec:    {spec.path}"]
@@ -398,6 +425,11 @@ def gen(spec: wavespec.WaveSpec, out: Path, lanes: list[str]) -> dict:
       fname = f"lane_{st.name}_{ln}.cmds"
       body = [f"# {spec.wave_id} / stage {st.name} / lane {ln} / "
               f"{len(lane_units)} queued task(s), {sum(len(u) for u in lane_units)} run(s)"]
+      for u in lane_units:
+        for r in u:
+          sc, nm = _producer_vars(r.cmd)
+          if sc:
+            producer_vars.setdefault(sc, set()).update(nm)
       for i, u in enumerate(lane_units):
         body.append(cmd_line(u, f"{spec.wave_id}_{st.name}_l{ln}_pair{i:02d}"))
       _w(out / fname, "\n".join(body) + "\n")
@@ -453,6 +485,43 @@ def gen(spec: wavespec.WaveSpec, out: Path, lanes: list[str]) -> dict:
     for d in donors:
       pf.append(f'[ -e "$RUNROOT/{d}" ] && ok {shlex.quote(d)} || bad "MISSING donor {d}"')
     pf.append("")
+  # ---- stale-producer gate (2026-08-21 NOBOOT incident) --------------------
+  # A lane command never pulls: it does `cd "$REPO"` and runs whatever is
+  # there. When an instance's fork predates the commit that added an override,
+  # the variable is simply UNREAD -- `DISAG_BOOTSTRAP=False` bound nothing and
+  # four runs trained as the wrong arm for 6.3 h each, while RUN_ID/TASK/SEED
+  # from the same prefix bound fine because those existed in the old script.
+  # Existence checks cannot see this; only reading the producer can.
+  #
+  # So: for every producer a lane invokes, assert on the INSTANCE'S OWN COPY
+  # that each variable the command sets is actually referenced. This is the
+  # check that would have caught the incident at preflight instead of at read.
+  if producer_vars:
+    pf += ['echo "== producer reads every variable the wave sets =="']
+    for script, names in sorted(producer_vars.items()):
+      pf.append(f'if [ ! -e "$REPO/{script}" ]; then bad "MISSING producer {script}"; else')
+      for v in sorted(names):
+        pat = shlex.quote("[$]\\{?" + v + "\\b")
+        pf.append(
+            f'  grep -qE {pat} "$REPO/{script}" '
+            f'&& ok "{script} reads ${v}" '
+            f'|| bad "STALE PRODUCER: {script} never reads ${v} -- the wave '
+            f'sets it and it would bind NOTHING (run push-repo)"')
+      pf.append("fi")
+    pf.append("")
+
+  # Generation-time HEAD, asserted against the instance's push-repo stamp. The
+  # variable check above is the load-bearing one; this reports the drift that
+  # explains it.
+  pf += ['echo "== repo generation stamp =="',
+         f'want={shlex.quote(repo_sha)}',
+         'got="$(cat "$REPO/scripts/ops/VERSION" 2>/dev/null | head -1)"',
+         'case "$got" in',
+         '  "$want"*|*"${want%%-*}"*) ok "instance repo matches wave generation ($want)" ;;',
+         '  "") bad "no VERSION stamp on the instance -- run push-repo" ;;',
+         '  *) bad "REPO DRIFT: wave generated at $want, instance has $got -- run push-repo" ;;',
+         'esac', "",
+         ]
   pf += ['echo "== helpers =="',
          'type dv3_queue_or_add >/dev/null 2>&1 && ok "helpers loaded ($(dv3_version))" \\',
          '  || bad "helpers not loaded -- run push-repo"', "",

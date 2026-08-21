@@ -30,6 +30,27 @@ echo "== disk =="
 pct="$(df -P "$RUNROOT" | awk 'NR==2{gsub(/%/,"",$5); print $5}')"
 [ "${pct:-100}" -lt 90 ] && ok "disk ${pct}% used" || bad "disk ${pct}% used"
 
+echo "== producer reads every variable the wave sets =="
+if [ ! -e "$REPO/scripts/uncfield_se.sbatch" ]; then bad "MISSING producer scripts/uncfield_se.sbatch"; else
+  grep -qE '[$]\{?DISTRACTOR_MOD_HI\b' "$REPO/scripts/uncfield_se.sbatch" && ok "scripts/uncfield_se.sbatch reads $DISTRACTOR_MOD_HI" || bad "STALE PRODUCER: scripts/uncfield_se.sbatch never reads $DISTRACTOR_MOD_HI -- the wave sets it and it would bind NOTHING (run push-repo)"
+  grep -qE '[$]\{?DISTRACTOR_MOD_INDEX\b' "$REPO/scripts/uncfield_se.sbatch" && ok "scripts/uncfield_se.sbatch reads $DISTRACTOR_MOD_INDEX" || bad "STALE PRODUCER: scripts/uncfield_se.sbatch never reads $DISTRACTOR_MOD_INDEX -- the wave sets it and it would bind NOTHING (run push-repo)"
+  grep -qE '[$]\{?DISTRACTOR_MOD_KEY\b' "$REPO/scripts/uncfield_se.sbatch" && ok "scripts/uncfield_se.sbatch reads $DISTRACTOR_MOD_KEY" || bad "STALE PRODUCER: scripts/uncfield_se.sbatch never reads $DISTRACTOR_MOD_KEY -- the wave sets it and it would bind NOTHING (run push-repo)"
+  grep -qE '[$]\{?DISTRACTOR_MOD_LO\b' "$REPO/scripts/uncfield_se.sbatch" && ok "scripts/uncfield_se.sbatch reads $DISTRACTOR_MOD_LO" || bad "STALE PRODUCER: scripts/uncfield_se.sbatch never reads $DISTRACTOR_MOD_LO -- the wave sets it and it would bind NOTHING (run push-repo)"
+  grep -qE '[$]\{?DISTRACTOR_SCALE\b' "$REPO/scripts/uncfield_se.sbatch" && ok "scripts/uncfield_se.sbatch reads $DISTRACTOR_SCALE" || bad "STALE PRODUCER: scripts/uncfield_se.sbatch never reads $DISTRACTOR_SCALE -- the wave sets it and it would bind NOTHING (run push-repo)"
+  grep -qE '[$]\{?RUN_ID\b' "$REPO/scripts/uncfield_se.sbatch" && ok "scripts/uncfield_se.sbatch reads $RUN_ID" || bad "STALE PRODUCER: scripts/uncfield_se.sbatch never reads $RUN_ID -- the wave sets it and it would bind NOTHING (run push-repo)"
+  grep -qE '[$]\{?SEED\b' "$REPO/scripts/uncfield_se.sbatch" && ok "scripts/uncfield_se.sbatch reads $SEED" || bad "STALE PRODUCER: scripts/uncfield_se.sbatch never reads $SEED -- the wave sets it and it would bind NOTHING (run push-repo)"
+  grep -qE '[$]\{?TASK\b' "$REPO/scripts/uncfield_se.sbatch" && ok "scripts/uncfield_se.sbatch reads $TASK" || bad "STALE PRODUCER: scripts/uncfield_se.sbatch never reads $TASK -- the wave sets it and it would bind NOTHING (run push-repo)"
+fi
+
+echo "== repo generation stamp =="
+want=6c29221d
+got="$(cat "$REPO/scripts/ops/VERSION" 2>/dev/null | head -1)"
+case "$got" in
+  "$want"*|*"${want%%-*}"*) ok "instance repo matches wave generation ($want)" ;;
+  "") bad "no VERSION stamp on the instance -- run push-repo" ;;
+  *) bad "REPO DRIFT: wave generated at $want, instance has $got -- run push-repo" ;;
+esac
+
 echo "== helpers =="
 type dv3_queue_or_add >/dev/null 2>&1 && ok "helpers loaded ($(dv3_version))" \
   || bad "helpers not loaded -- run push-repo"
