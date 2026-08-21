@@ -502,10 +502,13 @@ def gen(spec: wavespec.WaveSpec, out: Path, lanes: list[str]) -> dict:
       pf.append(f'if [ ! -e "$REPO/{script}" ]; then bad "MISSING producer {script}"; else')
       for v in sorted(names):
         pat = shlex.quote("[$]\\{?" + v + "\\b")
+        # The variable NAME is data here, not something to expand: an
+        # unescaped $VAR inside these double-quoted messages is expanded by the
+        # remote shell and, under `set -u`, kills the preflight outright.
         pf.append(
             f'  grep -qE {pat} "$REPO/{script}" '
-            f'&& ok "{script} reads ${v}" '
-            f'|| bad "STALE PRODUCER: {script} never reads ${v} -- the wave '
+            f'&& ok "{script} reads \\${v}" '
+            f'|| bad "STALE PRODUCER: {script} never reads \\${v} -- the wave '
             f'sets it and it would bind NOTHING (run push-repo)"')
       pf.append("fi")
     pf.append("")

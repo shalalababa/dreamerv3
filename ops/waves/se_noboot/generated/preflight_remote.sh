@@ -32,14 +32,14 @@ pct="$(df -P "$RUNROOT" | awk 'NR==2{gsub(/%/,"",$5); print $5}')"
 
 echo "== producer reads every variable the wave sets =="
 if [ ! -e "$REPO/scripts/uncfield_se.sbatch" ]; then bad "MISSING producer scripts/uncfield_se.sbatch"; else
-  grep -qE '[$]\{?DISAG_BOOTSTRAP\b' "$REPO/scripts/uncfield_se.sbatch" && ok "scripts/uncfield_se.sbatch reads $DISAG_BOOTSTRAP" || bad "STALE PRODUCER: scripts/uncfield_se.sbatch never reads $DISAG_BOOTSTRAP -- the wave sets it and it would bind NOTHING (run push-repo)"
-  grep -qE '[$]\{?RUN_ID\b' "$REPO/scripts/uncfield_se.sbatch" && ok "scripts/uncfield_se.sbatch reads $RUN_ID" || bad "STALE PRODUCER: scripts/uncfield_se.sbatch never reads $RUN_ID -- the wave sets it and it would bind NOTHING (run push-repo)"
-  grep -qE '[$]\{?SEED\b' "$REPO/scripts/uncfield_se.sbatch" && ok "scripts/uncfield_se.sbatch reads $SEED" || bad "STALE PRODUCER: scripts/uncfield_se.sbatch never reads $SEED -- the wave sets it and it would bind NOTHING (run push-repo)"
-  grep -qE '[$]\{?TASK\b' "$REPO/scripts/uncfield_se.sbatch" && ok "scripts/uncfield_se.sbatch reads $TASK" || bad "STALE PRODUCER: scripts/uncfield_se.sbatch never reads $TASK -- the wave sets it and it would bind NOTHING (run push-repo)"
+  grep -qE '[$]\{?DISAG_BOOTSTRAP\b' "$REPO/scripts/uncfield_se.sbatch" && ok "scripts/uncfield_se.sbatch reads \$DISAG_BOOTSTRAP" || bad "STALE PRODUCER: scripts/uncfield_se.sbatch never reads \$DISAG_BOOTSTRAP -- the wave sets it and it would bind NOTHING (run push-repo)"
+  grep -qE '[$]\{?RUN_ID\b' "$REPO/scripts/uncfield_se.sbatch" && ok "scripts/uncfield_se.sbatch reads \$RUN_ID" || bad "STALE PRODUCER: scripts/uncfield_se.sbatch never reads \$RUN_ID -- the wave sets it and it would bind NOTHING (run push-repo)"
+  grep -qE '[$]\{?SEED\b' "$REPO/scripts/uncfield_se.sbatch" && ok "scripts/uncfield_se.sbatch reads \$SEED" || bad "STALE PRODUCER: scripts/uncfield_se.sbatch never reads \$SEED -- the wave sets it and it would bind NOTHING (run push-repo)"
+  grep -qE '[$]\{?TASK\b' "$REPO/scripts/uncfield_se.sbatch" && ok "scripts/uncfield_se.sbatch reads \$TASK" || bad "STALE PRODUCER: scripts/uncfield_se.sbatch never reads \$TASK -- the wave sets it and it would bind NOTHING (run push-repo)"
 fi
 
 echo "== repo generation stamp =="
-want=unknown
+want=95b5d01b
 got="$(cat "$REPO/scripts/ops/VERSION" 2>/dev/null | head -1)"
 case "$got" in
   "$want"*|*"${want%%-*}"*) ok "instance repo matches wave generation ($want)" ;;

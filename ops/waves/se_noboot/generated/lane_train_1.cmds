@@ -1,3 +1,2 @@
-# se_noboot / stage train / lane 1 / 2 queued task(s), 2 run(s)
+# se_noboot / stage train / lane 1 / 1 queued task(s), 1 run(s)
 DV3_TASK_NAME=se_noboot_s41 bash -lc 'set -uo pipefail; source /root/.dreamer_vast_env; cd "$REPO"; mkdir -p "$RUNROOT/_cloud_logs"; ( set +e; echo "===== [$(date)] START se_noboot_s41 ====="; RUN_ID=se_noboot_s41 TASK=dmc_cheetah_run SEED=41 DISAG_BOOTSTRAP=False bash scripts/uncfield_se.sbatch; rc=$?; echo "===== [$(date)] DONE rc=$rc se_noboot_s41 ====="; exit $rc ) >> "$RUNROOT/_cloud_logs/se_noboot_s41.out" 2>&1'
-DV3_TASK_NAME=se_noboot_s43 bash -lc 'set -uo pipefail; source /root/.dreamer_vast_env; cd "$REPO"; mkdir -p "$RUNROOT/_cloud_logs"; ( set +e; echo "===== [$(date)] START se_noboot_s43 ====="; RUN_ID=se_noboot_s43 TASK=dmc_cheetah_run SEED=43 DISAG_BOOTSTRAP=False bash scripts/uncfield_se.sbatch; rc=$?; echo "===== [$(date)] DONE rc=$rc se_noboot_s43 ====="; exit $rc ) >> "$RUNROOT/_cloud_logs/se_noboot_s43.out" 2>&1'
