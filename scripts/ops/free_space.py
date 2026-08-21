@@ -50,8 +50,11 @@ def main():
                   help='{"name": <newest mtime epoch under it>} from the instance')
   ap.add_argument("--fresh-min", type=int, default=120)
   ap.add_argument("--queue-text", default=None,
-                  help="concatenated tasks.txt of the instance's ACTIVE queues; "
-                       "any entry NAMED in a queued or running command is refused")
+                  help="the LIVE slice of the instance's active queues -- tasks "
+                       "from running_index onward, NOT whole tasks.txt files. "
+                       "Any entry named in a pending or running command is "
+                       "refused. Passing completed tasks too holds every dir the "
+                       "lane ever wrote and stalls the reclaim entirely.")
   ap.add_argument("--now", type=float, default=None, help="instance clock, epoch")
   a = ap.parse_args()
   inst_doc = json.load(open(a.inst_json))
