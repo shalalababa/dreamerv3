@@ -100,13 +100,18 @@ def save_labels(rows, output, meta, extra_arrays=None):
   outputs the shared per-file summary line (it prints mean delta_real,
   an estimand-adjacent number) is suppressed — smoke stdout is for
   crash/dial/determinism sanity only, never estimand values."""
-  if os.path.basename(output).endswith('_smoke.npz'):
+  wv1_pass = str(meta.get('labeler_version', '')).endswith('_wv1')
+  if os.path.basename(output).endswith('_smoke.npz') or wv1_pass:
+    # review B1 (PREREG_p2_wave1 build review): wv1 rows have no
+    # delta_real, so the shared summary line both CRASHES and would be
+    # the exact value-blindness leak the smoke scope exists to prevent.
     import contextlib
     import io
     with contextlib.redirect_stdout(io.StringIO()):
       save_rows(rows, output, meta, extra_arrays=extra_arrays)
     print(f'wrote {output}: {len(rows)} labeled states '
-          '(smoke pass: estimand summary suppressed)')
+          + ('(WAVE-1 pass: estimand summary redacted)' if wv1_pass
+             else '(smoke pass: estimand summary suppressed)'))
   else:
     save_rows(rows, output, meta, extra_arrays=extra_arrays)
 
@@ -446,9 +451,76 @@ def _w2_label_state_tm2(enode, oracle, obs, qfull, cands, zlat, snap,
                                 np.int64))
 
 
+def _wave1_label_state_tm2(enode, oracle, obs, qfull, cands, zlat, snap,
+                           pstate, m_now, horizon, run_id, ep, t, wv1):
+  """WAVE-1 first-update labeling of ONE state
+  (PREREG_p2_wave1_firstupdate_20260821; additive — no executed path is
+  modified).
+
+  Two fixed policy variants, no selection on G anywhere (order-statistic
+  and leak-immune by construction):
+    mode   the policy-prior mode action  == cands[0] (M_REGISTERED
+           convention: candidate 0 IS the prior mode; no planner call)
+    cold1  the planner's action after exactly ONE MPPI update from a
+           cold start (t0=True, iterations forced to 1, restored in a
+           finally block; W2_ITERS_LOW == 1 is the same dial)
+
+  Per variant: R raw undiscounted G rollouts under per-repeat CRN marks
+  (tags 30+r), plus ONE own-objective score under an independent mark
+  (tag 22): own(a) = r(s,a) + discount * state_value(s') — the SAME
+  scoring convention as op_real (C5, the dual-objective oracle: grades
+  the first update on the planner's OWN terms). cold1's action draw uses
+  tag 21. Tag space: _w1_seed requires tags < 101; 21/22/30..37 are
+  disjoint from W1 (0,1,2..9) and W2 (0,10,11,12,2..9) tags."""
+  seed_base = int(wv1['seed_base'])
+  repeats = int(wv1['repeats'])
+  assert repeats <= 8, 'wave1 tag space assumes repeats <= 8'
+  act_mode = np.asarray(cands[0], np.float32).reshape(-1)
+  it0 = oracle.get_iterations()
+  try:
+    oracle.set_iterations(1)
+    oracle.rng_reset(oracle.w1_mark(_w1_seed(seed_base, ep, t, 21)))
+    oracle.set_plan_state(pstate)
+    restore_env(enode, snap)
+    act_cold1 = np.asarray(oracle.follower_act(obs, t0=True),
+                           np.float32).reshape(-1)
+  finally:
+    oracle.set_iterations(it0)
+  if wv1.get('dup'):
+    # CRN null gate (review M3, w1_dup_cand analogue): both variants get
+    # the SAME action; every paired quantity must come out EXACTLY equal.
+    act_cold1 = act_mode.copy()
+  # C5 own-objective scores (op_real convention), independent mark
+  own = {}
+  for name, act in (('mode', act_mode), ('cold1', act_cold1)):
+    oracle.rng_reset(oracle.w1_mark(_w1_seed(seed_base, ep, t, 22)))
+    oracle.set_plan_state(pstate)  # literal op_real parity (review minor)
+    restore_env(enode, snap)
+    nobs = _step(enode, act)
+    own[name] = np.float32(float(nobs['reward'])
+                           + oracle.discount * oracle.state_value(nobs))
+  g_mode = np.zeros(repeats, np.float32)
+  g_cold1 = np.zeros(repeats, np.float32)
+  for r in range(repeats):
+    mark_r = oracle.w1_mark(_w1_seed(seed_base, ep, t, 30 + r))
+    g_mode[r] = rollout_return(enode, oracle, act_mode, horizon, snap,
+                               pstate, mark_r)[0]
+    g_cold1[r] = rollout_return(enode, oracle, act_cold1, horizon, snap,
+                                pstate, mark_r)[0]
+  return dict(
+      run_id=run_id, episode=ep, step=t,
+      qfull=qfull, cands=np.asarray(cands, np.float32),
+      g_mode_rep=g_mode, g_cold1_rep=g_cold1,
+      own_mode=own['mode'], own_cold1=own['cold1'],
+      act_mode=act_mode, act_cold1=act_cold1,
+      zlat=np.asarray(zlat, np.float16), m_now=m_now,
+      iters_first=np.int64(1), iters_default=np.int64(it0),
+      dup=np.bool_(bool(wv1.get('dup', False))))
+
+
 def label_run(enode, oracle, n_states, horizon, label_every, max_steps,
               run_id, oracle_all=False, ref_stride=5, obs_flat=None,
-              w1=None, w2=None):
+              w1=None, w2=None, wv1=None):
   """obs_flat: callable obs->1-D vector for the determinism assert
   (defaults to reward-only comparison when None)."""
   rows = []
@@ -482,7 +554,13 @@ def label_run(enode, oracle, n_states, horizon, label_every, max_steps,
       restore_env(enode, snap)
 
       m_now = plugin_choice(qfull)
-      if w2 is not None:
+      if wv1 is not None:
+        rows.append(_wave1_label_state_tm2(
+            enode, oracle, obs, qfull, cands, zlat, snap, pstate,
+            m_now, horizon, run_id, ep, t, wv1))
+        restore_env(enode, snap)
+        oracle.set_plan_state(pstate)
+      elif w2 is not None:
         rows.append(_w2_label_state_tm2(
             enode, oracle, obs, qfull, cands, zlat, snap, pstate,
             m_now, horizon, run_id, ep, t, w2))
@@ -638,15 +716,29 @@ def main_real(args):
     assert args.env_seed is not None, (
         'W1 passes require --env_seed (constraint 6)')
     assert args.oracle_all, 'W1 requires --oracle_all'
+    assert not getattr(args, 'wv1_repeats', 0), (
+        'w1 and wave1 modes are mutually exclusive')
     w1 = dict(repeats=int(args.w1_repeats),
               dup_cand=bool(args.w1_dup_cand),
               seed_base=int(args.env_seed))
   else:
     assert not getattr(args, 'w1_dup_cand', False), (
         '--w1_dup_cand requires --w1_repeats > 0')
+  wv1 = None
+  if getattr(args, 'wv1_repeats', 0):
+    assert args.env_seed is not None, 'wave1 passes require --env_seed'
+    base_out = os.path.basename(str(args.output))
+    assert base_out.startswith(('wv1tm2_', 'wv1dup_')) or \
+        base_out.endswith('_smoke.npz'), (
+        'wave1 outputs must be named wv1tm2_*/wv1dup_* (review minor: '
+        f'orphan-file guard); got {base_out}')
+    wv1 = dict(repeats=int(args.wv1_repeats),
+               seed_base=int(args.env_seed),
+               dup=bool(getattr(args, 'wv1_dup', False)))
   w2 = None
   if getattr(args, 'w2_repeats', 0):
     assert w1 is None, 'w1 and w2 modes are mutually exclusive'
+    assert wv1 is None, 'w2 and wave1 modes are mutually exclusive'
     assert args.env_seed is not None, 'W2 passes require --env_seed'
     assert args.oracle_all, 'W2 requires --oracle_all'
     w2 = dict(repeats=int(args.w2_repeats),
@@ -679,7 +771,7 @@ def main_real(args):
       env.max_episode_steps, run_id=run_id, oracle_all=args.oracle_all,
       ref_stride=args.ref_stride,
       obs_flat=lambda o: flatten_obs(o, task, extra=env._extra_keys),
-      w1=w1, w2=w2)
+      w1=w1, w2=w2, wv1=wv1)
   smoke = bool(args.smoke_random_init)
   save_labels(rows, args.output, meta=dict(
       run_logdir=str(args.run_logdir or ''),
@@ -699,9 +791,12 @@ def main_real(args):
       mass_scale=1.0, behavior_checkpoint='',
       labeler_version=(LABELER_VERSION + '_w1' if w1 is not None else
                        LABELER_VERSION + '_w2' if w2 is not None else
+                       LABELER_VERSION + '_wv1' if wv1 is not None else
                        LABELER_VERSION),
       **({} if w1 is None else dict(w1=dict(w1),
                                     env_seed=int(env_seed))),
+      **({} if wv1 is None else dict(wv1=dict(wv1),
+                                     env_seed=int(env_seed))),
       **({} if w2 is None else dict(
           w2=dict(w2), env_seed=int(env_seed),
           w2_iters=dict(low=W2_ITERS_LOW,
@@ -1077,6 +1172,7 @@ def selfcheck():
   print('SELFCHECK PASS (' + '; '.join(legs) + ')')
   selfcheck_w1_tm2()
   selfcheck_w2_tm2()
+  selfcheck_wave1_tm2()
 
 
 class _W1ChaosEnv(_ChainEnv):
@@ -1290,6 +1386,105 @@ def selfcheck_w1_tm2():
         '_w1 redacted save round-trip)')
 
 
+def selfcheck_wave1_tm2():
+  """WAVE-1 legs (PREREG_p2_wave1_firstupdate_20260821; build-review B4).
+  Every assert was verified to CATCH a planted mutant during the build
+  review application (mode->cands[1]; missing finally; broken CRN mark;
+  shared own/rollout mark; non-redacted save)."""
+  import contextlib
+  import io
+  import json as _json
+  import tempfile
+
+  # Leg 1+2+CRN: normal pass
+  env, oracle = _W1ChaosEnv(), _W2Mock()
+  rows, _ = label_run(env, oracle, n_states=8, horizon=12,
+                      label_every=7, max_steps=400, run_id='wv1tm2',
+                      oracle_all=True,
+                      wv1=dict(repeats=4, seed_base=29))
+  assert oracle.get_iterations() == 6, 'iterations not restored (leg 2)'
+  # the iters=1 override must appear exactly once per state (the cold1
+  # action draw) and never during rollouts
+  assert oracle.iters_log.count(1) == len(rows), (
+      'iters=1 leaked into rollouts', oracle.iters_log.count(1), len(rows))
+  for r in rows:
+    assert r['g_mode_rep'].shape == (4,) and r['g_cold1_rep'].shape == (4,)
+    # leg 1: mode is EXACTLY candidate 0
+    assert np.array_equal(r['act_mode'], np.asarray(r['cands'][0],
+                                                    np.float32).reshape(-1)), \
+        'act_mode != cands[0] (leg 1)'
+    assert int(r['iters_first']) == 1 and int(r['iters_default']) == 6
+    assert not bool(r['dup'])
+  gm = np.stack([r['g_mode_rep'] for r in rows])
+  assert float(np.mean(gm.std(1))) > 1e-3, 'mode branch static'
+  # leg 4: own is scored under its own mark — variants share tag 22, so
+  # own differences reflect the ACTION only; with distinct actions the
+  # own values must differ for at least one state
+  own_d = [abs(float(r['own_mode']) - float(r['own_cold1'])) for r in rows]
+  assert max(own_d) > 1e-6, 'own-objective insensitive to the action'
+
+  # Leg 3 (CRN dup null): forced act_cold1 == act_mode must give EXACT
+  # equality of every paired quantity
+  env2, oracle2 = _W1ChaosEnv(), _W2Mock()
+  rows2, _ = label_run(env2, oracle2, n_states=4, horizon=12,
+                       label_every=7, max_steps=400, run_id='wv1dup',
+                       oracle_all=True,
+                       wv1=dict(repeats=3, seed_base=29, dup=True))
+  for r in rows2:
+    assert np.array_equal(r['g_mode_rep'], r['g_cold1_rep']), \
+        'CRN broken: dup variants differ (leg 3)'
+    assert float(r['own_mode']) == float(r['own_cold1']), \
+        'own-objective CRN broken (leg 3)'
+    assert bool(r['dup'])
+
+  # Leg 2b: an exception inside the cold1 block still restores the dial
+  env3, oracle3 = _W1ChaosEnv(), _W2Mock()
+  orig = oracle3.follower_act
+  def boom(obs, t0):
+    if t0:
+      raise RuntimeError('planted')
+    return orig(obs, t0)
+  oracle3.follower_act = boom
+  try:
+    label_run(env3, oracle3, n_states=1, horizon=12, label_every=7,
+              max_steps=400, run_id='wv1tm2', oracle_all=True,
+              wv1=dict(repeats=2, seed_base=29))
+  except RuntimeError:
+    pass
+  assert oracle3.get_iterations() == 6, 'dial not restored on exception'
+
+  # Leg 5: save round-trip with stdout redaction (review B1)
+  with tempfile.TemporaryDirectory() as tmp:
+    out = os.path.join(tmp, 'wv1tm2_cup_e1_seed51_late.npz')
+    buf = io.StringIO()
+    with contextlib.redirect_stdout(buf):
+      save_labels(rows, out, meta=dict(
+          labeler_version=LABELER_VERSION + '_wv1',
+          env_seed=29, wv1=dict(repeats=4, seed_base=29)))
+    txt = buf.getvalue()
+    assert 'redacted' in txt and 'delta_real' not in txt, txt
+    z = np.load(out, allow_pickle=True)
+    assert z['g_mode_rep'].shape == (len(rows), 4)
+    assert _json.loads(str(z['meta']))['labeler_version'].endswith('_wv1')
+
+  # Leg 6: mutual exclusion (mirrors main_real asserts structurally)
+  try:
+    label_run(_W1ChaosEnv(), _W2Mock(), n_states=1, horizon=12,
+              label_every=7, max_steps=400, run_id='x', oracle_all=True,
+              w2=dict(repeats=2, seed_base=1),
+              wv1=dict(repeats=2, seed_base=1))
+  except Exception:
+    pass  # dispatch order makes wv1 win; exclusion is enforced in
+          # main_real asserts (source-checked below)
+  src = open(__file__).read()
+  assert "assert wv1 is None, 'w2 and wave1 modes are mutually exclusive'" \
+      in src
+  assert "'w1 and wave1 modes are mutually exclusive'" in src
+  print('selfcheck_wave1_tm2 PASS (mode==cands[0]; dial restore incl. '
+        'exception; CRN dup exact-zero; own-mark action sensitivity; '
+        'redacted save round-trip; mutual-exclusion asserts present)')
+
+
 def main():
   p = argparse.ArgumentParser(description=__doc__)
   p.add_argument('--tdmpc2_root', default=None)
@@ -1319,6 +1514,13 @@ def main():
                  help='W1 adjudication wave (PREREG_w1_adjudication_'
                       'constraints_20260809): R independent-mark '
                       'repeats. 0 = off (default path byte-identical).')
+  p.add_argument('--wv1_repeats', type=int, default=0,
+                 help='WAVE-1 first-update mode: repeats per variant '
+                      '(PREREG_p2_wave1_firstupdate_20260821); mutually '
+                      'exclusive with --w1_repeats/--w2_repeats')
+  p.add_argument('--wv1_dup', action='store_true',
+                 help='WAVE-1 CRN null gate: act_cold1 := act_mode; all '
+                      'paired quantities must be exactly equal')
   p.add_argument('--w2_repeats', type=int, default=0,
                  help='W2 mechanism passes (PREREG_antiharvest_mech_'
                       '20260811): planner-variant repeats; 0 = off.')

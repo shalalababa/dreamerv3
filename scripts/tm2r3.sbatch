@@ -75,7 +75,7 @@ task_of() { case "$1" in cup) echo dmc_cup_catch;; finger) echo dmc_finger_turn_
 check_cell() {
   case "${TM2R3_DOM:-}" in cup|finger) ;; *) echo "ERROR: TM2R3_DOM '${TM2R3_DOM:-}' not in {cup,finger}"; exit 2;; esac
   case "${TM2R3_DOSE:-}" in e1|e4) ;; *) echo "ERROR: TM2R3_DOSE '${TM2R3_DOSE:-}' not in {e1,e4}"; exit 2;; esac
-  case "${TM2R3_SEED:-}" in 5[1-8]) ;; *) echo "ERROR: TM2R3_SEED '${TM2R3_SEED:-}' not in 51..58 (registered grid)"; exit 2;; esac
+  case "${TM2R3_SEED:-}" in 5[1-8]|59|6[0-6]) ;; *) echo "ERROR: TM2R3_SEED '${TM2R3_SEED:-}' not in 51..66 (registered grids: W1 51-58, fresh cohort 59-66 per PREREG_p2_wave2_freshcohort_20260821)"; exit 2;; esac
 }
 
 if [ "$STAGE" = train ]; then

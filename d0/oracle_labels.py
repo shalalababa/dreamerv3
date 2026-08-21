@@ -677,8 +677,13 @@ def save_rows(rows, output, meta, extra_arrays=None):
   # registered per-state achieved, and paired stdout means would reveal
   # the primaries before the ONE read. Default path byte-identical.
   version = str(meta.get('labeler_version', ''))
-  if version.endswith(('_xc1', '_xc2', '_cm1', '_w1', '_w2')):
-    reason = ('W1 pass' if version.endswith('_w1') else
+  if version.endswith(('_xc1', '_xc2', '_cm1', '_w1', '_w2', '_wv1')):
+    # '_wv1' added 21 Aug (PREREG_p2_wave1_firstupdate build-review B1):
+    # wv1 rows carry no delta_real, so the else-branch both crashes AND
+    # would be the exact leak this guard exists for. Additive: no
+    # pre-existing version string ends '_wv1'; default path byte-identical.
+    reason = ('WAVE-1 pass' if version.endswith('_wv1') else
+              'W1 pass' if version.endswith('_w1') else
               'W2 pass' if version.endswith('_w2') else 'consumer arm')
     print(f'wrote {output}: {len(rows)} labeled states '
           f'(estimand summary redacted: {reason})')
