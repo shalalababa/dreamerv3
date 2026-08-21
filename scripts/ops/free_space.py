@@ -36,6 +36,9 @@ this tool marked the top-level entry `tm2r3` reclaimable on an instance where
 import argparse, json
 
 FIELDS = ("ckpt_step", "n_scores", "n_files", "bytes")
+# Counters say HOW MUCH; the witness says WHICH RUN. Two runs of one shape
+# under one name (the spoiled NOBOOT arm and its re-run) are identical in
+# every counter and opposite in config.
 
 
 def main():
@@ -74,8 +77,18 @@ def main():
       risky.append((name, x["bytes"], "NOT on RCC"))
     else:
       short = [f for f in FIELDS if y.get(f, -1) < x.get(f, 0)]
+      wa, wb = x.get("witness_sha", ""), y.get("witness_sha", "")
       if short:
         risky.append((name, x["bytes"], "SHORT on RCC: " + ",".join(short)))
+      elif wa and wb and wa != wb:
+        risky.append((name, x["bytes"],
+                      f"COVERED BUT DIFFERENT: config {wa[:12]} vs rcc {wb[:12]} "
+                      "-- same name, same size, not the same run"))
+      elif not wa or not wb:
+        # No config to compare (analysis outputs, crashed adapts: ~6% of the
+        # tree). Counters cover it; say so rather than implying content proof.
+        held.append((name, x["bytes"],
+                     "UNVERIFIABLE -- counters cover it, no config to compare"))
       else:
         safe.append((name, x["bytes"]))
 

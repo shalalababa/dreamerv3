@@ -26,6 +26,7 @@ from __future__ import annotations
 
 import argparse
 import glob
+import hashlib
 import json
 import os
 import re
@@ -86,6 +87,39 @@ def walk(d: str) -> tuple[int, int, float]:
       except OSError:
         pass
   return n, size, newest
+
+
+# The files that IDENTIFY a run, as opposed to the bytes that merely accumulate
+# in it. A config is written once and says which arm this is; checkpoints say
+# only how far it got. Counters (n_files/bytes) cannot distinguish two runs of
+# the same shape under the same name -- e.g. the spoiled NOBOOT runs and their
+# re-run, identical in size, opposite in `disag_bootstrap`. Hashing ~10 MB of
+# configs across a 591 GB tree costs 0.03 s; hashing the tree costs 28 min and
+# would catch nothing this does not.
+IDENTITY_FILES = ("config.yaml", "config.json")
+
+
+def witness_sha(d: str) -> str:
+  """sha256 over the run's identity files, or "" when it has none.
+
+  Empty is NOT a match: a caller must treat an absent witness as "cannot
+  compare", never as "same". Silence is the failure mode this whole file
+  exists to avoid."""
+  h = hashlib.sha256()
+  found = False
+  for nm in IDENTITY_FILES:
+    p = os.path.join(d, nm)
+    if not os.path.isfile(p):
+      continue
+    found = True
+    h.update(nm.encode() + b"\0")
+    try:
+      with open(p, "rb") as fh:
+        for chunk in iter(lambda: fh.read(1 << 20), b""):
+          h.update(chunk)
+    except OSError:
+      return ""
+  return h.hexdigest() if found else ""
 
 
 # A run dir carries its own producer output. An entry with none of these is a
@@ -163,6 +197,7 @@ def main() -> None:
         "bytes": n_bytes,
         "newest_mtime": newest,
         "is_container": is_container(p),
+        "witness_sha": witness_sha(p),
     }
   print(json.dumps({"runroot": root, "now": time.time(), "entries": out}))
 

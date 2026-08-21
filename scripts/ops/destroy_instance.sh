@@ -146,19 +146,39 @@ import json, sys
 inst = json.load(open(sys.argv[1]))["entries"]
 rcc  = json.load(open(sys.argv[2]))["entries"]
 FIELDS = ("ckpt_step", "n_scores", "n_files", "bytes")
-covered, missing, short = [], [], []
+covered, missing, short, differ, unverifiable = [], [], [], [], []
 for name, a in sorted(inst.items()):
     b = rcc.get(name)
     if b is None:
         missing.append(name); continue
     bad = [f for f in FIELDS if b.get(f, 0) < a.get(f, 0)]
-    (short if bad else covered).append(
-        (name, ", ".join(f"{f} {a.get(f,0)}>{b.get(f,0)}" for f in bad)))
+    if bad:
+        short.append((name, ", ".join(f"{f} {a.get(f,0)}>{b.get(f,0)}" for f in bad)))
+        continue
+    # Counters say RCC holds at least as much. That does not say it holds the
+    # SAME run: two runs of one shape under one name (the spoiled NOBOOT arm
+    # and its re-run) are identical in size and opposite in config. Only
+    # content separates them. An absent witness means CANNOT COMPARE and is
+    # reported, never silently treated as a match.
+    wa, wb = a.get("witness_sha", ""), b.get("witness_sha", "")
+    if wa and wb:
+        (covered if wa == wb else differ).append(
+            (name, "" if wa == wb else
+             "config differs: inst %s vs rcc %s" % (wa[:12], wb[:12])))
+    else:
+        # 146 of 2291 real dirs carry no config (analysis outputs, crashed
+        # adapts). Absent is NOT a match, but it is also not evidence of a
+        # mismatch, so it gets its own verdict: counters still cover it, and
+        # the operator decides. Collapsing it into DIFFERENT would block 6% of
+        # the tree on dirs that were never at risk.
+        unverifiable.append((name, "no config on %s" % ("instance" if not wa else "RCC")))
 print(json.dumps({
     "n_inst": len(inst),
     "covered": [c[0] for c in covered],
     "missing": missing,
     "short": short,
+    "differ": differ,
+    "unverifiable": unverifiable,
 }))
 PY
 )"
@@ -170,9 +190,13 @@ for n in r["missing"]:
     print(f"  NOT ON RCC     {n}")
 for n, why in r["short"]:
     print(f"  SHORT ON RCC   {n}   ({why})")
+for n, why in r.get("differ", []):
+    print(f"  DIFFERENT      {n}   ({why})")
+for n, why in r.get("unverifiable", []):
+    print(f"  UNVERIFIABLE   {n}   ({why}; counters cover it)")
 PY
 unsafe="$(python3 -c "
-import json,sys; r=json.loads(sys.argv[1]); print(len(r['missing'])+len(r['short']))" "$report")"
+import json,sys; r=json.loads(sys.argv[1]); print(len(r['missing'])+len(r['short'])+len(r.get('differ',[])))" "$report")"
 
 if [ "$unsafe" -gt 0 ]; then
   echo

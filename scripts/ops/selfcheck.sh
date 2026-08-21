@@ -744,6 +744,72 @@ chk "board-raw no longer interleaves printf with the ssh call" \
     "! grep -q \"printf '{\\\"instance\\\":\\\"%s\\\",\\\"state\\\":' \" '$ROOT/scripts/ops/dv3ops'"
 
 echo
+echo "== reclamation: names are not identity =="
+python3 - <<'SCEOF'
+import json, os, subprocess, sys, tempfile, time
+now = time.time()
+mk = lambda **kw: dict({"ckpt_step":0,"n_scores":0,"n_files":1,"bytes":1,
+                        "newest_mtime":now-99999,"is_container":False,
+                        "witness_sha":""}, **kw)
+inst = {"now": now, "entries": {
+    "same":    mk(witness_sha="a"*64),
+    "differs": mk(witness_sha="a"*64),          # same counters, other content
+    "nowit":   mk(),
+    "live":    mk(newest_mtime=now),            # written just now
+    "box":     mk(is_container=True)}}
+rcc = {"entries": {
+    "same":    mk(witness_sha="a"*64),
+    "differs": mk(witness_sha="b"*64),
+    "nowit":   mk(),
+    "live":    mk(witness_sha="a"*64),
+    "box":     mk(witness_sha="a"*64)}}
+d = tempfile.mkdtemp(); a=os.path.join(d,"i"); b=os.path.join(d,"r"); m=os.path.join(d,"m")
+json.dump(inst, open(a,"w")); json.dump(rcc, open(b,"w"))
+json.dump({k:v["newest_mtime"] for k,v in inst["entries"].items()}, open(m,"w"))
+out = subprocess.run([sys.executable, "scripts/ops/free_space.py", "--inst-json", a,
+                      "--rcc-json", b, "--mtime-json", m],
+                     capture_output=True, text=True).stdout
+safe = out.split("HELD")[0]
+checks = [("only the true match is reclaimable", "same" in safe),
+          ("same counters + different config is refused", "differs" not in safe),
+          ("no-witness dir is not called safe", "nowit" not in safe),
+          ("freshly-written dir is refused", "live" not in safe),
+          ("container is refused", "box" not in safe)]
+for name, good in checks:
+    print(("  PASS " if good else "  FAIL ") + name)
+sys.exit(0 if all(g for _, g in checks) else 1)
+SCEOF
+[ $? -eq 0 ] && ok "reclamation guards hold" || bad "reclamation guards"
+
+python3 - <<'SCEOF'
+import importlib.util, os, sys, tempfile
+spec = importlib.util.spec_from_file_location("inv", "scripts/ops/runroot_inventory.py")
+inv = importlib.util.module_from_spec(spec); spec.loader.exec_module(inv)
+d = tempfile.mkdtemp()
+run = os.path.join(d, "box", "run1"); os.makedirs(run)
+open(os.path.join(run, "config.yaml"), "w").write("arm: A\n")
+sys.argv = ["inv", d]
+import io, contextlib, json
+buf = io.StringIO()
+with contextlib.redirect_stdout(buf):
+    inv.main()
+e = json.loads(buf.getvalue())["entries"]
+ok1 = "box/run1" in e and "box" not in e
+open(os.path.join(run, "config.yaml"), "w").write("arm: B\n")
+buf2 = io.StringIO()
+with contextlib.redirect_stdout(buf2):
+    inv.main()
+e2 = json.loads(buf2.getvalue())["entries"]
+ok2 = e2["box/run1"]["witness_sha"] != e["box/run1"]["witness_sha"]
+print("  PASS container is keyed per run, not by its own name" if ok1 else
+      "  FAIL container not descended")
+print("  PASS witness sha tracks config content" if ok2 else
+      "  FAIL witness sha ignored a config change")
+sys.exit(0 if ok1 and ok2 else 1)
+SCEOF
+[ $? -eq 0 ] && ok "inventory granularity + witness" || bad "inventory granularity + witness"
+
+echo
 echo "== P3: failure classification =="
 chk "signature table parses" "python3 '$ROOT/scripts/ops/triage.py' signatures"
 class_of () { printf '%s' "$1" > "$TMP/f.log"
