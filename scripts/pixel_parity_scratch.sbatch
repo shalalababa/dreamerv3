@@ -51,7 +51,16 @@
 # Resumable: a seed with ADAPT_DONE is skipped, so a re-submit continues.
 #
 # Env: SEEDS (default "1 2"), JOB_WALL_S (default 129600 = 36 h),
-#      MIN_SEED_S (default 46800 = 13 h), STEPS (default 1.25e5).
+#      MIN_SEED_S (default 82800 = 23 h), STEPS (default 1.25e5).
+#
+# MIN_SEED_S was 46800 (13 h) and that was WRONG: a whole seed MEASURED
+# 22.64 h (seed 1 of job 53738653 -- 124880 steps at 5517 steps/h). On
+# 2026-08-21 the 13 h guard saw 13.36 h remaining, judged that enough,
+# and started seed 2, which was then cut off by the 36 h walltime at
+# ~60-67% of target. A guard set to half the true cost cannot protect
+# anything. 23 h is the measured cost plus a small margin; the deferred
+# seed is resumed by re-submitting (finished seeds skip on ADAPT_DONE,
+# and an unfinished one continues from its own ckpt/latest).
 # ---------------------------------------------------------------------------
 set -uo pipefail
 T0=$SECONDS
@@ -63,7 +72,7 @@ cd "$REPO"
 : "${RUNROOT:?set RUNROOT}"
 SEEDS="${SEEDS:-1 2}"
 JOB_WALL_S="${JOB_WALL_S:-129600}"
-MIN_SEED_S="${MIN_SEED_S:-46800}"
+MIN_SEED_S="${MIN_SEED_S:-82800}"
 STEPS="${STEPS:-1.25e5}"
 TASK="${TASK:-dmc_finger_turn_hard}"
 
