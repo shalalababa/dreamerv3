@@ -120,7 +120,18 @@ $(cat "$INV")
 PYEOF" 2>/dev/null | tail -1)"
 case "$inst_json" in '{'*) ;; *) die "could not inventory instance $N (got: ${inst_json:0:120})" ;; esac
 
-rcc_json="$(ssh "${RCC_SSH[@]}" "$RCC_HOST" "python3 - '$RCC_RUNROOT' <<'PYEOF'
+# Ask RCC only about the names THIS INSTANCE holds. The question is "is what
+# lives here also safe there?", so RCC's other ~2260 dirs are irrelevant --
+# and walking all of them cost 249 s per call on a 591 GB scratch (measured
+# 2026-08-21), paid two or three times per destroy. A name the instance does
+# not have cannot be data at risk, so this narrows the walk without weakening
+# the gate: anything the instance has that RCC lacks still reports MISSING.
+INST_NAMES="$(printf '%s' "$inst_json" | python3 -c '
+import json, shlex, sys
+print(" ".join(shlex.quote(k) for k in sorted(json.load(sys.stdin)["entries"])))')"
+[ -n "$INST_NAMES" ] || die "instance $N inventory listed no run dirs"
+
+rcc_json="$(ssh "${RCC_SSH[@]}" "$RCC_HOST" "python3 - '$RCC_RUNROOT' --only $INST_NAMES <<'PYEOF'
 $(cat "$INV")
 PYEOF" 2>/dev/null | tail -1)"
 case "$rcc_json" in '{'*) ;; *) die "could not inventory RCC at $RCC_RUNROOT.

@@ -12,7 +12,15 @@ count, bytes), because a name matching on both sides proves nothing about
 whether the bytes arrived.
 
 Usage:
-  runroot_inventory.py <runroot> [--exclude name ...]
+  runroot_inventory.py <runroot> [--exclude name ...] [--only name ...]
+
+--only restricts the walk to the named entries. The archive check asks
+"is what lives on THIS INSTANCE also on RCC?", which needs counters for the
+~40 names the instance holds, not for all 2300 dirs in RCC scratch. Walking
+the whole 591 GB tree took 249 s per call (measured 2026-08-21) and every
+`dv3ops destroy` paid it two or three times. Restricting the RCC side to the
+instance's own names is not a weaker check: a name absent from --only is a
+name the instance does not have, so it cannot be data at risk.
 """
 from __future__ import annotations
 
@@ -74,6 +82,8 @@ def main() -> None:
   ap = argparse.ArgumentParser()
   ap.add_argument("runroot")
   ap.add_argument("--exclude", nargs="*", default=[])
+  ap.add_argument("--only", nargs="*", default=None,
+                  help="restrict to these entries (the caller's own names)")
   a = ap.parse_args()
 
   root = a.runroot
@@ -82,9 +92,15 @@ def main() -> None:
     sys.exit(1)
 
   skip = DEFAULT_EXCLUDE | set(a.exclude)
+  # --only is a filter, never a source: a requested name that is absent stays
+  # absent from the output, which is what makes the caller report it MISSING
+  # rather than silently treating it as covered.
+  want = set(a.only) if a.only is not None else None
   out = {}
   for name in sorted(os.listdir(root)):
     if name in skip:
+      continue
+    if want is not None and name not in want:
       continue
     p = os.path.join(root, name)
     if not os.path.isdir(p):
