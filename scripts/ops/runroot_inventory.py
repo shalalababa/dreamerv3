@@ -30,6 +30,7 @@ import json
 import os
 import re
 import sys
+import time
 
 # `<timestamp>-<step>` carries a step; a bare `<timestamp>` does not. Matching
 # trailing digits on the bare form reads the microsecond field as a training
@@ -64,18 +65,43 @@ def count_lines(path: str) -> int:
     return 0
 
 
-def walk(d: str) -> tuple[int, int]:
-  """(file count, total bytes). Symlinks counted, never followed."""
+def walk(d: str) -> tuple[int, int, float]:
+  """(file count, total bytes, newest mtime). Symlinks counted, never followed.
+
+  The newest mtime is what tells a caller the subtree is still being written.
+  It is the only signal here that does not depend on names matching up, which
+  is why the reclaimer refuses on it -- see free_space.py's header for the
+  incident that made freshness a hard gate rather than a hint."""
   n = size = 0
+  newest = 0.0
   for root, dirs, files in os.walk(d, followlinks=False):
     for f in files:
       p = os.path.join(root, f)
       n += 1
       try:
-        size += os.lstat(p).st_size
+        st = os.lstat(p)
+        size += st.st_size
+        if st.st_mtime > newest:
+          newest = st.st_mtime
       except OSError:
         pass
-  return n, size
+  return n, size, newest
+
+
+# A run dir carries its own producer output. An entry with none of these is a
+# CONTAINER holding other runs (e.g. `tm2r3/<run_id>/`), and its name says
+# nothing about its contents -- two directories can share a name on two hosts
+# and hold entirely different data.
+RUN_MARKS = ("scores.jsonl", "config.yaml", "config.json", "metrics.jsonl", "ckpt")
+
+
+def is_container(d: str) -> bool:
+  if any(os.path.exists(os.path.join(d, m)) for m in RUN_MARKS):
+    return False
+  try:
+    return any(os.path.isdir(os.path.join(d, e)) for e in os.listdir(d))
+  except OSError:
+    return False
 
 
 def main() -> None:
@@ -105,7 +131,7 @@ def main() -> None:
     p = os.path.join(root, name)
     if not os.path.isdir(p):
       continue
-    n_files, n_bytes = walk(p)
+    n_files, n_bytes, newest = walk(p)
     out[name] = {
         "ckpt_step": ckpt_step(p),
         "n_scores": count_lines(os.path.join(p, "scores.jsonl")),
@@ -113,8 +139,10 @@ def main() -> None:
                     if os.path.exists(os.path.join(p, m))],
         "n_files": n_files,
         "bytes": n_bytes,
+        "newest_mtime": newest,
+        "is_container": is_container(p),
     }
-  print(json.dumps({"runroot": root, "entries": out}))
+  print(json.dumps({"runroot": root, "now": time.time(), "entries": out}))
 
 
 if __name__ == "__main__":
