@@ -1,0 +1,117 @@
+{
+ "dv3": {
+  "n_files": 32,
+  "n_states": 6400,
+  "ceiling_state": 0.08378626040238579,
+  "ceiling_state_p99": 2.6667360132697144,
+  "ceiling_cell": 0.0,
+  "cell_ceilings": [
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0
+  ],
+  "frac_s2_nonpositive": 0.92265625,
+  "frac_all_g_zero": 0.5571875,
+  "pedestal_single_draw": 1.539853515625,
+  "dup_gates": {
+   "n_files": 2,
+   "between_var_max_abs": 0.0,
+   "between_exactly_zero": true,
+   "ceilings": [
+    0.0,
+    0.0
+   ]
+  }
+ },
+ "tm2": {
+  "n_files": 32,
+  "n_states": 6400,
+  "ceiling_state": 0.055872773778424596,
+  "ceiling_state_p99": 0.5483100422940947,
+  "ceiling_cell": 0.039527791425201665,
+  "cell_ceilings": [
+   0.0,
+   0.0303,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.5484,
+   0.0,
+   0.6862,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0
+  ],
+  "frac_s2_nonpositive": 0.97265625,
+  "frac_all_g_zero": 0.420625,
+  "pedestal_single_draw": 0.459140625,
+  "dup_gates": {
+   "n_files": 2,
+   "between_var_max_abs": 0.0,
+   "between_exactly_zero": true,
+   "ceilings": [
+    0.0,
+    0.0
+   ]
+  }
+ },
+ "status": "NON-REGISTERED ARCHIVED COMPUTE; adjudicates nothing; estimand first computed pre-registration (21 Aug ideation)",
+ "reproduction": {
+  "note": "ideation-doc ceilings NOT reproduced under any tried definition; reproducible values are lower",
+  "doc_ceiling": {
+   "dv3": 0.2026,
+   "tm2": 0.1184
+  },
+  "doc_ratio": "12-29x WITHDRAWN; interim 7.6x/3.9x also dropped (unreproduced denominators)"
+ }
+}
