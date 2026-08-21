@@ -52,52 +52,61 @@ stages:
     # FUNCTION of dom (cup -> dmc_cup_catch, finger -> dmc_finger_turn_hard)
     # and cannot be produced by a cartesian expansion.
     #
-    # ORDER IS LOAD-BEARING. Lane i takes entries i, i+4, i+8... so a
-    # seed-major listing would hand lane 0 every cup/e1 cell and lane 3 every
-    # finger/e4 cell -- mapping CONDITION onto LANE, i.e. onto GPU. The combo
-    # list is rotated by one position per seed, so each lane cycles through
-    # all four dom x dose conditions across its eight rounds.
+    # `seed` MUST BE THE FIRST KEY. wavegen runs wavespec.balanced_order()
+    # before packing, and that function classes runs by their FIRST VARIABLE
+    # ONLY (wavespec.py:369) then deals one per class in rotation. With `dom`
+    # first there are exactly two classes, the deal alternates cup/finger, and
+    # round-robin over FOUR lanes then puts every cup cell on lanes 0+2 and
+    # every finger cell on lanes 1+3 -- DOMAIN PERFECTLY CONFOUNDED WITH GPU.
+    # That is what this spec generated on the first attempt. With `seed` first
+    # there are eight singleton-per-tier classes, the deal preserves the order
+    # below, and each lane draws all four dom x dose conditions twice.
+    # A1 and B1 escaped this only because their first key was already `seed`.
+    #
+    # Within a seed the combo list is rotated by one position, which is what
+    # makes the post-balanced_order layout come out even. Verified by
+    # replicating balanced_order + assign_lanes, not by assumption.
     runs:
-      # -- round 1 (lanes 0-3), combos rotated by 0 --
-      - {run_id: tm2r3_cup_e1_seed59, dom: cup, dose: e1, task: dmc_cup_catch, seed: 59}
-      - {run_id: tm2r3_cup_e4_seed59, dom: cup, dose: e4, task: dmc_cup_catch, seed: 59}
-      - {run_id: tm2r3_finger_e1_seed59, dom: finger, dose: e1, task: dmc_finger_turn_hard, seed: 59}
-      - {run_id: tm2r3_finger_e4_seed59, dom: finger, dose: e4, task: dmc_finger_turn_hard, seed: 59}
-      # -- round 2 (lanes 0-3), combos rotated by 1 --
-      - {run_id: tm2r3_cup_e4_seed60, dom: cup, dose: e4, task: dmc_cup_catch, seed: 60}
-      - {run_id: tm2r3_finger_e1_seed60, dom: finger, dose: e1, task: dmc_finger_turn_hard, seed: 60}
-      - {run_id: tm2r3_finger_e4_seed60, dom: finger, dose: e4, task: dmc_finger_turn_hard, seed: 60}
-      - {run_id: tm2r3_cup_e1_seed60, dom: cup, dose: e1, task: dmc_cup_catch, seed: 60}
-      # -- round 3 (lanes 0-3), combos rotated by 2 --
-      - {run_id: tm2r3_finger_e1_seed61, dom: finger, dose: e1, task: dmc_finger_turn_hard, seed: 61}
-      - {run_id: tm2r3_finger_e4_seed61, dom: finger, dose: e4, task: dmc_finger_turn_hard, seed: 61}
-      - {run_id: tm2r3_cup_e1_seed61, dom: cup, dose: e1, task: dmc_cup_catch, seed: 61}
-      - {run_id: tm2r3_cup_e4_seed61, dom: cup, dose: e4, task: dmc_cup_catch, seed: 61}
-      # -- round 4 (lanes 0-3), combos rotated by 3 --
-      - {run_id: tm2r3_finger_e4_seed62, dom: finger, dose: e4, task: dmc_finger_turn_hard, seed: 62}
-      - {run_id: tm2r3_cup_e1_seed62, dom: cup, dose: e1, task: dmc_cup_catch, seed: 62}
-      - {run_id: tm2r3_cup_e4_seed62, dom: cup, dose: e4, task: dmc_cup_catch, seed: 62}
-      - {run_id: tm2r3_finger_e1_seed62, dom: finger, dose: e1, task: dmc_finger_turn_hard, seed: 62}
-      # -- round 5 (lanes 0-3), combos rotated by 4 --
-      - {run_id: tm2r3_cup_e1_seed63, dom: cup, dose: e1, task: dmc_cup_catch, seed: 63}
-      - {run_id: tm2r3_cup_e4_seed63, dom: cup, dose: e4, task: dmc_cup_catch, seed: 63}
-      - {run_id: tm2r3_finger_e1_seed63, dom: finger, dose: e1, task: dmc_finger_turn_hard, seed: 63}
-      - {run_id: tm2r3_finger_e4_seed63, dom: finger, dose: e4, task: dmc_finger_turn_hard, seed: 63}
-      # -- round 6 (lanes 0-3), combos rotated by 5 --
-      - {run_id: tm2r3_cup_e4_seed64, dom: cup, dose: e4, task: dmc_cup_catch, seed: 64}
-      - {run_id: tm2r3_finger_e1_seed64, dom: finger, dose: e1, task: dmc_finger_turn_hard, seed: 64}
-      - {run_id: tm2r3_finger_e4_seed64, dom: finger, dose: e4, task: dmc_finger_turn_hard, seed: 64}
-      - {run_id: tm2r3_cup_e1_seed64, dom: cup, dose: e1, task: dmc_cup_catch, seed: 64}
-      # -- round 7 (lanes 0-3), combos rotated by 6 --
-      - {run_id: tm2r3_finger_e1_seed65, dom: finger, dose: e1, task: dmc_finger_turn_hard, seed: 65}
-      - {run_id: tm2r3_finger_e4_seed65, dom: finger, dose: e4, task: dmc_finger_turn_hard, seed: 65}
-      - {run_id: tm2r3_cup_e1_seed65, dom: cup, dose: e1, task: dmc_cup_catch, seed: 65}
-      - {run_id: tm2r3_cup_e4_seed65, dom: cup, dose: e4, task: dmc_cup_catch, seed: 65}
-      # -- round 8 (lanes 0-3), combos rotated by 7 --
-      - {run_id: tm2r3_finger_e4_seed66, dom: finger, dose: e4, task: dmc_finger_turn_hard, seed: 66}
-      - {run_id: tm2r3_cup_e1_seed66, dom: cup, dose: e1, task: dmc_cup_catch, seed: 66}
-      - {run_id: tm2r3_cup_e4_seed66, dom: cup, dose: e4, task: dmc_cup_catch, seed: 66}
-      - {run_id: tm2r3_finger_e1_seed66, dom: finger, dose: e1, task: dmc_finger_turn_hard, seed: 66}
+      # -- seed 59: combos rotated by 0 --
+      - {seed: 59, dom: cup, dose: e1, task: dmc_cup_catch, run_id: tm2r3_cup_e1_seed59}
+      - {seed: 59, dom: cup, dose: e4, task: dmc_cup_catch, run_id: tm2r3_cup_e4_seed59}
+      - {seed: 59, dom: finger, dose: e1, task: dmc_finger_turn_hard, run_id: tm2r3_finger_e1_seed59}
+      - {seed: 59, dom: finger, dose: e4, task: dmc_finger_turn_hard, run_id: tm2r3_finger_e4_seed59}
+      # -- seed 60: combos rotated by 1 --
+      - {seed: 60, dom: cup, dose: e4, task: dmc_cup_catch, run_id: tm2r3_cup_e4_seed60}
+      - {seed: 60, dom: finger, dose: e1, task: dmc_finger_turn_hard, run_id: tm2r3_finger_e1_seed60}
+      - {seed: 60, dom: finger, dose: e4, task: dmc_finger_turn_hard, run_id: tm2r3_finger_e4_seed60}
+      - {seed: 60, dom: cup, dose: e1, task: dmc_cup_catch, run_id: tm2r3_cup_e1_seed60}
+      # -- seed 61: combos rotated by 2 --
+      - {seed: 61, dom: finger, dose: e1, task: dmc_finger_turn_hard, run_id: tm2r3_finger_e1_seed61}
+      - {seed: 61, dom: finger, dose: e4, task: dmc_finger_turn_hard, run_id: tm2r3_finger_e4_seed61}
+      - {seed: 61, dom: cup, dose: e1, task: dmc_cup_catch, run_id: tm2r3_cup_e1_seed61}
+      - {seed: 61, dom: cup, dose: e4, task: dmc_cup_catch, run_id: tm2r3_cup_e4_seed61}
+      # -- seed 62: combos rotated by 3 --
+      - {seed: 62, dom: finger, dose: e4, task: dmc_finger_turn_hard, run_id: tm2r3_finger_e4_seed62}
+      - {seed: 62, dom: cup, dose: e1, task: dmc_cup_catch, run_id: tm2r3_cup_e1_seed62}
+      - {seed: 62, dom: cup, dose: e4, task: dmc_cup_catch, run_id: tm2r3_cup_e4_seed62}
+      - {seed: 62, dom: finger, dose: e1, task: dmc_finger_turn_hard, run_id: tm2r3_finger_e1_seed62}
+      # -- seed 63: combos rotated by 4 --
+      - {seed: 63, dom: cup, dose: e1, task: dmc_cup_catch, run_id: tm2r3_cup_e1_seed63}
+      - {seed: 63, dom: cup, dose: e4, task: dmc_cup_catch, run_id: tm2r3_cup_e4_seed63}
+      - {seed: 63, dom: finger, dose: e1, task: dmc_finger_turn_hard, run_id: tm2r3_finger_e1_seed63}
+      - {seed: 63, dom: finger, dose: e4, task: dmc_finger_turn_hard, run_id: tm2r3_finger_e4_seed63}
+      # -- seed 64: combos rotated by 5 --
+      - {seed: 64, dom: cup, dose: e4, task: dmc_cup_catch, run_id: tm2r3_cup_e4_seed64}
+      - {seed: 64, dom: finger, dose: e1, task: dmc_finger_turn_hard, run_id: tm2r3_finger_e1_seed64}
+      - {seed: 64, dom: finger, dose: e4, task: dmc_finger_turn_hard, run_id: tm2r3_finger_e4_seed64}
+      - {seed: 64, dom: cup, dose: e1, task: dmc_cup_catch, run_id: tm2r3_cup_e1_seed64}
+      # -- seed 65: combos rotated by 6 --
+      - {seed: 65, dom: finger, dose: e1, task: dmc_finger_turn_hard, run_id: tm2r3_finger_e1_seed65}
+      - {seed: 65, dom: finger, dose: e4, task: dmc_finger_turn_hard, run_id: tm2r3_finger_e4_seed65}
+      - {seed: 65, dom: cup, dose: e1, task: dmc_cup_catch, run_id: tm2r3_cup_e1_seed65}
+      - {seed: 65, dom: cup, dose: e4, task: dmc_cup_catch, run_id: tm2r3_cup_e4_seed65}
+      # -- seed 66: combos rotated by 7 --
+      - {seed: 66, dom: finger, dose: e4, task: dmc_finger_turn_hard, run_id: tm2r3_finger_e4_seed66}
+      - {seed: 66, dom: cup, dose: e1, task: dmc_cup_catch, run_id: tm2r3_cup_e1_seed66}
+      - {seed: 66, dom: cup, dose: e4, task: dmc_cup_catch, run_id: tm2r3_cup_e4_seed66}
+      - {seed: 66, dom: finger, dose: e1, task: dmc_finger_turn_hard, run_id: tm2r3_finger_e1_seed66}
     logdir: "tm2r3/tm2r3_${dom}_${dose}_seed${seed}"
     cmd: >-
       TDMPC2_ROOT=/workspace/tdmpc2/tdmpc2
