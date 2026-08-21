@@ -758,19 +758,24 @@ inst = {"schema":3, "now": now, "entries": {
     "nowit":   mk(),
     "live":    mk(newest_mtime=now, witness=W("a")),
     "box":     mk(is_container=True, witness=W("a")),
-    "wave/run": mk(witness=W("d"))}}            # nested key, run_id passed alone
+    "wave/run": mk(witness=W("d")),             # nested key, run_id passed alone
+    "sub/ckpt9": mk(witness=W("a"))}}           # SUBSTRATE: read by a live command
 rcc = {"schema":3, "entries": {
     "same":    mk(witness=W("a")),
     "differs": mk(witness=W("b")),
     "nowit":   mk(),
     "live":    mk(witness=W("a")),
     "box":     mk(witness=W("a")),
-    "wave/run": mk(witness=W("d"))}}
+    "wave/run": mk(witness=W("d")),
+    "sub/ckpt9": mk(witness=W("a"))}}
 d = tempfile.mkdtemp(); a=os.path.join(d,"i"); b=os.path.join(d,"r"); m=os.path.join(d,"m")
 json.dump(inst, open(a,"w")); json.dump(rcc, open(b,"w"))
 json.dump({k:v["newest_mtime"] for k,v in inst["entries"].items()}, open(m,"w"))
+q = os.path.join(d, "q")
+open(q, "w").write("DV3_TASK_NAME=label bash -lc 'python -m d0.oracle_labels "
+                   "--run_logdir \"$RUNROOT/sub/ckpt9\" --states 200'\n")
 out = subprocess.run([sys.executable, "scripts/ops/free_space.py", "--inst-json", a,
-                      "--rcc-json", b, "--running", "run"],
+                      "--rcc-json", b, "--running", "run", "--queue-text", q],
                      capture_output=True, text=True).stdout
 safe = out.split("HELD")[0]
 checks = [("only the true match is reclaimable", "same" in safe),
@@ -778,7 +783,8 @@ checks = [("only the true match is reclaimable", "same" in safe),
           ("no-witness dir is not called safe", "nowit" not in safe),
           ("freshly-written dir is refused", "live" not in safe),
           ("container is refused", "box" not in safe),
-          ("--running matches a nested key's run-id tail", "wave/run" not in safe)]
+          ("--running matches a nested key's run-id tail", "wave/run" not in safe),
+          ("substrate named by a live command is refused", "sub/ckpt9" not in safe)]
 for name, good in checks:
     print(("  PASS " if good else "  FAIL ") + name)
 sys.exit(0 if all(g for _, g in checks) else 1)

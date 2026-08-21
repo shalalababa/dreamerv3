@@ -49,6 +49,9 @@ def main():
   ap.add_argument("--mtime-json", default=None,
                   help='{"name": <newest mtime epoch under it>} from the instance')
   ap.add_argument("--fresh-min", type=int, default=120)
+  ap.add_argument("--queue-text", default=None,
+                  help="concatenated tasks.txt of the instance's ACTIVE queues; "
+                       "any entry NAMED in a queued or running command is refused")
   ap.add_argument("--now", type=float, default=None, help="instance clock, epoch")
   a = ap.parse_args()
   inst_doc = json.load(open(a.inst_json))
@@ -66,8 +69,17 @@ def main():
   # header describes -- it survived the granularity fix and had to be found by
   # review, not by the guard itself.
   running = set(a.running)
-  def is_running(key: str) -> bool:
-    return key in running or key.rsplit("/", 1)[-1] in running
+  # SUBSTRATE is the third way a dir can be in use, and neither of the other
+  # guards sees it. `r3_local/r3_finger_e1_seed31` is the INPUT checkpoint of a
+  # running labeler pass: it is not a run_id in --running, and nothing writes to
+  # it, so its mtime is hours old and its RCC copy is complete -- SAFE by every
+  # test, and deleting it would have killed 17 live passes (21 Aug). A dir named
+  # in any queued or running command is in use, whoever is reading it.
+  qtext = open(a.queue_text).read() if a.queue_text else ""
+  def in_use(key: str) -> bool:
+    if key in running or key.rsplit("/", 1)[-1] in running:
+      return True
+    return bool(qtext) and (key in qtext or f"/{key.rsplit('/', 1)[-1]}" in qtext)
 
   import time
   # Freshness is the guard that does not depend on names lining up, so it is
@@ -83,8 +95,8 @@ def main():
   for name, x in sorted(inst.items()):
     y = rcc.get(name)
     age_min = (now - mt[name]) / 60 if name in mt else None
-    if is_running(name):
-      held.append((name, x["bytes"], "RUNNING -- counters still moving"))
+    if in_use(name):
+      held.append((name, x["bytes"], "IN USE -- running, or named by a queued command"))
     elif x.get("is_container"):
       held.append((name, x["bytes"],
                    "CONTAINER -- not a run dir; a shared name proves nothing "
