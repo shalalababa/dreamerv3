@@ -75,3 +75,53 @@ literal pins {occupancy window [0.08, 0.20], n=8/8, α=.05}.
 search-dose feasibility → dated occupancy FILL → build buffer → 8 fits +
 16 adapts (~48 GPU-h) → collate + witness → bundle + sha manifest →
 **[ME] ONE read**.
+
+---
+
+## FILL (ops, dated 2026-08-20) — the registered draw and its feasibility gate
+
+Reserved by the "Curation feasibility gate" clause above ("Realized
+occupancy recorded here by dated edit before any fit starts"). This block
+records a measurement; it changes no decision rule.
+
+**Command, as pinned by amendment 1** (run once, RCC caslake job `53746920`,
+`ops/waves/mindose_reacher/search_dose.sbatch`; every flag verified against
+the subparser before running so the registered draw was not spent on a typo —
+`--levels 4 --beam 40 --n_episodes 200 --n_candidates 400 --dirichlet 0.3
+--seed 0` are exactly the subparser defaults):
+
+```
+python -m probing.build_controlled_replay search-dose \
+  --index   $RUNROOT/axis1_reacher/episodes.json \
+  --ref_replay $RUNROOT/pilot_goal_reacher_seed1/replay \
+  --levels 4 --beam 40 --n_episodes 200 --n_candidates 400 \
+  --dirichlet 0.3 --seed 0 \
+  --output  $RUNROOT/axis1_reacher/dose.json
+```
+
+`--ref_replay` is copied verbatim from the registered reacher q1 search's own
+provenance (`axis1_reacher/pairs.json` records
+`ref_replay = $RUNROOT/pilot_goal_reacher_seed1/replay`, `n_episodes 200`).
+
+**Realized occupancies**
+
+| level | occupancy | target |
+|---|---|---|
+| d0 | 0.000000 | 0.0000 |
+| **d1** | **0.097837** | 0.0932 |
+| d2 | 0.185035 | 0.1863 |
+| d3 | 0.273711 | 0.2795 |
+
+`decision: OK`; 378 feasible candidates; max pairwise `dcov` 0.0109 against
+`cov_tol` 0.0144; overlap 0.11 against the 0.2 cap.
+
+**Gate outcome: PASSES.** Level-1 occupancy **0.097837 ∈ [0.08, 0.20]**, so
+the wave does NOT refuse pre-outcome. No re-draw was performed and none is
+admissible (a second draw would be a second look at this gate).
+
+**Holdout disposition**: `--holdout` omitted, per amendment 1 — the flag takes
+E4 probeset manifest paths and no reacher probeset exists (`e4_probesets`
+holds cup/finger/synth only). The obligation is inverted and registered: any
+future reacher probeset measured on these fits must exclude this buffer's
+episodes at probeset-build time. The buffer manifest carries
+`holdout_disposition: "no-probeset-exists"`.
