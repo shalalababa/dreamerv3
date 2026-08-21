@@ -67,7 +67,13 @@ built + selfchecked BEFORE THE READ)
   registered SMOKE shows a systematic sign on the resample controls
   (|mean| > half the distractor delta), the fire rule is amended to
   a control-relative comparator BEFORE the wave submits** — the
-  amendment path is registered here, pre-outcome.
+  amendment path is registered here, pre-outcome. **Comparator form,
+  pinned 21 Aug pre-smoke (#30 M8, implemented as
+  `--fire_rule control_relative` in the frozen reader): the per-run
+  statistic becomes [distractor delta MINUS the mean of the two
+  fresh-resample deltas] < 0, same ≥7/8 rule; the flag may be used
+  ONLY after a triggering smoke report, and the reader records which
+  rule ran.**
 - **D-family: DESCRIPTIVE ONLY** (no fire; #29 C-B1): the dual-mask
   decomposition per channel (substitution vs resample), the dup0
   anchor, and the velocity control; the taxonomy-cell narrative rests
