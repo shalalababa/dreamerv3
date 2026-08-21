@@ -148,9 +148,25 @@ def _looks_like_run(d: str) -> bool:
   return any(os.path.isfile(os.path.join(d, m)) for m in IDENTITY_FILES)
 
 
+def _is_own_run(d: str) -> bool:
+  """d is unambiguously a run dir in its own right: it carries BOTH a producer
+  mark and an identity file DIRECTLY. The `tm2r3` namespace that cost 16 live
+  runs had neither at its top level, so this cannot readmit that case."""
+  return (any(os.path.exists(os.path.join(d, m)) for m in PRODUCER_MARKS)
+          and any(os.path.isfile(os.path.join(d, m)) for m in IDENTITY_FILES))
+
+
 def is_container(d: str) -> bool:
   """Structure decides, not marks: a dir holding run-shaped children is a
   namespace even if it also carries a file that looks like a mark."""
+  # ...unless d is itself a run. DreamerV3 SE runs write
+  # ckpt_snapshots/manifest.json, and manifest.json is an IDENTITY file, so the
+  # child test alone declared EVERY se_* run a container (found 21 Aug). That
+  # is a fail-open, not just noise: destroy sorts containers into `boxes`,
+  # which are skipped by the coverage gate -- so the run's own scores.jsonl,
+  # metrics.jsonl and config.yaml went unchecked and unwitnessed.
+  if _is_own_run(d):
+    return False
   try:
     kids = [e for e in os.listdir(d) if os.path.isdir(os.path.join(d, e))]
   except OSError:

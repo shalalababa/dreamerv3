@@ -805,11 +805,29 @@ with contextlib.redirect_stdout(buf2):
     inv.main()
 e2 = json.loads(buf2.getvalue())["entries"]
 ok2 = e2["box/run1"]["witness"] != e["box/run1"]["witness"]
+# A REAL run dir is never a namespace, however run-shaped its children look.
+# DreamerV3 SE runs carry ckpt_snapshots/manifest.json -- an IDENTITY file --
+# which made every one of them a "container", and destroy SKIPS containers, so
+# their scores.jsonl/metrics.jsonl/config.yaml went unchecked (found 21 Aug).
+r2 = os.path.join(d, "se_run")
+os.makedirs(os.path.join(r2, "ckpt_snapshots"))
+os.makedirs(os.path.join(r2, "replay"))
+open(os.path.join(r2, "config.yaml"), "w").write("seed: 1\n")
+open(os.path.join(r2, "scores.jsonl"), "w").write("{}\n")
+open(os.path.join(r2, "ckpt_snapshots", "manifest.json"), "w").write("{}\n")
+buf3 = io.StringIO()
+with contextlib.redirect_stdout(buf3):
+    inv.main()
+e3 = json.loads(buf3.getvalue())["entries"]
+ok3 = "se_run" in e3 and not e3["se_run"]["is_container"] \
+    and "se_run/replay" not in e3
 print("  PASS container is keyed per run, not by its own name" if ok1 else
       "  FAIL container not descended")
 print("  PASS witness sha tracks config content" if ok2 else
       "  FAIL witness sha ignored a config change")
-sys.exit(0 if ok1 and ok2 else 1)
+print("  PASS a run dir with a manifest-bearing child is still ONE run" if ok3
+      else "  FAIL run dir split into sub-entries (destroy would skip it)")
+sys.exit(0 if ok1 and ok2 and ok3 else 1)
 SCEOF
 [ $? -eq 0 ] && ok "inventory granularity + witness" || bad "inventory granularity + witness"
 
