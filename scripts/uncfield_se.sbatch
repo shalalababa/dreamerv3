@@ -43,6 +43,8 @@
 #   DISTRACTOR_MOD_HI          config defaults, Stage-1-inert
 #   DISTRACTOR_SCALE           flat arm (amendment 3): 0.35891393;
 #                              default 1.0 = the Stage-1 hardcoded value
+#   EXPL_CONFIG                B2 APT column: expl_apt; default
+#                              expl_p2e = the Stage-1 hardcoded value
 #   DISAG_BOOTSTRAP            noboot arm (amendment 4, seeds 40-43):
 #                              set False (capitalized — elements flags
 #                              reject lowercase); default True =
@@ -109,7 +111,7 @@ echo "[$(date)] SE run RUN_ID=$RUN_ID TASK=$TASK SEED=$SEED STEPS=$STEPS"
 STOP_STEP=$("$PYTHON" -c "print(int(float('$STEPS')))")
 
 "$PYTHON" -u dreamerv3/main.py \
-  --logdir "$LOGDIR" --configs dmc_proprio expl_p2e \
+  --logdir "$LOGDIR" --configs dmc_proprio "${EXPL_CONFIG:-expl_p2e}" \
   --task "$TASK" --seed "$SEED" \
   --env.dmc.render False \
   --distractor.dim "${DISTRACTOR_DIM:-8}" --distractor.scale "${DISTRACTOR_SCALE:-1.0}" --distractor.basesd "$BASESD_N" \
