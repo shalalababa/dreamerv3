@@ -118,18 +118,40 @@ def main() -> None:
     sys.exit(1)
 
   skip = DEFAULT_EXCLUDE | set(a.exclude)
+
+  def entries_under(root_dir: str):
+    """Yield (key, path) at RUN-DIR granularity, descending through containers.
+
+    Comparing top-level names is what let `tm2r3` on an instance match an
+    unrelated `tm2r3` on RCC and be judged covered. A container is not a unit
+    of comparison: it is a namespace, and two namespaces sharing a name say
+    nothing about the runs inside them. Descending makes the key
+    `tm2r3/tm2r3_cup_e1_seed59`, which is a real run on both sides or on
+    neither. One level only -- deeper nesting is not a layout we use, and
+    unbounded recursion would walk replay shards as if they were runs."""
+    for nm in sorted(os.listdir(root_dir)):
+      if nm in skip:
+        continue
+      pp = os.path.join(root_dir, nm)
+      if not os.path.isdir(pp):
+        continue
+      if is_container(pp):
+        kids = [k for k in sorted(os.listdir(pp))
+                if os.path.isdir(os.path.join(pp, k))]
+        if kids:
+          for k in kids:
+            yield f"{nm}/{k}", os.path.join(pp, k)
+          continue
+      yield nm, pp
   # --only is a filter, never a source: a requested name that is absent stays
   # absent from the output, which is what makes the caller report it MISSING
   # rather than silently treating it as covered.
   want = set(a.only) if a.only is not None else None
   out = {}
-  for name in sorted(os.listdir(root)):
-    if name in skip:
-      continue
-    if want is not None and name not in want:
-      continue
-    p = os.path.join(root, name)
-    if not os.path.isdir(p):
+  for name, p in entries_under(root):
+    # --only may name either a container or a specific run; accept both so a
+    # caller that knows only the top-level name still gets its children.
+    if want is not None and not (name in want or name.split("/", 1)[0] in want):
       continue
     n_files, n_bytes, newest = walk(p)
     out[name] = {
