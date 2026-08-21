@@ -43,6 +43,10 @@
 #   DISTRACTOR_MOD_HI          config defaults, Stage-1-inert
 #   DISTRACTOR_SCALE           flat arm (amendment 3): 0.35891393;
 #                              default 1.0 = the Stage-1 hardcoded value
+#   DISAG_BOOTSTRAP            noboot arm (amendment 4, seeds 40-43):
+#                              set False (capitalized — elements flags
+#                              reject lowercase); default True =
+#                              the config/Stage-1 value
 #
 # GOTCHAS: clean shell (module purge; --export=ALL segfault rule);
 # submit from repo root. Wrapper streams are keyed to SEED via main.py's
@@ -116,6 +120,7 @@ STOP_STEP=$("$PYTHON" -c "print(int(float('$STEPS')))")
   --distractor.mod_index "${DISTRACTOR_MOD_INDEX:-0}" \
   --distractor.mod_lo "${DISTRACTOR_MOD_LO:-0.0}" \
   --distractor.mod_hi "${DISTRACTOR_MOD_HI:-1.0}" \
+  --agent.expl.disag_bootstrap "${DISAG_BOOTSTRAP:-True}" \
   --planted.source_key "$SOURCE_KEY" --planted.basesd "$BASESD_PLANTED" \
   --planted.gate_key "${GATE_KEY:-}" \
   --planted.gate_index "${GATE_INDEX:-0}" \

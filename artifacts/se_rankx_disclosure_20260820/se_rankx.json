@@ -1,0 +1,358 @@
+{
+ "status": "DESCRIPTIVE DISCLOSURE \u2014 unregistered data, no claims (PREREG_nfi_rankx_disclosure_20260820)",
+ "stage1_registered_anchor": {
+  "delta": -0.017,
+  "bca": [
+   -0.0277,
+   -0.0064
+  ],
+  "note": "the registered Stage-1 P-SE2 read (8 runs; anchor context)"
+ },
+ "hetero": {
+  "n": 4,
+  "delta_overall": {
+   "mean": -0.0821735173947705,
+   "bca": [
+    -0.10078133463557618,
+    -0.062462390504821136
+   ],
+   "per_run": [
+    -0.083967,
+    -0.107307,
+    -0.056215,
+    -0.081205
+   ],
+   "sign_agreement": "4/4 negative"
+  },
+  "delta_dfam": {
+   "mean": 0.0554324399629446,
+   "bca": [
+    0.04995411933761905,
+    0.06357029330772623
+   ],
+   "per_run": [
+    0.047841,
+    0.06623,
+    0.055592,
+    0.052067
+   ],
+   "sign_agreement": "0/4 negative"
+  },
+  "delta_noise": {
+   "mean": -0.13760595735771508,
+   "bca": [
+    -0.1634704773421523,
+    -0.11717293505302923
+   ],
+   "per_run": [
+    -0.131808,
+    -0.173536,
+    -0.111806,
+    -0.133273
+   ],
+   "sign_agreement": "4/4 negative"
+  },
+  "p_rank_per_run": [
+   1.0,
+   1.0,
+   1.0,
+   1.0
+  ]
+ },
+ "flat": {
+  "n": 4,
+  "delta_overall": {
+   "mean": -0.008769902753540698,
+   "bca": [
+    -0.014992078268112718,
+    0.0017178095662967185
+   ],
+   "per_run": [
+    0.005314,
+    -0.016999,
+    -0.014323,
+    -0.009072
+   ],
+   "sign_agreement": "3/4 negative"
+  },
+  "delta_dfam": {
+   "mean": -0.0012999663294628316,
+   "bca": [
+    -0.005324122177283133,
+    0.004879235377916923
+   ],
+   "per_run": [
+    -0.004689,
+    0.006424,
+    0.000246,
+    -0.007181
+   ],
+   "sign_agreement": "2/4 negative"
+  },
+  "delta_noise": {
+   "mean": -0.007469936424077839,
+   "bca": [
+    -0.018995721312644764,
+    0.004055848464489087
+   ],
+   "per_run": [
+    0.010003,
+    -0.023423,
+    -0.014569,
+    -0.001891
+   ],
+   "sign_agreement": "3/4 negative"
+  },
+  "p_rank_per_run": [
+   0.18181818181818182,
+   0.997002997002997,
+   0.988011988011988,
+   0.8931068931068931
+  ]
+ },
+ "stage1": {
+  "n": 8,
+  "delta_overall": {
+   "mean": -0.016960101799574023,
+   "bca": [
+    -0.027680385637645445,
+    -0.007158151221919817
+   ],
+   "per_run": [
+    -0.016932,
+    -0.018033,
+    -0.034994,
+    -0.02546,
+    0.005477,
+    -0.002565,
+    -0.002393,
+    -0.040781
+   ],
+   "sign_agreement": "7/8 negative"
+  },
+  "delta_dfam": {
+   "mean": -0.011073176981935919,
+   "bca": [
+    -0.014364099122783951,
+    -0.008166690893740225
+   ],
+   "per_run": [
+    -0.00778,
+    -0.004777,
+    -0.015529,
+    -0.009048,
+    -0.010742,
+    -0.01432,
+    -0.018395,
+    -0.007994
+   ],
+   "sign_agreement": "8/8 negative"
+  },
+  "delta_noise": {
+   "mean": -0.005886924817638049,
+   "bca": [
+    -0.01676856943952451,
+    0.007067446155379309
+   ],
+   "per_run": [
+    -0.009152,
+    -0.013255,
+    -0.019465,
+    -0.016411,
+    0.016218,
+    0.011755,
+    0.016002,
+    -0.032786
+   ],
+   "sign_agreement": "5/8 negative"
+  },
+  "p_rank_per_run": [
+   0.988011988011988,
+   0.996003996003996,
+   1.0,
+   0.993006993006993,
+   0.22577422577422576,
+   0.6443556443556444,
+   0.6153846153846154,
+   0.999000999000999
+  ]
+ },
+ "per_run": [
+  {
+   "run_dir": "/home/rickybao/projects/dreamerv3/local_results/uncfield_se_grad_20260817_101139/runroot/se_het_s28",
+   "arm": "hetero",
+   "train_seed": 28,
+   "delta_overall": -0.08396727647108915,
+   "delta_dfam": 0.04784114593048022,
+   "delta_noise": -0.1318084224015692,
+   "p_rank": 1.0,
+   "K": 256,
+   "topk": 10
+  },
+  {
+   "run_dir": "/home/rickybao/projects/dreamerv3/local_results/uncfield_se_grad_20260817_101139/runroot/se_het_s29",
+   "arm": "hetero",
+   "train_seed": 29,
+   "delta_overall": -0.10730661992663848,
+   "delta_dfam": 0.0662298260271823,
+   "delta_noise": -0.17353644595382067,
+   "p_rank": 1.0,
+   "K": 256,
+   "topk": 10
+  },
+  {
+   "run_dir": "/home/rickybao/projects/dreamerv3/local_results/uncfield_se_grad_20260817_101139/runroot/se_het_s30",
+   "arm": "hetero",
+   "train_seed": 30,
+   "delta_overall": -0.056214694418965094,
+   "delta_dfam": 0.055591695149357995,
+   "delta_noise": -0.11180638956832323,
+   "p_rank": 1.0,
+   "K": 256,
+   "topk": 10
+  },
+  {
+   "run_dir": "/home/rickybao/projects/dreamerv3/local_results/uncfield_se_grad_20260817_101139/runroot/se_het_s31",
+   "arm": "hetero",
+   "train_seed": 31,
+   "delta_overall": -0.08120547876238926,
+   "delta_dfam": 0.052067092744757876,
+   "delta_noise": -0.13327257150714722,
+   "p_rank": 1.0,
+   "K": 256,
+   "topk": 10
+  },
+  {
+   "run_dir": "/home/rickybao/projects/dreamerv3/local_results/uncfield_se_grad_20260817_101139/runroot/se_flat_s36",
+   "arm": "flat",
+   "train_seed": 36,
+   "delta_overall": 0.00531441105557573,
+   "delta_dfam": -0.004688567061963966,
+   "delta_noise": 0.010002978117539918,
+   "p_rank": 0.18181818181818182,
+   "K": 256,
+   "topk": 10
+  },
+  {
+   "run_dir": "/home/rickybao/projects/dreamerv3/local_results/uncfield_se_grad_20260817_101139/runroot/se_flat_s37",
+   "arm": "flat",
+   "train_seed": 37,
+   "delta_overall": -0.016998884216071874,
+   "delta_dfam": 0.0064237630272883095,
+   "delta_noise": -0.023422647243360406,
+   "p_rank": 0.997002997002997,
+   "K": 256,
+   "topk": 10
+  },
+  {
+   "run_dir": "/home/rickybao/projects/dreamerv3/local_results/uncfield_se_grad_20260817_101139/runroot/se_flat_s38",
+   "arm": "flat",
+   "train_seed": 38,
+   "delta_overall": -0.014323142952126333,
+   "delta_dfam": 0.0002456524298027618,
+   "delta_noise": -0.014568795381929123,
+   "p_rank": 0.988011988011988,
+   "K": 256,
+   "topk": 10
+  },
+  {
+   "run_dir": "/home/rickybao/projects/dreamerv3/local_results/uncfield_se_grad_20260817_101139/runroot/se_flat_s39",
+   "arm": "flat",
+   "train_seed": 39,
+   "delta_overall": -0.009071994901540315,
+   "delta_dfam": -0.0071807137129784315,
+   "delta_noise": -0.0018912811885617442,
+   "p_rank": 0.8931068931068931,
+   "K": 256,
+   "topk": 10
+  },
+  {
+   "run_dir": "/home/rickybao/projects/dreamerv3/local_results/uncfield_se_stage1_20260813_193324/se_cheetah_seed10",
+   "arm": "stage1",
+   "train_seed": 10,
+   "delta_overall": -0.016932388675614085,
+   "delta_dfam": -0.007779919721477069,
+   "delta_noise": -0.009152468954137016,
+   "p_rank": 0.988011988011988,
+   "K": 256,
+   "topk": 10
+  },
+  {
+   "run_dir": "/home/rickybao/projects/dreamerv3/local_results/uncfield_se_stage1_20260813_193324/se_cheetah_seed11",
+   "arm": "stage1",
+   "train_seed": 11,
+   "delta_overall": -0.018032767095471525,
+   "delta_dfam": -0.004777280885829516,
+   "delta_noise": -0.013255486209642009,
+   "p_rank": 0.996003996003996,
+   "K": 256,
+   "topk": 10
+  },
+  {
+   "run_dir": "/home/rickybao/projects/dreamerv3/local_results/uncfield_se_stage1_20260813_193324/se_cheetah_seed12",
+   "arm": "stage1",
+   "train_seed": 12,
+   "delta_overall": -0.03499371570661913,
+   "delta_dfam": -0.015529027478739021,
+   "delta_noise": -0.01946468822787989,
+   "p_rank": 1.0,
+   "K": 256,
+   "topk": 10
+  },
+  {
+   "run_dir": "/home/rickybao/projects/dreamerv3/local_results/uncfield_se_stage1_20260813_193324/se_cheetah_seed13",
+   "arm": "stage1",
+   "train_seed": 13,
+   "delta_overall": -0.025459840527807476,
+   "delta_dfam": -0.009048471329528684,
+   "delta_noise": -0.01641136919827857,
+   "p_rank": 0.993006993006993,
+   "K": 256,
+   "topk": 10
+  },
+  {
+   "run_dir": "/home/rickybao/projects/dreamerv3/local_results/uncfield_se_stage1_20260813_193324/se_cheetah_seed14",
+   "arm": "stage1",
+   "train_seed": 14,
+   "delta_overall": 0.0054768359489851814,
+   "delta_dfam": -0.010741551243930891,
+   "delta_noise": 0.016218387192916073,
+   "p_rank": 0.22577422577422576,
+   "K": 256,
+   "topk": 10
+  },
+  {
+   "run_dir": "/home/rickybao/projects/dreamerv3/local_results/uncfield_se_stage1_20260813_193324/se_cheetah_seed15",
+   "arm": "stage1",
+   "train_seed": 15,
+   "delta_overall": -0.0025650395383479685,
+   "delta_dfam": -0.014320152916820178,
+   "delta_noise": 0.011755113378472182,
+   "p_rank": 0.6443556443556444,
+   "K": 256,
+   "topk": 10
+  },
+  {
+   "run_dir": "/home/rickybao/projects/dreamerv3/local_results/uncfield_se_stage1_20260813_193324/se_cheetah_seed16",
+   "arm": "stage1",
+   "train_seed": 16,
+   "delta_overall": -0.0023930277731462057,
+   "delta_dfam": -0.018394540075646032,
+   "delta_noise": 0.016001512302499854,
+   "p_rank": 0.6153846153846154,
+   "K": 256,
+   "topk": 10
+  },
+  {
+   "run_dir": "/home/rickybao/projects/dreamerv3/local_results/uncfield_se_stage1_20260813_193324/se_cheetah_seed17",
+   "arm": "stage1",
+   "train_seed": 17,
+   "delta_overall": -0.040780871028570975,
+   "delta_dfam": -0.007994472203515957,
+   "delta_noise": -0.03278639882505502,
+   "p_rank": 0.999000999000999,
+   "K": 256,
+   "topk": 10
+  }
+ ]
+}
