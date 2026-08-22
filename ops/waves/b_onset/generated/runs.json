@@ -1,0 +1,809 @@
+{
+ "wave_id": "b_onset",
+ "spec": "/home/rickybao/projects/dreamerv3/ops/waves/b_onset/spec.yaml",
+ "prereg": "prereg/PREREG_trackB_onset_20260822.md",
+ "bundle": {
+  "prefix": "b_onset",
+  "include_stages": [
+   "train"
+  ],
+  "cloud_logs": [
+   "se_ons*_s*.out"
+  ]
+ },
+ "stages": [
+  {
+   "name": "train",
+   "target": "vast",
+   "kind": "se_run",
+   "on_failure": "continue",
+   "needs": null
+  }
+ ],
+ "runs": [
+  {
+   "stage": "train",
+   "kind": "se_run",
+   "target": "vast",
+   "run_id": "se_ons25_s96",
+   "cmd": "RUN_ID=se_ons25_s96 TASK=dmc_cheetah_run SEED=96 DISTRACTOR_SCALE=0.25 DISTRACTOR_MOD_KEY= DISTRACTOR_MOD_INDEX=0 DISTRACTOR_MOD_LO=0.0 DISTRACTOR_MOD_HI=1.0 PENALTY_MIX=False PENALTY_SCALE=0.0 PENALTY_GATE_KEY= PENALTY_GATE_INDEX=0 PENALTY_GATE_THRESHOLD=0.0 bash scripts/uncfield_se.sbatch",
+   "vars": {
+    "seed": 96,
+    "scale": "0.25",
+    "run_id": "se_ons25_s96"
+   },
+   "logdir": "se_ons25_s96",
+   "outputs": [
+    "se_ons25_s96"
+   ],
+   "inputs": [],
+   "done_when": [
+    {
+     "exists": "TRAINING_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "file_contains": {
+      "file": "config.yaml",
+      "pattern": "(?<![\\w.])scale:\\s+0\\.(25|3|34|38)\\b"
+     }
+    },
+    {
+     "file_contains": {
+      "file": "config.yaml",
+      "pattern": "penalty_mix:\\s+false"
+     }
+    },
+    {
+     "file_contains": {
+      "file": "ckpt_snapshots/nearest.json",
+      "pattern": "\"milestone\": 500000,\\s+\"step\": (49\\d{4}|[5-9]\\d{5})"
+     }
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 464
+     }
+    }
+   ]
+  },
+  {
+   "stage": "train",
+   "kind": "se_run",
+   "target": "vast",
+   "run_id": "se_ons30_s100",
+   "cmd": "RUN_ID=se_ons30_s100 TASK=dmc_cheetah_run SEED=100 DISTRACTOR_SCALE=0.30 DISTRACTOR_MOD_KEY= DISTRACTOR_MOD_INDEX=0 DISTRACTOR_MOD_LO=0.0 DISTRACTOR_MOD_HI=1.0 PENALTY_MIX=False PENALTY_SCALE=0.0 PENALTY_GATE_KEY= PENALTY_GATE_INDEX=0 PENALTY_GATE_THRESHOLD=0.0 bash scripts/uncfield_se.sbatch",
+   "vars": {
+    "seed": 100,
+    "scale": "0.30",
+    "run_id": "se_ons30_s100"
+   },
+   "logdir": "se_ons30_s100",
+   "outputs": [
+    "se_ons30_s100"
+   ],
+   "inputs": [],
+   "done_when": [
+    {
+     "exists": "TRAINING_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "file_contains": {
+      "file": "config.yaml",
+      "pattern": "(?<![\\w.])scale:\\s+0\\.(25|3|34|38)\\b"
+     }
+    },
+    {
+     "file_contains": {
+      "file": "config.yaml",
+      "pattern": "penalty_mix:\\s+false"
+     }
+    },
+    {
+     "file_contains": {
+      "file": "ckpt_snapshots/nearest.json",
+      "pattern": "\"milestone\": 500000,\\s+\"step\": (49\\d{4}|[5-9]\\d{5})"
+     }
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 464
+     }
+    }
+   ]
+  },
+  {
+   "stage": "train",
+   "kind": "se_run",
+   "target": "vast",
+   "run_id": "se_ons34_s104",
+   "cmd": "RUN_ID=se_ons34_s104 TASK=dmc_cheetah_run SEED=104 DISTRACTOR_SCALE=0.34 DISTRACTOR_MOD_KEY= DISTRACTOR_MOD_INDEX=0 DISTRACTOR_MOD_LO=0.0 DISTRACTOR_MOD_HI=1.0 PENALTY_MIX=False PENALTY_SCALE=0.0 PENALTY_GATE_KEY= PENALTY_GATE_INDEX=0 PENALTY_GATE_THRESHOLD=0.0 bash scripts/uncfield_se.sbatch",
+   "vars": {
+    "seed": 104,
+    "scale": "0.34",
+    "run_id": "se_ons34_s104"
+   },
+   "logdir": "se_ons34_s104",
+   "outputs": [
+    "se_ons34_s104"
+   ],
+   "inputs": [],
+   "done_when": [
+    {
+     "exists": "TRAINING_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "file_contains": {
+      "file": "config.yaml",
+      "pattern": "(?<![\\w.])scale:\\s+0\\.(25|3|34|38)\\b"
+     }
+    },
+    {
+     "file_contains": {
+      "file": "config.yaml",
+      "pattern": "penalty_mix:\\s+false"
+     }
+    },
+    {
+     "file_contains": {
+      "file": "ckpt_snapshots/nearest.json",
+      "pattern": "\"milestone\": 500000,\\s+\"step\": (49\\d{4}|[5-9]\\d{5})"
+     }
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 464
+     }
+    }
+   ]
+  },
+  {
+   "stage": "train",
+   "kind": "se_run",
+   "target": "vast",
+   "run_id": "se_ons38_s108",
+   "cmd": "RUN_ID=se_ons38_s108 TASK=dmc_cheetah_run SEED=108 DISTRACTOR_SCALE=0.38 DISTRACTOR_MOD_KEY= DISTRACTOR_MOD_INDEX=0 DISTRACTOR_MOD_LO=0.0 DISTRACTOR_MOD_HI=1.0 PENALTY_MIX=False PENALTY_SCALE=0.0 PENALTY_GATE_KEY= PENALTY_GATE_INDEX=0 PENALTY_GATE_THRESHOLD=0.0 bash scripts/uncfield_se.sbatch",
+   "vars": {
+    "seed": 108,
+    "scale": "0.38",
+    "run_id": "se_ons38_s108"
+   },
+   "logdir": "se_ons38_s108",
+   "outputs": [
+    "se_ons38_s108"
+   ],
+   "inputs": [],
+   "done_when": [
+    {
+     "exists": "TRAINING_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "file_contains": {
+      "file": "config.yaml",
+      "pattern": "(?<![\\w.])scale:\\s+0\\.(25|3|34|38)\\b"
+     }
+    },
+    {
+     "file_contains": {
+      "file": "config.yaml",
+      "pattern": "penalty_mix:\\s+false"
+     }
+    },
+    {
+     "file_contains": {
+      "file": "ckpt_snapshots/nearest.json",
+      "pattern": "\"milestone\": 500000,\\s+\"step\": (49\\d{4}|[5-9]\\d{5})"
+     }
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 464
+     }
+    }
+   ]
+  },
+  {
+   "stage": "train",
+   "kind": "se_run",
+   "target": "vast",
+   "run_id": "se_ons30_s101",
+   "cmd": "RUN_ID=se_ons30_s101 TASK=dmc_cheetah_run SEED=101 DISTRACTOR_SCALE=0.30 DISTRACTOR_MOD_KEY= DISTRACTOR_MOD_INDEX=0 DISTRACTOR_MOD_LO=0.0 DISTRACTOR_MOD_HI=1.0 PENALTY_MIX=False PENALTY_SCALE=0.0 PENALTY_GATE_KEY= PENALTY_GATE_INDEX=0 PENALTY_GATE_THRESHOLD=0.0 bash scripts/uncfield_se.sbatch",
+   "vars": {
+    "seed": 101,
+    "scale": "0.30",
+    "run_id": "se_ons30_s101"
+   },
+   "logdir": "se_ons30_s101",
+   "outputs": [
+    "se_ons30_s101"
+   ],
+   "inputs": [],
+   "done_when": [
+    {
+     "exists": "TRAINING_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "file_contains": {
+      "file": "config.yaml",
+      "pattern": "(?<![\\w.])scale:\\s+0\\.(25|3|34|38)\\b"
+     }
+    },
+    {
+     "file_contains": {
+      "file": "config.yaml",
+      "pattern": "penalty_mix:\\s+false"
+     }
+    },
+    {
+     "file_contains": {
+      "file": "ckpt_snapshots/nearest.json",
+      "pattern": "\"milestone\": 500000,\\s+\"step\": (49\\d{4}|[5-9]\\d{5})"
+     }
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 464
+     }
+    }
+   ]
+  },
+  {
+   "stage": "train",
+   "kind": "se_run",
+   "target": "vast",
+   "run_id": "se_ons34_s105",
+   "cmd": "RUN_ID=se_ons34_s105 TASK=dmc_cheetah_run SEED=105 DISTRACTOR_SCALE=0.34 DISTRACTOR_MOD_KEY= DISTRACTOR_MOD_INDEX=0 DISTRACTOR_MOD_LO=0.0 DISTRACTOR_MOD_HI=1.0 PENALTY_MIX=False PENALTY_SCALE=0.0 PENALTY_GATE_KEY= PENALTY_GATE_INDEX=0 PENALTY_GATE_THRESHOLD=0.0 bash scripts/uncfield_se.sbatch",
+   "vars": {
+    "seed": 105,
+    "scale": "0.34",
+    "run_id": "se_ons34_s105"
+   },
+   "logdir": "se_ons34_s105",
+   "outputs": [
+    "se_ons34_s105"
+   ],
+   "inputs": [],
+   "done_when": [
+    {
+     "exists": "TRAINING_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "file_contains": {
+      "file": "config.yaml",
+      "pattern": "(?<![\\w.])scale:\\s+0\\.(25|3|34|38)\\b"
+     }
+    },
+    {
+     "file_contains": {
+      "file": "config.yaml",
+      "pattern": "penalty_mix:\\s+false"
+     }
+    },
+    {
+     "file_contains": {
+      "file": "ckpt_snapshots/nearest.json",
+      "pattern": "\"milestone\": 500000,\\s+\"step\": (49\\d{4}|[5-9]\\d{5})"
+     }
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 464
+     }
+    }
+   ]
+  },
+  {
+   "stage": "train",
+   "kind": "se_run",
+   "target": "vast",
+   "run_id": "se_ons38_s109",
+   "cmd": "RUN_ID=se_ons38_s109 TASK=dmc_cheetah_run SEED=109 DISTRACTOR_SCALE=0.38 DISTRACTOR_MOD_KEY= DISTRACTOR_MOD_INDEX=0 DISTRACTOR_MOD_LO=0.0 DISTRACTOR_MOD_HI=1.0 PENALTY_MIX=False PENALTY_SCALE=0.0 PENALTY_GATE_KEY= PENALTY_GATE_INDEX=0 PENALTY_GATE_THRESHOLD=0.0 bash scripts/uncfield_se.sbatch",
+   "vars": {
+    "seed": 109,
+    "scale": "0.38",
+    "run_id": "se_ons38_s109"
+   },
+   "logdir": "se_ons38_s109",
+   "outputs": [
+    "se_ons38_s109"
+   ],
+   "inputs": [],
+   "done_when": [
+    {
+     "exists": "TRAINING_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "file_contains": {
+      "file": "config.yaml",
+      "pattern": "(?<![\\w.])scale:\\s+0\\.(25|3|34|38)\\b"
+     }
+    },
+    {
+     "file_contains": {
+      "file": "config.yaml",
+      "pattern": "penalty_mix:\\s+false"
+     }
+    },
+    {
+     "file_contains": {
+      "file": "ckpt_snapshots/nearest.json",
+      "pattern": "\"milestone\": 500000,\\s+\"step\": (49\\d{4}|[5-9]\\d{5})"
+     }
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 464
+     }
+    }
+   ]
+  },
+  {
+   "stage": "train",
+   "kind": "se_run",
+   "target": "vast",
+   "run_id": "se_ons25_s97",
+   "cmd": "RUN_ID=se_ons25_s97 TASK=dmc_cheetah_run SEED=97 DISTRACTOR_SCALE=0.25 DISTRACTOR_MOD_KEY= DISTRACTOR_MOD_INDEX=0 DISTRACTOR_MOD_LO=0.0 DISTRACTOR_MOD_HI=1.0 PENALTY_MIX=False PENALTY_SCALE=0.0 PENALTY_GATE_KEY= PENALTY_GATE_INDEX=0 PENALTY_GATE_THRESHOLD=0.0 bash scripts/uncfield_se.sbatch",
+   "vars": {
+    "seed": 97,
+    "scale": "0.25",
+    "run_id": "se_ons25_s97"
+   },
+   "logdir": "se_ons25_s97",
+   "outputs": [
+    "se_ons25_s97"
+   ],
+   "inputs": [],
+   "done_when": [
+    {
+     "exists": "TRAINING_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "file_contains": {
+      "file": "config.yaml",
+      "pattern": "(?<![\\w.])scale:\\s+0\\.(25|3|34|38)\\b"
+     }
+    },
+    {
+     "file_contains": {
+      "file": "config.yaml",
+      "pattern": "penalty_mix:\\s+false"
+     }
+    },
+    {
+     "file_contains": {
+      "file": "ckpt_snapshots/nearest.json",
+      "pattern": "\"milestone\": 500000,\\s+\"step\": (49\\d{4}|[5-9]\\d{5})"
+     }
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 464
+     }
+    }
+   ]
+  },
+  {
+   "stage": "train",
+   "kind": "se_run",
+   "target": "vast",
+   "run_id": "se_ons34_s106",
+   "cmd": "RUN_ID=se_ons34_s106 TASK=dmc_cheetah_run SEED=106 DISTRACTOR_SCALE=0.34 DISTRACTOR_MOD_KEY= DISTRACTOR_MOD_INDEX=0 DISTRACTOR_MOD_LO=0.0 DISTRACTOR_MOD_HI=1.0 PENALTY_MIX=False PENALTY_SCALE=0.0 PENALTY_GATE_KEY= PENALTY_GATE_INDEX=0 PENALTY_GATE_THRESHOLD=0.0 bash scripts/uncfield_se.sbatch",
+   "vars": {
+    "seed": 106,
+    "scale": "0.34",
+    "run_id": "se_ons34_s106"
+   },
+   "logdir": "se_ons34_s106",
+   "outputs": [
+    "se_ons34_s106"
+   ],
+   "inputs": [],
+   "done_when": [
+    {
+     "exists": "TRAINING_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "file_contains": {
+      "file": "config.yaml",
+      "pattern": "(?<![\\w.])scale:\\s+0\\.(25|3|34|38)\\b"
+     }
+    },
+    {
+     "file_contains": {
+      "file": "config.yaml",
+      "pattern": "penalty_mix:\\s+false"
+     }
+    },
+    {
+     "file_contains": {
+      "file": "ckpt_snapshots/nearest.json",
+      "pattern": "\"milestone\": 500000,\\s+\"step\": (49\\d{4}|[5-9]\\d{5})"
+     }
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 464
+     }
+    }
+   ]
+  },
+  {
+   "stage": "train",
+   "kind": "se_run",
+   "target": "vast",
+   "run_id": "se_ons38_s110",
+   "cmd": "RUN_ID=se_ons38_s110 TASK=dmc_cheetah_run SEED=110 DISTRACTOR_SCALE=0.38 DISTRACTOR_MOD_KEY= DISTRACTOR_MOD_INDEX=0 DISTRACTOR_MOD_LO=0.0 DISTRACTOR_MOD_HI=1.0 PENALTY_MIX=False PENALTY_SCALE=0.0 PENALTY_GATE_KEY= PENALTY_GATE_INDEX=0 PENALTY_GATE_THRESHOLD=0.0 bash scripts/uncfield_se.sbatch",
+   "vars": {
+    "seed": 110,
+    "scale": "0.38",
+    "run_id": "se_ons38_s110"
+   },
+   "logdir": "se_ons38_s110",
+   "outputs": [
+    "se_ons38_s110"
+   ],
+   "inputs": [],
+   "done_when": [
+    {
+     "exists": "TRAINING_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "file_contains": {
+      "file": "config.yaml",
+      "pattern": "(?<![\\w.])scale:\\s+0\\.(25|3|34|38)\\b"
+     }
+    },
+    {
+     "file_contains": {
+      "file": "config.yaml",
+      "pattern": "penalty_mix:\\s+false"
+     }
+    },
+    {
+     "file_contains": {
+      "file": "ckpt_snapshots/nearest.json",
+      "pattern": "\"milestone\": 500000,\\s+\"step\": (49\\d{4}|[5-9]\\d{5})"
+     }
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 464
+     }
+    }
+   ]
+  },
+  {
+   "stage": "train",
+   "kind": "se_run",
+   "target": "vast",
+   "run_id": "se_ons25_s98",
+   "cmd": "RUN_ID=se_ons25_s98 TASK=dmc_cheetah_run SEED=98 DISTRACTOR_SCALE=0.25 DISTRACTOR_MOD_KEY= DISTRACTOR_MOD_INDEX=0 DISTRACTOR_MOD_LO=0.0 DISTRACTOR_MOD_HI=1.0 PENALTY_MIX=False PENALTY_SCALE=0.0 PENALTY_GATE_KEY= PENALTY_GATE_INDEX=0 PENALTY_GATE_THRESHOLD=0.0 bash scripts/uncfield_se.sbatch",
+   "vars": {
+    "seed": 98,
+    "scale": "0.25",
+    "run_id": "se_ons25_s98"
+   },
+   "logdir": "se_ons25_s98",
+   "outputs": [
+    "se_ons25_s98"
+   ],
+   "inputs": [],
+   "done_when": [
+    {
+     "exists": "TRAINING_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "file_contains": {
+      "file": "config.yaml",
+      "pattern": "(?<![\\w.])scale:\\s+0\\.(25|3|34|38)\\b"
+     }
+    },
+    {
+     "file_contains": {
+      "file": "config.yaml",
+      "pattern": "penalty_mix:\\s+false"
+     }
+    },
+    {
+     "file_contains": {
+      "file": "ckpt_snapshots/nearest.json",
+      "pattern": "\"milestone\": 500000,\\s+\"step\": (49\\d{4}|[5-9]\\d{5})"
+     }
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 464
+     }
+    }
+   ]
+  },
+  {
+   "stage": "train",
+   "kind": "se_run",
+   "target": "vast",
+   "run_id": "se_ons30_s102",
+   "cmd": "RUN_ID=se_ons30_s102 TASK=dmc_cheetah_run SEED=102 DISTRACTOR_SCALE=0.30 DISTRACTOR_MOD_KEY= DISTRACTOR_MOD_INDEX=0 DISTRACTOR_MOD_LO=0.0 DISTRACTOR_MOD_HI=1.0 PENALTY_MIX=False PENALTY_SCALE=0.0 PENALTY_GATE_KEY= PENALTY_GATE_INDEX=0 PENALTY_GATE_THRESHOLD=0.0 bash scripts/uncfield_se.sbatch",
+   "vars": {
+    "seed": 102,
+    "scale": "0.30",
+    "run_id": "se_ons30_s102"
+   },
+   "logdir": "se_ons30_s102",
+   "outputs": [
+    "se_ons30_s102"
+   ],
+   "inputs": [],
+   "done_when": [
+    {
+     "exists": "TRAINING_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "file_contains": {
+      "file": "config.yaml",
+      "pattern": "(?<![\\w.])scale:\\s+0\\.(25|3|34|38)\\b"
+     }
+    },
+    {
+     "file_contains": {
+      "file": "config.yaml",
+      "pattern": "penalty_mix:\\s+false"
+     }
+    },
+    {
+     "file_contains": {
+      "file": "ckpt_snapshots/nearest.json",
+      "pattern": "\"milestone\": 500000,\\s+\"step\": (49\\d{4}|[5-9]\\d{5})"
+     }
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 464
+     }
+    }
+   ]
+  },
+  {
+   "stage": "train",
+   "kind": "se_run",
+   "target": "vast",
+   "run_id": "se_ons38_s111",
+   "cmd": "RUN_ID=se_ons38_s111 TASK=dmc_cheetah_run SEED=111 DISTRACTOR_SCALE=0.38 DISTRACTOR_MOD_KEY= DISTRACTOR_MOD_INDEX=0 DISTRACTOR_MOD_LO=0.0 DISTRACTOR_MOD_HI=1.0 PENALTY_MIX=False PENALTY_SCALE=0.0 PENALTY_GATE_KEY= PENALTY_GATE_INDEX=0 PENALTY_GATE_THRESHOLD=0.0 bash scripts/uncfield_se.sbatch",
+   "vars": {
+    "seed": 111,
+    "scale": "0.38",
+    "run_id": "se_ons38_s111"
+   },
+   "logdir": "se_ons38_s111",
+   "outputs": [
+    "se_ons38_s111"
+   ],
+   "inputs": [],
+   "done_when": [
+    {
+     "exists": "TRAINING_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "file_contains": {
+      "file": "config.yaml",
+      "pattern": "(?<![\\w.])scale:\\s+0\\.(25|3|34|38)\\b"
+     }
+    },
+    {
+     "file_contains": {
+      "file": "config.yaml",
+      "pattern": "penalty_mix:\\s+false"
+     }
+    },
+    {
+     "file_contains": {
+      "file": "ckpt_snapshots/nearest.json",
+      "pattern": "\"milestone\": 500000,\\s+\"step\": (49\\d{4}|[5-9]\\d{5})"
+     }
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 464
+     }
+    }
+   ]
+  },
+  {
+   "stage": "train",
+   "kind": "se_run",
+   "target": "vast",
+   "run_id": "se_ons25_s99",
+   "cmd": "RUN_ID=se_ons25_s99 TASK=dmc_cheetah_run SEED=99 DISTRACTOR_SCALE=0.25 DISTRACTOR_MOD_KEY= DISTRACTOR_MOD_INDEX=0 DISTRACTOR_MOD_LO=0.0 DISTRACTOR_MOD_HI=1.0 PENALTY_MIX=False PENALTY_SCALE=0.0 PENALTY_GATE_KEY= PENALTY_GATE_INDEX=0 PENALTY_GATE_THRESHOLD=0.0 bash scripts/uncfield_se.sbatch",
+   "vars": {
+    "seed": 99,
+    "scale": "0.25",
+    "run_id": "se_ons25_s99"
+   },
+   "logdir": "se_ons25_s99",
+   "outputs": [
+    "se_ons25_s99"
+   ],
+   "inputs": [],
+   "done_when": [
+    {
+     "exists": "TRAINING_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "file_contains": {
+      "file": "config.yaml",
+      "pattern": "(?<![\\w.])scale:\\s+0\\.(25|3|34|38)\\b"
+     }
+    },
+    {
+     "file_contains": {
+      "file": "config.yaml",
+      "pattern": "penalty_mix:\\s+false"
+     }
+    },
+    {
+     "file_contains": {
+      "file": "ckpt_snapshots/nearest.json",
+      "pattern": "\"milestone\": 500000,\\s+\"step\": (49\\d{4}|[5-9]\\d{5})"
+     }
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 464
+     }
+    }
+   ]
+  },
+  {
+   "stage": "train",
+   "kind": "se_run",
+   "target": "vast",
+   "run_id": "se_ons30_s103",
+   "cmd": "RUN_ID=se_ons30_s103 TASK=dmc_cheetah_run SEED=103 DISTRACTOR_SCALE=0.30 DISTRACTOR_MOD_KEY= DISTRACTOR_MOD_INDEX=0 DISTRACTOR_MOD_LO=0.0 DISTRACTOR_MOD_HI=1.0 PENALTY_MIX=False PENALTY_SCALE=0.0 PENALTY_GATE_KEY= PENALTY_GATE_INDEX=0 PENALTY_GATE_THRESHOLD=0.0 bash scripts/uncfield_se.sbatch",
+   "vars": {
+    "seed": 103,
+    "scale": "0.30",
+    "run_id": "se_ons30_s103"
+   },
+   "logdir": "se_ons30_s103",
+   "outputs": [
+    "se_ons30_s103"
+   ],
+   "inputs": [],
+   "done_when": [
+    {
+     "exists": "TRAINING_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "file_contains": {
+      "file": "config.yaml",
+      "pattern": "(?<![\\w.])scale:\\s+0\\.(25|3|34|38)\\b"
+     }
+    },
+    {
+     "file_contains": {
+      "file": "config.yaml",
+      "pattern": "penalty_mix:\\s+false"
+     }
+    },
+    {
+     "file_contains": {
+      "file": "ckpt_snapshots/nearest.json",
+      "pattern": "\"milestone\": 500000,\\s+\"step\": (49\\d{4}|[5-9]\\d{5})"
+     }
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 464
+     }
+    }
+   ]
+  },
+  {
+   "stage": "train",
+   "kind": "se_run",
+   "target": "vast",
+   "run_id": "se_ons34_s107",
+   "cmd": "RUN_ID=se_ons34_s107 TASK=dmc_cheetah_run SEED=107 DISTRACTOR_SCALE=0.34 DISTRACTOR_MOD_KEY= DISTRACTOR_MOD_INDEX=0 DISTRACTOR_MOD_LO=0.0 DISTRACTOR_MOD_HI=1.0 PENALTY_MIX=False PENALTY_SCALE=0.0 PENALTY_GATE_KEY= PENALTY_GATE_INDEX=0 PENALTY_GATE_THRESHOLD=0.0 bash scripts/uncfield_se.sbatch",
+   "vars": {
+    "seed": 107,
+    "scale": "0.34",
+    "run_id": "se_ons34_s107"
+   },
+   "logdir": "se_ons34_s107",
+   "outputs": [
+    "se_ons34_s107"
+   ],
+   "inputs": [],
+   "done_when": [
+    {
+     "exists": "TRAINING_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "file_contains": {
+      "file": "config.yaml",
+      "pattern": "(?<![\\w.])scale:\\s+0\\.(25|3|34|38)\\b"
+     }
+    },
+    {
+     "file_contains": {
+      "file": "config.yaml",
+      "pattern": "penalty_mix:\\s+false"
+     }
+    },
+    {
+     "file_contains": {
+      "file": "ckpt_snapshots/nearest.json",
+      "pattern": "\"milestone\": 500000,\\s+\"step\": (49\\d{4}|[5-9]\\d{5})"
+     }
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 464
+     }
+    }
+   ]
+  }
+ ]
+}

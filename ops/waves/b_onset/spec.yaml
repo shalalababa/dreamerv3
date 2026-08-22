@@ -8,22 +8,27 @@
 #
 # ONE INSTANCE (1-Aug rule; the primary is a cross-scale trend).
 #
-# LANE LAYOUT (R1-B1 — the B1-dose constraint pair, verbatim).
-# Declaration order fixes packing: with 16 runs over 8 lanes, entries
-# 1-8 are round 1 and 9-16 are round 2. The order below satisfies:
-#   - each ROUND holds exactly two runs of every scale (a round-wide
-#     disturbance cannot masquerade as a scale trend — the primary is
-#     MONOTONE in scale, so round==scale would reproduce it exactly),
-#   - each LANE holds two DIFFERENT scales (a slow/hot GPU cannot
-#     load onto one scale).
-# Reordering this list silently breaks both properties.
+# LANE LAYOUT (R1-B1; re-approved 22 Aug for a 4-LANE box — ops
+# raised the instance-14 conflict). 4 lanes x 4 rounds as a TRUE
+# 4x4 LATIN SQUARE — stronger than the 8-lane draft:
+#   - each ROUND holds exactly ONE run of every scale (a round-wide
+#     disturbance cannot masquerade as a scale trend — the primary
+#     is MONOTONE in scale, so round==scale would reproduce it),
+#   - each LANE runs every scale exactly ONCE (a slow/hot GPU
+#     cannot load onto any scale).
+# Declaration order fixes packing: entries 1-4 = round 1 on lanes
+# 0-3, entries 5-8 = round 2, etc. Rounds are approximate if
+# runtimes drift, but the square keeps both margins balanced.
+# Reordering this list silently breaks both properties. Drain
+# ~28 h (4 rounds x ~7 h) — accepted; the balance, not the lane
+# count, is the registered property.
 #
-# DISK -- THIS WAVE DOES NOT FIT WHOLE. 16 x 4.6 G = 73.6 G against
-# ~44 G free on an 8-GPU box (the B1 premise). Round 1 alone (36.8 G)
-# fits; round 2 starts per-lane as round 1 drains. OPERATIONAL
-# REQUIREMENT: pull each round-1 run to RCC, VERIFY, delete
-# instance-side while round 2 runs. replay/ is REQUIRED in this
-# wave's bundle (coverage leg) — never trim it instance-side.
+# DISK -- 16 x 4.6 G = 73.6 G total; only 4 runs (~18.4 G) in
+# flight per round, so a ~44 G box holds with margin. OPERATIONAL
+# REQUIREMENT unchanged: pull each finished run to RCC, VERIFY,
+# delete instance-side before its lane starts the next round.
+# replay/ is REQUIRED in this wave's bundle (coverage leg) — never
+# trim it instance-side.
 #
 # Variables NOT passed are covered elsewhere, each deliberately
 # (R1-m16 — justified, not "complete"): DISTRACTOR_DIM/BASESD_N,
@@ -61,24 +66,27 @@ stages:
     kind: se_run
     on_failure: continue
     runs:
-      # -- round 1: two of every scale; lanes 0-7 --
+      # 4x4 Latin square; rows = rounds, columns = lanes 0-3
+      # -- round 1 --
       - {run_id: se_ons25_s96,  seed: 96,  scale: "0.25"}
       - {run_id: se_ons30_s100, seed: 100, scale: "0.30"}
       - {run_id: se_ons34_s104, seed: 104, scale: "0.34"}
       - {run_id: se_ons38_s108, seed: 108, scale: "0.38"}
-      - {run_id: se_ons25_s97,  seed: 97,  scale: "0.25"}
+      # -- round 2 (cyclic shift) --
       - {run_id: se_ons30_s101, seed: 101, scale: "0.30"}
       - {run_id: se_ons34_s105, seed: 105, scale: "0.34"}
       - {run_id: se_ons38_s109, seed: 109, scale: "0.38"}
-      # -- round 2: two of every scale, rotated so no lane repeats --
+      - {run_id: se_ons25_s97,  seed: 97,  scale: "0.25"}
+      # -- round 3 --
       - {run_id: se_ons34_s106, seed: 106, scale: "0.34"}
       - {run_id: se_ons38_s110, seed: 110, scale: "0.38"}
       - {run_id: se_ons25_s98,  seed: 98,  scale: "0.25"}
       - {run_id: se_ons30_s102, seed: 102, scale: "0.30"}
-      - {run_id: se_ons34_s107, seed: 107, scale: "0.34"}
+      # -- round 4 --
       - {run_id: se_ons38_s111, seed: 111, scale: "0.38"}
       - {run_id: se_ons25_s99,  seed: 99,  scale: "0.25"}
       - {run_id: se_ons30_s103, seed: 103, scale: "0.30"}
+      - {run_id: se_ons34_s107, seed: 107, scale: "0.34"}
     logdir: "${run_id}"
     cmd: >-
       RUN_ID=${run_id} TASK=dmc_cheetah_run SEED=${seed}

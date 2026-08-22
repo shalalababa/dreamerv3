@@ -27,11 +27,15 @@ reproducible seed-level phase transition). Everything else
 Stage-1-verbatim (the B1 pin block applies unchanged: p2e/ens
 8/scale 1000/bootstrap True+0.8, planted position/0.0976, dim 8,
 basesd 1.215, theta 0.1, gates/mod off, penalty inert). **Wave
-layout (R1-B1): one instance, 8 lanes × 2 rounds, declaration
-order in `ops/waves/b_onset/spec.yaml` fixed so each ROUND holds
-exactly two runs of every scale and each LANE holds two different
-scales — the primary is monotone in scale, so a round≡scale layout
-would let any monotone wall-clock drift reproduce it.** Per-run
+layout (R1-B1; re-approved 22 Aug for the available 4-lane box —
+the registered property is the BALANCE, not the lane count): one
+instance, 4 lanes × 4 rounds as a true 4×4 LATIN SQUARE
+(declaration order fixed in `ops/waves/b_onset/spec.yaml`): each
+ROUND holds exactly one run of every scale and each LANE runs
+every scale exactly once — strictly stronger balance than the
+8-lane draft; the primary is monotone in scale, so a round≡scale
+layout would let any monotone wall-clock drift reproduce it.
+Drain ~28 h accepted.** Per-run
 `se_probe` post-training — ALL 16 in ONE CPU job
 (`scripts/se_onset_probe.sbatch`, the B1 device rule) **with the
 ckpt-identity skip rule + newest-DIRECTORY resolution + refuse on

@@ -1,0 +1,27 @@
+wave_id: b_onset
+spec:    /home/rickybao/projects/dreamerv3/ops/waves/b_onset/spec.yaml
+prereg:  prereg/PREREG_trackB_onset_20260822.md
+
+=== stage train  [vast]  kind=se_run  on_failure=continue  n=16 ===
+  se_ons25_s96
+  se_ons30_s100
+  se_ons34_s104
+  se_ons38_s108
+  se_ons30_s101
+  se_ons34_s105
+  se_ons38_s109
+  se_ons25_s97
+  se_ons34_s106
+  se_ons38_s110
+  se_ons25_s98
+  se_ons30_s102
+  se_ons38_s111
+  se_ons25_s99
+  se_ons30_s103
+  se_ons34_s107
+
+TOTAL RUNS: 16
+
+Check this list against the prereg before submitting. run_ids are
+consumed by frozen readers and the ledger; a wrong expansion here
+propagates into every downstream artifact.
