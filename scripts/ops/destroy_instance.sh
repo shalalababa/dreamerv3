@@ -109,6 +109,17 @@ if [ "$in_flight" -eq 1 ]; then
        Let it drain, or cancel its lanes deliberately first."
 fi
 
+# -- quiesce: freeze the logs before we compare anything --------------------
+# The watchdog and util samplers keep appending to _cloud_logs, so the archive
+# check below can never see a settled tree and a per-file verification never
+# converges. Gate 1 has just established the box is idle, which is exactly the
+# condition under which stopping the watchdog is safe. dv3_quiesce refuses on
+# its own if any lane is still active, so this cannot silence a working box.
+echo
+echo "== quiesce: stopping log writers so the tree settles =="
+dv3_ssh_dv3 "$N" 'source /root/.dreamer_vast_env >/dev/null 2>&1 || true; dv3_quiesce' \
+  || echo "  (quiesce unavailable or refused -- continuing; logs may lag)"
+
 # -- gate 2: every run dir must exist on RCC with >= counters ---------------
 echo
 echo "== archive check: instance vs RCC =="

@@ -791,6 +791,26 @@ sys.exit(0 if all(g for _, g in checks) else 1)
 SCEOF
 [ $? -eq 0 ] && ok "reclamation guards hold" || bad "reclamation guards"
 
+echo
+echo "== quiesce: only on an idle box, and it must actually freeze the logs =="
+grep -q 'dv3_quiesce ()' "$ROOT/scripts/ops/instance_helpers.sh" \
+  && ok "dv3_quiesce exists" || bad "dv3_quiesce missing"
+# it must REFUSE while a lane is active -- the watchdog is what heals a stuck lane
+awk '/^dv3_quiesce \(\)/,/^}/' "$ROOT/scripts/ops/instance_helpers.sh" | grep -q 'REFUSED' \
+  && ok "quiesce refuses while lanes are active" || bad "quiesce would silence a working box"
+awk '/^dv3_quiesce \(\)/,/^}/' "$ROOT/scripts/ops/instance_helpers.sh" | grep -q 'wd_loop' \
+  && ok "quiesce stops the watchdog" || bad "quiesce does not stop wd_loop"
+awk '/^dv3_quiesce \(\)/,/^}/' "$ROOT/scripts/ops/instance_helpers.sh" | grep -q 'dv3_sample_util' \
+  && ok "quiesce stops the util samplers" || bad "quiesce does not stop samplers"
+# destroy must quiesce BEFORE it compares trees, or the comparison never settles
+python3 - "$ROOT/scripts/ops/destroy_instance.sh" <<'PYEOF'
+import sys
+s=open(sys.argv[1]).read()
+q=s.find("dv3_quiesce"); a=s.find("archive check: instance vs RCC")
+sys.exit(0 if (q!=-1 and a!=-1 and q<a) else 1)
+PYEOF
+[ $? -eq 0 ] && ok "destroy quiesces before the archive check" || bad "destroy compares a moving tree"
+
 python3 - <<'SCEOF'
 import importlib.util, os, sys, tempfile
 spec = importlib.util.spec_from_file_location("inv", "scripts/ops/runroot_inventory.py")

@@ -29,6 +29,7 @@ dv3ops <verb> [args]
     migrate N               guided helper migration for a running instance (see §P0)
     selfcheck               local static checks of the ops library
     destroy N [--yes]       destroy a rented instance -- REPORTS by default;
+                            quiesces the log writers first so the tree settles
                             refuses unless every run dir is already on RCC
     rcc-connect [--status|--close]
                             open/reuse ONE shared ssh connection to RCC, so

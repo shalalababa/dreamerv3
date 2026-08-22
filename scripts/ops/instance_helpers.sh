@@ -638,6 +638,35 @@ dv3_cancel_queue () {
   dv3_cancel_lane "$arg"
 }
 
+# Stop the log writers so _cloud_logs stops moving. The watchdog (wd_loop) and
+# the per-task util samplers append to events.jsonl and *.util FOREVER, and both
+# files are small and constantly rewritten -- so a pull can never fully cover
+# them and a per-file verification never converges. On 2026-08-22 that held
+# instance 10 for 5.3 h ($3.54) on ONE stale 425-byte log, and blocked
+# instance 9's verify the same way; both were fixed by killing wd_loop by hand.
+#
+# REFUSES while any lane is active: the watchdog is what self-heals a stuck
+# lane, so it may only be stopped on a box that has finished working.
+dv3_quiesce () {
+  local n=0 g a
+  for g in 0 1 2 3 4 5 6 7; do
+    a="$(cat "$RUNROOT/_queue_control/lane_$g/active_queue" 2>/dev/null || true)"
+    [ -n "$a" ] && n=$((n+1))
+  done
+  if [ "$n" -gt 0 ]; then
+    echo "dv3_quiesce: REFUSED -- $n lane(s) still active; the watchdog stays up" >&2
+    return 1
+  fi
+  local wd
+  wd="$(ps -eo pid,args | awk '/wd_loop/ && !/awk/ {print $1}')"
+  [ -n "$wd" ] && kill $wd 2>/dev/null
+  local sm
+  sm="$(ps -eo pid,args | awk '/dv3_sample_util/ && !/awk/ {print $1}')"
+  [ -n "$sm" ] && kill $sm 2>/dev/null
+  sleep 2
+  echo "dv3_quiesce: watchdog=$(ps -eo args | grep -c '[w]d_loop') samplers=$(ps -eo args | grep -c '[d]v3_sample_util') (0/0 = logs frozen)"
+}
+
 dv3_cancel_lane () {
   local gpu="${1:?gpu lane}" qc active qdir spid cpid
   qc="$(dv3_qc "$gpu")" || return 1
