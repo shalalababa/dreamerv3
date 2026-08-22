@@ -1,0 +1,146 @@
+# Value-free vs online pretraining -- the 32 ADAPTS.
+# PREREG_valuefree_online_20260821.md (v3, FROZEN at user commit).
+#
+# The 8 online fits (ontask_finger_seed17-24) are NOT in this wave: they ran
+# on RCC as dv3_pilot jobs and are the source substrate for one of the arms.
+#
+# COMMANDS ARE TRANSCRIBED, NEVER RE-DERIVED (prereg D3, §"Registered
+# commands"). Every cmd below is the registered line with only ${seed} and
+# ${side} substituted. In particular DREAMER_DISABLE_GPUFLAGS is NOT set here
+# even though the neighbouring carrier_freshrep wave sets it -- it is not in
+# the registered command, and this prereg pins the commands literally.
+#
+# NEVER axis1.sbatch FOR THE ONTASK ARM (prereg D3, load-bearing): the online
+# checkpoints are timestamp-only with no -000000500000 suffix, so axis1's
+# fit-skip guard reads step 0 and would launch a 500k OFFLINE FIT INTO the
+# online run dir, destroying the arm. The ontask and scratchvf arms therefore
+# call dreamerv3/main.py directly.
+#
+# ONE UNFROZEN PROTOCOL, ALL 32 FRESH IN ONE BATCH (prereg): every arm uses
+# `unfrozen_readout` = agent.frozen_wm False. Measured 0.53 h per adapt on a
+# 5060 Ti (n=32, spread ~0), vs 0.27 h for the frozen protocol -- so ~4.2 h
+# over 4 lanes. ONE INSTANCE: the estimand is a per-seed cross-arm contrast
+# and GPU jobs are not job-to-job deterministic (1-Aug rule).
+#
+# LANE BALANCE: `seed` is the FIRST expand key in every stage on purpose --
+# balanced_order classes runs by the first variable only, so a low-cardinality
+# key there would land an arm on a GPU. With 8 seeds over 4 lanes each stage
+# deals 2 per lane, so every lane runs 2 cells of all four arms.
+#
+# NO ckpt_step_min ON AN ADAPT DIR: adapt checkpoints are timestamp-only and
+# wavecheck.ckpt_step() honestly returns 0 for them. Completion is the score
+# count; measured complete unfrozen adapts carry exactly 112 lines, and the
+# floor here is the house 100 used by carrier_freshrep for this same protocol.
+
+wave_id: vf_adapts
+paper: paper1
+prereg: prereg/PREREG_valuefree_online_20260821.md
+notes: >-
+  32 unfrozen adapts (finger_turn_hard, 1.25e5 steps): recipe s1 (primary),
+  recipe s0 (secondary), online-pretrained, and scratch. Seeds 17-24 each.
+  One instance, 4 lanes, ~4.2 h drain.
+
+defaults:
+  target: vast
+
+kinds:
+  axis1_fit_adapt: {per_gpu: 1}
+  direct_adapt: {per_gpu: 1}
+
+stages:
+
+  - name: vfs1
+    kind: axis1_fit_adapt
+    on_failure: continue
+    expand:
+      seed: [17, 18, 19, 20, 21, 22, 23, 24]
+    run_id: "adapt_q1uzs1_finger_seed${seed}_ckpt500000"
+    cmd: >-
+      DV3_TASK_NAME=${run_id} RUN_ID=${run_id}
+      WM_RUN=ax1wm_finger_rgoq1s1_seed${seed}
+      TASK=dmc_finger_turn_hard SEED=${seed}
+      REPLAY=${RUNROOT}/axis1_finger/q1/side1 UPDATES=500000
+      STEPS=1.25e5 AXIS1_EXPL_MODE=task AXIS1_ARM=rgo
+      AXIS1_ADAPT_CONFIG=unfrozen_readout bash scripts/axis1.sbatch
+    outputs:
+      - "adapt_q1uzs1_finger_seed${seed}_ckpt500000"
+    inputs:
+      - "ax1wm_finger_rgoq1s1_seed${seed}"
+      - "axis1_finger/q1/side1"
+      - "axis1_finger/q1/manifest.json"
+    done_when:
+      - exists: config.yaml
+      - jsonl_min_lines: {file: scores.jsonl, n: 100}
+
+  - name: vfs0
+    kind: axis1_fit_adapt
+    on_failure: continue
+    expand:
+      seed: [17, 18, 19, 20, 21, 22, 23, 24]
+    run_id: "adapt_q1uzs0_finger_seed${seed}_ckpt500000"
+    cmd: >-
+      DV3_TASK_NAME=${run_id} RUN_ID=${run_id}
+      WM_RUN=ax1wm_finger_rgoq1s0_seed${seed}
+      TASK=dmc_finger_turn_hard SEED=${seed}
+      REPLAY=${RUNROOT}/axis1_finger/q1/side0 UPDATES=500000
+      STEPS=1.25e5 AXIS1_EXPL_MODE=task AXIS1_ARM=rgo
+      AXIS1_ADAPT_CONFIG=unfrozen_readout bash scripts/axis1.sbatch
+    outputs:
+      - "adapt_q1uzs0_finger_seed${seed}_ckpt500000"
+    inputs:
+      - "ax1wm_finger_rgoq1s0_seed${seed}"
+      - "axis1_finger/q1/side0"
+      - "axis1_finger/q1/manifest.json"
+    done_when:
+      - exists: config.yaml
+      - jsonl_min_lines: {file: scores.jsonl, n: 100}
+
+  - name: vfontask
+    kind: direct_adapt
+    on_failure: continue
+    expand:
+      seed: [17, 18, 19, 20, 21, 22, 23, 24]
+    run_id: "adapt_ontask_finger_seed${seed}_ckpt500000"
+    cmd: >-
+      DV3_TASK_NAME=${run_id}
+      python dreamerv3/main.py
+      --logdir ${RUNROOT}/adapt_ontask_finger_seed${seed}_ckpt500000
+      --configs dmc_proprio unfrozen_readout
+      --task dmc_finger_turn_hard --seed ${seed}
+      --run.from_checkpoint ${RUNROOT}/ontask_finger_seed${seed}/ckpt/$(cat
+      ${RUNROOT}/ontask_finger_seed${seed}/ckpt/latest)
+      --run.steps 1.25e5 --env.dmc.render False
+    outputs:
+      - "adapt_ontask_finger_seed${seed}_ckpt500000"
+    inputs:
+      - "ontask_finger_seed${seed}"
+    done_when:
+      - exists: config.yaml
+      - jsonl_min_lines: {file: scores.jsonl, n: 100}
+
+  - name: vfscratch
+    kind: direct_adapt
+    on_failure: continue
+    expand:
+      seed: [17, 18, 19, 20, 21, 22, 23, 24]
+    run_id: "adapt_scratchvf_finger_seed${seed}_ckpt0"
+    cmd: >-
+      DV3_TASK_NAME=${run_id}
+      python dreamerv3/main.py
+      --logdir ${RUNROOT}/adapt_scratchvf_finger_seed${seed}_ckpt0
+      --configs dmc_proprio unfrozen_readout
+      --task dmc_finger_turn_hard --seed ${seed}
+      --run.steps 1.25e5 --env.dmc.render False
+    outputs:
+      - "adapt_scratchvf_finger_seed${seed}_ckpt0"
+    done_when:
+      - exists: config.yaml
+      - jsonl_min_lines: {file: scores.jsonl, n: 100}
+
+bundle:
+  prefix: vf_adapts
+  include_stages: [vfs1, vfs0, vfontask, vfscratch]
+  cloud_logs:
+    - "adapt_q1uzs*_finger_seed*.out"
+    - "adapt_ontask_finger_seed*.out"
+    - "adapt_scratchvf_finger_seed*.out"

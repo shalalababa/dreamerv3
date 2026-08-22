@@ -1,0 +1,995 @@
+{
+ "wave_id": "vf_adapts",
+ "spec": "/home/rickybao/projects/dreamerv3/ops/waves/vf_adapts/spec.yaml",
+ "prereg": "prereg/PREREG_valuefree_online_20260821.md",
+ "bundle": {
+  "prefix": "vf_adapts",
+  "include_stages": [
+   "vfs1",
+   "vfs0",
+   "vfontask",
+   "vfscratch"
+  ],
+  "cloud_logs": [
+   "adapt_q1uzs*_finger_seed*.out",
+   "adapt_ontask_finger_seed*.out",
+   "adapt_scratchvf_finger_seed*.out"
+  ]
+ },
+ "stages": [
+  {
+   "name": "vfs1",
+   "target": "vast",
+   "kind": "axis1_fit_adapt",
+   "on_failure": "continue",
+   "needs": null
+  },
+  {
+   "name": "vfs0",
+   "target": "vast",
+   "kind": "axis1_fit_adapt",
+   "on_failure": "continue",
+   "needs": null
+  },
+  {
+   "name": "vfontask",
+   "target": "vast",
+   "kind": "direct_adapt",
+   "on_failure": "continue",
+   "needs": null
+  },
+  {
+   "name": "vfscratch",
+   "target": "vast",
+   "kind": "direct_adapt",
+   "on_failure": "continue",
+   "needs": null
+  }
+ ],
+ "runs": [
+  {
+   "stage": "vfs1",
+   "kind": "axis1_fit_adapt",
+   "target": "vast",
+   "run_id": "adapt_q1uzs1_finger_seed17_ckpt500000",
+   "cmd": "DV3_TASK_NAME=adapt_q1uzs1_finger_seed17_ckpt500000 RUN_ID=adapt_q1uzs1_finger_seed17_ckpt500000 WM_RUN=ax1wm_finger_rgoq1s1_seed17 TASK=dmc_finger_turn_hard SEED=17 REPLAY=${RUNROOT}/axis1_finger/q1/side1 UPDATES=500000 STEPS=1.25e5 AXIS1_EXPL_MODE=task AXIS1_ARM=rgo AXIS1_ADAPT_CONFIG=unfrozen_readout bash scripts/axis1.sbatch",
+   "vars": {
+    "seed": 17,
+    "run_id": "adapt_q1uzs1_finger_seed17_ckpt500000"
+   },
+   "logdir": "adapt_q1uzs1_finger_seed17_ckpt500000",
+   "outputs": [
+    "adapt_q1uzs1_finger_seed17_ckpt500000"
+   ],
+   "inputs": [
+    "ax1wm_finger_rgoq1s1_seed17",
+    "axis1_finger/q1/side1",
+    "axis1_finger/q1/manifest.json"
+   ],
+   "done_when": [
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 100
+     }
+    }
+   ]
+  },
+  {
+   "stage": "vfs1",
+   "kind": "axis1_fit_adapt",
+   "target": "vast",
+   "run_id": "adapt_q1uzs1_finger_seed18_ckpt500000",
+   "cmd": "DV3_TASK_NAME=adapt_q1uzs1_finger_seed18_ckpt500000 RUN_ID=adapt_q1uzs1_finger_seed18_ckpt500000 WM_RUN=ax1wm_finger_rgoq1s1_seed18 TASK=dmc_finger_turn_hard SEED=18 REPLAY=${RUNROOT}/axis1_finger/q1/side1 UPDATES=500000 STEPS=1.25e5 AXIS1_EXPL_MODE=task AXIS1_ARM=rgo AXIS1_ADAPT_CONFIG=unfrozen_readout bash scripts/axis1.sbatch",
+   "vars": {
+    "seed": 18,
+    "run_id": "adapt_q1uzs1_finger_seed18_ckpt500000"
+   },
+   "logdir": "adapt_q1uzs1_finger_seed18_ckpt500000",
+   "outputs": [
+    "adapt_q1uzs1_finger_seed18_ckpt500000"
+   ],
+   "inputs": [
+    "ax1wm_finger_rgoq1s1_seed18",
+    "axis1_finger/q1/side1",
+    "axis1_finger/q1/manifest.json"
+   ],
+   "done_when": [
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 100
+     }
+    }
+   ]
+  },
+  {
+   "stage": "vfs1",
+   "kind": "axis1_fit_adapt",
+   "target": "vast",
+   "run_id": "adapt_q1uzs1_finger_seed19_ckpt500000",
+   "cmd": "DV3_TASK_NAME=adapt_q1uzs1_finger_seed19_ckpt500000 RUN_ID=adapt_q1uzs1_finger_seed19_ckpt500000 WM_RUN=ax1wm_finger_rgoq1s1_seed19 TASK=dmc_finger_turn_hard SEED=19 REPLAY=${RUNROOT}/axis1_finger/q1/side1 UPDATES=500000 STEPS=1.25e5 AXIS1_EXPL_MODE=task AXIS1_ARM=rgo AXIS1_ADAPT_CONFIG=unfrozen_readout bash scripts/axis1.sbatch",
+   "vars": {
+    "seed": 19,
+    "run_id": "adapt_q1uzs1_finger_seed19_ckpt500000"
+   },
+   "logdir": "adapt_q1uzs1_finger_seed19_ckpt500000",
+   "outputs": [
+    "adapt_q1uzs1_finger_seed19_ckpt500000"
+   ],
+   "inputs": [
+    "ax1wm_finger_rgoq1s1_seed19",
+    "axis1_finger/q1/side1",
+    "axis1_finger/q1/manifest.json"
+   ],
+   "done_when": [
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 100
+     }
+    }
+   ]
+  },
+  {
+   "stage": "vfs1",
+   "kind": "axis1_fit_adapt",
+   "target": "vast",
+   "run_id": "adapt_q1uzs1_finger_seed20_ckpt500000",
+   "cmd": "DV3_TASK_NAME=adapt_q1uzs1_finger_seed20_ckpt500000 RUN_ID=adapt_q1uzs1_finger_seed20_ckpt500000 WM_RUN=ax1wm_finger_rgoq1s1_seed20 TASK=dmc_finger_turn_hard SEED=20 REPLAY=${RUNROOT}/axis1_finger/q1/side1 UPDATES=500000 STEPS=1.25e5 AXIS1_EXPL_MODE=task AXIS1_ARM=rgo AXIS1_ADAPT_CONFIG=unfrozen_readout bash scripts/axis1.sbatch",
+   "vars": {
+    "seed": 20,
+    "run_id": "adapt_q1uzs1_finger_seed20_ckpt500000"
+   },
+   "logdir": "adapt_q1uzs1_finger_seed20_ckpt500000",
+   "outputs": [
+    "adapt_q1uzs1_finger_seed20_ckpt500000"
+   ],
+   "inputs": [
+    "ax1wm_finger_rgoq1s1_seed20",
+    "axis1_finger/q1/side1",
+    "axis1_finger/q1/manifest.json"
+   ],
+   "done_when": [
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 100
+     }
+    }
+   ]
+  },
+  {
+   "stage": "vfs1",
+   "kind": "axis1_fit_adapt",
+   "target": "vast",
+   "run_id": "adapt_q1uzs1_finger_seed21_ckpt500000",
+   "cmd": "DV3_TASK_NAME=adapt_q1uzs1_finger_seed21_ckpt500000 RUN_ID=adapt_q1uzs1_finger_seed21_ckpt500000 WM_RUN=ax1wm_finger_rgoq1s1_seed21 TASK=dmc_finger_turn_hard SEED=21 REPLAY=${RUNROOT}/axis1_finger/q1/side1 UPDATES=500000 STEPS=1.25e5 AXIS1_EXPL_MODE=task AXIS1_ARM=rgo AXIS1_ADAPT_CONFIG=unfrozen_readout bash scripts/axis1.sbatch",
+   "vars": {
+    "seed": 21,
+    "run_id": "adapt_q1uzs1_finger_seed21_ckpt500000"
+   },
+   "logdir": "adapt_q1uzs1_finger_seed21_ckpt500000",
+   "outputs": [
+    "adapt_q1uzs1_finger_seed21_ckpt500000"
+   ],
+   "inputs": [
+    "ax1wm_finger_rgoq1s1_seed21",
+    "axis1_finger/q1/side1",
+    "axis1_finger/q1/manifest.json"
+   ],
+   "done_when": [
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 100
+     }
+    }
+   ]
+  },
+  {
+   "stage": "vfs1",
+   "kind": "axis1_fit_adapt",
+   "target": "vast",
+   "run_id": "adapt_q1uzs1_finger_seed22_ckpt500000",
+   "cmd": "DV3_TASK_NAME=adapt_q1uzs1_finger_seed22_ckpt500000 RUN_ID=adapt_q1uzs1_finger_seed22_ckpt500000 WM_RUN=ax1wm_finger_rgoq1s1_seed22 TASK=dmc_finger_turn_hard SEED=22 REPLAY=${RUNROOT}/axis1_finger/q1/side1 UPDATES=500000 STEPS=1.25e5 AXIS1_EXPL_MODE=task AXIS1_ARM=rgo AXIS1_ADAPT_CONFIG=unfrozen_readout bash scripts/axis1.sbatch",
+   "vars": {
+    "seed": 22,
+    "run_id": "adapt_q1uzs1_finger_seed22_ckpt500000"
+   },
+   "logdir": "adapt_q1uzs1_finger_seed22_ckpt500000",
+   "outputs": [
+    "adapt_q1uzs1_finger_seed22_ckpt500000"
+   ],
+   "inputs": [
+    "ax1wm_finger_rgoq1s1_seed22",
+    "axis1_finger/q1/side1",
+    "axis1_finger/q1/manifest.json"
+   ],
+   "done_when": [
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 100
+     }
+    }
+   ]
+  },
+  {
+   "stage": "vfs1",
+   "kind": "axis1_fit_adapt",
+   "target": "vast",
+   "run_id": "adapt_q1uzs1_finger_seed23_ckpt500000",
+   "cmd": "DV3_TASK_NAME=adapt_q1uzs1_finger_seed23_ckpt500000 RUN_ID=adapt_q1uzs1_finger_seed23_ckpt500000 WM_RUN=ax1wm_finger_rgoq1s1_seed23 TASK=dmc_finger_turn_hard SEED=23 REPLAY=${RUNROOT}/axis1_finger/q1/side1 UPDATES=500000 STEPS=1.25e5 AXIS1_EXPL_MODE=task AXIS1_ARM=rgo AXIS1_ADAPT_CONFIG=unfrozen_readout bash scripts/axis1.sbatch",
+   "vars": {
+    "seed": 23,
+    "run_id": "adapt_q1uzs1_finger_seed23_ckpt500000"
+   },
+   "logdir": "adapt_q1uzs1_finger_seed23_ckpt500000",
+   "outputs": [
+    "adapt_q1uzs1_finger_seed23_ckpt500000"
+   ],
+   "inputs": [
+    "ax1wm_finger_rgoq1s1_seed23",
+    "axis1_finger/q1/side1",
+    "axis1_finger/q1/manifest.json"
+   ],
+   "done_when": [
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 100
+     }
+    }
+   ]
+  },
+  {
+   "stage": "vfs1",
+   "kind": "axis1_fit_adapt",
+   "target": "vast",
+   "run_id": "adapt_q1uzs1_finger_seed24_ckpt500000",
+   "cmd": "DV3_TASK_NAME=adapt_q1uzs1_finger_seed24_ckpt500000 RUN_ID=adapt_q1uzs1_finger_seed24_ckpt500000 WM_RUN=ax1wm_finger_rgoq1s1_seed24 TASK=dmc_finger_turn_hard SEED=24 REPLAY=${RUNROOT}/axis1_finger/q1/side1 UPDATES=500000 STEPS=1.25e5 AXIS1_EXPL_MODE=task AXIS1_ARM=rgo AXIS1_ADAPT_CONFIG=unfrozen_readout bash scripts/axis1.sbatch",
+   "vars": {
+    "seed": 24,
+    "run_id": "adapt_q1uzs1_finger_seed24_ckpt500000"
+   },
+   "logdir": "adapt_q1uzs1_finger_seed24_ckpt500000",
+   "outputs": [
+    "adapt_q1uzs1_finger_seed24_ckpt500000"
+   ],
+   "inputs": [
+    "ax1wm_finger_rgoq1s1_seed24",
+    "axis1_finger/q1/side1",
+    "axis1_finger/q1/manifest.json"
+   ],
+   "done_when": [
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 100
+     }
+    }
+   ]
+  },
+  {
+   "stage": "vfs0",
+   "kind": "axis1_fit_adapt",
+   "target": "vast",
+   "run_id": "adapt_q1uzs0_finger_seed17_ckpt500000",
+   "cmd": "DV3_TASK_NAME=adapt_q1uzs0_finger_seed17_ckpt500000 RUN_ID=adapt_q1uzs0_finger_seed17_ckpt500000 WM_RUN=ax1wm_finger_rgoq1s0_seed17 TASK=dmc_finger_turn_hard SEED=17 REPLAY=${RUNROOT}/axis1_finger/q1/side0 UPDATES=500000 STEPS=1.25e5 AXIS1_EXPL_MODE=task AXIS1_ARM=rgo AXIS1_ADAPT_CONFIG=unfrozen_readout bash scripts/axis1.sbatch",
+   "vars": {
+    "seed": 17,
+    "run_id": "adapt_q1uzs0_finger_seed17_ckpt500000"
+   },
+   "logdir": "adapt_q1uzs0_finger_seed17_ckpt500000",
+   "outputs": [
+    "adapt_q1uzs0_finger_seed17_ckpt500000"
+   ],
+   "inputs": [
+    "ax1wm_finger_rgoq1s0_seed17",
+    "axis1_finger/q1/side0",
+    "axis1_finger/q1/manifest.json"
+   ],
+   "done_when": [
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 100
+     }
+    }
+   ]
+  },
+  {
+   "stage": "vfs0",
+   "kind": "axis1_fit_adapt",
+   "target": "vast",
+   "run_id": "adapt_q1uzs0_finger_seed18_ckpt500000",
+   "cmd": "DV3_TASK_NAME=adapt_q1uzs0_finger_seed18_ckpt500000 RUN_ID=adapt_q1uzs0_finger_seed18_ckpt500000 WM_RUN=ax1wm_finger_rgoq1s0_seed18 TASK=dmc_finger_turn_hard SEED=18 REPLAY=${RUNROOT}/axis1_finger/q1/side0 UPDATES=500000 STEPS=1.25e5 AXIS1_EXPL_MODE=task AXIS1_ARM=rgo AXIS1_ADAPT_CONFIG=unfrozen_readout bash scripts/axis1.sbatch",
+   "vars": {
+    "seed": 18,
+    "run_id": "adapt_q1uzs0_finger_seed18_ckpt500000"
+   },
+   "logdir": "adapt_q1uzs0_finger_seed18_ckpt500000",
+   "outputs": [
+    "adapt_q1uzs0_finger_seed18_ckpt500000"
+   ],
+   "inputs": [
+    "ax1wm_finger_rgoq1s0_seed18",
+    "axis1_finger/q1/side0",
+    "axis1_finger/q1/manifest.json"
+   ],
+   "done_when": [
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 100
+     }
+    }
+   ]
+  },
+  {
+   "stage": "vfs0",
+   "kind": "axis1_fit_adapt",
+   "target": "vast",
+   "run_id": "adapt_q1uzs0_finger_seed19_ckpt500000",
+   "cmd": "DV3_TASK_NAME=adapt_q1uzs0_finger_seed19_ckpt500000 RUN_ID=adapt_q1uzs0_finger_seed19_ckpt500000 WM_RUN=ax1wm_finger_rgoq1s0_seed19 TASK=dmc_finger_turn_hard SEED=19 REPLAY=${RUNROOT}/axis1_finger/q1/side0 UPDATES=500000 STEPS=1.25e5 AXIS1_EXPL_MODE=task AXIS1_ARM=rgo AXIS1_ADAPT_CONFIG=unfrozen_readout bash scripts/axis1.sbatch",
+   "vars": {
+    "seed": 19,
+    "run_id": "adapt_q1uzs0_finger_seed19_ckpt500000"
+   },
+   "logdir": "adapt_q1uzs0_finger_seed19_ckpt500000",
+   "outputs": [
+    "adapt_q1uzs0_finger_seed19_ckpt500000"
+   ],
+   "inputs": [
+    "ax1wm_finger_rgoq1s0_seed19",
+    "axis1_finger/q1/side0",
+    "axis1_finger/q1/manifest.json"
+   ],
+   "done_when": [
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 100
+     }
+    }
+   ]
+  },
+  {
+   "stage": "vfs0",
+   "kind": "axis1_fit_adapt",
+   "target": "vast",
+   "run_id": "adapt_q1uzs0_finger_seed20_ckpt500000",
+   "cmd": "DV3_TASK_NAME=adapt_q1uzs0_finger_seed20_ckpt500000 RUN_ID=adapt_q1uzs0_finger_seed20_ckpt500000 WM_RUN=ax1wm_finger_rgoq1s0_seed20 TASK=dmc_finger_turn_hard SEED=20 REPLAY=${RUNROOT}/axis1_finger/q1/side0 UPDATES=500000 STEPS=1.25e5 AXIS1_EXPL_MODE=task AXIS1_ARM=rgo AXIS1_ADAPT_CONFIG=unfrozen_readout bash scripts/axis1.sbatch",
+   "vars": {
+    "seed": 20,
+    "run_id": "adapt_q1uzs0_finger_seed20_ckpt500000"
+   },
+   "logdir": "adapt_q1uzs0_finger_seed20_ckpt500000",
+   "outputs": [
+    "adapt_q1uzs0_finger_seed20_ckpt500000"
+   ],
+   "inputs": [
+    "ax1wm_finger_rgoq1s0_seed20",
+    "axis1_finger/q1/side0",
+    "axis1_finger/q1/manifest.json"
+   ],
+   "done_when": [
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 100
+     }
+    }
+   ]
+  },
+  {
+   "stage": "vfs0",
+   "kind": "axis1_fit_adapt",
+   "target": "vast",
+   "run_id": "adapt_q1uzs0_finger_seed21_ckpt500000",
+   "cmd": "DV3_TASK_NAME=adapt_q1uzs0_finger_seed21_ckpt500000 RUN_ID=adapt_q1uzs0_finger_seed21_ckpt500000 WM_RUN=ax1wm_finger_rgoq1s0_seed21 TASK=dmc_finger_turn_hard SEED=21 REPLAY=${RUNROOT}/axis1_finger/q1/side0 UPDATES=500000 STEPS=1.25e5 AXIS1_EXPL_MODE=task AXIS1_ARM=rgo AXIS1_ADAPT_CONFIG=unfrozen_readout bash scripts/axis1.sbatch",
+   "vars": {
+    "seed": 21,
+    "run_id": "adapt_q1uzs0_finger_seed21_ckpt500000"
+   },
+   "logdir": "adapt_q1uzs0_finger_seed21_ckpt500000",
+   "outputs": [
+    "adapt_q1uzs0_finger_seed21_ckpt500000"
+   ],
+   "inputs": [
+    "ax1wm_finger_rgoq1s0_seed21",
+    "axis1_finger/q1/side0",
+    "axis1_finger/q1/manifest.json"
+   ],
+   "done_when": [
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 100
+     }
+    }
+   ]
+  },
+  {
+   "stage": "vfs0",
+   "kind": "axis1_fit_adapt",
+   "target": "vast",
+   "run_id": "adapt_q1uzs0_finger_seed22_ckpt500000",
+   "cmd": "DV3_TASK_NAME=adapt_q1uzs0_finger_seed22_ckpt500000 RUN_ID=adapt_q1uzs0_finger_seed22_ckpt500000 WM_RUN=ax1wm_finger_rgoq1s0_seed22 TASK=dmc_finger_turn_hard SEED=22 REPLAY=${RUNROOT}/axis1_finger/q1/side0 UPDATES=500000 STEPS=1.25e5 AXIS1_EXPL_MODE=task AXIS1_ARM=rgo AXIS1_ADAPT_CONFIG=unfrozen_readout bash scripts/axis1.sbatch",
+   "vars": {
+    "seed": 22,
+    "run_id": "adapt_q1uzs0_finger_seed22_ckpt500000"
+   },
+   "logdir": "adapt_q1uzs0_finger_seed22_ckpt500000",
+   "outputs": [
+    "adapt_q1uzs0_finger_seed22_ckpt500000"
+   ],
+   "inputs": [
+    "ax1wm_finger_rgoq1s0_seed22",
+    "axis1_finger/q1/side0",
+    "axis1_finger/q1/manifest.json"
+   ],
+   "done_when": [
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 100
+     }
+    }
+   ]
+  },
+  {
+   "stage": "vfs0",
+   "kind": "axis1_fit_adapt",
+   "target": "vast",
+   "run_id": "adapt_q1uzs0_finger_seed23_ckpt500000",
+   "cmd": "DV3_TASK_NAME=adapt_q1uzs0_finger_seed23_ckpt500000 RUN_ID=adapt_q1uzs0_finger_seed23_ckpt500000 WM_RUN=ax1wm_finger_rgoq1s0_seed23 TASK=dmc_finger_turn_hard SEED=23 REPLAY=${RUNROOT}/axis1_finger/q1/side0 UPDATES=500000 STEPS=1.25e5 AXIS1_EXPL_MODE=task AXIS1_ARM=rgo AXIS1_ADAPT_CONFIG=unfrozen_readout bash scripts/axis1.sbatch",
+   "vars": {
+    "seed": 23,
+    "run_id": "adapt_q1uzs0_finger_seed23_ckpt500000"
+   },
+   "logdir": "adapt_q1uzs0_finger_seed23_ckpt500000",
+   "outputs": [
+    "adapt_q1uzs0_finger_seed23_ckpt500000"
+   ],
+   "inputs": [
+    "ax1wm_finger_rgoq1s0_seed23",
+    "axis1_finger/q1/side0",
+    "axis1_finger/q1/manifest.json"
+   ],
+   "done_when": [
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 100
+     }
+    }
+   ]
+  },
+  {
+   "stage": "vfs0",
+   "kind": "axis1_fit_adapt",
+   "target": "vast",
+   "run_id": "adapt_q1uzs0_finger_seed24_ckpt500000",
+   "cmd": "DV3_TASK_NAME=adapt_q1uzs0_finger_seed24_ckpt500000 RUN_ID=adapt_q1uzs0_finger_seed24_ckpt500000 WM_RUN=ax1wm_finger_rgoq1s0_seed24 TASK=dmc_finger_turn_hard SEED=24 REPLAY=${RUNROOT}/axis1_finger/q1/side0 UPDATES=500000 STEPS=1.25e5 AXIS1_EXPL_MODE=task AXIS1_ARM=rgo AXIS1_ADAPT_CONFIG=unfrozen_readout bash scripts/axis1.sbatch",
+   "vars": {
+    "seed": 24,
+    "run_id": "adapt_q1uzs0_finger_seed24_ckpt500000"
+   },
+   "logdir": "adapt_q1uzs0_finger_seed24_ckpt500000",
+   "outputs": [
+    "adapt_q1uzs0_finger_seed24_ckpt500000"
+   ],
+   "inputs": [
+    "ax1wm_finger_rgoq1s0_seed24",
+    "axis1_finger/q1/side0",
+    "axis1_finger/q1/manifest.json"
+   ],
+   "done_when": [
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 100
+     }
+    }
+   ]
+  },
+  {
+   "stage": "vfontask",
+   "kind": "direct_adapt",
+   "target": "vast",
+   "run_id": "adapt_ontask_finger_seed17_ckpt500000",
+   "cmd": "DV3_TASK_NAME=adapt_ontask_finger_seed17_ckpt500000 python dreamerv3/main.py --logdir ${RUNROOT}/adapt_ontask_finger_seed17_ckpt500000 --configs dmc_proprio unfrozen_readout --task dmc_finger_turn_hard --seed 17 --run.from_checkpoint ${RUNROOT}/ontask_finger_seed17/ckpt/$(cat ${RUNROOT}/ontask_finger_seed17/ckpt/latest) --run.steps 1.25e5 --env.dmc.render False",
+   "vars": {
+    "seed": 17,
+    "run_id": "adapt_ontask_finger_seed17_ckpt500000"
+   },
+   "logdir": "adapt_ontask_finger_seed17_ckpt500000",
+   "outputs": [
+    "adapt_ontask_finger_seed17_ckpt500000"
+   ],
+   "inputs": [
+    "ontask_finger_seed17"
+   ],
+   "done_when": [
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 100
+     }
+    }
+   ]
+  },
+  {
+   "stage": "vfontask",
+   "kind": "direct_adapt",
+   "target": "vast",
+   "run_id": "adapt_ontask_finger_seed18_ckpt500000",
+   "cmd": "DV3_TASK_NAME=adapt_ontask_finger_seed18_ckpt500000 python dreamerv3/main.py --logdir ${RUNROOT}/adapt_ontask_finger_seed18_ckpt500000 --configs dmc_proprio unfrozen_readout --task dmc_finger_turn_hard --seed 18 --run.from_checkpoint ${RUNROOT}/ontask_finger_seed18/ckpt/$(cat ${RUNROOT}/ontask_finger_seed18/ckpt/latest) --run.steps 1.25e5 --env.dmc.render False",
+   "vars": {
+    "seed": 18,
+    "run_id": "adapt_ontask_finger_seed18_ckpt500000"
+   },
+   "logdir": "adapt_ontask_finger_seed18_ckpt500000",
+   "outputs": [
+    "adapt_ontask_finger_seed18_ckpt500000"
+   ],
+   "inputs": [
+    "ontask_finger_seed18"
+   ],
+   "done_when": [
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 100
+     }
+    }
+   ]
+  },
+  {
+   "stage": "vfontask",
+   "kind": "direct_adapt",
+   "target": "vast",
+   "run_id": "adapt_ontask_finger_seed19_ckpt500000",
+   "cmd": "DV3_TASK_NAME=adapt_ontask_finger_seed19_ckpt500000 python dreamerv3/main.py --logdir ${RUNROOT}/adapt_ontask_finger_seed19_ckpt500000 --configs dmc_proprio unfrozen_readout --task dmc_finger_turn_hard --seed 19 --run.from_checkpoint ${RUNROOT}/ontask_finger_seed19/ckpt/$(cat ${RUNROOT}/ontask_finger_seed19/ckpt/latest) --run.steps 1.25e5 --env.dmc.render False",
+   "vars": {
+    "seed": 19,
+    "run_id": "adapt_ontask_finger_seed19_ckpt500000"
+   },
+   "logdir": "adapt_ontask_finger_seed19_ckpt500000",
+   "outputs": [
+    "adapt_ontask_finger_seed19_ckpt500000"
+   ],
+   "inputs": [
+    "ontask_finger_seed19"
+   ],
+   "done_when": [
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 100
+     }
+    }
+   ]
+  },
+  {
+   "stage": "vfontask",
+   "kind": "direct_adapt",
+   "target": "vast",
+   "run_id": "adapt_ontask_finger_seed20_ckpt500000",
+   "cmd": "DV3_TASK_NAME=adapt_ontask_finger_seed20_ckpt500000 python dreamerv3/main.py --logdir ${RUNROOT}/adapt_ontask_finger_seed20_ckpt500000 --configs dmc_proprio unfrozen_readout --task dmc_finger_turn_hard --seed 20 --run.from_checkpoint ${RUNROOT}/ontask_finger_seed20/ckpt/$(cat ${RUNROOT}/ontask_finger_seed20/ckpt/latest) --run.steps 1.25e5 --env.dmc.render False",
+   "vars": {
+    "seed": 20,
+    "run_id": "adapt_ontask_finger_seed20_ckpt500000"
+   },
+   "logdir": "adapt_ontask_finger_seed20_ckpt500000",
+   "outputs": [
+    "adapt_ontask_finger_seed20_ckpt500000"
+   ],
+   "inputs": [
+    "ontask_finger_seed20"
+   ],
+   "done_when": [
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 100
+     }
+    }
+   ]
+  },
+  {
+   "stage": "vfontask",
+   "kind": "direct_adapt",
+   "target": "vast",
+   "run_id": "adapt_ontask_finger_seed21_ckpt500000",
+   "cmd": "DV3_TASK_NAME=adapt_ontask_finger_seed21_ckpt500000 python dreamerv3/main.py --logdir ${RUNROOT}/adapt_ontask_finger_seed21_ckpt500000 --configs dmc_proprio unfrozen_readout --task dmc_finger_turn_hard --seed 21 --run.from_checkpoint ${RUNROOT}/ontask_finger_seed21/ckpt/$(cat ${RUNROOT}/ontask_finger_seed21/ckpt/latest) --run.steps 1.25e5 --env.dmc.render False",
+   "vars": {
+    "seed": 21,
+    "run_id": "adapt_ontask_finger_seed21_ckpt500000"
+   },
+   "logdir": "adapt_ontask_finger_seed21_ckpt500000",
+   "outputs": [
+    "adapt_ontask_finger_seed21_ckpt500000"
+   ],
+   "inputs": [
+    "ontask_finger_seed21"
+   ],
+   "done_when": [
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 100
+     }
+    }
+   ]
+  },
+  {
+   "stage": "vfontask",
+   "kind": "direct_adapt",
+   "target": "vast",
+   "run_id": "adapt_ontask_finger_seed22_ckpt500000",
+   "cmd": "DV3_TASK_NAME=adapt_ontask_finger_seed22_ckpt500000 python dreamerv3/main.py --logdir ${RUNROOT}/adapt_ontask_finger_seed22_ckpt500000 --configs dmc_proprio unfrozen_readout --task dmc_finger_turn_hard --seed 22 --run.from_checkpoint ${RUNROOT}/ontask_finger_seed22/ckpt/$(cat ${RUNROOT}/ontask_finger_seed22/ckpt/latest) --run.steps 1.25e5 --env.dmc.render False",
+   "vars": {
+    "seed": 22,
+    "run_id": "adapt_ontask_finger_seed22_ckpt500000"
+   },
+   "logdir": "adapt_ontask_finger_seed22_ckpt500000",
+   "outputs": [
+    "adapt_ontask_finger_seed22_ckpt500000"
+   ],
+   "inputs": [
+    "ontask_finger_seed22"
+   ],
+   "done_when": [
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 100
+     }
+    }
+   ]
+  },
+  {
+   "stage": "vfontask",
+   "kind": "direct_adapt",
+   "target": "vast",
+   "run_id": "adapt_ontask_finger_seed23_ckpt500000",
+   "cmd": "DV3_TASK_NAME=adapt_ontask_finger_seed23_ckpt500000 python dreamerv3/main.py --logdir ${RUNROOT}/adapt_ontask_finger_seed23_ckpt500000 --configs dmc_proprio unfrozen_readout --task dmc_finger_turn_hard --seed 23 --run.from_checkpoint ${RUNROOT}/ontask_finger_seed23/ckpt/$(cat ${RUNROOT}/ontask_finger_seed23/ckpt/latest) --run.steps 1.25e5 --env.dmc.render False",
+   "vars": {
+    "seed": 23,
+    "run_id": "adapt_ontask_finger_seed23_ckpt500000"
+   },
+   "logdir": "adapt_ontask_finger_seed23_ckpt500000",
+   "outputs": [
+    "adapt_ontask_finger_seed23_ckpt500000"
+   ],
+   "inputs": [
+    "ontask_finger_seed23"
+   ],
+   "done_when": [
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 100
+     }
+    }
+   ]
+  },
+  {
+   "stage": "vfontask",
+   "kind": "direct_adapt",
+   "target": "vast",
+   "run_id": "adapt_ontask_finger_seed24_ckpt500000",
+   "cmd": "DV3_TASK_NAME=adapt_ontask_finger_seed24_ckpt500000 python dreamerv3/main.py --logdir ${RUNROOT}/adapt_ontask_finger_seed24_ckpt500000 --configs dmc_proprio unfrozen_readout --task dmc_finger_turn_hard --seed 24 --run.from_checkpoint ${RUNROOT}/ontask_finger_seed24/ckpt/$(cat ${RUNROOT}/ontask_finger_seed24/ckpt/latest) --run.steps 1.25e5 --env.dmc.render False",
+   "vars": {
+    "seed": 24,
+    "run_id": "adapt_ontask_finger_seed24_ckpt500000"
+   },
+   "logdir": "adapt_ontask_finger_seed24_ckpt500000",
+   "outputs": [
+    "adapt_ontask_finger_seed24_ckpt500000"
+   ],
+   "inputs": [
+    "ontask_finger_seed24"
+   ],
+   "done_when": [
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 100
+     }
+    }
+   ]
+  },
+  {
+   "stage": "vfscratch",
+   "kind": "direct_adapt",
+   "target": "vast",
+   "run_id": "adapt_scratchvf_finger_seed17_ckpt0",
+   "cmd": "DV3_TASK_NAME=adapt_scratchvf_finger_seed17_ckpt0 python dreamerv3/main.py --logdir ${RUNROOT}/adapt_scratchvf_finger_seed17_ckpt0 --configs dmc_proprio unfrozen_readout --task dmc_finger_turn_hard --seed 17 --run.steps 1.25e5 --env.dmc.render False",
+   "vars": {
+    "seed": 17,
+    "run_id": "adapt_scratchvf_finger_seed17_ckpt0"
+   },
+   "logdir": "adapt_scratchvf_finger_seed17_ckpt0",
+   "outputs": [
+    "adapt_scratchvf_finger_seed17_ckpt0"
+   ],
+   "inputs": [],
+   "done_when": [
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 100
+     }
+    }
+   ]
+  },
+  {
+   "stage": "vfscratch",
+   "kind": "direct_adapt",
+   "target": "vast",
+   "run_id": "adapt_scratchvf_finger_seed18_ckpt0",
+   "cmd": "DV3_TASK_NAME=adapt_scratchvf_finger_seed18_ckpt0 python dreamerv3/main.py --logdir ${RUNROOT}/adapt_scratchvf_finger_seed18_ckpt0 --configs dmc_proprio unfrozen_readout --task dmc_finger_turn_hard --seed 18 --run.steps 1.25e5 --env.dmc.render False",
+   "vars": {
+    "seed": 18,
+    "run_id": "adapt_scratchvf_finger_seed18_ckpt0"
+   },
+   "logdir": "adapt_scratchvf_finger_seed18_ckpt0",
+   "outputs": [
+    "adapt_scratchvf_finger_seed18_ckpt0"
+   ],
+   "inputs": [],
+   "done_when": [
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 100
+     }
+    }
+   ]
+  },
+  {
+   "stage": "vfscratch",
+   "kind": "direct_adapt",
+   "target": "vast",
+   "run_id": "adapt_scratchvf_finger_seed19_ckpt0",
+   "cmd": "DV3_TASK_NAME=adapt_scratchvf_finger_seed19_ckpt0 python dreamerv3/main.py --logdir ${RUNROOT}/adapt_scratchvf_finger_seed19_ckpt0 --configs dmc_proprio unfrozen_readout --task dmc_finger_turn_hard --seed 19 --run.steps 1.25e5 --env.dmc.render False",
+   "vars": {
+    "seed": 19,
+    "run_id": "adapt_scratchvf_finger_seed19_ckpt0"
+   },
+   "logdir": "adapt_scratchvf_finger_seed19_ckpt0",
+   "outputs": [
+    "adapt_scratchvf_finger_seed19_ckpt0"
+   ],
+   "inputs": [],
+   "done_when": [
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 100
+     }
+    }
+   ]
+  },
+  {
+   "stage": "vfscratch",
+   "kind": "direct_adapt",
+   "target": "vast",
+   "run_id": "adapt_scratchvf_finger_seed20_ckpt0",
+   "cmd": "DV3_TASK_NAME=adapt_scratchvf_finger_seed20_ckpt0 python dreamerv3/main.py --logdir ${RUNROOT}/adapt_scratchvf_finger_seed20_ckpt0 --configs dmc_proprio unfrozen_readout --task dmc_finger_turn_hard --seed 20 --run.steps 1.25e5 --env.dmc.render False",
+   "vars": {
+    "seed": 20,
+    "run_id": "adapt_scratchvf_finger_seed20_ckpt0"
+   },
+   "logdir": "adapt_scratchvf_finger_seed20_ckpt0",
+   "outputs": [
+    "adapt_scratchvf_finger_seed20_ckpt0"
+   ],
+   "inputs": [],
+   "done_when": [
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 100
+     }
+    }
+   ]
+  },
+  {
+   "stage": "vfscratch",
+   "kind": "direct_adapt",
+   "target": "vast",
+   "run_id": "adapt_scratchvf_finger_seed21_ckpt0",
+   "cmd": "DV3_TASK_NAME=adapt_scratchvf_finger_seed21_ckpt0 python dreamerv3/main.py --logdir ${RUNROOT}/adapt_scratchvf_finger_seed21_ckpt0 --configs dmc_proprio unfrozen_readout --task dmc_finger_turn_hard --seed 21 --run.steps 1.25e5 --env.dmc.render False",
+   "vars": {
+    "seed": 21,
+    "run_id": "adapt_scratchvf_finger_seed21_ckpt0"
+   },
+   "logdir": "adapt_scratchvf_finger_seed21_ckpt0",
+   "outputs": [
+    "adapt_scratchvf_finger_seed21_ckpt0"
+   ],
+   "inputs": [],
+   "done_when": [
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 100
+     }
+    }
+   ]
+  },
+  {
+   "stage": "vfscratch",
+   "kind": "direct_adapt",
+   "target": "vast",
+   "run_id": "adapt_scratchvf_finger_seed22_ckpt0",
+   "cmd": "DV3_TASK_NAME=adapt_scratchvf_finger_seed22_ckpt0 python dreamerv3/main.py --logdir ${RUNROOT}/adapt_scratchvf_finger_seed22_ckpt0 --configs dmc_proprio unfrozen_readout --task dmc_finger_turn_hard --seed 22 --run.steps 1.25e5 --env.dmc.render False",
+   "vars": {
+    "seed": 22,
+    "run_id": "adapt_scratchvf_finger_seed22_ckpt0"
+   },
+   "logdir": "adapt_scratchvf_finger_seed22_ckpt0",
+   "outputs": [
+    "adapt_scratchvf_finger_seed22_ckpt0"
+   ],
+   "inputs": [],
+   "done_when": [
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 100
+     }
+    }
+   ]
+  },
+  {
+   "stage": "vfscratch",
+   "kind": "direct_adapt",
+   "target": "vast",
+   "run_id": "adapt_scratchvf_finger_seed23_ckpt0",
+   "cmd": "DV3_TASK_NAME=adapt_scratchvf_finger_seed23_ckpt0 python dreamerv3/main.py --logdir ${RUNROOT}/adapt_scratchvf_finger_seed23_ckpt0 --configs dmc_proprio unfrozen_readout --task dmc_finger_turn_hard --seed 23 --run.steps 1.25e5 --env.dmc.render False",
+   "vars": {
+    "seed": 23,
+    "run_id": "adapt_scratchvf_finger_seed23_ckpt0"
+   },
+   "logdir": "adapt_scratchvf_finger_seed23_ckpt0",
+   "outputs": [
+    "adapt_scratchvf_finger_seed23_ckpt0"
+   ],
+   "inputs": [],
+   "done_when": [
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 100
+     }
+    }
+   ]
+  },
+  {
+   "stage": "vfscratch",
+   "kind": "direct_adapt",
+   "target": "vast",
+   "run_id": "adapt_scratchvf_finger_seed24_ckpt0",
+   "cmd": "DV3_TASK_NAME=adapt_scratchvf_finger_seed24_ckpt0 python dreamerv3/main.py --logdir ${RUNROOT}/adapt_scratchvf_finger_seed24_ckpt0 --configs dmc_proprio unfrozen_readout --task dmc_finger_turn_hard --seed 24 --run.steps 1.25e5 --env.dmc.render False",
+   "vars": {
+    "seed": 24,
+    "run_id": "adapt_scratchvf_finger_seed24_ckpt0"
+   },
+   "logdir": "adapt_scratchvf_finger_seed24_ckpt0",
+   "outputs": [
+    "adapt_scratchvf_finger_seed24_ckpt0"
+   ],
+   "inputs": [],
+   "done_when": [
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 100
+     }
+    }
+   ]
+  }
+ ]
+}
