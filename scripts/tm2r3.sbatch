@@ -45,6 +45,27 @@
 # regardless of the pilot unless the registered re-power trigger fires.
 # Then ONE read: python -m analysis.p2_wave1_read --labels ... .
 #
+# WAVE-2 W1-PROTOCOL labeling stages
+# (PREREG_p2_wave2_freshcohort_20260821: "labeling exactly per
+# PREREG_w1_wave_20260809" — same flags, --w1_repeats 8,
+# --env_seed 20260809 LOAD-BEARING, standard dials; outputs to the
+# registered $RUNROOT/w1_labels dir beside the look-1 cohort, names
+# disjoint by seed; seeds 59-66 ONLY, the exact complement of wv1):
+#   w2smoke  once:          W1-protocol 5-state smoke on fresh LATE
+#                           ckpts (finger_e1_seed59 main +
+#                           cup_e1_seed59 dup_cand — the 20260809
+#                           wave's registered cheap-insurance smoke
+#                           mirrored) -> *_smoke.npz + W2_SMOKE_OK
+#   w2dup    once:          2 duplicate-null gate passes, mirror of
+#                           look-1's cup_e1+finger_e1 at the cohort's
+#                           first seed -> w1tm2dup_*_seed59_late.npz
+#                           + W2_DUP_OK
+#   w2labels one pass/job:  TM2R3_DOM, TM2R3_DOSE, TM2R3_SEED
+#                           (refuses before W2_DUP_OK) ->
+#                           w1tm2_{dom}_{dose}_seed{59..66}_late.npz
+# Then ONE read: python -m analysis.w1_read_fresh tm2 ... plus the
+# pre-named pooled secondary via analysis/w1_read_pooled.py.
+#
 # Submit-all examples (login node, clean shell — module-leakage gotcha):
 #   for d in cup finger; do for e in e1 e4; do for k in $(seq 51 58); do
 #     TM2R3_STAGE=train TM2R3_DOM=$d TM2R3_DOSE=$e TM2R3_SEED=$k \
@@ -64,6 +85,12 @@
 #     TM2R3_STAGE=wv1 TM2R3_DOM=$d TM2R3_DOSE=$e TM2R3_SEED=$k \
 #       sbatch scripts/tm2r3.sbatch
 #   done
+#   TM2R3_STAGE=w2smoke sbatch scripts/tm2r3.sbatch
+#   TM2R3_STAGE=w2dup sbatch scripts/tm2r3.sbatch
+#   for d in cup finger; do for e in e1 e4; do for k in $(seq 59 66); do
+#     TM2R3_STAGE=w2labels TM2R3_DOM=$d TM2R3_DOSE=$e TM2R3_SEED=$k \
+#       sbatch scripts/tm2r3.sbatch
+#   done; done; done
 #
 # All labeling dials pinned by the preregs — do not override.
 # ---------------------------------------------------------------------------
@@ -87,8 +114,12 @@ HEAD="$(git -C "$TDMPC2_CHECKOUT" rev-parse HEAD)"
 TM2R3_ROOT="${TM2R3_ROOT:-$RUNROOT/tm2r3}"
 LABELS="$TM2R3_ROOT/labels"
 WV1_LABELS="$TM2R3_ROOT/wave1_labels"
+# Wave-2 W1-protocol labels: the PREREG_w1_wave_20260809 registered dir
+# (KEEP_PENDING-protected), shared with the look-1 cohort — the pooled
+# secondary reads both cohorts from one dir; names disjoint by seed.
+W1_LABELS="${W1_LABELS_DIR:-$RUNROOT/w1_labels}"
 mkdir -p "$TM2R3_ROOT" "$LABELS"
-STAGE="${TM2R3_STAGE:?train|apismoke|smoke|labels|wv1dup|wv1}"
+STAGE="${TM2R3_STAGE:?train|apismoke|smoke|labels|wv1dup|wv1|w2smoke|w2dup|w2labels}"
 
 DIALS="--states 200 --horizon 100 --label_every 25 --actions 8 --seed 0 --ref_stride 5 --oracle_all"
 task_of() { case "$1" in cup) echo dmc_cup_catch;; finger) echo dmc_finger_turn_hard;; *) echo "ERROR: dom $1" >&2; exit 2;; esac; }
@@ -208,6 +239,78 @@ elif [ "$STAGE" = wv1 ]; then
       --wv1_repeats 4 --env_seed 20260821 \
       --output "$OUT"
   echo "[$(date)] wv1 $RUN rc=0 status=DONE"
+
+elif [ "$STAGE" = w2smoke ]; then
+  # WAVE-2 W1-protocol smoke (PREREG_p2_wave2_freshcohort_20260821 via
+  # PREREG_w1_wave_20260809's registered cheap-insurance smoke, mirrored
+  # onto the fresh cohort): 1 main + 1 dup_cand pass, 5 states, on
+  # trained fresh LATE ckpts. *_smoke.npz never matches the derived
+  # reader's regexes, so these files are inert at read time.
+  mkdir -p "$W1_LABELS"
+  for spec in "finger:e1:59:" "cup:e1:59:--w1_dup_cand"; do
+    IFS=: read -r dom dose k dupflag <<<"$spec"
+    RUN="tm2r3_${dom}_${dose}_seed${k}"
+    LOG="$TM2R3_ROOT/$RUN"
+    tag=""; [ -n "$dupflag" ] && tag="dup"
+    OUT="$W1_LABELS/w1tm2${tag}_${dom}_${dose}_seed${k}_late_smoke.npz"
+    [ -f "$LOG/ckpt_late.pt" ] || { echo "ERROR: $RUN has no ckpt_late.pt"; exit 1; }
+    [ -f "$OUT" ] && { echo "skip $OUT (exists)"; continue; }
+    echo "[$(date)] w2smoke $RUN ${tag:-main}"
+    python -m probing.tdmpc2_oracle_labels \
+        --run_logdir "$LOG" --checkpoint "$LOG/ckpt_late.pt" \
+        --states 5 --horizon 100 --label_every 25 --actions 8 --seed 0 \
+        --ref_stride 5 --oracle_all \
+        --w1_repeats 8 --env_seed 20260809 $dupflag \
+        --output "$OUT"
+  done
+  touch "$W1_LABELS/W2_SMOKE_OK"
+  echo "[$(date)] w2smoke OK (finger_e1_seed59 main + cup_e1_seed59 dup; inspect stdout before w2dup)"
+
+elif [ "$STAGE" = w2dup ]; then
+  # WAVE-2 duplicate-null gate passes: the mirror of look-1's tm2 dup
+  # cells (cup_e1 + finger_e1 at the cohort's first seed), full dials,
+  # --w1_dup_cand. The derived reader's dup_gate REFUSES the whole read
+  # unless every estimand is exactly 0 on these — run them before the
+  # 32-pass spend so a CRN breakage costs 2 passes, not 34.
+  [ -f "$W1_LABELS/W2_SMOKE_OK" ] || { echo "run w2smoke first"; exit 1; }
+  for dom in cup finger; do
+    RUN="tm2r3_${dom}_e1_seed59"
+    LOG="$TM2R3_ROOT/$RUN"
+    OUT="$W1_LABELS/w1tm2dup_${dom}_e1_seed59_late.npz"
+    [ -f "$LOG/ckpt_late.pt" ] || { echo "ERROR: $RUN has no ckpt_late.pt"; exit 1; }
+    [ -f "$OUT" ] && { echo "skip $OUT (exists)"; continue; }
+    echo "[$(date)] w2dup $RUN"
+    python -m probing.tdmpc2_oracle_labels \
+        --run_logdir "$LOG" --checkpoint "$LOG/ckpt_late.pt" \
+        $DIALS \
+        --w1_repeats 8 --w1_dup_cand --env_seed 20260809 \
+        --output "$OUT"
+  done
+  touch "$W1_LABELS/W2_DUP_OK"
+  echo "[$(date)] w2dup OK (cup+finger e1 seed59)"
+
+elif [ "$STAGE" = w2labels ]; then
+  # WAVE-2 main W1-protocol pass (PREREG_p2_wave2_freshcohort_20260821):
+  # LATE checkpoints, seeds 59-66 ONLY — the exact complement of wv1's
+  # fence, so the two waves cannot cross in either direction. All dials
+  # reader-pinned (env_seed 20260809 LOAD-BEARING, repeats 8,
+  # states 200, horizon 100).
+  [ -f "$W1_LABELS/W2_DUP_OK" ] || { echo "run w2dup first"; exit 1; }
+  : "${TM2R3_DOM:?cup|finger}"; : "${TM2R3_DOSE:?e1|e4}"; : "${TM2R3_SEED:?59..66}"
+  check_cell
+  case "$TM2R3_SEED" in 59|6[0-6]) ;; *) echo "ERROR: w2labels seeds are 59-66 only (PREREG_p2_wave2_freshcohort_20260821; 51-58 = look-1, already read — relabeling them would collide with the look-1 cohort)"; exit 2;; esac
+  RUN="tm2r3_${TM2R3_DOM}_${TM2R3_DOSE}_seed${TM2R3_SEED}"
+  LOG="$TM2R3_ROOT/$RUN"
+  OUT="$W1_LABELS/w1tm2_${RUN#tm2r3_}_late.npz"
+  [ -f "$OUT" ] && { echo "skip $OUT (exists)"; exit 0; }
+  [ -f "$LOG/ckpt_late.pt" ] || { echo "ERROR: $RUN has no ckpt_late.pt"; exit 1; }
+  echo "[$(date)] w2labels $RUN"
+  python -m probing.tdmpc2_oracle_labels \
+      --run_logdir "$LOG" --checkpoint "$LOG/ckpt_late.pt" \
+      $DIALS \
+      --w1_repeats 8 --env_seed 20260809 \
+      --output "$OUT"
+  echo "[$(date)] w2labels $RUN rc=0 status=DONE"
 
 else
   echo "unknown stage $STAGE"; exit 1
