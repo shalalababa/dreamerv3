@@ -40,9 +40,20 @@ for s in 120 121 122 123; do
   for inst in se_probe se_alea_mask; do
     out="$d/$inst"
     probed="$(python -c "import json;print(json.load(open('$out/$inst.json'))['ckpt'].rstrip('/').split('/')[-1])" 2>/dev/null || true)"
-    if [ -n "$probed" ] && [ "$probed" = "$latest" ]; then
+    # R-A1-m20: an alea-mask output without the Amendment-1 share
+    # block is PRE-AMENDMENT — never skip on it, re-run instead
+    amend_ok=1
+    if [ "$inst" = "se_alea_mask" ] && [ -n "$probed" ]; then
+      python -c "import json,sys;d=json.load(open('$out/$inst.json'));sys.exit(0 if 'shares' in d else 1)" || amend_ok=0
+    fi
+    if [ -n "$probed" ] && [ "$probed" = "$latest" ] && [ "$amend_ok" = 1 ]; then
       echo "SKIP   s$s/$inst (matches ckpt/latest $latest)"
       continue
+    fi
+    if [ "$amend_ok" = 0 ]; then
+      echo "PRE-AMENDMENT s$s/$inst — quarantining and re-running"
+      mv "$out" "$d/_PRE_AMEND1_${inst}_$(date +%Y%m%d%H%M%S)"
+      probed=""
     fi
     if [ -n "$probed" ]; then
       echo "STALE  s$s/$inst (probed $probed != latest $latest) — quarantining"

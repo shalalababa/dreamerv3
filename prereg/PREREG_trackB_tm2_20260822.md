@@ -1,9 +1,15 @@
-# PREREG — Track-B5: the TD-MPC2 column (decoder-free attribution), 22 Aug 2026
+# PREREG — Track-B5: the TD-MPC2 column (decoder-free attribution), 22 Aug 2026 — rev 2
 
-**Program:** Track B (user GO 22 Aug "do all the builds"; revised
-same-day per review R4 BEFORE any compute — anchor/action pairing
-corrected, specificity + inflation cells added, pins extended; all
-pre-outcome). The matrix's second architecture family: does
+**Program:** Track B (user GO 22 Aug "do all the builds"; rev 1
+same-day per review R4 — anchor/action pairing corrected,
+specificity + inflation cells added, pins extended; **rev 2 same
+day per R-A1-M12**: the registered fire channel — distractor batch
+permutation — was STRUCTURALLY UNABLE TO FIRE: with gates/mod off
+the SE distractor is a pure exogenous AR(1), so permutation is
+law-preserving and its population delta is zero by exchangeability
+for ANY statistic (`artifacts/det_semask_baseline_20260822/NOTE.md`
++ correction). The fire channel is re-specified LAW-CHANGING; all
+revisions pre-outcome, no B5 data exist). The matrix's second architecture family: does
 TD-MPC2's uncertainty proxy — its Q-ENSEMBLE std (K=5; TM2 has NO
 dynamics-disagreement ensemble, `tdmpc2_oracle_labels.py:45`) —
 price the SE planted channels? Filled cells for contrast:
@@ -44,13 +50,25 @@ path is gated by the registered cluster smokes)
   overwrite a recorded pass) and its sha256 is recorded, so a
   silent resample is detectable (R4-M2). `mpc=True` + seed passed
   as explicit cfg overrides (the house precedent; recorded and
-  reader-pinned, R4-M1). House mask suite with the house RNG
-  offsets (R4-m17): distractor batch-permutation = the fire
-  channel; dup0 bitwise no-op hard-assert; dup substitution +
-  fresh-resample; velocity batch-permutation control. Statistic =
-  std over the 5 Q heads of
+  reader-pinned, R4-M1). **Variant suite (rev 2, R-A1-M12):**
+  **distractor MEAN-SUBSTITUTION = the FIRE channel** (every
+  anchor's distractor replaced by the anchor-population mean
+  vector — LAW-CHANGING, level-sensitive: it tests whether the
+  Q-heads' disagreement depends on the channel carrying its
+  realized values at all); **velocity MEAN-SUBSTITUTION = the
+  form-matched specificity comparator** (upgrades R4-M5);
+  **distractor batch permutation = the built-in
+  EXCHANGEABILITY-NULL calibration row** (population delta 0 by
+  construction for the exogenous channel; a BCa-separated,
+  fire-comparable value flags an instrument defect, report-only);
+  velocity batch permutation = the coupling teeth (velocity is
+  state-coupled — informative); dup0 bitwise no-op hard-assert;
+  dup substitution + fresh-resample. House RNG offsets (R4-m17).
+  Statistic = std over the 5 Q heads of
   `two_hot_inv(Q(encode(flat), a_frozen, return_type='all'))`.
-  Torch-free core selfcheck PASS.
+  Torch-free core selfcheck PASS incl. the rev-2 exogenous case
+  (permutation EXACTLY zero-mean on a channel-only statistic while
+  mean-substitution fires).
 
 ## 2. Wave (8 TM2 trainings, seeds 132–139 + registered smokes)
 
@@ -83,30 +101,37 @@ must NOT sweep the smoke dir, R4-M8)
   instrument-side extra-key order, per-channel FORM pins), seeds
   132–139, done-markers, dup0 vector-zero, float64 provenance;
   defective → excluded, missing runs count AGAINST (denominator 8).
-- **PRIMARY (single fire channel, no BH; the APT-read form):**
-  `channels["distractor"]["delta_qstd_mean"] < 0` in ≥ 7/8
-  registered runs (binomial 9/256).
+- **PRIMARY (rev 2 — single fire channel, no BH; the APT-read
+  form):** `channels["distractor_meansub"]["delta_qstd_mean"] < 0`
+  in ≥ 7/8 registered runs (binomial 9/256).
 - **Outcome cells (registered BEFORE any number exists):**
   - **i-TM2-PRICES-DISTRACTOR** — fire AND channel-specific: the
-    Q-value channel inherits the misprice.
-  - **iii-TM2-NONSPECIFIC** (R4-M5) — fire, but in a majority of
-    loaded runs the velocity real-key control is also negative
-    with |Δ_vel| > 0.5·|Δ_dist|: the evidence is explained by
-    "any batch permutation lowers this statistic" (the APT arm's
-    own control went −0.028 in 8/8); no pricing claim licensed.
-  - **iv-TM2-PRICES-INFLATING** (R4-M7) — Δ > 0 in ≥ 7/8 (same
-    9/256): for a Q-ensemble the sign under coupling-destruction
-    is not theoretically pinned; systematic inflation is pricing
-    (manufactured dependence), NOT immunity.
+    Q-value channel's disagreement depends on the distractor's
+    realized values.
+  - **iii-TM2-NONSPECIFIC** — fire, but in a majority of loaded
+    runs the FORM-MATCHED velocity mean-substitution is also
+    negative with |Δ_vel| > 0.5·|Δ_dist|: the evidence is
+    explained by "any off-manifold substitution lowers this
+    statistic"; no pricing claim licensed.
+  - **iv-TM2-PRICES-INFLATING** — Δ > 0 in ≥ 7/8 (same 9/256):
+    the sign under the intervention is not theoretically pinned;
+    systematic inflation is pricing, NOT immunity.
   - **ii-TM2-IMMUNE** — no fire in either direction with ≥ 6
-    loaded runs.
+    loaded runs. Worded: the Q-std does not respond to the
+    LAW-CHANGING removal of the distractor's realized values —
+    a genuine level-immunity statement this time (rev 2 closed
+    the R-A1-M12 hole: the rev-1 permutation form could not have
+    fired on any pricing).
   - **NO-EVIDENCE** (R4-m15) — < 6 loaded runs and no fire: an
     immunity claim needs data.
-- Descriptive: velocity control (the teeth row AND the specificity
-  comparator), dup substitution + fresh-resample nulls, base Q-std
-  levels, p_inflate per channel. Registered caveat: Q-std measures
-  VALUE disagreement — a null does not license "TM2's exploration
-  is safe" (TM2 as configured has no intrinsic bonus); the cell is
+- Descriptive: the EXCHANGEABILITY-NULL calibration row (the
+  distractor permutation — inert by construction; BCa-separated,
+  fire-comparable values are flagged as instrument defects),
+  velocity permutation (the coupling teeth), velocity meansub row,
+  dup substitution + fresh-resample nulls, base Q-std levels,
+  p_inflate per channel. Registered caveat: Q-std measures VALUE
+  disagreement — a null does not license "TM2's exploration is
+  safe" (TM2 as configured has no intrinsic bonus); the cell is
   about the uncertainty PROXY's accounting.
 
 ## 4. Fences
@@ -116,7 +141,8 @@ is claimable as a contribution; the TM2 architecture is not. TM2
 pin: checkout e9f59321 (the sbatch asserts it).
 
 Freeze = review R4 adjudicated (done 22 Aug — 2 BLOCKING + 9 MAJOR
-+ 11 minor, all resolved pre-freeze) + commit of this file + the
++ 11 minor) + the rev-2 fire-channel re-spec (R-A1-M12, done 22
+Aug; both selfchecks PASS post-rev-2) + commit of this file + the
 tdmpc2_compat/tdmpc2_r3_train deltas + `probing/tm2_qmask.py` +
 `uncfield/tm2_qmask_read.py` + `scripts/tm2_b5.sbatch` — then
 apismoke → smoke → the 8 trainings.

@@ -25,14 +25,24 @@ SINGLE states — no windows, no burn-in):
      fixed across every variant — the mask must not change the
      action, or the delta confounds policy shift with Q-std shift
      (the registered estimand is the accounting, not the policy).
-  3. Mask suite from the frozen house line (population-
-     intervention), house RNG offsets (seed+13 perm, seed+1300+idx
-     resamples, seed+17 velocity — R4-m17): distractor -> batch
-     permutation across anchors (the fire channel); dup0 ->
-     substitution == bitwise no-op (hard-asserted); dup1/dup2 ->
-     substitution (descriptive) + FRESH-RESAMPLE (variance-matched,
-     content-only null); velocity -> batch permutation (real-key
-     calibration control).
+  3. Variant suite (rev 2 per R-A1-M12: the distractor is a pure
+     exogenous AR(1), so BATCH PERMUTATION is law-preserving and
+     its population delta is ZERO BY EXCHANGEABILITY for any
+     statistic — it cannot be a fire channel):
+       distractor MEAN-SUBSTITUTION -> the FIRE channel
+         (law-changing, level-sensitive: every anchor's distractor
+         replaced by the anchor-population mean vector);
+       velocity MEAN-SUBSTITUTION -> the form-matched specificity
+         comparator;
+       distractor batch permutation -> the built-in
+         EXCHANGEABILITY-NULL calibration row (population delta 0
+         by construction; materially nonzero = instrument defect);
+       velocity batch permutation -> the coupling teeth (velocity
+         is state-coupled, so this one is informative);
+       dup0 substitution == bitwise no-op (hard-asserted);
+       dup1/dup2 substitution (descriptive) + FRESH-RESAMPLE.
+     House RNG offsets (seed+13 perm, seed+1300+idx resamples,
+     seed+17 velocity — R4-m17).
   4. Statistic per anchor and variant: z = encode(flat(variant));
      q = two_hot_inv(Q(z, a_i, return_type='all')) over the K=5
      heads; qstd_i = std over heads. Delta per anchor = masked -
@@ -116,6 +126,17 @@ def build_variants(arrays, source_key, basesd, eps_ladder, seed):
   info['velocity_control'] = dict(
       form='batch_permutation_real_key_control',
       fixed_points=int((vperm == np.arange(S)).sum()))
+  # rev 2 (R-A1-M12): law-CHANGING mean-substitution channels —
+  # the fire channel and its form-matched specificity comparator
+  for ch, tag in (('distractor', 'distractor_meansub'),
+                  ('velocity', 'velocity_meansub')):
+    m = arrays[ch].mean(0, keepdims=True)
+    v = dict(arrays)
+    v[ch] = np.broadcast_to(m, arrays[ch].shape).astype(
+        arrays[ch].dtype).copy()
+    variants[tag] = v
+    info[tag] = dict(form='mean_substitution',
+                     sub_mean_norm=float(np.linalg.norm(m)))
   return variants, info
 
 
@@ -316,14 +337,37 @@ def selfcheck():
                               0.0976, EPS_LADDER, 0, 300, 300)
   assert ch['planted_dup0']['bitwise_noop']
   assert ch['planted_dup0']['delta_qstd_mean'] == 0.0
+  # the COUPLED fake: permutation destroys a real coupling (the
+  # velocity-analog machinery check)
   assert ch['distractor']['delta_qstd_mean'] < 0, ch['distractor']
   for c in ('planted_dup1_resample', 'planted_dup2_resample'):
     assert abs(ch[c]['delta_qstd_mean']) < 0.02, (c, ch[c])
   assert 'velocity_control' in ch
+  assert ch['distractor_meansub']['form'] == 'mean_substitution'
   ch2, _, _ = qmask_core(arrays, flat_fn, qstd_fn, 'position',
                          0.0976, EPS_LADDER, 0, 300, 300)
   for c in ch:
     assert ch[c]['delta_qstd_mean'] == ch2[c]['delta_qstd_mean'], c
+  # rev-2 semantics on an EXOGENOUS channel (R-A1-M12): with a
+  # level-sensitive statistic that reads only the distractor,
+  # permutation is EXACTLY zero-mean (same multiset re-paired)
+  # while MEAN-SUBSTITUTION fires negative (law-changing)
+  arrays_ex = dict(arrays)
+  arrays_ex['distractor'] = rng.normal(0, 1.2, (S, 8)).astype(
+      np.float32)                       # exogenous: pos-independent
+
+  def qstd_level(flat):
+    dis = flat[:, 17:25]
+    return 1.0 + (dis ** 2).mean(1)
+
+  chL, _, _ = qmask_core(arrays_ex, flat_fn, qstd_level, 'position',
+                         0.0976, EPS_LADDER, 0, 300, 300)
+  assert abs(chL['distractor']['delta_qstd_mean']) < 1e-12, (
+      "permutation must be exactly zero-mean on a channel-only "
+      "statistic")
+  assert chL['distractor_meansub']['delta_qstd_mean'] < -0.5, (
+      chL['distractor_meansub'])
+  assert abs(chL['velocity_meansub']['delta_qstd_mean']) < 1e-12
   # channel_slices layout matches flatten order
   from probing.tdmpc2_compat import channel_slices
 
@@ -334,8 +378,10 @@ def selfcheck():
   sl = channel_slices(TASK, keys[2:], space)
   assert sl['position'] == (0, 8) and sl['distractor'] == (17, 25), sl
   print('tm2_qmask selfcheck PASS (torch-free core: coupling-priced '
-        'fake fires negative on distractor; dup0 bitwise-zero; '
+        'fake fires negative under permutation; dup0 bitwise-zero; '
         'resample nulls ~0; velocity control present; determinism; '
+        'rev-2 exogenous case: permutation EXACTLY zero-mean while '
+        'MEAN-SUBSTITUTION fires (the R-A1-M12 re-spec); '
         'channel_slices layout)')
 
 

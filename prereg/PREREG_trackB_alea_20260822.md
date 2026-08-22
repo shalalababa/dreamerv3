@@ -146,3 +146,12 @@ explore/agent/configs deltas + `uncfield/se_alea_mask.py` +
 `uncfield/se_b4_read.py` + `scripts/se_b4_probe.sbatch` +
 `scripts/uncfield_se.sbatch` + `ops/waves/b4_alea/spec.yaml` — then
 the 4 submissions.
+
+---
+**POINTER (22 Aug, R-A1-m19):** §3's masked-delta manipulation
+check, R_rel primary, and R3-B3 aliveness gate are SUPERSEDED IN
+FULL by `PREREG_trackB_alea_amend1_20260822.md` (the §0 gate fired;
+the mask form is construction-inert for the exogenous distractor —
+see the amendment for the share-form re-specification and the
+supersession scope). §§0–2 and 4, the wave, and the head design
+stand.

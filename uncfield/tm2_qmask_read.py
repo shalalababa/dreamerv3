@@ -6,24 +6,32 @@ wave's compute; ONE execution; revised pre-freeze per review R4).
 suite), seeds 132-139; per run the tm2_qmask instrument (Q-ensemble
 std at frozen baseline actions, house mask suite).
 
+REV 2 (R-A1-M12): the distractor is a pure exogenous AR(1), so
+batch permutation is law-preserving — its population delta is ZERO
+BY EXCHANGEABILITY for any statistic and it cannot be a fire
+channel. The FIRE channel is now the law-changing
+distractor MEAN-SUBSTITUTION; the permutation row is retained as a
+built-in EXCHANGEABILITY-NULL calibration (materially nonzero =
+instrument defect, flagged); velocity MEAN-SUBSTITUTION is the
+form-matched specificity comparator; velocity permutation stays as
+the coupling teeth.
+
 PRIMARY (single fire channel, no BH; APT-read form): fires iff
-channels["distractor"]["delta_qstd_mean"] < 0 in >= 7 of the 8
-REGISTERED runs (binomial 9/256; missing/defective runs count
+channels["distractor_meansub"]["delta_qstd_mean"] < 0 in >= 7 of
+the 8 REGISTERED runs (binomial 9/256; missing/defective runs count
 AGAINST, denominator never shrinks). Outcome cells:
   i-TM2-PRICES-DISTRACTOR  — fire AND channel-specific;
   ii-TM2-IMMUNE            — no fire, >= 6 loaded;
-  iii-TM2-NONSPECIFIC      — fire, but the velocity real-key
-      control moves the same way at comparable magnitude in a
-      majority of loaded runs (R4-M5: "any batch permutation
-      lowers this statistic" explains the evidence — the APT
-      arm's own control ran -0.028 in 8/8);
-  iv-TM2-PRICES-INFLATING  — delta > 0 in >= 7/8 (R4-M7: for a
-      Q-ensemble the sign under coupling-destruction is not
-      theoretically pinned; a systematic POSITIVE delta is
-      pricing, not immunity);
-  NO-EVIDENCE              — fewer than 6 loaded runs and no fire
-      (R4-m15: an immunity claim needs data).
-D-family + resample nulls stay DESCRIPTIVE.
+  iii-TM2-NONSPECIFIC      — fire, but velocity MEAN-SUBSTITUTION
+      moves the same way at comparable magnitude in a majority of
+      loaded runs ("any off-manifold substitution lowers this
+      statistic" explains the evidence);
+  iv-TM2-PRICES-INFLATING  — delta > 0 in >= 7/8 (the sign under
+      the intervention is not theoretically pinned; systematic
+      inflation is pricing, not immunity);
+  NO-EVIDENCE              — fewer than 6 loaded runs and no fire.
+D-family + resample nulls + the exchangeability-null row stay
+DESCRIPTIVE.
 
 Run:  python -m uncfield.tm2_qmask_read --runs "<glob>" --output <d>
       python -m uncfield.tm2_qmask_read --selfcheck
@@ -50,12 +58,17 @@ TASK_PIN = "dmc_cheetah_run"
 NUM_Q_PIN = 5
 STEPS_PIN = 100_000
 CKPT_PIN = "ckpt_late.pt"
-FIRE_CHANNEL = "distractor"
+FIRE_CHANNEL = "distractor_meansub"
+SPECIFICITY_CHANNEL = "velocity_meansub"
+EXCH_NULL_CHANNEL = "distractor"     # inert by construction (M12)
 NONSPEC_RATIO = 0.5
-REQUIRED = ("distractor", "planted_dup0", "planted_dup1",
+REQUIRED = ("distractor", "distractor_meansub", "velocity_meansub",
+            "planted_dup0", "planted_dup1",
             "planted_dup2", "planted_dup1_resample",
             "planted_dup2_resample", "velocity_control")
 FORM_PIN = {"distractor": "batch_permutation",
+            "distractor_meansub": "mean_substitution",
+            "velocity_meansub": "mean_substitution",
             "planted_dup0": "source_substitution",
             "planted_dup1": "source_substitution",
             "planted_dup2": "source_substitution",
@@ -182,35 +195,61 @@ def aggregate(recs, excluded):
              if n_loaded else 1.0)
     out["primary"] = dict(
         statement="TD-MPC2's Q-ensemble std prices the planted "
-                  "distractor: delta < 0 in >= 7/8 registered runs; "
-                  "single channel, no BH; missing runs count "
-                  "against; specificity + inflation cells per the "
-                  "registered outcome map",
+                  "distractor (rev 2: MEAN-SUBSTITUTION fire "
+                  "channel — permutation is inert by "
+                  "exchangeability, R-A1-M12): delta < 0 in >= 7/8 "
+                  "registered runs; single channel, no BH; missing "
+                  "runs count against; specificity + inflation "
+                  "cells per the registered outcome map",
         per_run_delta=deltas, n_neg=n_neg, n_pos=n_pos,
         n_registered=N_REGISTERED, n_loaded=n_loaded, fires=fires,
         binom_p_registered_7of8=9 / 256, binom_p_attained=p_att)
     vel = [r["channels"]["velocity_control"]["delta_qstd_mean"]
            for r in recs]
-    # specificity condition (R4-M5): in a run, the velocity control
-    # "explains" the distractor delta when it is negative too and at
-    # least half its magnitude
+    # specificity condition (rev 2): the FORM-MATCHED velocity
+    # mean-substitution "explains" the fire when it moves the same
+    # way at >= half the magnitude
     nonspec_runs = sum(
         1 for r in recs
-        if r["channels"]["velocity_control"]["delta_qstd_mean"] < 0
-        and abs(r["channels"]["velocity_control"]["delta_qstd_mean"])
+        if r["channels"][SPECIFICITY_CHANNEL]["delta_qstd_mean"] < 0
+        and abs(r["channels"][SPECIFICITY_CHANNEL]
+                ["delta_qstd_mean"])
         > NONSPEC_RATIO
         * abs(r["channels"][FIRE_CHANNEL]["delta_qstd_mean"]))
     nonspecific = bool(n_loaded and nonspec_runs > n_loaded / 2)
     out["specificity"] = dict(
+        channel=SPECIFICITY_CHANNEL,
         nonspec_runs=nonspec_runs, n_loaded=n_loaded,
         ratio_threshold=NONSPEC_RATIO, nonspecific=nonspecific)
+    # exchangeability-null calibration (R-A1-M12): the distractor
+    # PERMUTATION row is inert by construction — flag material
+    # deviations as instrument defects (report-only)
+    exch = [r["channels"][EXCH_NULL_CHANNEL]["delta_qstd_mean"]
+            for r in recs]
+    exch_flags = [r["run_dir"] for r in recs
+                  if abs(r["channels"][EXCH_NULL_CHANNEL]
+                         ["delta_qstd_mean"])
+                  > 0.5 * abs(r["channels"][FIRE_CHANNEL]
+                              ["delta_qstd_mean"]) + 1e-12
+                  and (r["channels"][EXCH_NULL_CHANNEL]
+                       ["delta_qstd_bca"][0] > 0
+                       or r["channels"][EXCH_NULL_CHANNEL]
+                       ["delta_qstd_bca"][1] < 0)]
+    out["exchangeability_null"] = dict(
+        per_run=exch, defect_flags=exch_flags,
+        note="population delta 0 by construction (exogenous "
+             "channel); a BCa-separated, fire-comparable value "
+             "here indicates an instrument defect")
     out["descriptive"] = dict(
         velocity_control=dict(per_run=vel,
                               mean=(float(np.mean(vel)) if vel
                                     else None),
                               n_neg=sum(1 for x in vel if x < 0),
-                              note="the teeth row + the "
-                                   "specificity comparator"),
+                              note="the coupling teeth row "
+                                   "(velocity is state-coupled)"),
+        velocity_meansub=[
+            r["channels"][SPECIFICITY_CHANNEL]["delta_qstd_mean"]
+            for r in recs],
         dup_substitution={
             ch: [r["channels"][ch]["delta_qstd_mean"] for r in recs]
             for ch in ("planted_dup1", "planted_dup2")},
@@ -265,8 +304,13 @@ def run(args):
 # ---------------------------------------------------------------- selfcheck
 
 def _fixture(tmp, name, seed, d_dist=-0.02, d_vel=-0.005,
+             d_exch=0.0, d_velperm=-0.03,
              dup0_zero=True, extra=None, num_q=NUM_Q_PIN,
              doctor=None, doctor_audit=None, drop_npz=False):
+    """rev 2: d_dist = the MEAN-SUBSTITUTION fire channel; d_vel =
+    the form-matched velocity_meansub comparator; d_exch = the
+    exchangeability-null permutation row (default 0 — inert by
+    construction); d_velperm = the coupling teeth."""
     rng = np.random.default_rng(seed * 5 + 1)
     rd = os.path.join(tmp, name)
     mdir = os.path.join(rd, "tm2_qmask")
@@ -280,11 +324,14 @@ def _fixture(tmp, name, seed, d_dist=-0.02, d_vel=-0.005,
     with open(os.path.join(rd, "config.json"), "w") as f:
         json.dump(audit, f)
     open(os.path.join(rd, "TM2R3_TRAIN_DONE"), "w").close()
-    spec = {"distractor": d_dist, "planted_dup0": 0.0,
+    spec = {"distractor": d_exch,
+            "distractor_meansub": d_dist,
+            "velocity_meansub": d_vel,
+            "planted_dup0": 0.0,
             "planted_dup1": -1e-4, "planted_dup2": 1e-4,
             "planted_dup1_resample": 1e-4,
             "planted_dup2_resample": -1e-4,
-            "velocity_control": d_vel}
+            "velocity_control": d_velperm}
     chans, dnpz = {}, {}
     for ch, want in spec.items():
         if ch == "planted_dup0" and dup0_zero:
@@ -328,12 +375,31 @@ def _expect_fail(fn, needle):
 def selfcheck():
     import tempfile
     with tempfile.TemporaryDirectory() as tmp:
-        # fire 8/8, specific (velocity small)
+        # fire 8/8, specific (velocity_meansub small), the
+        # exchangeability row inert and unflagged
         runs = [_fixture(tmp, f"a{s}", s) for s in range(132, 140)]
         agg = aggregate([read_run(d) for d in runs], [])
         assert agg["outcome_cell"] == "i-TM2-PRICES-DISTRACTOR"
         assert agg["primary"]["binom_p_attained"] == 1 / 256
         assert not agg["specificity"]["nonspecific"]
+        assert not agg["exchangeability_null"]["defect_flags"]
+        # ...and a BCa-separated, fire-comparable exchangeability
+        # value flags an instrument defect (report-only)
+        def doc_exch(mj):
+            c = mj["channels"]["distractor"]
+            c["delta_qstd_mean"] = -0.019
+            c["delta_qstd_bca"] = [-0.021, -0.017]
+        runs = [_fixture(tmp, f"x{s}", s,
+                         doctor=(doc_exch if s == 132 else None))
+                for s in range(132, 140)]
+        # doctored mean breaks npz provenance -> rebuild npz row
+        import numpy as _np
+        xz = os.path.join(tmp, "x132", "tm2_qmask", "tm2_qmask.npz")
+        z = dict(_np.load(xz))
+        z["delta_qstd_distractor"] = _np.full(S_PIN, -0.019)
+        _np.savez(xz, **z)
+        agg = aggregate([read_run(d) for d in runs], [])
+        assert len(agg["exchangeability_null"]["defect_flags"]) == 1
         # fire but NONSPECIFIC (velocity moves too, comparable size)
         runs = [_fixture(tmp, f"n{s}", s, d_vel=-0.03)
                 for s in range(132, 140)]
@@ -417,11 +483,12 @@ def selfcheck():
         _expect_fail(lambda: run(parse_args(
             ["--runs", os.path.join(tmp, "e13*"),
              "--output", outd])), "ONE execution")
-    print("tm2_qmask_read selfcheck PASS (fire-specific/NONSPECIFIC/"
-          "immune/INFLATING/conservative-missing/NO-EVIDENCE cells; "
-          "extra-key/num_q/dup0/seed/provenance/ckpt/realized-steps/"
-          "instrument-drift/mpc/form gates; excluded persistence + "
-          "one-execution guard)")
+    print("tm2_qmask_read selfcheck PASS (rev 2 meansub fire "
+          "channel: fire-specific/NONSPECIFIC/immune/INFLATING/"
+          "conservative-missing/NO-EVIDENCE cells; exchangeability-"
+          "null inert + defect flag; extra-key/num_q/dup0/seed/"
+          "provenance/ckpt/realized-steps/instrument-drift/mpc/form "
+          "gates; excluded persistence + one-execution guard)")
 
 
 def main():
