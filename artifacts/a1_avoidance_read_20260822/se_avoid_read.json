@@ -1,0 +1,391 @@
+{
+ "n_hetero2": 4,
+ "n_flat2": 4,
+ "invalid_runs": [],
+ "instrument_flag": "CLEAN",
+ "probe_ckpt_flag": "OK",
+ "occupancy_hetero2": {
+  "mean": 0.45988765726988867,
+  "bca": [
+   0.43698908540819137,
+   0.4784915051108618
+  ]
+ },
+ "mechanism_hetero2": {
+  "dis_ratio_per_run": [
+   1.1935003888563884,
+   1.748583899940302,
+   1.5668654033344078,
+   1.6362321380838516
+  ],
+  "real_ratio_per_run": [
+   0.6572963648490474,
+   0.6792975914540426,
+   0.7485944170839471,
+   0.6700254950388655
+  ],
+  "note": "DESCRIPTIVE within-run normalizer-invariant ratios; no outcome licenses any claim or venue change"
+ },
+ "occupancy_flat2": {
+  "mean": 0.5197009952992708,
+  "bca": [
+   0.5042193924824059,
+   0.5427638801170461
+  ]
+ },
+ "mechanism_flat2": {
+  "dis_ratio_per_run": [
+   0.8133769633580568,
+   0.8082612910958252,
+   0.8327541592748755,
+   0.8112041350217667
+  ],
+  "real_ratio_per_run": [
+   0.7387952547696305,
+   0.7897398908670301,
+   0.771061173662268,
+   0.7271662129740014
+  ],
+  "note": "DESCRIPTIVE within-run normalizer-invariant ratios; no outcome licenses any claim or venue change"
+ },
+ "score_two_sided": {
+  "delta": -6.687489679112495,
+  "p": 0.37142857142857144,
+  "note": "reporting only"
+ },
+ "collapsed_runs": [],
+ "misprice_gate": {
+  "successes": 4,
+  "n_valid_probes": 4,
+  "passes": true
+ },
+ "gradient_delivery": {
+  "n_adjudicable": 4,
+  "successes": 4,
+  "passes": true,
+  "note": "near-degenerate on the pass side by construction (E[m^2] contrast); its role is catching collapse/instrument faults"
+ },
+ "primary": {
+  "statement": "REGISTERED avoidance: occupancy(hetero2) < occupancy(flat2), one-sided negative exact permutation; power note: firing requires the observed split among the 3 most extreme of 70",
+  "delta": -0.05981333802938216,
+  "p": 0.014285714285714285,
+  "n_assignments": 70,
+  "fires": true,
+  "min_attainable_p": 0.014285714285714285
+ },
+ "secondary_ranking": {
+  "delta": -0.06553864551369429,
+  "p": 0.014285714285714285,
+  "fires": true,
+  "note": "GATED on the primary (#27 M10): firing alone licenses nothing; reported unconditionally"
+ },
+ "outcome": "AVOIDANCE-CONFIRMED",
+ "fit_counters": {
+  "/scratch/midway3/rickybao/dreamerv3_runs/bundles/a1_avoidance_20260822_101130/runroot/se_avoid_het_s44": {
+   "expected": 500000.0,
+   "last_step": 499264,
+   "ratio": 0.998528,
+   "flag": "OK",
+   "config_steps": 500000.0
+  },
+  "/scratch/midway3/rickybao/dreamerv3_runs/bundles/a1_avoidance_20260822_101130/runroot/se_avoid_het_s45": {
+   "expected": 500000.0,
+   "last_step": 497856,
+   "ratio": 0.995712,
+   "flag": "OK",
+   "config_steps": 500000.0
+  },
+  "/scratch/midway3/rickybao/dreamerv3_runs/bundles/a1_avoidance_20260822_101130/runroot/se_avoid_het_s46": {
+   "expected": 500000.0,
+   "last_step": 498848,
+   "ratio": 0.997696,
+   "flag": "OK",
+   "config_steps": 500000.0
+  },
+  "/scratch/midway3/rickybao/dreamerv3_runs/bundles/a1_avoidance_20260822_101130/runroot/se_avoid_het_s47": {
+   "expected": 500000.0,
+   "last_step": 499120,
+   "ratio": 0.99824,
+   "flag": "OK",
+   "config_steps": 500000.0
+  },
+  "/scratch/midway3/rickybao/dreamerv3_runs/bundles/a1_avoidance_20260822_101130/runroot/se_avoid_flat_s48": {
+   "expected": 500000.0,
+   "last_step": 499968,
+   "ratio": 0.999936,
+   "flag": "OK",
+   "config_steps": 500000.0
+  },
+  "/scratch/midway3/rickybao/dreamerv3_runs/bundles/a1_avoidance_20260822_101130/runroot/se_avoid_flat_s49": {
+   "expected": 500000.0,
+   "last_step": 498576,
+   "ratio": 0.997152,
+   "flag": "OK",
+   "config_steps": 500000.0
+  },
+  "/scratch/midway3/rickybao/dreamerv3_runs/bundles/a1_avoidance_20260822_101130/runroot/se_avoid_flat_s50": {
+   "expected": 500000.0,
+   "last_step": 499088,
+   "ratio": 0.998176,
+   "flag": "OK",
+   "config_steps": 500000.0
+  },
+  "/scratch/midway3/rickybao/dreamerv3_runs/bundles/a1_avoidance_20260822_101130/runroot/se_avoid_flat_s51": {
+   "expected": 500000.0,
+   "last_step": 497840,
+   "ratio": 0.99568,
+   "flag": "OK",
+   "config_steps": 500000.0
+  }
+ },
+ "per_run": [
+  {
+   "run_dir": "/scratch/midway3/rickybao/dreamerv3_runs/bundles/a1_avoidance_20260822_101130/runroot/se_avoid_het_s44",
+   "train_seed": 44,
+   "arm": "hetero2",
+   "occupancy": 0.4302994833710042,
+   "n_steps": 495520,
+   "valid": true,
+   "rankx_delta": -0.03905430493148565,
+   "probe": {
+    "p_perm": 0.000999000999000999,
+    "theta1": 8.270103764350452,
+    "probe_valid": true,
+    "ckpt_final_ok": true
+   },
+   "levels": {
+    "real_mean": 0.0037657549433384296,
+    "intrinsic_mean": 0.0027684809174388647
+   },
+   "region": {
+    "n_high": 218,
+    "n_low": 294,
+    "adjudicable": true,
+    "real_high": 0.0029706504794422225,
+    "real_low": 0.004519499328319658,
+    "dis_high": 0.019725508898289165,
+    "dis_low": 0.01652744237242364,
+    "dis_ratio": 1.1935003888563884,
+    "real_ratio": 0.6572963648490474
+   },
+   "score": 30.653480468287842
+  },
+  {
+   "run_dir": "/scratch/midway3/rickybao/dreamerv3_runs/bundles/a1_avoidance_20260822_101130/runroot/se_avoid_het_s45",
+   "train_seed": 45,
+   "arm": "hetero2",
+   "occupancy": 0.4570578915197529,
+   "n_steps": 497344,
+   "valid": true,
+   "rankx_delta": -0.05285248910600637,
+   "probe": {
+    "p_perm": 0.000999000999000999,
+    "theta1": 7.088636625876046,
+    "probe_valid": true,
+    "ckpt_final_ok": true
+   },
+   "levels": {
+    "real_mean": 0.0035061623404746773,
+    "intrinsic_mean": 0.0030299662612378597
+   },
+   "region": {
+    "n_high": 233,
+    "n_low": 279,
+    "adjudicable": true,
+    "real_high": 0.0028580774659597834,
+    "real_low": 0.00420740114776801,
+    "dis_high": 0.018711955973063094,
+    "dis_low": 0.010701205686328196,
+    "dis_ratio": 1.748583899940302,
+    "real_ratio": 0.6792975914540426
+   },
+   "score": 45.32958448981351
+  },
+  {
+   "run_dir": "/scratch/midway3/rickybao/dreamerv3_runs/bundles/a1_avoidance_20260822_101130/runroot/se_avoid_het_s46",
+   "train_seed": 46,
+   "arm": "hetero2",
+   "occupancy": 0.46655721121423294,
+   "n_steps": 498224,
+   "valid": true,
+   "rankx_delta": -0.0919731027850611,
+   "probe": {
+    "p_perm": 0.000999000999000999,
+    "theta1": 7.081501140905927,
+    "probe_valid": true,
+    "ckpt_final_ok": true
+   },
+   "levels": {
+    "real_mean": 0.0031999370831828047,
+    "intrinsic_mean": 0.0026726475916802883
+   },
+   "region": {
+    "n_high": 250,
+    "n_low": 262,
+    "adjudicable": true,
+    "real_high": 0.0027974024877073724,
+    "real_low": 0.0037368732972980112,
+    "dis_high": 0.016254005741386208,
+    "dis_low": 0.010373581359826094,
+    "dis_ratio": 1.5668654033344078,
+    "real_ratio": 0.7485944170839471
+   },
+   "score": 42.09069335618766
+  },
+  {
+   "run_dir": "/scratch/midway3/rickybao/dreamerv3_runs/bundles/a1_avoidance_20260822_101130/runroot/se_avoid_het_s47",
+   "train_seed": 47,
+   "arm": "hetero2",
+   "occupancy": 0.48563604297456475,
+   "n_steps": 494432,
+   "valid": true,
+   "rankx_delta": -0.12080589447692469,
+   "probe": {
+    "p_perm": 0.000999000999000999,
+    "theta1": 7.765622945203621,
+    "probe_valid": true,
+    "ckpt_final_ok": true
+   },
+   "levels": {
+    "real_mean": 0.003399867516741829,
+    "intrinsic_mean": 0.0031151724979281425
+   },
+   "region": {
+    "n_high": 248,
+    "n_low": 264,
+    "adjudicable": true,
+    "real_high": 0.002778326080678383,
+    "real_low": 0.004146597556735096,
+    "dis_high": 0.01915719568293914,
+    "dis_low": 0.011708116004476986,
+    "dis_ratio": 1.6362321380838516,
+    "real_ratio": 0.6700254950388655
+   },
+   "score": 32.83927337244283
+  },
+  {
+   "run_dir": "/scratch/midway3/rickybao/dreamerv3_runs/bundles/a1_avoidance_20260822_101130/runroot/se_avoid_flat_s48",
+   "train_seed": 48,
+   "arm": "flat2",
+   "occupancy": 0.5503451621179565,
+   "n_steps": 498896,
+   "valid": true,
+   "rankx_delta": -0.00789479985079633,
+   "probe": {
+    "p_perm": 0.000999000999000999,
+    "theta1": 6.667444548528608,
+    "probe_valid": true,
+    "ckpt_final_ok": true
+   },
+   "levels": {
+    "real_mean": 0.0028057409403522294,
+    "intrinsic_mean": 0.0023389365524053574
+   },
+   "region": {
+    "n_high": 277,
+    "n_low": 235,
+    "adjudicable": true,
+    "real_high": 0.002462428919238851,
+    "real_low": 0.003333032938884644,
+    "dis_high": 0.011153281455782212,
+    "dis_low": 0.013712315394003142,
+    "dis_ratio": 0.8133769633580568,
+    "real_ratio": 0.7387952547696305
+   },
+   "score": 38.62219699487111
+  },
+  {
+   "run_dir": "/scratch/midway3/rickybao/dreamerv3_runs/bundles/a1_avoidance_20260822_101130/runroot/se_avoid_flat_s49",
+   "train_seed": 49,
+   "arm": "flat2",
+   "occupancy": 0.5159885129895309,
+   "n_steps": 495168,
+   "valid": true,
+   "rankx_delta": -0.019537958128944877,
+   "probe": {
+    "p_perm": 0.000999000999000999,
+    "theta1": 6.397062314053843,
+    "probe_valid": true,
+    "ckpt_final_ok": true
+   },
+   "levels": {
+    "real_mean": 0.0027460955000909353,
+    "intrinsic_mean": 0.0026403022930026054
+   },
+   "region": {
+    "n_high": 254,
+    "n_low": 258,
+    "adjudicable": true,
+    "real_high": 0.002460509590244433,
+    "real_low": 0.003115594917641957,
+    "dis_high": 0.011367109401226474,
+    "dis_low": 0.014063656798181149,
+    "dis_ratio": 0.8082612910958252,
+    "real_ratio": 0.7897398908670301
+   },
+   "score": 36.82742034376862
+  },
+  {
+   "run_dir": "/scratch/midway3/rickybao/dreamerv3_runs/bundles/a1_avoidance_20260822_101130/runroot/se_avoid_flat_s50",
+   "train_seed": 50,
+   "arm": "flat2",
+   "occupancy": 0.49245027197528085,
+   "n_steps": 497104,
+   "valid": true,
+   "rankx_delta": -0.013973709961819014,
+   "probe": {
+    "p_perm": 0.000999000999000999,
+    "theta1": 9.063280760730258,
+    "probe_valid": true,
+    "ckpt_final_ok": true
+   },
+   "levels": {
+    "real_mean": 0.003014391474102417,
+    "intrinsic_mean": 0.0022178026847541332
+   },
+   "region": {
+    "n_high": 258,
+    "n_low": 254,
+    "adjudicable": true,
+    "real_high": 0.002687182588260113,
+    "real_low": 0.0034850446113074865,
+    "dis_high": 0.015232224096458354,
+    "dis_low": 0.018291381588201112,
+    "dis_ratio": 0.8327541592748755,
+    "real_ratio": 0.771061173662268
+   },
+   "score": 60.118084258406995
+  },
+  {
+   "run_dir": "/scratch/midway3/rickybao/dreamerv3_runs/bundles/a1_avoidance_20260822_101130/runroot/se_avoid_flat_s51",
+   "train_seed": 51,
+   "arm": "flat2",
+   "occupancy": 0.5200200341143152,
+   "n_steps": 497152,
+   "valid": true,
+   "rankx_delta": -0.0011247413031404419,
+   "probe": {
+    "p_perm": 0.000999000999000999,
+    "theta1": 7.4051154726954875,
+    "probe_valid": true,
+    "ckpt_final_ok": true
+   },
+   "levels": {
+    "real_mean": 0.0027912139861048972,
+    "intrinsic_mean": 0.002669387962669134
+   },
+   "region": {
+    "n_high": 263,
+    "n_low": 249,
+    "adjudicable": true,
+    "real_high": 0.0024039172093407715,
+    "real_low": 0.0033058703312260733,
+    "dis_high": 0.012760834414340947,
+    "dis_low": 0.015730731468717847,
+    "dis_ratio": 0.8112041350217667,
+    "real_ratio": 0.7271662129740014
+   },
+   "score": 42.095288806135116
+  }
+ ]
+}

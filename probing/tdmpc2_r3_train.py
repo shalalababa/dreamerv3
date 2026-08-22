@@ -40,7 +40,7 @@ from probing.tdmpc2_compat import (
 
 TRAINER_VERSION = 'tm2r3_train_20260730'
 DONE_MARKER = 'TM2R3_TRAIN_DONE'
-TASKS = ('dmc_cup_catch', 'dmc_finger_turn_hard')
+TASKS = ('dmc_cup_catch', 'dmc_finger_turn_hard', 'dmc_cheetah_run')
 
 
 class JsonlLogger:
@@ -66,7 +66,10 @@ def main():
   ap.add_argument('--tdmpc2_root', default=None)
   ap.add_argument('--logdir', required=True)
   ap.add_argument('--task', required=True, choices=TASKS)
-  ap.add_argument('--dose', required=True, choices=('e1', 'e4'))
+  ap.add_argument('--dose', required=True, choices=('e1', 'e4', 'se'))
+  ap.add_argument('--planted', action='store_true',
+                  help='B5: add the SE planted-channel suite '
+                       '(PREREG_trackB_tm2_20260822)')
   ap.add_argument('--seed', type=int, required=True)
   ap.add_argument('--steps', type=int, default=100_000)
   ap.add_argument('--early_steps', type=int, default=25_000)
@@ -88,7 +91,8 @@ def main():
     print(f'{logdir} already DONE; nothing to do.')
     return
 
-  env = Dv3TaskEnv(args.task, seed=args.seed, dose=args.dose)
+  env = Dv3TaskEnv(args.task, seed=args.seed, dose=args.dose,
+                   planted=args.planted)
   obs_dim = int(env.observation_space.shape[0])
   act_dim = int(env.action_space.shape[0])
   cfg = build_cfg(args.tdmpc2_root or os.environ.get('TDMPC2_ROOT'),
@@ -107,6 +111,8 @@ def main():
 
   audit = dict(
       trainer_version=TRAINER_VERSION, task=args.task, dose=args.dose,
+      planted=bool(args.planted),
+      extra_keys=list(env._extra_keys),
       dose_config=dose_config(args.dose), seed=args.seed,
       steps=args.steps, early_steps=args.early_steps,
       obs_dim=obs_dim, action_dim=act_dim,

@@ -37,6 +37,8 @@ OBS_ORDER = {
     'dmc_finger_turn_hard': (
         'position', 'velocity', 'touch', 'target_position', 'dist_to_target'),
     'dmc_cup_catch': ('position', 'velocity'),
+    # B5 TM2 column (PREREG_trackB_tm2_20260822): the SE substrate task
+    'dmc_cheetah_run': ('position', 'velocity'),
 }
 META_KEYS = ('reward', 'is_first', 'is_last', 'is_terminal', 'action',
              'consec', 'stepid', 'regime', 'in_regime')
@@ -47,7 +49,33 @@ DISTRACTOR_KEY = 'distractor'
 DOSE_TABLE = {
     'e1': dict(dim=0, scale=1.0, theta=0.1, basesd=0.0, calib=1000),
     'e4': dict(dim=32, scale=3.0, theta=0.1, basesd=0.0, calib=1000),
+    # B5: the SE Stage-1 channel dose (uncfield_se.sbatch pins)
+    'se': dict(dim=8, scale=1.0, theta=0.1, basesd=1.215, calib=1000),
 }
+
+# B5: the SE planted-channel suite (planted.py; source position,
+# basesd 0.0976, dup eps ladder + const). Extra-key order is PINNED —
+# it defines the flat-vector layout for the trainer, the checkpoint
+# audit, and the mask instrument alike.
+PLANTED_KEYS_TM2 = ('planted_dup0', 'planted_dup1', 'planted_dup2',
+                    'planted_const')
+PLANTED_CFG = dict(source_key='position', basesd=0.0976)
+
+
+def planted_seed(run_seed, index=0):
+  return int(np.random.SeedSequence(
+      [run_seed, index, 0x5E]).generate_state(1)[0])
+
+
+def channel_slices(task, extra_keys, obs_space):
+  """{key: (start, stop)} into the flat vector, in the exact
+  flatten_obs order (canonical task keys, then extras)."""
+  out, i = {}, 0
+  for k in obs_keys(task) + tuple(extra_keys):
+    d = int(np.prod(obs_space[k].shape) or 1)
+    out[k] = (i, i + d)
+    i += d
+  return out
 
 
 def dose_config(dose):
@@ -159,13 +187,14 @@ class Dv3TaskEnv:
   1000-step episodes, and the canonical obs concatenation above.
   """
 
-  def __init__(self, task, seed=0, dose='e1'):
+  def __init__(self, task, seed=0, dose='e1', planted=False):
     import torch  # deferred: torch lives in the tdmpc2 env
     import gymnasium as gym
     from embodied.envs import dmc
     self._torch = torch
     self.task = task
     self.dose = dose
+    self.planted = bool(planted)
     dcfg = dose_config(dose)
     name = task.removeprefix('dmc_')
     # DMC ctor takes no seed; episode randomness comes from dm_control's
@@ -180,6 +209,14 @@ class Dv3TaskEnv:
       self._env = Distractor(self._env, **dcfg,
                              seed=distractor_seed(seed, 0))
       self._extra_keys = (DISTRACTOR_KEY,)
+    if self.planted:
+      # B5: Planted wraps AFTER Distractor (the main.py order);
+      # seed from SeedSequence([seed, 0, 0x5E]). Extra-key order is
+      # pinned: distractor first, then the planted quartet.
+      from embodied.envs.planted import Planted
+      self._env = Planted(self._env, **PLANTED_CFG,
+                          seed=planted_seed(seed, 0))
+      self._extra_keys = self._extra_keys + PLANTED_KEYS_TM2
     aspace = self._env.act_space['action']
     self._action_shape = aspace.shape
     self.action_space = gym.spaces.Box(
@@ -204,11 +241,13 @@ class Dv3TaskEnv:
   def reset(self):
     obs = self._env.step({
         'action': np.zeros(self._action_shape, np.float32), 'reset': True})
+    self.last_obs_dict = obs   # raw per-key dict (tm2_qmask anchors)
     return self._flat(obs)
 
   def step(self, action):
     a = np.asarray(action.detach().cpu().numpy(), np.float32)
     obs = self._env.step({'action': a, 'reset': False})
+    self.last_obs_dict = obs
     done = bool(obs['is_last'])
     info = {'success': 0.0, 'terminated': bool(obs['is_terminal'])}
     return self._flat(obs), float(obs['reward']), done, info

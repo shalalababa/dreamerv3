@@ -123,7 +123,9 @@ class Agent(embodied.jax.Agent):
       self.disag = explore.Disag(
           target_dim, ensemble=config.expl.disag_ens,
           units=config.expl.disag_units, layers=config.expl.disag_layers,
-          name='disag')
+          head=config.expl.disag_head,
+          logvar_min=config.expl.disag_logvar_min,
+          logvar_max=config.expl.disag_logvar_max, name='disag')
 
     # frozen_enc drops enc from the optimizer's module list (same mechanism
     # as frozen_wm, one level finer): enc params become constants in

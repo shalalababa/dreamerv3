@@ -1,0 +1,111 @@
+# Track-B ONSET wave -- PREREG_trackB_onset_20260822 (rev per review
+# R1, 22 Aug). Registers the rising limb of the B1 threshold-onset
+# hump on fresh data ON THE TRANSITION WINDOW: scales
+# {0.25, 0.30, 0.34, 0.38} x 4 seeds = 16 runs, seeds 96-111.
+# (R1-B2: the first-draft grid [0.30,0.45] sampled the plateau — the
+# prereg's own anchors put the rise essentially complete by ~0.36;
+# 0.25 is a registered fresh-seed replication of B1's bimodal point.)
+#
+# ONE INSTANCE (1-Aug rule; the primary is a cross-scale trend).
+#
+# LANE LAYOUT (R1-B1 — the B1-dose constraint pair, verbatim).
+# Declaration order fixes packing: with 16 runs over 8 lanes, entries
+# 1-8 are round 1 and 9-16 are round 2. The order below satisfies:
+#   - each ROUND holds exactly two runs of every scale (a round-wide
+#     disturbance cannot masquerade as a scale trend — the primary is
+#     MONOTONE in scale, so round==scale would reproduce it exactly),
+#   - each LANE holds two DIFFERENT scales (a slow/hot GPU cannot
+#     load onto one scale).
+# Reordering this list silently breaks both properties.
+#
+# DISK -- THIS WAVE DOES NOT FIT WHOLE. 16 x 4.6 G = 73.6 G against
+# ~44 G free on an 8-GPU box (the B1 premise). Round 1 alone (36.8 G)
+# fits; round 2 starts per-lane as round 1 drains. OPERATIONAL
+# REQUIREMENT: pull each round-1 run to RCC, VERIFY, delete
+# instance-side while round 2 runs. replay/ is REQUIRED in this
+# wave's bundle (coverage leg) — never trim it instance-side.
+#
+# Variables NOT passed are covered elsewhere, each deliberately
+# (R1-m16 — justified, not "complete"): DISTRACTOR_DIM/BASESD_N,
+# planted source/basesd, theta, gates — producer defaults pinned by
+# the reader's B1 pin block; DISAG_BOOTSTRAP/DISAG_HEAD — Stage-1
+# defaults (True/det), reader-pinned, BIND-CHECK live; STEPS —
+# producer default 5e5, gated by nearest.json + fit counters. The
+# mod quadruple and penalty block ARE passed inert (the reader
+# cannot distinguish unset from deliberately-default).
+# done_when regexes are newline-tolerant (\s+, the #34 B2 lesson)
+# and anchored against key-suffix collisions (R1-m15: (?<![\w.])).
+#
+# per_gpu: 1 -- SE runs measured 15243 MiB of a 16311 MiB card.
+# The 16 se_probe passes are NOT in this wave: ALL in ONE CPU job
+# via scripts/se_onset_probe.sbatch (scale == seed block, B1 rule).
+
+wave_id: b_onset
+paper: track_b
+prereg: prereg/PREREG_trackB_onset_20260822.md
+notes: >-
+  16 SE runs (dmc_cheetah_run, 5e5 steps, ~7 h each) across four
+  distractor scales on the transition window -- ALL ON ONE INSTANCE,
+  8 lanes x 2 rounds (~14 h drain). Requires mid-wave evacuation of
+  round 1; see the DISK note.
+
+defaults:
+  target: vast
+
+kinds:
+  se_run: {per_gpu: 1}
+
+stages:
+
+  - name: train
+    kind: se_run
+    on_failure: continue
+    runs:
+      # -- round 1: two of every scale; lanes 0-7 --
+      - {run_id: se_ons25_s96,  seed: 96,  scale: "0.25"}
+      - {run_id: se_ons30_s100, seed: 100, scale: "0.30"}
+      - {run_id: se_ons34_s104, seed: 104, scale: "0.34"}
+      - {run_id: se_ons38_s108, seed: 108, scale: "0.38"}
+      - {run_id: se_ons25_s97,  seed: 97,  scale: "0.25"}
+      - {run_id: se_ons30_s101, seed: 101, scale: "0.30"}
+      - {run_id: se_ons34_s105, seed: 105, scale: "0.34"}
+      - {run_id: se_ons38_s109, seed: 109, scale: "0.38"}
+      # -- round 2: two of every scale, rotated so no lane repeats --
+      - {run_id: se_ons34_s106, seed: 106, scale: "0.34"}
+      - {run_id: se_ons38_s110, seed: 110, scale: "0.38"}
+      - {run_id: se_ons25_s98,  seed: 98,  scale: "0.25"}
+      - {run_id: se_ons30_s102, seed: 102, scale: "0.30"}
+      - {run_id: se_ons34_s107, seed: 107, scale: "0.34"}
+      - {run_id: se_ons38_s111, seed: 111, scale: "0.38"}
+      - {run_id: se_ons25_s99,  seed: 99,  scale: "0.25"}
+      - {run_id: se_ons30_s103, seed: 103, scale: "0.30"}
+    logdir: "${run_id}"
+    cmd: >-
+      RUN_ID=${run_id} TASK=dmc_cheetah_run SEED=${seed}
+      DISTRACTOR_SCALE=${scale}
+      DISTRACTOR_MOD_KEY= DISTRACTOR_MOD_INDEX=0
+      DISTRACTOR_MOD_LO=0.0 DISTRACTOR_MOD_HI=1.0
+      PENALTY_MIX=False PENALTY_SCALE=0.0
+      PENALTY_GATE_KEY= PENALTY_GATE_INDEX=0 PENALTY_GATE_THRESHOLD=0.0
+      bash scripts/uncfield_se.sbatch
+    outputs:
+      - "${run_id}"
+    done_when:
+      - exists: TRAINING_DONE
+      - exists: config.yaml
+      # on-grid check only (shared across runs; B1-dose had none) —
+      # the EXACT per-run scale<->seed map is enforced FATALLY by the
+      # reader (SCALE_SEEDS gate)
+      - file_contains: {file: config.yaml, pattern: '(?<![\w.])scale:\s+0\.(25|3|34|38)\b'}
+      - file_contains: {file: config.yaml, pattern: 'penalty_mix:\s+false'}
+      - file_contains:
+          file: ckpt_snapshots/nearest.json
+          pattern: '"milestone": 500000,\s+"step": (49\d{4}|[5-9]\d{5})'
+      - jsonl_min_lines: {file: scores.jsonl, n: 464}
+
+bundle:
+  prefix: b_onset
+  include_stages: [train]
+  # full-tree run dirs: replay/ (coverage leg) + ckpt_snapshots/
+  # (degeneracy gate) ride along — no excludes on this bundle
+  cloud_logs: ["se_ons*_s*.out"]

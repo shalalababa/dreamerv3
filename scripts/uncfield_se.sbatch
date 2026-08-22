@@ -123,6 +123,7 @@ STOP_STEP=$("$PYTHON" -c "print(int(float('$STEPS')))")
   --distractor.mod_lo "${DISTRACTOR_MOD_LO:-0.0}" \
   --distractor.mod_hi "${DISTRACTOR_MOD_HI:-1.0}" \
   --agent.expl.disag_bootstrap "${DISAG_BOOTSTRAP:-True}" \
+  --agent.expl.disag_head "${DISAG_HEAD:-det}" \
   --agent.expl.penalty_mix "${PENALTY_MIX:-False}" \
   --penalty.scale "${PENALTY_SCALE:-0.0}" \
   --penalty.gate_key "${PENALTY_GATE_KEY:-}" \
@@ -171,6 +172,7 @@ def want(path, val):
         f"BIND-CHECK FAIL {path}: config={node!r} != wave={val!r}")
 want('agent.expl.disag_bootstrap',
      env.get('DISAG_BOOTSTRAP', 'True') == 'True')
+want('agent.expl.disag_head', env.get('DISAG_HEAD', 'det'))
 want('agent.expl.penalty_mix',
      env.get('PENALTY_MIX', 'False') == 'True')
 want('penalty.scale', float(env.get('PENALTY_SCALE', '0.0')))
@@ -188,6 +190,25 @@ want('distractor.scale', float(env.get('DISTRACTOR_SCALE', '1.0')))
 want('distractor.mod_key', env.get('DISTRACTOR_MOD_KEY', ''))
 want('distractor.gate_key', env.get('DISTRACTOR_GATE_KEY', ''))
 want('planted.gate_key', env.get('GATE_KEY', ''))
+# R3-D4: the remaining region-defining + identity variables
+want('distractor.gate_index',
+     int(env.get('DISTRACTOR_GATE_INDEX', '0')))
+want('distractor.gate_threshold',
+     float(env.get('DISTRACTOR_GATE_THRESHOLD', '0.0')))
+want('planted.gate_index', int(env.get('GATE_INDEX', '0')))
+want('planted.gate_threshold',
+     float(env.get('GATE_THRESHOLD', '0.0')))
+want('planted.source_key', env.get('SOURCE_KEY', 'position'))
+want('planted.basesd', float(env.get('BASESD_PLANTED', '0.0976')))
+want('distractor.basesd', float(env.get('BASESD_N', '1.215')))
+want('seed', int(env['SEED']))
+want('run.steps', float(env.get('STEPS', '5e5')))
+if env.get('EXPL_CONFIG', 'expl_p2e') == 'expl_p2e':
+    want('agent.expl.disag_scale', 1000.0)
+# constants, but their PRESENCE proves the checkout carries the B4
+# config keys (a stale configs.yaml would fail the key lookup)
+want('agent.expl.disag_logvar_min', -8.0)
+want('agent.expl.disag_logvar_max', 6.0)
 want('agent.expl.mode',
      {'expl_p2e': 'p2e', 'expl_apt': 'apt'}[
          env.get('EXPL_CONFIG', 'expl_p2e')])

@@ -1,0 +1,65 @@
+# Track-B4 aleatoric-repair wave -- PREREG_trackB_alea_20260822.
+# 4 runs, seeds 120-123, Stage-1 config + DISAG_HEAD=gauss (mu by
+# MSE, sigma by NLL-on-sg-residuals, deployed reward =
+# aleatoric-normalized disagreement). One instance, lanes 0-3, one
+# round (~7 h). DISK: 4 x 4.6 G fits; still pull per-run.
+# Checkout >= the B-batch freeze (BIND-CHECK carries DISAG_HEAD +
+# the logvar-bound constants + the R3-D4 identity variables).
+# Post-training: scripts/se_b4_probe.sbatch — ONE CPU job, all 4
+# runs, se_probe + se_alea_mask, ckpt-identity skip rule (R3-M4).
+# replay/ REQUIRED in the bundle.
+# Every arm passes the SAME variable set incl. inert values
+# (R3-D5 — the a1/a2 rule, on the wave whose subject IS the head).
+
+wave_id: b4_alea
+paper: track_b
+prereg: prereg/PREREG_trackB_alea_20260822.md
+notes: >-
+  4 SE runs (cheetah, seeds 120-123) with disag_head gauss, 5e5
+  steps, ~7 h each, one instance, one round.
+
+defaults:
+  target: vast
+
+kinds:
+  se_run: {per_gpu: 1}
+
+stages:
+
+  - name: alea
+    kind: se_run
+    on_failure: continue
+    expand:
+      seed: [120, 121, 122, 123]
+    run_id: "se_alea_s${seed}"
+    logdir: "se_alea_s${seed}"
+    cmd: >-
+      RUN_ID=se_alea_s${seed} TASK=dmc_cheetah_run SEED=${seed}
+      DISAG_HEAD=gauss DISAG_BOOTSTRAP=True EXPL_CONFIG=expl_p2e
+      STEPS=5e5 SOURCE_KEY=position
+      BASESD_PLANTED=0.0976 BASESD_N=1.215
+      DISTRACTOR_DIM=8 DISTRACTOR_SCALE=1.0
+      DISTRACTOR_GATE_KEY= DISTRACTOR_GATE_INDEX=0
+      DISTRACTOR_GATE_THRESHOLD=0.0
+      DISTRACTOR_MOD_KEY= DISTRACTOR_MOD_INDEX=0
+      DISTRACTOR_MOD_LO=0.0 DISTRACTOR_MOD_HI=1.0
+      GATE_KEY= GATE_INDEX=0 GATE_THRESHOLD=0.0
+      PENALTY_MIX=False PENALTY_SCALE=0.0
+      PENALTY_GATE_KEY= PENALTY_GATE_INDEX=0 PENALTY_GATE_THRESHOLD=0.0
+      bash scripts/uncfield_se.sbatch
+    outputs:
+      - "se_alea_s${seed}"
+    done_when:
+      - exists: TRAINING_DONE
+      - exists: config.yaml
+      - file_contains: {file: config.yaml, pattern: 'disag_head:\s+gauss'}
+      - file_contains: {file: config.yaml, pattern: 'penalty_mix:\s+false'}
+      - file_contains:
+          file: ckpt_snapshots/nearest.json
+          pattern: '"milestone": 500000,\s+"step": (49\d{4}|[5-9]\d{5})'
+      - jsonl_min_lines: {file: scores.jsonl, n: 464}
+
+bundle:
+  prefix: b4_alea
+  include_stages: [alea]
+  cloud_logs: ["se_alea_s*.out"]
