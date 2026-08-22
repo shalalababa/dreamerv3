@@ -1,0 +1,394 @@
+{
+ "wave_id": "b5_tm2",
+ "spec": "/home/rickybao/projects/dreamerv3/ops/waves/b5_tm2/spec.yaml",
+ "prereg": "prereg/PREREG_trackB_tm2_20260822.md",
+ "bundle": {
+  "prefix": "b5_tm2",
+  "include_stages": [
+   "train",
+   "qmask"
+  ],
+  "cloud_logs": [
+   "b5train_s*.out",
+   "b5qmask_s*.out"
+  ]
+ },
+ "stages": [
+  {
+   "name": "train",
+   "target": "vast",
+   "kind": "tm2_b5",
+   "on_failure": "continue",
+   "needs": null
+  },
+  {
+   "name": "qmask",
+   "target": "vast",
+   "kind": "tm2_b5",
+   "on_failure": "continue",
+   "needs": null
+  }
+ ],
+ "runs": [
+  {
+   "stage": "train",
+   "kind": "tm2_b5",
+   "target": "vast",
+   "run_id": "tm2se_s132",
+   "cmd": "DV3_TASK_NAME=b5train_s132 TM2_CONDA_ENV=/scratch/midway3/root/conda_envs/tdmpc2 TDMPC2_CHECKOUT=/scratch/midway3/root/tdmpc2 TM2B5_STAGE=train TM2B5_SEED=132 bash scripts/tm2_b5.sbatch",
+   "vars": {
+    "seed": 132,
+    "run_id": "tm2se_s132"
+   },
+   "logdir": "tm2_b5/tm2se_s132",
+   "outputs": [
+    "tm2_b5/tm2se_s132"
+   ],
+   "inputs": [],
+   "done_when": [
+    {
+     "exists": "TM2R3_TRAIN_DONE"
+    },
+    {
+     "exists": "ckpt_late.pt"
+    }
+   ]
+  },
+  {
+   "stage": "train",
+   "kind": "tm2_b5",
+   "target": "vast",
+   "run_id": "tm2se_s133",
+   "cmd": "DV3_TASK_NAME=b5train_s133 TM2_CONDA_ENV=/scratch/midway3/root/conda_envs/tdmpc2 TDMPC2_CHECKOUT=/scratch/midway3/root/tdmpc2 TM2B5_STAGE=train TM2B5_SEED=133 bash scripts/tm2_b5.sbatch",
+   "vars": {
+    "seed": 133,
+    "run_id": "tm2se_s133"
+   },
+   "logdir": "tm2_b5/tm2se_s133",
+   "outputs": [
+    "tm2_b5/tm2se_s133"
+   ],
+   "inputs": [],
+   "done_when": [
+    {
+     "exists": "TM2R3_TRAIN_DONE"
+    },
+    {
+     "exists": "ckpt_late.pt"
+    }
+   ]
+  },
+  {
+   "stage": "train",
+   "kind": "tm2_b5",
+   "target": "vast",
+   "run_id": "tm2se_s134",
+   "cmd": "DV3_TASK_NAME=b5train_s134 TM2_CONDA_ENV=/scratch/midway3/root/conda_envs/tdmpc2 TDMPC2_CHECKOUT=/scratch/midway3/root/tdmpc2 TM2B5_STAGE=train TM2B5_SEED=134 bash scripts/tm2_b5.sbatch",
+   "vars": {
+    "seed": 134,
+    "run_id": "tm2se_s134"
+   },
+   "logdir": "tm2_b5/tm2se_s134",
+   "outputs": [
+    "tm2_b5/tm2se_s134"
+   ],
+   "inputs": [],
+   "done_when": [
+    {
+     "exists": "TM2R3_TRAIN_DONE"
+    },
+    {
+     "exists": "ckpt_late.pt"
+    }
+   ]
+  },
+  {
+   "stage": "train",
+   "kind": "tm2_b5",
+   "target": "vast",
+   "run_id": "tm2se_s135",
+   "cmd": "DV3_TASK_NAME=b5train_s135 TM2_CONDA_ENV=/scratch/midway3/root/conda_envs/tdmpc2 TDMPC2_CHECKOUT=/scratch/midway3/root/tdmpc2 TM2B5_STAGE=train TM2B5_SEED=135 bash scripts/tm2_b5.sbatch",
+   "vars": {
+    "seed": 135,
+    "run_id": "tm2se_s135"
+   },
+   "logdir": "tm2_b5/tm2se_s135",
+   "outputs": [
+    "tm2_b5/tm2se_s135"
+   ],
+   "inputs": [],
+   "done_when": [
+    {
+     "exists": "TM2R3_TRAIN_DONE"
+    },
+    {
+     "exists": "ckpt_late.pt"
+    }
+   ]
+  },
+  {
+   "stage": "train",
+   "kind": "tm2_b5",
+   "target": "vast",
+   "run_id": "tm2se_s136",
+   "cmd": "DV3_TASK_NAME=b5train_s136 TM2_CONDA_ENV=/scratch/midway3/root/conda_envs/tdmpc2 TDMPC2_CHECKOUT=/scratch/midway3/root/tdmpc2 TM2B5_STAGE=train TM2B5_SEED=136 bash scripts/tm2_b5.sbatch",
+   "vars": {
+    "seed": 136,
+    "run_id": "tm2se_s136"
+   },
+   "logdir": "tm2_b5/tm2se_s136",
+   "outputs": [
+    "tm2_b5/tm2se_s136"
+   ],
+   "inputs": [],
+   "done_when": [
+    {
+     "exists": "TM2R3_TRAIN_DONE"
+    },
+    {
+     "exists": "ckpt_late.pt"
+    }
+   ]
+  },
+  {
+   "stage": "train",
+   "kind": "tm2_b5",
+   "target": "vast",
+   "run_id": "tm2se_s137",
+   "cmd": "DV3_TASK_NAME=b5train_s137 TM2_CONDA_ENV=/scratch/midway3/root/conda_envs/tdmpc2 TDMPC2_CHECKOUT=/scratch/midway3/root/tdmpc2 TM2B5_STAGE=train TM2B5_SEED=137 bash scripts/tm2_b5.sbatch",
+   "vars": {
+    "seed": 137,
+    "run_id": "tm2se_s137"
+   },
+   "logdir": "tm2_b5/tm2se_s137",
+   "outputs": [
+    "tm2_b5/tm2se_s137"
+   ],
+   "inputs": [],
+   "done_when": [
+    {
+     "exists": "TM2R3_TRAIN_DONE"
+    },
+    {
+     "exists": "ckpt_late.pt"
+    }
+   ]
+  },
+  {
+   "stage": "train",
+   "kind": "tm2_b5",
+   "target": "vast",
+   "run_id": "tm2se_s138",
+   "cmd": "DV3_TASK_NAME=b5train_s138 TM2_CONDA_ENV=/scratch/midway3/root/conda_envs/tdmpc2 TDMPC2_CHECKOUT=/scratch/midway3/root/tdmpc2 TM2B5_STAGE=train TM2B5_SEED=138 bash scripts/tm2_b5.sbatch",
+   "vars": {
+    "seed": 138,
+    "run_id": "tm2se_s138"
+   },
+   "logdir": "tm2_b5/tm2se_s138",
+   "outputs": [
+    "tm2_b5/tm2se_s138"
+   ],
+   "inputs": [],
+   "done_when": [
+    {
+     "exists": "TM2R3_TRAIN_DONE"
+    },
+    {
+     "exists": "ckpt_late.pt"
+    }
+   ]
+  },
+  {
+   "stage": "train",
+   "kind": "tm2_b5",
+   "target": "vast",
+   "run_id": "tm2se_s139",
+   "cmd": "DV3_TASK_NAME=b5train_s139 TM2_CONDA_ENV=/scratch/midway3/root/conda_envs/tdmpc2 TDMPC2_CHECKOUT=/scratch/midway3/root/tdmpc2 TM2B5_STAGE=train TM2B5_SEED=139 bash scripts/tm2_b5.sbatch",
+   "vars": {
+    "seed": 139,
+    "run_id": "tm2se_s139"
+   },
+   "logdir": "tm2_b5/tm2se_s139",
+   "outputs": [
+    "tm2_b5/tm2se_s139"
+   ],
+   "inputs": [],
+   "done_when": [
+    {
+     "exists": "TM2R3_TRAIN_DONE"
+    },
+    {
+     "exists": "ckpt_late.pt"
+    }
+   ]
+  },
+  {
+   "stage": "qmask",
+   "kind": "tm2_b5",
+   "target": "vast",
+   "run_id": "tm2se_s132_qmask",
+   "cmd": "DV3_TASK_NAME=b5qmask_s132 TM2_CONDA_ENV=/scratch/midway3/root/conda_envs/tdmpc2 TDMPC2_CHECKOUT=/scratch/midway3/root/tdmpc2 TM2B5_STAGE=qmask TM2B5_SEED=132 bash scripts/tm2_b5.sbatch",
+   "vars": {
+    "seed": 132,
+    "run_id": "tm2se_s132_qmask"
+   },
+   "logdir": "tm2_b5/tm2se_s132",
+   "outputs": [
+    "tm2_b5/tm2se_s132/tm2_qmask"
+   ],
+   "inputs": [],
+   "done_when": [
+    {
+     "exists": "tm2_qmask/tm2_qmask.json"
+    }
+   ]
+  },
+  {
+   "stage": "qmask",
+   "kind": "tm2_b5",
+   "target": "vast",
+   "run_id": "tm2se_s133_qmask",
+   "cmd": "DV3_TASK_NAME=b5qmask_s133 TM2_CONDA_ENV=/scratch/midway3/root/conda_envs/tdmpc2 TDMPC2_CHECKOUT=/scratch/midway3/root/tdmpc2 TM2B5_STAGE=qmask TM2B5_SEED=133 bash scripts/tm2_b5.sbatch",
+   "vars": {
+    "seed": 133,
+    "run_id": "tm2se_s133_qmask"
+   },
+   "logdir": "tm2_b5/tm2se_s133",
+   "outputs": [
+    "tm2_b5/tm2se_s133/tm2_qmask"
+   ],
+   "inputs": [],
+   "done_when": [
+    {
+     "exists": "tm2_qmask/tm2_qmask.json"
+    }
+   ]
+  },
+  {
+   "stage": "qmask",
+   "kind": "tm2_b5",
+   "target": "vast",
+   "run_id": "tm2se_s134_qmask",
+   "cmd": "DV3_TASK_NAME=b5qmask_s134 TM2_CONDA_ENV=/scratch/midway3/root/conda_envs/tdmpc2 TDMPC2_CHECKOUT=/scratch/midway3/root/tdmpc2 TM2B5_STAGE=qmask TM2B5_SEED=134 bash scripts/tm2_b5.sbatch",
+   "vars": {
+    "seed": 134,
+    "run_id": "tm2se_s134_qmask"
+   },
+   "logdir": "tm2_b5/tm2se_s134",
+   "outputs": [
+    "tm2_b5/tm2se_s134/tm2_qmask"
+   ],
+   "inputs": [],
+   "done_when": [
+    {
+     "exists": "tm2_qmask/tm2_qmask.json"
+    }
+   ]
+  },
+  {
+   "stage": "qmask",
+   "kind": "tm2_b5",
+   "target": "vast",
+   "run_id": "tm2se_s135_qmask",
+   "cmd": "DV3_TASK_NAME=b5qmask_s135 TM2_CONDA_ENV=/scratch/midway3/root/conda_envs/tdmpc2 TDMPC2_CHECKOUT=/scratch/midway3/root/tdmpc2 TM2B5_STAGE=qmask TM2B5_SEED=135 bash scripts/tm2_b5.sbatch",
+   "vars": {
+    "seed": 135,
+    "run_id": "tm2se_s135_qmask"
+   },
+   "logdir": "tm2_b5/tm2se_s135",
+   "outputs": [
+    "tm2_b5/tm2se_s135/tm2_qmask"
+   ],
+   "inputs": [],
+   "done_when": [
+    {
+     "exists": "tm2_qmask/tm2_qmask.json"
+    }
+   ]
+  },
+  {
+   "stage": "qmask",
+   "kind": "tm2_b5",
+   "target": "vast",
+   "run_id": "tm2se_s136_qmask",
+   "cmd": "DV3_TASK_NAME=b5qmask_s136 TM2_CONDA_ENV=/scratch/midway3/root/conda_envs/tdmpc2 TDMPC2_CHECKOUT=/scratch/midway3/root/tdmpc2 TM2B5_STAGE=qmask TM2B5_SEED=136 bash scripts/tm2_b5.sbatch",
+   "vars": {
+    "seed": 136,
+    "run_id": "tm2se_s136_qmask"
+   },
+   "logdir": "tm2_b5/tm2se_s136",
+   "outputs": [
+    "tm2_b5/tm2se_s136/tm2_qmask"
+   ],
+   "inputs": [],
+   "done_when": [
+    {
+     "exists": "tm2_qmask/tm2_qmask.json"
+    }
+   ]
+  },
+  {
+   "stage": "qmask",
+   "kind": "tm2_b5",
+   "target": "vast",
+   "run_id": "tm2se_s137_qmask",
+   "cmd": "DV3_TASK_NAME=b5qmask_s137 TM2_CONDA_ENV=/scratch/midway3/root/conda_envs/tdmpc2 TDMPC2_CHECKOUT=/scratch/midway3/root/tdmpc2 TM2B5_STAGE=qmask TM2B5_SEED=137 bash scripts/tm2_b5.sbatch",
+   "vars": {
+    "seed": 137,
+    "run_id": "tm2se_s137_qmask"
+   },
+   "logdir": "tm2_b5/tm2se_s137",
+   "outputs": [
+    "tm2_b5/tm2se_s137/tm2_qmask"
+   ],
+   "inputs": [],
+   "done_when": [
+    {
+     "exists": "tm2_qmask/tm2_qmask.json"
+    }
+   ]
+  },
+  {
+   "stage": "qmask",
+   "kind": "tm2_b5",
+   "target": "vast",
+   "run_id": "tm2se_s138_qmask",
+   "cmd": "DV3_TASK_NAME=b5qmask_s138 TM2_CONDA_ENV=/scratch/midway3/root/conda_envs/tdmpc2 TDMPC2_CHECKOUT=/scratch/midway3/root/tdmpc2 TM2B5_STAGE=qmask TM2B5_SEED=138 bash scripts/tm2_b5.sbatch",
+   "vars": {
+    "seed": 138,
+    "run_id": "tm2se_s138_qmask"
+   },
+   "logdir": "tm2_b5/tm2se_s138",
+   "outputs": [
+    "tm2_b5/tm2se_s138/tm2_qmask"
+   ],
+   "inputs": [],
+   "done_when": [
+    {
+     "exists": "tm2_qmask/tm2_qmask.json"
+    }
+   ]
+  },
+  {
+   "stage": "qmask",
+   "kind": "tm2_b5",
+   "target": "vast",
+   "run_id": "tm2se_s139_qmask",
+   "cmd": "DV3_TASK_NAME=b5qmask_s139 TM2_CONDA_ENV=/scratch/midway3/root/conda_envs/tdmpc2 TDMPC2_CHECKOUT=/scratch/midway3/root/tdmpc2 TM2B5_STAGE=qmask TM2B5_SEED=139 bash scripts/tm2_b5.sbatch",
+   "vars": {
+    "seed": 139,
+    "run_id": "tm2se_s139_qmask"
+   },
+   "logdir": "tm2_b5/tm2se_s139",
+   "outputs": [
+    "tm2_b5/tm2se_s139/tm2_qmask"
+   ],
+   "inputs": [],
+   "done_when": [
+    {
+     "exists": "tm2_qmask/tm2_qmask.json"
+    }
+   ]
+  }
+ ]
+}

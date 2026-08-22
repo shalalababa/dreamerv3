@@ -1,0 +1,16 @@
+wave_id: hspilot
+spec:    /home/rickybao/projects/dreamerv3/ops/waves/hspilot/spec.yaml
+
+=== stage p095  [vast]  kind=hs_run  on_failure=continue  n=2 ===
+  hspilot_p095_seed0
+  hspilot_p095_seed1
+
+=== stage p05  [vast]  kind=hs_run  on_failure=continue  n=2 ===
+  hspilot_p05_seed0
+  hspilot_p05_seed1
+
+TOTAL RUNS: 4
+
+Check this list against the prereg before submitting. run_ids are
+consumed by frozen readers and the ledger; a wrong expansion here
+propagates into every downstream artifact.

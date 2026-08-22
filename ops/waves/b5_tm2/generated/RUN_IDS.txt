@@ -1,0 +1,29 @@
+wave_id: b5_tm2
+spec:    /home/rickybao/projects/dreamerv3/ops/waves/b5_tm2/spec.yaml
+prereg:  prereg/PREREG_trackB_tm2_20260822.md
+
+=== stage train  [vast]  kind=tm2_b5  on_failure=continue  n=8 ===
+  tm2se_s132
+  tm2se_s133
+  tm2se_s134
+  tm2se_s135
+  tm2se_s136
+  tm2se_s137
+  tm2se_s138
+  tm2se_s139
+
+=== stage qmask  [vast]  kind=tm2_b5  on_failure=continue  n=8 ===
+  tm2se_s132_qmask
+  tm2se_s133_qmask
+  tm2se_s134_qmask
+  tm2se_s135_qmask
+  tm2se_s136_qmask
+  tm2se_s137_qmask
+  tm2se_s138_qmask
+  tm2se_s139_qmask
+
+TOTAL RUNS: 16
+
+Check this list against the prereg before submitting. run_ids are
+consumed by frozen readers and the ledger; a wrong expansion here
+propagates into every downstream artifact.

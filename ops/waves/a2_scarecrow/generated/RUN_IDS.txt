@@ -1,0 +1,39 @@
+wave_id: a2_scarecrow
+spec:    /home/rickybao/projects/dreamerv3/ops/waves/a2_scarecrow/spec.yaml
+prereg:  prereg/PREREG_trackA_scarecrow_20260822.md
+
+=== stage ctrl  [vast]  kind=se_run  on_failure=continue  n=4 ===
+  sc_ctrl_s76
+  sc_ctrl_s77
+  sc_ctrl_s78
+  sc_ctrl_s79
+
+=== stage scare  [vast]  kind=se_run  on_failure=continue  n=4 ===
+  sc_scare_s80
+  sc_scare_s81
+  sc_scare_s82
+  sc_scare_s83
+
+=== stage scare2  [vast]  kind=se_run  on_failure=continue  n=4 ===
+  sc_scare2_s84
+  sc_scare2_s85
+  sc_scare2_s86
+  sc_scare2_s87
+
+=== stage pen1  [vast]  kind=se_run  on_failure=continue  n=4 ===
+  sc_pen1_s88
+  sc_pen1_s89
+  sc_pen1_s90
+  sc_pen1_s91
+
+=== stage pen2  [vast]  kind=se_run  on_failure=continue  n=4 ===
+  sc_pen2_s92
+  sc_pen2_s93
+  sc_pen2_s94
+  sc_pen2_s95
+
+TOTAL RUNS: 20
+
+Check this list against the prereg before submitting. run_ids are
+consumed by frozen readers and the ledger; a wrong expansion here
+propagates into every downstream artifact.

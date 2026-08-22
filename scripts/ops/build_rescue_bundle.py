@@ -145,6 +145,29 @@ def wave_spec(wave, seeds=None):
     return dict(fits=fits, dir_of={f: f for f in fits}, updates=500000,
                 full_n=8, online_fits=list(fits), extra_expect=16,
                 vf_seeds=list(seeds))
+  if wave == 'crowding':
+    # PREREG_crowding_behavioral_20260820 (+amend1). 16 UNFROZEN adapts off
+    # the existing ruw fits; run_ids transcribed from the frozen reader
+    # (analysis/crowding_behavioral_read.py:45 ADAPTS), never invented.
+    seeds = tuple(range(1, 5)) if seeds is None else seeds
+    fits, adapt_of = [], {}
+    for w_ in (1, 100):
+      for sd in ('0', '1'):
+        for s in seeds:
+          key = f'ax1wm_finger_ruw{w_}q1s{sd}_seed{s}'
+          fits.append(key)
+          adapt_of[key] = (f'adapt_ax1uzruw{w_}q1s{sd}'
+                           f'_finger_seed{s}_ckpt500000')
+    return dict(fits=fits, dir_of={f: f for f in fits}, adapt_of=adapt_of,
+                updates=500000, full_n=16)
+  if wave == 'routedrepair':
+    # PREREG_routedrepair_20260820 (+amend1). The reader pins REFITS =
+    # ax1wm_finger_rrpq1s1_seed1..8 and three adapt modes per seed
+    # (repair/aptctl/snp), so 8 refits gate 24 adapt rows.
+    seeds = tuple(range(1, 9)) if seeds is None else seeds
+    fits = [f'ax1wm_finger_rrpq1s1_seed{s}' for s in seeds]
+    return dict(fits=fits, dir_of={f: f for f in fits}, updates=500000,
+                full_n=8, rr_seeds=list(seeds))
   die(f'unknown wave {wave}')
 
 
@@ -597,6 +620,15 @@ def expected_adapt_keys(wave, spec, seeds):
     for mode in ('ax1mdd1', 'scratch'):
       for s in (range(1, 9) if seeds is None else seeds):
         keys.add((mode, 'reacher', s))
+  if wave == 'crowding':
+    for w_ in (1, 100):
+      for sd in ('0', '1'):
+        for s in (range(1, 5) if seeds is None else seeds):
+          keys.add((f'ax1uzruw{w_}q1s{sd}', 'finger', s))
+  if wave == 'routedrepair':
+    for mode in ('ax1rrpq1s1', 'ax1raftq1s1', 'ax1rspq1s1'):
+      for s in (range(1, 9) if seeds is None else seeds):
+        keys.add((mode, 'finger', s))
   if wave == 'valuefree':                   # review-2 F7 / review-3 B1
     for mode in ('ontask', 'q1uzs1', 'q1uzs0', 'scratchvf'):
       for s in (range(17, 25) if seeds is None else seeds):
@@ -637,6 +669,64 @@ def build(args, seeds=None):
   witness = build_witness(args.runroot, spec, args.wave,
                           ref_configs=args.ref_configs,
                           lane_dir=args.lane_cmds)
+
+  if args.wave == 'crowding':
+    # amend1 B8: the reader refuses unless the adapt namespace was EMPTY at
+    # submission. That is not reconstructable from directory mtimes -- but
+    # submit_rcc.sh SKIPS any cell whose run dir already exists, so a cell
+    # that reached a `CELL <run_id>` line in a job log provably had no dir
+    # at submission. Deriving the flag from that evidence; never asserting it.
+    started, want = set(), set(spec['adapt_of'].values())
+    logdir = args.job_logs or os.getcwd()
+    for fn in sorted(glob.glob(os.path.join(logdir, 'crowd*.out'))):
+      with open(fn, errors='replace') as fh:
+        for line in fh:
+          m = re.search(r'CELL (adapt_ax1uzruw\S+)', line)
+          if m:
+            started.add(m.group(1))
+    absent = sorted(want - started)
+    witness['_meta']['no_preexisting_dirs'] = not absent
+    witness['_meta']['no_preexisting_dirs_evidence'] = (
+        'submit_rcc.sh:40 skips a cell whose run dir exists; %d/%d pinned '
+        'cells appear as CELL starts in %s/crowd*.out'
+        % (len(want) - len(absent), len(want), logdir))
+    if absent:
+      witness['_meta']['problems'].append(
+          'no_preexisting_dirs NOT established: no CELL start found for '
+          + ', '.join(absent[:4]))
+    shutil.copyfile(csv_path, os.path.join(work, 'frozen_auc.csv'))
+
+  if args.wave == 'routedrepair':
+    # amend1: all three arms at a seed must trace to ONE donor sha, and
+    # latest_ckpt() must resolve 500000 for 8/8 donors.
+    if not args.donor_provenance:
+      shutil.rmtree(work)
+      die('--donor_provenance required for routedrepair')
+    with open(args.donor_provenance) as f:
+      dp = json.load(f)
+    donors = dp.get('donors', {})
+    witness['_meta']['donor_generation'] = (
+        dp.get('_meta', {}).get('donor_generation')
+        or 'REFIT_20260808+seed5_completion_20260820')
+    ok500 = 0
+    for fit in spec['fits']:
+      if latest_ckpt_step(os.path.join(args.runroot,
+                                       spec['dir_of'][fit])) == 500000:
+        ok500 += 1
+    witness['_meta']['latest_ckpt_500k_8of8'] = (ok500 == len(spec['fits']))
+    if ok500 != len(spec['fits']):
+      witness['_meta']['problems'].append(
+          'latest_ckpt 500000 for only %d/%d refits' % (ok500,
+                                                        len(spec['fits'])))
+    for s in spec['rr_seeds']:
+      key = 'ax1wm_finger_fq1s1_seed%d' % s
+      sha = (donors.get(key) or {}).get('donor_sha')
+      if sha is None:
+        witness['_meta']['problems'].append(
+            'donor_provenance has no donor_sha for %s' % key)
+      for arm in ('repair', 'aptctl', 'snp'):
+        witness['donor_sha/%s/seed%d' % (arm, s)] = sha
+
   with open(os.path.join(work, 'witness.json'), 'w') as f:
     json.dump(witness, f, indent=1)
   if args.wave == 'carrier':
@@ -1041,7 +1131,13 @@ def selfcheck():
 def main():
   p = argparse.ArgumentParser(description=__doc__)
   p.add_argument('--wave', choices=['carrier', 'u1a', 'mindose',
-                                    'valuefree'])
+                                    'valuefree', 'crowding',
+                                    'routedrepair'])
+  p.add_argument('--job_logs',
+                 help='dir of the wave\'s slurm .out logs; crowding '
+                      'derives _meta.no_preexisting_dirs from them')
+  p.add_argument('--donor_provenance',
+                 help='routedrepair donor_provenance.json')
   p.add_argument('--extra_fits',
                  help='valuefree: comma list of the q1-arm fit run '
                       'names (freeze FILL)')

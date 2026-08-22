@@ -1,0 +1,84 @@
+# Track B5 -- TD-MPC2 qmask column. PREREG_trackB_tm2_20260822.
+#
+# Commands transcribed from scripts/tm2_b5.sbatch's own documented stage list.
+# apismoke and smoke are GATES and are run inline before this wave is
+# submitted, not queued here (apismoke PASSed 22 Aug on instance 16).
+#
+# ENV PATHS ARE INSTANCE PATHS, NOT RCC ONES. tdmpc2_env_setup.sh defaults to
+# /scratch/midway3/$USER/... and on an instance $USER is root, so the env
+# landed at /scratch/midway3/root/{conda_envs/tdmpc2,tdmpc2} -- same 50 G
+# overlay as /workspace, checkout verified at the pin e9f5932. tm2_b5.sbatch
+# hard-asserts that pin, so a wrong path fails closed rather than running the
+# Dreamer env by accident (the bare-`python` hazard in the house notes).
+#
+# SAME LANE FOR A SEED'S train AND qmask: qmask reads <run>/ckpt_late.pt from
+# the local run dir and refuses without TM2R3_TRAIN_DONE. `seed` is the only
+# expand key, so both stages deal seeds to lanes identically and a seed's two
+# passes land on the same lane, in order.
+#
+# per_gpu: 2 -- MEASURED, not assumed. The B5 smoke (same trainer,
+# probing.tdmpc2_r3_train, cheetah 53-dim) ran at 46% GPU / 301 MiB of a
+# 16311 MiB card, so one task leaves more than half the device idle. Two per
+# lane lands near 92% util and ~602 MiB, which is the open "TD-MPC2 on DMC
+# state may pack several per GPU" case in the house notes, now closed by
+# measurement. Not pushed further: util is not perfectly additive and the
+# CPU side is unmeasured for this trainer.
+
+wave_id: b5_tm2
+paper: paper5
+prereg: prereg/PREREG_trackB_tm2_20260822.md
+notes: >-
+  8 TD-MPC2 trainings (cheetah_run, se dose, planted, 53-dim, 100k steps,
+  seeds 132-139) + 8 tm2_qmask instrument passes. Two lanes, 4 rounds.
+
+defaults:
+  target: vast
+
+kinds:
+  tm2_b5: {per_gpu: 2}
+
+stages:
+
+  - name: train
+    kind: tm2_b5
+    on_failure: continue
+    expand:
+      seed: [132, 133, 134, 135, 136, 137, 138, 139]
+    run_id: "tm2se_s${seed}"
+    logdir: "tm2_b5/tm2se_s${seed}"
+    cmd: >-
+      DV3_TASK_NAME=b5train_s${seed}
+      TM2_CONDA_ENV=/scratch/midway3/root/conda_envs/tdmpc2
+      TDMPC2_CHECKOUT=/scratch/midway3/root/tdmpc2
+      TM2B5_STAGE=train TM2B5_SEED=${seed}
+      bash scripts/tm2_b5.sbatch
+    outputs:
+      - "tm2_b5/tm2se_s${seed}"
+    done_when:
+      - exists: TM2R3_TRAIN_DONE
+      - exists: ckpt_late.pt
+
+  - name: qmask
+    kind: tm2_b5
+    on_failure: continue
+    expand:
+      seed: [132, 133, 134, 135, 136, 137, 138, 139]
+    run_id: "tm2se_s${seed}_qmask"
+    logdir: "tm2_b5/tm2se_s${seed}"
+    cmd: >-
+      DV3_TASK_NAME=b5qmask_s${seed}
+      TM2_CONDA_ENV=/scratch/midway3/root/conda_envs/tdmpc2
+      TDMPC2_CHECKOUT=/scratch/midway3/root/tdmpc2
+      TM2B5_STAGE=qmask TM2B5_SEED=${seed}
+      bash scripts/tm2_b5.sbatch
+    outputs:
+      - "tm2_b5/tm2se_s${seed}/tm2_qmask"
+    done_when:
+      - exists: tm2_qmask/tm2_qmask.json
+
+bundle:
+  prefix: b5_tm2
+  include_stages: [train, qmask]
+  cloud_logs:
+    - "b5train_s*.out"
+    - "b5qmask_s*.out"

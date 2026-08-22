@@ -1,0 +1,71 @@
+# HiddenStakes pilot -- NON-REGISTERED execute-first start-gate (user GO 21 Aug).
+# No prereg; descriptive read only. The paper-assignment decision (Paper-2
+# upgrade vs new paper) is OPEN and waits on this pilot.
+#
+# Commands transcribed from scripts/hiddenstakes_pilot.sbatch's own documented
+# submit loop (its #SBATCH headers are comments under bash, which is NOT a
+# reason to pin it to RCC -- it needs no RCC substrate and no device class, so
+# it is instance work).
+#
+# ONE INSTANCE, and both arms on every lane: p_stay is the information axis
+# (0.95 anticipatable vs 0.5 leak-immune no-VoI control), so the estimand is a
+# cross-arm contrast. With `seed` as the only expand key each stage deals its
+# 2 runs across the 2 lanes, so each lane runs one p095 and one p05 -- device
+# variance lands on seeds, not inside the contrast. 2 lanes x 2 rounds.
+#
+# per_gpu: 1 (5e5 proprio measures ~15.2 G of a 16.3 G card).
+
+wave_id: hspilot
+paper: paper2
+notes: >-
+  4 HiddenStakes pilot runs (dmc_cheetah_run, 5e5 steps): p_stay {0.95, 0.5}
+  x seeds {0, 1}. Fixed dose dim=4 scale=1.0 cost=0.0 obs_noise=0.5.
+  One instance, 2 lanes, ~13 h drain.
+
+defaults:
+  target: vast
+
+kinds:
+  hs_run: {per_gpu: 1}
+
+stages:
+
+  - name: p095
+    kind: hs_run
+    on_failure: continue
+    expand:
+      seed: [0, 1]
+    run_id: "hspilot_p095_seed${seed}"
+    logdir: "hspilot/hspilot_p095_seed${seed}"
+    cmd: >-
+      DV3_TASK_NAME=${run_id} HS_PSTAY=0.95 SEED=${seed}
+      bash scripts/hiddenstakes_pilot.sbatch
+    outputs:
+      - "hspilot/hspilot_p095_seed${seed}"
+    done_when:
+      - exists: HSPILOT_DONE
+      - exists: config.yaml
+      - jsonl_min_lines: {file: scores.jsonl, n: 400}
+
+  - name: p05
+    kind: hs_run
+    on_failure: continue
+    expand:
+      seed: [0, 1]
+    run_id: "hspilot_p05_seed${seed}"
+    logdir: "hspilot/hspilot_p05_seed${seed}"
+    cmd: >-
+      DV3_TASK_NAME=${run_id} HS_PSTAY=0.5 SEED=${seed}
+      bash scripts/hiddenstakes_pilot.sbatch
+    outputs:
+      - "hspilot/hspilot_p05_seed${seed}"
+    done_when:
+      - exists: HSPILOT_DONE
+      - exists: config.yaml
+      - jsonl_min_lines: {file: scores.jsonl, n: 400}
+
+bundle:
+  prefix: hspilot
+  include_stages: [p095, p05]
+  cloud_logs:
+    - "hspilot_p*_seed*.out"

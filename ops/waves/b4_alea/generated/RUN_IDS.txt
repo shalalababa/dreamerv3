@@ -1,0 +1,15 @@
+wave_id: b4_alea
+spec:    /home/rickybao/projects/dreamerv3/ops/waves/b4_alea/spec.yaml
+prereg:  prereg/PREREG_trackB_alea_20260822.md
+
+=== stage alea  [vast]  kind=se_run  on_failure=continue  n=4 ===
+  se_alea_s120
+  se_alea_s121
+  se_alea_s122
+  se_alea_s123
+
+TOTAL RUNS: 4
+
+Check this list against the prereg before submitting. run_ids are
+consumed by frozen readers and the ledger; a wrong expansion here
+propagates into every downstream artifact.

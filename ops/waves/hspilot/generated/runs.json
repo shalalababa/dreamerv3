@@ -1,0 +1,153 @@
+{
+ "wave_id": "hspilot",
+ "spec": "/home/rickybao/projects/dreamerv3/ops/waves/hspilot/spec.yaml",
+ "prereg": null,
+ "bundle": {
+  "prefix": "hspilot",
+  "include_stages": [
+   "p095",
+   "p05"
+  ],
+  "cloud_logs": [
+   "hspilot_p*_seed*.out"
+  ]
+ },
+ "stages": [
+  {
+   "name": "p095",
+   "target": "vast",
+   "kind": "hs_run",
+   "on_failure": "continue",
+   "needs": null
+  },
+  {
+   "name": "p05",
+   "target": "vast",
+   "kind": "hs_run",
+   "on_failure": "continue",
+   "needs": null
+  }
+ ],
+ "runs": [
+  {
+   "stage": "p095",
+   "kind": "hs_run",
+   "target": "vast",
+   "run_id": "hspilot_p095_seed0",
+   "cmd": "DV3_TASK_NAME=hspilot_p095_seed0 HS_PSTAY=0.95 SEED=0 bash scripts/hiddenstakes_pilot.sbatch",
+   "vars": {
+    "seed": 0,
+    "run_id": "hspilot_p095_seed0"
+   },
+   "logdir": "hspilot/hspilot_p095_seed0",
+   "outputs": [
+    "hspilot/hspilot_p095_seed0"
+   ],
+   "inputs": [],
+   "done_when": [
+    {
+     "exists": "HSPILOT_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 400
+     }
+    }
+   ]
+  },
+  {
+   "stage": "p095",
+   "kind": "hs_run",
+   "target": "vast",
+   "run_id": "hspilot_p095_seed1",
+   "cmd": "DV3_TASK_NAME=hspilot_p095_seed1 HS_PSTAY=0.95 SEED=1 bash scripts/hiddenstakes_pilot.sbatch",
+   "vars": {
+    "seed": 1,
+    "run_id": "hspilot_p095_seed1"
+   },
+   "logdir": "hspilot/hspilot_p095_seed1",
+   "outputs": [
+    "hspilot/hspilot_p095_seed1"
+   ],
+   "inputs": [],
+   "done_when": [
+    {
+     "exists": "HSPILOT_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 400
+     }
+    }
+   ]
+  },
+  {
+   "stage": "p05",
+   "kind": "hs_run",
+   "target": "vast",
+   "run_id": "hspilot_p05_seed0",
+   "cmd": "DV3_TASK_NAME=hspilot_p05_seed0 HS_PSTAY=0.5 SEED=0 bash scripts/hiddenstakes_pilot.sbatch",
+   "vars": {
+    "seed": 0,
+    "run_id": "hspilot_p05_seed0"
+   },
+   "logdir": "hspilot/hspilot_p05_seed0",
+   "outputs": [
+    "hspilot/hspilot_p05_seed0"
+   ],
+   "inputs": [],
+   "done_when": [
+    {
+     "exists": "HSPILOT_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 400
+     }
+    }
+   ]
+  },
+  {
+   "stage": "p05",
+   "kind": "hs_run",
+   "target": "vast",
+   "run_id": "hspilot_p05_seed1",
+   "cmd": "DV3_TASK_NAME=hspilot_p05_seed1 HS_PSTAY=0.5 SEED=1 bash scripts/hiddenstakes_pilot.sbatch",
+   "vars": {
+    "seed": 1,
+    "run_id": "hspilot_p05_seed1"
+   },
+   "logdir": "hspilot/hspilot_p05_seed1",
+   "outputs": [
+    "hspilot/hspilot_p05_seed1"
+   ],
+   "inputs": [],
+   "done_when": [
+    {
+     "exists": "HSPILOT_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 400
+     }
+    }
+   ]
+  }
+ ]
+}

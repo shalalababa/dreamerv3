@@ -1,0 +1,2 @@
+# hspilot / stage p095 / lane 0 / 1 queued task(s), 1 run(s)
+DV3_TASK_NAME=hspilot_p095_seed0 bash -lc 'set -uo pipefail; source /root/.dreamer_vast_env; cd "$REPO"; mkdir -p "$RUNROOT/_cloud_logs"; mkdir -p "$RUNROOT/hspilot"; ( set +e; echo "===== [$(date)] START hspilot_p095_seed0 ====="; DV3_TASK_NAME=hspilot_p095_seed0 HS_PSTAY=0.95 SEED=0 bash scripts/hiddenstakes_pilot.sbatch; rc=$?; echo "===== [$(date)] DONE rc=$rc hspilot_p095_seed0 ====="; exit $rc ) >> "$RUNROOT/_cloud_logs/hspilot_p095_seed0.out" 2>&1'
