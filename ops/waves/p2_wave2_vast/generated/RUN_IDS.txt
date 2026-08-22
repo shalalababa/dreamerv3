@@ -1,0 +1,43 @@
+wave_id: p2_wave2_vast
+spec:    /home/rickybao/projects/dreamerv3/ops/waves/p2_wave2_vast/spec.yaml
+prereg:  prereg/PREREG_p2_wave2_freshcohort_20260821.md
+
+=== stage train  [vast]  kind=tm2r3_train  on_failure=continue  n=32 ===
+  tm2r3_cup_e1_seed59
+  tm2r3_cup_e4_seed59
+  tm2r3_finger_e1_seed59
+  tm2r3_finger_e4_seed59
+  tm2r3_cup_e4_seed60
+  tm2r3_finger_e1_seed60
+  tm2r3_finger_e4_seed60
+  tm2r3_cup_e1_seed60
+  tm2r3_finger_e1_seed61
+  tm2r3_finger_e4_seed61
+  tm2r3_cup_e1_seed61
+  tm2r3_cup_e4_seed61
+  tm2r3_finger_e4_seed62
+  tm2r3_cup_e1_seed62
+  tm2r3_cup_e4_seed62
+  tm2r3_finger_e1_seed62
+  tm2r3_cup_e1_seed63
+  tm2r3_cup_e4_seed63
+  tm2r3_finger_e1_seed63
+  tm2r3_finger_e4_seed63
+  tm2r3_cup_e4_seed64
+  tm2r3_finger_e1_seed64
+  tm2r3_finger_e4_seed64
+  tm2r3_cup_e1_seed64
+  tm2r3_finger_e1_seed65
+  tm2r3_finger_e4_seed65
+  tm2r3_cup_e1_seed65
+  tm2r3_cup_e4_seed65
+  tm2r3_finger_e4_seed66
+  tm2r3_cup_e1_seed66
+  tm2r3_cup_e4_seed66
+  tm2r3_finger_e1_seed66
+
+TOTAL RUNS: 32
+
+Check this list against the prereg before submitting. run_ids are
+consumed by frozen readers and the ledger; a wrong expansion here
+propagates into every downstream artifact.

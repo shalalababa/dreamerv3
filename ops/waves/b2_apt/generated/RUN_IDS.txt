@@ -1,0 +1,19 @@
+wave_id: b2_apt
+spec:    /home/rickybao/projects/dreamerv3/ops/waves/b2_apt/spec.yaml
+prereg:  prereg/PREREG_nfi_apt_20260821.md
+
+=== stage train  [vast]  kind=se_run  on_failure=continue  n=8 ===
+  se_apt_s68
+  se_apt_s69
+  se_apt_s70
+  se_apt_s71
+  se_apt_s72
+  se_apt_s73
+  se_apt_s74
+  se_apt_s75
+
+TOTAL RUNS: 8
+
+Check this list against the prereg before submitting. run_ids are
+consumed by frozen readers and the ledger; a wrong expansion here
+propagates into every downstream artifact.

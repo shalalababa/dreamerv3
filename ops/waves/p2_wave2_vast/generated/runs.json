@@ -1,0 +1,1369 @@
+{
+ "wave_id": "p2_wave2_vast",
+ "spec": "/home/rickybao/projects/dreamerv3/ops/waves/p2_wave2_vast/spec.yaml",
+ "prereg": "prereg/PREREG_p2_wave2_freshcohort_20260821.md",
+ "bundle": {
+  "prefix": "p2_wave2_vast",
+  "include_stages": [
+   "train"
+  ],
+  "cloud_logs": [
+   "tm2r3_*_seed*.out"
+  ]
+ },
+ "stages": [
+  {
+   "name": "train",
+   "target": "vast",
+   "kind": "tm2r3_train",
+   "on_failure": "continue",
+   "needs": null
+  }
+ ],
+ "runs": [
+  {
+   "stage": "train",
+   "kind": "tm2r3_train",
+   "target": "vast",
+   "run_id": "tm2r3_cup_e1_seed59",
+   "cmd": "TDMPC2_ROOT=/workspace/tdmpc2/tdmpc2 /workspace/conda_envs/tdmpc2/bin/python -m probing.tdmpc2_r3_train --tdmpc2_root /workspace/tdmpc2/tdmpc2 --logdir \"$RUNROOT/tm2r3/tm2r3_cup_e1_seed59\" --task dmc_cup_catch --dose e1 --seed 59 --steps 100000 --early_steps 25000",
+   "vars": {
+    "seed": 59,
+    "dom": "cup",
+    "dose": "e1",
+    "task": "dmc_cup_catch",
+    "run_id": "tm2r3_cup_e1_seed59"
+   },
+   "logdir": "tm2r3/tm2r3_cup_e1_seed59",
+   "outputs": [
+    "tm2r3/tm2r3_cup_e1_seed59"
+   ],
+   "inputs": [],
+   "done_when": [
+    {
+     "exists": "config.json"
+    },
+    {
+     "exists": "ckpt_early.pt"
+    },
+    {
+     "exists": "ckpt_late.pt"
+    },
+    {
+     "file_contains": {
+      "file": "ckpt_late.STEP",
+      "pattern": "^(9[0-9]{4}|[1-9][0-9]{5,})"
+     }
+    },
+    {
+     "file_contains": {
+      "file": "ckpt_early.STEP",
+      "pattern": "^(2[4-9][0-9]{3}|[3-9][0-9]{4}|[1-9][0-9]{5,})"
+     }
+    }
+   ]
+  },
+  {
+   "stage": "train",
+   "kind": "tm2r3_train",
+   "target": "vast",
+   "run_id": "tm2r3_cup_e4_seed59",
+   "cmd": "TDMPC2_ROOT=/workspace/tdmpc2/tdmpc2 /workspace/conda_envs/tdmpc2/bin/python -m probing.tdmpc2_r3_train --tdmpc2_root /workspace/tdmpc2/tdmpc2 --logdir \"$RUNROOT/tm2r3/tm2r3_cup_e4_seed59\" --task dmc_cup_catch --dose e4 --seed 59 --steps 100000 --early_steps 25000",
+   "vars": {
+    "seed": 59,
+    "dom": "cup",
+    "dose": "e4",
+    "task": "dmc_cup_catch",
+    "run_id": "tm2r3_cup_e4_seed59"
+   },
+   "logdir": "tm2r3/tm2r3_cup_e4_seed59",
+   "outputs": [
+    "tm2r3/tm2r3_cup_e4_seed59"
+   ],
+   "inputs": [],
+   "done_when": [
+    {
+     "exists": "config.json"
+    },
+    {
+     "exists": "ckpt_early.pt"
+    },
+    {
+     "exists": "ckpt_late.pt"
+    },
+    {
+     "file_contains": {
+      "file": "ckpt_late.STEP",
+      "pattern": "^(9[0-9]{4}|[1-9][0-9]{5,})"
+     }
+    },
+    {
+     "file_contains": {
+      "file": "ckpt_early.STEP",
+      "pattern": "^(2[4-9][0-9]{3}|[3-9][0-9]{4}|[1-9][0-9]{5,})"
+     }
+    }
+   ]
+  },
+  {
+   "stage": "train",
+   "kind": "tm2r3_train",
+   "target": "vast",
+   "run_id": "tm2r3_finger_e1_seed59",
+   "cmd": "TDMPC2_ROOT=/workspace/tdmpc2/tdmpc2 /workspace/conda_envs/tdmpc2/bin/python -m probing.tdmpc2_r3_train --tdmpc2_root /workspace/tdmpc2/tdmpc2 --logdir \"$RUNROOT/tm2r3/tm2r3_finger_e1_seed59\" --task dmc_finger_turn_hard --dose e1 --seed 59 --steps 100000 --early_steps 25000",
+   "vars": {
+    "seed": 59,
+    "dom": "finger",
+    "dose": "e1",
+    "task": "dmc_finger_turn_hard",
+    "run_id": "tm2r3_finger_e1_seed59"
+   },
+   "logdir": "tm2r3/tm2r3_finger_e1_seed59",
+   "outputs": [
+    "tm2r3/tm2r3_finger_e1_seed59"
+   ],
+   "inputs": [],
+   "done_when": [
+    {
+     "exists": "config.json"
+    },
+    {
+     "exists": "ckpt_early.pt"
+    },
+    {
+     "exists": "ckpt_late.pt"
+    },
+    {
+     "file_contains": {
+      "file": "ckpt_late.STEP",
+      "pattern": "^(9[0-9]{4}|[1-9][0-9]{5,})"
+     }
+    },
+    {
+     "file_contains": {
+      "file": "ckpt_early.STEP",
+      "pattern": "^(2[4-9][0-9]{3}|[3-9][0-9]{4}|[1-9][0-9]{5,})"
+     }
+    }
+   ]
+  },
+  {
+   "stage": "train",
+   "kind": "tm2r3_train",
+   "target": "vast",
+   "run_id": "tm2r3_finger_e4_seed59",
+   "cmd": "TDMPC2_ROOT=/workspace/tdmpc2/tdmpc2 /workspace/conda_envs/tdmpc2/bin/python -m probing.tdmpc2_r3_train --tdmpc2_root /workspace/tdmpc2/tdmpc2 --logdir \"$RUNROOT/tm2r3/tm2r3_finger_e4_seed59\" --task dmc_finger_turn_hard --dose e4 --seed 59 --steps 100000 --early_steps 25000",
+   "vars": {
+    "seed": 59,
+    "dom": "finger",
+    "dose": "e4",
+    "task": "dmc_finger_turn_hard",
+    "run_id": "tm2r3_finger_e4_seed59"
+   },
+   "logdir": "tm2r3/tm2r3_finger_e4_seed59",
+   "outputs": [
+    "tm2r3/tm2r3_finger_e4_seed59"
+   ],
+   "inputs": [],
+   "done_when": [
+    {
+     "exists": "config.json"
+    },
+    {
+     "exists": "ckpt_early.pt"
+    },
+    {
+     "exists": "ckpt_late.pt"
+    },
+    {
+     "file_contains": {
+      "file": "ckpt_late.STEP",
+      "pattern": "^(9[0-9]{4}|[1-9][0-9]{5,})"
+     }
+    },
+    {
+     "file_contains": {
+      "file": "ckpt_early.STEP",
+      "pattern": "^(2[4-9][0-9]{3}|[3-9][0-9]{4}|[1-9][0-9]{5,})"
+     }
+    }
+   ]
+  },
+  {
+   "stage": "train",
+   "kind": "tm2r3_train",
+   "target": "vast",
+   "run_id": "tm2r3_cup_e4_seed60",
+   "cmd": "TDMPC2_ROOT=/workspace/tdmpc2/tdmpc2 /workspace/conda_envs/tdmpc2/bin/python -m probing.tdmpc2_r3_train --tdmpc2_root /workspace/tdmpc2/tdmpc2 --logdir \"$RUNROOT/tm2r3/tm2r3_cup_e4_seed60\" --task dmc_cup_catch --dose e4 --seed 60 --steps 100000 --early_steps 25000",
+   "vars": {
+    "seed": 60,
+    "dom": "cup",
+    "dose": "e4",
+    "task": "dmc_cup_catch",
+    "run_id": "tm2r3_cup_e4_seed60"
+   },
+   "logdir": "tm2r3/tm2r3_cup_e4_seed60",
+   "outputs": [
+    "tm2r3/tm2r3_cup_e4_seed60"
+   ],
+   "inputs": [],
+   "done_when": [
+    {
+     "exists": "config.json"
+    },
+    {
+     "exists": "ckpt_early.pt"
+    },
+    {
+     "exists": "ckpt_late.pt"
+    },
+    {
+     "file_contains": {
+      "file": "ckpt_late.STEP",
+      "pattern": "^(9[0-9]{4}|[1-9][0-9]{5,})"
+     }
+    },
+    {
+     "file_contains": {
+      "file": "ckpt_early.STEP",
+      "pattern": "^(2[4-9][0-9]{3}|[3-9][0-9]{4}|[1-9][0-9]{5,})"
+     }
+    }
+   ]
+  },
+  {
+   "stage": "train",
+   "kind": "tm2r3_train",
+   "target": "vast",
+   "run_id": "tm2r3_finger_e1_seed60",
+   "cmd": "TDMPC2_ROOT=/workspace/tdmpc2/tdmpc2 /workspace/conda_envs/tdmpc2/bin/python -m probing.tdmpc2_r3_train --tdmpc2_root /workspace/tdmpc2/tdmpc2 --logdir \"$RUNROOT/tm2r3/tm2r3_finger_e1_seed60\" --task dmc_finger_turn_hard --dose e1 --seed 60 --steps 100000 --early_steps 25000",
+   "vars": {
+    "seed": 60,
+    "dom": "finger",
+    "dose": "e1",
+    "task": "dmc_finger_turn_hard",
+    "run_id": "tm2r3_finger_e1_seed60"
+   },
+   "logdir": "tm2r3/tm2r3_finger_e1_seed60",
+   "outputs": [
+    "tm2r3/tm2r3_finger_e1_seed60"
+   ],
+   "inputs": [],
+   "done_when": [
+    {
+     "exists": "config.json"
+    },
+    {
+     "exists": "ckpt_early.pt"
+    },
+    {
+     "exists": "ckpt_late.pt"
+    },
+    {
+     "file_contains": {
+      "file": "ckpt_late.STEP",
+      "pattern": "^(9[0-9]{4}|[1-9][0-9]{5,})"
+     }
+    },
+    {
+     "file_contains": {
+      "file": "ckpt_early.STEP",
+      "pattern": "^(2[4-9][0-9]{3}|[3-9][0-9]{4}|[1-9][0-9]{5,})"
+     }
+    }
+   ]
+  },
+  {
+   "stage": "train",
+   "kind": "tm2r3_train",
+   "target": "vast",
+   "run_id": "tm2r3_finger_e4_seed60",
+   "cmd": "TDMPC2_ROOT=/workspace/tdmpc2/tdmpc2 /workspace/conda_envs/tdmpc2/bin/python -m probing.tdmpc2_r3_train --tdmpc2_root /workspace/tdmpc2/tdmpc2 --logdir \"$RUNROOT/tm2r3/tm2r3_finger_e4_seed60\" --task dmc_finger_turn_hard --dose e4 --seed 60 --steps 100000 --early_steps 25000",
+   "vars": {
+    "seed": 60,
+    "dom": "finger",
+    "dose": "e4",
+    "task": "dmc_finger_turn_hard",
+    "run_id": "tm2r3_finger_e4_seed60"
+   },
+   "logdir": "tm2r3/tm2r3_finger_e4_seed60",
+   "outputs": [
+    "tm2r3/tm2r3_finger_e4_seed60"
+   ],
+   "inputs": [],
+   "done_when": [
+    {
+     "exists": "config.json"
+    },
+    {
+     "exists": "ckpt_early.pt"
+    },
+    {
+     "exists": "ckpt_late.pt"
+    },
+    {
+     "file_contains": {
+      "file": "ckpt_late.STEP",
+      "pattern": "^(9[0-9]{4}|[1-9][0-9]{5,})"
+     }
+    },
+    {
+     "file_contains": {
+      "file": "ckpt_early.STEP",
+      "pattern": "^(2[4-9][0-9]{3}|[3-9][0-9]{4}|[1-9][0-9]{5,})"
+     }
+    }
+   ]
+  },
+  {
+   "stage": "train",
+   "kind": "tm2r3_train",
+   "target": "vast",
+   "run_id": "tm2r3_cup_e1_seed60",
+   "cmd": "TDMPC2_ROOT=/workspace/tdmpc2/tdmpc2 /workspace/conda_envs/tdmpc2/bin/python -m probing.tdmpc2_r3_train --tdmpc2_root /workspace/tdmpc2/tdmpc2 --logdir \"$RUNROOT/tm2r3/tm2r3_cup_e1_seed60\" --task dmc_cup_catch --dose e1 --seed 60 --steps 100000 --early_steps 25000",
+   "vars": {
+    "seed": 60,
+    "dom": "cup",
+    "dose": "e1",
+    "task": "dmc_cup_catch",
+    "run_id": "tm2r3_cup_e1_seed60"
+   },
+   "logdir": "tm2r3/tm2r3_cup_e1_seed60",
+   "outputs": [
+    "tm2r3/tm2r3_cup_e1_seed60"
+   ],
+   "inputs": [],
+   "done_when": [
+    {
+     "exists": "config.json"
+    },
+    {
+     "exists": "ckpt_early.pt"
+    },
+    {
+     "exists": "ckpt_late.pt"
+    },
+    {
+     "file_contains": {
+      "file": "ckpt_late.STEP",
+      "pattern": "^(9[0-9]{4}|[1-9][0-9]{5,})"
+     }
+    },
+    {
+     "file_contains": {
+      "file": "ckpt_early.STEP",
+      "pattern": "^(2[4-9][0-9]{3}|[3-9][0-9]{4}|[1-9][0-9]{5,})"
+     }
+    }
+   ]
+  },
+  {
+   "stage": "train",
+   "kind": "tm2r3_train",
+   "target": "vast",
+   "run_id": "tm2r3_finger_e1_seed61",
+   "cmd": "TDMPC2_ROOT=/workspace/tdmpc2/tdmpc2 /workspace/conda_envs/tdmpc2/bin/python -m probing.tdmpc2_r3_train --tdmpc2_root /workspace/tdmpc2/tdmpc2 --logdir \"$RUNROOT/tm2r3/tm2r3_finger_e1_seed61\" --task dmc_finger_turn_hard --dose e1 --seed 61 --steps 100000 --early_steps 25000",
+   "vars": {
+    "seed": 61,
+    "dom": "finger",
+    "dose": "e1",
+    "task": "dmc_finger_turn_hard",
+    "run_id": "tm2r3_finger_e1_seed61"
+   },
+   "logdir": "tm2r3/tm2r3_finger_e1_seed61",
+   "outputs": [
+    "tm2r3/tm2r3_finger_e1_seed61"
+   ],
+   "inputs": [],
+   "done_when": [
+    {
+     "exists": "config.json"
+    },
+    {
+     "exists": "ckpt_early.pt"
+    },
+    {
+     "exists": "ckpt_late.pt"
+    },
+    {
+     "file_contains": {
+      "file": "ckpt_late.STEP",
+      "pattern": "^(9[0-9]{4}|[1-9][0-9]{5,})"
+     }
+    },
+    {
+     "file_contains": {
+      "file": "ckpt_early.STEP",
+      "pattern": "^(2[4-9][0-9]{3}|[3-9][0-9]{4}|[1-9][0-9]{5,})"
+     }
+    }
+   ]
+  },
+  {
+   "stage": "train",
+   "kind": "tm2r3_train",
+   "target": "vast",
+   "run_id": "tm2r3_finger_e4_seed61",
+   "cmd": "TDMPC2_ROOT=/workspace/tdmpc2/tdmpc2 /workspace/conda_envs/tdmpc2/bin/python -m probing.tdmpc2_r3_train --tdmpc2_root /workspace/tdmpc2/tdmpc2 --logdir \"$RUNROOT/tm2r3/tm2r3_finger_e4_seed61\" --task dmc_finger_turn_hard --dose e4 --seed 61 --steps 100000 --early_steps 25000",
+   "vars": {
+    "seed": 61,
+    "dom": "finger",
+    "dose": "e4",
+    "task": "dmc_finger_turn_hard",
+    "run_id": "tm2r3_finger_e4_seed61"
+   },
+   "logdir": "tm2r3/tm2r3_finger_e4_seed61",
+   "outputs": [
+    "tm2r3/tm2r3_finger_e4_seed61"
+   ],
+   "inputs": [],
+   "done_when": [
+    {
+     "exists": "config.json"
+    },
+    {
+     "exists": "ckpt_early.pt"
+    },
+    {
+     "exists": "ckpt_late.pt"
+    },
+    {
+     "file_contains": {
+      "file": "ckpt_late.STEP",
+      "pattern": "^(9[0-9]{4}|[1-9][0-9]{5,})"
+     }
+    },
+    {
+     "file_contains": {
+      "file": "ckpt_early.STEP",
+      "pattern": "^(2[4-9][0-9]{3}|[3-9][0-9]{4}|[1-9][0-9]{5,})"
+     }
+    }
+   ]
+  },
+  {
+   "stage": "train",
+   "kind": "tm2r3_train",
+   "target": "vast",
+   "run_id": "tm2r3_cup_e1_seed61",
+   "cmd": "TDMPC2_ROOT=/workspace/tdmpc2/tdmpc2 /workspace/conda_envs/tdmpc2/bin/python -m probing.tdmpc2_r3_train --tdmpc2_root /workspace/tdmpc2/tdmpc2 --logdir \"$RUNROOT/tm2r3/tm2r3_cup_e1_seed61\" --task dmc_cup_catch --dose e1 --seed 61 --steps 100000 --early_steps 25000",
+   "vars": {
+    "seed": 61,
+    "dom": "cup",
+    "dose": "e1",
+    "task": "dmc_cup_catch",
+    "run_id": "tm2r3_cup_e1_seed61"
+   },
+   "logdir": "tm2r3/tm2r3_cup_e1_seed61",
+   "outputs": [
+    "tm2r3/tm2r3_cup_e1_seed61"
+   ],
+   "inputs": [],
+   "done_when": [
+    {
+     "exists": "config.json"
+    },
+    {
+     "exists": "ckpt_early.pt"
+    },
+    {
+     "exists": "ckpt_late.pt"
+    },
+    {
+     "file_contains": {
+      "file": "ckpt_late.STEP",
+      "pattern": "^(9[0-9]{4}|[1-9][0-9]{5,})"
+     }
+    },
+    {
+     "file_contains": {
+      "file": "ckpt_early.STEP",
+      "pattern": "^(2[4-9][0-9]{3}|[3-9][0-9]{4}|[1-9][0-9]{5,})"
+     }
+    }
+   ]
+  },
+  {
+   "stage": "train",
+   "kind": "tm2r3_train",
+   "target": "vast",
+   "run_id": "tm2r3_cup_e4_seed61",
+   "cmd": "TDMPC2_ROOT=/workspace/tdmpc2/tdmpc2 /workspace/conda_envs/tdmpc2/bin/python -m probing.tdmpc2_r3_train --tdmpc2_root /workspace/tdmpc2/tdmpc2 --logdir \"$RUNROOT/tm2r3/tm2r3_cup_e4_seed61\" --task dmc_cup_catch --dose e4 --seed 61 --steps 100000 --early_steps 25000",
+   "vars": {
+    "seed": 61,
+    "dom": "cup",
+    "dose": "e4",
+    "task": "dmc_cup_catch",
+    "run_id": "tm2r3_cup_e4_seed61"
+   },
+   "logdir": "tm2r3/tm2r3_cup_e4_seed61",
+   "outputs": [
+    "tm2r3/tm2r3_cup_e4_seed61"
+   ],
+   "inputs": [],
+   "done_when": [
+    {
+     "exists": "config.json"
+    },
+    {
+     "exists": "ckpt_early.pt"
+    },
+    {
+     "exists": "ckpt_late.pt"
+    },
+    {
+     "file_contains": {
+      "file": "ckpt_late.STEP",
+      "pattern": "^(9[0-9]{4}|[1-9][0-9]{5,})"
+     }
+    },
+    {
+     "file_contains": {
+      "file": "ckpt_early.STEP",
+      "pattern": "^(2[4-9][0-9]{3}|[3-9][0-9]{4}|[1-9][0-9]{5,})"
+     }
+    }
+   ]
+  },
+  {
+   "stage": "train",
+   "kind": "tm2r3_train",
+   "target": "vast",
+   "run_id": "tm2r3_finger_e4_seed62",
+   "cmd": "TDMPC2_ROOT=/workspace/tdmpc2/tdmpc2 /workspace/conda_envs/tdmpc2/bin/python -m probing.tdmpc2_r3_train --tdmpc2_root /workspace/tdmpc2/tdmpc2 --logdir \"$RUNROOT/tm2r3/tm2r3_finger_e4_seed62\" --task dmc_finger_turn_hard --dose e4 --seed 62 --steps 100000 --early_steps 25000",
+   "vars": {
+    "seed": 62,
+    "dom": "finger",
+    "dose": "e4",
+    "task": "dmc_finger_turn_hard",
+    "run_id": "tm2r3_finger_e4_seed62"
+   },
+   "logdir": "tm2r3/tm2r3_finger_e4_seed62",
+   "outputs": [
+    "tm2r3/tm2r3_finger_e4_seed62"
+   ],
+   "inputs": [],
+   "done_when": [
+    {
+     "exists": "config.json"
+    },
+    {
+     "exists": "ckpt_early.pt"
+    },
+    {
+     "exists": "ckpt_late.pt"
+    },
+    {
+     "file_contains": {
+      "file": "ckpt_late.STEP",
+      "pattern": "^(9[0-9]{4}|[1-9][0-9]{5,})"
+     }
+    },
+    {
+     "file_contains": {
+      "file": "ckpt_early.STEP",
+      "pattern": "^(2[4-9][0-9]{3}|[3-9][0-9]{4}|[1-9][0-9]{5,})"
+     }
+    }
+   ]
+  },
+  {
+   "stage": "train",
+   "kind": "tm2r3_train",
+   "target": "vast",
+   "run_id": "tm2r3_cup_e1_seed62",
+   "cmd": "TDMPC2_ROOT=/workspace/tdmpc2/tdmpc2 /workspace/conda_envs/tdmpc2/bin/python -m probing.tdmpc2_r3_train --tdmpc2_root /workspace/tdmpc2/tdmpc2 --logdir \"$RUNROOT/tm2r3/tm2r3_cup_e1_seed62\" --task dmc_cup_catch --dose e1 --seed 62 --steps 100000 --early_steps 25000",
+   "vars": {
+    "seed": 62,
+    "dom": "cup",
+    "dose": "e1",
+    "task": "dmc_cup_catch",
+    "run_id": "tm2r3_cup_e1_seed62"
+   },
+   "logdir": "tm2r3/tm2r3_cup_e1_seed62",
+   "outputs": [
+    "tm2r3/tm2r3_cup_e1_seed62"
+   ],
+   "inputs": [],
+   "done_when": [
+    {
+     "exists": "config.json"
+    },
+    {
+     "exists": "ckpt_early.pt"
+    },
+    {
+     "exists": "ckpt_late.pt"
+    },
+    {
+     "file_contains": {
+      "file": "ckpt_late.STEP",
+      "pattern": "^(9[0-9]{4}|[1-9][0-9]{5,})"
+     }
+    },
+    {
+     "file_contains": {
+      "file": "ckpt_early.STEP",
+      "pattern": "^(2[4-9][0-9]{3}|[3-9][0-9]{4}|[1-9][0-9]{5,})"
+     }
+    }
+   ]
+  },
+  {
+   "stage": "train",
+   "kind": "tm2r3_train",
+   "target": "vast",
+   "run_id": "tm2r3_cup_e4_seed62",
+   "cmd": "TDMPC2_ROOT=/workspace/tdmpc2/tdmpc2 /workspace/conda_envs/tdmpc2/bin/python -m probing.tdmpc2_r3_train --tdmpc2_root /workspace/tdmpc2/tdmpc2 --logdir \"$RUNROOT/tm2r3/tm2r3_cup_e4_seed62\" --task dmc_cup_catch --dose e4 --seed 62 --steps 100000 --early_steps 25000",
+   "vars": {
+    "seed": 62,
+    "dom": "cup",
+    "dose": "e4",
+    "task": "dmc_cup_catch",
+    "run_id": "tm2r3_cup_e4_seed62"
+   },
+   "logdir": "tm2r3/tm2r3_cup_e4_seed62",
+   "outputs": [
+    "tm2r3/tm2r3_cup_e4_seed62"
+   ],
+   "inputs": [],
+   "done_when": [
+    {
+     "exists": "config.json"
+    },
+    {
+     "exists": "ckpt_early.pt"
+    },
+    {
+     "exists": "ckpt_late.pt"
+    },
+    {
+     "file_contains": {
+      "file": "ckpt_late.STEP",
+      "pattern": "^(9[0-9]{4}|[1-9][0-9]{5,})"
+     }
+    },
+    {
+     "file_contains": {
+      "file": "ckpt_early.STEP",
+      "pattern": "^(2[4-9][0-9]{3}|[3-9][0-9]{4}|[1-9][0-9]{5,})"
+     }
+    }
+   ]
+  },
+  {
+   "stage": "train",
+   "kind": "tm2r3_train",
+   "target": "vast",
+   "run_id": "tm2r3_finger_e1_seed62",
+   "cmd": "TDMPC2_ROOT=/workspace/tdmpc2/tdmpc2 /workspace/conda_envs/tdmpc2/bin/python -m probing.tdmpc2_r3_train --tdmpc2_root /workspace/tdmpc2/tdmpc2 --logdir \"$RUNROOT/tm2r3/tm2r3_finger_e1_seed62\" --task dmc_finger_turn_hard --dose e1 --seed 62 --steps 100000 --early_steps 25000",
+   "vars": {
+    "seed": 62,
+    "dom": "finger",
+    "dose": "e1",
+    "task": "dmc_finger_turn_hard",
+    "run_id": "tm2r3_finger_e1_seed62"
+   },
+   "logdir": "tm2r3/tm2r3_finger_e1_seed62",
+   "outputs": [
+    "tm2r3/tm2r3_finger_e1_seed62"
+   ],
+   "inputs": [],
+   "done_when": [
+    {
+     "exists": "config.json"
+    },
+    {
+     "exists": "ckpt_early.pt"
+    },
+    {
+     "exists": "ckpt_late.pt"
+    },
+    {
+     "file_contains": {
+      "file": "ckpt_late.STEP",
+      "pattern": "^(9[0-9]{4}|[1-9][0-9]{5,})"
+     }
+    },
+    {
+     "file_contains": {
+      "file": "ckpt_early.STEP",
+      "pattern": "^(2[4-9][0-9]{3}|[3-9][0-9]{4}|[1-9][0-9]{5,})"
+     }
+    }
+   ]
+  },
+  {
+   "stage": "train",
+   "kind": "tm2r3_train",
+   "target": "vast",
+   "run_id": "tm2r3_cup_e1_seed63",
+   "cmd": "TDMPC2_ROOT=/workspace/tdmpc2/tdmpc2 /workspace/conda_envs/tdmpc2/bin/python -m probing.tdmpc2_r3_train --tdmpc2_root /workspace/tdmpc2/tdmpc2 --logdir \"$RUNROOT/tm2r3/tm2r3_cup_e1_seed63\" --task dmc_cup_catch --dose e1 --seed 63 --steps 100000 --early_steps 25000",
+   "vars": {
+    "seed": 63,
+    "dom": "cup",
+    "dose": "e1",
+    "task": "dmc_cup_catch",
+    "run_id": "tm2r3_cup_e1_seed63"
+   },
+   "logdir": "tm2r3/tm2r3_cup_e1_seed63",
+   "outputs": [
+    "tm2r3/tm2r3_cup_e1_seed63"
+   ],
+   "inputs": [],
+   "done_when": [
+    {
+     "exists": "config.json"
+    },
+    {
+     "exists": "ckpt_early.pt"
+    },
+    {
+     "exists": "ckpt_late.pt"
+    },
+    {
+     "file_contains": {
+      "file": "ckpt_late.STEP",
+      "pattern": "^(9[0-9]{4}|[1-9][0-9]{5,})"
+     }
+    },
+    {
+     "file_contains": {
+      "file": "ckpt_early.STEP",
+      "pattern": "^(2[4-9][0-9]{3}|[3-9][0-9]{4}|[1-9][0-9]{5,})"
+     }
+    }
+   ]
+  },
+  {
+   "stage": "train",
+   "kind": "tm2r3_train",
+   "target": "vast",
+   "run_id": "tm2r3_cup_e4_seed63",
+   "cmd": "TDMPC2_ROOT=/workspace/tdmpc2/tdmpc2 /workspace/conda_envs/tdmpc2/bin/python -m probing.tdmpc2_r3_train --tdmpc2_root /workspace/tdmpc2/tdmpc2 --logdir \"$RUNROOT/tm2r3/tm2r3_cup_e4_seed63\" --task dmc_cup_catch --dose e4 --seed 63 --steps 100000 --early_steps 25000",
+   "vars": {
+    "seed": 63,
+    "dom": "cup",
+    "dose": "e4",
+    "task": "dmc_cup_catch",
+    "run_id": "tm2r3_cup_e4_seed63"
+   },
+   "logdir": "tm2r3/tm2r3_cup_e4_seed63",
+   "outputs": [
+    "tm2r3/tm2r3_cup_e4_seed63"
+   ],
+   "inputs": [],
+   "done_when": [
+    {
+     "exists": "config.json"
+    },
+    {
+     "exists": "ckpt_early.pt"
+    },
+    {
+     "exists": "ckpt_late.pt"
+    },
+    {
+     "file_contains": {
+      "file": "ckpt_late.STEP",
+      "pattern": "^(9[0-9]{4}|[1-9][0-9]{5,})"
+     }
+    },
+    {
+     "file_contains": {
+      "file": "ckpt_early.STEP",
+      "pattern": "^(2[4-9][0-9]{3}|[3-9][0-9]{4}|[1-9][0-9]{5,})"
+     }
+    }
+   ]
+  },
+  {
+   "stage": "train",
+   "kind": "tm2r3_train",
+   "target": "vast",
+   "run_id": "tm2r3_finger_e1_seed63",
+   "cmd": "TDMPC2_ROOT=/workspace/tdmpc2/tdmpc2 /workspace/conda_envs/tdmpc2/bin/python -m probing.tdmpc2_r3_train --tdmpc2_root /workspace/tdmpc2/tdmpc2 --logdir \"$RUNROOT/tm2r3/tm2r3_finger_e1_seed63\" --task dmc_finger_turn_hard --dose e1 --seed 63 --steps 100000 --early_steps 25000",
+   "vars": {
+    "seed": 63,
+    "dom": "finger",
+    "dose": "e1",
+    "task": "dmc_finger_turn_hard",
+    "run_id": "tm2r3_finger_e1_seed63"
+   },
+   "logdir": "tm2r3/tm2r3_finger_e1_seed63",
+   "outputs": [
+    "tm2r3/tm2r3_finger_e1_seed63"
+   ],
+   "inputs": [],
+   "done_when": [
+    {
+     "exists": "config.json"
+    },
+    {
+     "exists": "ckpt_early.pt"
+    },
+    {
+     "exists": "ckpt_late.pt"
+    },
+    {
+     "file_contains": {
+      "file": "ckpt_late.STEP",
+      "pattern": "^(9[0-9]{4}|[1-9][0-9]{5,})"
+     }
+    },
+    {
+     "file_contains": {
+      "file": "ckpt_early.STEP",
+      "pattern": "^(2[4-9][0-9]{3}|[3-9][0-9]{4}|[1-9][0-9]{5,})"
+     }
+    }
+   ]
+  },
+  {
+   "stage": "train",
+   "kind": "tm2r3_train",
+   "target": "vast",
+   "run_id": "tm2r3_finger_e4_seed63",
+   "cmd": "TDMPC2_ROOT=/workspace/tdmpc2/tdmpc2 /workspace/conda_envs/tdmpc2/bin/python -m probing.tdmpc2_r3_train --tdmpc2_root /workspace/tdmpc2/tdmpc2 --logdir \"$RUNROOT/tm2r3/tm2r3_finger_e4_seed63\" --task dmc_finger_turn_hard --dose e4 --seed 63 --steps 100000 --early_steps 25000",
+   "vars": {
+    "seed": 63,
+    "dom": "finger",
+    "dose": "e4",
+    "task": "dmc_finger_turn_hard",
+    "run_id": "tm2r3_finger_e4_seed63"
+   },
+   "logdir": "tm2r3/tm2r3_finger_e4_seed63",
+   "outputs": [
+    "tm2r3/tm2r3_finger_e4_seed63"
+   ],
+   "inputs": [],
+   "done_when": [
+    {
+     "exists": "config.json"
+    },
+    {
+     "exists": "ckpt_early.pt"
+    },
+    {
+     "exists": "ckpt_late.pt"
+    },
+    {
+     "file_contains": {
+      "file": "ckpt_late.STEP",
+      "pattern": "^(9[0-9]{4}|[1-9][0-9]{5,})"
+     }
+    },
+    {
+     "file_contains": {
+      "file": "ckpt_early.STEP",
+      "pattern": "^(2[4-9][0-9]{3}|[3-9][0-9]{4}|[1-9][0-9]{5,})"
+     }
+    }
+   ]
+  },
+  {
+   "stage": "train",
+   "kind": "tm2r3_train",
+   "target": "vast",
+   "run_id": "tm2r3_cup_e4_seed64",
+   "cmd": "TDMPC2_ROOT=/workspace/tdmpc2/tdmpc2 /workspace/conda_envs/tdmpc2/bin/python -m probing.tdmpc2_r3_train --tdmpc2_root /workspace/tdmpc2/tdmpc2 --logdir \"$RUNROOT/tm2r3/tm2r3_cup_e4_seed64\" --task dmc_cup_catch --dose e4 --seed 64 --steps 100000 --early_steps 25000",
+   "vars": {
+    "seed": 64,
+    "dom": "cup",
+    "dose": "e4",
+    "task": "dmc_cup_catch",
+    "run_id": "tm2r3_cup_e4_seed64"
+   },
+   "logdir": "tm2r3/tm2r3_cup_e4_seed64",
+   "outputs": [
+    "tm2r3/tm2r3_cup_e4_seed64"
+   ],
+   "inputs": [],
+   "done_when": [
+    {
+     "exists": "config.json"
+    },
+    {
+     "exists": "ckpt_early.pt"
+    },
+    {
+     "exists": "ckpt_late.pt"
+    },
+    {
+     "file_contains": {
+      "file": "ckpt_late.STEP",
+      "pattern": "^(9[0-9]{4}|[1-9][0-9]{5,})"
+     }
+    },
+    {
+     "file_contains": {
+      "file": "ckpt_early.STEP",
+      "pattern": "^(2[4-9][0-9]{3}|[3-9][0-9]{4}|[1-9][0-9]{5,})"
+     }
+    }
+   ]
+  },
+  {
+   "stage": "train",
+   "kind": "tm2r3_train",
+   "target": "vast",
+   "run_id": "tm2r3_finger_e1_seed64",
+   "cmd": "TDMPC2_ROOT=/workspace/tdmpc2/tdmpc2 /workspace/conda_envs/tdmpc2/bin/python -m probing.tdmpc2_r3_train --tdmpc2_root /workspace/tdmpc2/tdmpc2 --logdir \"$RUNROOT/tm2r3/tm2r3_finger_e1_seed64\" --task dmc_finger_turn_hard --dose e1 --seed 64 --steps 100000 --early_steps 25000",
+   "vars": {
+    "seed": 64,
+    "dom": "finger",
+    "dose": "e1",
+    "task": "dmc_finger_turn_hard",
+    "run_id": "tm2r3_finger_e1_seed64"
+   },
+   "logdir": "tm2r3/tm2r3_finger_e1_seed64",
+   "outputs": [
+    "tm2r3/tm2r3_finger_e1_seed64"
+   ],
+   "inputs": [],
+   "done_when": [
+    {
+     "exists": "config.json"
+    },
+    {
+     "exists": "ckpt_early.pt"
+    },
+    {
+     "exists": "ckpt_late.pt"
+    },
+    {
+     "file_contains": {
+      "file": "ckpt_late.STEP",
+      "pattern": "^(9[0-9]{4}|[1-9][0-9]{5,})"
+     }
+    },
+    {
+     "file_contains": {
+      "file": "ckpt_early.STEP",
+      "pattern": "^(2[4-9][0-9]{3}|[3-9][0-9]{4}|[1-9][0-9]{5,})"
+     }
+    }
+   ]
+  },
+  {
+   "stage": "train",
+   "kind": "tm2r3_train",
+   "target": "vast",
+   "run_id": "tm2r3_finger_e4_seed64",
+   "cmd": "TDMPC2_ROOT=/workspace/tdmpc2/tdmpc2 /workspace/conda_envs/tdmpc2/bin/python -m probing.tdmpc2_r3_train --tdmpc2_root /workspace/tdmpc2/tdmpc2 --logdir \"$RUNROOT/tm2r3/tm2r3_finger_e4_seed64\" --task dmc_finger_turn_hard --dose e4 --seed 64 --steps 100000 --early_steps 25000",
+   "vars": {
+    "seed": 64,
+    "dom": "finger",
+    "dose": "e4",
+    "task": "dmc_finger_turn_hard",
+    "run_id": "tm2r3_finger_e4_seed64"
+   },
+   "logdir": "tm2r3/tm2r3_finger_e4_seed64",
+   "outputs": [
+    "tm2r3/tm2r3_finger_e4_seed64"
+   ],
+   "inputs": [],
+   "done_when": [
+    {
+     "exists": "config.json"
+    },
+    {
+     "exists": "ckpt_early.pt"
+    },
+    {
+     "exists": "ckpt_late.pt"
+    },
+    {
+     "file_contains": {
+      "file": "ckpt_late.STEP",
+      "pattern": "^(9[0-9]{4}|[1-9][0-9]{5,})"
+     }
+    },
+    {
+     "file_contains": {
+      "file": "ckpt_early.STEP",
+      "pattern": "^(2[4-9][0-9]{3}|[3-9][0-9]{4}|[1-9][0-9]{5,})"
+     }
+    }
+   ]
+  },
+  {
+   "stage": "train",
+   "kind": "tm2r3_train",
+   "target": "vast",
+   "run_id": "tm2r3_cup_e1_seed64",
+   "cmd": "TDMPC2_ROOT=/workspace/tdmpc2/tdmpc2 /workspace/conda_envs/tdmpc2/bin/python -m probing.tdmpc2_r3_train --tdmpc2_root /workspace/tdmpc2/tdmpc2 --logdir \"$RUNROOT/tm2r3/tm2r3_cup_e1_seed64\" --task dmc_cup_catch --dose e1 --seed 64 --steps 100000 --early_steps 25000",
+   "vars": {
+    "seed": 64,
+    "dom": "cup",
+    "dose": "e1",
+    "task": "dmc_cup_catch",
+    "run_id": "tm2r3_cup_e1_seed64"
+   },
+   "logdir": "tm2r3/tm2r3_cup_e1_seed64",
+   "outputs": [
+    "tm2r3/tm2r3_cup_e1_seed64"
+   ],
+   "inputs": [],
+   "done_when": [
+    {
+     "exists": "config.json"
+    },
+    {
+     "exists": "ckpt_early.pt"
+    },
+    {
+     "exists": "ckpt_late.pt"
+    },
+    {
+     "file_contains": {
+      "file": "ckpt_late.STEP",
+      "pattern": "^(9[0-9]{4}|[1-9][0-9]{5,})"
+     }
+    },
+    {
+     "file_contains": {
+      "file": "ckpt_early.STEP",
+      "pattern": "^(2[4-9][0-9]{3}|[3-9][0-9]{4}|[1-9][0-9]{5,})"
+     }
+    }
+   ]
+  },
+  {
+   "stage": "train",
+   "kind": "tm2r3_train",
+   "target": "vast",
+   "run_id": "tm2r3_finger_e1_seed65",
+   "cmd": "TDMPC2_ROOT=/workspace/tdmpc2/tdmpc2 /workspace/conda_envs/tdmpc2/bin/python -m probing.tdmpc2_r3_train --tdmpc2_root /workspace/tdmpc2/tdmpc2 --logdir \"$RUNROOT/tm2r3/tm2r3_finger_e1_seed65\" --task dmc_finger_turn_hard --dose e1 --seed 65 --steps 100000 --early_steps 25000",
+   "vars": {
+    "seed": 65,
+    "dom": "finger",
+    "dose": "e1",
+    "task": "dmc_finger_turn_hard",
+    "run_id": "tm2r3_finger_e1_seed65"
+   },
+   "logdir": "tm2r3/tm2r3_finger_e1_seed65",
+   "outputs": [
+    "tm2r3/tm2r3_finger_e1_seed65"
+   ],
+   "inputs": [],
+   "done_when": [
+    {
+     "exists": "config.json"
+    },
+    {
+     "exists": "ckpt_early.pt"
+    },
+    {
+     "exists": "ckpt_late.pt"
+    },
+    {
+     "file_contains": {
+      "file": "ckpt_late.STEP",
+      "pattern": "^(9[0-9]{4}|[1-9][0-9]{5,})"
+     }
+    },
+    {
+     "file_contains": {
+      "file": "ckpt_early.STEP",
+      "pattern": "^(2[4-9][0-9]{3}|[3-9][0-9]{4}|[1-9][0-9]{5,})"
+     }
+    }
+   ]
+  },
+  {
+   "stage": "train",
+   "kind": "tm2r3_train",
+   "target": "vast",
+   "run_id": "tm2r3_finger_e4_seed65",
+   "cmd": "TDMPC2_ROOT=/workspace/tdmpc2/tdmpc2 /workspace/conda_envs/tdmpc2/bin/python -m probing.tdmpc2_r3_train --tdmpc2_root /workspace/tdmpc2/tdmpc2 --logdir \"$RUNROOT/tm2r3/tm2r3_finger_e4_seed65\" --task dmc_finger_turn_hard --dose e4 --seed 65 --steps 100000 --early_steps 25000",
+   "vars": {
+    "seed": 65,
+    "dom": "finger",
+    "dose": "e4",
+    "task": "dmc_finger_turn_hard",
+    "run_id": "tm2r3_finger_e4_seed65"
+   },
+   "logdir": "tm2r3/tm2r3_finger_e4_seed65",
+   "outputs": [
+    "tm2r3/tm2r3_finger_e4_seed65"
+   ],
+   "inputs": [],
+   "done_when": [
+    {
+     "exists": "config.json"
+    },
+    {
+     "exists": "ckpt_early.pt"
+    },
+    {
+     "exists": "ckpt_late.pt"
+    },
+    {
+     "file_contains": {
+      "file": "ckpt_late.STEP",
+      "pattern": "^(9[0-9]{4}|[1-9][0-9]{5,})"
+     }
+    },
+    {
+     "file_contains": {
+      "file": "ckpt_early.STEP",
+      "pattern": "^(2[4-9][0-9]{3}|[3-9][0-9]{4}|[1-9][0-9]{5,})"
+     }
+    }
+   ]
+  },
+  {
+   "stage": "train",
+   "kind": "tm2r3_train",
+   "target": "vast",
+   "run_id": "tm2r3_cup_e1_seed65",
+   "cmd": "TDMPC2_ROOT=/workspace/tdmpc2/tdmpc2 /workspace/conda_envs/tdmpc2/bin/python -m probing.tdmpc2_r3_train --tdmpc2_root /workspace/tdmpc2/tdmpc2 --logdir \"$RUNROOT/tm2r3/tm2r3_cup_e1_seed65\" --task dmc_cup_catch --dose e1 --seed 65 --steps 100000 --early_steps 25000",
+   "vars": {
+    "seed": 65,
+    "dom": "cup",
+    "dose": "e1",
+    "task": "dmc_cup_catch",
+    "run_id": "tm2r3_cup_e1_seed65"
+   },
+   "logdir": "tm2r3/tm2r3_cup_e1_seed65",
+   "outputs": [
+    "tm2r3/tm2r3_cup_e1_seed65"
+   ],
+   "inputs": [],
+   "done_when": [
+    {
+     "exists": "config.json"
+    },
+    {
+     "exists": "ckpt_early.pt"
+    },
+    {
+     "exists": "ckpt_late.pt"
+    },
+    {
+     "file_contains": {
+      "file": "ckpt_late.STEP",
+      "pattern": "^(9[0-9]{4}|[1-9][0-9]{5,})"
+     }
+    },
+    {
+     "file_contains": {
+      "file": "ckpt_early.STEP",
+      "pattern": "^(2[4-9][0-9]{3}|[3-9][0-9]{4}|[1-9][0-9]{5,})"
+     }
+    }
+   ]
+  },
+  {
+   "stage": "train",
+   "kind": "tm2r3_train",
+   "target": "vast",
+   "run_id": "tm2r3_cup_e4_seed65",
+   "cmd": "TDMPC2_ROOT=/workspace/tdmpc2/tdmpc2 /workspace/conda_envs/tdmpc2/bin/python -m probing.tdmpc2_r3_train --tdmpc2_root /workspace/tdmpc2/tdmpc2 --logdir \"$RUNROOT/tm2r3/tm2r3_cup_e4_seed65\" --task dmc_cup_catch --dose e4 --seed 65 --steps 100000 --early_steps 25000",
+   "vars": {
+    "seed": 65,
+    "dom": "cup",
+    "dose": "e4",
+    "task": "dmc_cup_catch",
+    "run_id": "tm2r3_cup_e4_seed65"
+   },
+   "logdir": "tm2r3/tm2r3_cup_e4_seed65",
+   "outputs": [
+    "tm2r3/tm2r3_cup_e4_seed65"
+   ],
+   "inputs": [],
+   "done_when": [
+    {
+     "exists": "config.json"
+    },
+    {
+     "exists": "ckpt_early.pt"
+    },
+    {
+     "exists": "ckpt_late.pt"
+    },
+    {
+     "file_contains": {
+      "file": "ckpt_late.STEP",
+      "pattern": "^(9[0-9]{4}|[1-9][0-9]{5,})"
+     }
+    },
+    {
+     "file_contains": {
+      "file": "ckpt_early.STEP",
+      "pattern": "^(2[4-9][0-9]{3}|[3-9][0-9]{4}|[1-9][0-9]{5,})"
+     }
+    }
+   ]
+  },
+  {
+   "stage": "train",
+   "kind": "tm2r3_train",
+   "target": "vast",
+   "run_id": "tm2r3_finger_e4_seed66",
+   "cmd": "TDMPC2_ROOT=/workspace/tdmpc2/tdmpc2 /workspace/conda_envs/tdmpc2/bin/python -m probing.tdmpc2_r3_train --tdmpc2_root /workspace/tdmpc2/tdmpc2 --logdir \"$RUNROOT/tm2r3/tm2r3_finger_e4_seed66\" --task dmc_finger_turn_hard --dose e4 --seed 66 --steps 100000 --early_steps 25000",
+   "vars": {
+    "seed": 66,
+    "dom": "finger",
+    "dose": "e4",
+    "task": "dmc_finger_turn_hard",
+    "run_id": "tm2r3_finger_e4_seed66"
+   },
+   "logdir": "tm2r3/tm2r3_finger_e4_seed66",
+   "outputs": [
+    "tm2r3/tm2r3_finger_e4_seed66"
+   ],
+   "inputs": [],
+   "done_when": [
+    {
+     "exists": "config.json"
+    },
+    {
+     "exists": "ckpt_early.pt"
+    },
+    {
+     "exists": "ckpt_late.pt"
+    },
+    {
+     "file_contains": {
+      "file": "ckpt_late.STEP",
+      "pattern": "^(9[0-9]{4}|[1-9][0-9]{5,})"
+     }
+    },
+    {
+     "file_contains": {
+      "file": "ckpt_early.STEP",
+      "pattern": "^(2[4-9][0-9]{3}|[3-9][0-9]{4}|[1-9][0-9]{5,})"
+     }
+    }
+   ]
+  },
+  {
+   "stage": "train",
+   "kind": "tm2r3_train",
+   "target": "vast",
+   "run_id": "tm2r3_cup_e1_seed66",
+   "cmd": "TDMPC2_ROOT=/workspace/tdmpc2/tdmpc2 /workspace/conda_envs/tdmpc2/bin/python -m probing.tdmpc2_r3_train --tdmpc2_root /workspace/tdmpc2/tdmpc2 --logdir \"$RUNROOT/tm2r3/tm2r3_cup_e1_seed66\" --task dmc_cup_catch --dose e1 --seed 66 --steps 100000 --early_steps 25000",
+   "vars": {
+    "seed": 66,
+    "dom": "cup",
+    "dose": "e1",
+    "task": "dmc_cup_catch",
+    "run_id": "tm2r3_cup_e1_seed66"
+   },
+   "logdir": "tm2r3/tm2r3_cup_e1_seed66",
+   "outputs": [
+    "tm2r3/tm2r3_cup_e1_seed66"
+   ],
+   "inputs": [],
+   "done_when": [
+    {
+     "exists": "config.json"
+    },
+    {
+     "exists": "ckpt_early.pt"
+    },
+    {
+     "exists": "ckpt_late.pt"
+    },
+    {
+     "file_contains": {
+      "file": "ckpt_late.STEP",
+      "pattern": "^(9[0-9]{4}|[1-9][0-9]{5,})"
+     }
+    },
+    {
+     "file_contains": {
+      "file": "ckpt_early.STEP",
+      "pattern": "^(2[4-9][0-9]{3}|[3-9][0-9]{4}|[1-9][0-9]{5,})"
+     }
+    }
+   ]
+  },
+  {
+   "stage": "train",
+   "kind": "tm2r3_train",
+   "target": "vast",
+   "run_id": "tm2r3_cup_e4_seed66",
+   "cmd": "TDMPC2_ROOT=/workspace/tdmpc2/tdmpc2 /workspace/conda_envs/tdmpc2/bin/python -m probing.tdmpc2_r3_train --tdmpc2_root /workspace/tdmpc2/tdmpc2 --logdir \"$RUNROOT/tm2r3/tm2r3_cup_e4_seed66\" --task dmc_cup_catch --dose e4 --seed 66 --steps 100000 --early_steps 25000",
+   "vars": {
+    "seed": 66,
+    "dom": "cup",
+    "dose": "e4",
+    "task": "dmc_cup_catch",
+    "run_id": "tm2r3_cup_e4_seed66"
+   },
+   "logdir": "tm2r3/tm2r3_cup_e4_seed66",
+   "outputs": [
+    "tm2r3/tm2r3_cup_e4_seed66"
+   ],
+   "inputs": [],
+   "done_when": [
+    {
+     "exists": "config.json"
+    },
+    {
+     "exists": "ckpt_early.pt"
+    },
+    {
+     "exists": "ckpt_late.pt"
+    },
+    {
+     "file_contains": {
+      "file": "ckpt_late.STEP",
+      "pattern": "^(9[0-9]{4}|[1-9][0-9]{5,})"
+     }
+    },
+    {
+     "file_contains": {
+      "file": "ckpt_early.STEP",
+      "pattern": "^(2[4-9][0-9]{3}|[3-9][0-9]{4}|[1-9][0-9]{5,})"
+     }
+    }
+   ]
+  },
+  {
+   "stage": "train",
+   "kind": "tm2r3_train",
+   "target": "vast",
+   "run_id": "tm2r3_finger_e1_seed66",
+   "cmd": "TDMPC2_ROOT=/workspace/tdmpc2/tdmpc2 /workspace/conda_envs/tdmpc2/bin/python -m probing.tdmpc2_r3_train --tdmpc2_root /workspace/tdmpc2/tdmpc2 --logdir \"$RUNROOT/tm2r3/tm2r3_finger_e1_seed66\" --task dmc_finger_turn_hard --dose e1 --seed 66 --steps 100000 --early_steps 25000",
+   "vars": {
+    "seed": 66,
+    "dom": "finger",
+    "dose": "e1",
+    "task": "dmc_finger_turn_hard",
+    "run_id": "tm2r3_finger_e1_seed66"
+   },
+   "logdir": "tm2r3/tm2r3_finger_e1_seed66",
+   "outputs": [
+    "tm2r3/tm2r3_finger_e1_seed66"
+   ],
+   "inputs": [],
+   "done_when": [
+    {
+     "exists": "config.json"
+    },
+    {
+     "exists": "ckpt_early.pt"
+    },
+    {
+     "exists": "ckpt_late.pt"
+    },
+    {
+     "file_contains": {
+      "file": "ckpt_late.STEP",
+      "pattern": "^(9[0-9]{4}|[1-9][0-9]{5,})"
+     }
+    },
+    {
+     "file_contains": {
+      "file": "ckpt_early.STEP",
+      "pattern": "^(2[4-9][0-9]{3}|[3-9][0-9]{4}|[1-9][0-9]{5,})"
+     }
+    }
+   ]
+  }
+ ]
+}

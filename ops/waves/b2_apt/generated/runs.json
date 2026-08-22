@@ -1,0 +1,337 @@
+{
+ "wave_id": "b2_apt",
+ "spec": "/home/rickybao/projects/dreamerv3/ops/waves/b2_apt/spec.yaml",
+ "prereg": "prereg/PREREG_nfi_apt_20260821.md",
+ "bundle": {
+  "prefix": "b2_apt",
+  "include_stages": [
+   "train"
+  ],
+  "cloud_logs": [
+   "se_apt_s*.out"
+  ]
+ },
+ "stages": [
+  {
+   "name": "train",
+   "target": "vast",
+   "kind": "se_run",
+   "on_failure": "continue",
+   "needs": null
+  }
+ ],
+ "runs": [
+  {
+   "stage": "train",
+   "kind": "se_run",
+   "target": "vast",
+   "run_id": "se_apt_s68",
+   "cmd": "RUN_ID=se_apt_s68 TASK=dmc_cheetah_run SEED=68 EXPL_CONFIG=expl_apt DISTRACTOR_MOD_KEY= DISTRACTOR_MOD_INDEX=0 DISTRACTOR_MOD_LO=0.0 DISTRACTOR_MOD_HI=1.0 DISTRACTOR_SCALE=1.0 bash scripts/uncfield_se.sbatch && python -m uncfield.se_apt_mask --run_logdir \"$RUNROOT/se_apt_s68\"",
+   "vars": {
+    "seed": 68,
+    "run_id": "se_apt_s68"
+   },
+   "logdir": "se_apt_s68",
+   "outputs": [
+    "se_apt_s68"
+   ],
+   "inputs": [],
+   "done_when": [
+    {
+     "exists": "TRAINING_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "exists": "se_apt_mask/se_apt_mask.json"
+    },
+    {
+     "file_contains": {
+      "file": "ckpt_snapshots/nearest.json",
+      "pattern": "\"milestone\": 500000,\\s+\"step\": (49\\d{4}|[5-9]\\d{5})"
+     }
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 464
+     }
+    }
+   ]
+  },
+  {
+   "stage": "train",
+   "kind": "se_run",
+   "target": "vast",
+   "run_id": "se_apt_s69",
+   "cmd": "RUN_ID=se_apt_s69 TASK=dmc_cheetah_run SEED=69 EXPL_CONFIG=expl_apt DISTRACTOR_MOD_KEY= DISTRACTOR_MOD_INDEX=0 DISTRACTOR_MOD_LO=0.0 DISTRACTOR_MOD_HI=1.0 DISTRACTOR_SCALE=1.0 bash scripts/uncfield_se.sbatch && python -m uncfield.se_apt_mask --run_logdir \"$RUNROOT/se_apt_s69\"",
+   "vars": {
+    "seed": 69,
+    "run_id": "se_apt_s69"
+   },
+   "logdir": "se_apt_s69",
+   "outputs": [
+    "se_apt_s69"
+   ],
+   "inputs": [],
+   "done_when": [
+    {
+     "exists": "TRAINING_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "exists": "se_apt_mask/se_apt_mask.json"
+    },
+    {
+     "file_contains": {
+      "file": "ckpt_snapshots/nearest.json",
+      "pattern": "\"milestone\": 500000,\\s+\"step\": (49\\d{4}|[5-9]\\d{5})"
+     }
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 464
+     }
+    }
+   ]
+  },
+  {
+   "stage": "train",
+   "kind": "se_run",
+   "target": "vast",
+   "run_id": "se_apt_s70",
+   "cmd": "RUN_ID=se_apt_s70 TASK=dmc_cheetah_run SEED=70 EXPL_CONFIG=expl_apt DISTRACTOR_MOD_KEY= DISTRACTOR_MOD_INDEX=0 DISTRACTOR_MOD_LO=0.0 DISTRACTOR_MOD_HI=1.0 DISTRACTOR_SCALE=1.0 bash scripts/uncfield_se.sbatch && python -m uncfield.se_apt_mask --run_logdir \"$RUNROOT/se_apt_s70\"",
+   "vars": {
+    "seed": 70,
+    "run_id": "se_apt_s70"
+   },
+   "logdir": "se_apt_s70",
+   "outputs": [
+    "se_apt_s70"
+   ],
+   "inputs": [],
+   "done_when": [
+    {
+     "exists": "TRAINING_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "exists": "se_apt_mask/se_apt_mask.json"
+    },
+    {
+     "file_contains": {
+      "file": "ckpt_snapshots/nearest.json",
+      "pattern": "\"milestone\": 500000,\\s+\"step\": (49\\d{4}|[5-9]\\d{5})"
+     }
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 464
+     }
+    }
+   ]
+  },
+  {
+   "stage": "train",
+   "kind": "se_run",
+   "target": "vast",
+   "run_id": "se_apt_s71",
+   "cmd": "RUN_ID=se_apt_s71 TASK=dmc_cheetah_run SEED=71 EXPL_CONFIG=expl_apt DISTRACTOR_MOD_KEY= DISTRACTOR_MOD_INDEX=0 DISTRACTOR_MOD_LO=0.0 DISTRACTOR_MOD_HI=1.0 DISTRACTOR_SCALE=1.0 bash scripts/uncfield_se.sbatch && python -m uncfield.se_apt_mask --run_logdir \"$RUNROOT/se_apt_s71\"",
+   "vars": {
+    "seed": 71,
+    "run_id": "se_apt_s71"
+   },
+   "logdir": "se_apt_s71",
+   "outputs": [
+    "se_apt_s71"
+   ],
+   "inputs": [],
+   "done_when": [
+    {
+     "exists": "TRAINING_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "exists": "se_apt_mask/se_apt_mask.json"
+    },
+    {
+     "file_contains": {
+      "file": "ckpt_snapshots/nearest.json",
+      "pattern": "\"milestone\": 500000,\\s+\"step\": (49\\d{4}|[5-9]\\d{5})"
+     }
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 464
+     }
+    }
+   ]
+  },
+  {
+   "stage": "train",
+   "kind": "se_run",
+   "target": "vast",
+   "run_id": "se_apt_s72",
+   "cmd": "RUN_ID=se_apt_s72 TASK=dmc_cheetah_run SEED=72 EXPL_CONFIG=expl_apt DISTRACTOR_MOD_KEY= DISTRACTOR_MOD_INDEX=0 DISTRACTOR_MOD_LO=0.0 DISTRACTOR_MOD_HI=1.0 DISTRACTOR_SCALE=1.0 bash scripts/uncfield_se.sbatch && python -m uncfield.se_apt_mask --run_logdir \"$RUNROOT/se_apt_s72\"",
+   "vars": {
+    "seed": 72,
+    "run_id": "se_apt_s72"
+   },
+   "logdir": "se_apt_s72",
+   "outputs": [
+    "se_apt_s72"
+   ],
+   "inputs": [],
+   "done_when": [
+    {
+     "exists": "TRAINING_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "exists": "se_apt_mask/se_apt_mask.json"
+    },
+    {
+     "file_contains": {
+      "file": "ckpt_snapshots/nearest.json",
+      "pattern": "\"milestone\": 500000,\\s+\"step\": (49\\d{4}|[5-9]\\d{5})"
+     }
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 464
+     }
+    }
+   ]
+  },
+  {
+   "stage": "train",
+   "kind": "se_run",
+   "target": "vast",
+   "run_id": "se_apt_s73",
+   "cmd": "RUN_ID=se_apt_s73 TASK=dmc_cheetah_run SEED=73 EXPL_CONFIG=expl_apt DISTRACTOR_MOD_KEY= DISTRACTOR_MOD_INDEX=0 DISTRACTOR_MOD_LO=0.0 DISTRACTOR_MOD_HI=1.0 DISTRACTOR_SCALE=1.0 bash scripts/uncfield_se.sbatch && python -m uncfield.se_apt_mask --run_logdir \"$RUNROOT/se_apt_s73\"",
+   "vars": {
+    "seed": 73,
+    "run_id": "se_apt_s73"
+   },
+   "logdir": "se_apt_s73",
+   "outputs": [
+    "se_apt_s73"
+   ],
+   "inputs": [],
+   "done_when": [
+    {
+     "exists": "TRAINING_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "exists": "se_apt_mask/se_apt_mask.json"
+    },
+    {
+     "file_contains": {
+      "file": "ckpt_snapshots/nearest.json",
+      "pattern": "\"milestone\": 500000,\\s+\"step\": (49\\d{4}|[5-9]\\d{5})"
+     }
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 464
+     }
+    }
+   ]
+  },
+  {
+   "stage": "train",
+   "kind": "se_run",
+   "target": "vast",
+   "run_id": "se_apt_s74",
+   "cmd": "RUN_ID=se_apt_s74 TASK=dmc_cheetah_run SEED=74 EXPL_CONFIG=expl_apt DISTRACTOR_MOD_KEY= DISTRACTOR_MOD_INDEX=0 DISTRACTOR_MOD_LO=0.0 DISTRACTOR_MOD_HI=1.0 DISTRACTOR_SCALE=1.0 bash scripts/uncfield_se.sbatch && python -m uncfield.se_apt_mask --run_logdir \"$RUNROOT/se_apt_s74\"",
+   "vars": {
+    "seed": 74,
+    "run_id": "se_apt_s74"
+   },
+   "logdir": "se_apt_s74",
+   "outputs": [
+    "se_apt_s74"
+   ],
+   "inputs": [],
+   "done_when": [
+    {
+     "exists": "TRAINING_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "exists": "se_apt_mask/se_apt_mask.json"
+    },
+    {
+     "file_contains": {
+      "file": "ckpt_snapshots/nearest.json",
+      "pattern": "\"milestone\": 500000,\\s+\"step\": (49\\d{4}|[5-9]\\d{5})"
+     }
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 464
+     }
+    }
+   ]
+  },
+  {
+   "stage": "train",
+   "kind": "se_run",
+   "target": "vast",
+   "run_id": "se_apt_s75",
+   "cmd": "RUN_ID=se_apt_s75 TASK=dmc_cheetah_run SEED=75 EXPL_CONFIG=expl_apt DISTRACTOR_MOD_KEY= DISTRACTOR_MOD_INDEX=0 DISTRACTOR_MOD_LO=0.0 DISTRACTOR_MOD_HI=1.0 DISTRACTOR_SCALE=1.0 bash scripts/uncfield_se.sbatch && python -m uncfield.se_apt_mask --run_logdir \"$RUNROOT/se_apt_s75\"",
+   "vars": {
+    "seed": 75,
+    "run_id": "se_apt_s75"
+   },
+   "logdir": "se_apt_s75",
+   "outputs": [
+    "se_apt_s75"
+   ],
+   "inputs": [],
+   "done_when": [
+    {
+     "exists": "TRAINING_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "exists": "se_apt_mask/se_apt_mask.json"
+    },
+    {
+     "file_contains": {
+      "file": "ckpt_snapshots/nearest.json",
+      "pattern": "\"milestone\": 500000,\\s+\"step\": (49\\d{4}|[5-9]\\d{5})"
+     }
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 464
+     }
+    }
+   ]
+  }
+ ]
+}
