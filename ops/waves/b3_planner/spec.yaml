@@ -61,3 +61,14 @@ stages:
     done_when:
       - exists: se_planner/se_planner.json
       - exists: se_planner/se_planner.npz
+
+# The probe writes se_planner/ INSIDE the Stage-1 checkpoint dir it reads, so
+# the bundle carries that subdirectory and not the host run: se_cheetah_seed1x
+# is shared substrate, already bundled under its own registration. This is the
+# same asymmetry that made drain_destroy.sh nearly lose all 8 outputs (it
+# excluded se_cheetah_seed* as planner INPUTS), so the path is spelled out.
+bundle:
+  prefix: b3_planner
+  include_stages: [probe]
+  cloud_logs:
+    - "se_planner_seed*.out"

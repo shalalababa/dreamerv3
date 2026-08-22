@@ -56,3 +56,16 @@ stages:
           file: ckpt_snapshots/nearest.json
           pattern: '"milestone": 500000,\s+"step": (49\d{4}|[5-9]\d{5})'
       - jsonl_min_lines: {file: scores.jsonl, n: 464}
+
+# The amendment names the bundle contents in its own words: "the §5-shaped
+# bundle: replay/, scores, config, metrics, ckpt/latest, se_probe/". The
+# stage's output is the whole run dir, which is a superset of that list -- a
+# superset is safe, a subset is not, and hardlinking makes the extra free on
+# RCC. se_probe/ is only present because scripts/se_noboot_probe.sbatch ran
+# (job 54278445, 4/4); this wave never produced it, which is exactly why the
+# checker reporting 4/4 DONE was not evidence the bundle was buildable.
+bundle:
+  prefix: se_noboot
+  include_stages: [train]
+  cloud_logs:
+    - "se_noboot_s*.out"

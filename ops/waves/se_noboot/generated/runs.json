@@ -2,7 +2,15 @@
  "wave_id": "se_noboot",
  "spec": "/home/rickybao/projects/dreamerv3/ops/waves/se_noboot/spec.yaml",
  "prereg": "prereg/PREREG_nfi_scale_exhibit_amend4_20260820.md",
- "bundle": null,
+ "bundle": {
+  "prefix": "se_noboot",
+  "include_stages": [
+   "train"
+  ],
+  "cloud_logs": [
+   "se_noboot_s*.out"
+  ]
+ },
  "stages": [
   {
    "name": "train",

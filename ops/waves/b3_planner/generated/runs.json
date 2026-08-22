@@ -2,7 +2,15 @@
  "wave_id": "b3_planner",
  "spec": "/home/rickybao/projects/dreamerv3/ops/waves/b3_planner/spec.yaml",
  "prereg": "prereg/PREREG_nfi_planner_20260821.md",
- "bundle": null,
+ "bundle": {
+  "prefix": "b3_planner",
+  "include_stages": [
+   "probe"
+  ],
+  "cloud_logs": [
+   "se_planner_seed*.out"
+  ]
+ },
  "stages": [
   {
    "name": "probe",

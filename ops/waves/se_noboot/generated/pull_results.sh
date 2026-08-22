@@ -56,12 +56,18 @@ for N in "$@"; do
   # can leave a stale progress/marker file that size+mtime will not correct,
   # and a stale witness is read as truth by the checker. Deliberately NOT
   # --append-verify, and deliberately scoped to tiny files.
+  # `latest` is in this list because it is the ONE payload file that is both
+  # MUTABLE and CONSTANT-LENGTH: --append-verify skips same-size files, so it
+  # froze at whatever checkpoint the first pull saw. On 2026-08-22 that left
+  # ten runs on RCC naming a 105k-152k step checkpoint while the 494k-499k
+  # ones sat beside them, and se_probe reported OK on the wrong model.
   rs -az -c --ignore-times --info=progress2 \
     -e "ssh -p $(dv3_port "$N") ${DV3_SSH_OPTS[*]}" \
     --include='*/' \
     --include='TRAINING_DONE' --include='ADAPT_DONE' --include='DISTILL_DONE' \
     --include='OFFLINE_FIT_PROGRESS' --include='config.yaml' \
     --include='scores.jsonl' --include='fidelity.json' --include='done' \
+    --include='latest' --include='*.STEP' \
     --exclude='*' \
     --include=/se_noboot_s40 \
   --include='/se_noboot_s40/***' \

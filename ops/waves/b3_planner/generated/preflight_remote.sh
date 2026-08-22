@@ -31,7 +31,7 @@ pct="$(df -P "$RUNROOT" | awk 'NR==2{gsub(/%/,"",$5); print $5}')"
 [ "${pct:-100}" -lt 90 ] && ok "disk ${pct}% used" || bad "disk ${pct}% used"
 
 echo "== repo generation stamp =="
-want=8ad0328b
+want=c59d85d3
 got="$(cat "$REPO/scripts/ops/VERSION" 2>/dev/null | head -1)"
 case "$got" in
   "$want"*|*"${want%%-*}"*) ok "instance repo matches wave generation ($want)" ;;
