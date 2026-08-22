@@ -271,6 +271,13 @@ def make_env(config, index, **overrides):
     seed = int(np.random.SeedSequence(
         [config.seed, index, 0x5E]).generate_state(1)[0])
     env = planted.Planted(env, **dict(planted_cfg), seed=seed)
+  pen_cfg = config.get('penalty', {})
+  if pen_cfg.get('scale', 0.0):
+    # Track A2 SCARECROW baseline (PREREG_trackA_scarecrow_20260822):
+    # REPLACES reward with a pure region penalty; scale 0.0 disables
+    # (default-inert, hiddenstakes convention). Deterministic, no rng.
+    from embodied.envs import regionpenalty
+    env = regionpenalty.RegionPenalty(env, **dict(pen_cfg))
   return wrap_env(env, config)
 
 

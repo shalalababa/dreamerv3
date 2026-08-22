@@ -1,0 +1,195 @@
+# A2 SCARECROW wave -- PREREG_trackA_scarecrow_20260822 (Track A2;
+# gate satisfied by the A1 read, artifacts/a1_avoidance_read_20260822;
+# review #34 adjudicated: done_when regexes newline-tolerant (B2), full
+# variable set on every arm (A1 convention), bundle block, disk plan).
+#
+# ONE INSTANCE, NON-NEGOTIABLE (the 1-Aug cross-invocation rule): the
+# primary and every secondary are cross-arm exact permutations, so all
+# 20 runs share one box. Lanes 0-3 -> 5 rounds x ~7 h ~= 35 h drain;
+# the per-stage lane assignment keeps arms BALANCED per lane (each lane
+# runs one cell of each arm), which is the device-confound guard.
+#
+# DISK (A1 measured 4.6 G/run: snapshots 3.9 G + replay 626 M): 20 x
+# 4.6 ~= 92 G — DOES NOT FIT alongside headroom on a 100 G box.
+# Registered mitigation = the standing rule: PULL EACH RUN TO RCC AS IT
+# FINISHES (verify, then delete instance-side — the RCC copy is the
+# archive), never an end-of-wave drain. replay/ must survive into the
+# bundle (occupancy + coverage + penalty-delivery legs read it).
+#
+# STALE-CHECKOUT DEFENSE (NOBOOT incident): instances must carry a
+# checkout >= the A2 freeze commit. Real guards, in order: (1) the
+# generated preflight asserts every env var below is READ by
+# scripts/uncfield_se.sbatch (wavegen var-read check); (2) a stale
+# dreamerv3/ dies at startup on the unknown --penalty.* flags; (3) the
+# producer BIND-CHECK kills a wrong bind within minutes; (4) the
+# reader's strict pins are the last lock.
+#
+# Every arm passes the SAME variable set including inert values (the
+# A1 rule: the frozen reader cannot tell an unset variable from a
+# deliberately-default one). Penalty arms carry the ctrl observation
+# CONFIGURATION (flat 0.35891393, no modulation) at matched
+# observation statistics — independent streams, different seeds.
+# per_gpu: 1 (SE runs measured 15243 MiB). se_probe passes are NOT
+# part of this wave (scripts/se_scarecrow_probe.sbatch, ONE CPU job,
+# ckpt-identity skip rule).
+
+wave_id: a2_scarecrow
+paper: track_a
+prereg: prereg/PREREG_trackA_scarecrow_20260822.md
+notes: >-
+  20 SE runs (cheetah, seeds 76-95): flat control, scarecrow (A1-hetero
+  quadruple), strong scarecrow (scale 2.0), penalty_mix lambda 0.5 and
+  2.0. 5e5 steps, ~7 h each, one instance, lanes 0-3, ~35 h drain.
+
+defaults:
+  target: vast
+
+kinds:
+  se_run: {per_gpu: 1}
+
+stages:
+
+  - name: ctrl
+    kind: se_run
+    on_failure: continue
+    expand:
+      seed: [76, 77, 78, 79]
+    run_id: "sc_ctrl_s${seed}"
+    logdir: "sc_ctrl_s${seed}"
+    cmd: >-
+      RUN_ID=sc_ctrl_s${seed} TASK=dmc_cheetah_run SEED=${seed}
+      DISTRACTOR_SCALE=0.35891393
+      DISTRACTOR_MOD_KEY= DISTRACTOR_MOD_INDEX=0
+      DISTRACTOR_MOD_LO=0.0 DISTRACTOR_MOD_HI=1.0
+      PENALTY_MIX=False PENALTY_SCALE=0.0
+      PENALTY_GATE_KEY= PENALTY_GATE_INDEX=0 PENALTY_GATE_THRESHOLD=0.0
+      bash scripts/uncfield_se.sbatch
+    outputs:
+      - "sc_ctrl_s${seed}"
+    done_when:
+      - exists: TRAINING_DONE
+      - exists: config.yaml
+      - file_contains: {file: config.yaml, pattern: 'scale:\s+0.35891393'}
+      - file_contains: {file: config.yaml, pattern: 'penalty_mix:\s+false'}
+      - file_contains:
+          file: ckpt_snapshots/nearest.json
+          pattern: '"milestone": 500000,\s+"step": (49\d{4}|[5-9]\d{5})'
+      - jsonl_min_lines: {file: scores.jsonl, n: 464}
+
+  - name: scare
+    kind: se_run
+    on_failure: continue
+    expand:
+      seed: [80, 81, 82, 83]
+    run_id: "sc_scare_s${seed}"
+    logdir: "sc_scare_s${seed}"
+    cmd: >-
+      RUN_ID=sc_scare_s${seed} TASK=dmc_cheetah_run SEED=${seed}
+      DISTRACTOR_SCALE=1.0
+      DISTRACTOR_MOD_KEY=position DISTRACTOR_MOD_INDEX=0
+      DISTRACTOR_MOD_LO=-0.32203162 DISTRACTOR_MOD_HI=0.19711795
+      PENALTY_MIX=False PENALTY_SCALE=0.0
+      PENALTY_GATE_KEY= PENALTY_GATE_INDEX=0 PENALTY_GATE_THRESHOLD=0.0
+      bash scripts/uncfield_se.sbatch
+    outputs:
+      - "sc_scare_s${seed}"
+    done_when:
+      - exists: TRAINING_DONE
+      - exists: config.yaml
+      - file_contains: {file: config.yaml, pattern: 'mod_lo:\s+-0.32203162'}
+      - file_contains: {file: config.yaml, pattern: 'penalty_mix:\s+false'}
+      - file_contains:
+          file: ckpt_snapshots/nearest.json
+          pattern: '"milestone": 500000,\s+"step": (49\d{4}|[5-9]\d{5})'
+      - jsonl_min_lines: {file: scores.jsonl, n: 464}
+
+  - name: scare2
+    kind: se_run
+    on_failure: continue
+    expand:
+      seed: [84, 85, 86, 87]
+    run_id: "sc_scare2_s${seed}"
+    logdir: "sc_scare2_s${seed}"
+    cmd: >-
+      RUN_ID=sc_scare2_s${seed} TASK=dmc_cheetah_run SEED=${seed}
+      DISTRACTOR_SCALE=2.0
+      DISTRACTOR_MOD_KEY=position DISTRACTOR_MOD_INDEX=0
+      DISTRACTOR_MOD_LO=-0.32203162 DISTRACTOR_MOD_HI=0.19711795
+      PENALTY_MIX=False PENALTY_SCALE=0.0
+      PENALTY_GATE_KEY= PENALTY_GATE_INDEX=0 PENALTY_GATE_THRESHOLD=0.0
+      bash scripts/uncfield_se.sbatch
+    outputs:
+      - "sc_scare2_s${seed}"
+    done_when:
+      - exists: TRAINING_DONE
+      - exists: config.yaml
+      - file_contains: {file: config.yaml, pattern: 'scale:\s+2.0'}
+      - file_contains: {file: config.yaml, pattern: 'mod_lo:\s+-0.32203162'}
+      - file_contains: {file: config.yaml, pattern: 'penalty_mix:\s+false'}
+      - file_contains:
+          file: ckpt_snapshots/nearest.json
+          pattern: '"milestone": 500000,\s+"step": (49\d{4}|[5-9]\d{5})'
+      - jsonl_min_lines: {file: scores.jsonl, n: 464}
+
+  - name: pen1
+    kind: se_run
+    on_failure: continue
+    expand:
+      seed: [88, 89, 90, 91]
+    run_id: "sc_pen1_s${seed}"
+    logdir: "sc_pen1_s${seed}"
+    cmd: >-
+      RUN_ID=sc_pen1_s${seed} TASK=dmc_cheetah_run SEED=${seed}
+      DISTRACTOR_SCALE=0.35891393
+      DISTRACTOR_MOD_KEY= DISTRACTOR_MOD_INDEX=0
+      DISTRACTOR_MOD_LO=0.0 DISTRACTOR_MOD_HI=1.0
+      PENALTY_MIX=True PENALTY_SCALE=0.5
+      PENALTY_GATE_KEY=position PENALTY_GATE_INDEX=0
+      PENALTY_GATE_THRESHOLD=-0.13009691
+      bash scripts/uncfield_se.sbatch
+    outputs:
+      - "sc_pen1_s${seed}"
+    done_when:
+      - exists: TRAINING_DONE
+      - exists: config.yaml
+      - file_contains: {file: config.yaml, pattern: 'penalty_mix:\s+true'}
+      - file_contains: {file: config.yaml, pattern: 'gate_threshold:\s+-0.13009691'}
+      - file_contains: {file: config.yaml, pattern: 'scale:\s+0.35891393'}
+      - file_contains:
+          file: ckpt_snapshots/nearest.json
+          pattern: '"milestone": 500000,\s+"step": (49\d{4}|[5-9]\d{5})'
+      - jsonl_min_lines: {file: scores.jsonl, n: 464}
+
+  - name: pen2
+    kind: se_run
+    on_failure: continue
+    expand:
+      seed: [92, 93, 94, 95]
+    run_id: "sc_pen2_s${seed}"
+    logdir: "sc_pen2_s${seed}"
+    cmd: >-
+      RUN_ID=sc_pen2_s${seed} TASK=dmc_cheetah_run SEED=${seed}
+      DISTRACTOR_SCALE=0.35891393
+      DISTRACTOR_MOD_KEY= DISTRACTOR_MOD_INDEX=0
+      DISTRACTOR_MOD_LO=0.0 DISTRACTOR_MOD_HI=1.0
+      PENALTY_MIX=True PENALTY_SCALE=2.0
+      PENALTY_GATE_KEY=position PENALTY_GATE_INDEX=0
+      PENALTY_GATE_THRESHOLD=-0.13009691
+      bash scripts/uncfield_se.sbatch
+    outputs:
+      - "sc_pen2_s${seed}"
+    done_when:
+      - exists: TRAINING_DONE
+      - exists: config.yaml
+      - file_contains: {file: config.yaml, pattern: 'penalty_mix:\s+true'}
+      - file_contains: {file: config.yaml, pattern: 'gate_threshold:\s+-0.13009691'}
+      - file_contains: {file: config.yaml, pattern: 'scale:\s+0.35891393'}
+      - file_contains:
+          file: ckpt_snapshots/nearest.json
+          pattern: '"milestone": 500000,\s+"step": (49\d{4}|[5-9]\d{5})'
+      - jsonl_min_lines: {file: scores.jsonl, n: 464}
+
+bundle:
+  prefix: a2_scarecrow
+  include_stages: [ctrl, scare, scare2, pen1, pen2]
+  cloud_logs: ["sc_*.out"]

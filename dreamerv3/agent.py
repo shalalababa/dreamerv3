@@ -96,7 +96,15 @@ class Agent(embodied.jax.Agent):
 
     self.expl_mode = config.expl.mode
     assert self.expl_mode in ('task', 'random', 'p2e', 'apt'), self.expl_mode
-    self.reward_free = (self.expl_mode != 'task')
+    # penalty_mix (Track A2 SCARECROW baseline, PREREG_trackA_scarecrow):
+    # a p2e explorer that ALSO trains the reward head (on the env's
+    # region-penalty reward) and adds its prediction to the imagined
+    # intrinsic reward. Default False = every existing arm unchanged.
+    assert not config.expl.penalty_mix or self.expl_mode == 'p2e', (
+        'penalty_mix is registered for p2e explorers only',
+        self.expl_mode)
+    self.reward_free = (
+        self.expl_mode != 'task') and not config.expl.penalty_mix
 
     # P2E predicts deterministic posterior features; sampled stochastic targets
     # add noise that collapses disagreement. disag_task trains the same
@@ -128,12 +136,23 @@ class Agent(embodied.jax.Agent):
       self.modules = wm
     elif self.expl_mode == 'p2e':
       self.modules = wm + [self.con, self.pol, self.val, self.disag]
+      if config.expl.penalty_mix:
+        # A2 review B1: nj.grad selects params by module path — without
+        # this the reward head is a frozen constant (loss pinned at
+        # ln(bins)) and the penalty arm silently runs pure p2e
+        self.modules = self.modules + [self.rew]
     elif self.expl_mode == 'apt':
       self.modules = wm + [self.con, self.pol, self.val]
     elif config.frozen_wm:
       self.modules = head + probes
     else:
       self.modules = wm + head + probes
+    # A2 review B1 tripwire: whenever the reward head is supposed to
+    # learn (reward_free False), it MUST be an optimizer target —
+    # otherwise its loss is a constant and the arm silently degrades
+    assert (self.rew in self.modules) == (not self.reward_free), (
+        'reward head optimizer-membership inconsistent with '
+        'reward_free', self.expl_mode, self.reward_free)
     self.opt = embodied.jax.Optimizer(
         self.modules, self._make_opt(**config.opt), summary_depth=1,
         name='opt')
@@ -145,6 +164,12 @@ class Agent(embodied.jax.Agent):
       keep = {'dyn', 'rep', *dec_space}
     elif self.expl_mode == 'p2e':
       keep = {'dyn', 'rep', 'con', 'policy', 'value', 'disag', *dec_space}
+      if self.config.expl.penalty_mix:
+        # A2 penalty arm trains the reward head (and repval rides the
+        # not-reward_free branch, agent.py:395) on the region penalty
+        keep.add('rew')
+        if self.config.repval_loss:
+          keep.add('repval')
     elif self.expl_mode == 'apt':
       keep = {'dyn', 'rep', 'con', 'policy', 'value', *dec_space}
     else:
@@ -334,6 +359,12 @@ class Agent(embodied.jax.Agent):
         metrics['expl/intr_rew_raw'] = raw_imgrew.mean()
         metrics['expl/intr_rew_raw_std'] = raw_imgrew.std()
         metrics['expl/disag_scale'] = self.config.expl.disag_scale
+        if self.config.expl.penalty_mix:
+          # A2 penalty arm: extrinsic (region-penalty) prediction added
+          # with the task-mode idiom (rew pred, no sg — agent.py:341)
+          pen_rew = self.rew(inp, 2).pred()
+          imgrew = imgrew + pen_rew
+          metrics['expl/penalty_rew'] = pen_rew.mean()
       elif self.expl_mode == 'apt':
         imgrew = sg(explore.apt_reward(
             inp, self.config.expl.apt_knn, self.config.expl.apt_logc))

@@ -47,6 +47,10 @@ defaults:
   # new-paper track, embodied/envs/hiddenstakes.py).
   hiddenstakes: {dim: 0, p_stay: 0.95, scale: 1.0, cost: 0.0, signal: 1.0, obs_noise: 0.5}
 
+  # Region penalty (Track A2 SCARECROW baseline): REPLACES reward with
+  # -scale inside the gate region; scale 0 disables (default-inert).
+  penalty: {scale: 0.0, gate_key: '', gate_index: 0, gate_threshold: 0.0}
+
   # Orthogonal-objective reward override (empty task disables the wrapper).
   orthreward: {task: ''}
 
@@ -149,6 +153,7 @@ defaults:
       disag_bootstrap: True,
       disag_bootstrap_prob: 0.8,
       disag_scale: 1000.0,
+      penalty_mix: False,
       disag_task: False,
       apt_knn: 12,
       apt_logc: 1.0,

@@ -123,6 +123,11 @@ STOP_STEP=$("$PYTHON" -c "print(int(float('$STEPS')))")
   --distractor.mod_lo "${DISTRACTOR_MOD_LO:-0.0}" \
   --distractor.mod_hi "${DISTRACTOR_MOD_HI:-1.0}" \
   --agent.expl.disag_bootstrap "${DISAG_BOOTSTRAP:-True}" \
+  --agent.expl.penalty_mix "${PENALTY_MIX:-False}" \
+  --penalty.scale "${PENALTY_SCALE:-0.0}" \
+  --penalty.gate_key "${PENALTY_GATE_KEY:-}" \
+  --penalty.gate_index "${PENALTY_GATE_INDEX:-0}" \
+  --penalty.gate_threshold "${PENALTY_GATE_THRESHOLD:-0.0}" \
   --planted.source_key "$SOURCE_KEY" --planted.basesd "$BASESD_PLANTED" \
   --planted.gate_key "${GATE_KEY:-}" \
   --planted.gate_index "${GATE_INDEX:-0}" \
@@ -166,6 +171,18 @@ def want(path, val):
         f"BIND-CHECK FAIL {path}: config={node!r} != wave={val!r}")
 want('agent.expl.disag_bootstrap',
      env.get('DISAG_BOOTSTRAP', 'True') == 'True')
+want('agent.expl.penalty_mix',
+     env.get('PENALTY_MIX', 'False') == 'True')
+want('penalty.scale', float(env.get('PENALTY_SCALE', '0.0')))
+want('penalty.gate_key', env.get('PENALTY_GATE_KEY', ''))
+# #34 M8: the variables that DEFINE the regions must bind too
+want('penalty.gate_index', int(env.get('PENALTY_GATE_INDEX', '0')))
+want('penalty.gate_threshold',
+     float(env.get('PENALTY_GATE_THRESHOLD', '0.0')))
+want('distractor.mod_index',
+     int(env.get('DISTRACTOR_MOD_INDEX', '0')))
+want('distractor.mod_lo', float(env.get('DISTRACTOR_MOD_LO', '0.0')))
+want('distractor.mod_hi', float(env.get('DISTRACTOR_MOD_HI', '1.0')))
 want('distractor.dim', int(env.get('DISTRACTOR_DIM', '8')))
 want('distractor.scale', float(env.get('DISTRACTOR_SCALE', '1.0')))
 want('distractor.mod_key', env.get('DISTRACTOR_MOD_KEY', ''))
