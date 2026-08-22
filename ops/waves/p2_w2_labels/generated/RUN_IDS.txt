@@ -1,0 +1,49 @@
+wave_id: p2_w2_labels
+spec:    /home/rickybao/projects/dreamerv3/ops/waves/p2_w2_labels/spec.yaml
+prereg:  prereg/PREREG_p2_wave2_freshcohort_20260821.md
+
+=== stage smoke  [vast]  kind=w2_gate  on_failure=abort  n=1 ===
+  p2w2_smoke_gate
+
+=== stage dup  [vast]  kind=w2_gate  on_failure=abort  n=1 ===
+  p2w2_dup_gate
+
+=== stage labels  [vast]  kind=w2_label  on_failure=continue  n=32 ===
+  w1tm2_cup_e1_seed59_late
+  w1tm2_cup_e4_seed60_late
+  w1tm2_finger_e1_seed61_late
+  w1tm2_finger_e4_seed62_late
+  w1tm2_cup_e1_seed63_late
+  w1tm2_cup_e4_seed64_late
+  w1tm2_finger_e1_seed65_late
+  w1tm2_finger_e4_seed66_late
+  w1tm2_cup_e4_seed59_late
+  w1tm2_finger_e1_seed60_late
+  w1tm2_finger_e4_seed61_late
+  w1tm2_cup_e1_seed62_late
+  w1tm2_cup_e4_seed63_late
+  w1tm2_finger_e1_seed64_late
+  w1tm2_finger_e4_seed65_late
+  w1tm2_cup_e1_seed66_late
+  w1tm2_finger_e1_seed59_late
+  w1tm2_finger_e4_seed60_late
+  w1tm2_cup_e1_seed61_late
+  w1tm2_cup_e4_seed62_late
+  w1tm2_finger_e1_seed63_late
+  w1tm2_finger_e4_seed64_late
+  w1tm2_cup_e1_seed65_late
+  w1tm2_cup_e4_seed66_late
+  w1tm2_finger_e4_seed59_late
+  w1tm2_cup_e1_seed60_late
+  w1tm2_cup_e4_seed61_late
+  w1tm2_finger_e1_seed62_late
+  w1tm2_finger_e4_seed63_late
+  w1tm2_cup_e1_seed64_late
+  w1tm2_cup_e4_seed65_late
+  w1tm2_finger_e1_seed66_late
+
+TOTAL RUNS: 34
+
+Check this list against the prereg before submitting. run_ids are
+consumed by frozen readers and the ledger; a wrong expansion here
+propagates into every downstream artifact.

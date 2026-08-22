@@ -1,0 +1,2 @@
+# p2_w2_labels / stage smoke / lane 0 / 1 queued task(s), 1 run(s)
+DV3_TASK_NAME=p2w2_smoke_gate bash -lc 'set -uo pipefail; source /root/.dreamer_vast_env; cd "$REPO"; mkdir -p "$RUNROOT/_cloud_logs"; ( set +e; echo "===== [$(date)] START p2w2_smoke_gate ====="; TM2R3_STAGE=w2smoke TM2_CONDA_ENV=/workspace/conda_envs/tdmpc2 TDMPC2_CHECKOUT=/workspace/tdmpc2 TM2R3_ROOT="${RUNROOT}/tm2r3" bash scripts/tm2r3.sbatch; rc=$?; echo "===== [$(date)] DONE rc=$rc p2w2_smoke_gate ====="; exit $rc ) >> "$RUNROOT/_cloud_logs/p2w2_smoke_gate.out" 2>&1'

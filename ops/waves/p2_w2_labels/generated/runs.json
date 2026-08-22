@@ -1,0 +1,824 @@
+{
+ "wave_id": "p2_w2_labels",
+ "spec": "/home/rickybao/projects/dreamerv3/ops/waves/p2_w2_labels/spec.yaml",
+ "prereg": "prereg/PREREG_p2_wave2_freshcohort_20260821.md",
+ "bundle": {
+  "prefix": "p2_w2_labels",
+  "include_stages": [
+   "smoke",
+   "dup",
+   "labels"
+  ],
+  "cloud_logs": [
+   "w1tm2_*_late.out",
+   "p2w2_*_gate.out"
+  ]
+ },
+ "stages": [
+  {
+   "name": "smoke",
+   "target": "vast",
+   "kind": "w2_gate",
+   "on_failure": "abort",
+   "needs": null
+  },
+  {
+   "name": "dup",
+   "target": "vast",
+   "kind": "w2_gate",
+   "on_failure": "abort",
+   "needs": null
+  },
+  {
+   "name": "labels",
+   "target": "vast",
+   "kind": "w2_label",
+   "on_failure": "continue",
+   "needs": null
+  }
+ ],
+ "runs": [
+  {
+   "stage": "smoke",
+   "kind": "w2_gate",
+   "target": "vast",
+   "run_id": "p2w2_smoke_gate",
+   "cmd": "TM2R3_STAGE=w2smoke TM2_CONDA_ENV=/workspace/conda_envs/tdmpc2 TDMPC2_CHECKOUT=/workspace/tdmpc2 TM2R3_ROOT=\"${RUNROOT}/tm2r3\" bash scripts/tm2r3.sbatch",
+   "vars": {
+    "run_id": "p2w2_smoke_gate"
+   },
+   "logdir": "w1_labels",
+   "outputs": [
+    "w1_labels"
+   ],
+   "inputs": [],
+   "done_when": [
+    {
+     "exists": "W2_SMOKE_OK"
+    }
+   ]
+  },
+  {
+   "stage": "dup",
+   "kind": "w2_gate",
+   "target": "vast",
+   "run_id": "p2w2_dup_gate",
+   "cmd": "TM2R3_STAGE=w2dup TM2_CONDA_ENV=/workspace/conda_envs/tdmpc2 TDMPC2_CHECKOUT=/workspace/tdmpc2 TM2R3_ROOT=\"${RUNROOT}/tm2r3\" bash scripts/tm2r3.sbatch",
+   "vars": {
+    "run_id": "p2w2_dup_gate"
+   },
+   "logdir": "w1_labels",
+   "outputs": [
+    "w1_labels"
+   ],
+   "inputs": [],
+   "done_when": [
+    {
+     "exists": "W2_DUP_OK"
+    },
+    {
+     "exists": "w1tm2dup_cup_e1_seed59_late.npz"
+    },
+    {
+     "exists": "w1tm2dup_finger_e1_seed59_late.npz"
+    }
+   ]
+  },
+  {
+   "stage": "labels",
+   "kind": "w2_label",
+   "target": "vast",
+   "run_id": "w1tm2_cup_e1_seed59_late",
+   "cmd": "W=\"${RUNROOT}/w1_labels/W2_DUP_OK\"; for _i in $(seq 1 2880); do [ -f \"$W\" ] && break; sleep 60; done; [ -f \"$W\" ] || { echo \"W2_DUP_OK never appeared within 48h\"; exit 75; }; TM2R3_STAGE=w2labels TM2R3_DOM=cup TM2R3_DOSE=e1 TM2R3_SEED=59 TM2_CONDA_ENV=/workspace/conda_envs/tdmpc2 TDMPC2_CHECKOUT=/workspace/tdmpc2 TM2R3_ROOT=\"${RUNROOT}/tm2r3\" bash scripts/tm2r3.sbatch",
+   "vars": {
+    "dom": "cup",
+    "dose": "e1",
+    "seed": 59,
+    "run_id": "w1tm2_cup_e1_seed59_late"
+   },
+   "logdir": "w1_labels",
+   "outputs": [
+    "w1_labels"
+   ],
+   "inputs": [],
+   "done_when": [
+    {
+     "exists": "w1tm2_cup_e1_seed59_late.npz"
+    }
+   ]
+  },
+  {
+   "stage": "labels",
+   "kind": "w2_label",
+   "target": "vast",
+   "run_id": "w1tm2_cup_e4_seed60_late",
+   "cmd": "W=\"${RUNROOT}/w1_labels/W2_DUP_OK\"; for _i in $(seq 1 2880); do [ -f \"$W\" ] && break; sleep 60; done; [ -f \"$W\" ] || { echo \"W2_DUP_OK never appeared within 48h\"; exit 75; }; TM2R3_STAGE=w2labels TM2R3_DOM=cup TM2R3_DOSE=e4 TM2R3_SEED=60 TM2_CONDA_ENV=/workspace/conda_envs/tdmpc2 TDMPC2_CHECKOUT=/workspace/tdmpc2 TM2R3_ROOT=\"${RUNROOT}/tm2r3\" bash scripts/tm2r3.sbatch",
+   "vars": {
+    "dom": "cup",
+    "dose": "e4",
+    "seed": 60,
+    "run_id": "w1tm2_cup_e4_seed60_late"
+   },
+   "logdir": "w1_labels",
+   "outputs": [
+    "w1_labels"
+   ],
+   "inputs": [],
+   "done_when": [
+    {
+     "exists": "w1tm2_cup_e4_seed60_late.npz"
+    }
+   ]
+  },
+  {
+   "stage": "labels",
+   "kind": "w2_label",
+   "target": "vast",
+   "run_id": "w1tm2_finger_e1_seed61_late",
+   "cmd": "W=\"${RUNROOT}/w1_labels/W2_DUP_OK\"; for _i in $(seq 1 2880); do [ -f \"$W\" ] && break; sleep 60; done; [ -f \"$W\" ] || { echo \"W2_DUP_OK never appeared within 48h\"; exit 75; }; TM2R3_STAGE=w2labels TM2R3_DOM=finger TM2R3_DOSE=e1 TM2R3_SEED=61 TM2_CONDA_ENV=/workspace/conda_envs/tdmpc2 TDMPC2_CHECKOUT=/workspace/tdmpc2 TM2R3_ROOT=\"${RUNROOT}/tm2r3\" bash scripts/tm2r3.sbatch",
+   "vars": {
+    "dom": "finger",
+    "dose": "e1",
+    "seed": 61,
+    "run_id": "w1tm2_finger_e1_seed61_late"
+   },
+   "logdir": "w1_labels",
+   "outputs": [
+    "w1_labels"
+   ],
+   "inputs": [],
+   "done_when": [
+    {
+     "exists": "w1tm2_finger_e1_seed61_late.npz"
+    }
+   ]
+  },
+  {
+   "stage": "labels",
+   "kind": "w2_label",
+   "target": "vast",
+   "run_id": "w1tm2_finger_e4_seed62_late",
+   "cmd": "W=\"${RUNROOT}/w1_labels/W2_DUP_OK\"; for _i in $(seq 1 2880); do [ -f \"$W\" ] && break; sleep 60; done; [ -f \"$W\" ] || { echo \"W2_DUP_OK never appeared within 48h\"; exit 75; }; TM2R3_STAGE=w2labels TM2R3_DOM=finger TM2R3_DOSE=e4 TM2R3_SEED=62 TM2_CONDA_ENV=/workspace/conda_envs/tdmpc2 TDMPC2_CHECKOUT=/workspace/tdmpc2 TM2R3_ROOT=\"${RUNROOT}/tm2r3\" bash scripts/tm2r3.sbatch",
+   "vars": {
+    "dom": "finger",
+    "dose": "e4",
+    "seed": 62,
+    "run_id": "w1tm2_finger_e4_seed62_late"
+   },
+   "logdir": "w1_labels",
+   "outputs": [
+    "w1_labels"
+   ],
+   "inputs": [],
+   "done_when": [
+    {
+     "exists": "w1tm2_finger_e4_seed62_late.npz"
+    }
+   ]
+  },
+  {
+   "stage": "labels",
+   "kind": "w2_label",
+   "target": "vast",
+   "run_id": "w1tm2_cup_e1_seed63_late",
+   "cmd": "W=\"${RUNROOT}/w1_labels/W2_DUP_OK\"; for _i in $(seq 1 2880); do [ -f \"$W\" ] && break; sleep 60; done; [ -f \"$W\" ] || { echo \"W2_DUP_OK never appeared within 48h\"; exit 75; }; TM2R3_STAGE=w2labels TM2R3_DOM=cup TM2R3_DOSE=e1 TM2R3_SEED=63 TM2_CONDA_ENV=/workspace/conda_envs/tdmpc2 TDMPC2_CHECKOUT=/workspace/tdmpc2 TM2R3_ROOT=\"${RUNROOT}/tm2r3\" bash scripts/tm2r3.sbatch",
+   "vars": {
+    "dom": "cup",
+    "dose": "e1",
+    "seed": 63,
+    "run_id": "w1tm2_cup_e1_seed63_late"
+   },
+   "logdir": "w1_labels",
+   "outputs": [
+    "w1_labels"
+   ],
+   "inputs": [],
+   "done_when": [
+    {
+     "exists": "w1tm2_cup_e1_seed63_late.npz"
+    }
+   ]
+  },
+  {
+   "stage": "labels",
+   "kind": "w2_label",
+   "target": "vast",
+   "run_id": "w1tm2_cup_e4_seed64_late",
+   "cmd": "W=\"${RUNROOT}/w1_labels/W2_DUP_OK\"; for _i in $(seq 1 2880); do [ -f \"$W\" ] && break; sleep 60; done; [ -f \"$W\" ] || { echo \"W2_DUP_OK never appeared within 48h\"; exit 75; }; TM2R3_STAGE=w2labels TM2R3_DOM=cup TM2R3_DOSE=e4 TM2R3_SEED=64 TM2_CONDA_ENV=/workspace/conda_envs/tdmpc2 TDMPC2_CHECKOUT=/workspace/tdmpc2 TM2R3_ROOT=\"${RUNROOT}/tm2r3\" bash scripts/tm2r3.sbatch",
+   "vars": {
+    "dom": "cup",
+    "dose": "e4",
+    "seed": 64,
+    "run_id": "w1tm2_cup_e4_seed64_late"
+   },
+   "logdir": "w1_labels",
+   "outputs": [
+    "w1_labels"
+   ],
+   "inputs": [],
+   "done_when": [
+    {
+     "exists": "w1tm2_cup_e4_seed64_late.npz"
+    }
+   ]
+  },
+  {
+   "stage": "labels",
+   "kind": "w2_label",
+   "target": "vast",
+   "run_id": "w1tm2_finger_e1_seed65_late",
+   "cmd": "W=\"${RUNROOT}/w1_labels/W2_DUP_OK\"; for _i in $(seq 1 2880); do [ -f \"$W\" ] && break; sleep 60; done; [ -f \"$W\" ] || { echo \"W2_DUP_OK never appeared within 48h\"; exit 75; }; TM2R3_STAGE=w2labels TM2R3_DOM=finger TM2R3_DOSE=e1 TM2R3_SEED=65 TM2_CONDA_ENV=/workspace/conda_envs/tdmpc2 TDMPC2_CHECKOUT=/workspace/tdmpc2 TM2R3_ROOT=\"${RUNROOT}/tm2r3\" bash scripts/tm2r3.sbatch",
+   "vars": {
+    "dom": "finger",
+    "dose": "e1",
+    "seed": 65,
+    "run_id": "w1tm2_finger_e1_seed65_late"
+   },
+   "logdir": "w1_labels",
+   "outputs": [
+    "w1_labels"
+   ],
+   "inputs": [],
+   "done_when": [
+    {
+     "exists": "w1tm2_finger_e1_seed65_late.npz"
+    }
+   ]
+  },
+  {
+   "stage": "labels",
+   "kind": "w2_label",
+   "target": "vast",
+   "run_id": "w1tm2_finger_e4_seed66_late",
+   "cmd": "W=\"${RUNROOT}/w1_labels/W2_DUP_OK\"; for _i in $(seq 1 2880); do [ -f \"$W\" ] && break; sleep 60; done; [ -f \"$W\" ] || { echo \"W2_DUP_OK never appeared within 48h\"; exit 75; }; TM2R3_STAGE=w2labels TM2R3_DOM=finger TM2R3_DOSE=e4 TM2R3_SEED=66 TM2_CONDA_ENV=/workspace/conda_envs/tdmpc2 TDMPC2_CHECKOUT=/workspace/tdmpc2 TM2R3_ROOT=\"${RUNROOT}/tm2r3\" bash scripts/tm2r3.sbatch",
+   "vars": {
+    "dom": "finger",
+    "dose": "e4",
+    "seed": 66,
+    "run_id": "w1tm2_finger_e4_seed66_late"
+   },
+   "logdir": "w1_labels",
+   "outputs": [
+    "w1_labels"
+   ],
+   "inputs": [],
+   "done_when": [
+    {
+     "exists": "w1tm2_finger_e4_seed66_late.npz"
+    }
+   ]
+  },
+  {
+   "stage": "labels",
+   "kind": "w2_label",
+   "target": "vast",
+   "run_id": "w1tm2_cup_e4_seed59_late",
+   "cmd": "W=\"${RUNROOT}/w1_labels/W2_DUP_OK\"; for _i in $(seq 1 2880); do [ -f \"$W\" ] && break; sleep 60; done; [ -f \"$W\" ] || { echo \"W2_DUP_OK never appeared within 48h\"; exit 75; }; TM2R3_STAGE=w2labels TM2R3_DOM=cup TM2R3_DOSE=e4 TM2R3_SEED=59 TM2_CONDA_ENV=/workspace/conda_envs/tdmpc2 TDMPC2_CHECKOUT=/workspace/tdmpc2 TM2R3_ROOT=\"${RUNROOT}/tm2r3\" bash scripts/tm2r3.sbatch",
+   "vars": {
+    "dom": "cup",
+    "dose": "e4",
+    "seed": 59,
+    "run_id": "w1tm2_cup_e4_seed59_late"
+   },
+   "logdir": "w1_labels",
+   "outputs": [
+    "w1_labels"
+   ],
+   "inputs": [],
+   "done_when": [
+    {
+     "exists": "w1tm2_cup_e4_seed59_late.npz"
+    }
+   ]
+  },
+  {
+   "stage": "labels",
+   "kind": "w2_label",
+   "target": "vast",
+   "run_id": "w1tm2_finger_e1_seed60_late",
+   "cmd": "W=\"${RUNROOT}/w1_labels/W2_DUP_OK\"; for _i in $(seq 1 2880); do [ -f \"$W\" ] && break; sleep 60; done; [ -f \"$W\" ] || { echo \"W2_DUP_OK never appeared within 48h\"; exit 75; }; TM2R3_STAGE=w2labels TM2R3_DOM=finger TM2R3_DOSE=e1 TM2R3_SEED=60 TM2_CONDA_ENV=/workspace/conda_envs/tdmpc2 TDMPC2_CHECKOUT=/workspace/tdmpc2 TM2R3_ROOT=\"${RUNROOT}/tm2r3\" bash scripts/tm2r3.sbatch",
+   "vars": {
+    "dom": "finger",
+    "dose": "e1",
+    "seed": 60,
+    "run_id": "w1tm2_finger_e1_seed60_late"
+   },
+   "logdir": "w1_labels",
+   "outputs": [
+    "w1_labels"
+   ],
+   "inputs": [],
+   "done_when": [
+    {
+     "exists": "w1tm2_finger_e1_seed60_late.npz"
+    }
+   ]
+  },
+  {
+   "stage": "labels",
+   "kind": "w2_label",
+   "target": "vast",
+   "run_id": "w1tm2_finger_e4_seed61_late",
+   "cmd": "W=\"${RUNROOT}/w1_labels/W2_DUP_OK\"; for _i in $(seq 1 2880); do [ -f \"$W\" ] && break; sleep 60; done; [ -f \"$W\" ] || { echo \"W2_DUP_OK never appeared within 48h\"; exit 75; }; TM2R3_STAGE=w2labels TM2R3_DOM=finger TM2R3_DOSE=e4 TM2R3_SEED=61 TM2_CONDA_ENV=/workspace/conda_envs/tdmpc2 TDMPC2_CHECKOUT=/workspace/tdmpc2 TM2R3_ROOT=\"${RUNROOT}/tm2r3\" bash scripts/tm2r3.sbatch",
+   "vars": {
+    "dom": "finger",
+    "dose": "e4",
+    "seed": 61,
+    "run_id": "w1tm2_finger_e4_seed61_late"
+   },
+   "logdir": "w1_labels",
+   "outputs": [
+    "w1_labels"
+   ],
+   "inputs": [],
+   "done_when": [
+    {
+     "exists": "w1tm2_finger_e4_seed61_late.npz"
+    }
+   ]
+  },
+  {
+   "stage": "labels",
+   "kind": "w2_label",
+   "target": "vast",
+   "run_id": "w1tm2_cup_e1_seed62_late",
+   "cmd": "W=\"${RUNROOT}/w1_labels/W2_DUP_OK\"; for _i in $(seq 1 2880); do [ -f \"$W\" ] && break; sleep 60; done; [ -f \"$W\" ] || { echo \"W2_DUP_OK never appeared within 48h\"; exit 75; }; TM2R3_STAGE=w2labels TM2R3_DOM=cup TM2R3_DOSE=e1 TM2R3_SEED=62 TM2_CONDA_ENV=/workspace/conda_envs/tdmpc2 TDMPC2_CHECKOUT=/workspace/tdmpc2 TM2R3_ROOT=\"${RUNROOT}/tm2r3\" bash scripts/tm2r3.sbatch",
+   "vars": {
+    "dom": "cup",
+    "dose": "e1",
+    "seed": 62,
+    "run_id": "w1tm2_cup_e1_seed62_late"
+   },
+   "logdir": "w1_labels",
+   "outputs": [
+    "w1_labels"
+   ],
+   "inputs": [],
+   "done_when": [
+    {
+     "exists": "w1tm2_cup_e1_seed62_late.npz"
+    }
+   ]
+  },
+  {
+   "stage": "labels",
+   "kind": "w2_label",
+   "target": "vast",
+   "run_id": "w1tm2_cup_e4_seed63_late",
+   "cmd": "W=\"${RUNROOT}/w1_labels/W2_DUP_OK\"; for _i in $(seq 1 2880); do [ -f \"$W\" ] && break; sleep 60; done; [ -f \"$W\" ] || { echo \"W2_DUP_OK never appeared within 48h\"; exit 75; }; TM2R3_STAGE=w2labels TM2R3_DOM=cup TM2R3_DOSE=e4 TM2R3_SEED=63 TM2_CONDA_ENV=/workspace/conda_envs/tdmpc2 TDMPC2_CHECKOUT=/workspace/tdmpc2 TM2R3_ROOT=\"${RUNROOT}/tm2r3\" bash scripts/tm2r3.sbatch",
+   "vars": {
+    "dom": "cup",
+    "dose": "e4",
+    "seed": 63,
+    "run_id": "w1tm2_cup_e4_seed63_late"
+   },
+   "logdir": "w1_labels",
+   "outputs": [
+    "w1_labels"
+   ],
+   "inputs": [],
+   "done_when": [
+    {
+     "exists": "w1tm2_cup_e4_seed63_late.npz"
+    }
+   ]
+  },
+  {
+   "stage": "labels",
+   "kind": "w2_label",
+   "target": "vast",
+   "run_id": "w1tm2_finger_e1_seed64_late",
+   "cmd": "W=\"${RUNROOT}/w1_labels/W2_DUP_OK\"; for _i in $(seq 1 2880); do [ -f \"$W\" ] && break; sleep 60; done; [ -f \"$W\" ] || { echo \"W2_DUP_OK never appeared within 48h\"; exit 75; }; TM2R3_STAGE=w2labels TM2R3_DOM=finger TM2R3_DOSE=e1 TM2R3_SEED=64 TM2_CONDA_ENV=/workspace/conda_envs/tdmpc2 TDMPC2_CHECKOUT=/workspace/tdmpc2 TM2R3_ROOT=\"${RUNROOT}/tm2r3\" bash scripts/tm2r3.sbatch",
+   "vars": {
+    "dom": "finger",
+    "dose": "e1",
+    "seed": 64,
+    "run_id": "w1tm2_finger_e1_seed64_late"
+   },
+   "logdir": "w1_labels",
+   "outputs": [
+    "w1_labels"
+   ],
+   "inputs": [],
+   "done_when": [
+    {
+     "exists": "w1tm2_finger_e1_seed64_late.npz"
+    }
+   ]
+  },
+  {
+   "stage": "labels",
+   "kind": "w2_label",
+   "target": "vast",
+   "run_id": "w1tm2_finger_e4_seed65_late",
+   "cmd": "W=\"${RUNROOT}/w1_labels/W2_DUP_OK\"; for _i in $(seq 1 2880); do [ -f \"$W\" ] && break; sleep 60; done; [ -f \"$W\" ] || { echo \"W2_DUP_OK never appeared within 48h\"; exit 75; }; TM2R3_STAGE=w2labels TM2R3_DOM=finger TM2R3_DOSE=e4 TM2R3_SEED=65 TM2_CONDA_ENV=/workspace/conda_envs/tdmpc2 TDMPC2_CHECKOUT=/workspace/tdmpc2 TM2R3_ROOT=\"${RUNROOT}/tm2r3\" bash scripts/tm2r3.sbatch",
+   "vars": {
+    "dom": "finger",
+    "dose": "e4",
+    "seed": 65,
+    "run_id": "w1tm2_finger_e4_seed65_late"
+   },
+   "logdir": "w1_labels",
+   "outputs": [
+    "w1_labels"
+   ],
+   "inputs": [],
+   "done_when": [
+    {
+     "exists": "w1tm2_finger_e4_seed65_late.npz"
+    }
+   ]
+  },
+  {
+   "stage": "labels",
+   "kind": "w2_label",
+   "target": "vast",
+   "run_id": "w1tm2_cup_e1_seed66_late",
+   "cmd": "W=\"${RUNROOT}/w1_labels/W2_DUP_OK\"; for _i in $(seq 1 2880); do [ -f \"$W\" ] && break; sleep 60; done; [ -f \"$W\" ] || { echo \"W2_DUP_OK never appeared within 48h\"; exit 75; }; TM2R3_STAGE=w2labels TM2R3_DOM=cup TM2R3_DOSE=e1 TM2R3_SEED=66 TM2_CONDA_ENV=/workspace/conda_envs/tdmpc2 TDMPC2_CHECKOUT=/workspace/tdmpc2 TM2R3_ROOT=\"${RUNROOT}/tm2r3\" bash scripts/tm2r3.sbatch",
+   "vars": {
+    "dom": "cup",
+    "dose": "e1",
+    "seed": 66,
+    "run_id": "w1tm2_cup_e1_seed66_late"
+   },
+   "logdir": "w1_labels",
+   "outputs": [
+    "w1_labels"
+   ],
+   "inputs": [],
+   "done_when": [
+    {
+     "exists": "w1tm2_cup_e1_seed66_late.npz"
+    }
+   ]
+  },
+  {
+   "stage": "labels",
+   "kind": "w2_label",
+   "target": "vast",
+   "run_id": "w1tm2_finger_e1_seed59_late",
+   "cmd": "W=\"${RUNROOT}/w1_labels/W2_DUP_OK\"; for _i in $(seq 1 2880); do [ -f \"$W\" ] && break; sleep 60; done; [ -f \"$W\" ] || { echo \"W2_DUP_OK never appeared within 48h\"; exit 75; }; TM2R3_STAGE=w2labels TM2R3_DOM=finger TM2R3_DOSE=e1 TM2R3_SEED=59 TM2_CONDA_ENV=/workspace/conda_envs/tdmpc2 TDMPC2_CHECKOUT=/workspace/tdmpc2 TM2R3_ROOT=\"${RUNROOT}/tm2r3\" bash scripts/tm2r3.sbatch",
+   "vars": {
+    "dom": "finger",
+    "dose": "e1",
+    "seed": 59,
+    "run_id": "w1tm2_finger_e1_seed59_late"
+   },
+   "logdir": "w1_labels",
+   "outputs": [
+    "w1_labels"
+   ],
+   "inputs": [],
+   "done_when": [
+    {
+     "exists": "w1tm2_finger_e1_seed59_late.npz"
+    }
+   ]
+  },
+  {
+   "stage": "labels",
+   "kind": "w2_label",
+   "target": "vast",
+   "run_id": "w1tm2_finger_e4_seed60_late",
+   "cmd": "W=\"${RUNROOT}/w1_labels/W2_DUP_OK\"; for _i in $(seq 1 2880); do [ -f \"$W\" ] && break; sleep 60; done; [ -f \"$W\" ] || { echo \"W2_DUP_OK never appeared within 48h\"; exit 75; }; TM2R3_STAGE=w2labels TM2R3_DOM=finger TM2R3_DOSE=e4 TM2R3_SEED=60 TM2_CONDA_ENV=/workspace/conda_envs/tdmpc2 TDMPC2_CHECKOUT=/workspace/tdmpc2 TM2R3_ROOT=\"${RUNROOT}/tm2r3\" bash scripts/tm2r3.sbatch",
+   "vars": {
+    "dom": "finger",
+    "dose": "e4",
+    "seed": 60,
+    "run_id": "w1tm2_finger_e4_seed60_late"
+   },
+   "logdir": "w1_labels",
+   "outputs": [
+    "w1_labels"
+   ],
+   "inputs": [],
+   "done_when": [
+    {
+     "exists": "w1tm2_finger_e4_seed60_late.npz"
+    }
+   ]
+  },
+  {
+   "stage": "labels",
+   "kind": "w2_label",
+   "target": "vast",
+   "run_id": "w1tm2_cup_e1_seed61_late",
+   "cmd": "W=\"${RUNROOT}/w1_labels/W2_DUP_OK\"; for _i in $(seq 1 2880); do [ -f \"$W\" ] && break; sleep 60; done; [ -f \"$W\" ] || { echo \"W2_DUP_OK never appeared within 48h\"; exit 75; }; TM2R3_STAGE=w2labels TM2R3_DOM=cup TM2R3_DOSE=e1 TM2R3_SEED=61 TM2_CONDA_ENV=/workspace/conda_envs/tdmpc2 TDMPC2_CHECKOUT=/workspace/tdmpc2 TM2R3_ROOT=\"${RUNROOT}/tm2r3\" bash scripts/tm2r3.sbatch",
+   "vars": {
+    "dom": "cup",
+    "dose": "e1",
+    "seed": 61,
+    "run_id": "w1tm2_cup_e1_seed61_late"
+   },
+   "logdir": "w1_labels",
+   "outputs": [
+    "w1_labels"
+   ],
+   "inputs": [],
+   "done_when": [
+    {
+     "exists": "w1tm2_cup_e1_seed61_late.npz"
+    }
+   ]
+  },
+  {
+   "stage": "labels",
+   "kind": "w2_label",
+   "target": "vast",
+   "run_id": "w1tm2_cup_e4_seed62_late",
+   "cmd": "W=\"${RUNROOT}/w1_labels/W2_DUP_OK\"; for _i in $(seq 1 2880); do [ -f \"$W\" ] && break; sleep 60; done; [ -f \"$W\" ] || { echo \"W2_DUP_OK never appeared within 48h\"; exit 75; }; TM2R3_STAGE=w2labels TM2R3_DOM=cup TM2R3_DOSE=e4 TM2R3_SEED=62 TM2_CONDA_ENV=/workspace/conda_envs/tdmpc2 TDMPC2_CHECKOUT=/workspace/tdmpc2 TM2R3_ROOT=\"${RUNROOT}/tm2r3\" bash scripts/tm2r3.sbatch",
+   "vars": {
+    "dom": "cup",
+    "dose": "e4",
+    "seed": 62,
+    "run_id": "w1tm2_cup_e4_seed62_late"
+   },
+   "logdir": "w1_labels",
+   "outputs": [
+    "w1_labels"
+   ],
+   "inputs": [],
+   "done_when": [
+    {
+     "exists": "w1tm2_cup_e4_seed62_late.npz"
+    }
+   ]
+  },
+  {
+   "stage": "labels",
+   "kind": "w2_label",
+   "target": "vast",
+   "run_id": "w1tm2_finger_e1_seed63_late",
+   "cmd": "W=\"${RUNROOT}/w1_labels/W2_DUP_OK\"; for _i in $(seq 1 2880); do [ -f \"$W\" ] && break; sleep 60; done; [ -f \"$W\" ] || { echo \"W2_DUP_OK never appeared within 48h\"; exit 75; }; TM2R3_STAGE=w2labels TM2R3_DOM=finger TM2R3_DOSE=e1 TM2R3_SEED=63 TM2_CONDA_ENV=/workspace/conda_envs/tdmpc2 TDMPC2_CHECKOUT=/workspace/tdmpc2 TM2R3_ROOT=\"${RUNROOT}/tm2r3\" bash scripts/tm2r3.sbatch",
+   "vars": {
+    "dom": "finger",
+    "dose": "e1",
+    "seed": 63,
+    "run_id": "w1tm2_finger_e1_seed63_late"
+   },
+   "logdir": "w1_labels",
+   "outputs": [
+    "w1_labels"
+   ],
+   "inputs": [],
+   "done_when": [
+    {
+     "exists": "w1tm2_finger_e1_seed63_late.npz"
+    }
+   ]
+  },
+  {
+   "stage": "labels",
+   "kind": "w2_label",
+   "target": "vast",
+   "run_id": "w1tm2_finger_e4_seed64_late",
+   "cmd": "W=\"${RUNROOT}/w1_labels/W2_DUP_OK\"; for _i in $(seq 1 2880); do [ -f \"$W\" ] && break; sleep 60; done; [ -f \"$W\" ] || { echo \"W2_DUP_OK never appeared within 48h\"; exit 75; }; TM2R3_STAGE=w2labels TM2R3_DOM=finger TM2R3_DOSE=e4 TM2R3_SEED=64 TM2_CONDA_ENV=/workspace/conda_envs/tdmpc2 TDMPC2_CHECKOUT=/workspace/tdmpc2 TM2R3_ROOT=\"${RUNROOT}/tm2r3\" bash scripts/tm2r3.sbatch",
+   "vars": {
+    "dom": "finger",
+    "dose": "e4",
+    "seed": 64,
+    "run_id": "w1tm2_finger_e4_seed64_late"
+   },
+   "logdir": "w1_labels",
+   "outputs": [
+    "w1_labels"
+   ],
+   "inputs": [],
+   "done_when": [
+    {
+     "exists": "w1tm2_finger_e4_seed64_late.npz"
+    }
+   ]
+  },
+  {
+   "stage": "labels",
+   "kind": "w2_label",
+   "target": "vast",
+   "run_id": "w1tm2_cup_e1_seed65_late",
+   "cmd": "W=\"${RUNROOT}/w1_labels/W2_DUP_OK\"; for _i in $(seq 1 2880); do [ -f \"$W\" ] && break; sleep 60; done; [ -f \"$W\" ] || { echo \"W2_DUP_OK never appeared within 48h\"; exit 75; }; TM2R3_STAGE=w2labels TM2R3_DOM=cup TM2R3_DOSE=e1 TM2R3_SEED=65 TM2_CONDA_ENV=/workspace/conda_envs/tdmpc2 TDMPC2_CHECKOUT=/workspace/tdmpc2 TM2R3_ROOT=\"${RUNROOT}/tm2r3\" bash scripts/tm2r3.sbatch",
+   "vars": {
+    "dom": "cup",
+    "dose": "e1",
+    "seed": 65,
+    "run_id": "w1tm2_cup_e1_seed65_late"
+   },
+   "logdir": "w1_labels",
+   "outputs": [
+    "w1_labels"
+   ],
+   "inputs": [],
+   "done_when": [
+    {
+     "exists": "w1tm2_cup_e1_seed65_late.npz"
+    }
+   ]
+  },
+  {
+   "stage": "labels",
+   "kind": "w2_label",
+   "target": "vast",
+   "run_id": "w1tm2_cup_e4_seed66_late",
+   "cmd": "W=\"${RUNROOT}/w1_labels/W2_DUP_OK\"; for _i in $(seq 1 2880); do [ -f \"$W\" ] && break; sleep 60; done; [ -f \"$W\" ] || { echo \"W2_DUP_OK never appeared within 48h\"; exit 75; }; TM2R3_STAGE=w2labels TM2R3_DOM=cup TM2R3_DOSE=e4 TM2R3_SEED=66 TM2_CONDA_ENV=/workspace/conda_envs/tdmpc2 TDMPC2_CHECKOUT=/workspace/tdmpc2 TM2R3_ROOT=\"${RUNROOT}/tm2r3\" bash scripts/tm2r3.sbatch",
+   "vars": {
+    "dom": "cup",
+    "dose": "e4",
+    "seed": 66,
+    "run_id": "w1tm2_cup_e4_seed66_late"
+   },
+   "logdir": "w1_labels",
+   "outputs": [
+    "w1_labels"
+   ],
+   "inputs": [],
+   "done_when": [
+    {
+     "exists": "w1tm2_cup_e4_seed66_late.npz"
+    }
+   ]
+  },
+  {
+   "stage": "labels",
+   "kind": "w2_label",
+   "target": "vast",
+   "run_id": "w1tm2_finger_e4_seed59_late",
+   "cmd": "W=\"${RUNROOT}/w1_labels/W2_DUP_OK\"; for _i in $(seq 1 2880); do [ -f \"$W\" ] && break; sleep 60; done; [ -f \"$W\" ] || { echo \"W2_DUP_OK never appeared within 48h\"; exit 75; }; TM2R3_STAGE=w2labels TM2R3_DOM=finger TM2R3_DOSE=e4 TM2R3_SEED=59 TM2_CONDA_ENV=/workspace/conda_envs/tdmpc2 TDMPC2_CHECKOUT=/workspace/tdmpc2 TM2R3_ROOT=\"${RUNROOT}/tm2r3\" bash scripts/tm2r3.sbatch",
+   "vars": {
+    "dom": "finger",
+    "dose": "e4",
+    "seed": 59,
+    "run_id": "w1tm2_finger_e4_seed59_late"
+   },
+   "logdir": "w1_labels",
+   "outputs": [
+    "w1_labels"
+   ],
+   "inputs": [],
+   "done_when": [
+    {
+     "exists": "w1tm2_finger_e4_seed59_late.npz"
+    }
+   ]
+  },
+  {
+   "stage": "labels",
+   "kind": "w2_label",
+   "target": "vast",
+   "run_id": "w1tm2_cup_e1_seed60_late",
+   "cmd": "W=\"${RUNROOT}/w1_labels/W2_DUP_OK\"; for _i in $(seq 1 2880); do [ -f \"$W\" ] && break; sleep 60; done; [ -f \"$W\" ] || { echo \"W2_DUP_OK never appeared within 48h\"; exit 75; }; TM2R3_STAGE=w2labels TM2R3_DOM=cup TM2R3_DOSE=e1 TM2R3_SEED=60 TM2_CONDA_ENV=/workspace/conda_envs/tdmpc2 TDMPC2_CHECKOUT=/workspace/tdmpc2 TM2R3_ROOT=\"${RUNROOT}/tm2r3\" bash scripts/tm2r3.sbatch",
+   "vars": {
+    "dom": "cup",
+    "dose": "e1",
+    "seed": 60,
+    "run_id": "w1tm2_cup_e1_seed60_late"
+   },
+   "logdir": "w1_labels",
+   "outputs": [
+    "w1_labels"
+   ],
+   "inputs": [],
+   "done_when": [
+    {
+     "exists": "w1tm2_cup_e1_seed60_late.npz"
+    }
+   ]
+  },
+  {
+   "stage": "labels",
+   "kind": "w2_label",
+   "target": "vast",
+   "run_id": "w1tm2_cup_e4_seed61_late",
+   "cmd": "W=\"${RUNROOT}/w1_labels/W2_DUP_OK\"; for _i in $(seq 1 2880); do [ -f \"$W\" ] && break; sleep 60; done; [ -f \"$W\" ] || { echo \"W2_DUP_OK never appeared within 48h\"; exit 75; }; TM2R3_STAGE=w2labels TM2R3_DOM=cup TM2R3_DOSE=e4 TM2R3_SEED=61 TM2_CONDA_ENV=/workspace/conda_envs/tdmpc2 TDMPC2_CHECKOUT=/workspace/tdmpc2 TM2R3_ROOT=\"${RUNROOT}/tm2r3\" bash scripts/tm2r3.sbatch",
+   "vars": {
+    "dom": "cup",
+    "dose": "e4",
+    "seed": 61,
+    "run_id": "w1tm2_cup_e4_seed61_late"
+   },
+   "logdir": "w1_labels",
+   "outputs": [
+    "w1_labels"
+   ],
+   "inputs": [],
+   "done_when": [
+    {
+     "exists": "w1tm2_cup_e4_seed61_late.npz"
+    }
+   ]
+  },
+  {
+   "stage": "labels",
+   "kind": "w2_label",
+   "target": "vast",
+   "run_id": "w1tm2_finger_e1_seed62_late",
+   "cmd": "W=\"${RUNROOT}/w1_labels/W2_DUP_OK\"; for _i in $(seq 1 2880); do [ -f \"$W\" ] && break; sleep 60; done; [ -f \"$W\" ] || { echo \"W2_DUP_OK never appeared within 48h\"; exit 75; }; TM2R3_STAGE=w2labels TM2R3_DOM=finger TM2R3_DOSE=e1 TM2R3_SEED=62 TM2_CONDA_ENV=/workspace/conda_envs/tdmpc2 TDMPC2_CHECKOUT=/workspace/tdmpc2 TM2R3_ROOT=\"${RUNROOT}/tm2r3\" bash scripts/tm2r3.sbatch",
+   "vars": {
+    "dom": "finger",
+    "dose": "e1",
+    "seed": 62,
+    "run_id": "w1tm2_finger_e1_seed62_late"
+   },
+   "logdir": "w1_labels",
+   "outputs": [
+    "w1_labels"
+   ],
+   "inputs": [],
+   "done_when": [
+    {
+     "exists": "w1tm2_finger_e1_seed62_late.npz"
+    }
+   ]
+  },
+  {
+   "stage": "labels",
+   "kind": "w2_label",
+   "target": "vast",
+   "run_id": "w1tm2_finger_e4_seed63_late",
+   "cmd": "W=\"${RUNROOT}/w1_labels/W2_DUP_OK\"; for _i in $(seq 1 2880); do [ -f \"$W\" ] && break; sleep 60; done; [ -f \"$W\" ] || { echo \"W2_DUP_OK never appeared within 48h\"; exit 75; }; TM2R3_STAGE=w2labels TM2R3_DOM=finger TM2R3_DOSE=e4 TM2R3_SEED=63 TM2_CONDA_ENV=/workspace/conda_envs/tdmpc2 TDMPC2_CHECKOUT=/workspace/tdmpc2 TM2R3_ROOT=\"${RUNROOT}/tm2r3\" bash scripts/tm2r3.sbatch",
+   "vars": {
+    "dom": "finger",
+    "dose": "e4",
+    "seed": 63,
+    "run_id": "w1tm2_finger_e4_seed63_late"
+   },
+   "logdir": "w1_labels",
+   "outputs": [
+    "w1_labels"
+   ],
+   "inputs": [],
+   "done_when": [
+    {
+     "exists": "w1tm2_finger_e4_seed63_late.npz"
+    }
+   ]
+  },
+  {
+   "stage": "labels",
+   "kind": "w2_label",
+   "target": "vast",
+   "run_id": "w1tm2_cup_e1_seed64_late",
+   "cmd": "W=\"${RUNROOT}/w1_labels/W2_DUP_OK\"; for _i in $(seq 1 2880); do [ -f \"$W\" ] && break; sleep 60; done; [ -f \"$W\" ] || { echo \"W2_DUP_OK never appeared within 48h\"; exit 75; }; TM2R3_STAGE=w2labels TM2R3_DOM=cup TM2R3_DOSE=e1 TM2R3_SEED=64 TM2_CONDA_ENV=/workspace/conda_envs/tdmpc2 TDMPC2_CHECKOUT=/workspace/tdmpc2 TM2R3_ROOT=\"${RUNROOT}/tm2r3\" bash scripts/tm2r3.sbatch",
+   "vars": {
+    "dom": "cup",
+    "dose": "e1",
+    "seed": 64,
+    "run_id": "w1tm2_cup_e1_seed64_late"
+   },
+   "logdir": "w1_labels",
+   "outputs": [
+    "w1_labels"
+   ],
+   "inputs": [],
+   "done_when": [
+    {
+     "exists": "w1tm2_cup_e1_seed64_late.npz"
+    }
+   ]
+  },
+  {
+   "stage": "labels",
+   "kind": "w2_label",
+   "target": "vast",
+   "run_id": "w1tm2_cup_e4_seed65_late",
+   "cmd": "W=\"${RUNROOT}/w1_labels/W2_DUP_OK\"; for _i in $(seq 1 2880); do [ -f \"$W\" ] && break; sleep 60; done; [ -f \"$W\" ] || { echo \"W2_DUP_OK never appeared within 48h\"; exit 75; }; TM2R3_STAGE=w2labels TM2R3_DOM=cup TM2R3_DOSE=e4 TM2R3_SEED=65 TM2_CONDA_ENV=/workspace/conda_envs/tdmpc2 TDMPC2_CHECKOUT=/workspace/tdmpc2 TM2R3_ROOT=\"${RUNROOT}/tm2r3\" bash scripts/tm2r3.sbatch",
+   "vars": {
+    "dom": "cup",
+    "dose": "e4",
+    "seed": 65,
+    "run_id": "w1tm2_cup_e4_seed65_late"
+   },
+   "logdir": "w1_labels",
+   "outputs": [
+    "w1_labels"
+   ],
+   "inputs": [],
+   "done_when": [
+    {
+     "exists": "w1tm2_cup_e4_seed65_late.npz"
+    }
+   ]
+  },
+  {
+   "stage": "labels",
+   "kind": "w2_label",
+   "target": "vast",
+   "run_id": "w1tm2_finger_e1_seed66_late",
+   "cmd": "W=\"${RUNROOT}/w1_labels/W2_DUP_OK\"; for _i in $(seq 1 2880); do [ -f \"$W\" ] && break; sleep 60; done; [ -f \"$W\" ] || { echo \"W2_DUP_OK never appeared within 48h\"; exit 75; }; TM2R3_STAGE=w2labels TM2R3_DOM=finger TM2R3_DOSE=e1 TM2R3_SEED=66 TM2_CONDA_ENV=/workspace/conda_envs/tdmpc2 TDMPC2_CHECKOUT=/workspace/tdmpc2 TM2R3_ROOT=\"${RUNROOT}/tm2r3\" bash scripts/tm2r3.sbatch",
+   "vars": {
+    "dom": "finger",
+    "dose": "e1",
+    "seed": 66,
+    "run_id": "w1tm2_finger_e1_seed66_late"
+   },
+   "logdir": "w1_labels",
+   "outputs": [
+    "w1_labels"
+   ],
+   "inputs": [],
+   "done_when": [
+    {
+     "exists": "w1tm2_finger_e1_seed66_late.npz"
+    }
+   ]
+  }
+ ]
+}

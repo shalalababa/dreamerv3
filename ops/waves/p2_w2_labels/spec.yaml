@@ -1,0 +1,185 @@
+# Paper-2 Wave-2 LABELING -- PREREG_p2_wave2_freshcohort_20260821, whose
+# labeling leg is registered as the OLD W1 protocol (PREREG_w1_wave_20260809:
+# --w1_repeats 8, --env_seed 20260809 LOAD-BEARING, 200 states, horizon 100,
+# w1tm2_* names into $RUNROOT/w1_labels beside the look-1 cohort).
+#
+# The 32 fresh TRAININGS (seeds 59-66) are already done -- ops/waves/
+# p2_wave2_vast, 32/32 ckpt_late.pt verified byte-identical on instances 12
+# and 14. This wave is the labeling that had no committed submit vehicle: the
+# TODO carried it as a hand `for d in cup finger; ... sbatch` loop, and a raw
+# hand-queued .cmds bypasses the stale-producer preflight gate. This spec is
+# that loop, transcribed, so it goes through gen -> preflight -> submit like
+# every other wave.
+#
+# ORDERING IS REGISTERED, not a preference: tm2r3.sbatch refuses w2dup until
+# W2_SMOKE_OK exists and refuses w2labels until W2_DUP_OK exists. The derived
+# reader's dup_gate REFUSES the whole read unless every estimand is exactly 0
+# on the two duplicate passes, which is why they run before the 32-pass spend
+# -- a CRN breakage then costs 2 passes, not 34.
+#
+# LANE 0 carries both gate stages; the queue is serial per lane, so smoke then
+# dup then that lane's labels is automatic. Lanes 1-3 hold only labels, so
+# they would otherwise start BEFORE the gate cleared and each exit 1. Their
+# command bodies therefore open with the same readiness wait Wave 1 used, and
+# it waits on the FILE THE PRODUCER ACTUALLY CONSUMES ($RUNROOT/w1_labels/
+# W2_DUP_OK, the literal path tm2r3.sbatch tests), not on a directory or a
+# marker of my own. 2880 x 60s = 48 h, sized well above the ~5 h the dup stage
+# needs (two full 200-state passes, run sequentially inside one invocation),
+# because a wait that expires early strands the lane silently.
+#
+# COST NOTE, not hidden: lanes 1-3 idle through the dup stage. The dup stage
+# is one invocation that loops cup then finger, so it cannot be split across
+# lanes without editing a registered script.
+#
+# per_gpu 8 for labeling is the user's measured decision (3-way sampled ~30%
+# GPU; 8-way balances GPU against the 64 cores). Wave 1 is running the same
+# packing on instance 12 right now.
+#
+# ENV PATHS are instance-12 shaped (/workspace/...), verified present with the
+# tdmpc2 checkout at the registered pin e9f59321. A box whose env lives
+# elsewhere -- instance 16 has it under /scratch/midway3/root because
+# tdmpc2_env_setup.sh defaults to $USER and $USER is root there -- needs these
+# two paths changed before submitting.
+
+wave_id: p2_w2_labels
+paper: paper2
+prereg: prereg/PREREG_p2_wave2_freshcohort_20260821.md
+notes: >-
+  Wave-2 W1-protocol labeling: smoke gate, 2 duplicate-null gate passes, then
+  32 main passes ({cup,finger} x {e1,e4} x seeds 59-66) on the fresh cohort's
+  LATE checkpoints. One instance, 4 lanes, 8 cells per GPU.
+
+defaults:
+  target: vast
+
+kinds:
+  w2_gate:  {per_gpu: 1}
+  w2_label: {per_gpu: 8}
+
+stages:
+
+  # run_ids here are OPS labels for two gate invocations; the registered
+  # artifact names (w1tm2*_smoke.npz, w1tm2dup_*_late.npz) are emitted by
+  # tm2r3.sbatch itself and are not derived from these strings.
+  - name: smoke
+    kind: w2_gate
+    on_failure: abort
+    runs:
+      - {run_id: p2w2_smoke_gate}
+    logdir: "w1_labels"
+    cmd: >-
+      TM2R3_STAGE=w2smoke
+      TM2_CONDA_ENV=/workspace/conda_envs/tdmpc2
+      TDMPC2_CHECKOUT=/workspace/tdmpc2
+      TM2R3_ROOT="${RUNROOT}/tm2r3"
+      bash scripts/tm2r3.sbatch
+    outputs:
+      - "w1_labels"
+    done_when:
+      - exists: W2_SMOKE_OK
+
+  - name: dup
+    kind: w2_gate
+    on_failure: abort
+    runs:
+      - {run_id: p2w2_dup_gate}
+    logdir: "w1_labels"
+    cmd: >-
+      TM2R3_STAGE=w2dup
+      TM2_CONDA_ENV=/workspace/conda_envs/tdmpc2
+      TDMPC2_CHECKOUT=/workspace/tdmpc2
+      TM2R3_ROOT="${RUNROOT}/tm2r3"
+      bash scripts/tm2r3.sbatch
+    outputs:
+      - "w1_labels"
+    done_when:
+      - exists: W2_DUP_OK
+      - exists: w1tm2dup_cup_e1_seed59_late.npz
+      - exists: w1tm2dup_finger_e1_seed59_late.npz
+
+  # LANE LAYOUT -- 4x8 rotation, and it is load-bearing, not tidiness.
+  # `expand:` cannot express it. balanced_order classes runs by the FIRST
+  # expand variable and interleaves the classes; pair_runs then chunks the
+  # result into per_gpu=8 units and assign_lanes round-robins the units. With
+  # seed as the first variable that arithmetic lands ONE (dom,dose) cell on
+  # each card -- lane 0 all cup_e1, lane 1 all cup_e4, and so on. I generated
+  # exactly that and threw it away: the dose contrast e1-vs-e4 is Paper-2's
+  # estimand, and computing its two arms on two different physical GPUs is the
+  # confound this repo already measured once (E4 ridge probe: byte-identical
+  # re-run on the same card, up to 0.113 AUROC apart across cards).
+  #
+  # An EXPLICIT runs list survives balanced_order untouched, because the class
+  # key is the first field of each entry and run_id is unique -- every run
+  # becomes its own class and zip_longest returns declaration order. So the
+  # order below IS the lane assignment: entries 1-8 -> lane 0, 9-16 -> lane 1,
+  # 17-24 -> lane 2, 25-32 -> lane 3.
+  #
+  # Each lane runs all 8 seeds once and 2 cells of each of the 4 (dom,dose)
+  # combinations, rotating combo (lane+position) mod 4. Every (dom,dose,seed)
+  # appears exactly once across the wave. Reordering this list silently
+  # reintroduces the confound.
+  - name: labels
+    kind: w2_label
+    on_failure: continue
+    runs:
+      # --- lane 0 (entries 1-8) ---
+      - {run_id: w1tm2_cup_e1_seed59_late, dom: cup, dose: e1, seed: 59}
+      - {run_id: w1tm2_cup_e4_seed60_late, dom: cup, dose: e4, seed: 60}
+      - {run_id: w1tm2_finger_e1_seed61_late, dom: finger, dose: e1, seed: 61}
+      - {run_id: w1tm2_finger_e4_seed62_late, dom: finger, dose: e4, seed: 62}
+      - {run_id: w1tm2_cup_e1_seed63_late, dom: cup, dose: e1, seed: 63}
+      - {run_id: w1tm2_cup_e4_seed64_late, dom: cup, dose: e4, seed: 64}
+      - {run_id: w1tm2_finger_e1_seed65_late, dom: finger, dose: e1, seed: 65}
+      - {run_id: w1tm2_finger_e4_seed66_late, dom: finger, dose: e4, seed: 66}
+      # --- lane 1 (entries 9-16) ---
+      - {run_id: w1tm2_cup_e4_seed59_late, dom: cup, dose: e4, seed: 59}
+      - {run_id: w1tm2_finger_e1_seed60_late, dom: finger, dose: e1, seed: 60}
+      - {run_id: w1tm2_finger_e4_seed61_late, dom: finger, dose: e4, seed: 61}
+      - {run_id: w1tm2_cup_e1_seed62_late, dom: cup, dose: e1, seed: 62}
+      - {run_id: w1tm2_cup_e4_seed63_late, dom: cup, dose: e4, seed: 63}
+      - {run_id: w1tm2_finger_e1_seed64_late, dom: finger, dose: e1, seed: 64}
+      - {run_id: w1tm2_finger_e4_seed65_late, dom: finger, dose: e4, seed: 65}
+      - {run_id: w1tm2_cup_e1_seed66_late, dom: cup, dose: e1, seed: 66}
+      # --- lane 2 (entries 17-24) ---
+      - {run_id: w1tm2_finger_e1_seed59_late, dom: finger, dose: e1, seed: 59}
+      - {run_id: w1tm2_finger_e4_seed60_late, dom: finger, dose: e4, seed: 60}
+      - {run_id: w1tm2_cup_e1_seed61_late, dom: cup, dose: e1, seed: 61}
+      - {run_id: w1tm2_cup_e4_seed62_late, dom: cup, dose: e4, seed: 62}
+      - {run_id: w1tm2_finger_e1_seed63_late, dom: finger, dose: e1, seed: 63}
+      - {run_id: w1tm2_finger_e4_seed64_late, dom: finger, dose: e4, seed: 64}
+      - {run_id: w1tm2_cup_e1_seed65_late, dom: cup, dose: e1, seed: 65}
+      - {run_id: w1tm2_cup_e4_seed66_late, dom: cup, dose: e4, seed: 66}
+      # --- lane 3 (entries 25-32) ---
+      - {run_id: w1tm2_finger_e4_seed59_late, dom: finger, dose: e4, seed: 59}
+      - {run_id: w1tm2_cup_e1_seed60_late, dom: cup, dose: e1, seed: 60}
+      - {run_id: w1tm2_cup_e4_seed61_late, dom: cup, dose: e4, seed: 61}
+      - {run_id: w1tm2_finger_e1_seed62_late, dom: finger, dose: e1, seed: 62}
+      - {run_id: w1tm2_finger_e4_seed63_late, dom: finger, dose: e4, seed: 63}
+      - {run_id: w1tm2_cup_e1_seed64_late, dom: cup, dose: e1, seed: 64}
+      - {run_id: w1tm2_cup_e4_seed65_late, dom: cup, dose: e4, seed: 65}
+      - {run_id: w1tm2_finger_e1_seed66_late, dom: finger, dose: e1, seed: 66}
+    logdir: "w1_labels"
+    cmd: >-
+      W="${RUNROOT}/w1_labels/W2_DUP_OK";
+      for _i in $(seq 1 2880); do [ -f "$W" ] && break; sleep 60; done;
+      [ -f "$W" ] || { echo "W2_DUP_OK never appeared within 48h"; exit 75; };
+      TM2R3_STAGE=w2labels TM2R3_DOM=${dom} TM2R3_DOSE=${dose}
+      TM2R3_SEED=${seed}
+      TM2_CONDA_ENV=/workspace/conda_envs/tdmpc2
+      TDMPC2_CHECKOUT=/workspace/tdmpc2
+      TM2R3_ROOT="${RUNROOT}/tm2r3"
+      bash scripts/tm2r3.sbatch
+    outputs:
+      - "w1_labels"
+    done_when:
+      - exists: "w1tm2_${dom}_${dose}_seed${seed}_late.npz"
+
+# w1_labels/ is shared with the look-1 cohort (the pooled secondary reads both
+# from one dir; names are disjoint by seed), so the bundle carries the whole
+# directory rather than a per-run subtree.
+bundle:
+  prefix: p2_w2_labels
+  include_stages: [smoke, dup, labels]
+  cloud_logs:
+    - "w1tm2_*_late.out"
+    - "p2w2_*_gate.out"
