@@ -1,0 +1,31 @@
+{
+ "prereg": "PREREG_u1a_pooled_20260820.md",
+ "amendment": "PREREG_u1a_pooled_amend1_20260820.md",
+ "overall": "NO-CALL-UNDERPOWERED: no fire and realized MDE80 (150.0) exceeds the look-1 point estimate (+145.0) \u2014 underpowered-non-replication; SUGGESTIVE persists on power grounds (amend1 B4)",
+ "primary_pooled": {
+  "mean": 96.13538750000001,
+  "ci": [
+   2.6668679275774627,
+   193.71606721303303
+  ],
+  "perm_p": 0.072845458984375,
+  "d_z": 0.4838513208778028,
+  "sd": 198.68786826000854,
+  "n": 16,
+  "alpha": 0.0294,
+  "fire": false
+ },
+ "fresh_only": {
+  "mean": 47.263000000000005,
+  "n": 8,
+  "note": "non-decisional sign conjunct (M7)"
+ },
+ "realized_mde80": 149.99455433259038,
+ "look1_point": 145.007775,
+ "alpha_honesty": "two-look union bound <= .0794 (amend1 B5)",
+ "gates": {
+  "fits": 32,
+  "updates": 500000,
+  "modal_n_ep": 96
+ }
+}

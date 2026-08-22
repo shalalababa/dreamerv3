@@ -1,0 +1,46 @@
+{
+ "prereg": "PREREG_carrier_freshrep_20260820.md",
+ "amendment": "PREREG_carrier_freshrep_amend1_20260820.md",
+ "overall": "CARRIER-REPLICATES-AND-REENTERS: fresh-only replication fires and the pooled estimate clears the BH re-entry target \u2014 the carrier re-enters the 21-primary family and Scaling12 re-admits by step-up arithmetic",
+ "primary_fresh": {
+  "mean": 49.5893425,
+  "ci": [
+   13.6030898972004,
+   82.8425403858371
+  ],
+  "perm_p": 0.008114959425202874,
+  "n": 40,
+  "sd": 111.83042281292182,
+  "d_z": 0.4434333811198828,
+  "method": "mc_signflip_200000_seed20260820",
+  "alpha": 0.05,
+  "fire": true
+ },
+ "secondary_pooled": {
+  "mean": 50.1237125,
+  "ci": [
+   22.33042866561229,
+   77.4175969542829
+  ],
+  "perm_p": 0.0008149959250203749,
+  "n": 56,
+  "sd": 105.54737283692623,
+  "d_z": 0.47489303762626667,
+  "method": "mc_signflip_200000_seed20260820",
+  "alpha": 0.01666666666666667,
+  "reentry": true
+ },
+ "scaling12_readmitted": true,
+ "look1": {
+  "csv": "artifacts/p3_amend1_20260717/auc_pooled_1_16.csv",
+  "sha256": "664fd549636e7d74ef1aa97457d32054eef0a06434efb27b7bd55761744edd7b",
+  "mean": 51.4596375,
+  "n": 16
+ },
+ "gates": {
+  "fits_witnessed": 160,
+  "updates": 500000,
+  "modal_n_ep": 96,
+  "sd_plan": 91.26
+ }
+}
