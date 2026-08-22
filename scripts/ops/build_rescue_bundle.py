@@ -136,6 +136,15 @@ def wave_spec(wave, seeds=None):
     fits = [f'ax1wm_reacher_mdd1_seed{s}' for s in seeds]
     return dict(fits=fits, dir_of={f: f for f in fits}, updates=500000,
                 full_n=8)
+  if wave == 'valuefree':
+    # PREREG_valuefree_online_20260821 v3 (finger, rgo arm, carrier
+    # seeds 17-24): 8 fresh online task runs; the 16 rgo fit names
+    # (s1+s0) come via --extra_fits.
+    seeds = tuple(range(17, 25)) if seeds is None else seeds
+    fits = [f'ontask_finger_seed{s}' for s in seeds]
+    return dict(fits=fits, dir_of={f: f for f in fits}, updates=500000,
+                full_n=8, online_fits=list(fits), extra_expect=16,
+                vf_seeds=list(seeds))
   die(f'unknown wave {wave}')
 
 
@@ -396,10 +405,99 @@ def build_witness(runroot, spec, wave, ref_configs=None, lane_dir=None):
     else:
       entry['counters'] = scan
       entry['counters_source'] = 'ckpt_scan_single_host'
+    if wave == 'valuefree':
+      cfg_flat_all = flat_config(cfg)
+      entry['cfg_pins'] = {k: cfg_flat_all.get(k) for k in
+                           ('task', 'run.train_ratio', 'run.steps', 'agent.reward_grad', 'agent.repval_grad')}
+    if fit in spec.get('online_fits', ()):
+      # valuefree budget-parity witness. Review-2 F1/F9: an online
+      # run's ckpt dirs carry NO step suffix, so counters come from
+      # the REALIZED optimizer updates in metrics.jsonl; the config
+      # dial is recorded as nominal only.
+      cfg_flat = flat_config(cfg)
+      entry['train_ratio_nominal'] = cfg_flat.get('run.train_ratio')
+      entry['train_ratio'] = cfg_flat.get('run.train_ratio')
+      upd, rr = 0, None
+      mt = os.path.join(run_dir, 'metrics.jsonl')
+      if os.path.exists(mt):
+        with open(mt) as fh:
+          for line in fh:
+            line = line.strip()
+            if not line:
+              continue
+            try:
+              row = json.loads(line)
+            except json.JSONDecodeError:
+              continue
+            # D14: replay/updates is a per-interval sampled-item
+            # counter, never an optimizer count — only the real key
+            if 'train/opt/updates' in row:
+              upd = max(upd, int(row['train/opt/updates']))
+            if 'replay/replay_ratio' in row:
+              rr = float(row['replay/replay_ratio'])
+      entry['counters'] = upd
+      entry['counters_source'] = 'metrics_updates'
+      entry['replay_ratio_realized'] = rr
+      if not upd:
+        problems.append(f'{fit}: no realized updates in metrics.jsonl '
+                        '— the counters gate will refuse')
+      last_step = 0
+      sc = os.path.join(run_dir, 'scores.jsonl')
+      if os.path.exists(sc):
+        with open(sc) as fh:
+          for line in fh:
+            line = line.strip()
+            if line:
+              try:
+                last_step = max(last_step,
+                                int(json.loads(line).get('step', 0)))
+              except (ValueError, json.JSONDecodeError):
+                pass
+      entry['env_steps'] = last_step
+      if not last_step:
+        problems.append(f'{fit}: no realized env steps (scores.jsonl '
+                        'missing/empty) — the budget-parity gate will '
+                        'refuse')
     w[fit] = entry
   meta['problems'] = problems
   if wave == 'carrier':
     meta['amend1_config_match'] = bool(all_match)
+  if wave == 'valuefree':
+    # D5: adapt -> checkpoint linkage. Each arm adapt's saved config
+    # must load from ITS registered fit dir; scratchvf must load
+    # nothing. Recorded + gated (the reader refuses unless
+    # adapt_ckpt_ok is true).
+    fit_of = dict()
+    for sd_ in spec.get('vf_seeds', ()):
+      fit_of[f'adapt_ontask_finger_seed{sd_}_ckpt500000'] = \
+          f'ontask_finger_seed{sd_}'
+      fit_of[f'adapt_q1uzs1_finger_seed{sd_}_ckpt500000'] = \
+          f'ax1wm_finger_rgoq1s1_seed{sd_}'
+      fit_of[f'adapt_q1uzs0_finger_seed{sd_}_ckpt500000'] = \
+          f'ax1wm_finger_rgoq1s0_seed{sd_}'
+      fit_of[f'adapt_scratchvf_finger_seed{sd_}_ckpt0'] = None
+    adapt_ckpts, ok = {}, True
+    for adapt, fit_dir in fit_of.items():
+      cfgp = os.path.join(runroot, adapt, 'config.yaml')
+      if not os.path.exists(cfgp):
+        ok = False
+        problems.append(f'{adapt}: no config.yaml — linkage '
+                        'unverifiable')
+        continue
+      fc = flat_config(cfgp).get('run.from_checkpoint') or ''
+      adapt_ckpts[adapt] = fc
+      if fit_dir is None:
+        if fc:
+          ok = False
+          problems.append(f'{adapt}: scratch adapt loads a checkpoint '
+                          f'({fc}) — protocol broken')
+      elif f'/{fit_dir}/' not in fc and not fc.rstrip('/').endswith(
+          fit_dir):
+        ok = False
+        problems.append(f'{adapt}: from_checkpoint {fc!r} does not '
+                        f'reference its fit {fit_dir}')
+    meta['adapt_ckpts'] = adapt_ckpts
+    meta['adapt_ckpt_ok'] = bool(ok)
   w['_meta'] = meta
   return w
 
@@ -499,11 +597,24 @@ def expected_adapt_keys(wave, spec, seeds):
     for mode in ('ax1mdd1', 'scratch'):
       for s in (range(1, 9) if seeds is None else seeds):
         keys.add((mode, 'reacher', s))
+  if wave == 'valuefree':                   # review-2 F7 / review-3 B1
+    for mode in ('ontask', 'q1uzs1', 'q1uzs0', 'scratchvf'):
+      for s in (range(17, 25) if seeds is None else seeds):
+        keys.add((mode, 'finger', s))
   return keys
 
 
 def build(args, seeds=None):
   spec = wave_spec(args.wave, seeds=seeds)
+  if getattr(args, 'extra_fits', None):
+    extras = [f.strip() for f in args.extra_fits.split(',') if f.strip()]
+    want = spec.get('extra_expect')
+    if want is not None and seeds is None and len(extras) != want:
+      die(f'{len(extras)} extra fits != registered {want}')
+    for f in extras:
+      spec['fits'].append(f)
+      spec['dir_of'][f] = f
+    spec['full_n'] += len(extras)          # review-2 F6
   if seeds is None and len(spec['fits']) != spec['full_n']:
     die(f'fit list {len(spec["fits"])} != registered {spec["full_n"]}')
   final = args.output.rstrip('/')
@@ -562,7 +673,8 @@ CFG_TMPL = ('agent: {x: 1}\nenv:\n  dmc: {use_seed: true}\n'
             'logdir: /rr/%s\nreplay: {size: 1}\nseed: %d\nz: 2\n')
 
 
-def _mk_fit(root, name, ckpt_step, progress, seed, extra=''):
+def _mk_fit(root, name, ckpt_step, progress, seed, extra='',
+            replace_cfg=None):
   d = os.path.join(root, name)
   os.makedirs(os.path.join(d, 'ckpt',
                            f'20260101T000000-{ckpt_step:012d}'),
@@ -572,7 +684,10 @@ def _mk_fit(root, name, ckpt_step, progress, seed, extra=''):
   with open(os.path.join(d, 'OFFLINE_FIT_PROGRESS'), 'w') as f:
     f.write(f'update={progress}\n')
   with open(os.path.join(d, 'config.yaml'), 'w') as f:
-    f.write(CFG_TMPL % (name, seed) + extra)
+    if replace_cfg is not None:
+      f.write(replace_cfg)
+    else:
+      f.write(CFG_TMPL % (name, seed) + extra)
   return d
 
 
@@ -601,7 +716,7 @@ def _mk_cloud_log(root, adapt, fit, seed, sd, ckpt_step=500000,
 
 def _ns(**kw):
   base = dict(wave=None, runroot=None, output=None, ref_configs=None,
-              lane_cmds=None, dose_manifest=None,
+              lane_cmds=None, dose_manifest=None, extra_fits=None,
               attest_first_draw=False, allow_problems=False)
   base.update(kw)
   return argparse.Namespace(**base)
@@ -788,6 +903,117 @@ def selfcheck():
     assert bm2['first_draw'] is False   # attestation never defaults on
     shutil.rmtree(os.path.join(root, 'e4_probesets'))
 
+    # --- valuefree END-TO-END v3 (F13 + D5/D10/D14/D19): online-shaped
+    # ckpt dirs, metrics counters, cfg_pins, adapt->ckpt linkage
+    vf_seeds = (17, 18)
+    q1_extras = []
+    def cfg_vf(name, seed):
+      return ('agent: {reward_grad: true, repval_grad: false, x: 1}\n'
+              'task: dmc_finger_turn_hard\n'
+              f'logdir: /rr/{name}\n'
+              'run: {train_ratio: 1024.0, steps: 500000.0}\n'
+              f'seed: {seed}\n')
+    for sv in vf_seeds:
+      vf = f'ontask_finger_seed{sv}'
+      d_vf = _mk_fit(root, vf, 500000, 500000, sv,
+                     replace_cfg=cfg_vf(vf, sv))
+      shutil.rmtree(os.path.join(d_vf, 'ckpt'))
+      os.makedirs(os.path.join(d_vf, 'ckpt', '20260821T120000F000001'))
+      open(os.path.join(d_vf, 'ckpt', '20260821T120000F000001',
+                        'done'), 'w').close()
+      with open(os.path.join(d_vf, 'metrics.jsonl'), 'w') as f:
+        f.write(json.dumps({'step': 1, 'train/opt/updates': 100}) + '\n')
+        f.write(json.dumps({'train/opt/updates': 494368,
+                            'replay/updates': 4980000,
+                            'replay/replay_ratio': 1040.0}) + '\n')
+      with open(os.path.join(d_vf, 'scores.jsonl'), 'w') as f:
+        for st in (100000, 496496):
+          f.write(json.dumps({'step': st, 'episode/score': 1.0}) + '\n')
+      for sd_tok in ('1', '0'):
+        qf = f'ax1wm_finger_rgoq1s{sd_tok}_seed{sv}'
+        # unconditional rewrite: the carrier leg above created these
+        # names with ITS fixture config — the valuefree leg needs the
+        # pinned-key config
+        _mk_fit(root, qf, 500000, 500000, sv,
+                replace_cfg=cfg_vf(qf, sv))
+        if qf not in q1_extras:
+          q1_extras.append(qf)
+      for mode, fit_ref in (('ontask', vf),
+                            ('q1uzs1',
+                             f'ax1wm_finger_rgoq1s1_seed{sv}'),
+                            ('q1uzs0',
+                             f'ax1wm_finger_rgoq1s0_seed{sv}'),
+                            ('scratchvf', None)):
+        ms = 0 if mode == 'scratchvf' else 500000
+        ad = f'adapt_{mode}_finger_seed{sv}_ckpt{ms}'
+        _mk_adapt(root, ad)
+        with open(os.path.join(root, ad, 'config.yaml'), 'w') as f:
+          fc = ('' if fit_ref is None else
+                f'/rr/{fit_ref}/ckpt/20260101T000000-000000500000')
+          f.write(f"run:\n  from_checkpoint: '{fc}'\nseed: {sv}\n")
+    out_vf = os.path.join(tmp, 'bvf')
+    rc_vf = build(_ns(wave='valuefree', runroot=root, output=out_vf,
+                      extra_fits=','.join(q1_extras)), seeds=vf_seeds)
+    assert rc_vf == 0, rc_vf
+    wvf = json.load(open(os.path.join(out_vf, 'witness.json')))
+    e = wvf['ontask_finger_seed17']
+    assert e['counters'] == 494368, e         # D14: replay/updates
+    assert e['counters_source'] == 'metrics_updates'   # never latched
+    assert e['ckpt_scan_update'] == 0
+    assert e['replay_ratio_realized'] == 1040.0
+    assert e['env_steps'] == 496496
+    assert e['cfg_pins']['task'] == 'dmc_finger_turn_hard'
+    assert e['cfg_pins']['agent.repval_grad'] is False
+    assert wvf['ax1wm_finger_rgoq1s1_seed18']['cfg_pins'][
+        'agent.reward_grad'] is True
+    assert wvf['_meta']['adapt_ckpt_ok'] is True, wvf['_meta']
+    # D5 mismatch: point one arm adapt at the WRONG fit -> ok False
+    bad = os.path.join(root,
+                       'adapt_q1uzs1_finger_seed17_ckpt500000',
+                       'config.yaml')
+    with open(bad, 'w') as f:
+      f.write("run:\n  from_checkpoint: "
+              "'/rr/ax1wm_finger_rgoq1s0_seed17/ckpt/x'\nseed: 17\n")
+    wbad = build_witness(root, wave_spec('valuefree', seeds=vf_seeds),
+                         'valuefree')
+    assert wbad['_meta']['adapt_ckpt_ok'] is False
+    with open(bad, 'w') as f:
+      f.write("run:\n  from_checkpoint: "
+              "'/rr/ax1wm_finger_rgoq1s1_seed17/ckpt/x'\nseed: 17\n")
+    # missing metrics -> problem flagged
+    os.remove(os.path.join(root, 'ontask_finger_seed17',
+                           'metrics.jsonl'))
+    wv2 = build_witness(root, wave_spec('valuefree', seeds=(17,)),
+                        'valuefree')
+    assert wv2['ontask_finger_seed17']['counters'] == 0
+    assert any('counters gate will refuse' in x
+               for x in wv2['_meta']['problems'])
+    # review-3 B1: the PRODUCTION (seeds=None) expected keys are the
+    # registered seeds 17-24, never 1-8
+    prod_keys = expected_adapt_keys('valuefree',
+                                    wave_spec('valuefree'), None)
+    assert ('ontask', 'finger', 17) in prod_keys
+    assert ('ontask', 'finger', 1) not in prod_keys
+    assert len(prod_keys) == 32
+    # D19: the extra_expect count guard (seeds=None path)
+    try:
+      build(_ns(wave='valuefree', runroot=root,
+                output=os.path.join(tmp, 'bvf19'),
+                extra_fits='a,b,c'), seeds=None)
+      raise AssertionError('extra_expect guard failed to trip')
+    except SystemExit as e19:
+      assert 'extra fits != registered' in str(e19), e19
+    # missing adapt row -> nothing bundled (F7 real)
+    shutil.rmtree(os.path.join(root,
+                               'adapt_scratchvf_finger_seed18_ckpt0'))
+    try:
+      build(_ns(wave='valuefree', runroot=root,
+                output=os.path.join(tmp, 'bvf2'),
+                extra_fits=','.join(q1_extras)), seeds=vf_seeds)
+      raise AssertionError('valuefree adapt-row refusal failed to trip')
+    except SystemExit as e2:
+      assert 'nothing bundled' in str(e2), e2
+
     # --- missing adapt row -> nothing bundled, no half-built dir
     shutil.rmtree(os.path.join(
         root, 'adapt_ax1rgoq1s0_finger_seed17_ckpt500000'))
@@ -814,7 +1040,11 @@ def selfcheck():
 
 def main():
   p = argparse.ArgumentParser(description=__doc__)
-  p.add_argument('--wave', choices=['carrier', 'u1a', 'mindose'])
+  p.add_argument('--wave', choices=['carrier', 'u1a', 'mindose',
+                                    'valuefree'])
+  p.add_argument('--extra_fits',
+                 help='valuefree: comma list of the q1-arm fit run '
+                      'names (freeze FILL)')
   p.add_argument('--runroot')
   p.add_argument('--output')
   p.add_argument('--ref_configs',
