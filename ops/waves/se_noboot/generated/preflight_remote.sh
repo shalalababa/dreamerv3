@@ -39,7 +39,7 @@ if [ ! -e "$REPO/scripts/uncfield_se.sbatch" ]; then bad "MISSING producer scrip
 fi
 
 echo "== repo generation stamp =="
-want=95b5d01b
+want=8ad0328b
 got="$(cat "$REPO/scripts/ops/VERSION" 2>/dev/null | head -1)"
 case "$got" in
   "$want"*|*"${want%%-*}"*) ok "instance repo matches wave generation ($want)" ;;

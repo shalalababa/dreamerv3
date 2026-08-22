@@ -1,0 +1,1274 @@
+{
+ "n_scorings": 44,
+ "n_distinct": 32,
+ "n_views": 12,
+ "scope": "32 of the paper's 60 distinct models; out = dataseed3/4 + hid128t10k/t30k (16, JOBCONFIGS extension pending) + family-2 (12, world=dcfield)",
+ "tier_carried_distinct": 29,
+ "tier_clipped_distinct": 24,
+ "tier_dh_untouched_distinct": 20,
+ "collapse_fraction": 0.1724137931034483,
+ "pmc1": {
+  "statement": "P-MC1: >= 50% of the 29 distinct-model carried-exploit-tier members lose tier membership under the clip",
+  "lost": 5,
+  "fires": false
+ },
+ "pmc2": {
+  "statement": "P-MC2 (PARTIALLY pre-computed \u2014 3 traced cycles/member; the full-bank quantifier is a prediction, #29 M10): pilot2 m3 retains clipped exploits; m0/m1/m2 do not",
+  "observed": {
+   "pilot2_m0": true,
+   "pilot2_m1": true,
+   "pilot2_m2": true,
+   "pilot2_m3": true
+  },
+  "fires": false
+ },
+ "pmc3": {
+  "statement": "P-MC3 guard: retention >= 0.8 on every MEASURED model (informative AND carried > EPS_PRED); ABSTAIN = clip never touches that model's real credit",
+  "n_measured": 23,
+  "n_abstain": 9,
+  "fires": false
+ },
+ "pmc4": {
+  "n_pairs": 32,
+  "mean_rho_carried": 0.05334641007070631,
+  "mean_rho_clipped": 0.15460331986980175,
+  "n_improved": 31,
+  "note": "exploratory-registered; nan-safe (#29 m16)"
+ },
+ "view_sensitivity": [
+  {
+   "job": "ymode_s0",
+   "member": 0,
+   "tier_carried": true,
+   "tier_clipped": true
+  },
+  {
+   "job": "ymode_s0",
+   "member": 1,
+   "tier_carried": true,
+   "tier_clipped": true
+  },
+  {
+   "job": "ymode_s0",
+   "member": 2,
+   "tier_carried": true,
+   "tier_clipped": true
+  },
+  {
+   "job": "ymode_s0",
+   "member": 3,
+   "tier_carried": true,
+   "tier_clipped": true
+  },
+  {
+   "job": "ymode_s1",
+   "member": 0,
+   "tier_carried": true,
+   "tier_clipped": true
+  },
+  {
+   "job": "ymode_s1",
+   "member": 1,
+   "tier_carried": true,
+   "tier_clipped": true
+  },
+  {
+   "job": "ymode_s1",
+   "member": 2,
+   "tier_carried": true,
+   "tier_clipped": true
+  },
+  {
+   "job": "ymode_s1",
+   "member": 3,
+   "tier_carried": true,
+   "tier_clipped": true
+  },
+  {
+   "job": "ymode_s2",
+   "member": 0,
+   "tier_carried": true,
+   "tier_clipped": true
+  },
+  {
+   "job": "ymode_s2",
+   "member": 1,
+   "tier_carried": true,
+   "tier_clipped": true
+  },
+  {
+   "job": "ymode_s2",
+   "member": 2,
+   "tier_carried": true,
+   "tier_clipped": true
+  },
+  {
+   "job": "ymode_s2",
+   "member": 3,
+   "tier_carried": true,
+   "tier_clipped": true
+  }
+ ],
+ "retention_rows": [
+  {
+   "job": "dataseed1",
+   "member": 0,
+   "status": "MEASURED",
+   "cycle": "c140_0-1-4-1-2-1-0_all",
+   "carried": 0.08638707796732503,
+   "clipped": 0.08638707796732503,
+   "ratio": 1.0,
+   "ok": true
+  },
+  {
+   "job": "dataseed1",
+   "member": 1,
+   "status": "MEASURED",
+   "cycle": "c15_0-1-0-1-0-5-0_all",
+   "carried": 0.15029805898666282,
+   "clipped": 0.15029805898666282,
+   "ratio": 1.0,
+   "ok": true
+  },
+  {
+   "job": "dataseed1",
+   "member": 2,
+   "status": "ABSTAIN",
+   "note": "no informative cycle with carried > EPS_PRED \u2014 clip never touches this model's real sensing credit"
+  },
+  {
+   "job": "dataseed1",
+   "member": 3,
+   "status": "MEASURED",
+   "cycle": "c153_0-1-4-1-4-5-0_all",
+   "carried": 0.08095260461171377,
+   "clipped": 0.08095260461171377,
+   "ratio": 1.0,
+   "ok": true
+  },
+  {
+   "job": "dataseed2",
+   "member": 0,
+   "status": "MEASURED",
+   "cycle": "c46_0-1-0-5-0-5-0_all",
+   "carried": 0.08933950463930684,
+   "clipped": 0.08933950463930684,
+   "ratio": 1.0,
+   "ok": true
+  },
+  {
+   "job": "dataseed2",
+   "member": 1,
+   "status": "MEASURED",
+   "cycle": "c13_0-1-0-1-0-1-0_only_s5_z4_n0",
+   "carried": 0.5854098796844505,
+   "clipped": 0.5247754198753234,
+   "ratio": 0.8964239212330847,
+   "ok": true
+  },
+  {
+   "job": "dataseed2",
+   "member": 2,
+   "status": "MEASURED",
+   "cycle": "c13_0-1-0-1-0-1-0_only_s5_z4_n0",
+   "carried": 0.4575264056523656,
+   "clipped": 0.4575264056523656,
+   "ratio": 1.0,
+   "ok": true
+  },
+  {
+   "job": "dataseed2",
+   "member": 3,
+   "status": "MEASURED",
+   "cycle": "c104_0-1-2-3-2-1-0_only_s5_z4_n0",
+   "carried": 0.10416040321191145,
+   "clipped": 0.10416040321191145,
+   "ratio": 1.0,
+   "ok": true
+  },
+  {
+   "job": "hid128",
+   "member": 0,
+   "status": "MEASURED",
+   "cycle": "c227_0-5-0-5-0-5-0_only_s5_z4_n0",
+   "carried": 0.2201253424088163,
+   "clipped": 0.2201253424088163,
+   "ratio": 1.0,
+   "ok": true
+  },
+  {
+   "job": "hid128",
+   "member": 1,
+   "status": "MEASURED",
+   "cycle": "c224_0-5-0-5-0-5-0_all",
+   "carried": 0.2595701416333511,
+   "clipped": 0.2595701416333511,
+   "ratio": 1.0,
+   "ok": true
+  },
+  {
+   "job": "hid128",
+   "member": 2,
+   "status": "ABSTAIN",
+   "note": "no informative cycle with carried > EPS_PRED \u2014 clip never touches this model's real sensing credit"
+  },
+  {
+   "job": "hid128",
+   "member": 3,
+   "status": "ABSTAIN",
+   "note": "no informative cycle with carried > EPS_PRED \u2014 clip never touches this model's real sensing credit"
+  },
+  {
+   "job": "hid32",
+   "member": 0,
+   "status": "MEASURED",
+   "cycle": "c46_0-1-0-5-0-5-0_all",
+   "carried": 0.18116184572378796,
+   "clipped": 0.18116184572378796,
+   "ratio": 1.0,
+   "ok": true
+  },
+  {
+   "job": "hid32",
+   "member": 1,
+   "status": "MEASURED",
+   "cycle": "c10_0-1-0-1-0-1-0_all",
+   "carried": 0.2484891563653963,
+   "clipped": 0.2484891563653963,
+   "ratio": 1.0,
+   "ok": true
+  },
+  {
+   "job": "hid32",
+   "member": 2,
+   "status": "ABSTAIN",
+   "note": "no informative cycle with carried > EPS_PRED \u2014 clip never touches this model's real sensing credit"
+  },
+  {
+   "job": "hid32",
+   "member": 3,
+   "status": "MEASURED",
+   "cycle": "c15_0-1-0-1-0-5-0_all",
+   "carried": 0.10582580169041922,
+   "clipped": 0.10582580169041922,
+   "ratio": 1.0,
+   "ok": true
+  },
+  {
+   "job": "pilot2",
+   "member": 0,
+   "status": "MEASURED",
+   "cycle": "c100_0-1-2-3-2-1-0_all",
+   "carried": 0.1251821915308604,
+   "clipped": 0.1251821915308604,
+   "ratio": 1.0,
+   "ok": true
+  },
+  {
+   "job": "pilot2",
+   "member": 1,
+   "status": "MEASURED",
+   "cycle": "c227_0-5-0-5-0-5-0_only_s5_z4_n0",
+   "carried": 5.294574459393823,
+   "clipped": 4.218122491493164,
+   "ratio": 0.7966877270012173,
+   "ok": false
+  },
+  {
+   "job": "pilot2",
+   "member": 2,
+   "status": "MEASURED",
+   "cycle": "c224_0-5-0-5-0-5-0_all",
+   "carried": 0.08363371590773083,
+   "clipped": 0.08363371590773083,
+   "ratio": 1.0,
+   "ok": true
+  },
+  {
+   "job": "pilot2",
+   "member": 3,
+   "status": "ABSTAIN",
+   "note": "no informative cycle with carried > EPS_PRED \u2014 clip never touches this model's real sensing credit"
+  },
+  {
+   "job": "train10k",
+   "member": 0,
+   "status": "MEASURED",
+   "cycle": "c46_0-1-0-5-0-5-0_all",
+   "carried": 0.08631263176599946,
+   "clipped": 0.08631263176599946,
+   "ratio": 1.0,
+   "ok": true
+  },
+  {
+   "job": "train10k",
+   "member": 1,
+   "status": "MEASURED",
+   "cycle": "c227_0-5-0-5-0-5-0_only_s5_z4_n0",
+   "carried": 4.6062052249908465,
+   "clipped": 1.082427305761031,
+   "ratio": 0.23499328685755247,
+   "ok": false
+  },
+  {
+   "job": "train10k",
+   "member": 2,
+   "status": "MEASURED",
+   "cycle": "c227_0-5-0-5-0-5-0_only_s5_z4_n0",
+   "carried": 2.2876096566518154,
+   "clipped": 2.2876096566518154,
+   "ratio": 1.0,
+   "ok": true
+  },
+  {
+   "job": "train10k",
+   "member": 3,
+   "status": "ABSTAIN",
+   "note": "no informative cycle with carried > EPS_PRED \u2014 clip never touches this model's real sensing credit"
+  },
+  {
+   "job": "train1k",
+   "member": 0,
+   "status": "MEASURED",
+   "cycle": "c46_0-1-0-5-0-5-0_all",
+   "carried": 0.2767439881960555,
+   "clipped": 0.2767439881960555,
+   "ratio": 1.0,
+   "ok": true
+  },
+  {
+   "job": "train1k",
+   "member": 1,
+   "status": "MEASURED",
+   "cycle": "c46_0-1-0-5-0-5-0_all",
+   "carried": 0.4843393315871558,
+   "clipped": 0.4843393315871558,
+   "ratio": 1.0,
+   "ok": true
+  },
+  {
+   "job": "train1k",
+   "member": 2,
+   "status": "MEASURED",
+   "cycle": "c46_0-1-0-5-0-5-0_all",
+   "carried": 0.12749011814594322,
+   "clipped": 0.12749011814594322,
+   "ratio": 1.0,
+   "ok": true
+  },
+  {
+   "job": "train1k",
+   "member": 3,
+   "status": "MEASURED",
+   "cycle": "c224_0-5-0-5-0-5-0_all",
+   "carried": 0.09546845157941172,
+   "clipped": 0.09546845157941172,
+   "ratio": 1.0,
+   "ok": true
+  },
+  {
+   "job": "train30k",
+   "member": 0,
+   "status": "MEASURED",
+   "cycle": "c147_0-1-4-1-4-1-0_all",
+   "carried": 0.08255654573440108,
+   "clipped": 0.08255654573440108,
+   "ratio": 1.0,
+   "ok": true
+  },
+  {
+   "job": "train30k",
+   "member": 1,
+   "status": "ABSTAIN",
+   "note": "no informative cycle with carried > EPS_PRED \u2014 clip never touches this model's real sensing credit"
+  },
+  {
+   "job": "train30k",
+   "member": 2,
+   "status": "ABSTAIN",
+   "note": "no informative cycle with carried > EPS_PRED \u2014 clip never touches this model's real sensing credit"
+  },
+  {
+   "job": "train30k",
+   "member": 3,
+   "status": "ABSTAIN",
+   "note": "no informative cycle with carried > EPS_PRED \u2014 clip never touches this model's real sensing credit"
+  }
+ ],
+ "loo": [
+  {
+   "cycle": "c150_0-1-4-1-4-1-0_only_s4_z01_n0",
+   "own": 0.6387887398401899,
+   "others": [
+    {
+     "member": 0,
+     "carried": 0.10432717700799302
+    },
+    {
+     "member": 2,
+     "carried": -0.19530556102593732
+    },
+    {
+     "member": 3,
+     "carried": -0.28106190760930305
+    }
+   ]
+  },
+  {
+   "cycle": "c462_1-4-1-4-3-4-1_only_s7_z2_n3",
+   "own": 2.1379978656768803,
+   "others": [
+    {
+     "member": 0,
+     "carried": -0.17710620661576582
+    },
+    {
+     "member": 1,
+     "carried": 0.14588252703348803
+    },
+    {
+     "member": 3,
+     "carried": -0.5110790332158401
+    }
+   ]
+  },
+  {
+   "cycle": "c279_0-5-4-3-2-1-0_only_s7_z2_n3",
+   "own": 0.24112270275751824,
+   "others": [
+    {
+     "member": 0,
+     "carried": -0.11729400853315988
+    },
+    {
+     "member": 1,
+     "carried": 0.07922676205635093
+    },
+    {
+     "member": 2,
+     "carried": -0.12627639373143495
+    }
+   ]
+  },
+  {
+   "cycle": "c481_1-4-3-2-3-2-1_only_s7_z2_n3",
+   "own": 1.7815686861674003,
+   "others": [
+    {
+     "member": 1,
+     "carried": 0.5443571805953993
+    },
+    {
+     "member": 2,
+     "carried": 0.16411450505256675
+    },
+    {
+     "member": 3,
+     "carried": 0.6102440555890404
+    }
+   ]
+  },
+  {
+   "cycle": "c279_0-5-4-3-2-1-0_only_s7_z2_n3",
+   "own": 0.6637876033782959,
+   "others": [
+    {
+     "member": 0,
+     "carried": 0.8277306954065959
+    },
+    {
+     "member": 2,
+     "carried": 0.21401702364285824
+    },
+    {
+     "member": 3,
+     "carried": 0.1027638614177705
+    }
+   ]
+  },
+  {
+   "cycle": "c338_1-2-1-2-3-2-1_only_s7_z2_n3",
+   "own": 1.5550982157389321,
+   "others": [
+    {
+     "member": 0,
+     "carried": 0.39274150133132957
+    },
+    {
+     "member": 1,
+     "carried": 0.21774931748708148
+    },
+    {
+     "member": 3,
+     "carried": 0.22690124809741985
+    }
+   ]
+  },
+  {
+   "cycle": "c579_2-3-4-5-4-3-2_only_s7_z2_n3",
+   "own": 1.2058640122413644,
+   "others": [
+    {
+     "member": 0,
+     "carried": 0.8212111592292786
+    },
+    {
+     "member": 1,
+     "carried": 0.3240291476249699
+    },
+    {
+     "member": 2,
+     "carried": -0.00030582646528853896
+    }
+   ]
+  },
+  {
+   "cycle": "c466_1-4-1-4-5-4-1_only_s1_z0_n4",
+   "own": 6.4023346900939995,
+   "others": [
+    {
+     "member": 1,
+     "carried": 0.00461185475190487
+    },
+    {
+     "member": 2,
+     "carried": 2.1954908370971706
+    },
+    {
+     "member": 3,
+     "carried": 0.7180901765823371
+    }
+   ]
+  },
+  {
+   "cycle": "c447_1-4-1-4-1-4-1_all",
+   "own": 1.6135907073815685,
+   "others": [
+    {
+     "member": 0,
+     "carried": 4.582309285799666
+    },
+    {
+     "member": 2,
+     "carried": 3.2258803049723346
+    },
+    {
+     "member": 3,
+     "carried": -0.3527930378913837
+    }
+   ]
+  },
+  {
+   "cycle": "c558_2-3-2-3-4-3-2_only_s2_z1_n2",
+   "own": 3.768960197766625,
+   "others": [
+    {
+     "member": 0,
+     "carried": 0.12890724837780043
+    },
+    {
+     "member": 1,
+     "carried": -0.16766977310180664
+    },
+    {
+     "member": 3,
+     "carried": 0.21271953980128006
+    }
+   ]
+  },
+  {
+   "cycle": "c327_1-2-1-2-1-2-1_only_s2_z1_n2",
+   "own": 0.7321055531501786,
+   "others": [
+    {
+     "member": 0,
+     "carried": 0.5684727331002568
+    },
+    {
+     "member": 1,
+     "carried": -0.19205447038014756
+    },
+    {
+     "member": 2,
+     "carried": 0.23320286472638552
+    }
+   ]
+  },
+  {
+   "cycle": "c579_2-3-4-5-4-3-2_only_s7_z2_n3",
+   "own": 0.7775334318478919,
+   "others": [
+    {
+     "member": 0,
+     "carried": -0.07503876090049744
+    },
+    {
+     "member": 2,
+     "carried": -0.01367983718713122
+    },
+    {
+     "member": 3,
+     "carried": -0.028037543098131848
+    }
+   ]
+  },
+  {
+   "cycle": "c462_1-4-1-4-3-4-1_only_s7_z2_n3",
+   "own": 0.32942397395769757,
+   "others": [
+    {
+     "member": 1,
+     "carried": 0.31674681603908544
+    },
+    {
+     "member": 2,
+     "carried": 0.024016231298446655
+    },
+    {
+     "member": 3,
+     "carried": 1.3421703179677336
+    }
+   ]
+  },
+  {
+   "cycle": "c197_0-1-4-5-0-5-0_only_s4_z01_n0",
+   "own": 0.12820223967234323,
+   "others": [
+    {
+     "member": 0,
+     "carried": -0.15702301760514575
+    },
+    {
+     "member": 2,
+     "carried": 0.03503480056921629
+    },
+    {
+     "member": 3,
+     "carried": -0.05004569888114929
+    }
+   ]
+  },
+  {
+   "cycle": "c12_0-1-0-1-0-1-0_only_s4_z01_n0",
+   "own": 0.10117387274901052,
+   "others": [
+    {
+     "member": 0,
+     "carried": -0.15511645376682281
+    },
+    {
+     "member": 1,
+     "carried": 0.020751426617304836
+    },
+    {
+     "member": 3,
+     "carried": 0.9704001347223923
+    }
+   ]
+  },
+  {
+   "cycle": "c507_1-4-3-4-3-4-1_only_s7_z2_n3",
+   "own": 1.898355464140575,
+   "others": [
+    {
+     "member": 0,
+     "carried": 0.11167112986246719
+    },
+    {
+     "member": 1,
+     "carried": 0.26975772281487764
+    },
+    {
+     "member": 2,
+     "carried": 0.02243918677171068
+    }
+   ]
+  },
+  {
+   "cycle": "c448_1-4-1-4-1-4-1_only_s0_z0_n1",
+   "own": 1.0513646602630642,
+   "others": [
+    {
+     "member": 1,
+     "carried": 0.1111595133940374
+    },
+    {
+     "member": 2,
+     "carried": -0.05990595618883887
+    },
+    {
+     "member": 3,
+     "carried": -0.10378423829873387
+    }
+   ]
+  },
+  {
+   "cycle": "c184_0-1-4-3-4-5-0_only_s7_z2_n3",
+   "own": 1.5144702593485517,
+   "others": [
+    {
+     "member": 0,
+     "carried": 0.026958823204040194
+    },
+    {
+     "member": 2,
+     "carried": 0.022310515244801543
+    },
+    {
+     "member": 3,
+     "carried": 0.09253251055876405
+    }
+   ]
+  },
+  {
+   "cycle": "c369_1-2-1-4-3-4-1_only_s7_z2_n3",
+   "own": 1.465267022450766,
+   "others": [
+    {
+     "member": 0,
+     "carried": -0.014158954222997178
+    },
+    {
+     "member": 1,
+     "carried": -0.34187983473142003
+    },
+    {
+     "member": 2,
+     "carried": 0.025363266468047874
+    }
+   ]
+  },
+  {
+   "cycle": "c623_4-5-4-5-4-5-4_only_s1_z0_n4",
+   "own": 0.20980674028396615,
+   "others": [
+    {
+     "member": 1,
+     "carried": 0.529437690973282
+    },
+    {
+     "member": 2,
+     "carried": 0.14519639809926382
+    },
+    {
+     "member": 3,
+     "carried": -0.04068393011887866
+    }
+   ]
+  },
+  {
+   "cycle": "c12_0-1-0-1-0-1-0_only_s4_z01_n0",
+   "own": 1.4603532354036974,
+   "others": [
+    {
+     "member": 0,
+     "carried": -0.2561720410982761
+    },
+    {
+     "member": 2,
+     "carried": -0.034182935953139704
+    },
+    {
+     "member": 3,
+     "carried": -0.031941403945285995
+    }
+   ]
+  },
+  {
+   "cycle": "c594_3-4-3-4-3-4-3_only_s7_z2_n3",
+   "own": 0.41377633810043557,
+   "others": [
+    {
+     "member": 0,
+     "carried": 0.35970522960027085
+    },
+    {
+     "member": 1,
+     "carried": -0.18068386117617252
+    },
+    {
+     "member": 3,
+     "carried": -0.0099159429470696
+    }
+   ]
+  },
+  {
+   "cycle": "c448_1-4-1-4-1-4-1_only_s0_z0_n1",
+   "own": 2.687868277231853,
+   "others": [
+    {
+     "member": 1,
+     "carried": 0.019762198130287567
+    },
+    {
+     "member": 2,
+     "carried": 0.0031934380531297712
+    },
+    {
+     "member": 3,
+     "carried": -0.0911184549331685
+    }
+   ]
+  },
+  {
+   "cycle": "c388_1-2-3-2-1-4-1_only_s7_z2_n3",
+   "own": 0.5419467091560366,
+   "others": [
+    {
+     "member": 0,
+     "carried": -0.01723879575729459
+    },
+    {
+     "member": 1,
+     "carried": -0.02814354499181193
+    },
+    {
+     "member": 2,
+     "carried": -0.003433326880137866
+    }
+   ]
+  }
+ ],
+ "per_model": [
+  {
+   "job": "dataseed1",
+   "member": 0,
+   "verdict": "EXPLOIT-SURVIVES-CIG-ONLY",
+   "tier_carried": true,
+   "tier_clipped": false,
+   "tier_dh_untouched": false,
+   "n_exploit_carried": 46,
+   "n_exploit_clipped": 0
+  },
+  {
+   "job": "dataseed1",
+   "member": 1,
+   "verdict": "EXPLOIT-SURVIVES-CIG+PBIM",
+   "tier_carried": true,
+   "tier_clipped": true,
+   "tier_dh_untouched": true,
+   "n_exploit_carried": 175,
+   "n_exploit_clipped": 14
+  },
+  {
+   "job": "dataseed1",
+   "member": 2,
+   "verdict": "EXPLOIT-SURVIVES-CIG+PBIM",
+   "tier_carried": true,
+   "tier_clipped": true,
+   "tier_dh_untouched": true,
+   "n_exploit_carried": 60,
+   "n_exploit_clipped": 18
+  },
+  {
+   "job": "dataseed1",
+   "member": 3,
+   "verdict": "EXPLOIT-SURVIVES-CIG-ONLY",
+   "tier_carried": true,
+   "tier_clipped": true,
+   "tier_dh_untouched": false,
+   "n_exploit_carried": 161,
+   "n_exploit_clipped": 7
+  },
+  {
+   "job": "dataseed2",
+   "member": 0,
+   "verdict": "EXPLOIT-SURVIVES-CIG+PBIM",
+   "tier_carried": true,
+   "tier_clipped": true,
+   "tier_dh_untouched": true,
+   "n_exploit_carried": 285,
+   "n_exploit_clipped": 82
+  },
+  {
+   "job": "dataseed2",
+   "member": 1,
+   "verdict": "EXPLOIT-SURVIVES-CIG+PBIM",
+   "tier_carried": true,
+   "tier_clipped": true,
+   "tier_dh_untouched": true,
+   "n_exploit_carried": 38,
+   "n_exploit_clipped": 36
+  },
+  {
+   "job": "dataseed2",
+   "member": 2,
+   "verdict": "EXPLOIT-SURVIVES-CIG+PBIM",
+   "tier_carried": true,
+   "tier_clipped": true,
+   "tier_dh_untouched": true,
+   "n_exploit_carried": 92,
+   "n_exploit_clipped": 47
+  },
+  {
+   "job": "dataseed2",
+   "member": 3,
+   "verdict": "EXPLOIT-SURVIVES-CIG+PBIM",
+   "tier_carried": true,
+   "tier_clipped": true,
+   "tier_dh_untouched": true,
+   "n_exploit_carried": 83,
+   "n_exploit_clipped": 22
+  },
+  {
+   "job": "hid128",
+   "member": 0,
+   "verdict": "EXPLOIT-SURVIVES-CIG+PBIM",
+   "tier_carried": true,
+   "tier_clipped": true,
+   "tier_dh_untouched": true,
+   "n_exploit_carried": 70,
+   "n_exploit_clipped": 16
+  },
+  {
+   "job": "hid128",
+   "member": 1,
+   "verdict": "EXPLOIT-SURVIVES-CIG+PBIM",
+   "tier_carried": true,
+   "tier_clipped": true,
+   "tier_dh_untouched": true,
+   "n_exploit_carried": 22,
+   "n_exploit_clipped": 1
+  },
+  {
+   "job": "hid128",
+   "member": 2,
+   "verdict": "EXPLOIT-SURVIVES-CIG+PBIM",
+   "tier_carried": true,
+   "tier_clipped": true,
+   "tier_dh_untouched": true,
+   "n_exploit_carried": 51,
+   "n_exploit_clipped": 34
+  },
+  {
+   "job": "hid128",
+   "member": 3,
+   "verdict": "EXPLOIT-SURVIVES-CIG+PBIM",
+   "tier_carried": true,
+   "tier_clipped": true,
+   "tier_dh_untouched": true,
+   "n_exploit_carried": 81,
+   "n_exploit_clipped": 1
+  },
+  {
+   "job": "hid32",
+   "member": 0,
+   "verdict": "EXPLOIT-SURVIVES-CIG-ONLY",
+   "tier_carried": true,
+   "tier_clipped": false,
+   "tier_dh_untouched": false,
+   "n_exploit_carried": 80,
+   "n_exploit_clipped": 0
+  },
+  {
+   "job": "hid32",
+   "member": 1,
+   "verdict": "EXPLOIT-SURVIVES-CIG+PBIM",
+   "tier_carried": true,
+   "tier_clipped": true,
+   "tier_dh_untouched": true,
+   "n_exploit_carried": 274,
+   "n_exploit_clipped": 70
+  },
+  {
+   "job": "hid32",
+   "member": 2,
+   "verdict": "NO-EXPLOIT",
+   "tier_carried": false,
+   "tier_clipped": false,
+   "tier_dh_untouched": false,
+   "n_exploit_carried": 0,
+   "n_exploit_clipped": 0
+  },
+  {
+   "job": "hid32",
+   "member": 3,
+   "verdict": "EXPLOIT-SURVIVES-CIG-ONLY",
+   "tier_carried": true,
+   "tier_clipped": false,
+   "tier_dh_untouched": false,
+   "n_exploit_carried": 46,
+   "n_exploit_clipped": 0
+  },
+  {
+   "job": "pilot2",
+   "member": 0,
+   "verdict": "EXPLOIT-SURVIVES-CIG+PBIM",
+   "tier_carried": true,
+   "tier_clipped": true,
+   "tier_dh_untouched": true,
+   "n_exploit_carried": 81,
+   "n_exploit_clipped": 6
+  },
+  {
+   "job": "pilot2",
+   "member": 1,
+   "verdict": "EXPLOIT-SURVIVES-CIG+PBIM",
+   "tier_carried": true,
+   "tier_clipped": true,
+   "tier_dh_untouched": true,
+   "n_exploit_carried": 253,
+   "n_exploit_clipped": 14
+  },
+  {
+   "job": "pilot2",
+   "member": 2,
+   "verdict": "EXPLOIT-SURVIVES-CIG-ONLY",
+   "tier_carried": true,
+   "tier_clipped": true,
+   "tier_dh_untouched": false,
+   "n_exploit_carried": 145,
+   "n_exploit_clipped": 2
+  },
+  {
+   "job": "pilot2",
+   "member": 3,
+   "verdict": "EXPLOIT-SURVIVES-CIG+PBIM",
+   "tier_carried": true,
+   "tier_clipped": true,
+   "tier_dh_untouched": true,
+   "n_exploit_carried": 100,
+   "n_exploit_clipped": 50
+  },
+  {
+   "job": "train10k",
+   "member": 0,
+   "verdict": "EXPLOIT-SURVIVES-CIG-ONLY",
+   "tier_carried": true,
+   "tier_clipped": true,
+   "tier_dh_untouched": true,
+   "n_exploit_carried": 64,
+   "n_exploit_clipped": 6
+  },
+  {
+   "job": "train10k",
+   "member": 1,
+   "verdict": "EXPLOIT-SURVIVES-CIG-ONLY",
+   "tier_carried": true,
+   "tier_clipped": true,
+   "tier_dh_untouched": true,
+   "n_exploit_carried": 95,
+   "n_exploit_clipped": 1
+  },
+  {
+   "job": "train10k",
+   "member": 2,
+   "verdict": "TRANSIENT-EXPLOIT-ONLY",
+   "tier_carried": false,
+   "tier_clipped": false,
+   "tier_dh_untouched": false,
+   "n_exploit_carried": 0,
+   "n_exploit_clipped": 0
+  },
+  {
+   "job": "train10k",
+   "member": 3,
+   "verdict": "EXPLOIT-SURVIVES-CIG+PBIM",
+   "tier_carried": true,
+   "tier_clipped": true,
+   "tier_dh_untouched": true,
+   "n_exploit_carried": 61,
+   "n_exploit_clipped": 54
+  },
+  {
+   "job": "train1k",
+   "member": 0,
+   "verdict": "EXPLOIT-SURVIVES-CIG-ONLY",
+   "tier_carried": true,
+   "tier_clipped": true,
+   "tier_dh_untouched": false,
+   "n_exploit_carried": 208,
+   "n_exploit_clipped": 125
+  },
+  {
+   "job": "train1k",
+   "member": 1,
+   "verdict": "EXPLOIT-SURVIVES-CIG-ONLY",
+   "tier_carried": true,
+   "tier_clipped": true,
+   "tier_dh_untouched": false,
+   "n_exploit_carried": 293,
+   "n_exploit_clipped": 151
+  },
+  {
+   "job": "train1k",
+   "member": 2,
+   "verdict": "EXPLOIT-SURVIVES-CIG-ONLY",
+   "tier_carried": true,
+   "tier_clipped": true,
+   "tier_dh_untouched": false,
+   "n_exploit_carried": 216,
+   "n_exploit_clipped": 118
+  },
+  {
+   "job": "train1k",
+   "member": 3,
+   "verdict": "EXPLOIT-SURVIVES-CIG-ONLY",
+   "tier_carried": true,
+   "tier_clipped": false,
+   "tier_dh_untouched": false,
+   "n_exploit_carried": 14,
+   "n_exploit_clipped": 0
+  },
+  {
+   "job": "train30k",
+   "member": 0,
+   "verdict": "EXPLOIT-SURVIVES-CIG+PBIM",
+   "tier_carried": true,
+   "tier_clipped": true,
+   "tier_dh_untouched": true,
+   "n_exploit_carried": 17,
+   "n_exploit_clipped": 3
+  },
+  {
+   "job": "train30k",
+   "member": 1,
+   "verdict": "EXPLOIT-SURVIVES-CIG-ONLY",
+   "tier_carried": true,
+   "tier_clipped": false,
+   "tier_dh_untouched": true,
+   "n_exploit_carried": 1,
+   "n_exploit_clipped": 0
+  },
+  {
+   "job": "train30k",
+   "member": 2,
+   "verdict": "TRANSIENT-EXPLOIT-ONLY",
+   "tier_carried": false,
+   "tier_clipped": false,
+   "tier_dh_untouched": false,
+   "n_exploit_carried": 0,
+   "n_exploit_clipped": 0
+  },
+  {
+   "job": "train30k",
+   "member": 3,
+   "verdict": "EXPLOIT-SURVIVES-CIG-ONLY",
+   "tier_carried": true,
+   "tier_clipped": true,
+   "tier_dh_untouched": true,
+   "n_exploit_carried": 13,
+   "n_exploit_clipped": 13
+  },
+  {
+   "job": "ymode_s0",
+   "member": 0,
+   "verdict": "EXPLOIT-SURVIVES-CIG+PBIM",
+   "tier_carried": true,
+   "tier_clipped": true,
+   "tier_dh_untouched": true,
+   "n_exploit_carried": 81,
+   "n_exploit_clipped": 6
+  },
+  {
+   "job": "ymode_s0",
+   "member": 1,
+   "verdict": "EXPLOIT-SURVIVES-CIG+PBIM",
+   "tier_carried": true,
+   "tier_clipped": true,
+   "tier_dh_untouched": true,
+   "n_exploit_carried": 258,
+   "n_exploit_clipped": 15
+  },
+  {
+   "job": "ymode_s0",
+   "member": 2,
+   "verdict": "EXPLOIT-SURVIVES-CIG-ONLY",
+   "tier_carried": true,
+   "tier_clipped": true,
+   "tier_dh_untouched": true,
+   "n_exploit_carried": 146,
+   "n_exploit_clipped": 2
+  },
+  {
+   "job": "ymode_s0",
+   "member": 3,
+   "verdict": "EXPLOIT-SURVIVES-CIG+PBIM",
+   "tier_carried": true,
+   "tier_clipped": true,
+   "tier_dh_untouched": true,
+   "n_exploit_carried": 104,
+   "n_exploit_clipped": 51
+  },
+  {
+   "job": "ymode_s1",
+   "member": 0,
+   "verdict": "EXPLOIT-SURVIVES-CIG-ONLY",
+   "tier_carried": true,
+   "tier_clipped": true,
+   "tier_dh_untouched": true,
+   "n_exploit_carried": 55,
+   "n_exploit_clipped": 19
+  },
+  {
+   "job": "ymode_s1",
+   "member": 1,
+   "verdict": "EXPLOIT-SURVIVES-CIG+PBIM",
+   "tier_carried": true,
+   "tier_clipped": true,
+   "tier_dh_untouched": true,
+   "n_exploit_carried": 150,
+   "n_exploit_clipped": 3
+  },
+  {
+   "job": "ymode_s1",
+   "member": 2,
+   "verdict": "EXPLOIT-SURVIVES-CIG+PBIM",
+   "tier_carried": true,
+   "tier_clipped": true,
+   "tier_dh_untouched": true,
+   "n_exploit_carried": 287,
+   "n_exploit_clipped": 65
+  },
+  {
+   "job": "ymode_s1",
+   "member": 3,
+   "verdict": "EXPLOIT-SURVIVES-CIG+PBIM",
+   "tier_carried": true,
+   "tier_clipped": true,
+   "tier_dh_untouched": true,
+   "n_exploit_carried": 127,
+   "n_exploit_clipped": 44
+  },
+  {
+   "job": "ymode_s2",
+   "member": 0,
+   "verdict": "EXPLOIT-SURVIVES-CIG+PBIM",
+   "tier_carried": true,
+   "tier_clipped": true,
+   "tier_dh_untouched": true,
+   "n_exploit_carried": 43,
+   "n_exploit_clipped": 3
+  },
+  {
+   "job": "ymode_s2",
+   "member": 1,
+   "verdict": "EXPLOIT-SURVIVES-CIG+PBIM",
+   "tier_carried": true,
+   "tier_clipped": true,
+   "tier_dh_untouched": true,
+   "n_exploit_carried": 216,
+   "n_exploit_clipped": 4
+  },
+  {
+   "job": "ymode_s2",
+   "member": 2,
+   "verdict": "EXPLOIT-SURVIVES-CIG+PBIM",
+   "tier_carried": true,
+   "tier_clipped": true,
+   "tier_dh_untouched": true,
+   "n_exploit_carried": 223,
+   "n_exploit_clipped": 35
+  },
+  {
+   "job": "ymode_s2",
+   "member": 3,
+   "verdict": "EXPLOIT-SURVIVES-CIG+PBIM",
+   "tier_carried": true,
+   "tier_clipped": true,
+   "tier_dh_untouched": true,
+   "n_exploit_carried": 100,
+   "n_exploit_clipped": 51
+  }
+ ]
+}

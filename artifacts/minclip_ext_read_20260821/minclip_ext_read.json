@@ -1,0 +1,427 @@
+{
+ "bank": "EXTENSION",
+ "n_models": 16,
+ "stamp_set": [
+  "{\"eps_pred\": 0.08, \"eps_true\": 0.02, \"git\": \"0ab54ef\", \"n_burn\": 30, \"n_loops\": 8}"
+ ],
+ "scope": "dataseed3/4 + hid128t10k/t30k = 16 distinct models; with the main bank's 32 this covers 48 of the paper's 60. Out (#31 M9): dc_gru/dc_lstm (8, world=dcfield \u2014 genuine porting) and lg_lstm (4, world=lg \u2014 same world, deferred by resource choice, NOT by porting)",
+ "tier_carried": 15,
+ "tier_clipped": 9,
+ "tier_dh_untouched": 6,
+ "collapse_fraction": 0.4,
+ "pmc1_ext": {
+  "statement": "P-MC1-EXT (replication): >= 50% of the 15 extension carried-exploit-tier members lose tier membership under the clip. CLUSTERING CAVEAT (#31 M7): the 15 tier members come from only 4 ensembles \u2014 the per-ensemble breakdown is the mandatory disclosure and the Wilson interval is descriptive",
+  "lost": 6,
+  "collapse_wilson95": [
+   0.19824228082594664,
+   0.642535572434923
+  ],
+  "fires": false
+ },
+ "per_ensemble": [
+  {
+   "job": "dataseed3",
+   "tier": 4,
+   "lost": 1
+  },
+  {
+   "job": "dataseed4",
+   "tier": 4,
+   "lost": 0
+  },
+  {
+   "job": "hid128t10k",
+   "tier": 4,
+   "lost": 2
+  },
+  {
+   "job": "hid128t30k",
+   "tier": 3,
+   "lost": 3
+  }
+ ],
+ "interaction_2x3": [
+  {
+   "hid": 64,
+   "steps": "3k",
+   "job": "pilot2",
+   "bank": "main",
+   "cell": {
+    "n_tier": 4,
+    "n_lost": 0
+   }
+  },
+  {
+   "hid": 64,
+   "steps": "10k",
+   "job": "train10k",
+   "bank": "main",
+   "cell": {
+    "n_tier": 3,
+    "n_lost": 0
+   }
+  },
+  {
+   "hid": 64,
+   "steps": "30k",
+   "job": "train30k",
+   "bank": "main",
+   "cell": {
+    "n_tier": 3,
+    "n_lost": 1
+   }
+  },
+  {
+   "hid": 128,
+   "steps": "3k",
+   "job": "hid128",
+   "bank": "main",
+   "cell": {
+    "n_tier": 4,
+    "n_lost": 0
+   }
+  },
+  {
+   "hid": 128,
+   "steps": "10k",
+   "job": "hid128t10k",
+   "bank": "ext",
+   "cell": {
+    "n_tier": 4,
+    "n_lost": 2
+   }
+  },
+  {
+   "hid": 128,
+   "steps": "30k",
+   "job": "hid128t30k",
+   "bank": "ext",
+   "cell": {
+    "n_tier": 3,
+    "n_lost": 3
+   }
+  }
+ ],
+ "pmc2_note": "no P-MC2 analogue: the extension has no traced mechanism exploits (mechanism.json covers pilot2 only)",
+ "pmc3_ext": {
+  "statement": "P-MC3-EXT guard: retention >= 0.8 on every MEASURED model; ABSTAIN = clip never touches that model's real credit",
+  "n_measured": 12,
+  "n_abstain": 4,
+  "fires": false
+ },
+ "pmc4_ext": {
+  "n_pairs": 16,
+  "mean_rho_carried": -0.12910091194030926,
+  "mean_rho_clipped": -0.05928851197788157,
+  "n_improved": 16,
+  "note": "exploratory-registered; nan-safe"
+ },
+ "retention_rows": [
+  {
+   "job": "dataseed3",
+   "member": 0,
+   "status": "MEASURED",
+   "cycle": "c10_0-1-0-1-0-1-0_all",
+   "carried": 0.09056609869003163,
+   "clipped": 0.09056609869003163,
+   "ratio": 1.0,
+   "ok": true
+  },
+  {
+   "job": "dataseed3",
+   "member": 1,
+   "status": "ABSTAIN",
+   "note": "no informative cycle with carried > EPS_PRED \u2014 clip never touches this model's real sensing credit"
+  },
+  {
+   "job": "dataseed3",
+   "member": 2,
+   "status": "MEASURED",
+   "cycle": "c50_0-1-0-5-0-5-0_only_s5_z4_n0",
+   "carried": 0.3993335962295539,
+   "clipped": 0.3993335962295539,
+   "ratio": 1.0,
+   "ok": true
+  },
+  {
+   "job": "dataseed3",
+   "member": 3,
+   "status": "ABSTAIN",
+   "note": "no informative cycle with carried > EPS_PRED \u2014 clip never touches this model's real sensing credit"
+  },
+  {
+   "job": "dataseed4",
+   "member": 0,
+   "status": "MEASURED",
+   "cycle": "c13_0-1-0-1-0-1-0_only_s5_z4_n0",
+   "carried": 1.7523259321848594,
+   "clipped": 0.6583251679548557,
+   "ratio": 0.37568648381185205,
+   "ok": false
+  },
+  {
+   "job": "dataseed4",
+   "member": 1,
+   "status": "MEASURED",
+   "cycle": "c169_0-1-4-3-4-1-0_all",
+   "carried": 0.16948729256788753,
+   "clipped": 0.16948729256788753,
+   "ratio": 1.0,
+   "ok": true
+  },
+  {
+   "job": "dataseed4",
+   "member": 2,
+   "status": "MEASURED",
+   "cycle": "c15_0-1-0-1-0-5-0_all",
+   "carried": 0.10752247770627299,
+   "clipped": 0.10752247770627299,
+   "ratio": 1.0,
+   "ok": true
+  },
+  {
+   "job": "dataseed4",
+   "member": 3,
+   "status": "MEASURED",
+   "cycle": "c234_0-5-0-5-4-1-0_only_s5_z4_n0",
+   "carried": 0.0860546827316288,
+   "clipped": 0.0860546827316288,
+   "ratio": 1.0,
+   "ok": true
+  },
+  {
+   "job": "hid128t10k",
+   "member": 0,
+   "status": "MEASURED",
+   "cycle": "c46_0-1-0-5-0-5-0_all",
+   "carried": 0.4798028270403516,
+   "clipped": 0.4798028270403516,
+   "ratio": 1.0,
+   "ok": true
+  },
+  {
+   "job": "hid128t10k",
+   "member": 1,
+   "status": "MEASURED",
+   "cycle": "c224_0-5-0-5-0-5-0_all",
+   "carried": 0.10676940282185576,
+   "clipped": 0.10676940282185576,
+   "ratio": 1.0,
+   "ok": true
+  },
+  {
+   "job": "hid128t10k",
+   "member": 2,
+   "status": "MEASURED",
+   "cycle": "c46_0-1-0-5-0-5-0_all",
+   "carried": 0.23778095841407498,
+   "clipped": 0.23778095841407498,
+   "ratio": 1.0,
+   "ok": true
+  },
+  {
+   "job": "hid128t10k",
+   "member": 3,
+   "status": "ABSTAIN",
+   "note": "no informative cycle with carried > EPS_PRED \u2014 clip never touches this model's real sensing credit"
+  },
+  {
+   "job": "hid128t30k",
+   "member": 0,
+   "status": "MEASURED",
+   "cycle": "c46_0-1-0-5-0-5-0_all",
+   "carried": 0.11499059200286599,
+   "clipped": 0.11499059200286599,
+   "ratio": 1.0,
+   "ok": true
+  },
+  {
+   "job": "hid128t30k",
+   "member": 1,
+   "status": "MEASURED",
+   "cycle": "c57_0-1-0-5-4-1-0_only_s5_z4_n0",
+   "carried": 0.10042858123779186,
+   "clipped": 0.10042858123779186,
+   "ratio": 1.0,
+   "ok": true
+  },
+  {
+   "job": "hid128t30k",
+   "member": 2,
+   "status": "ABSTAIN",
+   "note": "no informative cycle with carried > EPS_PRED \u2014 clip never touches this model's real sensing credit"
+  },
+  {
+   "job": "hid128t30k",
+   "member": 3,
+   "status": "MEASURED",
+   "cycle": "c13_0-1-0-1-0-1-0_only_s5_z4_n0",
+   "carried": 0.08966962496439357,
+   "clipped": 0.08966962496439357,
+   "ratio": 1.0,
+   "ok": true
+  }
+ ],
+ "per_model": [
+  {
+   "job": "dataseed3",
+   "member": 0,
+   "verdict": "EXPLOIT-SURVIVES-CIG-ONLY",
+   "tier_carried": true,
+   "tier_clipped": true,
+   "tier_dh_untouched": false,
+   "n_exploit_carried": 82,
+   "n_exploit_clipped": 1
+  },
+  {
+   "job": "dataseed3",
+   "member": 1,
+   "verdict": "EXPLOIT-SURVIVES-CIG+PBIM",
+   "tier_carried": true,
+   "tier_clipped": true,
+   "tier_dh_untouched": true,
+   "n_exploit_carried": 123,
+   "n_exploit_clipped": 4
+  },
+  {
+   "job": "dataseed3",
+   "member": 2,
+   "verdict": "EXPLOIT-SURVIVES-CIG+PBIM",
+   "tier_carried": true,
+   "tier_clipped": true,
+   "tier_dh_untouched": true,
+   "n_exploit_carried": 130,
+   "n_exploit_clipped": 11
+  },
+  {
+   "job": "dataseed3",
+   "member": 3,
+   "verdict": "EXPLOIT-SURVIVES-CIG+PBIM",
+   "tier_carried": true,
+   "tier_clipped": false,
+   "tier_dh_untouched": true,
+   "n_exploit_carried": 52,
+   "n_exploit_clipped": 0
+  },
+  {
+   "job": "dataseed4",
+   "member": 0,
+   "verdict": "EXPLOIT-SURVIVES-CIG+PBIM",
+   "tier_carried": true,
+   "tier_clipped": true,
+   "tier_dh_untouched": true,
+   "n_exploit_carried": 134,
+   "n_exploit_clipped": 40
+  },
+  {
+   "job": "dataseed4",
+   "member": 1,
+   "verdict": "EXPLOIT-SURVIVES-CIG+PBIM",
+   "tier_carried": true,
+   "tier_clipped": true,
+   "tier_dh_untouched": true,
+   "n_exploit_carried": 75,
+   "n_exploit_clipped": 18
+  },
+  {
+   "job": "dataseed4",
+   "member": 2,
+   "verdict": "EXPLOIT-SURVIVES-CIG+PBIM",
+   "tier_carried": true,
+   "tier_clipped": true,
+   "tier_dh_untouched": true,
+   "n_exploit_carried": 155,
+   "n_exploit_clipped": 30
+  },
+  {
+   "job": "dataseed4",
+   "member": 3,
+   "verdict": "EXPLOIT-SURVIVES-CIG-ONLY",
+   "tier_carried": true,
+   "tier_clipped": true,
+   "tier_dh_untouched": false,
+   "n_exploit_carried": 22,
+   "n_exploit_clipped": 1
+  },
+  {
+   "job": "hid128t10k",
+   "member": 0,
+   "verdict": "EXPLOIT-SURVIVES-CIG-ONLY",
+   "tier_carried": true,
+   "tier_clipped": true,
+   "tier_dh_untouched": false,
+   "n_exploit_carried": 29,
+   "n_exploit_clipped": 2
+  },
+  {
+   "job": "hid128t10k",
+   "member": 1,
+   "verdict": "EXPLOIT-SURVIVES-CIG-ONLY",
+   "tier_carried": true,
+   "tier_clipped": false,
+   "tier_dh_untouched": false,
+   "n_exploit_carried": 7,
+   "n_exploit_clipped": 0
+  },
+  {
+   "job": "hid128t10k",
+   "member": 2,
+   "verdict": "EXPLOIT-SURVIVES-CIG-ONLY",
+   "tier_carried": true,
+   "tier_clipped": true,
+   "tier_dh_untouched": false,
+   "n_exploit_carried": 13,
+   "n_exploit_clipped": 2
+  },
+  {
+   "job": "hid128t10k",
+   "member": 3,
+   "verdict": "EXPLOIT-SURVIVES-CIG-ONLY",
+   "tier_carried": true,
+   "tier_clipped": false,
+   "tier_dh_untouched": false,
+   "n_exploit_carried": 46,
+   "n_exploit_clipped": 0
+  },
+  {
+   "job": "hid128t30k",
+   "member": 0,
+   "verdict": "EXPLOIT-SURVIVES-CIG-ONLY",
+   "tier_carried": true,
+   "tier_clipped": false,
+   "tier_dh_untouched": false,
+   "n_exploit_carried": 13,
+   "n_exploit_clipped": 0
+  },
+  {
+   "job": "hid128t30k",
+   "member": 1,
+   "verdict": "TRANSIENT-EXPLOIT-ONLY",
+   "tier_carried": false,
+   "tier_clipped": false,
+   "tier_dh_untouched": false,
+   "n_exploit_carried": 0,
+   "n_exploit_clipped": 0
+  },
+  {
+   "job": "hid128t30k",
+   "member": 2,
+   "verdict": "EXPLOIT-SURVIVES-CIG-ONLY",
+   "tier_carried": true,
+   "tier_clipped": false,
+   "tier_dh_untouched": false,
+   "n_exploit_carried": 11,
+   "n_exploit_clipped": 0
+  },
+  {
+   "job": "hid128t30k",
+   "member": 3,
+   "verdict": "EXPLOIT-SURVIVES-CIG-ONLY",
+   "tier_carried": true,
+   "tier_clipped": false,
+   "tier_dh_untouched": false,
+   "n_exploit_carried": 22,
+   "n_exploit_clipped": 0
+  }
+ ]
+}

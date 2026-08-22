@@ -1,0 +1,47 @@
+{
+ "tag": "rkn_pilot2",
+ "steps": 3000,
+ "losses": [
+  2.1314148902893066,
+  2.142850399017334,
+  2.023451328277588,
+  1.908735752105713
+ ],
+ "member_info": [
+  {
+   "sigma_pi": 0.999534547328949,
+   "sigma_exact": 1.0048363830071325,
+   "batch": 32,
+   "lr": 0.001,
+   "steps": 3000,
+   "dtype": "float32 training / float64 deploy"
+  },
+  {
+   "sigma_pi": 0.9956261515617371,
+   "sigma_exact": 1.0008039095017018,
+   "batch": 32,
+   "lr": 0.001,
+   "steps": 3000,
+   "dtype": "float32 training / float64 deploy"
+  },
+  {
+   "sigma_pi": 0.9933159947395325,
+   "sigma_exact": 0.9979929167191135,
+   "batch": 32,
+   "lr": 0.001,
+   "steps": 3000,
+   "dtype": "float32 training / float64 deploy"
+  },
+  {
+   "sigma_pi": 0.9934636354446411,
+   "sigma_exact": 0.9976945738888495,
+   "batch": 32,
+   "lr": 0.001,
+   "steps": 3000,
+   "dtype": "float32 training / float64 deploy"
+  }
+ ],
+ "n_members": 4,
+ "data": "override",
+ "cell": "rkn_kalman"
+}

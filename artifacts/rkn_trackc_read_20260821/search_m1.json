@@ -1,0 +1,5445 @@
+{
+ "tag": "rkn_pilot2",
+ "member": 1,
+ "kind": "rkn_kalman",
+ "stamp": {
+  "git": "0ab54ef",
+  "eps_true": 0.02,
+  "eps_pred": 0.08,
+  "n_burn": 30,
+  "n_loops": 8
+ },
+ "verdict": "EXPLOIT-SURVIVES-CIG-ONLY",
+ "counts": {
+  "n_cycles": 626,
+  "n_neutral": 484,
+  "n_exploit_naive": 293,
+  "n_exploit_cig": 293,
+  "n_exploit_pbim": 0,
+  "n_exploit_both": 0,
+  "n_exploit_transient": 0,
+  "drift_per_action": -0.003338703977117071
+ },
+ "n_cycles": 626,
+ "n_neutral": 484,
+ "n_exploit_cig": 293,
+ "n_exploit_pbim": 0,
+ "n_exploit_both": 0,
+ "consistency_rows": [
+  {
+   "name": "c447_1-4-1-4-1-4-1_all",
+   "uses_overlap": false,
+   "sensors": [
+    "s0_z0_n1",
+    "s1_z0_n4"
+   ],
+   "neutral": true,
+   "true_rate": 0.013556560634713666,
+   "carried": 0.42555917319021974,
+   "licensed": 1.0429823436099348,
+   "clipped": 0.42555917319021974,
+   "licensed_minus_carried": 0.6174231704197151,
+   "frac_inconsistent": 0.0,
+   "n_senses": 6,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c552_2-3-2-3-2-3-2_only_s2_z1_n2",
+   "uses_overlap": false,
+   "sensors": [
+    "s2_z1_n2"
+   ],
+   "neutral": true,
+   "true_rate": 0.013111876039758386,
+   "carried": 0.3479494361520321,
+   "licensed": 0.6100422540257674,
+   "clipped": 0.3479494361520321,
+   "licensed_minus_carried": 0.2620928178737353,
+   "frac_inconsistent": 0.0,
+   "n_senses": 3,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c327_1-2-1-2-1-2-1_only_s2_z1_n2",
+   "uses_overlap": false,
+   "sensors": [
+    "s2_z1_n2"
+   ],
+   "neutral": true,
+   "true_rate": 0.013111876039758386,
+   "carried": 0.3479494361520321,
+   "licensed": 0.6100422540257674,
+   "clipped": 0.3479494361520321,
+   "licensed_minus_carried": 0.2620928178737353,
+   "frac_inconsistent": 0.0,
+   "n_senses": 3,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c336_1-2-1-2-3-2-1_only_s2_z1_n2",
+   "uses_overlap": false,
+   "sensors": [
+    "s2_z1_n2"
+   ],
+   "neutral": true,
+   "true_rate": 0.013111876039758386,
+   "carried": 0.3479494361520321,
+   "licensed": 0.6100422540257674,
+   "clipped": 0.3479494361520321,
+   "licensed_minus_carried": 0.2620928178737353,
+   "frac_inconsistent": 0.0,
+   "n_senses": 3,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c392_1-2-3-2-3-2-1_only_s2_z1_n2",
+   "uses_overlap": false,
+   "sensors": [
+    "s2_z1_n2"
+   ],
+   "neutral": true,
+   "true_rate": 0.013111876039758386,
+   "carried": 0.3479494361520321,
+   "licensed": 0.6100422540257674,
+   "clipped": 0.3479494361520321,
+   "licensed_minus_carried": 0.2620928178737353,
+   "frac_inconsistent": 0.0,
+   "n_senses": 3,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c225_0-5-0-5-0-5-0_only_s3_z1_n5",
+   "uses_overlap": false,
+   "sensors": [
+    "s3_z1_n5"
+   ],
+   "neutral": true,
+   "true_rate": 0.013111876039758386,
+   "carried": 0.30309387339437355,
+   "licensed": 0.5275171967022954,
+   "clipped": 0.30309387339437355,
+   "licensed_minus_carried": 0.2244233233079218,
+   "frac_inconsistent": 0.0,
+   "n_senses": 3,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c238_0-5-0-5-4-5-0_only_s3_z1_n5",
+   "uses_overlap": false,
+   "sensors": [
+    "s3_z1_n5"
+   ],
+   "neutral": true,
+   "true_rate": 0.013111876039758386,
+   "carried": 0.30309387339437355,
+   "licensed": 0.5275171967022954,
+   "clipped": 0.30309387339437355,
+   "licensed_minus_carried": 0.2244233233079218,
+   "frac_inconsistent": 0.0,
+   "n_senses": 3,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c313_0-5-4-5-4-5-0_only_s3_z1_n5",
+   "uses_overlap": false,
+   "sensors": [
+    "s3_z1_n5"
+   ],
+   "neutral": true,
+   "true_rate": 0.013111876039758386,
+   "carried": 0.30309387339437355,
+   "licensed": 0.5275171967022954,
+   "clipped": 0.30309387339437355,
+   "licensed_minus_carried": 0.2244233233079218,
+   "frac_inconsistent": 0.0,
+   "n_senses": 3,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c624_4-5-4-5-4-5-4_only_s3_z1_n5",
+   "uses_overlap": false,
+   "sensors": [
+    "s3_z1_n5"
+   ],
+   "neutral": true,
+   "true_rate": 0.013111876039758386,
+   "carried": 0.30309387339437355,
+   "licensed": 0.5275171967022954,
+   "clipped": 0.30309387339437355,
+   "licensed_minus_carried": 0.2244233233079218,
+   "frac_inconsistent": 0.0,
+   "n_senses": 3,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c326_1-2-1-2-1-2-1_only_s0_z0_n1",
+   "uses_overlap": false,
+   "sensors": [
+    "s0_z0_n1"
+   ],
+   "neutral": true,
+   "true_rate": 0.013226806042267558,
+   "carried": 0.3496085977243508,
+   "licensed": 0.6418181120033972,
+   "clipped": 0.3496085977243508,
+   "licensed_minus_carried": 0.2922095142790464,
+   "frac_inconsistent": 0.0,
+   "n_senses": 3,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c330_1-2-1-2-1-4-1_only_s0_z0_n1",
+   "uses_overlap": false,
+   "sensors": [
+    "s0_z0_n1"
+   ],
+   "neutral": true,
+   "true_rate": 0.013226806042267558,
+   "carried": 0.3496085977243508,
+   "licensed": 0.6418181120033972,
+   "clipped": 0.3496085977243508,
+   "licensed_minus_carried": 0.2922095142790464,
+   "frac_inconsistent": 0.0,
+   "n_senses": 3,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c353_1-2-1-4-1-4-1_only_s0_z0_n1",
+   "uses_overlap": false,
+   "sensors": [
+    "s0_z0_n1"
+   ],
+   "neutral": true,
+   "true_rate": 0.013226806042267558,
+   "carried": 0.3496085977243508,
+   "licensed": 0.6418181120033972,
+   "clipped": 0.3496085977243508,
+   "licensed_minus_carried": 0.2922095142790464,
+   "frac_inconsistent": 0.0,
+   "n_senses": 3,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c448_1-4-1-4-1-4-1_only_s0_z0_n1",
+   "uses_overlap": false,
+   "sensors": [
+    "s0_z0_n1"
+   ],
+   "neutral": true,
+   "true_rate": 0.013226806042267558,
+   "carried": 0.3496085977243508,
+   "licensed": 0.6418181120033972,
+   "clipped": 0.3496085977243508,
+   "licensed_minus_carried": 0.2922095142790464,
+   "frac_inconsistent": 0.0,
+   "n_senses": 3,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c449_1-4-1-4-1-4-1_only_s1_z0_n4",
+   "uses_overlap": false,
+   "sensors": [
+    "s1_z0_n4"
+   ],
+   "neutral": true,
+   "true_rate": 0.013226806042267558,
+   "carried": 0.34834327718735403,
+   "licensed": 0.630288931569608,
+   "clipped": 0.34834327718735403,
+   "licensed_minus_carried": 0.28194565438225394,
+   "frac_inconsistent": 0.0,
+   "n_senses": 3,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c460_1-4-1-4-3-4-1_only_s1_z0_n4",
+   "uses_overlap": false,
+   "sensors": [
+    "s1_z0_n4"
+   ],
+   "neutral": true,
+   "true_rate": 0.013226806042267558,
+   "carried": 0.34834327718735403,
+   "licensed": 0.630288931569608,
+   "clipped": 0.34834327718735403,
+   "licensed_minus_carried": 0.28194565438225394,
+   "frac_inconsistent": 0.0,
+   "n_senses": 3,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c466_1-4-1-4-5-4-1_only_s1_z0_n4",
+   "uses_overlap": false,
+   "sensors": [
+    "s1_z0_n4"
+   ],
+   "neutral": true,
+   "true_rate": 0.013226806042267558,
+   "carried": 0.34834327718735403,
+   "licensed": 0.630288931569608,
+   "clipped": 0.34834327718735403,
+   "licensed_minus_carried": 0.28194565438225394,
+   "frac_inconsistent": 0.0,
+   "n_senses": 3,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c505_1-4-3-4-3-4-1_only_s1_z0_n4",
+   "uses_overlap": false,
+   "sensors": [
+    "s1_z0_n4"
+   ],
+   "neutral": true,
+   "true_rate": 0.013226806042267558,
+   "carried": 0.34834327718735403,
+   "licensed": 0.630288931569608,
+   "clipped": 0.34834327718735403,
+   "licensed_minus_carried": 0.28194565438225394,
+   "frac_inconsistent": 0.0,
+   "n_senses": 3,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c511_1-4-3-4-5-4-1_only_s1_z0_n4",
+   "uses_overlap": false,
+   "sensors": [
+    "s1_z0_n4"
+   ],
+   "neutral": true,
+   "true_rate": 0.013226806042267558,
+   "carried": 0.34834327718735403,
+   "licensed": 0.630288931569608,
+   "clipped": 0.34834327718735403,
+   "licensed_minus_carried": 0.28194565438225394,
+   "frac_inconsistent": 0.0,
+   "n_senses": 3,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c531_1-4-5-4-3-4-1_only_s1_z0_n4",
+   "uses_overlap": false,
+   "sensors": [
+    "s1_z0_n4"
+   ],
+   "neutral": true,
+   "true_rate": 0.013226806042267558,
+   "carried": 0.34834327718735403,
+   "licensed": 0.630288931569608,
+   "clipped": 0.34834327718735403,
+   "licensed_minus_carried": 0.28194565438225394,
+   "frac_inconsistent": 0.0,
+   "n_senses": 3,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c538_1-4-5-4-5-4-1_only_s1_z0_n4",
+   "uses_overlap": false,
+   "sensors": [
+    "s1_z0_n4"
+   ],
+   "neutral": true,
+   "true_rate": 0.013226806042267558,
+   "carried": 0.34834327718735403,
+   "licensed": 0.630288931569608,
+   "clipped": 0.34834327718735403,
+   "licensed_minus_carried": 0.28194565438225394,
+   "frac_inconsistent": 0.0,
+   "n_senses": 3,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c592_3-4-3-4-3-4-3_only_s1_z0_n4",
+   "uses_overlap": false,
+   "sensors": [
+    "s1_z0_n4"
+   ],
+   "neutral": true,
+   "true_rate": 0.013226806042267558,
+   "carried": 0.34834327718735403,
+   "licensed": 0.630288931569608,
+   "clipped": 0.34834327718735403,
+   "licensed_minus_carried": 0.28194565438225394,
+   "frac_inconsistent": 0.0,
+   "n_senses": 3,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c597_3-4-3-4-5-4-3_only_s1_z0_n4",
+   "uses_overlap": false,
+   "sensors": [
+    "s1_z0_n4"
+   ],
+   "neutral": true,
+   "true_rate": 0.013226806042267558,
+   "carried": 0.34834327718735403,
+   "licensed": 0.630288931569608,
+   "clipped": 0.34834327718735403,
+   "licensed_minus_carried": 0.28194565438225394,
+   "frac_inconsistent": 0.0,
+   "n_senses": 3,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c609_3-4-5-4-5-4-3_only_s1_z0_n4",
+   "uses_overlap": false,
+   "sensors": [
+    "s1_z0_n4"
+   ],
+   "neutral": true,
+   "true_rate": 0.013226806042267558,
+   "carried": 0.34834327718735403,
+   "licensed": 0.630288931569608,
+   "clipped": 0.34834327718735403,
+   "licensed_minus_carried": 0.28194565438225394,
+   "frac_inconsistent": 0.0,
+   "n_senses": 3,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c11_0-1-0-1-0-1-0_only_s0_z0_n1",
+   "uses_overlap": false,
+   "sensors": [
+    "s0_z0_n1"
+   ],
+   "neutral": true,
+   "true_rate": 0.013226806042267558,
+   "carried": 0.3496085977243508,
+   "licensed": 0.6418181120033972,
+   "clipped": 0.3496085977243508,
+   "licensed_minus_carried": 0.2922095142790464,
+   "frac_inconsistent": 0.0,
+   "n_senses": 3,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c22_0-1-0-1-2-1-0_only_s0_z0_n1",
+   "uses_overlap": false,
+   "sensors": [
+    "s0_z0_n1"
+   ],
+   "neutral": true,
+   "true_rate": 0.013226806042267558,
+   "carried": 0.3496085977243508,
+   "licensed": 0.6418181120033972,
+   "clipped": 0.3496085977243508,
+   "licensed_minus_carried": 0.2922095142790464,
+   "frac_inconsistent": 0.0,
+   "n_senses": 3,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c28_0-1-0-1-4-1-0_only_s0_z0_n1",
+   "uses_overlap": false,
+   "sensors": [
+    "s0_z0_n1"
+   ],
+   "neutral": true,
+   "true_rate": 0.013226806042267558,
+   "carried": 0.3496085977243508,
+   "licensed": 0.6418181120033972,
+   "clipped": 0.3496085977243508,
+   "licensed_minus_carried": 0.2922095142790464,
+   "frac_inconsistent": 0.0,
+   "n_senses": 3,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c80_0-1-2-1-2-1-0_only_s0_z0_n1",
+   "uses_overlap": false,
+   "sensors": [
+    "s0_z0_n1"
+   ],
+   "neutral": true,
+   "true_rate": 0.013226806042267558,
+   "carried": 0.3496085977243508,
+   "licensed": 0.6418181120033972,
+   "clipped": 0.3496085977243508,
+   "licensed_minus_carried": 0.2922095142790464,
+   "frac_inconsistent": 0.0,
+   "n_senses": 3,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c86_0-1-2-1-4-1-0_only_s0_z0_n1",
+   "uses_overlap": false,
+   "sensors": [
+    "s0_z0_n1"
+   ],
+   "neutral": true,
+   "true_rate": 0.013226806042267558,
+   "carried": 0.3496085977243508,
+   "licensed": 0.6418181120033972,
+   "clipped": 0.3496085977243508,
+   "licensed_minus_carried": 0.2922095142790464,
+   "frac_inconsistent": 0.0,
+   "n_senses": 3,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c141_0-1-4-1-2-1-0_only_s0_z0_n1",
+   "uses_overlap": false,
+   "sensors": [
+    "s0_z0_n1"
+   ],
+   "neutral": true,
+   "true_rate": 0.013226806042267558,
+   "carried": 0.3496085977243508,
+   "licensed": 0.6418181120033972,
+   "clipped": 0.3496085977243508,
+   "licensed_minus_carried": 0.2922095142790464,
+   "frac_inconsistent": 0.0,
+   "n_senses": 3,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c148_0-1-4-1-4-1-0_only_s0_z0_n1",
+   "uses_overlap": false,
+   "sensors": [
+    "s0_z0_n1"
+   ],
+   "neutral": true,
+   "true_rate": 0.013226806042267558,
+   "carried": 0.3496085977243508,
+   "licensed": 0.6418181120033972,
+   "clipped": 0.3496085977243508,
+   "licensed_minus_carried": 0.2922095142790464,
+   "frac_inconsistent": 0.0,
+   "n_senses": 3,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c623_4-5-4-5-4-5-4_only_s1_z0_n4",
+   "uses_overlap": false,
+   "sensors": [
+    "s1_z0_n4"
+   ],
+   "neutral": true,
+   "true_rate": 0.013226806042267558,
+   "carried": 0.34830302267695434,
+   "licensed": 0.630264387304737,
+   "clipped": 0.34830302267695434,
+   "licensed_minus_carried": 0.28196136462778265,
+   "frac_inconsistent": 0.0,
+   "n_senses": 3,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c554_2-3-2-3-2-3-2_only_s7_z2_n3",
+   "uses_overlap": false,
+   "sensors": [
+    "s7_z2_n3"
+   ],
+   "neutral": true,
+   "true_rate": 0.013643694485101054,
+   "carried": 0.38864898506131196,
+   "licensed": 0.6869554429517614,
+   "clipped": 0.38864898506131196,
+   "licensed_minus_carried": 0.2983064578904494,
+   "frac_inconsistent": 0.0,
+   "n_senses": 3,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c560_2-3-2-3-4-3-2_only_s7_z2_n3",
+   "uses_overlap": false,
+   "sensors": [
+    "s7_z2_n3"
+   ],
+   "neutral": true,
+   "true_rate": 0.013643694485101054,
+   "carried": 0.38864898506131196,
+   "licensed": 0.6869554429517614,
+   "clipped": 0.38864898506131196,
+   "licensed_minus_carried": 0.2983064578904494,
+   "frac_inconsistent": 0.0,
+   "n_senses": 3,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c572_2-3-4-3-4-3-2_only_s7_z2_n3",
+   "uses_overlap": false,
+   "sensors": [
+    "s7_z2_n3"
+   ],
+   "neutral": true,
+   "true_rate": 0.013643694485101054,
+   "carried": 0.38864898506131196,
+   "licensed": 0.6869554429517614,
+   "clipped": 0.38864898506131196,
+   "licensed_minus_carried": 0.2983064578904494,
+   "frac_inconsistent": 0.0,
+   "n_senses": 3,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c594_3-4-3-4-3-4-3_only_s7_z2_n3",
+   "uses_overlap": false,
+   "sensors": [
+    "s7_z2_n3"
+   ],
+   "neutral": true,
+   "true_rate": 0.013643694485101054,
+   "carried": 0.38861205126562237,
+   "licensed": 0.6869539065462886,
+   "clipped": 0.38861205126562237,
+   "licensed_minus_carried": 0.29834185528066626,
+   "frac_inconsistent": 0.0,
+   "n_senses": 3,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c558_2-3-2-3-4-3-2_only_s2_z1_n2",
+   "uses_overlap": false,
+   "sensors": [
+    "s2_z1_n2"
+   ],
+   "neutral": true,
+   "true_rate": 0.012749087870103093,
+   "carried": 0.3014826041567866,
+   "licensed": 0.4680518027341927,
+   "clipped": 0.3014826041567866,
+   "licensed_minus_carried": 0.1665691985774061,
+   "frac_inconsistent": 0.0,
+   "n_senses": 2,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c479_1-4-3-2-3-2-1_only_s2_z1_n2",
+   "uses_overlap": false,
+   "sensors": [
+    "s2_z1_n2"
+   ],
+   "neutral": true,
+   "true_rate": 0.012749087870103093,
+   "carried": 0.3015128588190976,
+   "licensed": 0.46805545967053713,
+   "clipped": 0.3015128588190976,
+   "licensed_minus_carried": 0.16654260085143952,
+   "frac_inconsistent": 0.0,
+   "n_senses": 2,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c360_1-2-1-4-3-2-1_only_s2_z1_n2",
+   "uses_overlap": false,
+   "sensors": [
+    "s2_z1_n2"
+   ],
+   "neutral": true,
+   "true_rate": 0.012749087870103093,
+   "carried": 0.3014978997793596,
+   "licensed": 0.468054088521068,
+   "clipped": 0.3014978997793596,
+   "licensed_minus_carried": 0.1665561887417084,
+   "frac_inconsistent": 0.0,
+   "n_senses": 2,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c420_1-2-3-4-3-2-1_only_s2_z1_n2",
+   "uses_overlap": false,
+   "sensors": [
+    "s2_z1_n2"
+   ],
+   "neutral": true,
+   "true_rate": 0.012749087870103093,
+   "carried": 0.3014978997793596,
+   "licensed": 0.468054088521068,
+   "clipped": 0.3014978997793596,
+   "licensed_minus_carried": 0.1665561887417084,
+   "frac_inconsistent": 0.0,
+   "n_senses": 2,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c332_1-2-1-2-1-4-1_only_s2_z1_n2",
+   "uses_overlap": false,
+   "sensors": [
+    "s2_z1_n2"
+   ],
+   "neutral": true,
+   "true_rate": 0.012749087870103093,
+   "carried": 0.3014826041567866,
+   "licensed": 0.4680518027341927,
+   "clipped": 0.3014826041567866,
+   "licensed_minus_carried": 0.1665691985774061,
+   "frac_inconsistent": 0.0,
+   "n_senses": 2,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c343_1-2-1-2-3-4-1_only_s2_z1_n2",
+   "uses_overlap": false,
+   "sensors": [
+    "s2_z1_n2"
+   ],
+   "neutral": true,
+   "true_rate": 0.012749087870103093,
+   "carried": 0.3014826041567866,
+   "licensed": 0.4680518027341927,
+   "clipped": 0.3014826041567866,
+   "licensed_minus_carried": 0.1665691985774061,
+   "frac_inconsistent": 0.0,
+   "n_senses": 2,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c386_1-2-3-2-1-4-1_only_s2_z1_n2",
+   "uses_overlap": false,
+   "sensors": [
+    "s2_z1_n2"
+   ],
+   "neutral": true,
+   "true_rate": 0.012749087870103093,
+   "carried": 0.3014826041567866,
+   "licensed": 0.4680518027341927,
+   "clipped": 0.3014826041567866,
+   "licensed_minus_carried": 0.1665691985774061,
+   "frac_inconsistent": 0.0,
+   "n_senses": 2,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c399_1-2-3-2-3-4-1_only_s2_z1_n2",
+   "uses_overlap": false,
+   "sensors": [
+    "s2_z1_n2"
+   ],
+   "neutral": true,
+   "true_rate": 0.012749087870103093,
+   "carried": 0.3014826041567866,
+   "licensed": 0.4680518027341927,
+   "clipped": 0.3014826041567866,
+   "licensed_minus_carried": 0.1665691985774061,
+   "frac_inconsistent": 0.0,
+   "n_senses": 2,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c539_1-4-5-4-5-4-1_only_s3_z1_n5",
+   "uses_overlap": false,
+   "sensors": [
+    "s3_z1_n5"
+   ],
+   "neutral": true,
+   "true_rate": 0.012749087870103093,
+   "carried": 0.2626775394323537,
+   "licensed": 0.40470321368449097,
+   "clipped": 0.2626775394323537,
+   "licensed_minus_carried": 0.14202567425213725,
+   "frac_inconsistent": 0.0,
+   "n_senses": 2,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c610_3-4-5-4-5-4-3_only_s3_z1_n5",
+   "uses_overlap": false,
+   "sensors": [
+    "s3_z1_n5"
+   ],
+   "neutral": true,
+   "true_rate": 0.012749087870103093,
+   "carried": 0.2626775394323537,
+   "licensed": 0.40470321368449097,
+   "clipped": 0.2626775394323537,
+   "licensed_minus_carried": 0.14202567425213725,
+   "frac_inconsistent": 0.0,
+   "n_senses": 2,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c81_0-1-2-1-2-1-0_only_s2_z1_n2",
+   "uses_overlap": false,
+   "sensors": [
+    "s2_z1_n2"
+   ],
+   "neutral": true,
+   "true_rate": 0.012749087870103093,
+   "carried": 0.3014826041567866,
+   "licensed": 0.4680518027341927,
+   "clipped": 0.3014826041567866,
+   "licensed_minus_carried": 0.1665691985774061,
+   "frac_inconsistent": 0.0,
+   "n_senses": 2,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c102_0-1-2-3-2-1-0_only_s2_z1_n2",
+   "uses_overlap": false,
+   "sensors": [
+    "s2_z1_n2"
+   ],
+   "neutral": true,
+   "true_rate": 0.012749087870103093,
+   "carried": 0.3014826041567866,
+   "licensed": 0.4680518027341927,
+   "clipped": 0.3014826041567866,
+   "licensed_minus_carried": 0.1665691985774061,
+   "frac_inconsistent": 0.0,
+   "n_senses": 2,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c48_0-1-0-5-0-5-0_only_s3_z1_n5",
+   "uses_overlap": false,
+   "sensors": [
+    "s3_z1_n5"
+   ],
+   "neutral": true,
+   "true_rate": 0.012749087870103093,
+   "carried": 0.2626775394323537,
+   "licensed": 0.40470321368449097,
+   "clipped": 0.2626775394323537,
+   "licensed_minus_carried": 0.14202567425213725,
+   "frac_inconsistent": 0.0,
+   "n_senses": 2,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c62_0-1-0-5-4-5-0_only_s3_z1_n5",
+   "uses_overlap": false,
+   "sensors": [
+    "s3_z1_n5"
+   ],
+   "neutral": true,
+   "true_rate": 0.012749087870103093,
+   "carried": 0.2626775394323537,
+   "licensed": 0.40470321368449097,
+   "clipped": 0.2626775394323537,
+   "licensed_minus_carried": 0.14202567425213725,
+   "frac_inconsistent": 0.0,
+   "n_senses": 2,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c196_0-1-4-5-0-5-0_only_s3_z1_n5",
+   "uses_overlap": false,
+   "sensors": [
+    "s3_z1_n5"
+   ],
+   "neutral": true,
+   "true_rate": 0.012749087870103093,
+   "carried": 0.2626775394323537,
+   "licensed": 0.40470321368449097,
+   "clipped": 0.2626775394323537,
+   "licensed_minus_carried": 0.14202567425213725,
+   "frac_inconsistent": 0.0,
+   "n_senses": 2,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c210_0-1-4-5-4-5-0_only_s3_z1_n5",
+   "uses_overlap": false,
+   "sensors": [
+    "s3_z1_n5"
+   ],
+   "neutral": true,
+   "true_rate": 0.012749087870103093,
+   "carried": 0.2626775394323537,
+   "licensed": 0.40470321368449097,
+   "clipped": 0.2626775394323537,
+   "licensed_minus_carried": 0.14202567425213725,
+   "frac_inconsistent": 0.0,
+   "n_senses": 2,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c267_0-5-4-1-4-5-0_only_s3_z1_n5",
+   "uses_overlap": false,
+   "sensors": [
+    "s3_z1_n5"
+   ],
+   "neutral": true,
+   "true_rate": 0.012749087870103093,
+   "carried": 0.26266250974582017,
+   "licensed": 0.4047008713503103,
+   "clipped": 0.26266250974582017,
+   "licensed_minus_carried": 0.14203836160449013,
+   "frac_inconsistent": 0.0,
+   "n_senses": 2,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c292_0-5-4-3-4-5-0_only_s3_z1_n5",
+   "uses_overlap": false,
+   "sensors": [
+    "s3_z1_n5"
+   ],
+   "neutral": true,
+   "true_rate": 0.012749087870103093,
+   "carried": 0.26266250974582017,
+   "licensed": 0.4047008713503103,
+   "clipped": 0.26266250974582017,
+   "licensed_minus_carried": 0.14203836160449013,
+   "frac_inconsistent": 0.0,
+   "n_senses": 2,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c232_0-5-0-5-4-1-0_only_s3_z1_n5",
+   "uses_overlap": false,
+   "sensors": [
+    "s3_z1_n5"
+   ],
+   "neutral": true,
+   "true_rate": 0.012749087870103093,
+   "carried": 0.26264725350664375,
+   "licensed": 0.4046974399518376,
+   "clipped": 0.26264725350664375,
+   "licensed_minus_carried": 0.14205018644519385,
+   "frac_inconsistent": 0.0,
+   "n_senses": 2,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c307_0-5-4-5-4-1-0_only_s3_z1_n5",
+   "uses_overlap": false,
+   "sensors": [
+    "s3_z1_n5"
+   ],
+   "neutral": true,
+   "true_rate": 0.012749087870103093,
+   "carried": 0.26264725350664375,
+   "licensed": 0.4046974399518376,
+   "clipped": 0.26264725350664375,
+   "licensed_minus_carried": 0.14205018644519385,
+   "frac_inconsistent": 0.0,
+   "n_senses": 2,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c569_2-3-4-3-4-3-2_only_s1_z0_n4",
+   "uses_overlap": false,
+   "sensors": [
+    "s1_z0_n4"
+   ],
+   "neutral": true,
+   "true_rate": 0.012912724835912659,
+   "carried": 0.3016853437811249,
+   "licensed": 0.4826574212324656,
+   "clipped": 0.3016853437811249,
+   "licensed_minus_carried": 0.1809720774513407,
+   "frac_inconsistent": 0.0,
+   "n_senses": 2,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c575_2-3-4-5-4-3-2_only_s1_z0_n4",
+   "uses_overlap": false,
+   "sensors": [
+    "s1_z0_n4"
+   ],
+   "neutral": true,
+   "true_rate": 0.012912724835912659,
+   "carried": 0.3016853437811249,
+   "licensed": 0.4826574212324656,
+   "clipped": 0.3016853437811249,
+   "licensed_minus_carried": 0.1809720774513407,
+   "frac_inconsistent": 0.0,
+   "n_senses": 2,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c579_2-3-4-5-4-3-2_only_s7_z2_n3",
+   "uses_overlap": false,
+   "sensors": [
+    "s7_z2_n3"
+   ],
+   "neutral": true,
+   "true_rate": 0.013517544772303491,
+   "carried": 0.33643785306679264,
+   "licensed": 0.5261588386912148,
+   "clipped": 0.33643785306679264,
+   "licensed_minus_carried": 0.1897209856244222,
+   "frac_inconsistent": 0.0,
+   "n_senses": 2,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c384_1-2-3-2-1-4-1_only_s0_z0_n1",
+   "uses_overlap": false,
+   "sensors": [
+    "s0_z0_n1"
+   ],
+   "neutral": true,
+   "true_rate": 0.012912724835912659,
+   "carried": 0.30263740371076486,
+   "licensed": 0.4916421810632546,
+   "clipped": 0.30263740371076486,
+   "licensed_minus_carried": 0.18900477735248972,
+   "frac_inconsistent": 0.0,
+   "n_senses": 2,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c411_1-2-3-4-1-4-1_only_s0_z0_n1",
+   "uses_overlap": false,
+   "sensors": [
+    "s0_z0_n1"
+   ],
+   "neutral": true,
+   "true_rate": 0.012912724835912659,
+   "carried": 0.30263740371076486,
+   "licensed": 0.4916421810632546,
+   "clipped": 0.30263740371076486,
+   "licensed_minus_carried": 0.18900477735248972,
+   "frac_inconsistent": 0.0,
+   "n_senses": 2,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c335_1-2-1-2-3-2-1_only_s0_z0_n1",
+   "uses_overlap": false,
+   "sensors": [
+    "s0_z0_n1"
+   ],
+   "neutral": true,
+   "true_rate": 0.012912724835912659,
+   "carried": 0.30261828170193517,
+   "licensed": 0.4916315672191157,
+   "clipped": 0.30261828170193517,
+   "licensed_minus_carried": 0.18901328551718055,
+   "frac_inconsistent": 0.0,
+   "n_senses": 2,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c341_1-2-1-2-3-4-1_only_s0_z0_n1",
+   "uses_overlap": false,
+   "sensors": [
+    "s0_z0_n1"
+   ],
+   "neutral": true,
+   "true_rate": 0.012912724835912659,
+   "carried": 0.30261828170193517,
+   "licensed": 0.4916315672191157,
+   "clipped": 0.30261828170193517,
+   "licensed_minus_carried": 0.18901328551718055,
+   "frac_inconsistent": 0.0,
+   "n_senses": 2,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c358_1-2-1-4-3-2-1_only_s0_z0_n1",
+   "uses_overlap": false,
+   "sensors": [
+    "s0_z0_n1"
+   ],
+   "neutral": true,
+   "true_rate": 0.012912724835912659,
+   "carried": 0.30261828170193517,
+   "licensed": 0.4916315672191157,
+   "clipped": 0.30261828170193517,
+   "licensed_minus_carried": 0.18901328551718055,
+   "frac_inconsistent": 0.0,
+   "n_senses": 2,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c365_1-2-1-4-3-4-1_only_s0_z0_n1",
+   "uses_overlap": false,
+   "sensors": [
+    "s0_z0_n1"
+   ],
+   "neutral": true,
+   "true_rate": 0.012912724835912659,
+   "carried": 0.30261828170193517,
+   "licensed": 0.4916315672191157,
+   "clipped": 0.30261828170193517,
+   "licensed_minus_carried": 0.18901328551718055,
+   "frac_inconsistent": 0.0,
+   "n_senses": 2,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c372_1-2-1-4-5-4-1_only_s0_z0_n1",
+   "uses_overlap": false,
+   "sensors": [
+    "s0_z0_n1"
+   ],
+   "neutral": true,
+   "true_rate": 0.012912724835912659,
+   "carried": 0.30261828170193517,
+   "licensed": 0.4916315672191157,
+   "clipped": 0.30261828170193517,
+   "licensed_minus_carried": 0.18901328551718055,
+   "frac_inconsistent": 0.0,
+   "n_senses": 2,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c452_1-4-1-4-3-2-1_only_s0_z0_n1",
+   "uses_overlap": false,
+   "sensors": [
+    "s0_z0_n1"
+   ],
+   "neutral": true,
+   "true_rate": 0.012912724835912659,
+   "carried": 0.30261828170193517,
+   "licensed": 0.4916315672191157,
+   "clipped": 0.30261828170193517,
+   "licensed_minus_carried": 0.18901328551718055,
+   "frac_inconsistent": 0.0,
+   "n_senses": 2,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c459_1-4-1-4-3-4-1_only_s0_z0_n1",
+   "uses_overlap": false,
+   "sensors": [
+    "s0_z0_n1"
+   ],
+   "neutral": true,
+   "true_rate": 0.012912724835912659,
+   "carried": 0.30261828170193517,
+   "licensed": 0.4916315672191157,
+   "clipped": 0.30261828170193517,
+   "licensed_minus_carried": 0.18901328551718055,
+   "frac_inconsistent": 0.0,
+   "n_senses": 2,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c465_1-4-1-4-5-4-1_only_s0_z0_n1",
+   "uses_overlap": false,
+   "sensors": [
+    "s0_z0_n1"
+   ],
+   "neutral": true,
+   "true_rate": 0.012912724835912659,
+   "carried": 0.30261828170193517,
+   "licensed": 0.4916315672191157,
+   "clipped": 0.30261828170193517,
+   "licensed_minus_carried": 0.18901328551718055,
+   "frac_inconsistent": 0.0,
+   "n_senses": 2,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c443_1-4-1-4-1_all",
+   "uses_overlap": false,
+   "sensors": [
+    "s0_z0_n1",
+    "s1_z0_n4"
+   ],
+   "neutral": true,
+   "true_rate": 0.013389651905963085,
+   "carried": 0.2805496661429119,
+   "licensed": 0.6938675862005887,
+   "clipped": 0.2805496661429119,
+   "licensed_minus_carried": 0.41331792005767687,
+   "frac_inconsistent": 0.0,
+   "n_senses": 4,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c453_1-4-1-4-3-2-1_only_s1_z0_n4",
+   "uses_overlap": false,
+   "sensors": [
+    "s1_z0_n4"
+   ],
+   "neutral": true,
+   "true_rate": 0.012912724835912659,
+   "carried": 0.3016495495645213,
+   "licensed": 0.48263615110481056,
+   "clipped": 0.3016495495645213,
+   "licensed_minus_carried": 0.18098660154028928,
+   "frac_inconsistent": 0.0,
+   "n_senses": 2,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c498_1-4-3-4-3-2-1_only_s1_z0_n4",
+   "uses_overlap": false,
+   "sensors": [
+    "s1_z0_n4"
+   ],
+   "neutral": true,
+   "true_rate": 0.012912724835912659,
+   "carried": 0.3016495495645213,
+   "licensed": 0.48263615110481056,
+   "clipped": 0.3016495495645213,
+   "licensed_minus_carried": 0.18098660154028928,
+   "frac_inconsistent": 0.0,
+   "n_senses": 2,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c523_1-4-5-4-3-2-1_only_s1_z0_n4",
+   "uses_overlap": false,
+   "sensors": [
+    "s1_z0_n4"
+   ],
+   "neutral": true,
+   "true_rate": 0.012912724835912659,
+   "carried": 0.3016495495645213,
+   "licensed": 0.48263615110481056,
+   "clipped": 0.3016495495645213,
+   "licensed_minus_carried": 0.18098660154028928,
+   "frac_inconsistent": 0.0,
+   "n_senses": 2,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c485_1-4-3-2-3-4-1_only_s1_z0_n4",
+   "uses_overlap": false,
+   "sensors": [
+    "s1_z0_n4"
+   ],
+   "neutral": true,
+   "true_rate": 0.012912724835912659,
+   "carried": 0.30166782144349846,
+   "licensed": 0.48264874243575345,
+   "clipped": 0.30166782144349846,
+   "licensed_minus_carried": 0.180980920992255,
+   "frac_inconsistent": 0.0,
+   "n_senses": 2,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c354_1-2-1-4-1-4-1_only_s1_z0_n4",
+   "uses_overlap": false,
+   "sensors": [
+    "s1_z0_n4"
+   ],
+   "neutral": true,
+   "true_rate": 0.012912724835912659,
+   "carried": 0.3016853437811249,
+   "licensed": 0.4826574212324656,
+   "clipped": 0.3016853437811249,
+   "licensed_minus_carried": 0.1809720774513407,
+   "frac_inconsistent": 0.0,
+   "n_senses": 2,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c366_1-2-1-4-3-4-1_only_s1_z0_n4",
+   "uses_overlap": false,
+   "sensors": [
+    "s1_z0_n4"
+   ],
+   "neutral": true,
+   "true_rate": 0.012912724835912659,
+   "carried": 0.3016853437811249,
+   "licensed": 0.4826574212324656,
+   "clipped": 0.3016853437811249,
+   "licensed_minus_carried": 0.1809720774513407,
+   "frac_inconsistent": 0.0,
+   "n_senses": 2,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c373_1-2-1-4-5-4-1_only_s1_z0_n4",
+   "uses_overlap": false,
+   "sensors": [
+    "s1_z0_n4"
+   ],
+   "neutral": true,
+   "true_rate": 0.012912724835912659,
+   "carried": 0.3016853437811249,
+   "licensed": 0.4826574212324656,
+   "clipped": 0.3016853437811249,
+   "licensed_minus_carried": 0.1809720774513407,
+   "frac_inconsistent": 0.0,
+   "n_senses": 2,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c412_1-2-3-4-1-4-1_only_s1_z0_n4",
+   "uses_overlap": false,
+   "sensors": [
+    "s1_z0_n4"
+   ],
+   "neutral": true,
+   "true_rate": 0.012912724835912659,
+   "carried": 0.3016853437811249,
+   "licensed": 0.4826574212324656,
+   "clipped": 0.3016853437811249,
+   "licensed_minus_carried": 0.1809720774513407,
+   "frac_inconsistent": 0.0,
+   "n_senses": 2,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c426_1-2-3-4-3-4-1_only_s1_z0_n4",
+   "uses_overlap": false,
+   "sensors": [
+    "s1_z0_n4"
+   ],
+   "neutral": true,
+   "true_rate": 0.012912724835912659,
+   "carried": 0.3016853437811249,
+   "licensed": 0.4826574212324656,
+   "clipped": 0.3016853437811249,
+   "licensed_minus_carried": 0.1809720774513407,
+   "frac_inconsistent": 0.0,
+   "n_senses": 2,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c433_1-2-3-4-5-4-1_only_s1_z0_n4",
+   "uses_overlap": false,
+   "sensors": [
+    "s1_z0_n4"
+   ],
+   "neutral": true,
+   "true_rate": 0.012912724835912659,
+   "carried": 0.3016853437811249,
+   "licensed": 0.4826574212324656,
+   "clipped": 0.3016853437811249,
+   "licensed_minus_carried": 0.1809720774513407,
+   "frac_inconsistent": 0.0,
+   "n_senses": 2,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c600_3-4-3-4-5-4-3_only_s7_z2_n3",
+   "uses_overlap": false,
+   "sensors": [
+    "s7_z2_n3"
+   ],
+   "neutral": true,
+   "true_rate": 0.013517544772303491,
+   "carried": 0.33638951479516566,
+   "licensed": 0.5261566213590512,
+   "clipped": 0.33638951479516566,
+   "licensed_minus_carried": 0.1897671065638855,
+   "frac_inconsistent": 0.0,
+   "n_senses": 2,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c394_1-2-3-2-3-2-1_only_s7_z2_n3",
+   "uses_overlap": false,
+   "sensors": [
+    "s7_z2_n3"
+   ],
+   "neutral": true,
+   "true_rate": 0.013517544772303491,
+   "carried": 0.33642200622011376,
+   "licensed": 0.5261580185529184,
+   "clipped": 0.33642200622011376,
+   "licensed_minus_carried": 0.18973601233280468,
+   "frac_inconsistent": 0.0,
+   "n_senses": 2,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c401_1-2-3-2-3-4-1_only_s7_z2_n3",
+   "uses_overlap": false,
+   "sensors": [
+    "s7_z2_n3"
+   ],
+   "neutral": true,
+   "true_rate": 0.013517544772303491,
+   "carried": 0.33642200622011376,
+   "licensed": 0.5261580185529184,
+   "clipped": 0.33642200622011376,
+   "licensed_minus_carried": 0.18973601233280468,
+   "frac_inconsistent": 0.0,
+   "n_senses": 2,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c422_1-2-3-4-3-2-1_only_s7_z2_n3",
+   "uses_overlap": false,
+   "sensors": [
+    "s7_z2_n3"
+   ],
+   "neutral": true,
+   "true_rate": 0.013517544772303491,
+   "carried": 0.33642200622011376,
+   "licensed": 0.5261580185529184,
+   "clipped": 0.33642200622011376,
+   "licensed_minus_carried": 0.18973601233280468,
+   "frac_inconsistent": 0.0,
+   "n_senses": 2,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c429_1-2-3-4-3-4-1_only_s7_z2_n3",
+   "uses_overlap": false,
+   "sensors": [
+    "s7_z2_n3"
+   ],
+   "neutral": true,
+   "true_rate": 0.013517544772303491,
+   "carried": 0.33642200622011376,
+   "licensed": 0.5261580185529184,
+   "clipped": 0.33642200622011376,
+   "licensed_minus_carried": 0.18973601233280468,
+   "frac_inconsistent": 0.0,
+   "n_senses": 2,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c481_1-4-3-2-3-2-1_only_s7_z2_n3",
+   "uses_overlap": false,
+   "sensors": [
+    "s7_z2_n3"
+   ],
+   "neutral": true,
+   "true_rate": 0.013517544772303491,
+   "carried": 0.33642200622011376,
+   "licensed": 0.5261580185529184,
+   "clipped": 0.33642200622011376,
+   "licensed_minus_carried": 0.18973601233280468,
+   "frac_inconsistent": 0.0,
+   "n_senses": 2,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c488_1-4-3-2-3-4-1_only_s7_z2_n3",
+   "uses_overlap": false,
+   "sensors": [
+    "s7_z2_n3"
+   ],
+   "neutral": true,
+   "true_rate": 0.013517544772303491,
+   "carried": 0.33642200622011376,
+   "licensed": 0.5261580185529184,
+   "clipped": 0.33642200622011376,
+   "licensed_minus_carried": 0.18973601233280468,
+   "frac_inconsistent": 0.0,
+   "n_senses": 2,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c501_1-4-3-4-3-2-1_only_s7_z2_n3",
+   "uses_overlap": false,
+   "sensors": [
+    "s7_z2_n3"
+   ],
+   "neutral": true,
+   "true_rate": 0.013517544772303491,
+   "carried": 0.33642200622011376,
+   "licensed": 0.5261580185529184,
+   "clipped": 0.33642200622011376,
+   "licensed_minus_carried": 0.18973601233280468,
+   "frac_inconsistent": 0.0,
+   "n_senses": 2,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c507_1-4-3-4-3-4-1_only_s7_z2_n3",
+   "uses_overlap": false,
+   "sensors": [
+    "s7_z2_n3"
+   ],
+   "neutral": true,
+   "true_rate": 0.013517544772303491,
+   "carried": 0.33642200622011376,
+   "licensed": 0.5261580185529184,
+   "clipped": 0.33642200622011376,
+   "licensed_minus_carried": 0.18973601233280468,
+   "frac_inconsistent": 0.0,
+   "n_senses": 2,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c250_0-5-4-1-2-1-0_only_s0_z0_n1",
+   "uses_overlap": false,
+   "sensors": [
+    "s0_z0_n1"
+   ],
+   "neutral": true,
+   "true_rate": 0.012912724835912659,
+   "carried": 0.30265555358942575,
+   "licensed": 0.49164920656224914,
+   "clipped": 0.30265555358942575,
+   "licensed_minus_carried": 0.1889936529728234,
+   "frac_inconsistent": 0.0,
+   "n_senses": 2,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c258_0-5-4-1-4-1-0_only_s0_z0_n1",
+   "uses_overlap": false,
+   "sensors": [
+    "s0_z0_n1"
+   ],
+   "neutral": true,
+   "true_rate": 0.012912724835912659,
+   "carried": 0.30265555358942575,
+   "licensed": 0.49164920656224914,
+   "clipped": 0.30265555358942575,
+   "licensed_minus_carried": 0.1889936529728234,
+   "frac_inconsistent": 0.0,
+   "n_senses": 2,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c53_0-1-0-5-4-1-0_only_s0_z0_n1",
+   "uses_overlap": false,
+   "sensors": [
+    "s0_z0_n1"
+   ],
+   "neutral": true,
+   "true_rate": 0.012912724835912659,
+   "carried": 0.30263740371076486,
+   "licensed": 0.4916421810632546,
+   "clipped": 0.30263740371076486,
+   "licensed_minus_carried": 0.18900477735248972,
+   "frac_inconsistent": 0.0,
+   "n_senses": 2,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c101_0-1-2-3-2-1-0_only_s0_z0_n1",
+   "uses_overlap": false,
+   "sensors": [
+    "s0_z0_n1"
+   ],
+   "neutral": true,
+   "true_rate": 0.012912724835912659,
+   "carried": 0.30263740371076486,
+   "licensed": 0.4916421810632546,
+   "clipped": 0.30263740371076486,
+   "licensed_minus_carried": 0.18900477735248972,
+   "frac_inconsistent": 0.0,
+   "n_senses": 2,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c109_0-1-2-3-4-1-0_only_s0_z0_n1",
+   "uses_overlap": false,
+   "sensors": [
+    "s0_z0_n1"
+   ],
+   "neutral": true,
+   "true_rate": 0.012912724835912659,
+   "carried": 0.30263740371076486,
+   "licensed": 0.4916421810632546,
+   "clipped": 0.30263740371076486,
+   "licensed_minus_carried": 0.18900477735248972,
+   "frac_inconsistent": 0.0,
+   "n_senses": 2,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c161_0-1-4-3-2-1-0_only_s0_z0_n1",
+   "uses_overlap": false,
+   "sensors": [
+    "s0_z0_n1"
+   ],
+   "neutral": true,
+   "true_rate": 0.012912724835912659,
+   "carried": 0.30263740371076486,
+   "licensed": 0.4916421810632546,
+   "clipped": 0.30263740371076486,
+   "licensed_minus_carried": 0.18900477735248972,
+   "frac_inconsistent": 0.0,
+   "n_senses": 2,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c170_0-1-4-3-4-1-0_only_s0_z0_n1",
+   "uses_overlap": false,
+   "sensors": [
+    "s0_z0_n1"
+   ],
+   "neutral": true,
+   "true_rate": 0.012912724835912659,
+   "carried": 0.30263740371076486,
+   "licensed": 0.4916421810632546,
+   "clipped": 0.30263740371076486,
+   "licensed_minus_carried": 0.18900477735248972,
+   "frac_inconsistent": 0.0,
+   "n_senses": 2,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c201_0-1-4-5-4-1-0_only_s0_z0_n1",
+   "uses_overlap": false,
+   "sensors": [
+    "s0_z0_n1"
+   ],
+   "neutral": true,
+   "true_rate": 0.012912724835912659,
+   "carried": 0.30263740371076486,
+   "licensed": 0.4916421810632546,
+   "clipped": 0.30263740371076486,
+   "licensed_minus_carried": 0.18900477735248972,
+   "frac_inconsistent": 0.0,
+   "n_senses": 2,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c16_0-1-0-1-0-5-0_only_s0_z0_n1",
+   "uses_overlap": false,
+   "sensors": [
+    "s0_z0_n1"
+   ],
+   "neutral": true,
+   "true_rate": 0.012912724835912659,
+   "carried": 0.30261828170193517,
+   "licensed": 0.4916315672191157,
+   "clipped": 0.30261828170193517,
+   "licensed_minus_carried": 0.18901328551718055,
+   "frac_inconsistent": 0.0,
+   "n_senses": 2,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c34_0-1-0-1-4-5-0_only_s0_z0_n1",
+   "uses_overlap": false,
+   "sensors": [
+    "s0_z0_n1"
+   ],
+   "neutral": true,
+   "true_rate": 0.012912724835912659,
+   "carried": 0.30261828170193517,
+   "licensed": 0.4916315672191157,
+   "clipped": 0.30261828170193517,
+   "licensed_minus_carried": 0.18901328551718055,
+   "frac_inconsistent": 0.0,
+   "n_senses": 2,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c73_0-1-2-1-0-5-0_only_s0_z0_n1",
+   "uses_overlap": false,
+   "sensors": [
+    "s0_z0_n1"
+   ],
+   "neutral": true,
+   "true_rate": 0.012912724835912659,
+   "carried": 0.30261828170193517,
+   "licensed": 0.4916315672191157,
+   "clipped": 0.30261828170193517,
+   "licensed_minus_carried": 0.18901328551718055,
+   "frac_inconsistent": 0.0,
+   "n_senses": 2,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c93_0-1-2-1-4-5-0_only_s0_z0_n1",
+   "uses_overlap": false,
+   "sensors": [
+    "s0_z0_n1"
+   ],
+   "neutral": true,
+   "true_rate": 0.012912724835912659,
+   "carried": 0.30261828170193517,
+   "licensed": 0.4916315672191157,
+   "clipped": 0.30261828170193517,
+   "licensed_minus_carried": 0.18901328551718055,
+   "frac_inconsistent": 0.0,
+   "n_senses": 2,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c134_0-1-4-1-0-5-0_only_s0_z0_n1",
+   "uses_overlap": false,
+   "sensors": [
+    "s0_z0_n1"
+   ],
+   "neutral": true,
+   "true_rate": 0.012912724835912659,
+   "carried": 0.30261828170193517,
+   "licensed": 0.4916315672191157,
+   "clipped": 0.30261828170193517,
+   "licensed_minus_carried": 0.18901328551718055,
+   "frac_inconsistent": 0.0,
+   "n_senses": 2,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c154_0-1-4-1-4-5-0_only_s0_z0_n1",
+   "uses_overlap": false,
+   "sensors": [
+    "s0_z0_n1"
+   ],
+   "neutral": true,
+   "true_rate": 0.012912724835912659,
+   "carried": 0.30261828170193517,
+   "licensed": 0.4916315672191157,
+   "clipped": 0.30261828170193517,
+   "licensed_minus_carried": 0.18901328551718055,
+   "frac_inconsistent": 0.0,
+   "n_senses": 2,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c149_0-1-4-1-4-1-0_only_s1_z0_n4",
+   "uses_overlap": false,
+   "sensors": [
+    "s1_z0_n4"
+   ],
+   "neutral": true,
+   "true_rate": 0.012912724835912659,
+   "carried": 0.3016495495645213,
+   "licensed": 0.48263615110481056,
+   "clipped": 0.3016495495645213,
+   "licensed_minus_carried": 0.18098660154028928,
+   "frac_inconsistent": 0.0,
+   "n_senses": 2,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c155_0-1-4-1-4-5-0_only_s1_z0_n4",
+   "uses_overlap": false,
+   "sensors": [
+    "s1_z0_n4"
+   ],
+   "neutral": true,
+   "true_rate": 0.012912724835912659,
+   "carried": 0.3016495495645213,
+   "licensed": 0.48263615110481056,
+   "clipped": 0.3016495495645213,
+   "licensed_minus_carried": 0.18098660154028928,
+   "frac_inconsistent": 0.0,
+   "n_senses": 2,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c171_0-1-4-3-4-1-0_only_s1_z0_n4",
+   "uses_overlap": false,
+   "sensors": [
+    "s1_z0_n4"
+   ],
+   "neutral": true,
+   "true_rate": 0.012912724835912659,
+   "carried": 0.3016495495645213,
+   "licensed": 0.48263615110481056,
+   "clipped": 0.3016495495645213,
+   "licensed_minus_carried": 0.18098660154028928,
+   "frac_inconsistent": 0.0,
+   "n_senses": 2,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c179_0-1-4-3-4-5-0_only_s1_z0_n4",
+   "uses_overlap": false,
+   "sensors": [
+    "s1_z0_n4"
+   ],
+   "neutral": true,
+   "true_rate": 0.012912724835912659,
+   "carried": 0.3016495495645213,
+   "licensed": 0.48263615110481056,
+   "clipped": 0.3016495495645213,
+   "licensed_minus_carried": 0.18098660154028928,
+   "frac_inconsistent": 0.0,
+   "n_senses": 2,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c202_0-1-4-5-4-1-0_only_s1_z0_n4",
+   "uses_overlap": false,
+   "sensors": [
+    "s1_z0_n4"
+   ],
+   "neutral": true,
+   "true_rate": 0.012912724835912659,
+   "carried": 0.3016495495645213,
+   "licensed": 0.48263615110481056,
+   "clipped": 0.3016495495645213,
+   "licensed_minus_carried": 0.18098660154028928,
+   "frac_inconsistent": 0.0,
+   "n_senses": 2,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c209_0-1-4-5-4-5-0_only_s1_z0_n4",
+   "uses_overlap": false,
+   "sensors": [
+    "s1_z0_n4"
+   ],
+   "neutral": true,
+   "true_rate": 0.012912724835912659,
+   "carried": 0.3016495495645213,
+   "licensed": 0.48263615110481056,
+   "clipped": 0.3016495495645213,
+   "licensed_minus_carried": 0.18098660154028928,
+   "frac_inconsistent": 0.0,
+   "n_senses": 2,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c259_0-5-4-1-4-1-0_only_s1_z0_n4",
+   "uses_overlap": false,
+   "sensors": [
+    "s1_z0_n4"
+   ],
+   "neutral": true,
+   "true_rate": 0.012912724835912659,
+   "carried": 0.3016495495645213,
+   "licensed": 0.48263615110481056,
+   "clipped": 0.3016495495645213,
+   "licensed_minus_carried": 0.18098660154028928,
+   "frac_inconsistent": 0.0,
+   "n_senses": 2,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c266_0-5-4-1-4-5-0_only_s1_z0_n4",
+   "uses_overlap": false,
+   "sensors": [
+    "s1_z0_n4"
+   ],
+   "neutral": true,
+   "true_rate": 0.012912724835912659,
+   "carried": 0.3016495495645213,
+   "licensed": 0.48263615110481056,
+   "clipped": 0.3016495495645213,
+   "licensed_minus_carried": 0.18098660154028928,
+   "frac_inconsistent": 0.0,
+   "n_senses": 2,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c283_0-5-4-3-4-1-0_only_s1_z0_n4",
+   "uses_overlap": false,
+   "sensors": [
+    "s1_z0_n4"
+   ],
+   "neutral": true,
+   "true_rate": 0.012912724835912659,
+   "carried": 0.3016495495645213,
+   "licensed": 0.48263615110481056,
+   "clipped": 0.3016495495645213,
+   "licensed_minus_carried": 0.18098660154028928,
+   "frac_inconsistent": 0.0,
+   "n_senses": 2,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c291_0-5-4-3-4-5-0_only_s1_z0_n4",
+   "uses_overlap": false,
+   "sensors": [
+    "s1_z0_n4"
+   ],
+   "neutral": true,
+   "true_rate": 0.012912724835912659,
+   "carried": 0.3016495495645213,
+   "licensed": 0.48263615110481056,
+   "clipped": 0.3016495495645213,
+   "licensed_minus_carried": 0.18098660154028928,
+   "frac_inconsistent": 0.0,
+   "n_senses": 2,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c306_0-5-4-5-4-1-0_only_s1_z0_n4",
+   "uses_overlap": false,
+   "sensors": [
+    "s1_z0_n4"
+   ],
+   "neutral": true,
+   "true_rate": 0.012912724835912659,
+   "carried": 0.3016495495645213,
+   "licensed": 0.48263615110481056,
+   "clipped": 0.3016495495645213,
+   "licensed_minus_carried": 0.18098660154028928,
+   "frac_inconsistent": 0.0,
+   "n_senses": 2,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c312_0-5-4-5-4-5-0_only_s1_z0_n4",
+   "uses_overlap": false,
+   "sensors": [
+    "s1_z0_n4"
+   ],
+   "neutral": true,
+   "true_rate": 0.012912724835912659,
+   "carried": 0.3016495495645213,
+   "licensed": 0.48263615110481056,
+   "clipped": 0.3016495495645213,
+   "licensed_minus_carried": 0.18098660154028928,
+   "frac_inconsistent": 0.0,
+   "n_senses": 2,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c570_2-3-4-3-4-3-2_only_s2_z1_n2",
+   "uses_overlap": false,
+   "sensors": [
+    "s2_z1_n2"
+   ],
+   "neutral": true,
+   "true_rate": 0.011772026385013401,
+   "carried": 0.2291854885089375,
+   "licensed": 0.30843062535240273,
+   "clipped": 0.2291854885089375,
+   "licensed_minus_carried": 0.07924513684346524,
+   "frac_inconsistent": 0.0,
+   "n_senses": 1,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c576_2-3-4-5-4-3-2_only_s2_z1_n2",
+   "uses_overlap": false,
+   "sensors": [
+    "s2_z1_n2"
+   ],
+   "neutral": true,
+   "true_rate": 0.011772026385013401,
+   "carried": 0.2291854885089375,
+   "licensed": 0.30843062535240273,
+   "clipped": 0.2291854885089375,
+   "licensed_minus_carried": 0.07924513684346524,
+   "frac_inconsistent": 0.0,
+   "n_senses": 1,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c577_2-3-4-5-4-3-2_only_s3_z1_n5",
+   "uses_overlap": false,
+   "sensors": [
+    "s3_z1_n5"
+   ],
+   "neutral": true,
+   "true_rate": 0.011772026385013401,
+   "carried": 0.19946436743250384,
+   "licensed": 0.2664350327820668,
+   "clipped": 0.19946436743250384,
+   "licensed_minus_carried": 0.06697066534956297,
+   "frac_inconsistent": 0.0,
+   "n_senses": 1,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c454_1-4-1-4-3-2-1_only_s2_z1_n2",
+   "uses_overlap": false,
+   "sensors": [
+    "s2_z1_n2"
+   ],
+   "neutral": true,
+   "true_rate": 0.011772026385013401,
+   "carried": 0.22922873917251851,
+   "licensed": 0.308437325816459,
+   "clipped": 0.22922873917251851,
+   "licensed_minus_carried": 0.07920858664394048,
+   "frac_inconsistent": 0.0,
+   "n_senses": 1,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c499_1-4-3-4-3-2-1_only_s2_z1_n2",
+   "uses_overlap": false,
+   "sensors": [
+    "s2_z1_n2"
+   ],
+   "neutral": true,
+   "true_rate": 0.011772026385013401,
+   "carried": 0.22922873917251851,
+   "licensed": 0.308437325816459,
+   "clipped": 0.22922873917251851,
+   "licensed_minus_carried": 0.07920858664394048,
+   "frac_inconsistent": 0.0,
+   "n_senses": 1,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c524_1-4-5-4-3-2-1_only_s2_z1_n2",
+   "uses_overlap": false,
+   "sensors": [
+    "s2_z1_n2"
+   ],
+   "neutral": true,
+   "true_rate": 0.011772026385013401,
+   "carried": 0.22922873917251851,
+   "licensed": 0.308437325816459,
+   "clipped": 0.22922873917251851,
+   "licensed_minus_carried": 0.07920858664394048,
+   "frac_inconsistent": 0.0,
+   "n_senses": 1,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c486_1-4-3-2-3-4-1_only_s2_z1_n2",
+   "uses_overlap": false,
+   "sensors": [
+    "s2_z1_n2"
+   ],
+   "neutral": true,
+   "true_rate": 0.011772026385013401,
+   "carried": 0.22920730789839427,
+   "licensed": 0.30843399692673945,
+   "clipped": 0.22920730789839427,
+   "licensed_minus_carried": 0.07922668902834518,
+   "frac_inconsistent": 0.0,
+   "n_senses": 1,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c355_1-2-1-4-1-4-1_only_s2_z1_n2",
+   "uses_overlap": false,
+   "sensors": [
+    "s2_z1_n2"
+   ],
+   "neutral": true,
+   "true_rate": 0.011772026385013401,
+   "carried": 0.2291854885089375,
+   "licensed": 0.30843062535240273,
+   "clipped": 0.2291854885089375,
+   "licensed_minus_carried": 0.07924513684346524,
+   "frac_inconsistent": 0.0,
+   "n_senses": 1,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c367_1-2-1-4-3-4-1_only_s2_z1_n2",
+   "uses_overlap": false,
+   "sensors": [
+    "s2_z1_n2"
+   ],
+   "neutral": true,
+   "true_rate": 0.011772026385013401,
+   "carried": 0.2291854885089375,
+   "licensed": 0.30843062535240273,
+   "clipped": 0.2291854885089375,
+   "licensed_minus_carried": 0.07924513684346524,
+   "frac_inconsistent": 0.0,
+   "n_senses": 1,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c374_1-2-1-4-5-4-1_only_s2_z1_n2",
+   "uses_overlap": false,
+   "sensors": [
+    "s2_z1_n2"
+   ],
+   "neutral": true,
+   "true_rate": 0.011772026385013401,
+   "carried": 0.2291854885089375,
+   "licensed": 0.30843062535240273,
+   "clipped": 0.2291854885089375,
+   "licensed_minus_carried": 0.07924513684346524,
+   "frac_inconsistent": 0.0,
+   "n_senses": 1,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c413_1-2-3-4-1-4-1_only_s2_z1_n2",
+   "uses_overlap": false,
+   "sensors": [
+    "s2_z1_n2"
+   ],
+   "neutral": true,
+   "true_rate": 0.011772026385013401,
+   "carried": 0.2291854885089375,
+   "licensed": 0.30843062535240273,
+   "clipped": 0.2291854885089375,
+   "licensed_minus_carried": 0.07924513684346524,
+   "frac_inconsistent": 0.0,
+   "n_senses": 1,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c427_1-2-3-4-3-4-1_only_s2_z1_n2",
+   "uses_overlap": false,
+   "sensors": [
+    "s2_z1_n2"
+   ],
+   "neutral": true,
+   "true_rate": 0.011772026385013401,
+   "carried": 0.2291854885089375,
+   "licensed": 0.30843062535240273,
+   "clipped": 0.2291854885089375,
+   "licensed_minus_carried": 0.07924513684346524,
+   "frac_inconsistent": 0.0,
+   "n_senses": 1,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c434_1-2-3-4-5-4-1_only_s2_z1_n2",
+   "uses_overlap": false,
+   "sensors": [
+    "s2_z1_n2"
+   ],
+   "neutral": true,
+   "true_rate": 0.011772026385013401,
+   "carried": 0.2291854885089375,
+   "licensed": 0.30843062535240273,
+   "clipped": 0.2291854885089375,
+   "licensed_minus_carried": 0.07924513684346524,
+   "frac_inconsistent": 0.0,
+   "n_senses": 1,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c375_1-2-1-4-5-4-1_only_s3_z1_n5",
+   "uses_overlap": false,
+   "sensors": [
+    "s3_z1_n5"
+   ],
+   "neutral": true,
+   "true_rate": 0.011772026385013401,
+   "carried": 0.19946436743250384,
+   "licensed": 0.2664350327820668,
+   "clipped": 0.19946436743250384,
+   "licensed_minus_carried": 0.06697066534956297,
+   "frac_inconsistent": 0.0,
+   "n_senses": 1,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c435_1-2-3-4-5-4-1_only_s3_z1_n5",
+   "uses_overlap": false,
+   "sensors": [
+    "s3_z1_n5"
+   ],
+   "neutral": true,
+   "true_rate": 0.011772026385013401,
+   "carried": 0.19946436743250384,
+   "licensed": 0.2664350327820668,
+   "clipped": 0.19946436743250384,
+   "licensed_minus_carried": 0.06697066534956297,
+   "frac_inconsistent": 0.0,
+   "n_senses": 1,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c467_1-4-1-4-5-4-1_only_s3_z1_n5",
+   "uses_overlap": false,
+   "sensors": [
+    "s3_z1_n5"
+   ],
+   "neutral": true,
+   "true_rate": 0.011772026385013401,
+   "carried": 0.19946436743250384,
+   "licensed": 0.2664350327820668,
+   "clipped": 0.19946436743250384,
+   "licensed_minus_carried": 0.06697066534956297,
+   "frac_inconsistent": 0.0,
+   "n_senses": 1,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c512_1-4-3-4-5-4-1_only_s3_z1_n5",
+   "uses_overlap": false,
+   "sensors": [
+    "s3_z1_n5"
+   ],
+   "neutral": true,
+   "true_rate": 0.011772026385013401,
+   "carried": 0.19946436743250384,
+   "licensed": 0.2664350327820668,
+   "clipped": 0.19946436743250384,
+   "licensed_minus_carried": 0.06697066534956297,
+   "frac_inconsistent": 0.0,
+   "n_senses": 1,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c598_3-4-3-4-5-4-3_only_s3_z1_n5",
+   "uses_overlap": false,
+   "sensors": [
+    "s3_z1_n5"
+   ],
+   "neutral": true,
+   "true_rate": 0.011772026385013401,
+   "carried": 0.19946436743250384,
+   "licensed": 0.2664350327820668,
+   "clipped": 0.19946436743250384,
+   "licensed_minus_carried": 0.06697066534956297,
+   "frac_inconsistent": 0.0,
+   "n_senses": 1,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c525_1-4-5-4-3-2-1_only_s3_z1_n5",
+   "uses_overlap": false,
+   "sensors": [
+    "s3_z1_n5"
+   ],
+   "neutral": true,
+   "true_rate": 0.011772026385013401,
+   "carried": 0.19944288051547177,
+   "licensed": 0.266429946540674,
+   "clipped": 0.19944288051547177,
+   "licensed_minus_carried": 0.06698706602520221,
+   "frac_inconsistent": 0.0,
+   "n_senses": 1,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c532_1-4-5-4-3-4-1_only_s3_z1_n5",
+   "uses_overlap": false,
+   "sensors": [
+    "s3_z1_n5"
+   ],
+   "neutral": true,
+   "true_rate": 0.011772026385013401,
+   "carried": 0.19944288051547177,
+   "licensed": 0.266429946540674,
+   "clipped": 0.19944288051547177,
+   "licensed_minus_carried": 0.06698706602520221,
+   "frac_inconsistent": 0.0,
+   "n_senses": 1,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c23_0-1-0-1-2-1-0_only_s2_z1_n2",
+   "uses_overlap": false,
+   "sensors": [
+    "s2_z1_n2"
+   ],
+   "neutral": true,
+   "true_rate": 0.011772026385013401,
+   "carried": 0.22920730789839427,
+   "licensed": 0.30843399692673945,
+   "clipped": 0.22920730789839427,
+   "licensed_minus_carried": 0.07922668902834518,
+   "frac_inconsistent": 0.0,
+   "n_senses": 1,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c143_0-1-4-1-2-1-0_only_s2_z1_n2",
+   "uses_overlap": false,
+   "sensors": [
+    "s2_z1_n2"
+   ],
+   "neutral": true,
+   "true_rate": 0.011772026385013401,
+   "carried": 0.22920730789839427,
+   "licensed": 0.30843399692673945,
+   "clipped": 0.22920730789839427,
+   "licensed_minus_carried": 0.07922668902834518,
+   "frac_inconsistent": 0.0,
+   "n_senses": 1,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c163_0-1-4-3-2-1-0_only_s2_z1_n2",
+   "uses_overlap": false,
+   "sensors": [
+    "s2_z1_n2"
+   ],
+   "neutral": true,
+   "true_rate": 0.011772026385013401,
+   "carried": 0.22920730789839427,
+   "licensed": 0.30843399692673945,
+   "clipped": 0.22920730789839427,
+   "licensed_minus_carried": 0.07922668902834518,
+   "frac_inconsistent": 0.0,
+   "n_senses": 1,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c252_0-5-4-1-2-1-0_only_s2_z1_n2",
+   "uses_overlap": false,
+   "sensors": [
+    "s2_z1_n2"
+   ],
+   "neutral": true,
+   "true_rate": 0.011772026385013401,
+   "carried": 0.22920730789839427,
+   "licensed": 0.30843399692673945,
+   "clipped": 0.22920730789839427,
+   "licensed_minus_carried": 0.07922668902834518,
+   "frac_inconsistent": 0.0,
+   "n_senses": 1,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c274_0-5-4-3-2-1-0_only_s2_z1_n2",
+   "uses_overlap": false,
+   "sensors": [
+    "s2_z1_n2"
+   ],
+   "neutral": true,
+   "true_rate": 0.011772026385013401,
+   "carried": 0.22920730789839427,
+   "licensed": 0.30843399692673945,
+   "clipped": 0.22920730789839427,
+   "licensed_minus_carried": 0.07922668902834518,
+   "frac_inconsistent": 0.0,
+   "n_senses": 1,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c74_0-1-2-1-0-5-0_only_s2_z1_n2",
+   "uses_overlap": false,
+   "sensors": [
+    "s2_z1_n2"
+   ],
+   "neutral": true,
+   "true_rate": 0.011772026385013401,
+   "carried": 0.2291854885089375,
+   "licensed": 0.30843062535240273,
+   "clipped": 0.2291854885089375,
+   "licensed_minus_carried": 0.07924513684346524,
+   "frac_inconsistent": 0.0,
+   "n_senses": 1,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c88_0-1-2-1-4-1-0_only_s2_z1_n2",
+   "uses_overlap": false,
+   "sensors": [
+    "s2_z1_n2"
+   ],
+   "neutral": true,
+   "true_rate": 0.011772026385013401,
+   "carried": 0.2291854885089375,
+   "licensed": 0.30843062535240273,
+   "clipped": 0.2291854885089375,
+   "licensed_minus_carried": 0.07924513684346524,
+   "frac_inconsistent": 0.0,
+   "n_senses": 1,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c95_0-1-2-1-4-5-0_only_s2_z1_n2",
+   "uses_overlap": false,
+   "sensors": [
+    "s2_z1_n2"
+   ],
+   "neutral": true,
+   "true_rate": 0.011772026385013401,
+   "carried": 0.2291854885089375,
+   "licensed": 0.30843062535240273,
+   "clipped": 0.2291854885089375,
+   "licensed_minus_carried": 0.07924513684346524,
+   "frac_inconsistent": 0.0,
+   "n_senses": 1,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c111_0-1-2-3-4-1-0_only_s2_z1_n2",
+   "uses_overlap": false,
+   "sensors": [
+    "s2_z1_n2"
+   ],
+   "neutral": true,
+   "true_rate": 0.011772026385013401,
+   "carried": 0.2291854885089375,
+   "licensed": 0.30843062535240273,
+   "clipped": 0.2291854885089375,
+   "licensed_minus_carried": 0.07924513684346524,
+   "frac_inconsistent": 0.0,
+   "n_senses": 1,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c120_0-1-2-3-4-5-0_only_s2_z1_n2",
+   "uses_overlap": false,
+   "sensors": [
+    "s2_z1_n2"
+   ],
+   "neutral": true,
+   "true_rate": 0.011772026385013401,
+   "carried": 0.2291854885089375,
+   "licensed": 0.30843062535240273,
+   "clipped": 0.2291854885089375,
+   "licensed_minus_carried": 0.07924513684346524,
+   "frac_inconsistent": 0.0,
+   "n_senses": 1,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c17_0-1-0-1-0-5-0_only_s3_z1_n5",
+   "uses_overlap": false,
+   "sensors": [
+    "s3_z1_n5"
+   ],
+   "neutral": true,
+   "true_rate": 0.011772026385013401,
+   "carried": 0.19946436743250384,
+   "licensed": 0.2664350327820668,
+   "clipped": 0.19946436743250384,
+   "licensed_minus_carried": 0.06697066534956297,
+   "frac_inconsistent": 0.0,
+   "n_senses": 1,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c36_0-1-0-1-4-5-0_only_s3_z1_n5",
+   "uses_overlap": false,
+   "sensors": [
+    "s3_z1_n5"
+   ],
+   "neutral": true,
+   "true_rate": 0.011772026385013401,
+   "carried": 0.19946436743250384,
+   "licensed": 0.2664350327820668,
+   "clipped": 0.19946436743250384,
+   "licensed_minus_carried": 0.06697066534956297,
+   "frac_inconsistent": 0.0,
+   "n_senses": 1,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c75_0-1-2-1-0-5-0_only_s3_z1_n5",
+   "uses_overlap": false,
+   "sensors": [
+    "s3_z1_n5"
+   ],
+   "neutral": true,
+   "true_rate": 0.011772026385013401,
+   "carried": 0.19946436743250384,
+   "licensed": 0.2664350327820668,
+   "clipped": 0.19946436743250384,
+   "licensed_minus_carried": 0.06697066534956297,
+   "frac_inconsistent": 0.0,
+   "n_senses": 1,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c96_0-1-2-1-4-5-0_only_s3_z1_n5",
+   "uses_overlap": false,
+   "sensors": [
+    "s3_z1_n5"
+   ],
+   "neutral": true,
+   "true_rate": 0.011772026385013401,
+   "carried": 0.19946436743250384,
+   "licensed": 0.2664350327820668,
+   "clipped": 0.19946436743250384,
+   "licensed_minus_carried": 0.06697066534956297,
+   "frac_inconsistent": 0.0,
+   "n_senses": 1,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c121_0-1-2-3-4-5-0_only_s3_z1_n5",
+   "uses_overlap": false,
+   "sensors": [
+    "s3_z1_n5"
+   ],
+   "neutral": true,
+   "true_rate": 0.011772026385013401,
+   "carried": 0.19946436743250384,
+   "licensed": 0.2664350327820668,
+   "clipped": 0.19946436743250384,
+   "licensed_minus_carried": 0.06697066534956297,
+   "frac_inconsistent": 0.0,
+   "n_senses": 1,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c136_0-1-4-1-0-5-0_only_s3_z1_n5",
+   "uses_overlap": false,
+   "sensors": [
+    "s3_z1_n5"
+   ],
+   "neutral": true,
+   "true_rate": 0.011772026385013401,
+   "carried": 0.19946436743250384,
+   "licensed": 0.2664350327820668,
+   "clipped": 0.19946436743250384,
+   "licensed_minus_carried": 0.06697066534956297,
+   "frac_inconsistent": 0.0,
+   "n_senses": 1,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c156_0-1-4-1-4-5-0_only_s3_z1_n5",
+   "uses_overlap": false,
+   "sensors": [
+    "s3_z1_n5"
+   ],
+   "neutral": true,
+   "true_rate": 0.011772026385013401,
+   "carried": 0.19946436743250384,
+   "licensed": 0.2664350327820668,
+   "clipped": 0.19946436743250384,
+   "licensed_minus_carried": 0.06697066534956297,
+   "frac_inconsistent": 0.0,
+   "n_senses": 1,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c180_0-1-4-3-4-5-0_only_s3_z1_n5",
+   "uses_overlap": false,
+   "sensors": [
+    "s3_z1_n5"
+   ],
+   "neutral": true,
+   "true_rate": 0.011772026385013401,
+   "carried": 0.19946436743250384,
+   "licensed": 0.2664350327820668,
+   "clipped": 0.19946436743250384,
+   "licensed_minus_carried": 0.06697066534956297,
+   "frac_inconsistent": 0.0,
+   "n_senses": 1,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c55_0-1-0-5-4-1-0_only_s3_z1_n5",
+   "uses_overlap": false,
+   "sensors": [
+    "s3_z1_n5"
+   ],
+   "neutral": true,
+   "true_rate": 0.011772026385013401,
+   "carried": 0.19944288051547177,
+   "licensed": 0.266429946540674,
+   "clipped": 0.19944288051547177,
+   "licensed_minus_carried": 0.06698706602520221,
+   "frac_inconsistent": 0.0,
+   "n_senses": 1,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c203_0-1-4-5-4-1-0_only_s3_z1_n5",
+   "uses_overlap": false,
+   "sensors": [
+    "s3_z1_n5"
+   ],
+   "neutral": true,
+   "true_rate": 0.011772026385013401,
+   "carried": 0.19944288051547177,
+   "licensed": 0.266429946540674,
+   "clipped": 0.19944288051547177,
+   "licensed_minus_carried": 0.06698706602520221,
+   "frac_inconsistent": 0.0,
+   "n_senses": 1,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c253_0-5-4-1-2-1-0_only_s3_z1_n5",
+   "uses_overlap": false,
+   "sensors": [
+    "s3_z1_n5"
+   ],
+   "neutral": true,
+   "true_rate": 0.011772026385013401,
+   "carried": 0.1994210031361352,
+   "licensed": 0.2664247906853073,
+   "clipped": 0.1994210031361352,
+   "licensed_minus_carried": 0.06700378754917208,
+   "frac_inconsistent": 0.0,
+   "n_senses": 1,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c260_0-5-4-1-4-1-0_only_s3_z1_n5",
+   "uses_overlap": false,
+   "sensors": [
+    "s3_z1_n5"
+   ],
+   "neutral": true,
+   "true_rate": 0.011772026385013401,
+   "carried": 0.1994210031361352,
+   "licensed": 0.2664247906853073,
+   "clipped": 0.1994210031361352,
+   "licensed_minus_carried": 0.06700378754917208,
+   "frac_inconsistent": 0.0,
+   "n_senses": 1,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c275_0-5-4-3-2-1-0_only_s3_z1_n5",
+   "uses_overlap": false,
+   "sensors": [
+    "s3_z1_n5"
+   ],
+   "neutral": true,
+   "true_rate": 0.011772026385013401,
+   "carried": 0.1994210031361352,
+   "licensed": 0.2664247906853073,
+   "clipped": 0.1994210031361352,
+   "licensed_minus_carried": 0.06700378754917208,
+   "frac_inconsistent": 0.0,
+   "n_senses": 1,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c284_0-5-4-3-4-1-0_only_s3_z1_n5",
+   "uses_overlap": false,
+   "sensors": [
+    "s3_z1_n5"
+   ],
+   "neutral": true,
+   "true_rate": 0.011772026385013401,
+   "carried": 0.1994210031361352,
+   "licensed": 0.2664247906853073,
+   "clipped": 0.1994210031361352,
+   "licensed_minus_carried": 0.06700378754917208,
+   "frac_inconsistent": 0.0,
+   "n_senses": 1,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c338_1-2-1-2-3-2-1_only_s7_z2_n3",
+   "uses_overlap": false,
+   "sensors": [
+    "s7_z2_n3"
+   ],
+   "neutral": true,
+   "true_rate": 0.013152725222925987,
+   "carried": 0.25547066516304673,
+   "licensed": 0.3455730388349123,
+   "clipped": 0.25547066516304673,
+   "licensed_minus_carried": 0.09010237367186558,
+   "frac_inconsistent": 0.0,
+   "n_senses": 1,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c345_1-2-1-2-3-4-1_only_s7_z2_n3",
+   "uses_overlap": false,
+   "sensors": [
+    "s7_z2_n3"
+   ],
+   "neutral": true,
+   "true_rate": 0.013152725222925987,
+   "carried": 0.25547066516304673,
+   "licensed": 0.3455730388349123,
+   "clipped": 0.25547066516304673,
+   "licensed_minus_carried": 0.09010237367186558,
+   "frac_inconsistent": 0.0,
+   "n_senses": 1,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c362_1-2-1-4-3-2-1_only_s7_z2_n3",
+   "uses_overlap": false,
+   "sensors": [
+    "s7_z2_n3"
+   ],
+   "neutral": true,
+   "true_rate": 0.013152725222925987,
+   "carried": 0.25547066516304673,
+   "licensed": 0.3455730388349123,
+   "clipped": 0.25547066516304673,
+   "licensed_minus_carried": 0.09010237367186558,
+   "frac_inconsistent": 0.0,
+   "n_senses": 1,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c369_1-2-1-4-3-4-1_only_s7_z2_n3",
+   "uses_overlap": false,
+   "sensors": [
+    "s7_z2_n3"
+   ],
+   "neutral": true,
+   "true_rate": 0.013152725222925987,
+   "carried": 0.25547066516304673,
+   "licensed": 0.3455730388349123,
+   "clipped": 0.25547066516304673,
+   "licensed_minus_carried": 0.09010237367186558,
+   "frac_inconsistent": 0.0,
+   "n_senses": 1,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c456_1-4-1-4-3-2-1_only_s7_z2_n3",
+   "uses_overlap": false,
+   "sensors": [
+    "s7_z2_n3"
+   ],
+   "neutral": true,
+   "true_rate": 0.013152725222925987,
+   "carried": 0.25547066516304673,
+   "licensed": 0.3455730388349123,
+   "clipped": 0.25547066516304673,
+   "licensed_minus_carried": 0.09010237367186558,
+   "frac_inconsistent": 0.0,
+   "n_senses": 1,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c462_1-4-1-4-3-4-1_only_s7_z2_n3",
+   "uses_overlap": false,
+   "sensors": [
+    "s7_z2_n3"
+   ],
+   "neutral": true,
+   "true_rate": 0.013152725222925987,
+   "carried": 0.25547066516304673,
+   "licensed": 0.3455730388349123,
+   "clipped": 0.25547066516304673,
+   "licensed_minus_carried": 0.09010237367186558,
+   "frac_inconsistent": 0.0,
+   "n_senses": 1,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c527_1-4-5-4-3-2-1_only_s7_z2_n3",
+   "uses_overlap": false,
+   "sensors": [
+    "s7_z2_n3"
+   ],
+   "neutral": true,
+   "true_rate": 0.013152725222925987,
+   "carried": 0.25547066516304673,
+   "licensed": 0.3455730388349123,
+   "clipped": 0.25547066516304673,
+   "licensed_minus_carried": 0.09010237367186558,
+   "frac_inconsistent": 0.0,
+   "n_senses": 1,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c534_1-4-5-4-3-4-1_only_s7_z2_n3",
+   "uses_overlap": false,
+   "sensors": [
+    "s7_z2_n3"
+   ],
+   "neutral": true,
+   "true_rate": 0.013152725222925987,
+   "carried": 0.25547066516304673,
+   "licensed": 0.3455730388349123,
+   "clipped": 0.25547066516304673,
+   "licensed_minus_carried": 0.09010237367186558,
+   "frac_inconsistent": 0.0,
+   "n_senses": 1,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c388_1-2-3-2-1-4-1_only_s7_z2_n3",
+   "uses_overlap": false,
+   "sensors": [
+    "s7_z2_n3"
+   ],
+   "neutral": true,
+   "true_rate": 0.013152725222925987,
+   "carried": 0.2554488581768488,
+   "licensed": 0.34557188489934887,
+   "clipped": 0.2554488581768488,
+   "licensed_minus_carried": 0.09012302672250005,
+   "frac_inconsistent": 0.0,
+   "n_senses": 1,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c415_1-2-3-4-1-4-1_only_s7_z2_n3",
+   "uses_overlap": false,
+   "sensors": [
+    "s7_z2_n3"
+   ],
+   "neutral": true,
+   "true_rate": 0.013152725222925987,
+   "carried": 0.2554488581768488,
+   "licensed": 0.34557188489934887,
+   "clipped": 0.2554488581768488,
+   "licensed_minus_carried": 0.09012302672250005,
+   "frac_inconsistent": 0.0,
+   "n_senses": 1,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c437_1-2-3-4-5-4-1_only_s7_z2_n3",
+   "uses_overlap": false,
+   "sensors": [
+    "s7_z2_n3"
+   ],
+   "neutral": true,
+   "true_rate": 0.013152725222925987,
+   "carried": 0.2554488581768488,
+   "licensed": 0.34557188489934887,
+   "clipped": 0.2554488581768488,
+   "licensed_minus_carried": 0.09012302672250005,
+   "frac_inconsistent": 0.0,
+   "n_senses": 1,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c514_1-4-3-4-5-4-1_only_s7_z2_n3",
+   "uses_overlap": false,
+   "sensors": [
+    "s7_z2_n3"
+   ],
+   "neutral": true,
+   "true_rate": 0.013152725222925987,
+   "carried": 0.2554488581768488,
+   "licensed": 0.34557188489934887,
+   "clipped": 0.2554488581768488,
+   "licensed_minus_carried": 0.09012302672250005,
+   "frac_inconsistent": 0.0,
+   "n_senses": 1,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c612_3-4-5-4-5-4-3_only_s7_z2_n3",
+   "uses_overlap": false,
+   "sensors": [
+    "s7_z2_n3"
+   ],
+   "neutral": true,
+   "true_rate": 0.013152725222925987,
+   "carried": 0.2554266688788236,
+   "licensed": 0.3455707152294799,
+   "clipped": 0.2554266688788236,
+   "licensed_minus_carried": 0.09014404635065631,
+   "frac_inconsistent": 0.0,
+   "n_senses": 1,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c106_0-1-2-3-2-1-0_only_s7_z2_n3",
+   "uses_overlap": false,
+   "sensors": [
+    "s7_z2_n3"
+   ],
+   "neutral": true,
+   "true_rate": 0.013152725222925987,
+   "carried": 0.2554488581768488,
+   "licensed": 0.34557188489934887,
+   "clipped": 0.2554488581768488,
+   "licensed_minus_carried": 0.09012302672250005,
+   "frac_inconsistent": 0.0,
+   "n_senses": 1,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c115_0-1-2-3-4-1-0_only_s7_z2_n3",
+   "uses_overlap": false,
+   "sensors": [
+    "s7_z2_n3"
+   ],
+   "neutral": true,
+   "true_rate": 0.013152725222925987,
+   "carried": 0.2554488581768488,
+   "licensed": 0.34557188489934887,
+   "clipped": 0.2554488581768488,
+   "licensed_minus_carried": 0.09012302672250005,
+   "frac_inconsistent": 0.0,
+   "n_senses": 1,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c125_0-1-2-3-4-5-0_only_s7_z2_n3",
+   "uses_overlap": false,
+   "sensors": [
+    "s7_z2_n3"
+   ],
+   "neutral": true,
+   "true_rate": 0.013152725222925987,
+   "carried": 0.2554488581768488,
+   "licensed": 0.34557188489934887,
+   "clipped": 0.2554488581768488,
+   "licensed_minus_carried": 0.09012302672250005,
+   "frac_inconsistent": 0.0,
+   "n_senses": 1,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c167_0-1-4-3-2-1-0_only_s7_z2_n3",
+   "uses_overlap": false,
+   "sensors": [
+    "s7_z2_n3"
+   ],
+   "neutral": true,
+   "true_rate": 0.013152725222925987,
+   "carried": 0.2554488581768488,
+   "licensed": 0.34557188489934887,
+   "clipped": 0.2554488581768488,
+   "licensed_minus_carried": 0.09012302672250005,
+   "frac_inconsistent": 0.0,
+   "n_senses": 1,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c175_0-1-4-3-4-1-0_only_s7_z2_n3",
+   "uses_overlap": false,
+   "sensors": [
+    "s7_z2_n3"
+   ],
+   "neutral": true,
+   "true_rate": 0.013152725222925987,
+   "carried": 0.2554488581768488,
+   "licensed": 0.34557188489934887,
+   "clipped": 0.2554488581768488,
+   "licensed_minus_carried": 0.09012302672250005,
+   "frac_inconsistent": 0.0,
+   "n_senses": 1,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c184_0-1-4-3-4-5-0_only_s7_z2_n3",
+   "uses_overlap": false,
+   "sensors": [
+    "s7_z2_n3"
+   ],
+   "neutral": true,
+   "true_rate": 0.013152725222925987,
+   "carried": 0.2554488581768488,
+   "licensed": 0.34557188489934887,
+   "clipped": 0.2554488581768488,
+   "licensed_minus_carried": 0.09012302672250005,
+   "frac_inconsistent": 0.0,
+   "n_senses": 1,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c279_0-5-4-3-2-1-0_only_s7_z2_n3",
+   "uses_overlap": false,
+   "sensors": [
+    "s7_z2_n3"
+   ],
+   "neutral": true,
+   "true_rate": 0.013152725222925987,
+   "carried": 0.2554488581768488,
+   "licensed": 0.34557188489934887,
+   "clipped": 0.2554488581768488,
+   "licensed_minus_carried": 0.09012302672250005,
+   "frac_inconsistent": 0.0,
+   "n_senses": 1,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c288_0-5-4-3-4-1-0_only_s7_z2_n3",
+   "uses_overlap": false,
+   "sensors": [
+    "s7_z2_n3"
+   ],
+   "neutral": true,
+   "true_rate": 0.013152725222925987,
+   "carried": 0.2554488581768488,
+   "licensed": 0.34557188489934887,
+   "clipped": 0.2554488581768488,
+   "licensed_minus_carried": 0.09012302672250005,
+   "frac_inconsistent": 0.0,
+   "n_senses": 1,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c296_0-5-4-3-4-5-0_only_s7_z2_n3",
+   "uses_overlap": false,
+   "sensors": [
+    "s7_z2_n3"
+   ],
+   "neutral": true,
+   "true_rate": 0.013152725222925987,
+   "carried": 0.2554488581768488,
+   "licensed": 0.34557188489934887,
+   "clipped": 0.2554488581768488,
+   "licensed_minus_carried": 0.09012302672250005,
+   "frac_inconsistent": 0.0,
+   "n_senses": 1,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c557_2-3-2-3-4-3-2_only_s1_z0_n4",
+   "uses_overlap": false,
+   "sensors": [
+    "s1_z0_n4"
+   ],
+   "neutral": true,
+   "true_rate": 0.012054090201353063,
+   "carried": 0.22887934254862907,
+   "licensed": 0.31694813047494175,
+   "clipped": 0.22887934254862907,
+   "licensed_minus_carried": 0.08806878792631267,
+   "frac_inconsistent": 0.0,
+   "n_senses": 1,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c391_1-2-3-2-3-2-1_only_s0_z0_n1",
+   "uses_overlap": false,
+   "sensors": [
+    "s0_z0_n1"
+   ],
+   "neutral": true,
+   "true_rate": 0.012054090201353063,
+   "carried": 0.22942524427756683,
+   "licensed": 0.32310622396126243,
+   "clipped": 0.22942524427756683,
+   "licensed_minus_carried": 0.0936809796836956,
+   "frac_inconsistent": 0.0,
+   "n_senses": 1,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c397_1-2-3-2-3-4-1_only_s0_z0_n1",
+   "uses_overlap": false,
+   "sensors": [
+    "s0_z0_n1"
+   ],
+   "neutral": true,
+   "true_rate": 0.012054090201353063,
+   "carried": 0.22942524427756683,
+   "licensed": 0.32310622396126243,
+   "clipped": 0.22942524427756683,
+   "licensed_minus_carried": 0.0936809796836956,
+   "frac_inconsistent": 0.0,
+   "n_senses": 1,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c418_1-2-3-4-3-2-1_only_s0_z0_n1",
+   "uses_overlap": false,
+   "sensors": [
+    "s0_z0_n1"
+   ],
+   "neutral": true,
+   "true_rate": 0.012054090201353063,
+   "carried": 0.22942524427756683,
+   "licensed": 0.32310622396126243,
+   "clipped": 0.22942524427756683,
+   "licensed_minus_carried": 0.0936809796836956,
+   "frac_inconsistent": 0.0,
+   "n_senses": 1,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c425_1-2-3-4-3-4-1_only_s0_z0_n1",
+   "uses_overlap": false,
+   "sensors": [
+    "s0_z0_n1"
+   ],
+   "neutral": true,
+   "true_rate": 0.012054090201353063,
+   "carried": 0.22942524427756683,
+   "licensed": 0.32310622396126243,
+   "clipped": 0.22942524427756683,
+   "licensed_minus_carried": 0.0936809796836956,
+   "frac_inconsistent": 0.0,
+   "n_senses": 1,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c432_1-2-3-4-5-4-1_only_s0_z0_n1",
+   "uses_overlap": false,
+   "sensors": [
+    "s0_z0_n1"
+   ],
+   "neutral": true,
+   "true_rate": 0.012054090201353063,
+   "carried": 0.22942524427756683,
+   "licensed": 0.32310622396126243,
+   "clipped": 0.22942524427756683,
+   "licensed_minus_carried": 0.0936809796836956,
+   "frac_inconsistent": 0.0,
+   "n_senses": 1,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c477_1-4-3-2-3-2-1_only_s0_z0_n1",
+   "uses_overlap": false,
+   "sensors": [
+    "s0_z0_n1"
+   ],
+   "neutral": true,
+   "true_rate": 0.012054090201353063,
+   "carried": 0.22942524427756683,
+   "licensed": 0.32310622396126243,
+   "clipped": 0.22942524427756683,
+   "licensed_minus_carried": 0.0936809796836956,
+   "frac_inconsistent": 0.0,
+   "n_senses": 1,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c484_1-4-3-2-3-4-1_only_s0_z0_n1",
+   "uses_overlap": false,
+   "sensors": [
+    "s0_z0_n1"
+   ],
+   "neutral": true,
+   "true_rate": 0.012054090201353063,
+   "carried": 0.22942524427756683,
+   "licensed": 0.32310622396126243,
+   "clipped": 0.22942524427756683,
+   "licensed_minus_carried": 0.0936809796836956,
+   "frac_inconsistent": 0.0,
+   "n_senses": 1,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c497_1-4-3-4-3-2-1_only_s0_z0_n1",
+   "uses_overlap": false,
+   "sensors": [
+    "s0_z0_n1"
+   ],
+   "neutral": true,
+   "true_rate": 0.012054090201353063,
+   "carried": 0.22942524427756683,
+   "licensed": 0.32310622396126243,
+   "clipped": 0.22942524427756683,
+   "licensed_minus_carried": 0.0936809796836956,
+   "frac_inconsistent": 0.0,
+   "n_senses": 1,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c504_1-4-3-4-3-4-1_only_s0_z0_n1",
+   "uses_overlap": false,
+   "sensors": [
+    "s0_z0_n1"
+   ],
+   "neutral": true,
+   "true_rate": 0.012054090201353063,
+   "carried": 0.22942524427756683,
+   "licensed": 0.32310622396126243,
+   "clipped": 0.22942524427756683,
+   "licensed_minus_carried": 0.0936809796836956,
+   "frac_inconsistent": 0.0,
+   "n_senses": 1,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c510_1-4-3-4-5-4-1_only_s0_z0_n1",
+   "uses_overlap": false,
+   "sensors": [
+    "s0_z0_n1"
+   ],
+   "neutral": true,
+   "true_rate": 0.012054090201353063,
+   "carried": 0.22942524427756683,
+   "licensed": 0.32310622396126243,
+   "clipped": 0.22942524427756683,
+   "licensed_minus_carried": 0.0936809796836956,
+   "frac_inconsistent": 0.0,
+   "n_senses": 1,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c522_1-4-5-4-3-2-1_only_s0_z0_n1",
+   "uses_overlap": false,
+   "sensors": [
+    "s0_z0_n1"
+   ],
+   "neutral": true,
+   "true_rate": 0.012054090201353063,
+   "carried": 0.22942524427756683,
+   "licensed": 0.32310622396126243,
+   "clipped": 0.22942524427756683,
+   "licensed_minus_carried": 0.0936809796836956,
+   "frac_inconsistent": 0.0,
+   "n_senses": 1,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c530_1-4-5-4-3-4-1_only_s0_z0_n1",
+   "uses_overlap": false,
+   "sensors": [
+    "s0_z0_n1"
+   ],
+   "neutral": true,
+   "true_rate": 0.012054090201353063,
+   "carried": 0.22942524427756683,
+   "licensed": 0.32310622396126243,
+   "clipped": 0.22942524427756683,
+   "licensed_minus_carried": 0.0936809796836956,
+   "frac_inconsistent": 0.0,
+   "n_senses": 1,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c537_1-4-5-4-5-4-1_only_s0_z0_n1",
+   "uses_overlap": false,
+   "sensors": [
+    "s0_z0_n1"
+   ],
+   "neutral": true,
+   "true_rate": 0.012054090201353063,
+   "carried": 0.22942524427756683,
+   "licensed": 0.32310622396126243,
+   "clipped": 0.22942524427756683,
+   "licensed_minus_carried": 0.0936809796836956,
+   "frac_inconsistent": 0.0,
+   "n_senses": 1,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c331_1-2-1-2-1-4-1_only_s1_z0_n4",
+   "uses_overlap": false,
+   "sensors": [
+    "s1_z0_n4"
+   ],
+   "neutral": true,
+   "true_rate": 0.012054090201353063,
+   "carried": 0.22887934254862907,
+   "licensed": 0.31694813047494175,
+   "clipped": 0.22887934254862907,
+   "licensed_minus_carried": 0.08806878792631267,
+   "frac_inconsistent": 0.0,
+   "n_senses": 1,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c342_1-2-1-2-3-4-1_only_s1_z0_n4",
+   "uses_overlap": false,
+   "sensors": [
+    "s1_z0_n4"
+   ],
+   "neutral": true,
+   "true_rate": 0.012054090201353063,
+   "carried": 0.22887934254862907,
+   "licensed": 0.31694813047494175,
+   "clipped": 0.22887934254862907,
+   "licensed_minus_carried": 0.08806878792631267,
+   "frac_inconsistent": 0.0,
+   "n_senses": 1,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c385_1-2-3-2-1-4-1_only_s1_z0_n4",
+   "uses_overlap": false,
+   "sensors": [
+    "s1_z0_n4"
+   ],
+   "neutral": true,
+   "true_rate": 0.012054090201353063,
+   "carried": 0.22887934254862907,
+   "licensed": 0.31694813047494175,
+   "clipped": 0.22887934254862907,
+   "licensed_minus_carried": 0.08806878792631267,
+   "frac_inconsistent": 0.0,
+   "n_senses": 1,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c398_1-2-3-2-3-4-1_only_s1_z0_n4",
+   "uses_overlap": false,
+   "sensors": [
+    "s1_z0_n4"
+   ],
+   "neutral": true,
+   "true_rate": 0.012054090201353063,
+   "carried": 0.22887934254862907,
+   "licensed": 0.31694813047494175,
+   "clipped": 0.22887934254862907,
+   "licensed_minus_carried": 0.08806878792631267,
+   "frac_inconsistent": 0.0,
+   "n_senses": 1,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c359_1-2-1-4-3-2-1_only_s1_z0_n4",
+   "uses_overlap": false,
+   "sensors": [
+    "s1_z0_n4"
+   ],
+   "neutral": true,
+   "true_rate": 0.012054090201353063,
+   "carried": 0.22885371754737793,
+   "licensed": 0.31693176828425706,
+   "clipped": 0.22885371754737793,
+   "licensed_minus_carried": 0.08807805073687913,
+   "frac_inconsistent": 0.0,
+   "n_senses": 1,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c419_1-2-3-4-3-2-1_only_s1_z0_n4",
+   "uses_overlap": false,
+   "sensors": [
+    "s1_z0_n4"
+   ],
+   "neutral": true,
+   "true_rate": 0.012054090201353063,
+   "carried": 0.22885371754737793,
+   "licensed": 0.31693176828425706,
+   "clipped": 0.22885371754737793,
+   "licensed_minus_carried": 0.08807805073687913,
+   "frac_inconsistent": 0.0,
+   "n_senses": 1,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c478_1-4-3-2-3-2-1_only_s1_z0_n4",
+   "uses_overlap": false,
+   "sensors": [
+    "s1_z0_n4"
+   ],
+   "neutral": true,
+   "true_rate": 0.012054090201353063,
+   "carried": 0.22882765447320996,
+   "licensed": 0.31691526715314483,
+   "clipped": 0.22882765447320996,
+   "licensed_minus_carried": 0.08808761267993487,
+   "frac_inconsistent": 0.0,
+   "n_senses": 1,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c230_0-5-0-5-4-1-0_only_s0_z0_n1",
+   "uses_overlap": false,
+   "sensors": [
+    "s0_z0_n1"
+   ],
+   "neutral": true,
+   "true_rate": 0.012054090201353063,
+   "carried": 0.2294790216785385,
+   "licensed": 0.32313424971150784,
+   "clipped": 0.2294790216785385,
+   "licensed_minus_carried": 0.09365522803296933,
+   "frac_inconsistent": 0.0,
+   "n_senses": 1,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c272_0-5-4-3-2-1-0_only_s0_z0_n1",
+   "uses_overlap": false,
+   "sensors": [
+    "s0_z0_n1"
+   ],
+   "neutral": true,
+   "true_rate": 0.012054090201353063,
+   "carried": 0.2294790216785385,
+   "licensed": 0.32313424971150784,
+   "clipped": 0.2294790216785385,
+   "licensed_minus_carried": 0.09365522803296933,
+   "frac_inconsistent": 0.0,
+   "n_senses": 1,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c282_0-5-4-3-4-1-0_only_s0_z0_n1",
+   "uses_overlap": false,
+   "sensors": [
+    "s0_z0_n1"
+   ],
+   "neutral": true,
+   "true_rate": 0.012054090201353063,
+   "carried": 0.2294790216785385,
+   "licensed": 0.32313424971150784,
+   "clipped": 0.2294790216785385,
+   "licensed_minus_carried": 0.09365522803296933,
+   "frac_inconsistent": 0.0,
+   "n_senses": 1,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c305_0-5-4-5-4-1-0_only_s0_z0_n1",
+   "uses_overlap": false,
+   "sensors": [
+    "s0_z0_n1"
+   ],
+   "neutral": true,
+   "true_rate": 0.012054090201353063,
+   "carried": 0.2294790216785385,
+   "licensed": 0.32313424971150784,
+   "clipped": 0.2294790216785385,
+   "licensed_minus_carried": 0.09365522803296933,
+   "frac_inconsistent": 0.0,
+   "n_senses": 1,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c265_0-5-4-1-4-5-0_only_s0_z0_n1",
+   "uses_overlap": false,
+   "sensors": [
+    "s0_z0_n1"
+   ],
+   "neutral": true,
+   "true_rate": 0.012054090201353063,
+   "carried": 0.2294523577294254,
+   "licensed": 0.32312029643168905,
+   "clipped": 0.2294523577294254,
+   "licensed_minus_carried": 0.09366793870226364,
+   "frac_inconsistent": 0.0,
+   "n_senses": 1,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c47_0-1-0-5-0-5-0_only_s0_z0_n1",
+   "uses_overlap": false,
+   "sensors": [
+    "s0_z0_n1"
+   ],
+   "neutral": true,
+   "true_rate": 0.012054090201353063,
+   "carried": 0.22942524427756683,
+   "licensed": 0.32310622396126243,
+   "clipped": 0.22942524427756683,
+   "licensed_minus_carried": 0.0936809796836956,
+   "frac_inconsistent": 0.0,
+   "n_senses": 1,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c60_0-1-0-5-4-5-0_only_s0_z0_n1",
+   "uses_overlap": false,
+   "sensors": [
+    "s0_z0_n1"
+   ],
+   "neutral": true,
+   "true_rate": 0.012054090201353063,
+   "carried": 0.22942524427756683,
+   "licensed": 0.32310622396126243,
+   "clipped": 0.22942524427756683,
+   "licensed_minus_carried": 0.0936809796836956,
+   "frac_inconsistent": 0.0,
+   "n_senses": 1,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c118_0-1-2-3-4-5-0_only_s0_z0_n1",
+   "uses_overlap": false,
+   "sensors": [
+    "s0_z0_n1"
+   ],
+   "neutral": true,
+   "true_rate": 0.012054090201353063,
+   "carried": 0.22942524427756683,
+   "licensed": 0.32310622396126243,
+   "clipped": 0.22942524427756683,
+   "licensed_minus_carried": 0.0936809796836956,
+   "frac_inconsistent": 0.0,
+   "n_senses": 1,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c178_0-1-4-3-4-5-0_only_s0_z0_n1",
+   "uses_overlap": false,
+   "sensors": [
+    "s0_z0_n1"
+   ],
+   "neutral": true,
+   "true_rate": 0.012054090201353063,
+   "carried": 0.22942524427756683,
+   "licensed": 0.32310622396126243,
+   "clipped": 0.22942524427756683,
+   "licensed_minus_carried": 0.0936809796836956,
+   "frac_inconsistent": 0.0,
+   "n_senses": 1,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c194_0-1-4-5-0-5-0_only_s0_z0_n1",
+   "uses_overlap": false,
+   "sensors": [
+    "s0_z0_n1"
+   ],
+   "neutral": true,
+   "true_rate": 0.012054090201353063,
+   "carried": 0.22942524427756683,
+   "licensed": 0.32310622396126243,
+   "clipped": 0.22942524427756683,
+   "licensed_minus_carried": 0.0936809796836956,
+   "frac_inconsistent": 0.0,
+   "n_senses": 1,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c208_0-1-4-5-4-5-0_only_s0_z0_n1",
+   "uses_overlap": false,
+   "sensors": [
+    "s0_z0_n1"
+   ],
+   "neutral": true,
+   "true_rate": 0.012054090201353063,
+   "carried": 0.22942524427756683,
+   "licensed": 0.32310622396126243,
+   "clipped": 0.22942524427756683,
+   "licensed_minus_carried": 0.0936809796836956,
+   "frac_inconsistent": 0.0,
+   "n_senses": 1,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c29_0-1-0-1-4-1-0_only_s1_z0_n4",
+   "uses_overlap": false,
+   "sensors": [
+    "s1_z0_n4"
+   ],
+   "neutral": true,
+   "true_rate": 0.012054090201353063,
+   "carried": 0.22885371754737793,
+   "licensed": 0.31693176828425706,
+   "clipped": 0.22885371754737793,
+   "licensed_minus_carried": 0.08807805073687913,
+   "frac_inconsistent": 0.0,
+   "n_senses": 1,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c35_0-1-0-1-4-5-0_only_s1_z0_n4",
+   "uses_overlap": false,
+   "sensors": [
+    "s1_z0_n4"
+   ],
+   "neutral": true,
+   "true_rate": 0.012054090201353063,
+   "carried": 0.22885371754737793,
+   "licensed": 0.31693176828425706,
+   "clipped": 0.22885371754737793,
+   "licensed_minus_carried": 0.08807805073687913,
+   "frac_inconsistent": 0.0,
+   "n_senses": 1,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c54_0-1-0-5-4-1-0_only_s1_z0_n4",
+   "uses_overlap": false,
+   "sensors": [
+    "s1_z0_n4"
+   ],
+   "neutral": true,
+   "true_rate": 0.012054090201353063,
+   "carried": 0.22885371754737793,
+   "licensed": 0.31693176828425706,
+   "clipped": 0.22885371754737793,
+   "licensed_minus_carried": 0.08807805073687913,
+   "frac_inconsistent": 0.0,
+   "n_senses": 1,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c61_0-1-0-5-4-5-0_only_s1_z0_n4",
+   "uses_overlap": false,
+   "sensors": [
+    "s1_z0_n4"
+   ],
+   "neutral": true,
+   "true_rate": 0.012054090201353063,
+   "carried": 0.22885371754737793,
+   "licensed": 0.31693176828425706,
+   "clipped": 0.22885371754737793,
+   "licensed_minus_carried": 0.08807805073687913,
+   "frac_inconsistent": 0.0,
+   "n_senses": 1,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c87_0-1-2-1-4-1-0_only_s1_z0_n4",
+   "uses_overlap": false,
+   "sensors": [
+    "s1_z0_n4"
+   ],
+   "neutral": true,
+   "true_rate": 0.012054090201353063,
+   "carried": 0.22885371754737793,
+   "licensed": 0.31693176828425706,
+   "clipped": 0.22885371754737793,
+   "licensed_minus_carried": 0.08807805073687913,
+   "frac_inconsistent": 0.0,
+   "n_senses": 1,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c94_0-1-2-1-4-5-0_only_s1_z0_n4",
+   "uses_overlap": false,
+   "sensors": [
+    "s1_z0_n4"
+   ],
+   "neutral": true,
+   "true_rate": 0.012054090201353063,
+   "carried": 0.22885371754737793,
+   "licensed": 0.31693176828425706,
+   "clipped": 0.22885371754737793,
+   "licensed_minus_carried": 0.08807805073687913,
+   "frac_inconsistent": 0.0,
+   "n_senses": 1,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c110_0-1-2-3-4-1-0_only_s1_z0_n4",
+   "uses_overlap": false,
+   "sensors": [
+    "s1_z0_n4"
+   ],
+   "neutral": true,
+   "true_rate": 0.012054090201353063,
+   "carried": 0.22885371754737793,
+   "licensed": 0.31693176828425706,
+   "clipped": 0.22885371754737793,
+   "licensed_minus_carried": 0.08807805073687913,
+   "frac_inconsistent": 0.0,
+   "n_senses": 1,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c119_0-1-2-3-4-5-0_only_s1_z0_n4",
+   "uses_overlap": false,
+   "sensors": [
+    "s1_z0_n4"
+   ],
+   "neutral": true,
+   "true_rate": 0.012054090201353063,
+   "carried": 0.22885371754737793,
+   "licensed": 0.31693176828425706,
+   "clipped": 0.22885371754737793,
+   "licensed_minus_carried": 0.08807805073687913,
+   "frac_inconsistent": 0.0,
+   "n_senses": 1,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c231_0-5-0-5-4-1-0_only_s1_z0_n4",
+   "uses_overlap": false,
+   "sensors": [
+    "s1_z0_n4"
+   ],
+   "neutral": true,
+   "true_rate": 0.012054090201353063,
+   "carried": 0.22885371754737793,
+   "licensed": 0.31693176828425706,
+   "clipped": 0.22885371754737793,
+   "licensed_minus_carried": 0.08807805073687913,
+   "frac_inconsistent": 0.0,
+   "n_senses": 1,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c237_0-5-0-5-4-5-0_only_s1_z0_n4",
+   "uses_overlap": false,
+   "sensors": [
+    "s1_z0_n4"
+   ],
+   "neutral": true,
+   "true_rate": 0.012054090201353063,
+   "carried": 0.22885371754737793,
+   "licensed": 0.31693176828425706,
+   "clipped": 0.22885371754737793,
+   "licensed_minus_carried": 0.08807805073687913,
+   "frac_inconsistent": 0.0,
+   "n_senses": 1,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c135_0-1-4-1-0-5-0_only_s1_z0_n4",
+   "uses_overlap": false,
+   "sensors": [
+    "s1_z0_n4"
+   ],
+   "neutral": true,
+   "true_rate": 0.012054090201353063,
+   "carried": 0.22882765447320996,
+   "licensed": 0.31691526715314483,
+   "clipped": 0.22882765447320996,
+   "licensed_minus_carried": 0.08808761267993487,
+   "frac_inconsistent": 0.0,
+   "n_senses": 1,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c142_0-1-4-1-2-1-0_only_s1_z0_n4",
+   "uses_overlap": false,
+   "sensors": [
+    "s1_z0_n4"
+   ],
+   "neutral": true,
+   "true_rate": 0.012054090201353063,
+   "carried": 0.22882765447320996,
+   "licensed": 0.31691526715314483,
+   "clipped": 0.22882765447320996,
+   "licensed_minus_carried": 0.08808761267993487,
+   "frac_inconsistent": 0.0,
+   "n_senses": 1,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c162_0-1-4-3-2-1-0_only_s1_z0_n4",
+   "uses_overlap": false,
+   "sensors": [
+    "s1_z0_n4"
+   ],
+   "neutral": true,
+   "true_rate": 0.012054090201353063,
+   "carried": 0.22882765447320996,
+   "licensed": 0.31691526715314483,
+   "clipped": 0.22882765447320996,
+   "licensed_minus_carried": 0.08808761267993487,
+   "frac_inconsistent": 0.0,
+   "n_senses": 1,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c195_0-1-4-5-0-5-0_only_s1_z0_n4",
+   "uses_overlap": false,
+   "sensors": [
+    "s1_z0_n4"
+   ],
+   "neutral": true,
+   "true_rate": 0.012054090201353063,
+   "carried": 0.22882765447320996,
+   "licensed": 0.31691526715314483,
+   "clipped": 0.22882765447320996,
+   "licensed_minus_carried": 0.08808761267993487,
+   "frac_inconsistent": 0.0,
+   "n_senses": 1,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c251_0-5-4-1-2-1-0_only_s1_z0_n4",
+   "uses_overlap": false,
+   "sensors": [
+    "s1_z0_n4"
+   ],
+   "neutral": true,
+   "true_rate": 0.012054090201353063,
+   "carried": 0.22882765447320996,
+   "licensed": 0.31691526715314483,
+   "clipped": 0.22882765447320996,
+   "licensed_minus_carried": 0.08808761267993487,
+   "frac_inconsistent": 0.0,
+   "n_senses": 1,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c273_0-5-4-3-2-1-0_only_s1_z0_n4",
+   "uses_overlap": false,
+   "sensors": [
+    "s1_z0_n4"
+   ],
+   "neutral": true,
+   "true_rate": 0.012054090201353063,
+   "carried": 0.22882765447320996,
+   "licensed": 0.31691526715314483,
+   "clipped": 0.22882765447320996,
+   "licensed_minus_carried": 0.08808761267993487,
+   "frac_inconsistent": 0.0,
+   "n_senses": 1,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c547_2-3-2-3-2_only_s2_z1_n2",
+   "uses_overlap": false,
+   "sensors": [
+    "s2_z1_n2"
+   ],
+   "neutral": true,
+   "true_rate": 0.012749087870103093,
+   "carried": 0.23000552470613966,
+   "licensed": 0.40652536875036704,
+   "clipped": 0.23000552470613966,
+   "licensed_minus_carried": 0.17651984404422738,
+   "frac_inconsistent": 0.0,
+   "n_senses": 2,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c323_1-2-1-2-1_only_s2_z1_n2",
+   "uses_overlap": false,
+   "sensors": [
+    "s2_z1_n2"
+   ],
+   "neutral": true,
+   "true_rate": 0.012749087870103093,
+   "carried": 0.23000552470613966,
+   "licensed": 0.40652536875036704,
+   "clipped": 0.23000552470613966,
+   "licensed_minus_carried": 0.17651984404422738,
+   "frac_inconsistent": 0.0,
+   "n_senses": 2,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c379_1-2-3-2-1_only_s2_z1_n2",
+   "uses_overlap": false,
+   "sensors": [
+    "s2_z1_n2"
+   ],
+   "neutral": true,
+   "true_rate": 0.012749087870103093,
+   "carried": 0.23000552470613966,
+   "licensed": 0.40652536875036704,
+   "clipped": 0.23000552470613966,
+   "licensed_minus_carried": 0.17651984404422738,
+   "frac_inconsistent": 0.0,
+   "n_senses": 2,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c220_0-5-0-5-0_only_s3_z1_n5",
+   "uses_overlap": false,
+   "sensors": [
+    "s3_z1_n5"
+   ],
+   "neutral": true,
+   "true_rate": 0.012749087870103093,
+   "carried": 0.2000968743872955,
+   "licensed": 0.3514011363235624,
+   "clipped": 0.2000968743872955,
+   "licensed_minus_carried": 0.1513042619362669,
+   "frac_inconsistent": 0.0,
+   "n_senses": 2,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c300_0-5-4-5-0_only_s3_z1_n5",
+   "uses_overlap": false,
+   "sensors": [
+    "s3_z1_n5"
+   ],
+   "neutral": true,
+   "true_rate": 0.012749087870103093,
+   "carried": 0.2000968743872955,
+   "licensed": 0.3514011363235624,
+   "clipped": 0.2000968743872955,
+   "licensed_minus_carried": 0.1513042619362669,
+   "frac_inconsistent": 0.0,
+   "n_senses": 2,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c620_4-5-4-5-4_only_s3_z1_n5",
+   "uses_overlap": false,
+   "sensors": [
+    "s3_z1_n5"
+   ],
+   "neutral": true,
+   "true_rate": 0.012749087870103093,
+   "carried": 0.2000968743872955,
+   "licensed": 0.3514011363235624,
+   "clipped": 0.2000968743872955,
+   "licensed_minus_carried": 0.1513042619362669,
+   "frac_inconsistent": 0.0,
+   "n_senses": 2,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c549_2-3-2-3-2_only_s7_z2_n3",
+   "uses_overlap": false,
+   "sensors": [
+    "s7_z2_n3"
+   ],
+   "neutral": true,
+   "true_rate": 0.013517544772303491,
+   "carried": 0.2570241817928871,
+   "licensed": 0.4579025561112693,
+   "clipped": 0.2570241817928871,
+   "licensed_minus_carried": 0.20087837431838218,
+   "frac_inconsistent": 0.0,
+   "n_senses": 2,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c566_2-3-4-3-2_only_s7_z2_n3",
+   "uses_overlap": false,
+   "sensors": [
+    "s7_z2_n3"
+   ],
+   "neutral": true,
+   "true_rate": 0.013517544772303491,
+   "carried": 0.2570241817928871,
+   "licensed": 0.4579025561112693,
+   "clipped": 0.2570241817928871,
+   "licensed_minus_carried": 0.20087837431838218,
+   "frac_inconsistent": 0.0,
+   "n_senses": 2,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c589_3-4-3-4-3_only_s7_z2_n3",
+   "uses_overlap": false,
+   "sensors": [
+    "s7_z2_n3"
+   ],
+   "neutral": true,
+   "true_rate": 0.013517544772303491,
+   "carried": 0.2569641916036667,
+   "licensed": 0.45790073258124964,
+   "clipped": 0.2569641916036667,
+   "licensed_minus_carried": 0.20093654097758296,
+   "frac_inconsistent": 0.0,
+   "n_senses": 2,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c322_1-2-1-2-1_only_s0_z0_n1",
+   "uses_overlap": false,
+   "sensors": [
+    "s0_z0_n1"
+   ],
+   "neutral": true,
+   "true_rate": 0.012912724835912659,
+   "carried": 0.23070232975096006,
+   "licensed": 0.42706221092411684,
+   "clipped": 0.23070232975096006,
+   "licensed_minus_carried": 0.19635988117315678,
+   "frac_inconsistent": 0.0,
+   "n_senses": 2,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c348_1-2-1-4-1_only_s0_z0_n1",
+   "uses_overlap": false,
+   "sensors": [
+    "s0_z0_n1"
+   ],
+   "neutral": true,
+   "true_rate": 0.012912724835912659,
+   "carried": 0.23070232975096006,
+   "licensed": 0.42706221092411684,
+   "clipped": 0.23070232975096006,
+   "licensed_minus_carried": 0.19635988117315678,
+   "frac_inconsistent": 0.0,
+   "n_senses": 2,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c444_1-4-1-4-1_only_s0_z0_n1",
+   "uses_overlap": false,
+   "sensors": [
+    "s0_z0_n1"
+   ],
+   "neutral": true,
+   "true_rate": 0.012912724835912659,
+   "carried": 0.23070232975096006,
+   "licensed": 0.42706221092411684,
+   "clipped": 0.23070232975096006,
+   "licensed_minus_carried": 0.19635988117315678,
+   "frac_inconsistent": 0.0,
+   "n_senses": 2,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c445_1-4-1-4-1_only_s1_z0_n4",
+   "uses_overlap": false,
+   "sensors": [
+    "s1_z0_n4"
+   ],
+   "neutral": true,
+   "true_rate": 0.012912724835912659,
+   "carried": 0.22993916717813612,
+   "licensed": 0.41919525223668874,
+   "clipped": 0.22993916717813612,
+   "licensed_minus_carried": 0.18925608505855263,
+   "frac_inconsistent": 0.0,
+   "n_senses": 2,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c492_1-4-3-4-1_only_s1_z0_n4",
+   "uses_overlap": false,
+   "sensors": [
+    "s1_z0_n4"
+   ],
+   "neutral": true,
+   "true_rate": 0.012912724835912659,
+   "carried": 0.22993916717813612,
+   "licensed": 0.41919525223668874,
+   "clipped": 0.22993916717813612,
+   "licensed_minus_carried": 0.18925608505855263,
+   "frac_inconsistent": 0.0,
+   "n_senses": 2,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c518_1-4-5-4-1_only_s1_z0_n4",
+   "uses_overlap": false,
+   "sensors": [
+    "s1_z0_n4"
+   ],
+   "neutral": true,
+   "true_rate": 0.012912724835912659,
+   "carried": 0.22993916717813612,
+   "licensed": 0.41919525223668874,
+   "clipped": 0.22993916717813612,
+   "licensed_minus_carried": 0.18925608505855263,
+   "frac_inconsistent": 0.0,
+   "n_senses": 2,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c587_3-4-3-4-3_only_s1_z0_n4",
+   "uses_overlap": false,
+   "sensors": [
+    "s1_z0_n4"
+   ],
+   "neutral": true,
+   "true_rate": 0.012912724835912659,
+   "carried": 0.22993916717813612,
+   "licensed": 0.41919525223668874,
+   "clipped": 0.22993916717813612,
+   "licensed_minus_carried": 0.18925608505855263,
+   "frac_inconsistent": 0.0,
+   "n_senses": 2,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c603_3-4-5-4-3_only_s1_z0_n4",
+   "uses_overlap": false,
+   "sensors": [
+    "s1_z0_n4"
+   ],
+   "neutral": true,
+   "true_rate": 0.012912724835912659,
+   "carried": 0.22993916717813612,
+   "licensed": 0.41919525223668874,
+   "clipped": 0.22993916717813612,
+   "licensed_minus_carried": 0.18925608505855263,
+   "frac_inconsistent": 0.0,
+   "n_senses": 2,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c6_0-1-0-1-0_only_s0_z0_n1",
+   "uses_overlap": false,
+   "sensors": [
+    "s0_z0_n1"
+   ],
+   "neutral": true,
+   "true_rate": 0.012912724835912659,
+   "carried": 0.23070232975096006,
+   "licensed": 0.42706221092411684,
+   "clipped": 0.23070232975096006,
+   "licensed_minus_carried": 0.19635988117315678,
+   "frac_inconsistent": 0.0,
+   "n_senses": 2,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c67_0-1-2-1-0_only_s0_z0_n1",
+   "uses_overlap": false,
+   "sensors": [
+    "s0_z0_n1"
+   ],
+   "neutral": true,
+   "true_rate": 0.012912724835912659,
+   "carried": 0.23070232975096006,
+   "licensed": 0.42706221092411684,
+   "clipped": 0.23070232975096006,
+   "licensed_minus_carried": 0.19635988117315678,
+   "frac_inconsistent": 0.0,
+   "n_senses": 2,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c128_0-1-4-1-0_only_s0_z0_n1",
+   "uses_overlap": false,
+   "sensors": [
+    "s0_z0_n1"
+   ],
+   "neutral": true,
+   "true_rate": 0.012912724835912659,
+   "carried": 0.23070232975096006,
+   "licensed": 0.42706221092411684,
+   "clipped": 0.23070232975096006,
+   "licensed_minus_carried": 0.19635988117315678,
+   "frac_inconsistent": 0.0,
+   "n_senses": 2,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c619_4-5-4-5-4_only_s1_z0_n4",
+   "uses_overlap": false,
+   "sensors": [
+    "s1_z0_n4"
+   ],
+   "neutral": true,
+   "true_rate": 0.012912724835912659,
+   "carried": 0.22987253638448113,
+   "licensed": 0.4191705680650958,
+   "clipped": 0.22987253638448113,
+   "licensed_minus_carried": 0.18929803168061465,
+   "frac_inconsistent": 0.0,
+   "n_senses": 2,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c564_2-3-4-3-2_only_s2_z1_n2",
+   "uses_overlap": false,
+   "sensors": [
+    "s2_z1_n2"
+   ],
+   "neutral": true,
+   "true_rate": 0.011772026385013401,
+   "carried": 0.17941673853783446,
+   "licensed": 0.2614009755503931,
+   "clipped": 0.17941673853783446,
+   "licensed_minus_carried": 0.08198423701255864,
+   "frac_inconsistent": 0.0,
+   "n_senses": 1,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c472_1-4-3-2-1_only_s2_z1_n2",
+   "uses_overlap": false,
+   "sensors": [
+    "s2_z1_n2"
+   ],
+   "neutral": true,
+   "true_rate": 0.011772026385013401,
+   "carried": 0.1794596077133528,
+   "licensed": 0.2614049445307896,
+   "clipped": 0.1794596077133528,
+   "licensed_minus_carried": 0.08194533681743682,
+   "frac_inconsistent": 0.0,
+   "n_senses": 1,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c350_1-2-1-4-1_only_s2_z1_n2",
+   "uses_overlap": false,
+   "sensors": [
+    "s2_z1_n2"
+   ],
+   "neutral": true,
+   "true_rate": 0.011772026385013401,
+   "carried": 0.17941673853783446,
+   "licensed": 0.2614009755503931,
+   "clipped": 0.17941673853783446,
+   "licensed_minus_carried": 0.08198423701255864,
+   "frac_inconsistent": 0.0,
+   "n_senses": 1,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c406_1-2-3-4-1_only_s2_z1_n2",
+   "uses_overlap": false,
+   "sensors": [
+    "s2_z1_n2"
+   ],
+   "neutral": true,
+   "true_rate": 0.011772026385013401,
+   "carried": 0.17941673853783446,
+   "licensed": 0.2614009755503931,
+   "clipped": 0.17941673853783446,
+   "licensed_minus_carried": 0.08198423701255864,
+   "frac_inconsistent": 0.0,
+   "n_senses": 1,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c519_1-4-5-4-1_only_s3_z1_n5",
+   "uses_overlap": false,
+   "sensors": [
+    "s3_z1_n5"
+   ],
+   "neutral": true,
+   "true_rate": 0.011772026385013401,
+   "carried": 0.15601608928593347,
+   "licensed": 0.22579742950961657,
+   "clipped": 0.15601608928593347,
+   "licensed_minus_carried": 0.0697813402236831,
+   "frac_inconsistent": 0.0,
+   "n_senses": 1,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c604_3-4-5-4-3_only_s3_z1_n5",
+   "uses_overlap": false,
+   "sensors": [
+    "s3_z1_n5"
+   ],
+   "neutral": true,
+   "true_rate": 0.011772026385013401,
+   "carried": 0.15601608928593347,
+   "licensed": 0.22579742950961657,
+   "clipped": 0.15601608928593347,
+   "licensed_minus_carried": 0.0697813402236831,
+   "frac_inconsistent": 0.0,
+   "n_senses": 1,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c68_0-1-2-1-0_only_s2_z1_n2",
+   "uses_overlap": false,
+   "sensors": [
+    "s2_z1_n2"
+   ],
+   "neutral": true,
+   "true_rate": 0.011772026385013401,
+   "carried": 0.17941673853783446,
+   "licensed": 0.2614009755503931,
+   "clipped": 0.17941673853783446,
+   "licensed_minus_carried": 0.08198423701255864,
+   "frac_inconsistent": 0.0,
+   "n_senses": 1,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c42_0-1-0-5-0_only_s3_z1_n5",
+   "uses_overlap": false,
+   "sensors": [
+    "s3_z1_n5"
+   ],
+   "neutral": true,
+   "true_rate": 0.011772026385013401,
+   "carried": 0.15601608928593347,
+   "licensed": 0.22579742950961657,
+   "clipped": 0.15601608928593347,
+   "licensed_minus_carried": 0.0697813402236831,
+   "frac_inconsistent": 0.0,
+   "n_senses": 1,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c189_0-1-4-5-0_only_s3_z1_n5",
+   "uses_overlap": false,
+   "sensors": [
+    "s3_z1_n5"
+   ],
+   "neutral": true,
+   "true_rate": 0.011772026385013401,
+   "carried": 0.15601608928593347,
+   "licensed": 0.22579742950961657,
+   "clipped": 0.15601608928593347,
+   "licensed_minus_carried": 0.0697813402236831,
+   "frac_inconsistent": 0.0,
+   "n_senses": 1,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c245_0-5-4-1-0_only_s3_z1_n5",
+   "uses_overlap": false,
+   "sensors": [
+    "s3_z1_n5"
+   ],
+   "neutral": true,
+   "true_rate": 0.011772026385013401,
+   "carried": 0.15597299086275362,
+   "licensed": 0.22579098270418113,
+   "clipped": 0.15597299086275362,
+   "licensed_minus_carried": 0.0698179918414275,
+   "frac_inconsistent": 0.0,
+   "n_senses": 1,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c381_1-2-3-2-1_only_s7_z2_n3",
+   "uses_overlap": false,
+   "sensors": [
+    "s7_z2_n3"
+   ],
+   "neutral": true,
+   "true_rate": 0.013152725222925987,
+   "carried": 0.20040604736603984,
+   "licensed": 0.29368720171853613,
+   "clipped": 0.20040604736603984,
+   "licensed_minus_carried": 0.09328115435249629,
+   "frac_inconsistent": 0.0,
+   "n_senses": 1,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c408_1-2-3-4-1_only_s7_z2_n3",
+   "uses_overlap": false,
+   "sensors": [
+    "s7_z2_n3"
+   ],
+   "neutral": true,
+   "true_rate": 0.013152725222925987,
+   "carried": 0.20040604736603984,
+   "licensed": 0.29368720171853613,
+   "clipped": 0.20040604736603984,
+   "licensed_minus_carried": 0.09328115435249629,
+   "frac_inconsistent": 0.0,
+   "n_senses": 1,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c474_1-4-3-2-1_only_s7_z2_n3",
+   "uses_overlap": false,
+   "sensors": [
+    "s7_z2_n3"
+   ],
+   "neutral": true,
+   "true_rate": 0.013152725222925987,
+   "carried": 0.20040604736603984,
+   "licensed": 0.29368720171853613,
+   "clipped": 0.20040604736603984,
+   "licensed_minus_carried": 0.09328115435249629,
+   "frac_inconsistent": 0.0,
+   "n_senses": 1,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c494_1-4-3-4-1_only_s7_z2_n3",
+   "uses_overlap": false,
+   "sensors": [
+    "s7_z2_n3"
+   ],
+   "neutral": true,
+   "true_rate": 0.013152725222925987,
+   "carried": 0.20040604736603984,
+   "licensed": 0.29368720171853613,
+   "clipped": 0.20040604736603984,
+   "licensed_minus_carried": 0.09328115435249629,
+   "frac_inconsistent": 0.0,
+   "n_senses": 1,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c606_3-4-5-4-3_only_s7_z2_n3",
+   "uses_overlap": false,
+   "sensors": [
+    "s7_z2_n3"
+   ],
+   "neutral": true,
+   "true_rate": 0.013152725222925987,
+   "carried": 0.2003618588832914,
+   "licensed": 0.29368571412964956,
+   "clipped": 0.2003618588832914,
+   "licensed_minus_carried": 0.09332385524635817,
+   "frac_inconsistent": 0.0,
+   "n_senses": 1,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c563_2-3-4-3-2_only_s1_z0_n4",
+   "uses_overlap": false,
+   "sensors": [
+    "s1_z0_n4"
+   ],
+   "neutral": true,
+   "true_rate": 0.012054090201353063,
+   "carried": 0.179268394806551,
+   "licensed": 0.2686959888675323,
+   "clipped": 0.179268394806551,
+   "licensed_minus_carried": 0.08942759406098133,
+   "frac_inconsistent": 0.0,
+   "n_senses": 1,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c378_1-2-3-2-1_only_s0_z0_n1",
+   "uses_overlap": false,
+   "sensors": [
+    "s0_z0_n1"
+   ],
+   "neutral": true,
+   "true_rate": 0.012054090201353063,
+   "carried": 0.17971462044479658,
+   "licensed": 0.27387891493872923,
+   "clipped": 0.17971462044479658,
+   "licensed_minus_carried": 0.09416429449393265,
+   "frac_inconsistent": 0.0,
+   "n_senses": 1,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c404_1-2-3-4-1_only_s0_z0_n1",
+   "uses_overlap": false,
+   "sensors": [
+    "s0_z0_n1"
+   ],
+   "neutral": true,
+   "true_rate": 0.012054090201353063,
+   "carried": 0.17971462044479658,
+   "licensed": 0.27387891493872923,
+   "clipped": 0.17971462044479658,
+   "licensed_minus_carried": 0.09416429449393265,
+   "frac_inconsistent": 0.0,
+   "n_senses": 1,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c470_1-4-3-2-1_only_s0_z0_n1",
+   "uses_overlap": false,
+   "sensors": [
+    "s0_z0_n1"
+   ],
+   "neutral": true,
+   "true_rate": 0.012054090201353063,
+   "carried": 0.17971462044479658,
+   "licensed": 0.27387891493872923,
+   "clipped": 0.17971462044479658,
+   "licensed_minus_carried": 0.09416429449393265,
+   "frac_inconsistent": 0.0,
+   "n_senses": 1,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c491_1-4-3-4-1_only_s0_z0_n1",
+   "uses_overlap": false,
+   "sensors": [
+    "s0_z0_n1"
+   ],
+   "neutral": true,
+   "true_rate": 0.012054090201353063,
+   "carried": 0.17971462044479658,
+   "licensed": 0.27387891493872923,
+   "clipped": 0.17971462044479658,
+   "licensed_minus_carried": 0.09416429449393265,
+   "frac_inconsistent": 0.0,
+   "n_senses": 1,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c517_1-4-5-4-1_only_s0_z0_n1",
+   "uses_overlap": false,
+   "sensors": [
+    "s0_z0_n1"
+   ],
+   "neutral": true,
+   "true_rate": 0.012054090201353063,
+   "carried": 0.17971462044479658,
+   "licensed": 0.27387891493872923,
+   "clipped": 0.17971462044479658,
+   "licensed_minus_carried": 0.09416429449393265,
+   "frac_inconsistent": 0.0,
+   "n_senses": 1,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c349_1-2-1-4-1_only_s1_z0_n4",
+   "uses_overlap": false,
+   "sensors": [
+    "s1_z0_n4"
+   ],
+   "neutral": true,
+   "true_rate": 0.012054090201353063,
+   "carried": 0.179268394806551,
+   "licensed": 0.2686959888675323,
+   "clipped": 0.179268394806551,
+   "licensed_minus_carried": 0.08942759406098133,
+   "frac_inconsistent": 0.0,
+   "n_senses": 1,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c405_1-2-3-4-1_only_s1_z0_n4",
+   "uses_overlap": false,
+   "sensors": [
+    "s1_z0_n4"
+   ],
+   "neutral": true,
+   "true_rate": 0.012054090201353063,
+   "carried": 0.179268394806551,
+   "licensed": 0.2686959888675323,
+   "clipped": 0.179268394806551,
+   "licensed_minus_carried": 0.08942759406098133,
+   "frac_inconsistent": 0.0,
+   "n_senses": 1,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c471_1-4-3-2-1_only_s1_z0_n4",
+   "uses_overlap": false,
+   "sensors": [
+    "s1_z0_n4"
+   ],
+   "neutral": true,
+   "true_rate": 0.012054090201353063,
+   "carried": 0.17921905392624327,
+   "licensed": 0.26867800686931564,
+   "clipped": 0.17921905392624327,
+   "licensed_minus_carried": 0.08945895294307238,
+   "frac_inconsistent": 0.0,
+   "n_senses": 1,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c243_0-5-4-1-0_only_s0_z0_n1",
+   "uses_overlap": false,
+   "sensors": [
+    "s0_z0_n1"
+   ],
+   "neutral": true,
+   "true_rate": 0.012054090201353063,
+   "carried": 0.17976551281142816,
+   "licensed": 0.2738940277699512,
+   "clipped": 0.17976551281142816,
+   "licensed_minus_carried": 0.09412851495852304,
+   "frac_inconsistent": 0.0,
+   "n_senses": 1,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c41_0-1-0-5-0_only_s0_z0_n1",
+   "uses_overlap": false,
+   "sensors": [
+    "s0_z0_n1"
+   ],
+   "neutral": true,
+   "true_rate": 0.012054090201353063,
+   "carried": 0.17971462044479658,
+   "licensed": 0.27387891493872923,
+   "clipped": 0.17971462044479658,
+   "licensed_minus_carried": 0.09416429449393265,
+   "frac_inconsistent": 0.0,
+   "n_senses": 1,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c187_0-1-4-5-0_only_s0_z0_n1",
+   "uses_overlap": false,
+   "sensors": [
+    "s0_z0_n1"
+   ],
+   "neutral": true,
+   "true_rate": 0.012054090201353063,
+   "carried": 0.17971462044479658,
+   "licensed": 0.27387891493872923,
+   "clipped": 0.17971462044479658,
+   "licensed_minus_carried": 0.09416429449393265,
+   "frac_inconsistent": 0.0,
+   "n_senses": 1,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c129_0-1-4-1-0_only_s1_z0_n4",
+   "uses_overlap": false,
+   "sensors": [
+    "s1_z0_n4"
+   ],
+   "neutral": true,
+   "true_rate": 0.012054090201353063,
+   "carried": 0.17921905392624327,
+   "licensed": 0.26867800686931564,
+   "clipped": 0.17921905392624327,
+   "licensed_minus_carried": 0.08945895294307238,
+   "frac_inconsistent": 0.0,
+   "n_senses": 1,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c188_0-1-4-5-0_only_s1_z0_n4",
+   "uses_overlap": false,
+   "sensors": [
+    "s1_z0_n4"
+   ],
+   "neutral": true,
+   "true_rate": 0.012054090201353063,
+   "carried": 0.17921905392624327,
+   "licensed": 0.26867800686931564,
+   "clipped": 0.17921905392624327,
+   "licensed_minus_carried": 0.08945895294307238,
+   "frac_inconsistent": 0.0,
+   "n_senses": 1,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c244_0-5-4-1-0_only_s1_z0_n4",
+   "uses_overlap": false,
+   "sensors": [
+    "s1_z0_n4"
+   ],
+   "neutral": true,
+   "true_rate": 0.012054090201353063,
+   "carried": 0.17921905392624327,
+   "licensed": 0.26867800686931564,
+   "clipped": 0.17921905392624327,
+   "licensed_minus_carried": 0.08945895294307238,
+   "frac_inconsistent": 0.0,
+   "n_senses": 1,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c299_0-5-4-5-0_only_s1_z0_n4",
+   "uses_overlap": false,
+   "sensors": [
+    "s1_z0_n4"
+   ],
+   "neutral": true,
+   "true_rate": 0.012054090201353063,
+   "carried": 0.17921905392624327,
+   "licensed": 0.26867800686931564,
+   "clipped": 0.17921905392624327,
+   "licensed_minus_carried": 0.08945895294307238,
+   "frac_inconsistent": 0.0,
+   "n_senses": 1,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c439_1-4-1_all",
+   "uses_overlap": false,
+   "sensors": [
+    "s0_z0_n1",
+    "s1_z0_n4"
+   ],
+   "neutral": true,
+   "true_rate": 0.012912724835912659,
+   "carried": 0.1349186092935586,
+   "licensed": 0.3456777290237065,
+   "clipped": 0.1349186092935586,
+   "licensed_minus_carried": 0.21075911973014794,
+   "frac_inconsistent": 0.0,
+   "n_senses": 2,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c542_2-3-2_only_s2_z1_n2",
+   "uses_overlap": false,
+   "sensors": [
+    "s2_z1_n2"
+   ],
+   "neutral": true,
+   "true_rate": 0.011772026385013845,
+   "carried": 0.11193800778382856,
+   "licensed": 0.20310607480229909,
+   "clipped": 0.11193800778382856,
+   "licensed_minus_carried": 0.09116806701847052,
+   "frac_inconsistent": 0.0,
+   "n_senses": 1,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c319_1-2-1_only_s2_z1_n2",
+   "uses_overlap": false,
+   "sensors": [
+    "s2_z1_n2"
+   ],
+   "neutral": true,
+   "true_rate": 0.011772026385013845,
+   "carried": 0.11193800778382856,
+   "licensed": 0.20310607480229909,
+   "clipped": 0.11193800778382856,
+   "licensed_minus_carried": 0.09116806701847052,
+   "frac_inconsistent": 0.0,
+   "n_senses": 1,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c215_0-5-0_only_s3_z1_n5",
+   "uses_overlap": false,
+   "sensors": [
+    "s3_z1_n5"
+   ],
+   "neutral": true,
+   "true_rate": 0.011772026385013401,
+   "carried": 0.09695753640890681,
+   "licensed": 0.17543051404170298,
+   "clipped": 0.09695753640890681,
+   "licensed_minus_carried": 0.07847297763279618,
+   "frac_inconsistent": 0.0,
+   "n_senses": 1,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c616_4-5-4_only_s3_z1_n5",
+   "uses_overlap": false,
+   "sensors": [
+    "s3_z1_n5"
+   ],
+   "neutral": true,
+   "true_rate": 0.011772026385013401,
+   "carried": 0.09695753640890681,
+   "licensed": 0.17543051404170298,
+   "clipped": 0.09695753640890681,
+   "licensed_minus_carried": 0.07847297763279618,
+   "frac_inconsistent": 0.0,
+   "n_senses": 1,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c544_2-3-2_only_s7_z2_n3",
+   "uses_overlap": false,
+   "sensors": [
+    "s7_z2_n3"
+   ],
+   "neutral": true,
+   "true_rate": 0.013152725222926431,
+   "carried": 0.12536150365455623,
+   "licensed": 0.2288884353124005,
+   "clipped": 0.12536150365455623,
+   "licensed_minus_carried": 0.10352693165784427,
+   "frac_inconsistent": 0.0,
+   "n_senses": 1,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c584_3-4-3_only_s7_z2_n3",
+   "uses_overlap": false,
+   "sensors": [
+    "s7_z2_n3"
+   ],
+   "neutral": true,
+   "true_rate": 0.013152725222925987,
+   "carried": 0.12524799325778768,
+   "licensed": 0.22888668069795678,
+   "clipped": 0.12524799325778768,
+   "licensed_minus_carried": 0.1036386874401691,
+   "frac_inconsistent": 0.0,
+   "n_senses": 1,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c318_1-2-1_only_s0_z0_n1",
+   "uses_overlap": false,
+   "sensors": [
+    "s0_z0_n1"
+   ],
+   "neutral": true,
+   "true_rate": 0.012054090201352174,
+   "carried": 0.11172713652922239,
+   "licensed": 0.21291486754653188,
+   "clipped": 0.11172713652922239,
+   "licensed_minus_carried": 0.10118773101730949,
+   "frac_inconsistent": 0.0,
+   "n_senses": 1,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c440_1-4-1_only_s0_z0_n1",
+   "uses_overlap": false,
+   "sensors": [
+    "s0_z0_n1"
+   ],
+   "neutral": true,
+   "true_rate": 0.012054090201352174,
+   "carried": 0.11172713652922239,
+   "licensed": 0.21291486754653188,
+   "clipped": 0.11172713652922239,
+   "licensed_minus_carried": 0.10118773101730949,
+   "frac_inconsistent": 0.0,
+   "n_senses": 1,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c441_1-4-1_only_s1_z0_n4",
+   "uses_overlap": false,
+   "sensors": [
+    "s1_z0_n4"
+   ],
+   "neutral": true,
+   "true_rate": 0.01205409020135395,
+   "carried": 0.11143963658141964,
+   "licensed": 0.20884672510957542,
+   "clipped": 0.11143963658141964,
+   "licensed_minus_carried": 0.09740708852815577,
+   "frac_inconsistent": 0.0,
+   "n_senses": 1,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c582_3-4-3_only_s1_z0_n4",
+   "uses_overlap": false,
+   "sensors": [
+    "s1_z0_n4"
+   ],
+   "neutral": true,
+   "true_rate": 0.01205409020135395,
+   "carried": 0.11143963658141964,
+   "licensed": 0.20884672510957542,
+   "clipped": 0.11143963658141964,
+   "licensed_minus_carried": 0.09740708852815577,
+   "frac_inconsistent": 0.0,
+   "n_senses": 1,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c1_0-1-0_only_s0_z0_n1",
+   "uses_overlap": false,
+   "sensors": [
+    "s0_z0_n1"
+   ],
+   "neutral": true,
+   "true_rate": 0.012054090201352174,
+   "carried": 0.11172713652922239,
+   "licensed": 0.21291486754653188,
+   "clipped": 0.11172713652922239,
+   "licensed_minus_carried": 0.10118773101730949,
+   "frac_inconsistent": 0.0,
+   "n_senses": 1,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c615_4-5-4_only_s1_z0_n4",
+   "uses_overlap": false,
+   "sensors": [
+    "s1_z0_n4"
+   ],
+   "neutral": true,
+   "true_rate": 0.012054090201353507,
+   "carried": 0.11131103819140464,
+   "licensed": 0.20882818706252504,
+   "clipped": 0.11131103819140464,
+   "licensed_minus_carried": 0.0975171488711204,
+   "frac_inconsistent": 0.0,
+   "n_senses": 1,
+   "exploit_carried": true,
+   "exploit_clipped": true
+  },
+  {
+   "name": "c15_0-1-0-1-0-5-0_all",
+   "uses_overlap": true,
+   "sensors": [
+    "s0_z0_n1",
+    "s3_z1_n5",
+    "s4_z01_n0",
+    "s5_z4_n0"
+   ],
+   "neutral": false,
+   "true_rate": 1.054067144328139,
+   "carried": 0.8653349164286745,
+   "licensed": 2.940508599953585,
+   "clipped": 0.8653349164286745,
+   "licensed_minus_carried": 2.0751736835249104,
+   "frac_inconsistent": 0.0,
+   "n_senses": 9,
+   "exploit_carried": false,
+   "exploit_clipped": false
+  },
+  {
+   "name": "c10_0-1-0-1-0-1-0_all",
+   "uses_overlap": true,
+   "sensors": [
+    "s0_z0_n1",
+    "s4_z01_n0",
+    "s5_z4_n0"
+   ],
+   "neutral": false,
+   "true_rate": 1.0533128715184632,
+   "carried": 0.8604649721537816,
+   "licensed": 2.9786158924132033,
+   "clipped": 0.8604649721537816,
+   "licensed_minus_carried": 2.1181509202594215,
+   "frac_inconsistent": 0.0,
+   "n_senses": 9,
+   "exploit_carried": false,
+   "exploit_clipped": false
+  },
+  {
+   "name": "c46_0-1-0-5-0-5-0_all",
+   "uses_overlap": true,
+   "sensors": [
+    "s0_z0_n1",
+    "s3_z1_n5",
+    "s4_z01_n0",
+    "s5_z4_n0"
+   ],
+   "neutral": false,
+   "true_rate": 1.0541117008753487,
+   "carried": 0.850892546867041,
+   "licensed": 2.918702196716601,
+   "clipped": 0.850892546867041,
+   "licensed_minus_carried": 2.06780964984956,
+   "frac_inconsistent": 0.0,
+   "n_senses": 9,
+   "exploit_carried": false,
+   "exploit_clipped": false
+  },
+  {
+   "name": "c100_0-1-2-3-2-1-0_all",
+   "uses_overlap": true,
+   "sensors": [
+    "s0_z0_n1",
+    "s2_z1_n2",
+    "s4_z01_n0",
+    "s5_z4_n0",
+    "s6_tv_n3",
+    "s7_z2_n3"
+   ],
+   "neutral": false,
+   "true_rate": 0.39691191358576017,
+   "carried": 0.8349153840778061,
+   "licensed": 2.2906184378088685,
+   "clipped": 0.8349153840778061,
+   "licensed_minus_carried": 1.4557030537310625,
+   "frac_inconsistent": 0.0,
+   "n_senses": 8,
+   "exploit_carried": false,
+   "exploit_clipped": false
+  },
+  {
+   "name": "c117_0-1-2-3-4-5-0_all",
+   "uses_overlap": true,
+   "sensors": [
+    "s0_z0_n1",
+    "s1_z0_n4",
+    "s2_z1_n2",
+    "s3_z1_n5",
+    "s4_z01_n0",
+    "s5_z4_n0",
+    "s6_tv_n3",
+    "s7_z2_n3"
+   ],
+   "neutral": false,
+   "true_rate": 0.39691191358576017,
+   "carried": 0.8232657511676303,
+   "licensed": 2.2528125220424013,
+   "clipped": 0.8232657511676303,
+   "licensed_minus_carried": 1.429546770874771,
+   "frac_inconsistent": 0.0,
+   "n_senses": 8,
+   "exploit_carried": false,
+   "exploit_clipped": false
+  },
+  {
+   "name": "c160_0-1-4-3-2-1-0_all",
+   "uses_overlap": true,
+   "sensors": [
+    "s0_z0_n1",
+    "s1_z0_n4",
+    "s2_z1_n2",
+    "s4_z01_n0",
+    "s5_z4_n0",
+    "s6_tv_n3",
+    "s7_z2_n3"
+   ],
+   "neutral": false,
+   "true_rate": 0.3965500142766816,
+   "carried": 0.8231014341320346,
+   "licensed": 2.2654699632924684,
+   "clipped": 0.8231014341320346,
+   "licensed_minus_carried": 1.4423685291604338,
+   "frac_inconsistent": 0.0,
+   "n_senses": 8,
+   "exploit_carried": false,
+   "exploit_clipped": false
+  },
+  {
+   "name": "c108_0-1-2-3-4-1-0_all",
+   "uses_overlap": true,
+   "sensors": [
+    "s0_z0_n1",
+    "s1_z0_n4",
+    "s2_z1_n2",
+    "s4_z01_n0",
+    "s5_z4_n0",
+    "s6_tv_n3",
+    "s7_z2_n3"
+   ],
+   "neutral": false,
+   "true_rate": 0.39655001427668024,
+   "carried": 0.8230180196180851,
+   "licensed": 2.2671638878539335,
+   "clipped": 0.8230180196180851,
+   "licensed_minus_carried": 1.4441458682358483,
+   "frac_inconsistent": 0.0,
+   "n_senses": 8,
+   "exploit_carried": false,
+   "exploit_clipped": false
+  },
+  {
+   "name": "c271_0-5-4-3-2-1-0_all",
+   "uses_overlap": true,
+   "sensors": [
+    "s0_z0_n1",
+    "s1_z0_n4",
+    "s2_z1_n2",
+    "s3_z1_n5",
+    "s4_z01_n0",
+    "s5_z4_n0",
+    "s6_tv_n3",
+    "s7_z2_n3"
+   ],
+   "neutral": false,
+   "true_rate": 0.39691191358575884,
+   "carried": 0.8223328702172218,
+   "licensed": 2.252416350730368,
+   "clipped": 0.8223328702172218,
+   "licensed_minus_carried": 1.4300834805131464,
+   "frac_inconsistent": 0.0,
+   "n_senses": 8,
+   "exploit_carried": false,
+   "exploit_clipped": false
+  },
+  {
+   "name": "c224_0-5-0-5-0-5-0_all",
+   "uses_overlap": true,
+   "sensors": [
+    "s3_z1_n5",
+    "s4_z01_n0",
+    "s5_z4_n0"
+   ],
+   "neutral": false,
+   "true_rate": 1.0534846757292953,
+   "carried": 0.8108746208671179,
+   "licensed": 2.936492476635598,
+   "clipped": 0.8108746208671179,
+   "licensed_minus_carried": 2.12561785576848,
+   "frac_inconsistent": 0.0,
+   "n_senses": 9,
+   "exploit_carried": false,
+   "exploit_clipped": false
+  },
+  {
+   "name": "c21_0-1-0-1-2-1-0_all",
+   "uses_overlap": true,
+   "sensors": [
+    "s0_z0_n1",
+    "s2_z1_n2",
+    "s4_z01_n0",
+    "s5_z4_n0"
+   ],
+   "neutral": false,
+   "true_rate": 0.7234432624329679,
+   "carried": 0.8101810756700654,
+   "licensed": 2.3846766716740424,
+   "clipped": 0.8101810756700654,
+   "licensed_minus_carried": 1.574495596003977,
+   "frac_inconsistent": 0.0,
+   "n_senses": 8,
+   "exploit_carried": false,
+   "exploit_clipped": false
+  },
+  {
+   "name": "c290_0-5-4-3-4-5-0_all",
+   "uses_overlap": true,
+   "sensors": [
+    "s1_z0_n4",
+    "s3_z1_n5",
+    "s4_z01_n0",
+    "s5_z4_n0",
+    "s6_tv_n3",
+    "s7_z2_n3"
+   ],
+   "neutral": false,
+   "true_rate": 0.3969119135857597,
+   "carried": 0.8067459173019221,
+   "licensed": 2.208058138867613,
+   "clipped": 0.8067459173019221,
+   "licensed_minus_carried": 1.4013122215656906,
+   "frac_inconsistent": 0.0,
+   "n_senses": 8,
+   "exploit_carried": false,
+   "exploit_clipped": false
+  },
+  {
+   "name": "c72_0-1-2-1-0-5-0_all",
+   "uses_overlap": true,
+   "sensors": [
+    "s0_z0_n1",
+    "s2_z1_n2",
+    "s3_z1_n5",
+    "s4_z01_n0",
+    "s5_z4_n0"
+   ],
+   "neutral": false,
+   "true_rate": 0.7236851606089134,
+   "carried": 0.8049440477495089,
+   "licensed": 2.361316687526643,
+   "clipped": 0.8049440477495089,
+   "licensed_minus_carried": 1.5563726397771342,
+   "frac_inconsistent": 0.0,
+   "n_senses": 8,
+   "exploit_carried": false,
+   "exploit_clipped": false
+  },
+  {
+   "name": "c177_0-1-4-3-4-5-0_all",
+   "uses_overlap": true,
+   "sensors": [
+    "s0_z0_n1",
+    "s1_z0_n4",
+    "s3_z1_n5",
+    "s4_z01_n0",
+    "s5_z4_n0",
+    "s6_tv_n3",
+    "s7_z2_n3"
+   ],
+   "neutral": false,
+   "true_rate": 0.3965500142766816,
+   "carried": 0.8047800164540281,
+   "licensed": 2.2151809205310697,
+   "clipped": 0.8047800164540281,
+   "licensed_minus_carried": 1.4104009040770418,
+   "frac_inconsistent": 0.0,
+   "n_senses": 8,
+   "exploit_carried": false,
+   "exploit_clipped": false
+  },
+  {
+   "name": "c281_0-5-4-3-4-1-0_all",
+   "uses_overlap": true,
+   "sensors": [
+    "s0_z0_n1",
+    "s1_z0_n4",
+    "s3_z1_n5",
+    "s4_z01_n0",
+    "s5_z4_n0",
+    "s6_tv_n3",
+    "s7_z2_n3"
+   ],
+   "neutral": false,
+   "true_rate": 0.39655001427668024,
+   "carried": 0.8043439244835705,
+   "licensed": 2.218741120343046,
+   "clipped": 0.8043439244835705,
+   "licensed_minus_carried": 1.4143971958594754,
+   "frac_inconsistent": 0.0,
+   "n_senses": 8,
+   "exploit_carried": false,
+   "exploit_clipped": false
+  },
+  {
+   "name": "c33_0-1-0-1-4-5-0_all",
+   "uses_overlap": true,
+   "sensors": [
+    "s0_z0_n1",
+    "s1_z0_n4",
+    "s3_z1_n5",
+    "s4_z01_n0",
+    "s5_z4_n0"
+   ],
+   "neutral": false,
+   "true_rate": 0.7234432624329679,
+   "carried": 0.7918908701790571,
+   "licensed": 2.3441747933713595,
+   "clipped": 0.7918908701790571,
+   "licensed_minus_carried": 1.5522839231923022,
+   "frac_inconsistent": 0.0,
+   "n_senses": 8,
+   "exploit_carried": false,
+   "exploit_clipped": false
+  },
+  {
+   "name": "c52_0-1-0-5-4-1-0_all",
+   "uses_overlap": true,
+   "sensors": [
+    "s0_z0_n1",
+    "s1_z0_n4",
+    "s3_z1_n5",
+    "s4_z01_n0",
+    "s5_z4_n0"
+   ],
+   "neutral": false,
+   "true_rate": 0.7234432624329683,
+   "carried": 0.7912186324750438,
+   "licensed": 2.3469156551493926,
+   "clipped": 0.7912186324750438,
+   "licensed_minus_carried": 1.555697022674349,
+   "frac_inconsistent": 0.0,
+   "n_senses": 8,
+   "exploit_carried": false,
+   "exploit_clipped": false
+  },
+  {
+   "name": "c59_0-1-0-5-4-5-0_all",
+   "uses_overlap": true,
+   "sensors": [
+    "s0_z0_n1",
+    "s1_z0_n4",
+    "s3_z1_n5",
+    "s4_z01_n0",
+    "s5_z4_n0"
+   ],
+   "neutral": false,
+   "true_rate": 0.7236851606089143,
+   "carried": 0.7908732157322794,
+   "licensed": 2.3265322789226217,
+   "clipped": 0.7908732157322794,
+   "licensed_minus_carried": 1.5356590631903422,
+   "frac_inconsistent": 0.0,
+   "n_senses": 8,
+   "exploit_carried": false,
+   "exploit_clipped": false
+  },
+  {
+   "name": "c193_0-1-4-5-0-5-0_all",
+   "uses_overlap": true,
+   "sensors": [
+    "s0_z0_n1",
+    "s1_z0_n4",
+    "s3_z1_n5",
+    "s4_z01_n0",
+    "s5_z4_n0"
+   ],
+   "neutral": false,
+   "true_rate": 0.7236851606089134,
+   "carried": 0.7878428374952524,
+   "licensed": 2.3244459825960373,
+   "clipped": 0.7878428374952524,
+   "licensed_minus_carried": 1.5366031451007849,
+   "frac_inconsistent": 0.0,
+   "n_senses": 8,
+   "exploit_carried": false,
+   "exploit_clipped": false
+  },
+  {
+   "name": "c133_0-1-4-1-0-5-0_all",
+   "uses_overlap": true,
+   "sensors": [
+    "s0_z0_n1",
+    "s1_z0_n4",
+    "s3_z1_n5",
+    "s4_z01_n0",
+    "s5_z4_n0"
+   ],
+   "neutral": false,
+   "true_rate": 0.7234432624329674,
+   "carried": 0.7871735231381971,
+   "licensed": 2.340802335123643,
+   "clipped": 0.7871735231381971,
+   "licensed_minus_carried": 1.553628811985446,
+   "frac_inconsistent": 0.0,
+   "n_senses": 8,
+   "exploit_carried": false,
+   "exploit_clipped": false
+  },
+  {
+   "name": "c229_0-5-0-5-4-1-0_all",
+   "uses_overlap": true,
+   "sensors": [
+    "s0_z0_n1",
+    "s1_z0_n4",
+    "s3_z1_n5",
+    "s4_z01_n0",
+    "s5_z4_n0"
+   ],
+   "neutral": false,
+   "true_rate": 0.7236851606089143,
+   "carried": 0.7865824561840058,
+   "licensed": 2.3209373134182885,
+   "clipped": 0.7865824561840058,
+   "licensed_minus_carried": 1.5343548572342827,
+   "frac_inconsistent": 0.0,
+   "n_senses": 8,
+   "exploit_carried": false,
+   "exploit_clipped": false
+  }
+ ],
+ "consistency_rows_truncated": false,
+ "naive_equals_carried": true
+}

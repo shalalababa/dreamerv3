@@ -1,0 +1,37 @@
+{
+ "prereg": "PREREG_mindose_reacher_20260820.md",
+ "amendment": "PREREG_mindose_reacher_amend1_20260820.md",
+ "overall": "PROCEED: dose-1 unfrozen clears scratch on reacher \u2014 the recipe has legs outside finger. NOTE (amend1 M13): the comparison is unmatched-budget by design; this PROCEED licenses only a matched-budget follow-up registration, never a recipe claim by itself",
+ "primary": {
+  "diff": 193.52733749999993,
+  "ci": [
+   90.60421178843647,
+   340.8827319639547
+  ],
+  "perm_p": 0.0065993400659934,
+  "n": [
+   8,
+   8
+  ],
+  "alpha": 0.05,
+  "fire": true
+ },
+ "realized_mde80": 180.83122062146833,
+ "arms": {
+  "dose_mean": 596.7304624999999,
+  "scratch_mean": 403.203125
+ },
+ "buffer": {
+  "occupancy": 0.097837,
+  "window": [
+   0.08,
+   0.2
+  ]
+ },
+ "gates": {
+  "fits": 8,
+  "updates": 500000,
+  "modal_n_ep": 96
+ },
+ "secondary_note": "dose vs W0 reacher task cells is cross-protocol (frozen vs unfrozen) \u2014 context only (amend1 M12)"
+}

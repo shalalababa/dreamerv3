@@ -1,0 +1,34 @@
+{
+ "tag": "rkn_pilot2",
+ "exact_floor_fullcov": [
+  0.3005853079500698,
+  -1.8203009159303651
+ ],
+ "exact_floor_diag": {
+  "obs_nll": 0.3005853079500697,
+  "z_nll": -1.8003741889997855
+ },
+ "members": [
+  {
+   "member": 0,
+   "obs_nll": 0.4309120274683149,
+   "z_nll": 1.81504795361211
+  },
+  {
+   "member": 1,
+   "obs_nll": 0.43255354053471334,
+   "z_nll": 1.8277602705485487
+  },
+  {
+   "member": 2,
+   "obs_nll": 0.43049843936760934,
+   "z_nll": 1.7655642040379118
+  },
+  {
+   "member": 3,
+   "obs_nll": 0.4212665710449589,
+   "z_nll": 1.6907201862482049
+  }
+ ],
+ "convention": "heldout_eval seeds 777123/888777; obs before update, z after step; P-RKN3 comparisons use the DIAG floor (#33 F11)"
+}
