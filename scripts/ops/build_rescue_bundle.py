@@ -335,6 +335,23 @@ def sha256_file(path):
 # Builders
 # --------------------------------------------------------------------------
 
+def ckpt_sha(path):
+  """sha256 of a resolved checkpoint: a file directly; a directory as
+  the hash of its sorted (name, file-sha) pairs. None if absent."""
+  import hashlib
+  if os.path.isfile(path):
+    return sha256_file(path)
+  if os.path.isdir(path):
+    h = hashlib.sha256()
+    for fn in sorted(os.listdir(path)):
+      fp = os.path.join(path, fn)
+      if os.path.isfile(fp):
+        h.update(fn.encode())
+        h.update(bytes.fromhex(sha256_file(fp)))
+    return h.hexdigest()
+  return None
+
+
 def _load_refs(ref_configs, problems, meta, wave):
   """Reference configs: bytes for matching (carrier), paths+shas
   recorded in _meta for BOTH carrier and u1a (finding 6)."""
@@ -358,7 +375,8 @@ def _load_refs(ref_configs, problems, meta, wave):
   return refs
 
 
-def build_witness(runroot, spec, wave, ref_configs=None, lane_dir=None):
+def build_witness(runroot, spec, wave, ref_configs=None, lane_dir=None,
+                  job_logs=None):
   w, problems = {}, []
   meta = dict(builder='scripts/ops/build_rescue_bundle.py', wave=wave,
               config_exceptions=list(CONFIG_EXCEPTIONS),
@@ -521,6 +539,106 @@ def build_witness(runroot, spec, wave, ref_configs=None, lane_dir=None):
                         f'reference its fit {fit_dir}')
     meta['adapt_ckpts'] = adapt_ckpts
     meta['adapt_ckpt_ok'] = bool(ok)
+  if wave == 'crowding':
+    # The frozen reader gates check_witness(ADAPTS, 125000): witness
+    # entries keyed by the 16 ADAPT run_ids with counters == 125000
+    # EXACTLY. An adapt's ckpt dirs carry no step suffix and neither
+    # metrics.jsonl (final step trails run.steps by up to one logging
+    # cadence, ~1e4) nor scores.jsonl (episode boundaries) ever reads
+    # exactly 125000 — so the pinned value is written ONLY when four
+    # independent signals agree, else the realized metrics step is
+    # written and the reader refuses:
+    #   (1) the adapt's saved config run.steps == 125000;
+    #   (2) an OK/DONE line for this run_id in the bundle job logs
+    #       (bundle.sbatch prints it only on rc=0 + ADAPT_DONE +
+    #       n_ep>=100, and rc=0 requires main.py to REACH run.steps);
+    #   (3) metrics.jsonl final step >= 115000 (within one cadence);
+    #   (4) scores.jsonl >= 100 lines.
+    # Plus the prereg's linkage obligations: from_checkpoint must
+    # resolve inside the paired fit dir, and the loaded ckpt's sha is
+    # recorded.
+    done_log = set()
+    logdir = job_logs or os.getcwd()
+    for fn in sorted(glob.glob(os.path.join(logdir, 'crowd*.out'))):
+      with open(fn, errors='replace') as fh:
+        for line in fh:
+          m = re.search(r'(?:OK|DONE)\s+(adapt_ax1uzruw\S+)', line)
+          if m:
+            done_log.add(m.group(1))
+    if not done_log:
+      problems.append(f'no OK/DONE adapt lines in {logdir}/crowd*.out '
+                      '— pass --job_logs; completion corroboration '
+                      'missing for every adapt')
+    for fit, adapt in spec['adapt_of'].items():
+      adir = os.path.join(runroot, adapt)
+      cfgp = os.path.join(adir, 'config.yaml')
+      if not os.path.isdir(adir) or not os.path.exists(cfgp):
+        problems.append(f'{adapt}: run dir or config.yaml missing — '
+                        'the adapt witness gate will refuse')
+        w[adapt] = dict(counters=0, counters_source='missing')
+        continue
+      cf = flat_config(cfgp)
+      entry = dict(
+          config_sha_excl_registered=config_sha_excl(cfgp))
+      entry['config_sha_excl_seed'] = entry['config_sha_excl_registered']
+      steps_cfg = int(float(cf.get('run.steps') or 0))
+      entry['run_steps_config'] = steps_cfg
+      if steps_cfg != 125000:
+        problems.append(f'{adapt}: config run.steps {steps_cfg} != '
+                        '125000')
+      fc = str(cf.get('run.from_checkpoint') or '')
+      entry['from_checkpoint'] = fc
+      if f'/{fit}/' not in fc and not fc.rstrip('/').endswith(fit):
+        problems.append(f'{adapt}: from_checkpoint {fc!r} does not '
+                        f'reference its fit {fit} — linkage broken')
+      else:
+        sha = ckpt_sha(fc)
+        entry['loaded_ckpt_sha'] = sha
+        if sha is None:
+          problems.append(f'{adapt}: loaded checkpoint {fc!r} no '
+                          'longer exists — sha unrecordable')
+      last_mstep = 0
+      mt = os.path.join(adir, 'metrics.jsonl')
+      if os.path.exists(mt):
+        with open(mt) as fh:
+          for line in fh:
+            line = line.strip()
+            if line:
+              try:
+                last_mstep = max(last_mstep,
+                                 int(json.loads(line).get('step', 0)))
+              except (ValueError, json.JSONDecodeError):
+                pass
+      entry['realized_final_metrics_step'] = last_mstep
+      nep = 0
+      sc = os.path.join(adir, 'scores.jsonl')
+      if os.path.exists(sc):
+        with open(sc) as fh:
+          nep = sum(1 for ln in fh if ln.strip())
+      entry['scores_lines'] = nep
+      in_log = adapt in done_log
+      entry['job_log_ok'] = in_log
+      complete = (steps_cfg == 125000 and in_log
+                  and last_mstep >= 115000 and nep >= 100)
+      if complete:
+        entry['counters'] = 125000
+        entry['counters_source'] = ('config_steps125k+job_log_ok+'
+                                    'metrics_ge115k+scores_ge100')
+      else:
+        entry['counters'] = last_mstep
+        entry['counters_source'] = 'incomplete_evidence'
+        why = []
+        if not in_log:
+          why.append('no OK/DONE job-log line')
+        if last_mstep < 115000:
+          why.append(f'metrics final step {last_mstep} < 115000')
+        if nep < 100:
+          why.append(f'scores lines {nep} < 100')
+        if why:
+          problems.append(f'{adapt}: completion NOT established '
+                          f'({"; ".join(why)}) — counters left at the '
+                          'realized metrics step, reader will refuse')
+      w[adapt] = entry
   w['_meta'] = meta
   return w
 
@@ -668,7 +786,8 @@ def build(args, seeds=None):
         f'(first: {missing[:4]}) — wave not drained; nothing bundled')
   witness = build_witness(args.runroot, spec, args.wave,
                           ref_configs=args.ref_configs,
-                          lane_dir=args.lane_cmds)
+                          lane_dir=args.lane_cmds,
+                          job_logs=args.job_logs)
 
   if args.wave == 'crowding':
     # amend1 B8: the reader refuses unless the adapt namespace was EMPTY at
@@ -807,7 +926,8 @@ def _mk_cloud_log(root, adapt, fit, seed, sd, ckpt_step=500000,
 def _ns(**kw):
   base = dict(wave=None, runroot=None, output=None, ref_configs=None,
               lane_cmds=None, dose_manifest=None, extra_fits=None,
-              attest_first_draw=False, allow_problems=False)
+              attest_first_draw=False, allow_problems=False,
+              job_logs=None, donor_provenance=None)
   base.update(kw)
   return argparse.Namespace(**base)
 
@@ -1116,6 +1236,72 @@ def selfcheck():
       assert 'nothing bundled' in str(e), e
     assert not os.path.exists(out4) and not os.path.exists(
         out4 + '.building')
+  # --- crowding adapt-witness leg (unit level: build_witness only).
+  # The frozen reader gates counters == 125000 on the 16 ADAPT run_ids;
+  # no realized log counter lands exactly there, so the pinned value is
+  # written only under the four-signal completion evidence.
+  with tempfile.TemporaryDirectory() as tmp:
+    root = os.path.join(tmp, 'rr')
+    logdir = os.path.join(tmp, 'logs')
+    os.makedirs(logdir)
+    cspec = wave_spec('crowding', seeds=(1,))
+    log_lines = []
+    for fit, adapt in cspec['adapt_of'].items():
+      fdir = _mk_fit(root, fit, 500000, 500000, 1)
+      ck = os.path.join(fdir, 'ckpt', '20260101T000000-000000500000')
+      adir = os.path.join(root, adapt)
+      os.makedirs(adir)
+      with open(os.path.join(adir, 'config.yaml'), 'w') as f:
+        f.write('run:\n  steps: 125000.0\n'
+                f'  from_checkpoint: {ck}\nseed: 1\n')
+      with open(os.path.join(adir, 'metrics.jsonl'), 'w') as f:
+        for st in (50000, 114256, 123648):
+          f.write(json.dumps({'step': st}) + '\n')
+      with open(os.path.join(adir, 'scores.jsonl'), 'w') as f:
+        for i in range(110):
+          f.write(json.dumps({'step': 1000 * (i + 1),
+                              'episode/score': 1.0}) + '\n')
+      log_lines.append(f'CELL {adapt}  (86400s of walltime left)\n')
+      log_lines.append(f'OK     {adapt} (scores.jsonl 110 lines)\n')
+    with open(os.path.join(logdir, 'crowd_1.out'), 'w') as f:
+      f.writelines(log_lines)
+    wgood = build_witness(root, cspec, 'crowding', job_logs=logdir)
+    for adapt in cspec['adapt_of'].values():
+      e = wgood[adapt]
+      assert e['counters'] == 125000, e
+      assert e['counters_source'].startswith('config_steps125k'), e
+      assert e['loaded_ckpt_sha'], e
+    assert wgood['_meta']['problems'] == [], wgood['_meta']['problems']
+
+    # (a) OK line missing for one adapt -> realized counters + problem
+    bad = sorted(cspec['adapt_of'].values())[0]
+    with open(os.path.join(logdir, 'crowd_1.out'), 'w') as f:
+      f.writelines(ln for ln in log_lines if f'OK     {bad}' not in ln)
+    wa = build_witness(root, cspec, 'crowding', job_logs=logdir)
+    assert wa[bad]['counters'] == 123648, wa[bad]
+    assert any('no OK/DONE' in p for p in wa['_meta']['problems'])
+    with open(os.path.join(logdir, 'crowd_1.out'), 'w') as f:
+      f.writelines(log_lines)
+
+    # (b) truncated metrics -> completion not established
+    mt = os.path.join(root, bad, 'metrics.jsonl')
+    with open(mt, 'w') as f:
+      f.write(json.dumps({'step': 90000}) + '\n')
+    wb = build_witness(root, cspec, 'crowding', job_logs=logdir)
+    assert wb[bad]['counters'] == 90000, wb[bad]
+    assert any('90000 < 115000' in p for p in wb['_meta']['problems'])
+    with open(mt, 'w') as f:
+      for st in (50000, 114256, 123648):
+        f.write(json.dumps({'step': st}) + '\n')
+
+    # (c) from_checkpoint pointing at a foreign fit -> linkage problem
+    cfgp = os.path.join(root, bad, 'config.yaml')
+    with open(cfgp, 'w') as f:
+      f.write('run:\n  steps: 125000.0\n'
+              '  from_checkpoint: /rr/ax1wm_finger_other_seed9/ckpt/x\n'
+              'seed: 1\n')
+    wc = build_witness(root, cspec, 'crowding', job_logs=logdir)
+    assert any('linkage broken' in p for p in wc['_meta']['problems'])
   print('SELFCHECK PASS (build_rescue_bundle v2: carrier end-to-end '
         'incl. seed+logdir-excepted sha identity + arm distinction + '
         'adapt-log counters + lane file; stale-copy path -> counters '
@@ -1125,7 +1311,12 @@ def selfcheck():
         'keys + refs recorded; mindose END-TO-END with build-dose '
         'manifest shape + search-shape refusal + probeset-appearance '
         'flips disposition + attestation never defaults on; missing '
-        'adapt row -> nothing bundled, no half-built dir)')
+        'adapt row -> nothing bundled, no half-built dir; crowding '
+        'adapt witnesses: counters=125000 only under four-signal '
+        'completion evidence (config steps + job-log OK + metrics '
+        'within one cadence + scores lines), linkage + loaded-ckpt '
+        'sha recorded, each signal drop -> realized counters + '
+        'problem)')
 
 
 def main():

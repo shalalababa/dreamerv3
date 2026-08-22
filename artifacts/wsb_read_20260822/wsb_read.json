@@ -1,0 +1,45 @@
+{
+ "n_cells": 8,
+ "delta": 2.0,
+ "realized_planted_spread_median": 0.7636962276932947,
+ "spread_min": 0.2,
+ "recovery_slope": {
+  "point": 1.0045419031773677,
+  "ci": [
+   0.996642221417761,
+   1.0242566050159199
+  ],
+  "perm_p": 0.008099190080991902,
+  "n_cells": 8
+ },
+ "slope_note": "estimand = 1 + substrate beta (disclosed ~0)",
+ "verdict": "IN-VIVO-CALIBRATED",
+ "probe_slope": {
+  "point": 1.0000461800885323,
+  "ci": [
+   1.0,
+   1.0001385402655965
+  ],
+  "perm_p": 0.008099190080991902,
+  "n_cells": 8
+ },
+ "split_opp_stamped": {
+  "point": 0.7198835802078247,
+  "ci": [
+   0.46081120704584044,
+   1.0782917949795874
+  ],
+  "perm_p": 0.008099190080991902,
+  "n_cells": 8
+ },
+ "consumer_tilt": {
+  "point": -0.0390691907927976,
+  "ci": [
+   -0.07842437574218866,
+   -0.005295571501093001
+  ],
+  "perm_p": 0.11828817118288171,
+  "n_cells": 8,
+  "alarm": false
+ }
+}

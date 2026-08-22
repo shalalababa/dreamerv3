@@ -1,0 +1,44 @@
+{
+ "prereg": "PREREG_routedrepair_20260820.md",
+ "amendment": "PREREG_routedrepair_amend1_20260820.md",
+ "overall": "PROCEED: routing beats full fine-tuning of the same sunk trunk AND reaches the scratch neighborhood. NOTE (amend1 M14): this wave cannot separate repair from overwrite; PROCEED licenses the short-refit, random-init-control and matched-budget follow-up registrations \u2014 never the deployable salvage claim by itself",
+ "d1": {
+  "mean": 201.0885625,
+  "ci": [
+   162.25719729451254,
+   250.9309875
+  ],
+  "perm_p": 0.0078125,
+  "d_z": 2.959501378820215,
+  "sd": 67.94677101321797,
+  "n": 8,
+  "alpha": 0.05,
+  "fire": true
+ },
+ "d2": {
+  "mean": 143.760425,
+  "ci": [
+   99.25436818590894,
+   203.17842806394512
+  ],
+  "perm_p": 0.0078125,
+  "d_z": 1.8253714423433058,
+  "sd": 78.75680623963784,
+  "n": 8,
+  "bar": 122.6823,
+  "bar_met": true,
+  "note": "vs constant; pin error not propagated \u2014 anti-conservative, disclosed"
+ },
+ "arms": {
+  "repair_mean": 291.442725,
+  "aptctl_mean": 90.3541625,
+  "snp_mean": 125.5651125,
+  "july_pin_descriptive": 89.8984625,
+  "scratch": 147.6823
+ },
+ "gates": {
+  "refits": 8,
+  "refit_updates": 500000,
+  "modal_n_ep": 96
+ }
+}
