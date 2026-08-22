@@ -1,0 +1,19 @@
+wave_id: b3_planner
+spec:    /home/rickybao/projects/dreamerv3/ops/waves/b3_planner/spec.yaml
+prereg:  prereg/PREREG_nfi_planner_20260821.md
+
+=== stage probe  [vast]  kind=planner_probe  on_failure=continue  n=8 ===
+  se_planner_seed10
+  se_planner_seed11
+  se_planner_seed12
+  se_planner_seed13
+  se_planner_seed14
+  se_planner_seed15
+  se_planner_seed16
+  se_planner_seed17
+
+TOTAL RUNS: 8
+
+Check this list against the prereg before submitting. run_ids are
+consumed by frozen readers and the ledger; a wrong expansion here
+propagates into every downstream artifact.

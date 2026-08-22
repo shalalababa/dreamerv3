@@ -1,0 +1,209 @@
+{
+ "wave_id": "b3_planner",
+ "spec": "/home/rickybao/projects/dreamerv3/ops/waves/b3_planner/spec.yaml",
+ "prereg": "prereg/PREREG_nfi_planner_20260821.md",
+ "bundle": null,
+ "stages": [
+  {
+   "name": "probe",
+   "target": "vast",
+   "kind": "planner_probe",
+   "on_failure": "continue",
+   "needs": null
+  }
+ ],
+ "runs": [
+  {
+   "stage": "probe",
+   "kind": "planner_probe",
+   "target": "vast",
+   "run_id": "se_planner_seed10",
+   "cmd": "MUJOCO_GL=egl XLA_PYTHON_CLIENT_PREALLOCATE=false python -m uncfield.se_planner_probe --run_logdir \"$RUNROOT/se_cheetah_seed10\" --platform cuda --seed 0",
+   "vars": {
+    "seed": 10,
+    "run_id": "se_planner_seed10"
+   },
+   "logdir": "se_cheetah_seed10",
+   "outputs": [
+    "se_cheetah_seed10/se_planner"
+   ],
+   "inputs": [],
+   "done_when": [
+    {
+     "exists": "se_planner/se_planner.json"
+    },
+    {
+     "exists": "se_planner/se_planner.npz"
+    }
+   ]
+  },
+  {
+   "stage": "probe",
+   "kind": "planner_probe",
+   "target": "vast",
+   "run_id": "se_planner_seed11",
+   "cmd": "MUJOCO_GL=egl XLA_PYTHON_CLIENT_PREALLOCATE=false python -m uncfield.se_planner_probe --run_logdir \"$RUNROOT/se_cheetah_seed11\" --platform cuda --seed 0",
+   "vars": {
+    "seed": 11,
+    "run_id": "se_planner_seed11"
+   },
+   "logdir": "se_cheetah_seed11",
+   "outputs": [
+    "se_cheetah_seed11/se_planner"
+   ],
+   "inputs": [],
+   "done_when": [
+    {
+     "exists": "se_planner/se_planner.json"
+    },
+    {
+     "exists": "se_planner/se_planner.npz"
+    }
+   ]
+  },
+  {
+   "stage": "probe",
+   "kind": "planner_probe",
+   "target": "vast",
+   "run_id": "se_planner_seed12",
+   "cmd": "MUJOCO_GL=egl XLA_PYTHON_CLIENT_PREALLOCATE=false python -m uncfield.se_planner_probe --run_logdir \"$RUNROOT/se_cheetah_seed12\" --platform cuda --seed 0",
+   "vars": {
+    "seed": 12,
+    "run_id": "se_planner_seed12"
+   },
+   "logdir": "se_cheetah_seed12",
+   "outputs": [
+    "se_cheetah_seed12/se_planner"
+   ],
+   "inputs": [],
+   "done_when": [
+    {
+     "exists": "se_planner/se_planner.json"
+    },
+    {
+     "exists": "se_planner/se_planner.npz"
+    }
+   ]
+  },
+  {
+   "stage": "probe",
+   "kind": "planner_probe",
+   "target": "vast",
+   "run_id": "se_planner_seed13",
+   "cmd": "MUJOCO_GL=egl XLA_PYTHON_CLIENT_PREALLOCATE=false python -m uncfield.se_planner_probe --run_logdir \"$RUNROOT/se_cheetah_seed13\" --platform cuda --seed 0",
+   "vars": {
+    "seed": 13,
+    "run_id": "se_planner_seed13"
+   },
+   "logdir": "se_cheetah_seed13",
+   "outputs": [
+    "se_cheetah_seed13/se_planner"
+   ],
+   "inputs": [],
+   "done_when": [
+    {
+     "exists": "se_planner/se_planner.json"
+    },
+    {
+     "exists": "se_planner/se_planner.npz"
+    }
+   ]
+  },
+  {
+   "stage": "probe",
+   "kind": "planner_probe",
+   "target": "vast",
+   "run_id": "se_planner_seed14",
+   "cmd": "MUJOCO_GL=egl XLA_PYTHON_CLIENT_PREALLOCATE=false python -m uncfield.se_planner_probe --run_logdir \"$RUNROOT/se_cheetah_seed14\" --platform cuda --seed 0",
+   "vars": {
+    "seed": 14,
+    "run_id": "se_planner_seed14"
+   },
+   "logdir": "se_cheetah_seed14",
+   "outputs": [
+    "se_cheetah_seed14/se_planner"
+   ],
+   "inputs": [],
+   "done_when": [
+    {
+     "exists": "se_planner/se_planner.json"
+    },
+    {
+     "exists": "se_planner/se_planner.npz"
+    }
+   ]
+  },
+  {
+   "stage": "probe",
+   "kind": "planner_probe",
+   "target": "vast",
+   "run_id": "se_planner_seed15",
+   "cmd": "MUJOCO_GL=egl XLA_PYTHON_CLIENT_PREALLOCATE=false python -m uncfield.se_planner_probe --run_logdir \"$RUNROOT/se_cheetah_seed15\" --platform cuda --seed 0",
+   "vars": {
+    "seed": 15,
+    "run_id": "se_planner_seed15"
+   },
+   "logdir": "se_cheetah_seed15",
+   "outputs": [
+    "se_cheetah_seed15/se_planner"
+   ],
+   "inputs": [],
+   "done_when": [
+    {
+     "exists": "se_planner/se_planner.json"
+    },
+    {
+     "exists": "se_planner/se_planner.npz"
+    }
+   ]
+  },
+  {
+   "stage": "probe",
+   "kind": "planner_probe",
+   "target": "vast",
+   "run_id": "se_planner_seed16",
+   "cmd": "MUJOCO_GL=egl XLA_PYTHON_CLIENT_PREALLOCATE=false python -m uncfield.se_planner_probe --run_logdir \"$RUNROOT/se_cheetah_seed16\" --platform cuda --seed 0",
+   "vars": {
+    "seed": 16,
+    "run_id": "se_planner_seed16"
+   },
+   "logdir": "se_cheetah_seed16",
+   "outputs": [
+    "se_cheetah_seed16/se_planner"
+   ],
+   "inputs": [],
+   "done_when": [
+    {
+     "exists": "se_planner/se_planner.json"
+    },
+    {
+     "exists": "se_planner/se_planner.npz"
+    }
+   ]
+  },
+  {
+   "stage": "probe",
+   "kind": "planner_probe",
+   "target": "vast",
+   "run_id": "se_planner_seed17",
+   "cmd": "MUJOCO_GL=egl XLA_PYTHON_CLIENT_PREALLOCATE=false python -m uncfield.se_planner_probe --run_logdir \"$RUNROOT/se_cheetah_seed17\" --platform cuda --seed 0",
+   "vars": {
+    "seed": 17,
+    "run_id": "se_planner_seed17"
+   },
+   "logdir": "se_cheetah_seed17",
+   "outputs": [
+    "se_cheetah_seed17/se_planner"
+   ],
+   "inputs": [],
+   "done_when": [
+    {
+     "exists": "se_planner/se_planner.json"
+    },
+    {
+     "exists": "se_planner/se_planner.npz"
+    }
+   ]
+  }
+ ]
+}

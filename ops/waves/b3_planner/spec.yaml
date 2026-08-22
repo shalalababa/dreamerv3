@@ -1,0 +1,63 @@
+# Planner wave (Track D / Act-2 axis) -- PREREG_nfi_planner_20260821.md.
+#
+# 8 GPU tasks, one per Stage-1 checkpoint se_cheetah_seed10..17. This is the
+# instance-side twin of scripts/se_planner.sbatch (RCC array 0-7); the command
+# is transcribed from that sbatch VERBATIM -- `--platform cuda --seed 0`, no
+# --smoke, no --output, so the probe writes its registered <run>/se_planner.
+# The registered SMOKE=1 GPU task ran first on RCC (job 54153849, seed 10):
+# devices [CudaDevice(id=0)], backend gpu, 5 arms, reset_hits 0, cem_improves
+# True on all three CEM arms, written to se_planner_smoke/ (#32 m2) so it does
+# not collide with these outputs.
+#
+# DEVICE. The prereg pins ONE CUDA device per run and REJECTS a CPU fallback
+# (#32 m3 -- different numeric regime); the frozen reader asserts exactly that
+# per run (se_planner_read.py:137-139) and records the device/backend strings,
+# but does NOT require the 8 runs to share one physical GPU. Lanes therefore
+# satisfy the registration as written: one lane = one card = one device.
+#
+# INPUTS. The probe reads only <run>/config.yaml + <run>/ckpt (it builds a
+# FRESH env per arm and never touches replay/), so staging is 43 MB per seed,
+# 346 MB for all eight -- verified before this spec was written.
+#
+# per_gpu: 1. Cost is small: the smoke did 40 steps/arm in 24 s, and the wave
+# runs 2000 steps/arm, projecting to roughly 20-30 min per task. That is an
+# UNVERIFIED projection from the smoke, not a measurement.
+
+wave_id: b3_planner
+paper: paper5
+prereg: prereg/PREREG_nfi_planner_20260821.md
+notes: >-
+  8 planner-probe passes on the Stage-1 cheetah checkpoints (seeds 10-17),
+  one GPU each. Requires se_cheetah_seed10..17 (config.yaml + ckpt) staged.
+
+defaults:
+  target: vast
+
+kinds:
+  planner_probe: {per_gpu: 1}
+
+stages:
+
+  - name: probe
+    kind: planner_probe
+    on_failure: continue
+    runs:
+      - {run_id: se_planner_seed10, seed: 10}
+      - {run_id: se_planner_seed11, seed: 11}
+      - {run_id: se_planner_seed12, seed: 12}
+      - {run_id: se_planner_seed13, seed: 13}
+      - {run_id: se_planner_seed14, seed: 14}
+      - {run_id: se_planner_seed15, seed: 15}
+      - {run_id: se_planner_seed16, seed: 16}
+      - {run_id: se_planner_seed17, seed: 17}
+    logdir: "se_cheetah_seed${seed}"
+    cmd: >-
+      MUJOCO_GL=egl XLA_PYTHON_CLIENT_PREALLOCATE=false
+      python -m uncfield.se_planner_probe
+      --run_logdir "$RUNROOT/se_cheetah_seed${seed}"
+      --platform cuda --seed 0
+    outputs:
+      - "se_cheetah_seed${seed}/se_planner"
+    done_when:
+      - exists: se_planner/se_planner.json
+      - exists: se_planner/se_planner.npz
