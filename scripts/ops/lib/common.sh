@@ -35,6 +35,17 @@ DV3_SSH_OPTS=(-o ServerAliveInterval=30 -o ServerAliveCountMax=120
 # only behaviour that makes an archive an archive.
 DV3_RSYNC_OPTS=(-az --partial --append-verify --copy-unsafe-links --info=progress2 --stats)
 #
+# ...with ONE exception, and it is not hypothetical. --append-verify skips any
+# file whose size already matches, so a MUTABLE, CONSTANT-LENGTH file never
+# updates after its first copy. `ckpt/latest` is exactly that: rewritten on
+# every save, always a fixed-length timestamp. On 2026-08-22 ten runs on RCC
+# still pointed at their FIRST-pulled checkpoint -- four A1 cells named a
+# ~105k-133k step checkpoint while the 494k-499k ones sat beside them, and
+# se_probe happily probed the wrong model and reported OK. Payload blobs are
+# genuinely immutable so the flag stays; these pointers need their own pass.
+# The generated pull_results.sh pass 2 (checksum-forced, --ignore-times) is
+# where those pointers are corrected; keep `latest` in its include list.
+#
 # CODE: --append-verify is CATASTROPHIC here. It only ever appends to a file
 # that is SHORTER on the destination and skips it outright when the size
 # matches -- so an edited file of unchanged length never propagates. That is
