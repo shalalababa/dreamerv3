@@ -65,11 +65,15 @@ skipped and the failure reports the dep you just installed.
 `$RUNROOT/axis1_finger/<quad>/` to the matching remote parent, including
 `manifest.json` — `axis1.sbatch` requires `$(dirname "$REPLAY")/manifest.json`.
 
-**RCC caps submitted jobs at 12 — ALL jobs, not just gpu.** The surplus is
-REJECTED (`QOSMaxSubmitJobPerUserLimit`), never queued, so an over-submit goes
-MISSING rather than waiting. Check `squeue -u $USER -h | wc -l` before every
-submission. For CPU work run many subtasks under ONE job
-(`scripts/rcc_bundle.sbatch`, PAYLOAD + IDX) rather than one job per task.
+**RCC caps submitted jobs at 12 in the `gpu` QOS.** Measured 22 Aug 2026 with
+`sacctmgr show qos`: gpu MaxSubmitJobsPU=**12**, caslake=**1000**, bigmem=10,
+debug=1, and assoc/account/partition MaxSubmitJobs all empty — so CPU work on
+caslake is effectively unconstrained and does NOT compete with gpu jobs. The
+surplus is REJECTED (`QOSMaxSubmitJobPerUserLimit`), never queued, so an
+over-submit goes MISSING rather than waiting: check
+`squeue -u $USER -h -p gpu | wc -l` before a gpu submission, and prefer
+`scripts/rcc_bundle.sbatch` (PAYLOAD + IDX) to fit many gpu cells into one job
+— that is how waves C and A ran 16 cells in 2 slots.
 `submit_all.sh` respects `MAX_JOBS=12`;
 direct `sbatch` loops must too. Slurm `.out` logs stay in `$REPO`.
 
