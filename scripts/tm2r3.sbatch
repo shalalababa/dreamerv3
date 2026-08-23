@@ -273,7 +273,12 @@ elif [ "$STAGE" = w2dup ]; then
   # unless every estimand is exactly 0 on these — run them before the
   # 32-pass spend so a CRN breakage costs 2 passes, not 34.
   [ -f "$W1_LABELS/W2_SMOKE_OK" ] || { echo "run w2smoke first"; exit 1; }
-  for dom in cup finger; do
+  # W2DUP_DOMS (20260823, ops): optional domain filter so the two dup
+  # passes can run as two CONCURRENT invocations on one GPU (a single
+  # pass measured 51% util / 302 MiB, so one card carries both). Dials,
+  # seeds and outputs are untouched -- this changes execution shape
+  # only. Default is the original sequential "cup finger".
+  for dom in ${W2DUP_DOMS:-cup finger}; do
     RUN="tm2r3_${dom}_e1_seed59"
     LOG="$TM2R3_ROOT/$RUN"
     OUT="$W1_LABELS/w1tm2dup_${dom}_e1_seed59_late.npz"
@@ -286,8 +291,16 @@ elif [ "$STAGE" = w2dup ]; then
         --w1_repeats 8 --w1_dup_cand --env_seed 20260809 \
         --output "$OUT"
   done
-  touch "$W1_LABELS/W2_DUP_OK"
-  echo "[$(date)] w2dup OK (cup+finger e1 seed59)"
+  # STRICTER than the previous unconditional touch: the marker now
+  # asserts BOTH registered dup passes exist, so a partial run (or one
+  # half of a concurrent pair) can never open the label gate.
+  if [ -f "$W1_LABELS/w1tm2dup_cup_e1_seed59_late.npz" ] && \
+     [ -f "$W1_LABELS/w1tm2dup_finger_e1_seed59_late.npz" ]; then
+    touch "$W1_LABELS/W2_DUP_OK"
+    echo "[$(date)] w2dup OK (cup+finger e1 seed59)"
+  else
+    echo "[$(date)] w2dup partial (this invocation: ${W2DUP_DOMS:-cup finger}); W2_DUP_OK NOT set"
+  fi
 
 elif [ "$STAGE" = w2labels ]; then
   # WAVE-2 main W1-protocol pass (PREREG_p2_wave2_freshcohort_20260821):
