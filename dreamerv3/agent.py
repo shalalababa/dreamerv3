@@ -95,7 +95,15 @@ class Agent(embodied.jax.Agent):
     self.advnorm = embodied.jax.Normalize(**config.advnorm, name='advnorm')
 
     self.expl_mode = config.expl.mode
-    assert self.expl_mode in ('task', 'random', 'p2e', 'apt'), self.expl_mode
+    assert self.expl_mode in (
+        'task', 'random', 'p2e', 'apt', 'advd'), self.expl_mode
+    # advd (Wave B, PREREG_waveb_advd_20260822): a fresh actor-critic
+    # adapted on a FROZEN Stage-1/A1 world model whose imagined reward
+    # is the DECODED DISTRACTOR MEMBER-VARIANCE (the se_probe
+    # postsplit/decode idiom on the frozen disag + dec). The producer
+    # BIND-CHECK enforces run.from_checkpoint carrying
+    # enc/dyn/dec/disag; the probe's bitwise WM-identity gate is the
+    # post-hoc proof the freeze held.
     # penalty_mix (Track A2 SCARECROW baseline, PREREG_trackA_scarecrow):
     # a p2e explorer that ALSO trains the reward head (on the env's
     # region-penalty reward) and adds its prediction to the imagined
@@ -112,7 +120,7 @@ class Agent(embodied.jax.Agent):
     assert not config.expl.disag_task or self.expl_mode == 'task', (
         'disag_task is the task-mode measurement flag', self.expl_mode)
     self.disag = None
-    if self.expl_mode == 'p2e' or config.expl.disag_task:
+    if self.expl_mode in ('p2e', 'advd') or config.expl.disag_task:
       rssm_kw = config.dyn[config.dyn.typ]
       if config.expl.disag_target == 'postfeat':
         target_dim = rssm_kw['deter'] + rssm_kw['stoch'] * rssm_kw['classes']
@@ -145,6 +153,15 @@ class Agent(embodied.jax.Agent):
         self.modules = self.modules + [self.rew]
     elif self.expl_mode == 'apt':
       self.modules = wm + [self.con, self.pol, self.val]
+    elif self.expl_mode == 'advd':
+      # Wave-B: EXACTLY the trainable heads — wm AND disag are
+      # measurement substrate, never optimizer targets; nj.grad
+      # selects by module path, so exclusion here IS the freeze.
+      # The POST-HOC proof (rev WB-n8: a constructor assert on this
+      # literal list would be tautological) is the evaluation
+      # probe's bitwise WM-identity gate over ^(enc|dyn|dec|disag)/
+      # between the source and adapted checkpoints.
+      self.modules = [self.con, self.pol, self.val]
     elif config.frozen_wm:
       self.modules = head + probes
     else:
@@ -174,6 +191,13 @@ class Agent(embodied.jax.Agent):
           keep.add('repval')
     elif self.expl_mode == 'apt':
       keep = {'dyn', 'rep', 'con', 'policy', 'value', *dec_space}
+    elif self.expl_mode == 'advd':
+      # the loss aggregator requires keep == computed losses; the
+      # FREEZE lives in self.modules (con/pol/val only), so the
+      # wm/disag losses below are constants w.r.t. every trainable
+      # parameter — same mechanism as frozen_wm
+      keep = {'dyn', 'rep', 'con', 'policy', 'value', 'disag',
+              *dec_space}
     else:
       keep = {'dyn', 'rep', 'rew', 'con', 'policy', 'value', 'repval',
               *dec_space}
@@ -370,6 +394,12 @@ class Agent(embodied.jax.Agent):
       elif self.expl_mode == 'apt':
         imgrew = sg(explore.apt_reward(
             inp, self.config.expl.apt_knn, self.config.expl.apt_logc))
+      elif self.expl_mode == 'advd':
+        raw_imgrew = self._advd_reward(inp, self._act2tensor(imgact))
+        imgrew = sg(raw_imgrew * self.config.expl.advd_scale)
+        metrics['expl/advd_rew_raw'] = raw_imgrew.mean()
+        metrics['expl/advd_rew_raw_std'] = raw_imgrew.std()
+        metrics['expl/advd_scale'] = self.config.expl.advd_scale
       else:
         imgrew = self.rew(inp, 2).pred()
       if self.reward_free:
@@ -707,6 +737,36 @@ class Agent(embodied.jax.Agent):
       return feat['stoch'].reshape((*feat['stoch'].shape[:-2], -1))
     else:
       raise NotImplementedError(target)
+
+  def _advd_reward(self, feat_t, actvec):
+    """Wave-B advd imagined objective (PREREG_waveb_advd_20260822):
+    per imagined (s, a), the DECODED DISTRACTOR MEMBER-VARIANCE —
+    disag.predict -> postsplit -> the frozen decoder per member ->
+    var over members of the 'distractor' recon, mean over dims (the
+    se_probe member_vars idiom, inside the training graph).
+    Unnormalized: per-run argmax-equivalent (the distractor dims are
+    iid at one scale). disag + dec are frozen (not in self.modules)
+    and the caller sg's the result — this is an objective, never a
+    gradient path into the substrate."""
+    assert self.config.expl.disag_target == 'postfeat', (
+        'advd decodes postfeat member predictions')
+    preds = f32(self.disag.predict(feat_t, actvec))    # (E, B, T, t)
+    E, B, T = preds.shape[0], preds.shape[1], preds.shape[2]
+    ddim = self.dyn.deter
+    members = []
+    for e in range(E):
+      det = preds[e][..., :ddim]
+      probs = preds[e][..., ddim:].reshape(
+          (B, T, self.dyn.stoch, self.dyn.classes))
+      probs = jnp.clip(probs, 1e-6, 1.0)
+      probs = probs / probs.sum(-1, keepdims=True)
+      dec_carry = self.dec.initial(B)
+      _, _, recons = self.dec(dec_carry, dict(deter=det, stoch=probs),
+                              jnp.zeros((B, T), bool), training=False)
+      assert 'distractor' in recons, (
+          'advd requires a distractor observation key', list(recons))
+      members.append(f32(recons['distractor'].pred()))
+    return jnp.stack(members, 0).var(0).mean(-1)       # (B, T)
 
   def _make_opt(
       self,

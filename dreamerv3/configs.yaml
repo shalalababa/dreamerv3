@@ -156,6 +156,7 @@ defaults:
       disag_head: det,
       disag_logvar_min: -8.0,
       disag_logvar_max: 6.0,
+      advd_scale: 100.0,
       penalty_mix: False,
       disag_task: False,
       apt_knn: 12,
@@ -290,6 +291,14 @@ expl_p2e:
 
 expl_apt:
   agent.expl.mode: apt
+
+# Wave B (PREREG_waveb_advd_20260822): adversarial amortized actor —
+# fresh pol/val/con adapted against the decoded-distractor-variance
+# objective on a FROZEN source WM+disag (loaded via from_checkpoint;
+# the advd module list in agent.py IS the freeze).
+expl_advd:
+  agent.expl.mode: advd
+  run.from_checkpoint_regex: '^(enc|dyn|dec|disag)/'
 
 frozen_readout:
   agent.frozen_wm: True

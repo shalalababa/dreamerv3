@@ -1,0 +1,94 @@
+# Wave B advd adaptations -- PREREG_waveb_advd_20260822.
+# 16 adaptations: AMBIENT wing = 8 on the Stage-1 checkpoints
+# (source seeds 10-17); LOCALIZED wing = 8 on the A1 checkpoints
+# (hetero 44-47 w/ the mod quadruple, flat 48-51 at FLAT scale).
+# Each run: expl_advd from the source ckpt (frozen WM+disag via
+# from_checkpoint regex), 1e5 steps, ~2-3 h.
+#
+# STAGING (rev WB-M1/M5): the sources live at $RUNROOT/_wb_srcs on
+# the instance (SRCROOT is set IN the cmd, so it rides the
+# stale-producer gate — never a hand export). Each source dir needs
+# ckpt/ incl. the latest pointer. BEFORE submitting, run the
+# ZERO-GPU staging gate on the staged sources:
+#   python scripts/wb_advd_preflight.py --srcroot <staged dir>
+# (env-identity vs the producer-emitted config + architecture
+# parity + the SOURCE_CKPT_PIN manifest — this is what catches a
+# WB-B1-class schema drift or a jointly-stale source BEFORE the
+# 40 GPU-h are spent). The producer additionally resolves
+# ckpt/latest with the stale-pointer guard at run time.
+#
+# LAYOUT: primary comparisons are WITHIN-run (the probe pairs
+# advd/policy on one device later), so no cross-run trend rides on
+# rounds; the list still interleaves wings so no round is
+# wing-pure. Lane count free (per_gpu 1).
+#
+# Omitted vars are producer defaults pinned by the reader
+# (BASESD_*, SOURCE_KEY, STEPS=1e5 default, gates off); the mod
+# quadruple + penalty block ARE passed inert/active explicitly.
+# done_when regexes newline-tolerant (#34 B2).
+
+wave_id: wb_advd
+paper: paper5_trackb
+prereg: prereg/PREREG_waveb_advd_20260822.md
+notes: >-
+  16 advd adaptations (frozen source WM+disag; fresh pol/val/con
+  vs the decoded-distractor-variance objective), 1e5 steps each.
+  Requires $SRCROOT staged with the 16 source ckpt dirs.
+
+defaults:
+  target: vast
+
+kinds:
+  advd_run: {per_gpu: 1}
+
+stages:
+
+  - name: adapt
+    kind: advd_run
+    on_failure: continue
+    runs:
+      # interleaved wings; ambient / hetero / flat / ambient ...
+      - {run_id: se_advd_s10,      seed: 10, src: se_cheetah_seed10, scale: "1.0",        modk: "",         modlo: "0.0",         modhi: "1.0"}
+      - {run_id: se_advd_het_s44,  seed: 44, src: se_avoid_het_s44,  scale: "1.0",        modk: "position", modlo: "-0.32203162", modhi: "0.19711795"}
+      - {run_id: se_advd_flat_s48, seed: 48, src: se_avoid_flat_s48, scale: "0.35891393", modk: "",         modlo: "0.0",         modhi: "1.0"}
+      - {run_id: se_advd_s11,      seed: 11, src: se_cheetah_seed11, scale: "1.0",        modk: "",         modlo: "0.0",         modhi: "1.0"}
+      - {run_id: se_advd_s12,      seed: 12, src: se_cheetah_seed12, scale: "1.0",        modk: "",         modlo: "0.0",         modhi: "1.0"}
+      - {run_id: se_advd_het_s45,  seed: 45, src: se_avoid_het_s45,  scale: "1.0",        modk: "position", modlo: "-0.32203162", modhi: "0.19711795"}
+      - {run_id: se_advd_flat_s49, seed: 49, src: se_avoid_flat_s49, scale: "0.35891393", modk: "",         modlo: "0.0",         modhi: "1.0"}
+      - {run_id: se_advd_s13,      seed: 13, src: se_cheetah_seed13, scale: "1.0",        modk: "",         modlo: "0.0",         modhi: "1.0"}
+      - {run_id: se_advd_s14,      seed: 14, src: se_cheetah_seed14, scale: "1.0",        modk: "",         modlo: "0.0",         modhi: "1.0"}
+      - {run_id: se_advd_het_s46,  seed: 46, src: se_avoid_het_s46,  scale: "1.0",        modk: "position", modlo: "-0.32203162", modhi: "0.19711795"}
+      - {run_id: se_advd_flat_s50, seed: 50, src: se_avoid_flat_s50, scale: "0.35891393", modk: "",         modlo: "0.0",         modhi: "1.0"}
+      - {run_id: se_advd_s15,      seed: 15, src: se_cheetah_seed15, scale: "1.0",        modk: "",         modlo: "0.0",         modhi: "1.0"}
+      - {run_id: se_advd_s16,      seed: 16, src: se_cheetah_seed16, scale: "1.0",        modk: "",         modlo: "0.0",         modhi: "1.0"}
+      - {run_id: se_advd_het_s47,  seed: 47, src: se_avoid_het_s47,  scale: "1.0",        modk: "position", modlo: "-0.32203162", modhi: "0.19711795"}
+      - {run_id: se_advd_flat_s51, seed: 51, src: se_avoid_flat_s51, scale: "0.35891393", modk: "",         modlo: "0.0",         modhi: "1.0"}
+      - {run_id: se_advd_s17,      seed: 17, src: se_cheetah_seed17, scale: "1.0",        modk: "",         modlo: "0.0",         modhi: "1.0"}
+    logdir: "${run_id}"
+    cmd: >-
+      SRCROOT="$RUNROOT/_wb_srcs"
+      RUN_ID=${run_id} TASK=dmc_cheetah_run SEED=${seed}
+      SRC_DIR=${src}
+      DISTRACTOR_SCALE=${scale}
+      DISTRACTOR_MOD_KEY=${modk} DISTRACTOR_MOD_INDEX=0
+      DISTRACTOR_MOD_LO=${modlo} DISTRACTOR_MOD_HI=${modhi}
+      PENALTY_MIX=False PENALTY_SCALE=0.0
+      PENALTY_GATE_KEY= PENALTY_GATE_INDEX=0 PENALTY_GATE_THRESHOLD=0.0
+      bash scripts/uncfield_advd.sbatch
+    outputs:
+      - "${run_id}"
+    done_when:
+      - exists: TRAINING_DONE
+      - exists: config.yaml
+      - file_contains: {file: config.yaml, pattern: 'mode:\s+advd'}
+      - file_contains: {file: config.yaml, pattern: 'from_checkpoint_regex:\s+\^\(enc\|dyn\|dec\|disag\)/'}
+      - file_contains: {file: config.yaml, pattern: 'penalty_mix:\s+false'}
+      - file_contains:
+          file: ckpt_snapshots/nearest.json
+          pattern: '"milestone": 100000,\s+"step": (9[5-9]\d{3}|[1-9]\d{5})'
+      - jsonl_min_lines: {file: scores.jsonl, n: 80}
+
+bundle:
+  prefix: wb_advd
+  include_stages: [adapt]
+  cloud_logs: ["se_advd*_s*.out", "se_advd_probe_*.out"]
