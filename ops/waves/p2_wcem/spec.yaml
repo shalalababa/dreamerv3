@@ -105,13 +105,7 @@ stages:
       --w1_repeats 8 --w1_dup_cand --cem_consumer --env_seed 20260824
       --output "$O";
       D="${RUNROOT}/wcem_labels";
-      if [ -f "$D/wcemdup_finger_e1_seed31_late.npz" ] &&
-         [ -f "$D/wcemdup_cup_e4_seed32_late.npz" ]; then
-        touch "$D/WCEM_DUP_OK";
-        echo "WCEM_DUP_OK set (both registered dup passes present)";
-      else
-        echo "dup partial; WCEM_DUP_OK NOT set";
-      fi
+      if [ -f "$D/wcemdup_finger_e1_seed31_late.npz" ] && [ -f "$D/wcemdup_cup_e4_seed32_late.npz" ]; then touch "$D/WCEM_DUP_OK"; echo "WCEM_DUP_OK set (both registered dup passes present)"; else echo "dup partial; WCEM_DUP_OK NOT set"; fi
     outputs:
       - "wcem_labels"
     done_when:
