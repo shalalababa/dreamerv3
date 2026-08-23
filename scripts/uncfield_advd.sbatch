@@ -36,6 +36,23 @@ SAVE_EVERY="${SAVE_EVERY:-300}"
 LOGDIR="$RUNROOT/$RUN_ID"
 mkdir -p "$LOGDIR"
 rm -f "$LOGDIR/TRAINING_DONE"
+# WB AMENDMENT 1 resume guards (20260823): a staged-back run dir
+# must carry a resolvable ckpt pointer, its replay buffer, and no
+# error file — elements Replay.load falls back SILENTLY to an empty
+# buffer if replay/ is missing (ckpt/<id>/replay.pkl is a 4-byte
+# None), and portal aborts opaquely on a leftover error file. The
+# stale config.yaml must go, or the BIND-CHECK below reads leg-1's
+# run.steps before main.py rewrites the file.
+if [ -d "$LOGDIR/ckpt" ]; then
+  [ ! -e "$LOGDIR/error" ] || { echo "FATAL: $LOGDIR/error exists — refusing resume"; exit 90; }
+  r_latest="$(cat "$LOGDIR/ckpt/latest" 2>/dev/null || true)"
+  [ -n "$r_latest" ] && [ -d "$LOGDIR/ckpt/$r_latest" ] || {
+    echo "FATAL: resume without resolvable ckpt/latest (latest='$r_latest')"; exit 90; }
+  n_npz="$(ls "$LOGDIR/replay/"*.npz 2>/dev/null | wc -l)"
+  [ "$n_npz" -ge 150 ] || {
+    echo "FATAL: resume with $n_npz replay chunks (<150) — replay/ not staged back"; exit 90; }
+  rm -f "$LOGDIR/config.yaml"
+fi
 
 : "${SOURCE_KEY:=position}"
 : "${BASESD_PLANTED:=0.0976}"

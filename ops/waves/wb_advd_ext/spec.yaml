@@ -1,0 +1,103 @@
+# Wave B EXTENSION — PREREG_waveb_advd_20260822 AMENDMENT 1 rev 2
+# (20260823): continue ALL 16 actors from their OWN run dirs to
+# 2e5 steps (UNIFORM dose — reviewer finding 2: extending only the
+# gate-failers would selectively re-roll the wing's only negative
+# delta after its sign was seen; a uniform outcome-independent dose
+# cannot steer the gate or the primary).
+#
+# STAGING (amendment §ops): each run dir staged back FULL — ckpt/
+# (with the latest pointer) AND replay/ (>=150 chunks; Replay.load
+# falls back SILENTLY to an empty buffer if missing) — plus
+# _wb_srcs with all 16 source dirs. Resume semantics:
+# from_checkpoint regex-loads the frozen WM, then cp.load_or_save()
+# restores the run's own full state over it (embodied/run/train.py)
+# => continued actor training on the bitwise-identical frozen WM.
+# The producer's resume-guard block (registered in the amendment)
+# enforces ckpt/replay/error preconditions and removes the stale
+# config.yaml (else BIND-CHECK deterministically kills the resume
+# on run.steps 1e5 != 2e5). ZERO-GPU preflight first:
+#   python scripts/wb_advd_preflight.py --srcroot <staged dir>
+# CANARY: the first resume must LOG PAST its restored step (~96k)
+# before the rest are fed.
+#
+# AFTER all 16 gate green: pull continuously to RCC (extended
+# ckpt/ incl. the latest pointer). The FRESH probe panel runs ON
+# RCC (panel 1 ran there), ONE GPU job pinned to panel-1's GPU
+# model, SMOKE first then FRESH_PANEL=1 — see the amendment's ops
+# chain. The read bundle is wb_advd_r2, built RCC-side over all 16
+# run dirs AFTER the panel; this spec's instance-side bundle
+# (wb_advd_extlegs) is NOT the read bundle.
+#
+# done_when: milestone gate at 200000 with tolerance >=190000
+# (clock-based snapshots every 300 s = ~7.8k-step spacing, NO
+# final save — a 5k tolerance would false-fail ~35 % of completed
+# runs; 190k still cannot match a leg-1 nearest.json, whose
+# milestone-200000 row carries step ~96k). scores.jsonl floor 185
+# (96 lines/1e5 measured; JSONLOutput appends across resume).
+
+wave_id: wb_advd_ext
+paper: paper5_trackb
+prereg: prereg/PREREG_waveb_advd_amend1_20260823.md
+notes: >-
+  Amendment-1 uniform extension: all 16 advd actors resume from
+  their own checkpoints to 2e5 steps (~1 h/leg realized) on the
+  frozen source WMs. Requires staged-back FULL run dirs (ckpt/ +
+  replay/) + $RUNROOT/_wb_srcs sources.
+
+defaults:
+  target: vast
+
+kinds:
+  advd_run: {per_gpu: 1}
+
+stages:
+
+  - name: adapt_ext
+    kind: advd_run
+    on_failure: continue
+    runs:
+      # same interleaved order + per-run vars as ops/waves/wb_advd
+      - {run_id: se_advd_s10,      seed: 10, src: se_cheetah_seed10, scale: "1.0",        modk: "",         modlo: "0.0",         modhi: "1.0"}
+      - {run_id: se_advd_het_s44,  seed: 44, src: se_avoid_het_s44,  scale: "1.0",        modk: "position", modlo: "-0.32203162", modhi: "0.19711795"}
+      - {run_id: se_advd_flat_s48, seed: 48, src: se_avoid_flat_s48, scale: "0.35891393", modk: "",         modlo: "0.0",         modhi: "1.0"}
+      - {run_id: se_advd_s11,      seed: 11, src: se_cheetah_seed11, scale: "1.0",        modk: "",         modlo: "0.0",         modhi: "1.0"}
+      - {run_id: se_advd_s12,      seed: 12, src: se_cheetah_seed12, scale: "1.0",        modk: "",         modlo: "0.0",         modhi: "1.0"}
+      - {run_id: se_advd_het_s45,  seed: 45, src: se_avoid_het_s45,  scale: "1.0",        modk: "position", modlo: "-0.32203162", modhi: "0.19711795"}
+      - {run_id: se_advd_flat_s49, seed: 49, src: se_avoid_flat_s49, scale: "0.35891393", modk: "",         modlo: "0.0",         modhi: "1.0"}
+      - {run_id: se_advd_s13,      seed: 13, src: se_cheetah_seed13, scale: "1.0",        modk: "",         modlo: "0.0",         modhi: "1.0"}
+      - {run_id: se_advd_s14,      seed: 14, src: se_cheetah_seed14, scale: "1.0",        modk: "",         modlo: "0.0",         modhi: "1.0"}
+      - {run_id: se_advd_het_s46,  seed: 46, src: se_avoid_het_s46,  scale: "1.0",        modk: "position", modlo: "-0.32203162", modhi: "0.19711795"}
+      - {run_id: se_advd_flat_s50, seed: 50, src: se_avoid_flat_s50, scale: "0.35891393", modk: "",         modlo: "0.0",         modhi: "1.0"}
+      - {run_id: se_advd_s15,      seed: 15, src: se_cheetah_seed15, scale: "1.0",        modk: "",         modlo: "0.0",         modhi: "1.0"}
+      - {run_id: se_advd_s16,      seed: 16, src: se_cheetah_seed16, scale: "1.0",        modk: "",         modlo: "0.0",         modhi: "1.0"}
+      - {run_id: se_advd_het_s47,  seed: 47, src: se_avoid_het_s47,  scale: "1.0",        modk: "position", modlo: "-0.32203162", modhi: "0.19711795"}
+      - {run_id: se_advd_flat_s51, seed: 51, src: se_avoid_flat_s51, scale: "0.35891393", modk: "",         modlo: "0.0",         modhi: "1.0"}
+      - {run_id: se_advd_s17,      seed: 17, src: se_cheetah_seed17, scale: "1.0",        modk: "",         modlo: "0.0",         modhi: "1.0"}
+    logdir: "${run_id}"
+    cmd: >-
+      SRCROOT="$RUNROOT/_wb_srcs"
+      RUN_ID=${run_id} TASK=dmc_cheetah_run SEED=${seed}
+      SRC_DIR=${src} STEPS=2e5
+      DISTRACTOR_SCALE=${scale}
+      DISTRACTOR_MOD_KEY=${modk} DISTRACTOR_MOD_INDEX=0
+      DISTRACTOR_MOD_LO=${modlo} DISTRACTOR_MOD_HI=${modhi}
+      PENALTY_MIX=False PENALTY_SCALE=0.0
+      PENALTY_GATE_KEY= PENALTY_GATE_INDEX=0 PENALTY_GATE_THRESHOLD=0.0
+      bash scripts/uncfield_advd.sbatch
+    outputs:
+      - "${run_id}"
+    done_when:
+      - exists: TRAINING_DONE
+      - exists: config.yaml
+      - file_contains: {file: config.yaml, pattern: 'mode:\s+advd'}
+      - file_contains: {file: config.yaml, pattern: 'from_checkpoint_regex:\s+\^\(enc\|dyn\|dec\|disag\)/'}
+      - file_contains: {file: config.yaml, pattern: 'penalty_mix:\s+false'}
+      - file_contains:
+          file: ckpt_snapshots/nearest.json
+          pattern: '"milestone": 200000,\s+"step": (19[0-9]\d{3}|[2-9]\d{5})'
+      - jsonl_min_lines: {file: scores.jsonl, n: 185}
+
+bundle:
+  prefix: wb_advd_extlegs
+  include_stages: [adapt_ext]
+  cloud_logs: ["se_advd*_s*.out"]

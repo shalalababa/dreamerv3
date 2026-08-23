@@ -84,7 +84,12 @@ TASK_PIN = "dmc_cheetah_run"
 REPAIR_BAR = 0.5
 S_PIN = 512
 PROV_RTOL = 1e-12
-XPROV_RTOL = 1e-4          # cross-instrument (f32/f64, R-A1-m21)
+XPROV_RTOL = 5e-2          # cross-instrument (Amendment 2,
+#   20260823: bf16 graph-order divergence between the two compiled
+#   instruments measured at mixed-sign ~1-2% on independent
+#   channels; the gate's purpose — M6-class >=50% form drift,
+#   wrong-checkout probes — is intact at 5e-2; anchor identity is
+#   the R-A1-M8 seed/n_eval pins' job)
 LOGVAR_MIN_PIN = -8.0
 LOGVAR_MAX_PIN = 6.0
 CV_FLOOR_FRAC = 0.25

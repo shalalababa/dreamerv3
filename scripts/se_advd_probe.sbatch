@@ -26,6 +26,20 @@ export MUJOCO_GL=egl
 export XLA_PYTHON_CLIENT_PREALLOCATE=false
 RUNS_ROOT="${RUNS_ROOT:?adapted runs parent dir}"
 SRCS_ROOT="${SRCS_ROOT:?source runs parent dir}"
+# Device provenance for the panel record (the probe json cannot
+# certify the device — WB Amendment 1 pins panel 2 to panel-1's
+# GPU model, verified against this line):
+nvidia-smi --query-gpu=name,driver_version --format=csv,noheader || true
+# WB AMENDMENT 1: FRESH_PANEL must never run over a bundle/archive
+# tree — those hold the only panel-1 copies outside the tar.
+if [[ "${FRESH_PANEL:-0}" == "1" ]]; then
+  for marker in COMPLETION.txt manifest.sha256; do
+    if [ -e "$RUNS_ROOT/$marker" ] || [ -e "$RUNS_ROOT/../$marker" ]; then
+      echo "FATAL: FRESH_PANEL over a bundle tree ($marker found near $RUNS_ROOT) — refusing"
+      exit 90
+    fi
+  done
+fi
 PAIRS=(
   "se_advd_s10:se_cheetah_seed10"      "se_advd_s11:se_cheetah_seed11"
   "se_advd_s12:se_cheetah_seed12"      "se_advd_s13:se_cheetah_seed13"
@@ -49,6 +63,14 @@ for pair in "${PAIRS[@]}"; do
   IFS=: read -r adp src <<< "$pair"
   d="$RUNS_ROOT/$adp"
   out="$d/se_advd"
+  # WB AMENDMENT 1 (20260823): FRESH_PANEL=1 re-rolls the WHOLE
+  # 16-pair panel on this job's single device — quarantine any
+  # existing output BEFORE the skip rule can see it (a skipped
+  # pair would splice an old-device output into the new panel).
+  if [[ "${FRESH_PANEL:-0}" == "1" ]] && [ -e "$out" ]; then
+    echo "FRESH  $adp — quarantining pre-existing panel output"
+    mv "$out" "$d/_SUPERSEDED_WBA1_se_advd_$(date +%Y%m%d%H%M%S)"
+  fi
   latest="$(cat "$d/ckpt/latest" 2>/dev/null || true)"
   newest="$(find "$d/ckpt" -mindepth 1 -maxdepth 1 -type d -printf '%f\n' 2>/dev/null | sort | tail -1)"
   if [ -z "$latest" ] || [ -z "$newest" ]; then
@@ -84,4 +106,12 @@ for pair in "${PAIRS[@]}"; do
   fi
 done
 echo "[$(date)] se_advd probes: ok=$n_ok skipped=$n_skip failed=$n_fail (of ${#PAIRS[@]})"
-[ "$n_fail" -eq 0 ]
+# WB AMENDMENT 1: under FRESH_PANEL the job succeeds ONLY if every
+# pair was freshly probed in THIS job (n_skip would mean a spliced
+# cross-job/cross-device panel — every panel resubmission must set
+# FRESH_PANEL=1 again).
+if [[ "${FRESH_PANEL:-0}" == "1" ]]; then
+  [ "$n_fail" -eq 0 ] && [ "$n_skip" -eq 0 ] && [ "$n_ok" -eq "${#PAIRS[@]}" ]
+else
+  [ "$n_fail" -eq 0 ]
+fi
