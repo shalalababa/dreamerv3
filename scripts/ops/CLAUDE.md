@@ -65,7 +65,12 @@ skipped and the failure reports the dep you just installed.
 `$RUNROOT/axis1_finger/<quad>/` to the matching remote parent, including
 `manifest.json` — `axis1.sbatch` requires `$(dirname "$REPLAY")/manifest.json`.
 
-**RCC caps submitted jobs at 12.** `submit_all.sh` respects `MAX_JOBS=12`;
+**RCC caps submitted jobs at 12 — ALL jobs, not just gpu.** The surplus is
+REJECTED (`QOSMaxSubmitJobPerUserLimit`), never queued, so an over-submit goes
+MISSING rather than waiting. Check `squeue -u $USER -h | wc -l` before every
+submission. For CPU work run many subtasks under ONE job
+(`scripts/rcc_bundle.sbatch`, PAYLOAD + IDX) rather than one job per task.
+`submit_all.sh` respects `MAX_JOBS=12`;
 direct `sbatch` loops must too. Slurm `.out` logs stay in `$REPO`.
 
 **GPU jobs are not job-to-job deterministic** on Midway3. Never design a
