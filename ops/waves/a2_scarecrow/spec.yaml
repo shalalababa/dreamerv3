@@ -1,45 +1,48 @@
-# A2 SCARECROW wave -- PREREG_trackA_scarecrow_20260822 (Track A2;
-# gate satisfied by the A1 read, artifacts/a1_avoidance_read_20260822;
-# review #34 adjudicated: done_when regexes newline-tolerant (B2), full
-# variable set on every arm (A1 convention), bundle block, disk plan).
+# A2 SCARECROW wave -- PREREG_trackA_scarecrow_20260822 +
+# AMENDMENT 1 (20260823): FULL RESTART after the instance-13
+# release breach (round 1 of the old per-stage layout was the
+# ENTIRE ctrl arm — pooling would have made device == control for
+# every cross-arm contrast; the four completed sc_ctrl_s76..79 are
+# quarantined _SUPERSEDED_INST13_* on RCC BEFORE any restart pull).
 #
-# ONE INSTANCE, NON-NEGOTIABLE (the 1-Aug cross-invocation rule): the
-# primary and every secondary are cross-arm exact permutations, so all
-# 20 runs share one box. Lanes 0-3 -> 5 rounds x ~7 h ~= 35 h drain;
-# the per-stage lane assignment keeps arms BALANCED per lane (each lane
-# runs one cell of each arm), which is the device-confound guard.
+# ONE INSTANCE, NON-NEGOTIABLE (the 1-Aug cross-invocation rule):
+# the primary and every secondary are cross-arm exact permutations,
+# so all 20 runs share one box — and the box is APPARATUS: it is
+# not released until the wave is COMPLETE (the ops fourth check).
 #
-# DISK (A1 measured 4.6 G/run: snapshots 3.9 G + replay 626 M): 20 x
-# 4.6 ~= 92 G — DOES NOT FIT alongside headroom on a 100 G box.
-# Registered mitigation = the standing rule: PULL EACH RUN TO RCC AS IT
-# FINISHES (verify, then delete instance-side — the RCC copy is the
-# archive), never an end-of-wave drain. replay/ must survive into the
-# bundle (occupancy + coverage + penalty-delivery legs read it).
+# LANE LAYOUT (Amendment 1 — replaces the per-stage packing that
+# caused the arm-pure round): ONE stage, explicit cyclic 4x5 list,
+# round r lane l -> arm (r+l) mod 5:
+#   - every ROUND holds 4 DISTINCT arms (never arm-pure — a
+#     round-wide disturbance cannot load onto one arm),
+#   - every LANE runs each arm exactly once (the original balance).
+# Declaration order fixes packing; entries 1-4 = round 1, etc.
+# Reordering this list silently breaks both properties.
 #
-# STALE-CHECKOUT DEFENSE (NOBOOT incident): instances must carry a
-# checkout >= the A2 freeze commit. Real guards, in order: (1) the
-# generated preflight asserts every env var below is READ by
-# scripts/uncfield_se.sbatch (wavegen var-read check); (2) a stale
-# dreamerv3/ dies at startup on the unknown --penalty.* flags; (3) the
-# producer BIND-CHECK kills a wrong bind within minutes; (4) the
-# reader's strict pins are the last lock.
+# done_when carries the COMMON gates only (single stage); ARM
+# identity is enforced by the frozen reader's fatal per-arm pins
+# (se_scarecrow_read, #34-reviewed) — the house authority.
 #
-# Every arm passes the SAME variable set including inert values (the
-# A1 rule: the frozen reader cannot tell an unset variable from a
-# deliberately-default one). Penalty arms carry the ctrl observation
-# CONFIGURATION (flat 0.35891393, no modulation) at matched
-# observation statistics — independent streams, different seeds.
-# per_gpu: 1 (SE runs measured 15243 MiB). se_probe passes are NOT
-# part of this wave (scripts/se_scarecrow_probe.sbatch, ONE CPU job,
-# ckpt-identity skip rule).
+# DISK (A1 measured 4.6 G/run): 20 x 4.6 ~= 92 G — pull each run to
+# RCC as it finishes (verify, then delete instance-side), never an
+# end-of-wave drain. replay/ must survive into the bundle.
+#
+# STALE-CHECKOUT DEFENSE unchanged (preflight var-read check;
+# unknown --penalty.* flags kill a stale checkout; BIND-CHECK;
+# reader pins).
+# Every arm passes the SAME variable set including inert values.
+# per_gpu: 1. se_probe passes are NOT part of this wave
+# (scripts/se_scarecrow_probe.sbatch, ONE CPU job).
 
 wave_id: a2_scarecrow
 paper: track_a
 prereg: prereg/PREREG_trackA_scarecrow_20260822.md
 notes: >-
-  20 SE runs (cheetah, seeds 76-95): flat control, scarecrow (A1-hetero
-  quadruple), strong scarecrow (scale 2.0), penalty_mix lambda 0.5 and
-  2.0. 5e5 steps, ~7 h each, one instance, lanes 0-3, ~35 h drain.
+  RESTART (Amendment 1): 20 SE runs (cheetah, seeds 76-95): flat
+  control, scarecrow (A1-hetero quadruple), strong scarecrow
+  (scale 2.0), penalty_mix lambda 0.5 and 2.0. 5e5 steps, ~7 h
+  each, ONE instance, 4 lanes x 5 rounds (cyclic arm interleave),
+  ~35 h drain.
 
 defaults:
   target: vast
@@ -49,141 +52,54 @@ kinds:
 
 stages:
 
-  - name: ctrl
+  - name: a2
     kind: se_run
     on_failure: continue
-    expand:
-      seed: [76, 77, 78, 79]
-    run_id: "sc_ctrl_s${seed}"
-    logdir: "sc_ctrl_s${seed}"
+    runs:
+      # cyclic 4x5: round r lane l -> arm (r+l) mod 5;
+      # arms: ctrl(76-79) scare(80-83) scare2(84-87) pen1(88-91) pen2(92-95)
+      # -- round 1: ctrl scare scare2 pen1 --
+      - {run_id: sc_ctrl_s76,   seed: 76, scale: "0.35891393", modk: "",         modlo: "0.0",         modhi: "1.0",        pmix: "False", pscale: "0.0", pgkey: "",         pgthr: "0.0"}
+      - {run_id: sc_scare_s80,  seed: 80, scale: "1.0",        modk: "position", modlo: "-0.32203162", modhi: "0.19711795", pmix: "False", pscale: "0.0", pgkey: "",         pgthr: "0.0"}
+      - {run_id: sc_scare2_s84, seed: 84, scale: "2.0",        modk: "position", modlo: "-0.32203162", modhi: "0.19711795", pmix: "False", pscale: "0.0", pgkey: "",         pgthr: "0.0"}
+      - {run_id: sc_pen1_s88,   seed: 88, scale: "0.35891393", modk: "",         modlo: "0.0",         modhi: "1.0",        pmix: "True",  pscale: "0.5", pgkey: "position", pgthr: "-0.13009691"}
+      # -- round 2: scare scare2 pen1 pen2 --
+      - {run_id: sc_scare_s81,  seed: 81, scale: "1.0",        modk: "position", modlo: "-0.32203162", modhi: "0.19711795", pmix: "False", pscale: "0.0", pgkey: "",         pgthr: "0.0"}
+      - {run_id: sc_scare2_s85, seed: 85, scale: "2.0",        modk: "position", modlo: "-0.32203162", modhi: "0.19711795", pmix: "False", pscale: "0.0", pgkey: "",         pgthr: "0.0"}
+      - {run_id: sc_pen1_s89,   seed: 89, scale: "0.35891393", modk: "",         modlo: "0.0",         modhi: "1.0",        pmix: "True",  pscale: "0.5", pgkey: "position", pgthr: "-0.13009691"}
+      - {run_id: sc_pen2_s92,   seed: 92, scale: "0.35891393", modk: "",         modlo: "0.0",         modhi: "1.0",        pmix: "True",  pscale: "2.0", pgkey: "position", pgthr: "-0.13009691"}
+      # -- round 3: scare2 pen1 pen2 ctrl --
+      - {run_id: sc_scare2_s86, seed: 86, scale: "2.0",        modk: "position", modlo: "-0.32203162", modhi: "0.19711795", pmix: "False", pscale: "0.0", pgkey: "",         pgthr: "0.0"}
+      - {run_id: sc_pen1_s90,   seed: 90, scale: "0.35891393", modk: "",         modlo: "0.0",         modhi: "1.0",        pmix: "True",  pscale: "0.5", pgkey: "position", pgthr: "-0.13009691"}
+      - {run_id: sc_pen2_s93,   seed: 93, scale: "0.35891393", modk: "",         modlo: "0.0",         modhi: "1.0",        pmix: "True",  pscale: "2.0", pgkey: "position", pgthr: "-0.13009691"}
+      - {run_id: sc_ctrl_s77,   seed: 77, scale: "0.35891393", modk: "",         modlo: "0.0",         modhi: "1.0",        pmix: "False", pscale: "0.0", pgkey: "",         pgthr: "0.0"}
+      # -- round 4: pen1 pen2 ctrl scare --
+      - {run_id: sc_pen1_s91,   seed: 91, scale: "0.35891393", modk: "",         modlo: "0.0",         modhi: "1.0",        pmix: "True",  pscale: "0.5", pgkey: "position", pgthr: "-0.13009691"}
+      - {run_id: sc_pen2_s94,   seed: 94, scale: "0.35891393", modk: "",         modlo: "0.0",         modhi: "1.0",        pmix: "True",  pscale: "2.0", pgkey: "position", pgthr: "-0.13009691"}
+      - {run_id: sc_ctrl_s78,   seed: 78, scale: "0.35891393", modk: "",         modlo: "0.0",         modhi: "1.0",        pmix: "False", pscale: "0.0", pgkey: "",         pgthr: "0.0"}
+      - {run_id: sc_scare_s82,  seed: 82, scale: "1.0",        modk: "position", modlo: "-0.32203162", modhi: "0.19711795", pmix: "False", pscale: "0.0", pgkey: "",         pgthr: "0.0"}
+      # -- round 5: pen2 ctrl scare scare2 --
+      - {run_id: sc_pen2_s95,   seed: 95, scale: "0.35891393", modk: "",         modlo: "0.0",         modhi: "1.0",        pmix: "True",  pscale: "2.0", pgkey: "position", pgthr: "-0.13009691"}
+      - {run_id: sc_ctrl_s79,   seed: 79, scale: "0.35891393", modk: "",         modlo: "0.0",         modhi: "1.0",        pmix: "False", pscale: "0.0", pgkey: "",         pgthr: "0.0"}
+      - {run_id: sc_scare_s83,  seed: 83, scale: "1.0",        modk: "position", modlo: "-0.32203162", modhi: "0.19711795", pmix: "False", pscale: "0.0", pgkey: "",         pgthr: "0.0"}
+      - {run_id: sc_scare2_s87, seed: 87, scale: "2.0",        modk: "position", modlo: "-0.32203162", modhi: "0.19711795", pmix: "False", pscale: "0.0", pgkey: "",         pgthr: "0.0"}
+    logdir: "${run_id}"
     cmd: >-
-      RUN_ID=sc_ctrl_s${seed} TASK=dmc_cheetah_run SEED=${seed}
-      DISTRACTOR_SCALE=0.35891393
-      DISTRACTOR_MOD_KEY= DISTRACTOR_MOD_INDEX=0
-      DISTRACTOR_MOD_LO=0.0 DISTRACTOR_MOD_HI=1.0
-      PENALTY_MIX=False PENALTY_SCALE=0.0
-      PENALTY_GATE_KEY= PENALTY_GATE_INDEX=0 PENALTY_GATE_THRESHOLD=0.0
+      RUN_ID=${run_id} TASK=dmc_cheetah_run SEED=${seed}
+      DISTRACTOR_SCALE=${scale}
+      DISTRACTOR_MOD_KEY=${modk} DISTRACTOR_MOD_INDEX=0
+      DISTRACTOR_MOD_LO=${modlo} DISTRACTOR_MOD_HI=${modhi}
+      PENALTY_MIX=${pmix} PENALTY_SCALE=${pscale}
+      PENALTY_GATE_KEY=${pgkey} PENALTY_GATE_INDEX=0
+      PENALTY_GATE_THRESHOLD=${pgthr}
       bash scripts/uncfield_se.sbatch
     outputs:
-      - "sc_ctrl_s${seed}"
+      - "${run_id}"
     done_when:
       - exists: TRAINING_DONE
       - exists: config.yaml
-      - file_contains: {file: config.yaml, pattern: 'scale:\s+0.35891393'}
-      - file_contains: {file: config.yaml, pattern: 'penalty_mix:\s+false'}
-      - file_contains:
-          file: ckpt_snapshots/nearest.json
-          pattern: '"milestone": 500000,\s+"step": (49\d{4}|[5-9]\d{5})'
-      - jsonl_min_lines: {file: scores.jsonl, n: 464}
-
-  - name: scare
-    kind: se_run
-    on_failure: continue
-    expand:
-      seed: [80, 81, 82, 83]
-    run_id: "sc_scare_s${seed}"
-    logdir: "sc_scare_s${seed}"
-    cmd: >-
-      RUN_ID=sc_scare_s${seed} TASK=dmc_cheetah_run SEED=${seed}
-      DISTRACTOR_SCALE=1.0
-      DISTRACTOR_MOD_KEY=position DISTRACTOR_MOD_INDEX=0
-      DISTRACTOR_MOD_LO=-0.32203162 DISTRACTOR_MOD_HI=0.19711795
-      PENALTY_MIX=False PENALTY_SCALE=0.0
-      PENALTY_GATE_KEY= PENALTY_GATE_INDEX=0 PENALTY_GATE_THRESHOLD=0.0
-      bash scripts/uncfield_se.sbatch
-    outputs:
-      - "sc_scare_s${seed}"
-    done_when:
-      - exists: TRAINING_DONE
-      - exists: config.yaml
-      - file_contains: {file: config.yaml, pattern: 'mod_lo:\s+-0.32203162'}
-      - file_contains: {file: config.yaml, pattern: 'penalty_mix:\s+false'}
-      - file_contains:
-          file: ckpt_snapshots/nearest.json
-          pattern: '"milestone": 500000,\s+"step": (49\d{4}|[5-9]\d{5})'
-      - jsonl_min_lines: {file: scores.jsonl, n: 464}
-
-  - name: scare2
-    kind: se_run
-    on_failure: continue
-    expand:
-      seed: [84, 85, 86, 87]
-    run_id: "sc_scare2_s${seed}"
-    logdir: "sc_scare2_s${seed}"
-    cmd: >-
-      RUN_ID=sc_scare2_s${seed} TASK=dmc_cheetah_run SEED=${seed}
-      DISTRACTOR_SCALE=2.0
-      DISTRACTOR_MOD_KEY=position DISTRACTOR_MOD_INDEX=0
-      DISTRACTOR_MOD_LO=-0.32203162 DISTRACTOR_MOD_HI=0.19711795
-      PENALTY_MIX=False PENALTY_SCALE=0.0
-      PENALTY_GATE_KEY= PENALTY_GATE_INDEX=0 PENALTY_GATE_THRESHOLD=0.0
-      bash scripts/uncfield_se.sbatch
-    outputs:
-      - "sc_scare2_s${seed}"
-    done_when:
-      - exists: TRAINING_DONE
-      - exists: config.yaml
-      - file_contains: {file: config.yaml, pattern: 'scale:\s+2.0'}
-      - file_contains: {file: config.yaml, pattern: 'mod_lo:\s+-0.32203162'}
-      - file_contains: {file: config.yaml, pattern: 'penalty_mix:\s+false'}
-      - file_contains:
-          file: ckpt_snapshots/nearest.json
-          pattern: '"milestone": 500000,\s+"step": (49\d{4}|[5-9]\d{5})'
-      - jsonl_min_lines: {file: scores.jsonl, n: 464}
-
-  - name: pen1
-    kind: se_run
-    on_failure: continue
-    expand:
-      seed: [88, 89, 90, 91]
-    run_id: "sc_pen1_s${seed}"
-    logdir: "sc_pen1_s${seed}"
-    cmd: >-
-      RUN_ID=sc_pen1_s${seed} TASK=dmc_cheetah_run SEED=${seed}
-      DISTRACTOR_SCALE=0.35891393
-      DISTRACTOR_MOD_KEY= DISTRACTOR_MOD_INDEX=0
-      DISTRACTOR_MOD_LO=0.0 DISTRACTOR_MOD_HI=1.0
-      PENALTY_MIX=True PENALTY_SCALE=0.5
-      PENALTY_GATE_KEY=position PENALTY_GATE_INDEX=0
-      PENALTY_GATE_THRESHOLD=-0.13009691
-      bash scripts/uncfield_se.sbatch
-    outputs:
-      - "sc_pen1_s${seed}"
-    done_when:
-      - exists: TRAINING_DONE
-      - exists: config.yaml
-      - file_contains: {file: config.yaml, pattern: 'penalty_mix:\s+true'}
-      - file_contains: {file: config.yaml, pattern: 'gate_threshold:\s+-0.13009691'}
-      - file_contains: {file: config.yaml, pattern: 'scale:\s+0.35891393'}
-      - file_contains:
-          file: ckpt_snapshots/nearest.json
-          pattern: '"milestone": 500000,\s+"step": (49\d{4}|[5-9]\d{5})'
-      - jsonl_min_lines: {file: scores.jsonl, n: 464}
-
-  - name: pen2
-    kind: se_run
-    on_failure: continue
-    expand:
-      seed: [92, 93, 94, 95]
-    run_id: "sc_pen2_s${seed}"
-    logdir: "sc_pen2_s${seed}"
-    cmd: >-
-      RUN_ID=sc_pen2_s${seed} TASK=dmc_cheetah_run SEED=${seed}
-      DISTRACTOR_SCALE=0.35891393
-      DISTRACTOR_MOD_KEY= DISTRACTOR_MOD_INDEX=0
-      DISTRACTOR_MOD_LO=0.0 DISTRACTOR_MOD_HI=1.0
-      PENALTY_MIX=True PENALTY_SCALE=2.0
-      PENALTY_GATE_KEY=position PENALTY_GATE_INDEX=0
-      PENALTY_GATE_THRESHOLD=-0.13009691
-      bash scripts/uncfield_se.sbatch
-    outputs:
-      - "sc_pen2_s${seed}"
-    done_when:
-      - exists: TRAINING_DONE
-      - exists: config.yaml
-      - file_contains: {file: config.yaml, pattern: 'penalty_mix:\s+true'}
-      - file_contains: {file: config.yaml, pattern: 'gate_threshold:\s+-0.13009691'}
-      - file_contains: {file: config.yaml, pattern: 'scale:\s+0.35891393'}
+      # common gates only — ARM identity is the frozen reader's
+      # fatal per-arm pin block (single-stage shared done_when)
       - file_contains:
           file: ckpt_snapshots/nearest.json
           pattern: '"milestone": 500000,\s+"step": (49\d{4}|[5-9]\d{5})'
@@ -191,5 +107,5 @@ stages:
 
 bundle:
   prefix: a2_scarecrow
-  include_stages: [ctrl, scare, scare2, pen1, pen2]
+  include_stages: [a2]
   cloud_logs: ["sc_*.out"]
