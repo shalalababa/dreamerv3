@@ -1,0 +1,157 @@
+# WCEM -- CEM consumer on the frozen dv3 RSSM.
+# PREREG_p2_cem_consumer_20260821, UNLOCKED 23 Aug by the Wave-1 read
+# (MECHANISM-CLOSED-NEGATIVE); the prereg was execution-sequenced behind it.
+#
+# Transcribed from the prereg's Ops line and the FROZEN reader
+# (analysis/wcem_read.py) -- never re-derived:
+#   EXPECT_ENV_SEED 20260824 / REPEATS 8 / STATES 200 / HORIZON 100
+#   VERSION_SUFFIX '_wcem'; EXPECT_CELLS 8
+#   FILE_RE  wcem_(cup|finger)_(e1|e4)_seed(3[12])_late.npz
+#   DUP_CELLS wcemdup_finger_e1_seed31_late.npz,
+#             wcemdup_cup_e4_seed32_late.npz
+# The remaining W1-protocol dials are the labeler's OWN defaults and are
+# spelled out anyway so the command is auditable without reading argparse:
+# --label_every 25 --actions 8 --seed 0 --ref_stride 5 (verified equal to
+# the defaults at d0/oracle_labels.py:2607-2656).
+#
+# --cem_consumer is what sets the five CEM pins (iters 4, samples 64,
+# horizon 6, elites 8, std 0.5) via d0/sweep.py::load_config; the reader
+# refuses any other values. Do NOT pass them by hand.
+#
+# --checkpoint is OMITTED on purpose: the labeler defaults to
+# <run_logdir>/ckpt and resolves `latest` inside it (oracle_labels.py:1256),
+# which IS the registered "R3 LATE" checkpoint. Naming one by hand would
+# pin a timestamp that differs per run.
+#
+# CONCURRENCY. Unlike the Wave-2 dup gate -- one registered invocation that
+# looped both domains, and needed a script change to parallelise -- each WCEM
+# pass here is its own process, so per_gpu alone gives real concurrency and
+# NOTHING registered is edited. dup uses per_gpu 2 (user decision, 23 Aug).
+#
+# COST IS UNPRICED. The prereg's "~10 W1-scale passes x (1 + ~1.2 CEM
+# overhead)" is explicitly an UNVERIFIED planning estimate and instructs ops
+# to re-derive it from the cluster smoke and record it in the bundle NOTES.
+# `cells` therefore ships at per_gpu 1; set it from the smoke's measured
+# price before submitting that stage, and record the derivation.
+
+wave_id: p2_wcem
+paper: paper2
+prereg: prereg/PREREG_p2_cem_consumer_20260821.md
+notes: >-
+  WCEM consumer: cluster smoke (5 states, discarded) -> 2 duplicate-null
+  gate passes (2-way) -> 8 cells (cup/finger x e1/e4 x seeds 31-32) on the
+  dv3 R3 LATE checkpoints. Smoke+dup on one 1-GPU box; cells on a 4-lane
+  box once the smoke prices the pass.
+
+defaults:
+  target: vast
+
+kinds:
+  wcem_gate: {per_gpu: 1}
+  wcem_dup:  {per_gpu: 2}
+  wcem_cell: {per_gpu: 1}
+
+stages:
+
+  # Cluster smoke: prices the pass and verifies the checkpoint's heads under
+  # cem. Writes OUTSIDE wcem_labels/ and deletes itself -- the reader refuses
+  # on "no unregistered wcem* files", and a stray smoke npz sitting next to
+  # the registered names is exactly that failure.
+  - name: smoke
+    kind: wcem_gate
+    on_failure: abort
+    runs:
+      - {run_id: wcem_smoke_gate, src: r3_finger_e1_seed31}
+    logdir: "wcem_labels"
+    cmd: >-
+      set -e;
+      S="${RUNROOT}/_wcem_smoke"; mkdir -p "$S";
+      t0=$(date +%s);
+      python -m d0.oracle_labels
+      --run_logdir "${RUNROOT}/r3_local/${src}"
+      --states 5 --horizon 100 --label_every 25 --actions 8 --seed 0
+      --ref_stride 5 --oracle_all
+      --w1_repeats 8 --cem_consumer --env_seed 20260824
+      --output "$S/smoke_${src}.npz";
+      t1=$(date +%s);
+      echo "WCEM_SMOKE_SECONDS_5_STATES=$((t1-t0))";
+      rm -rf "$S";
+      mkdir -p "${RUNROOT}/wcem_labels";
+      touch "${RUNROOT}/wcem_labels/WCEM_SMOKE_OK"
+    outputs:
+      - "wcem_labels"
+    done_when:
+      - exists: WCEM_SMOKE_OK
+
+  # Duplicate-null gate: the reader refuses the whole read unless every
+  # estimand is exactly 0 on these two, so they run before the 8-cell spend.
+  # --w1_dup_cand is what makes a pass a duplicate.
+  - name: dup
+    kind: wcem_dup
+    on_failure: abort
+    runs:
+      - {run_id: wcemdup_finger_e1_seed31, src: r3_finger_e1_seed31, out: wcemdup_finger_e1_seed31_late}
+      - {run_id: wcemdup_cup_e4_seed32,    src: r3_cup_e4_seed32,    out: wcemdup_cup_e4_seed32_late}
+    logdir: "wcem_labels"
+    cmd: >-
+      W="${RUNROOT}/wcem_labels/WCEM_SMOKE_OK";
+      [ -f "$W" ] || { echo "run the wcem smoke first"; exit 1; };
+      O="${RUNROOT}/wcem_labels/${out}.npz";
+      [ -f "$O" ] && { echo "skip $O (exists)"; exit 0; };
+      python -m d0.oracle_labels
+      --run_logdir "${RUNROOT}/r3_local/${src}"
+      --states 200 --horizon 100 --label_every 25 --actions 8 --seed 0
+      --ref_stride 5 --oracle_all
+      --w1_repeats 8 --w1_dup_cand --cem_consumer --env_seed 20260824
+      --output "$O";
+      D="${RUNROOT}/wcem_labels";
+      if [ -f "$D/wcemdup_finger_e1_seed31_late.npz" ] &&
+         [ -f "$D/wcemdup_cup_e4_seed32_late.npz" ]; then
+        touch "$D/WCEM_DUP_OK";
+        echo "WCEM_DUP_OK set (both registered dup passes present)";
+      else
+        echo "dup partial; WCEM_DUP_OK NOT set";
+      fi
+    outputs:
+      - "wcem_labels"
+    done_when:
+      - exists: "${out}.npz"
+
+  # The 8 registered cells. NOT submitted with smoke+dup -- they wait for the
+  # 4-lane box, and for per_gpu to be set from the smoke's measured price.
+  - name: cells
+    kind: wcem_cell
+    on_failure: continue
+    runs:
+      - {run_id: wcem_cup_e1_seed31,    src: r3_cup_e1_seed31,    out: wcem_cup_e1_seed31_late}
+      - {run_id: wcem_finger_e1_seed31, src: r3_finger_e1_seed31, out: wcem_finger_e1_seed31_late}
+      - {run_id: wcem_cup_e4_seed31,    src: r3_cup_e4_seed31,    out: wcem_cup_e4_seed31_late}
+      - {run_id: wcem_finger_e4_seed31, src: r3_finger_e4_seed31, out: wcem_finger_e4_seed31_late}
+      - {run_id: wcem_cup_e1_seed32,    src: r3_cup_e1_seed32,    out: wcem_cup_e1_seed32_late}
+      - {run_id: wcem_finger_e1_seed32, src: r3_finger_e1_seed32, out: wcem_finger_e1_seed32_late}
+      - {run_id: wcem_cup_e4_seed32,    src: r3_cup_e4_seed32,    out: wcem_cup_e4_seed32_late}
+      - {run_id: wcem_finger_e4_seed32, src: r3_finger_e4_seed32, out: wcem_finger_e4_seed32_late}
+    logdir: "wcem_labels"
+    cmd: >-
+      W="${RUNROOT}/wcem_labels/WCEM_DUP_OK";
+      for _i in $(seq 1 2880); do [ -f "$W" ] && break; sleep 60; done;
+      [ -f "$W" ] || { echo "WCEM_DUP_OK never appeared within 48h"; exit 75; };
+      O="${RUNROOT}/wcem_labels/${out}.npz";
+      [ -f "$O" ] && { echo "skip $O (exists)"; exit 0; };
+      python -m d0.oracle_labels
+      --run_logdir "${RUNROOT}/r3_local/${src}"
+      --states 200 --horizon 100 --label_every 25 --actions 8 --seed 0
+      --ref_stride 5 --oracle_all
+      --w1_repeats 8 --cem_consumer --env_seed 20260824
+      --output "$O"
+    outputs:
+      - "wcem_labels"
+    done_when:
+      - exists: "${out}.npz"
+
+bundle:
+  prefix: p2_wcem
+  include_stages: [smoke, dup, cells]
+  cloud_logs:
+    - "wcem_*.out"
+    - "wcemdup_*.out"
