@@ -23,10 +23,24 @@
 # which IS the registered "R3 LATE" checkpoint. Naming one by hand would
 # pin a timestamp that differs per run.
 #
-# CONCURRENCY. Unlike the Wave-2 dup gate -- one registered invocation that
-# looped both domains, and needed a script change to parallelise -- each WCEM
-# pass here is its own process, so per_gpu alone gives real concurrency and
-# NOTHING registered is edited. dup uses per_gpu 2 (user decision, 23 Aug).
+# CONCURRENCY -- MEASURED 23 Aug: TWO WCEM PASSES CANNOT SHARE ONE GPU.
+# per_gpu 2 was tried first (each pass is its own process, so wavegen's
+# packing gives real concurrency for free). Both passes died in
+# backend_compile_and_load with
+#   INTERNAL: No supported config found for HLO ... %gemm_fusion_dot
+#   kind=kCustom "fusion_backend_config":{"kind":"__triton_gemm"}
+#   "device_type":"DEVICE_TYPE_INVALID"
+#   op_name="jit(fn)/opt/transpose(jvp(con))/mlp/linear0/transpose"
+# Isolated with one variable changed at a time on inst 28 (driver 595.84):
+#   1 proc, 5 states, --w1_dup_cand  -> rc=0, wrote 5 labeled states
+#   2 proc, 5 states, --w1_dup_cand  -> BOTH rc=1, same Triton error
+# So it is concurrent Triton GEMM autotuning on ONE device, not the
+# dup_cand path and not the state count (the failure is at COMPILE time,
+# which happens once regardless of --states). per_gpu is therefore 1
+# everywhere. LANES are unaffected: one lane = one card = one process, so a
+# 4-lane box still runs 4 passes at once, just not 2 per card.
+# NOT worked around with XLA flags (e.g. disabling triton_gemm): that would
+# change how a REGISTERED instrument compiles, which is not an ops call.
 #
 # COST IS UNPRICED. The prereg's "~10 W1-scale passes x (1 + ~1.2 CEM
 # overhead)" is explicitly an UNVERIFIED planning estimate and instructs ops
@@ -48,7 +62,7 @@ defaults:
 
 kinds:
   wcem_gate: {per_gpu: 1}
-  wcem_dup:  {per_gpu: 2}
+  wcem_dup:  {per_gpu: 1}   # 2-way MEASURED BROKEN, see header
   wcem_cell: {per_gpu: 1}
 
 stages:
@@ -103,7 +117,7 @@ stages:
       --states 200 --horizon 100 --label_every 25 --actions 8 --seed 0
       --ref_stride 5 --oracle_all
       --w1_repeats 8 --w1_dup_cand --cem_consumer --env_seed 20260824
-      --output "$O";
+      --output "$O" || { rc=$?; echo "FATAL: dup labeler failed rc=$rc"; exit $rc; };
       D="${RUNROOT}/wcem_labels";
       if [ -f "$D/wcemdup_finger_e1_seed31_late.npz" ] && [ -f "$D/wcemdup_cup_e4_seed32_late.npz" ]; then touch "$D/WCEM_DUP_OK"; echo "WCEM_DUP_OK set (both registered dup passes present)"; else echo "dup partial; WCEM_DUP_OK NOT set"; fi
     outputs:
