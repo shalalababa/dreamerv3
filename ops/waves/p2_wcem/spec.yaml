@@ -62,8 +62,7 @@ defaults:
 
 kinds:
   wcem_gate: {per_gpu: 1}
-  wcem_dup:  {per_gpu: 1}   # 2-way MEASURED BROKEN, see header
-  wcem_cell: {per_gpu: 1}
+  wcem_main: {per_gpu: 5}   # 5 per GPU x 2 GPUs = all 10 passes in ONE round
 
 stages:
 
@@ -79,6 +78,7 @@ stages:
     logdir: "wcem_labels"
     cmd: >-
       set -e;
+      export XLA_PYTHON_CLIENT_MEM_FRACTION=0.18;
       S="${RUNROOT}/_wcem_smoke"; mkdir -p "$S";
       t0=$(date +%s);
       python -m d0.oracle_labels
@@ -97,61 +97,51 @@ stages:
     done_when:
       - exists: WCEM_SMOKE_OK
 
-  # Duplicate-null gate: the reader refuses the whole read unless every
-  # estimand is exactly 0 on these two, so they run before the 8-cell spend.
-  # --w1_dup_cand is what makes a pass a duplicate.
-  - name: dup
-    kind: wcem_dup
-    on_failure: abort
+  # MAIN STAGE -- the 2 duplicate-null passes AND the 8 registered cells, run
+  # TOGETHER. The prereg's chain is smoke -> dups -> cells so that a CRN
+  # breakage costs 2 passes instead of 8; the USER waived that ordering on
+  # 23 Aug on the ground that under concurrency the cells are nearly free in
+  # wall-clock, so a tripped gate costs ~one round either way. The gate is NOT
+  # weakened: the reader still refuses the whole read unless both dup passes
+  # are exactly zero, and there is no override path.
+  #
+  # REGIME (Paper-2 approval, 23 Aug, conditions 1-4):
+  #   XLA_PYTHON_CLIENT_MEM_FRACTION=0.18 on EVERY pass incl. the smoke
+  #   5 tasks per GPU x 2 GPUs = all 10 in one round
+  # Measured basis: the working set is NOT 15 GB -- that was the allocator
+  # filling the 0.95 cap it was given. One pass runs in 3,876 MiB at 0.18-ish
+  # and 1,742 MiB at 0.095; peak ~= fraction*16311 + ~190 MiB overhead, so
+  # 5 x (0.18*16311 + 190) = 15,630 of 16,311. CPU is not the limit (~2 cores
+  # per pass, 36 cores); GPU util ~12%/pass, so 5/card ~= 60%.
+  - name: main
+    kind: wcem_main
+    on_failure: continue
     runs:
-      - {run_id: wcemdup_finger_e1_seed31, src: r3_finger_e1_seed31, out: wcemdup_finger_e1_seed31_late}
-      - {run_id: wcemdup_cup_e4_seed32,    src: r3_cup_e4_seed32,    out: wcemdup_cup_e4_seed32_late}
+      # lane 0: 1 dup + 4 cells, balanced on dom x dose x seed
+      - {run_id: wcemdup_finger_e1_seed31, src: r3_finger_e1_seed31, out: wcemdup_finger_e1_seed31_late, dup: "--w1_dup_cand"}
+      - {run_id: wcem_cup_e1_seed31,       src: r3_cup_e1_seed31,    out: wcem_cup_e1_seed31_late,       dup: ""}
+      - {run_id: wcem_cup_e4_seed32,       src: r3_cup_e4_seed32,    out: wcem_cup_e4_seed32_late,       dup: ""}
+      - {run_id: wcem_finger_e1_seed32,    src: r3_finger_e1_seed32, out: wcem_finger_e1_seed32_late,    dup: ""}
+      - {run_id: wcem_finger_e4_seed31,    src: r3_finger_e4_seed31, out: wcem_finger_e4_seed31_late,    dup: ""}
+      # lane 1: 1 dup + 4 cells, same balance
+      - {run_id: wcemdup_cup_e4_seed32,    src: r3_cup_e4_seed32,    out: wcemdup_cup_e4_seed32_late,    dup: "--w1_dup_cand"}
+      - {run_id: wcem_cup_e1_seed32,       src: r3_cup_e1_seed32,    out: wcem_cup_e1_seed32_late,       dup: ""}
+      - {run_id: wcem_cup_e4_seed31,       src: r3_cup_e4_seed31,    out: wcem_cup_e4_seed31_late,       dup: ""}
+      - {run_id: wcem_finger_e1_seed31,    src: r3_finger_e1_seed31, out: wcem_finger_e1_seed31_late,    dup: ""}
+      - {run_id: wcem_finger_e4_seed32,    src: r3_finger_e4_seed32, out: wcem_finger_e4_seed32_late,    dup: ""}
     logdir: "wcem_labels"
     cmd: >-
       W="${RUNROOT}/wcem_labels/WCEM_SMOKE_OK";
       [ -f "$W" ] || { echo "run the wcem smoke first"; exit 1; };
+      export XLA_PYTHON_CLIENT_MEM_FRACTION=0.18;
       O="${RUNROOT}/wcem_labels/${out}.npz";
       [ -f "$O" ] && { echo "skip $O (exists)"; exit 0; };
       python -m d0.oracle_labels
       --run_logdir "${RUNROOT}/r3_local/${src}"
       --states 200 --horizon 100 --label_every 25 --actions 8 --seed 0
       --ref_stride 5 --oracle_all
-      --w1_repeats 8 --w1_dup_cand --cem_consumer --env_seed 20260824
-      --output "$O" || { rc=$?; echo "FATAL: dup labeler failed rc=$rc"; exit $rc; };
-      D="${RUNROOT}/wcem_labels";
-      if [ -f "$D/wcemdup_finger_e1_seed31_late.npz" ] && [ -f "$D/wcemdup_cup_e4_seed32_late.npz" ]; then touch "$D/WCEM_DUP_OK"; echo "WCEM_DUP_OK set (both registered dup passes present)"; else echo "dup partial; WCEM_DUP_OK NOT set"; fi
-    outputs:
-      - "wcem_labels"
-    done_when:
-      - exists: "${out}.npz"
-
-  # The 8 registered cells. NOT submitted with smoke+dup -- they wait for the
-  # 4-lane box, and for per_gpu to be set from the smoke's measured price.
-  - name: cells
-    kind: wcem_cell
-    on_failure: continue
-    runs:
-      - {run_id: wcem_cup_e1_seed31,    src: r3_cup_e1_seed31,    out: wcem_cup_e1_seed31_late}
-      - {run_id: wcem_finger_e1_seed31, src: r3_finger_e1_seed31, out: wcem_finger_e1_seed31_late}
-      - {run_id: wcem_cup_e4_seed31,    src: r3_cup_e4_seed31,    out: wcem_cup_e4_seed31_late}
-      - {run_id: wcem_finger_e4_seed31, src: r3_finger_e4_seed31, out: wcem_finger_e4_seed31_late}
-      - {run_id: wcem_cup_e1_seed32,    src: r3_cup_e1_seed32,    out: wcem_cup_e1_seed32_late}
-      - {run_id: wcem_finger_e1_seed32, src: r3_finger_e1_seed32, out: wcem_finger_e1_seed32_late}
-      - {run_id: wcem_cup_e4_seed32,    src: r3_cup_e4_seed32,    out: wcem_cup_e4_seed32_late}
-      - {run_id: wcem_finger_e4_seed32, src: r3_finger_e4_seed32, out: wcem_finger_e4_seed32_late}
-    logdir: "wcem_labels"
-    cmd: >-
-      W="${RUNROOT}/wcem_labels/WCEM_DUP_OK";
-      for _i in $(seq 1 2880); do [ -f "$W" ] && break; sleep 60; done;
-      [ -f "$W" ] || { echo "WCEM_DUP_OK never appeared within 48h"; exit 75; };
-      O="${RUNROOT}/wcem_labels/${out}.npz";
-      [ -f "$O" ] && { echo "skip $O (exists)"; exit 0; };
-      python -m d0.oracle_labels
-      --run_logdir "${RUNROOT}/r3_local/${src}"
-      --states 200 --horizon 100 --label_every 25 --actions 8 --seed 0
-      --ref_stride 5 --oracle_all
-      --w1_repeats 8 --cem_consumer --env_seed 20260824
-      --output "$O"
+      --w1_repeats 8 ${dup} --cem_consumer --env_seed 20260824
+      --output "$O" || { rc=$?; echo "FATAL: labeler failed rc=$rc"; exit $rc; }
     outputs:
       - "wcem_labels"
     done_when:
@@ -159,7 +149,7 @@ stages:
 
 bundle:
   prefix: p2_wcem
-  include_stages: [smoke, dup, cells]
+  include_stages: [smoke, main]
   cloud_logs:
     - "wcem_*.out"
     - "wcemdup_*.out"
