@@ -42,7 +42,7 @@ if [ ! -e "$REPO/scripts/tm2r3.sbatch" ]; then bad "MISSING producer scripts/tm2
 fi
 
 echo "== repo generation stamp =="
-want=0d12aa0f
+want=9e8cdd91
 got="$(cat "$REPO/scripts/ops/VERSION" 2>/dev/null | head -1)"
 case "$got" in
   "$want"*|*"${want%%-*}"*) ok "instance repo matches wave generation ($want)" ;;
