@@ -184,7 +184,33 @@ def wave_spec(wave, seeds=None):
       adapt_of[rcb] = f'adapt_ax1rcbq1s1_finger_seed{s}_ckpt500000'
     return dict(fits=fits, dir_of={f: f for f in fits}, adapt_of=adapt_of,
                 updates=500000, full_n=16)
+  if wave == 'rrp2':
+    # PREREG_rrp2_20260823: paired certification — seeds 1-8, three
+    # arms per seed in ONE job. The rca'-source prefix is resolved at
+    # build() from what exists (the registered existence FILL);
+    # wave_spec receives it via the rca_prefix kwarg.
+    seeds = tuple(range(1, 9)) if seeds is None else seeds
+    fits, adapt_of = [], {}
+    for s in seeds:
+      rrp = f'ax1wm_finger_rrpq1s1_seed{s}'
+      rp2b = f'ax1wm_finger_rp2bq1s1_seed{s}'
+      fits += [rrp, rp2b]
+      adapt_of[rrp] = f'adapt_ax1rp2rq1s1_finger_seed{s}_ckpt500000'
+      adapt_of[rp2b] = f'adapt_ax1rp2bq1s1_finger_seed{s}_ckpt500000'
+    return dict(fits=fits, dir_of={f: f for f in fits}, adapt_of=adapt_of,
+                updates=500000, full_n=24, rp2_seeds=list(seeds))
   die(f'unknown wave {wave}')
+
+
+def rrp2_resolve_rca_prefix(runroot, seeds):
+  """The registered existence FILL: (A) surviving rgoq1s1 seeds 1-8 if
+  8/8 hold a done-ckpt at step 500000, else (B) fresh rp2gq1s1."""
+  for prefix in ('ax1wm_finger_rgoq1s1', 'ax1wm_finger_rp2gq1s1'):
+    if all(latest_ckpt_step(os.path.join(runroot, f'{prefix}_seed{s}'))
+           == 500000 for s in seeds):
+      return prefix
+  die('rrp2: neither rca-source prefix has 8/8 complete fits at '
+      '500000 — run the path-B rp2g fits first')
 
 
 # --------------------------------------------------------------------------
@@ -510,6 +536,49 @@ def build_witness(runroot, spec, wave, ref_configs=None, lane_dir=None,
         entry['cfg_pins'].update(
             {k: cf_all.get(k) for k in
              ('run.from_checkpoint_regex', 'agent.frozen_enc')})
+    if wave == 'rrp2':
+      # PREREG_rrp2_20260823 — same witness family as rrpctl with the
+      # rca'-source prefix resolved by the registered existence FILL.
+      cf_all = flat_config(cfg)
+      seed_sfx = fit.rsplit('seed', 1)[1]
+      rca_prefix = spec.get('rca_prefix') or 'UNRESOLVED'
+      if fit.startswith('ax1wm_finger_rrpq1s1'):
+        fc = str(cf_all.get('run.from_checkpoint') or '')
+        entry['init_from_checkpoint'] = fc
+        src = f'ax1wm_finger_fq1s1_seed{seed_sfx}'
+        if f'/{src}/' not in fc and not fc.rstrip('/').endswith(src):
+          problems.append(f'{fit}: rrp init {fc!r} not inside its '
+                          f'fq1s1 donor {src}')
+      elif fit.startswith(rca_prefix):
+        # review B1: the random-init property is part of the arm's
+        # definition — run.from_checkpoint recorded for the reader's
+        # empty-init gate.
+        entry['cfg_pins'] = {k: cf_all.get(k) for k in
+                             ('task', 'agent.reward_grad',
+                              'agent.repval_grad',
+                              'run.from_checkpoint')}
+        ck = latest_done_ckpt_dir(run_dir)
+        entry['ckpt_sha'] = ckpt_sha(ck) if ck else None
+        if not entry['ckpt_sha']:
+          problems.append(f'{fit}: no completed ckpt to sha — the '
+                          'init-pairing gate will refuse')
+      elif fit.startswith('ax1wm_finger_rp2bq1s1'):
+        entry['cfg_pins'] = {k: cf_all.get(k) for k in
+                             ('task', 'agent.reward_grad',
+                              'agent.repval_grad',
+                              'run.from_checkpoint_regex',
+                              'agent.frozen_enc')}
+        fc = str(cf_all.get('run.from_checkpoint') or '')
+        entry['init_from_checkpoint'] = fc
+        src = f'{rca_prefix}_seed{seed_sfx}'
+        if f'/{src}/' not in fc and not fc.rstrip('/').endswith(src):
+          problems.append(f'{fit}: init from_checkpoint {fc!r} not '
+                          f'inside its same-seed source {src} — the '
+                          'reader will refuse')
+        entry['init_sha'] = ckpt_sha(fc) if fc else None
+        if not entry['init_sha']:
+          problems.append(f'{fit}: init checkpoint sha unrecordable '
+                          f'({fc!r} missing) — the reader will refuse')
     if fit in spec.get('online_fits', ()):
       # valuefree budget-parity witness. Review-2 F1/F9: an online
       # run's ckpt dirs carry NO step suffix, so counters come from
@@ -599,9 +668,10 @@ def build_witness(runroot, spec, wave, ref_configs=None, lane_dir=None,
                         f'reference its fit {fit_dir}')
     meta['adapt_ckpts'] = adapt_ckpts
     meta['adapt_ckpt_ok'] = bool(ok)
-  if wave in ('crowding', 'rrpctl'):
+  if wave in ('crowding', 'rrpctl', 'rrp2'):
     # Adapt-witness block (crowding: PREREG_crowding_behavioral;
-    # rrpctl: PREREG_rrpctl_20260822 — same adapt protocol). The
+    # rrpctl: PREREG_rrpctl_20260822; rrp2: PREREG_rrp2_20260823 —
+    # same adapt protocol). The
     # frozen readers gate adapt counters == 125000 EXACTLY. An adapt's
     # ckpt dirs carry no step suffix and neither metrics.jsonl (final
     # step trails run.steps by up to one logging cadence, ~1e4) nor
@@ -617,29 +687,43 @@ def build_witness(runroot, spec, wave, ref_configs=None, lane_dir=None,
     #   (4) scores.jsonl >= 100 lines.
     # Plus the linkage obligations: from_checkpoint must resolve
     # inside the paired fit dir, and the loaded ckpt's sha is recorded.
-    aw_glob, aw_re = {
-        'crowding': ('crowd*.out', r'(?:OK|DONE)\s+(adapt_ax1uzruw\S+)'),
+    aw_glob, aw_re, refit_prefix = {
+        'crowding': ('crowd*.out',
+                     r'(?:OK|DONE)\s+(adapt_ax1uzruw\S+)', None),
         'rrpctl': ('rrpctl*.out',
-                   r'(?:OK|DONE)\s+(adapt_ax1rc[ab]q1s1\S+)'),
+                   r'(?:OK|DONE)\s+(adapt_ax1rc[ab]q1s1\S+)',
+                   'ax1wm_finger_rcbq1s1'),
+        'rrp2': ('rrp2*.out',
+                 r'(?:OK|DONE)\s+(adapt_ax1rp2[rab]q1s1\S+)',
+                 ('ax1wm_finger_rp2bq1s1', 'ax1wm_finger_rp2gq1s1')),
     }[wave]
-    done_log, replay_of = set(), {}
+    if isinstance(refit_prefix, str):
+      refit_prefix = (refit_prefix,) if refit_prefix else ()
+    elif refit_prefix is None:
+      refit_prefix = ()
+    done_log, replay_of = {}, {}
     logdir = job_logs or os.getcwd()
     for fn in sorted(glob.glob(os.path.join(logdir, aw_glob))):
+      base_fn = os.path.basename(fn)
       with open(fn, errors='replace') as fh:
         for line in fh:
           m = re.search(aw_re, line)
           if m:
-            done_log.add(m.group(1))
-          m2 = re.search(r'offline_fit WM_RUN=(ax1wm_finger_rcbq1s1_'
-                         r'seed\d+) REPLAY=(\S+)', line)
-          if m2:
-            replay_of[m2.group(1)] = m2.group(2)
-    if wave == 'rrpctl':
+            done_log.setdefault(m.group(1), set()).add(base_fn)
+          for pfx in refit_prefix:
+            m2 = re.search(r'offline_fit WM_RUN=(%s_seed\d+) '
+                           r'REPLAY=(\S+)' % pfx, line)
+            if m2:
+              replay_of[m2.group(1)] = m2.group(2)
+    if refit_prefix:
       # review M3 (replay leg): the phase-2 buffer is not in the fit
       # config (--static_replay is an offline_fit CLI arg), so the
-      # realized path comes from axis1's own log line.
+      # realized path comes from axis1's own log line. rrp2 review B1:
+      # the rp2g (path-B) prefix is scanned too; the surviving-carrier
+      # path inherits replay provenance from its own registration, so
+      # absence of a line for a NON-rp2g source is not a problem.
       for fit in spec['fits']:
-        if not fit.startswith('ax1wm_finger_rcbq1s1') or fit not in w:
+        if not fit.startswith(tuple(refit_prefix)) or fit not in w:
           continue
         rp = replay_of.get(fit)
         w[fit]['replay_realized'] = rp
@@ -647,6 +731,17 @@ def build_witness(runroot, spec, wave, ref_configs=None, lane_dir=None,
           problems.append(f'{fit}: no realized "offline_fit ... '
                           'REPLAY=" line in the job logs — the buffer '
                           'witness gate will refuse')
+    if wave == 'rrp2':
+      meta['rca_source_prefix'] = spec.get('rca_prefix')
+      # review M3: S1 compares against 22-Aug pinned values; record
+      # the repo commit so the code-identity caveat is auditable.
+      import subprocess
+      try:
+        meta['repo_commit'] = subprocess.run(
+            ['git', 'rev-parse', 'HEAD'], capture_output=True,
+            text=True, timeout=10).stdout.strip() or None
+      except Exception:
+        meta['repo_commit'] = None
     if not done_log:
       problems.append(f'no OK/DONE adapt lines in {logdir}/{aw_glob} '
                       '— pass --job_logs; completion corroboration '
@@ -698,8 +793,17 @@ def build_witness(runroot, spec, wave, ref_configs=None, lane_dir=None,
         with open(sc) as fh:
           nep = sum(1 for ln in fh if ln.strip())
       entry['scores_lines'] = nep
-      in_log = adapt in done_log
+      files = sorted(done_log.get(adapt, ()))
+      in_log = bool(files)
       entry['job_log_ok'] = in_log
+      entry['job_log_file'] = files[0] if len(files) == 1 else None
+      if len(files) > 1:
+        # review M2: an adapt with OK/DONE lines in MORE than one job
+        # log is ambiguous provenance — never silently pick one (the
+        # lexicographic 'last' can be the OLDER job).
+        problems.append(f'{adapt}: OK/DONE lines in {len(files)} job '
+                        f'logs {files} — ambiguous invocation; the '
+                        'pairing gate will refuse')
       complete = (steps_cfg == 125000 and in_log
                   and last_mstep >= 115000 and nep >= 100)
       if complete:
@@ -833,6 +937,10 @@ def expected_adapt_keys(wave, spec, seeds):
     for mode in ('ax1rcaq1s1', 'ax1rcbq1s1'):
       for s in (range(17, 25) if seeds is None else seeds):
         keys.add((mode, 'finger', s))
+  if wave == 'rrp2':
+    for mode in ('ax1rp2rq1s1', 'ax1rp2aq1s1', 'ax1rp2bq1s1'):
+      for s in (range(1, 9) if seeds is None else seeds):
+        keys.add((mode, 'finger', s))
   if wave == 'valuefree':                   # review-2 F7 / review-3 B1
     for mode in ('ontask', 'q1uzs1', 'q1uzs0', 'scratchvf'):
       for s in (range(17, 25) if seeds is None else seeds):
@@ -842,6 +950,17 @@ def expected_adapt_keys(wave, spec, seeds):
 
 def build(args, seeds=None):
   spec = wave_spec(args.wave, seeds=seeds)
+  if args.wave == 'rrp2':
+    # Registered existence FILL: resolve the rca'-source prefix and
+    # graft its 8 fits + adapts into the spec.
+    prefix = rrp2_resolve_rca_prefix(args.runroot, spec['rp2_seeds'])
+    spec['rca_prefix'] = prefix
+    for s in spec['rp2_seeds']:
+      f = f'{prefix}_seed{s}'
+      spec['fits'].append(f)
+      spec['dir_of'][f] = f
+      spec['adapt_of'][f] = \
+          f'adapt_ax1rp2aq1s1_finger_seed{s}_ckpt500000'
   if getattr(args, 'extra_fits', None):
     extras = [f.strip() for f in args.extra_fits.split(',') if f.strip()]
     want = spec.get('extra_expect')
@@ -1464,6 +1583,71 @@ def selfcheck():
     assert any('not inside its same-seed carrier fit' in p
                for p in wr2['_meta']['problems']), \
         wr2['_meta']['problems']
+
+  # --- rrp2 leg: source-prefix grafting + job_log_file recording +
+  # the same init-equality/replay machinery on the rp2 namespaces.
+  with tempfile.TemporaryDirectory() as tmp:
+    root = os.path.join(tmp, 'rr')
+    logdir = os.path.join(tmp, 'logs')
+    os.makedirs(logdir)
+    pspec = wave_spec('rrp2', seeds=(1,))
+    # m7: exercise the REAL resolver + graft path (build()'s logic)
+    _mk_fit(root, 'ax1wm_finger_rgoq1s1_seed1', 500000, 500000, 1)
+    assert rrp2_resolve_rca_prefix(root, (1,)) == \
+        'ax1wm_finger_rgoq1s1'
+    pspec['rca_prefix'] = rrp2_resolve_rca_prefix(root, (1,))
+    pspec['fits'].append('ax1wm_finger_rgoq1s1_seed1')
+    pspec['dir_of']['ax1wm_finger_rgoq1s1_seed1'] = \
+        'ax1wm_finger_rgoq1s1_seed1'
+    pspec['adapt_of']['ax1wm_finger_rgoq1s1_seed1'] = \
+        'adapt_ax1rp2aq1s1_finger_seed1_ckpt500000'
+    arm_yaml = ('task: dmc_finger_turn_hard\n'
+                'agent:\n  reward_grad: true\n  repval_grad: false\n')
+    log_lines = []
+    for fit, adapt in pspec['adapt_of'].items():
+      fdir = _mk_fit(root, fit, 500000, 500000, 1)
+      ck = os.path.join(fdir, 'ckpt', '20260101T000000-000000500000')
+      rgo_ck = os.path.join(root, 'ax1wm_finger_rgoq1s1_seed1', 'ckpt',
+                            '20260101T000000-000000500000')
+      if fit.startswith('ax1wm_finger_rrpq1s1'):
+        cfg_body = (arm_yaml + 'run:\n  from_checkpoint: '
+                    '/rr/ax1wm_finger_fq1s1_seed1/ckpt/x\nseed: 1\n')
+      elif fit.startswith('ax1wm_finger_rp2bq1s1'):
+        cfg_body = (arm_yaml + '  frozen_enc: false\n'
+                    f'run:\n  from_checkpoint: {rgo_ck}\n'
+                    "  from_checkpoint_regex: '^(enc|dyn|dec)/'\n"
+                    'seed: 1\n')
+        log_lines.append(f'offline_fit WM_RUN={fit} '
+                         'REPLAY=/rr/axis1_finger/q1/side1 '
+                         'UPDATES=500000 SEED=1\n')
+      else:
+        cfg_body = arm_yaml + 'seed: 1\n'
+      with open(os.path.join(fdir, 'config.yaml'), 'w') as f:
+        f.write(cfg_body)
+      adir = os.path.join(root, adapt)
+      os.makedirs(adir)
+      with open(os.path.join(adir, 'config.yaml'), 'w') as f:
+        f.write(f'run:\n  steps: 125000.0\n  from_checkpoint: {ck}\n'
+                'seed: 1\n')
+      with open(os.path.join(adir, 'metrics.jsonl'), 'w') as f:
+        f.write(json.dumps({'step': 124800}) + '\n')
+      with open(os.path.join(adir, 'scores.jsonl'), 'w') as f:
+        for i in range(110):
+          f.write(json.dumps({'step': 1000 * (i + 1),
+                              'episode/score': 1.0}) + '\n')
+      log_lines.append(f'OK     {adapt} (scores.jsonl 110 lines)\n')
+    with open(os.path.join(logdir, 'rrp2_bundle_1.out'), 'w') as f:
+      f.writelines(log_lines)
+    wp2 = build_witness(root, pspec, 'rrp2', job_logs=logdir)
+    assert wp2['_meta']['problems'] == [], wp2['_meta']['problems']
+    assert wp2['_meta']['rca_source_prefix'] == 'ax1wm_finger_rgoq1s1'
+    rgo1 = wp2['ax1wm_finger_rgoq1s1_seed1']
+    rp2b1 = wp2['ax1wm_finger_rp2bq1s1_seed1']
+    assert rgo1['ckpt_sha'] and rp2b1['init_sha'] == rgo1['ckpt_sha']
+    assert rp2b1['replay_realized'] == '/rr/axis1_finger/q1/side1'
+    for adapt in pspec['adapt_of'].values():
+      assert wp2[adapt]['counters'] == 125000, wp2[adapt]
+      assert wp2[adapt]['job_log_file'] == 'rrp2_bundle_1.out'
   print('SELFCHECK PASS (build_rescue_bundle v2: carrier end-to-end '
         'incl. seed+logdir-excepted sha identity + arm distinction + '
         'adapt-log counters + lane file; stale-copy path -> counters '
@@ -1480,14 +1664,16 @@ def selfcheck():
         'sha recorded, each signal drop -> realized counters + '
         'problem; rrpctl: init-sha pairing to the same-seed carrier '
         'rgo fit + rgo-arm cfg pins + shared adapt-witness machinery, '
-        'foreign init -> problem)')
+        'foreign init -> problem; rrp2: source-prefix graft + '
+        'job_log_file recording + init equality + realized replay on '
+        'the rp2 namespaces)')
 
 
 def main():
   p = argparse.ArgumentParser(description=__doc__)
   p.add_argument('--wave', choices=['carrier', 'u1a', 'mindose',
                                     'valuefree', 'crowding',
-                                    'routedrepair', 'rrpctl'])
+                                    'routedrepair', 'rrpctl', 'rrp2'])
   p.add_argument('--job_logs',
                  help='dir of the wave\'s slurm .out logs; crowding '
                       'derives _meta.no_preexisting_dirs from them')
