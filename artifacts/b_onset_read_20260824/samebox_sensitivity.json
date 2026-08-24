@@ -1,0 +1,101 @@
+{
+ "registration": "PREREG_trackB_onset_amend1_20260823 cl.4: descriptive-never-a-fire (n=12 < MIN_USABLE 14); same-device consistency row",
+ "n": 12,
+ "per_run": [
+  {
+   "run": "se_ons25_s97",
+   "seed": 97,
+   "scale": 0.25,
+   "theta1": 0.08580282938980481,
+   "device": "instance-25"
+  },
+  {
+   "run": "se_ons25_s98",
+   "seed": 98,
+   "scale": 0.25,
+   "theta1": 0.12970298944739736,
+   "device": "instance-25"
+  },
+  {
+   "run": "se_ons25_s99",
+   "seed": 99,
+   "scale": 0.25,
+   "theta1": 0.0899190855211335,
+   "device": "instance-25"
+  },
+  {
+   "run": "se_ons30_s101",
+   "seed": 101,
+   "scale": 0.3,
+   "theta1": 4.54458795926672,
+   "device": "instance-25"
+  },
+  {
+   "run": "se_ons30_s102",
+   "seed": 102,
+   "scale": 0.3,
+   "theta1": 5.329798819558192,
+   "device": "instance-25"
+  },
+  {
+   "run": "se_ons30_s103",
+   "seed": 103,
+   "scale": 0.3,
+   "theta1": 3.801408126896088,
+   "device": "instance-25"
+  },
+  {
+   "run": "se_ons34_s105",
+   "seed": 105,
+   "scale": 0.34,
+   "theta1": 6.8080067579148915,
+   "device": "instance-25"
+  },
+  {
+   "run": "se_ons34_s106",
+   "seed": 106,
+   "scale": 0.34,
+   "theta1": 7.615679696681291,
+   "device": "instance-25"
+  },
+  {
+   "run": "se_ons34_s107",
+   "seed": 107,
+   "scale": 0.34,
+   "theta1": 9.559191563356816,
+   "device": "instance-25"
+  },
+  {
+   "run": "se_ons38_s109",
+   "seed": 109,
+   "scale": 0.38,
+   "theta1": 7.5953741095467775,
+   "device": "instance-25"
+  },
+  {
+   "run": "se_ons38_s110",
+   "seed": 110,
+   "scale": 0.38,
+   "theta1": 8.409463172928826,
+   "device": "instance-25"
+  },
+  {
+   "run": "se_ons38_s111",
+   "seed": 111,
+   "scale": 0.38,
+   "theta1": 9.30871949654591,
+   "device": "instance-25"
+  }
+ ],
+ "spearman_rho": 0.8852587100294375,
+ "p_one_sided_positive": 0.0003099969000309997,
+ "n_perm": 100000,
+ "perm_seed": 20260822,
+ "pooled_primary_for_reference": {
+  "statement": "theta_1(distractor) INCREASES in scale across the fresh onset window (RELATIVE estimand; rising limb only \u2014 the SHAPE stays descriptive; Spearman > 0, one-sided positive label permutation, 100000 draws, seed 20260822)",
+  "rho": 0.897381812634432,
+  "p": 2.999970000299997e-05,
+  "n": 16,
+  "fires": true
+ }
+}
