@@ -1,0 +1,938 @@
+{
+ "n_registered": 8,
+ "n_loaded": 8,
+ "n_invalid": 0,
+ "invalid_runs": [],
+ "seeds": [
+  68,
+  69,
+  70,
+  71,
+  72,
+  73,
+  74,
+  75
+ ],
+ "fire_rule": "sign",
+ "stamp": {
+  "git": "f403593d",
+  "time": "2026-08-22T10:45:33"
+ },
+ "partial_flag": "COMPLETE",
+ "probe_ckpt_flag": "OK",
+ "per_run": [
+  {
+   "run_dir": "/home/rickybao/projects/dreamerv3/local_results/b2_apt_20260822_100924/runroot/se_apt_s68",
+   "train_seed": 68,
+   "n_eval": 512,
+   "base_apt_mean": 1.9786005020141602,
+   "channels": {
+    "planted_dup0": {
+     "delta_apt_mean": 0.0,
+     "delta_apt_bca": [
+      0.0,
+      0.0
+     ],
+     "p_reduce": 1.0,
+     "p_inflate": 1.0,
+     "form": "source_substitution",
+     "prov_exact": true,
+     "delta_se": 0.0
+    },
+    "planted_dup1": {
+     "delta_apt_mean": 0.000497118104249239,
+     "delta_apt_bca": [
+      -0.00027664300600401,
+      0.0011658490025757474
+     ],
+     "p_reduce": 0.8971028971028971,
+     "p_inflate": 0.1038961038961039,
+     "form": "source_substitution",
+     "prov_exact": true,
+     "delta_se": 0.0003795189240541836
+    },
+    "planted_dup2": {
+     "delta_apt_mean": 0.00016844947822391987,
+     "delta_apt_bca": [
+      -0.0004974088703114282,
+      0.0008901380000587781
+     ],
+     "p_reduce": 0.6773226773226774,
+     "p_inflate": 0.32367632367632365,
+     "form": "source_substitution",
+     "prov_exact": true,
+     "delta_se": 0.00035815168474592394
+    },
+    "distractor": {
+     "delta_apt_mean": 0.0012610619887709618,
+     "delta_apt_bca": [
+      -0.0006468350232516561,
+      0.003103560697247178
+     ],
+     "p_reduce": 0.913086913086913,
+     "p_inflate": 0.08791208791208792,
+     "form": "batch_permutation",
+     "prov_exact": true,
+     "delta_se": 0.0009322243730785606
+    },
+    "planted_dup1_resample": {
+     "delta_apt_mean": -0.0003365755546838045,
+     "delta_apt_bca": [
+      -0.0010447133362543439,
+      0.00035815579689404265
+     ],
+     "p_reduce": 0.17482517482517482,
+     "p_inflate": 0.8261738261738262,
+     "form": "fresh_resample",
+     "prov_exact": true,
+     "delta_se": 0.00036392259940837865
+    },
+    "planted_dup2_resample": {
+     "delta_apt_mean": 1.567159779369831e-05,
+     "delta_apt_bca": [
+      -0.0007857018927031429,
+      0.0007782263500482409
+     ],
+     "p_reduce": 0.4935064935064935,
+     "p_inflate": 0.5074925074925075,
+     "form": "fresh_resample",
+     "prov_exact": true,
+     "delta_se": 0.00039224966223994317
+    },
+    "velocity_control": {
+     "delta_apt_mean": -0.02575748460367322,
+     "delta_apt_bca": [
+      -0.02966037600325015,
+      -0.021715533099828245
+     ],
+     "p_reduce": 0.000999000999000999,
+     "p_inflate": 1.0,
+     "form": "batch_permutation_real_key_control",
+     "prov_exact": true,
+     "delta_se": 0.001980056046657041
+    }
+   }
+  },
+  {
+   "run_dir": "/home/rickybao/projects/dreamerv3/local_results/b2_apt_20260822_100924/runroot/se_apt_s69",
+   "train_seed": 69,
+   "n_eval": 512,
+   "base_apt_mean": 1.9966543912887573,
+   "channels": {
+    "planted_dup0": {
+     "delta_apt_mean": 0.0,
+     "delta_apt_bca": [
+      0.0,
+      0.0
+     ],
+     "p_reduce": 1.0,
+     "p_inflate": 1.0,
+     "form": "source_substitution",
+     "prov_exact": true,
+     "delta_se": 0.0
+    },
+    "planted_dup1": {
+     "delta_apt_mean": 0.00013601896353065968,
+     "delta_apt_bca": [
+      -0.0005709548291369258,
+      0.0007975196107897112
+     ],
+     "p_reduce": 0.6653346653346653,
+     "p_inflate": 0.3356643356643357,
+     "form": "source_substitution",
+     "prov_exact": true,
+     "delta_se": 0.00035568168278205333
+    },
+    "planted_dup2": {
+     "delta_apt_mean": 0.00040160631760954857,
+     "delta_apt_bca": [
+      -0.0002677374620467291,
+      0.001027916092914817
+     ],
+     "p_reduce": 0.903096903096903,
+     "p_inflate": 0.0979020979020979,
+     "form": "source_substitution",
+     "prov_exact": true,
+     "delta_se": 0.00033013206597236864
+    },
+    "distractor": {
+     "delta_apt_mean": -0.0016008797101676464,
+     "delta_apt_bca": [
+      -0.0032853472615649907,
+      0.00015934463191187055
+     ],
+     "p_reduce": 0.030969030969030968,
+     "p_inflate": 0.97002997002997,
+     "form": "batch_permutation",
+     "prov_exact": true,
+     "delta_se": 0.0008832341614905259
+    },
+    "planted_dup1_resample": {
+     "delta_apt_mean": -2.5124521926045418e-05,
+     "delta_apt_bca": [
+      -0.0007424840745717148,
+      0.0006782359972981626
+     ],
+     "p_reduce": 0.47152847152847155,
+     "p_inflate": 0.5294705294705294,
+     "form": "fresh_resample",
+     "prov_exact": true,
+     "delta_se": 0.0003665419675189302
+    },
+    "planted_dup2_resample": {
+     "delta_apt_mean": 0.00012766686268150806,
+     "delta_apt_bca": [
+      -0.000530898140637901,
+      0.00084066041002352
+     ],
+     "p_reduce": 0.6523476523476524,
+     "p_inflate": 0.34865134865134867,
+     "form": "fresh_resample",
+     "prov_exact": true,
+     "delta_se": 0.0003392075595043729
+    },
+    "velocity_control": {
+     "delta_apt_mean": -0.027853008825331926,
+     "delta_apt_bca": [
+      -0.031265593431062104,
+      -0.02401630296356245
+     ],
+     "p_reduce": 0.000999000999000999,
+     "p_inflate": 1.0,
+     "form": "batch_permutation_real_key_control",
+     "prov_exact": true,
+     "delta_se": 0.001836389065771993
+    }
+   }
+  },
+  {
+   "run_dir": "/home/rickybao/projects/dreamerv3/local_results/b2_apt_20260822_100924/runroot/se_apt_s70",
+   "train_seed": 70,
+   "n_eval": 512,
+   "base_apt_mean": 1.9968453645706177,
+   "channels": {
+    "planted_dup0": {
+     "delta_apt_mean": 0.0,
+     "delta_apt_bca": [
+      0.0,
+      0.0
+     ],
+     "p_reduce": 1.0,
+     "p_inflate": 1.0,
+     "form": "source_substitution",
+     "prov_exact": true,
+     "delta_se": 0.0
+    },
+    "planted_dup1": {
+     "delta_apt_mean": 0.00024785217829048634,
+     "delta_apt_bca": [
+      -0.0003756414221117266,
+      0.0009001480931269523
+     ],
+     "p_reduce": 0.7592407592407593,
+     "p_inflate": 0.24175824175824176,
+     "form": "source_substitution",
+     "prov_exact": true,
+     "delta_se": 0.0003344189780531664
+    },
+    "planted_dup2": {
+     "delta_apt_mean": -0.0002346730325371027,
+     "delta_apt_bca": [
+      -0.0009609485041235288,
+      0.00044508298932071223
+     ],
+     "p_reduce": 0.24875124875124874,
+     "p_inflate": 0.7522477522477522,
+     "form": "source_substitution",
+     "prov_exact": true,
+     "delta_se": 0.0003560436813535166
+    },
+    "distractor": {
+     "delta_apt_mean": 0.0007344165351241827,
+     "delta_apt_bca": [
+      -0.000996688891793037,
+      0.002457678089774702
+     ],
+     "p_reduce": 0.7812187812187812,
+     "p_inflate": 0.21978021978021978,
+     "form": "batch_permutation",
+     "prov_exact": true,
+     "delta_se": 0.0008821453331825722
+    },
+    "planted_dup1_resample": {
+     "delta_apt_mean": 0.0006624644156545401,
+     "delta_apt_bca": [
+      -3.953170558168462e-05,
+      0.00135411883536828
+     ],
+     "p_reduce": 0.9790209790209791,
+     "p_inflate": 0.02197802197802198,
+     "form": "fresh_resample",
+     "prov_exact": true,
+     "delta_se": 0.00034784437947090835
+    },
+    "planted_dup2_resample": {
+     "delta_apt_mean": 0.00022267969325184822,
+     "delta_apt_bca": [
+      -0.0005213976959627533,
+      0.0008917914338126962
+     ],
+     "p_reduce": 0.7452547452547452,
+     "p_inflate": 0.25574425574425574,
+     "form": "fresh_resample",
+     "prov_exact": true,
+     "delta_se": 0.0003755554258828465
+    },
+    "velocity_control": {
+     "delta_apt_mean": -0.026591988746076822,
+     "delta_apt_bca": [
+      -0.029872357668798574,
+      -0.023292261057381174
+     ],
+     "p_reduce": 0.000999000999000999,
+     "p_inflate": 1.0,
+     "form": "batch_permutation_real_key_control",
+     "prov_exact": true,
+     "delta_se": 0.0016531774581117974
+    }
+   }
+  },
+  {
+   "run_dir": "/home/rickybao/projects/dreamerv3/local_results/b2_apt_20260822_100924/runroot/se_apt_s71",
+   "train_seed": 71,
+   "n_eval": 512,
+   "base_apt_mean": 2.0045719146728516,
+   "channels": {
+    "planted_dup0": {
+     "delta_apt_mean": 0.0,
+     "delta_apt_bca": [
+      0.0,
+      0.0
+     ],
+     "p_reduce": 1.0,
+     "p_inflate": 1.0,
+     "form": "source_substitution",
+     "prov_exact": true,
+     "delta_se": 0.0
+    },
+    "planted_dup1": {
+     "delta_apt_mean": 0.0008133002556860447,
+     "delta_apt_bca": [
+      0.00025328758196309804,
+      0.001454088155958939
+     ],
+     "p_reduce": 0.997002997002997,
+     "p_inflate": 0.003996003996003996,
+     "form": "source_substitution",
+     "prov_exact": true,
+     "delta_se": 0.0003117717728151921
+    },
+    "planted_dup2": {
+     "delta_apt_mean": 0.00034042797051370144,
+     "delta_apt_bca": [
+      -0.00027727703579501776,
+      0.0009884195795659425
+     ],
+     "p_reduce": 0.8451548451548452,
+     "p_inflate": 0.15584415584415584,
+     "form": "source_substitution",
+     "prov_exact": true,
+     "delta_se": 0.00032691289603868336
+    },
+    "distractor": {
+     "delta_apt_mean": 0.00048182858154177666,
+     "delta_apt_bca": [
+      -0.0013296581621328161,
+      0.0023612394571041564
+     ],
+     "p_reduce": 0.6903096903096904,
+     "p_inflate": 0.3106893106893107,
+     "form": "batch_permutation",
+     "prov_exact": true,
+     "delta_se": 0.0009260212620889075
+    },
+    "planted_dup1_resample": {
+     "delta_apt_mean": -6.538815796375275e-06,
+     "delta_apt_bca": [
+      -0.0006598706928075237,
+      0.000654468181739449
+     ],
+     "p_reduce": 0.4825174825174825,
+     "p_inflate": 0.5184815184815185,
+     "form": "fresh_resample",
+     "prov_exact": true,
+     "delta_se": 0.000336454516119863
+    },
+    "planted_dup2_resample": {
+     "delta_apt_mean": 0.0004447847604751587,
+     "delta_apt_bca": [
+      -0.00011511956716624146,
+      0.001055355669786042
+     ],
+     "p_reduce": 0.929070929070929,
+     "p_inflate": 0.07192807192807193,
+     "form": "fresh_resample",
+     "prov_exact": true,
+     "delta_se": 0.00030023092326578177
+    },
+    "velocity_control": {
+     "delta_apt_mean": -0.02754001854918897,
+     "delta_apt_bca": [
+      -0.0309549733307676,
+      -0.023988745566370824
+     ],
+     "p_reduce": 0.000999000999000999,
+     "p_inflate": 1.0,
+     "form": "batch_permutation_real_key_control",
+     "prov_exact": true,
+     "delta_se": 0.001804684575729313
+    }
+   }
+  },
+  {
+   "run_dir": "/home/rickybao/projects/dreamerv3/local_results/b2_apt_20260822_100924/runroot/se_apt_s72",
+   "train_seed": 72,
+   "n_eval": 512,
+   "base_apt_mean": 2.0143237113952637,
+   "channels": {
+    "planted_dup0": {
+     "delta_apt_mean": 0.0,
+     "delta_apt_bca": [
+      0.0,
+      0.0
+     ],
+     "p_reduce": 1.0,
+     "p_inflate": 1.0,
+     "form": "source_substitution",
+     "prov_exact": true,
+     "delta_se": 0.0
+    },
+    "planted_dup1": {
+     "delta_apt_mean": -0.00011834921315312386,
+     "delta_apt_bca": [
+      -0.0008286954717771984,
+      0.0005837720045819188
+     ],
+     "p_reduce": 0.3886113886113886,
+     "p_inflate": 0.6123876123876124,
+     "form": "source_substitution",
+     "prov_exact": true,
+     "delta_se": 0.000350038777304602
+    },
+    "planted_dup2": {
+     "delta_apt_mean": 2.7074012905359268e-05,
+     "delta_apt_bca": [
+      -0.0006343154494197127,
+      0.0006861787916586623
+     ],
+     "p_reduce": 0.5364635364635365,
+     "p_inflate": 0.4645354645354645,
+     "form": "source_substitution",
+     "prov_exact": true,
+     "delta_se": 0.0003291744253788644
+    },
+    "distractor": {
+     "delta_apt_mean": 8.02383292466402e-05,
+     "delta_apt_bca": [
+      -0.0015957423523909069,
+      0.0016425883265526234
+     ],
+     "p_reduce": 0.5494505494505495,
+     "p_inflate": 0.4515484515484515,
+     "form": "batch_permutation",
+     "prov_exact": true,
+     "delta_se": 0.0008222184579072581
+    },
+    "planted_dup1_resample": {
+     "delta_apt_mean": -0.000575782498344779,
+     "delta_apt_bca": [
+      -0.0012596991622045007,
+      8.164395865207786e-05
+     ],
+     "p_reduce": 0.04995004995004995,
+     "p_inflate": 0.951048951048951,
+     "form": "fresh_resample",
+     "prov_exact": true,
+     "delta_se": 0.0003470150670576711
+    },
+    "planted_dup2_resample": {
+     "delta_apt_mean": -0.0002826484851539135,
+     "delta_apt_bca": [
+      -0.0010155149501906145,
+      0.00041262264449428766
+     ],
+     "p_reduce": 0.21078921078921078,
+     "p_inflate": 0.7902097902097902,
+     "form": "fresh_resample",
+     "prov_exact": true,
+     "delta_se": 0.0003662021223668425
+    },
+    "velocity_control": {
+     "delta_apt_mean": -0.03442970640026033,
+     "delta_apt_bca": [
+      -0.037836124527376336,
+      -0.030681969435405444
+     ],
+     "p_reduce": 0.000999000999000999,
+     "p_inflate": 1.0,
+     "form": "batch_permutation_real_key_control",
+     "prov_exact": true,
+     "delta_se": 0.0017867463773385208
+    }
+   }
+  },
+  {
+   "run_dir": "/home/rickybao/projects/dreamerv3/local_results/b2_apt_20260822_100924/runroot/se_apt_s73",
+   "train_seed": 73,
+   "n_eval": 512,
+   "base_apt_mean": 2.006495952606201,
+   "channels": {
+    "planted_dup0": {
+     "delta_apt_mean": 0.0,
+     "delta_apt_bca": [
+      0.0,
+      0.0
+     ],
+     "p_reduce": 1.0,
+     "p_inflate": 1.0,
+     "form": "source_substitution",
+     "prov_exact": true,
+     "delta_se": 0.0
+    },
+    "planted_dup1": {
+     "delta_apt_mean": -0.00040262751281261444,
+     "delta_apt_bca": [
+      -0.0010141282513912184,
+      0.00026613606160366736
+     ],
+     "p_reduce": 0.11288711288711288,
+     "p_inflate": 0.8881118881118881,
+     "form": "source_substitution",
+     "prov_exact": true,
+     "delta_se": 0.00032931254704558804
+    },
+    "planted_dup2": {
+     "delta_apt_mean": 0.00018427870236337185,
+     "delta_apt_bca": [
+      -0.00048569684397518366,
+      0.0008365130342948606
+     ],
+     "p_reduce": 0.7122877122877123,
+     "p_inflate": 0.2887112887112887,
+     "form": "source_substitution",
+     "prov_exact": true,
+     "delta_se": 0.00034355455638783314
+    },
+    "distractor": {
+     "delta_apt_mean": 0.0006692598108202219,
+     "delta_apt_bca": [
+      -0.0008525668756780593,
+      0.002488363325657401
+     ],
+     "p_reduce": 0.7812187812187812,
+     "p_inflate": 0.21978021978021978,
+     "form": "batch_permutation",
+     "prov_exact": true,
+     "delta_se": 0.0008467693459943928
+    },
+    "planted_dup1_resample": {
+     "delta_apt_mean": -0.0008057882077991962,
+     "delta_apt_bca": [
+      -0.0014449132365779232,
+      -0.00013073945683979033
+     ],
+     "p_reduce": 0.008991008991008992,
+     "p_inflate": 0.9920079920079921,
+     "form": "fresh_resample",
+     "prov_exact": true,
+     "delta_se": 0.00033259846914568403
+    },
+    "planted_dup2_resample": {
+     "delta_apt_mean": -0.00041224644519388676,
+     "delta_apt_bca": [
+      -0.0011071866914203873,
+      0.0002722533651589087
+     ],
+     "p_reduce": 0.10589410589410589,
+     "p_inflate": 0.8951048951048951,
+     "form": "fresh_resample",
+     "prov_exact": true,
+     "delta_se": 0.0003492103184769429
+    },
+    "velocity_control": {
+     "delta_apt_mean": -0.021868914598599076,
+     "delta_apt_bca": [
+      -0.025267663845946763,
+      -0.01824839647382758
+     ],
+     "p_reduce": 0.000999000999000999,
+     "p_inflate": 1.0,
+     "form": "batch_permutation_real_key_control",
+     "prov_exact": true,
+     "delta_se": 0.0017993735388213748
+    }
+   }
+  },
+  {
+   "run_dir": "/home/rickybao/projects/dreamerv3/local_results/b2_apt_20260822_100924/runroot/se_apt_s74",
+   "train_seed": 74,
+   "n_eval": 512,
+   "base_apt_mean": 1.9874601364135742,
+   "channels": {
+    "planted_dup0": {
+     "delta_apt_mean": 0.0,
+     "delta_apt_bca": [
+      0.0,
+      0.0
+     ],
+     "p_reduce": 1.0,
+     "p_inflate": 1.0,
+     "form": "source_substitution",
+     "prov_exact": true,
+     "delta_se": 0.0
+    },
+    "planted_dup1": {
+     "delta_apt_mean": -0.000612958800047636,
+     "delta_apt_bca": [
+      -0.0012750605264712613,
+      6.692384426661679e-05
+     ],
+     "p_reduce": 0.03496503496503497,
+     "p_inflate": 0.9660339660339661,
+     "form": "source_substitution",
+     "prov_exact": true,
+     "delta_se": 0.0003481879734888442
+    },
+    "planted_dup2": {
+     "delta_apt_mean": -5.551218055188656e-05,
+     "delta_apt_bca": [
+      -0.0006885467765968301,
+      0.0005873600620078237
+     ],
+     "p_reduce": 0.44455544455544455,
+     "p_inflate": 0.5564435564435565,
+     "form": "source_substitution",
+     "prov_exact": true,
+     "delta_se": 0.00034243053688271587
+    },
+    "distractor": {
+     "delta_apt_mean": 0.002028948161751032,
+     "delta_apt_bca": [
+      0.0001865262488303866,
+      0.003987841447879179
+     ],
+     "p_reduce": 0.981018981018981,
+     "p_inflate": 0.01998001998001998,
+     "form": "batch_permutation",
+     "prov_exact": true,
+     "delta_se": 0.0009497550996172743
+    },
+    "planted_dup1_resample": {
+     "delta_apt_mean": -0.0001458816695958376,
+     "delta_apt_bca": [
+      -0.0008148712946254777,
+      0.0004942511773978233
+     ],
+     "p_reduce": 0.33766233766233766,
+     "p_inflate": 0.6633366633366633,
+     "form": "fresh_resample",
+     "prov_exact": true,
+     "delta_se": 0.00035430305529629205
+    },
+    "planted_dup2_resample": {
+     "delta_apt_mean": -0.00039460789412260056,
+     "delta_apt_bca": [
+      -0.0010121449214163807,
+      0.00024940213002979126
+     ],
+     "p_reduce": 0.12287712287712288,
+     "p_inflate": 0.8781218781218781,
+     "form": "fresh_resample",
+     "prov_exact": true,
+     "delta_se": 0.0003381982932734815
+    },
+    "velocity_control": {
+     "delta_apt_mean": -0.02996412804350257,
+     "delta_apt_bca": [
+      -0.03388743583246063,
+      -0.025662677598495012
+     ],
+     "p_reduce": 0.000999000999000999,
+     "p_inflate": 1.0,
+     "form": "batch_permutation_real_key_control",
+     "prov_exact": true,
+     "delta_se": 0.002136089699558538
+    }
+   }
+  },
+  {
+   "run_dir": "/home/rickybao/projects/dreamerv3/local_results/b2_apt_20260822_100924/runroot/se_apt_s75",
+   "train_seed": 75,
+   "n_eval": 512,
+   "base_apt_mean": 2.0047943592071533,
+   "channels": {
+    "planted_dup0": {
+     "delta_apt_mean": 0.0,
+     "delta_apt_bca": [
+      0.0,
+      0.0
+     ],
+     "p_reduce": 1.0,
+     "p_inflate": 1.0,
+     "form": "source_substitution",
+     "prov_exact": true,
+     "delta_se": 0.0
+    },
+    "planted_dup1": {
+     "delta_apt_mean": -0.0008729652035981417,
+     "delta_apt_bca": [
+      -0.0015349854944938111,
+      -0.0001581766837843082
+     ],
+     "p_reduce": 0.003996003996003996,
+     "p_inflate": 0.997002997002997,
+     "form": "source_substitution",
+     "prov_exact": true,
+     "delta_se": 0.0003526276404551023
+    },
+    "planted_dup2": {
+     "delta_apt_mean": 7.389509119093418e-05,
+     "delta_apt_bca": [
+      -0.0005159710765845968,
+      0.0007285843986586932
+     ],
+     "p_reduce": 0.5764235764235764,
+     "p_inflate": 0.4245754245754246,
+     "form": "source_substitution",
+     "prov_exact": true,
+     "delta_se": 0.0003260646397072592
+    },
+    "distractor": {
+     "delta_apt_mean": 0.0017684029880911112,
+     "delta_apt_bca": [
+      7.073741755226427e-05,
+      0.0035443810737181545
+     ],
+     "p_reduce": 0.977022977022977,
+     "p_inflate": 0.023976023976023976,
+     "form": "batch_permutation",
+     "prov_exact": true,
+     "delta_se": 0.0008786136933166507
+    },
+    "planted_dup1_resample": {
+     "delta_apt_mean": -0.00010135537013411522,
+     "delta_apt_bca": [
+      -0.0007810847920608784,
+      0.0005996761173766939
+     ],
+     "p_reduce": 0.4045954045954046,
+     "p_inflate": 0.5964035964035964,
+     "form": "fresh_resample",
+     "prov_exact": true,
+     "delta_se": 0.0003447041905110883
+    },
+    "planted_dup2_resample": {
+     "delta_apt_mean": 0.0003306532744318247,
+     "delta_apt_bca": [
+      -0.00036845375394512094,
+      0.0011003835520502403
+     ],
+     "p_reduce": 0.8181818181818182,
+     "p_inflate": 0.18281718281718282,
+     "form": "fresh_resample",
+     "prov_exact": true,
+     "delta_se": 0.0003546586208307187
+    },
+    "velocity_control": {
+     "delta_apt_mean": -0.028723363764584064,
+     "delta_apt_bca": [
+      -0.032552475206308475,
+      -0.024715799513959583
+     ],
+     "p_reduce": 0.000999000999000999,
+     "p_inflate": 1.0,
+     "form": "batch_permutation_real_key_control",
+     "prov_exact": true,
+     "delta_se": 0.0019489608625532786
+    }
+   }
+  }
+ ],
+ "primary": {
+  "statement": "APT prices the planted distractor: per-run statistic (sign) < 0 in >= 7/8 REGISTERED runs; single fire channel, no BH; sign-at-zero coin null ASSERTED per prereg #29 C-M3; NaN/-0.0 count as non-negative; missing/invalid runs count against the fire and missingness may be informative (disclosed, #30 M7)",
+  "channel": "distractor",
+  "per_run_stat": [
+   0.0012610619887709618,
+   -0.0016008797101676464,
+   0.0007344165351241827,
+   0.00048182858154177666,
+   8.02383292466402e-05,
+   0.0006692598108202219,
+   0.002028948161751032,
+   0.0017684029880911112
+  ],
+  "n_neg": 1,
+  "n_registered": 8,
+  "n_loaded": 8,
+  "n_invalid": 0,
+  "partial_flag": "COMPLETE",
+  "fires": false,
+  "binom_p_registered_7of8": 0.03515625,
+  "binom_p_attained": 0.99609375
+ },
+ "descriptive": {
+  "dual_mask": {
+   "planted_dup1": {
+    "substitution_per_run": [
+     0.000497118104249239,
+     0.00013601896353065968,
+     0.00024785217829048634,
+     0.0008133002556860447,
+     -0.00011834921315312386,
+     -0.00040262751281261444,
+     -0.000612958800047636,
+     -0.0008729652035981417
+    ],
+    "resample_per_run": [
+     -0.0003365755546838045,
+     -2.5124521926045418e-05,
+     0.0006624644156545401,
+     -6.538815796375275e-06,
+     -0.000575782498344779,
+     -0.0008057882077991962,
+     -0.0001458816695958376,
+     -0.00010135537013411522
+    ],
+    "mechanical_component_per_run": [
+     0.0008336936589330435,
+     0.0001611434854567051,
+     -0.0004146122373640537,
+     0.00081983907148242,
+     0.00045743328519165516,
+     0.0004031606949865818,
+     -0.00046707713045179844,
+     -0.0007716098334640265
+    ],
+    "substitution_mean": -3.907640348188579e-05,
+    "resample_mean": -0.00016682277782820165
+   },
+   "planted_dup2": {
+    "substitution_per_run": [
+     0.00016844947822391987,
+     0.00040160631760954857,
+     -0.0002346730325371027,
+     0.00034042797051370144,
+     2.7074012905359268e-05,
+     0.00018427870236337185,
+     -5.551218055188656e-05,
+     7.389509119093418e-05
+    ],
+    "resample_per_run": [
+     1.567159779369831e-05,
+     0.00012766686268150806,
+     0.00022267969325184822,
+     0.0004447847604751587,
+     -0.0002826484851539135,
+     -0.00041224644519388676,
+     -0.00039460789412260056,
+     0.0003306532744318247
+    ],
+    "mechanical_component_per_run": [
+     0.00015277788043022156,
+     0.0002739394549280405,
+     -0.0004573527257889509,
+     -0.00010435678996145725,
+     0.00030972249805927277,
+     0.0005965251475572586,
+     0.000339095713570714,
+     -0.0002567581832408905
+    ],
+    "substitution_mean": 0.00011319329496473074,
+    "resample_mean": 6.494170520454645e-06
+   }
+  },
+  "dup0_anchor": "0.0 exactly on every run (vector-level hard-assert)",
+  "velocity_control": {
+   "per_run": [
+    -0.02575748460367322,
+    -0.027853008825331926,
+    -0.026591988746076822,
+    -0.02754001854918897,
+    -0.03442970640026033,
+    -0.021868914598599076,
+    -0.02996412804350257,
+    -0.028723363764584064
+   ],
+   "mean": -0.027841076691402122,
+   "n_neg": 8
+  },
+  "note": "anchor-level p/BCa diagnostic-not-calibrated (#29 C-M4); population-intervention estimand"
+ },
+ "spread_rescoped": false,
+ "spread_detail": {
+  "n_neg_trigger": 1,
+  "n_loaded": 8,
+  "positive_resample_anomaly_runs": 0,
+  "note": "positive-signed material resample means are an anomaly report, never cell (iii)"
+ },
+ "outcome_cell": "ii-APT-IMMUNE",
+ "fit_counters": {
+  "/home/rickybao/projects/dreamerv3/local_results/b2_apt_20260822_100924/runroot/se_apt_s68": {
+   "expected": 500000.0,
+   "last_step": 498768,
+   "ratio": 0.997536,
+   "flag": "OK",
+   "config_steps": 500000.0
+  },
+  "/home/rickybao/projects/dreamerv3/local_results/b2_apt_20260822_100924/runroot/se_apt_s69": {
+   "expected": 500000.0,
+   "last_step": 497680,
+   "ratio": 0.99536,
+   "flag": "OK",
+   "config_steps": 500000.0
+  },
+  "/home/rickybao/projects/dreamerv3/local_results/b2_apt_20260822_100924/runroot/se_apt_s70": {
+   "expected": 500000.0,
+   "last_step": 497952,
+   "ratio": 0.995904,
+   "flag": "OK",
+   "config_steps": 500000.0
+  },
+  "/home/rickybao/projects/dreamerv3/local_results/b2_apt_20260822_100924/runroot/se_apt_s71": {
+   "expected": 500000.0,
+   "last_step": 497376,
+   "ratio": 0.994752,
+   "flag": "OK",
+   "config_steps": 500000.0
+  },
+  "/home/rickybao/projects/dreamerv3/local_results/b2_apt_20260822_100924/runroot/se_apt_s72": {
+   "expected": 500000.0,
+   "last_step": 498512,
+   "ratio": 0.997024,
+   "flag": "OK",
+   "config_steps": 500000.0
+  },
+  "/home/rickybao/projects/dreamerv3/local_results/b2_apt_20260822_100924/runroot/se_apt_s73": {
+   "expected": 500000.0,
+   "last_step": 497056,
+   "ratio": 0.994112,
+   "flag": "OK",
+   "config_steps": 500000.0
+  },
+  "/home/rickybao/projects/dreamerv3/local_results/b2_apt_20260822_100924/runroot/se_apt_s74": {
+   "expected": 500000.0,
+   "last_step": 497696,
+   "ratio": 0.995392,
+   "flag": "OK",
+   "config_steps": 500000.0
+  },
+  "/home/rickybao/projects/dreamerv3/local_results/b2_apt_20260822_100924/runroot/se_apt_s75": {
+   "expected": 500000.0,
+   "last_step": 497776,
+   "ratio": 0.995552,
+   "flag": "OK",
+   "config_steps": 500000.0
+  }
+ },
+ "fit_flag": "OK"
+}

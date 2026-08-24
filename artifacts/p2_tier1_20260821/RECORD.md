@@ -59,3 +59,20 @@ conjunction; it rests DIRECTLY on the screen's measured ceilings
 (≈0.06–0.08 against a single-draw pedestal of 1.54/0.46), which is the
 stronger and cleaner statement. This caveat travels with every use of
 the dv3 CCD verdict.
+
+## AB leg fold-in (22 Aug — the second registered component)
+
+Substrate: r3_scores_20260822_182736 (32 dv3 R3 per-run scores.jsonl,
+cup/finger × e1/e4 × seeds 31–38, manifest verified 0 failed; 16
+files/domain, every file ≥20 episodes). ONE registered invocation of
+`--component ab`; output p2t1_ab.json (ONE-read guarded).
+
+**Verdict: AB-DEAD-ON-ARRIVAL — both domains, by an order of
+magnitude.** Run-level sd is enormous relative to the 5%-of-mean
+policy-relevance bound: cup MDE80(16/arm) = 406.8 vs bound 26.7
+(15×); finger 215.4 vs 11.0 (20×). Even n=32/arm misses by ~13–14×.
+Registered consequence: **item 9 (the purchase A/B behavioral wave)
+is RETIRED WITHOUT COMPUTE** — the board's own suspicion ("with
+84–95% floors this may be dead on arrival") is confirmed with
+measured dispersions attached. Disclosed: run_sd carries ~18%
+relative s.e. at n=16; no plausible sd shrinkage closes a 15–20× gap.

@@ -1,0 +1,260 @@
+{
+ "n_loaded": 4,
+ "invalid_runs": [],
+ "instrument_flag": "CLEAN",
+ "probe_ckpt_flag": "OK",
+ "stage1_reference": {
+  "real_mean_min": 0.002872289559389982,
+  "intrinsic_min": 0.00188539270311594,
+  "n": 8
+ },
+ "per_run": [
+  {
+   "run_dir": "/scratch/midway3/rickybao/dreamerv3_runs/bundles/se_noboot_20260822_121232/runroot/se_noboot_s40",
+   "train_seed": 40,
+   "n_eval": 512,
+   "valid": true,
+   "cal_real_max": 0.04610550031065941,
+   "real_mean_level": 0.003613406200909392,
+   "intrinsic_mean": 0.0023404685780406,
+   "disag_replay_rew": 0.00010174452100191919,
+   "per_key_levels": {
+    "distractor": 0.010872312472201884,
+    "planted_const": 1.1992229305944624e-09,
+    "planted_dup0": 0.0022945914897718467,
+    "planted_dup1": 0.0022950523998588324,
+    "planted_dup2": 0.002224065567133948,
+    "position": 0.002298171639267821,
+    "velocity": 0.004928640762550963
+   },
+   "channels": {
+    "planted_dup0": {
+     "share_vs_real": 0.22634723782539368,
+     "p_perm": 0.968031968031968,
+     "vs_source": 0.9984424405074885,
+     "indicator": false
+    },
+    "planted_dup1": {
+     "share_vs_real": 0.22638240456581116,
+     "p_perm": 0.98001998001998,
+     "vs_source": 0.9986428342030906,
+     "indicator": false
+    },
+    "planted_dup2": {
+     "share_vs_real": 0.22092726826667786,
+     "p_perm": 0.9920079920079921,
+     "vs_source": 0.9677546484144278,
+     "indicator": false
+    },
+    "distractor": {
+     "share_vs_real": 0.5809347629547119,
+     "p_perm": 0.000999000999000999,
+     "vs_source": 4.7308546517577,
+     "indicator": true
+    }
+   }
+  },
+  {
+   "run_dir": "/scratch/midway3/rickybao/dreamerv3_runs/bundles/se_noboot_20260822_121232/runroot/se_noboot_s41",
+   "train_seed": 41,
+   "n_eval": 512,
+   "valid": true,
+   "cal_real_max": 0.04304734990000725,
+   "real_mean_level": 0.0031823544442078047,
+   "intrinsic_mean": 0.0021451006177812815,
+   "disag_replay_rew": 0.00010316596626894195,
+   "per_key_levels": {
+    "distractor": 0.010173105518333614,
+    "planted_const": 5.105670294099779e-10,
+    "planted_dup0": 0.0018852669090847485,
+    "planted_dup1": 0.001880836505733896,
+    "planted_dup2": 0.0018273832101840526,
+    "position": 0.0018866790851461701,
+    "velocity": 0.004478029803269439
+   },
+   "channels": {
+    "planted_dup0": {
+     "share_vs_real": 0.21399828791618347,
+     "p_perm": 0.98001998001998,
+     "vs_source": 0.9992511624844745,
+     "indicator": false
+    },
+    "planted_dup1": {
+     "share_vs_real": 0.21360278129577637,
+     "p_perm": 0.985014985014985,
+     "vs_source": 0.9969030237523289,
+     "indicator": false
+    },
+    "planted_dup2": {
+     "share_vs_real": 0.20879974961280823,
+     "p_perm": 0.989010989010989,
+     "vs_source": 0.9685711611294587,
+     "indicator": false
+    },
+    "distractor": {
+     "share_vs_real": 0.595003068447113,
+     "p_perm": 0.000999000999000999,
+     "vs_source": 5.392067962064247,
+     "indicator": true
+    }
+   }
+  },
+  {
+   "run_dir": "/scratch/midway3/rickybao/dreamerv3_runs/bundles/se_noboot_20260822_121232/runroot/se_noboot_s42",
+   "train_seed": 42,
+   "n_eval": 512,
+   "valid": true,
+   "cal_real_max": 0.04617518559098244,
+   "real_mean_level": 0.0034165366337725166,
+   "intrinsic_mean": 0.0024966998025774956,
+   "disag_replay_rew": 9.747060708933632e-05,
+   "per_key_levels": {
+    "distractor": 0.010434360010549426,
+    "planted_const": 1.3751403644263194e-09,
+    "planted_dup0": 0.002141391647455748,
+    "planted_dup1": 0.0021401606791187078,
+    "planted_dup2": 0.0020766962043126114,
+    "position": 0.002139619187801145,
+    "velocity": 0.004693454079743888
+   },
+   "channels": {
+    "planted_dup0": {
+     "share_vs_real": 0.22396807372570038,
+     "p_perm": 0.972027972027972,
+     "vs_source": 1.0008285459432207,
+     "indicator": false
+    },
+    "planted_dup1": {
+     "share_vs_real": 0.22386816143989563,
+     "p_perm": 0.975024975024975,
+     "vs_source": 1.0002531124066103,
+     "indicator": false
+    },
+    "planted_dup2": {
+     "share_vs_real": 0.21868130564689636,
+     "p_perm": 0.984015984015984,
+     "vs_source": 0.9705918423155411,
+     "indicator": false
+    },
+    "distractor": {
+     "share_vs_real": 0.5844232439994812,
+     "p_perm": 0.000999000999000999,
+     "vs_source": 4.876737413724416,
+     "indicator": true
+    }
+   }
+  },
+  {
+   "run_dir": "/scratch/midway3/rickybao/dreamerv3_runs/bundles/se_noboot_20260822_121232/runroot/se_noboot_s43",
+   "train_seed": 43,
+   "n_eval": 512,
+   "valid": true,
+   "cal_real_max": 0.043078139424324036,
+   "real_mean_level": 0.003853928326457713,
+   "intrinsic_mean": 0.0020862079691141844,
+   "disag_replay_rew": 0.00010680041321330496,
+   "per_key_levels": {
+    "distractor": 0.011357839684933424,
+    "planted_const": 1.5573666106716288e-09,
+    "planted_dup0": 0.002327835936739575,
+    "planted_dup1": 0.0023271619211300276,
+    "planted_dup2": 0.0022703996946802363,
+    "position": 0.002326238543901127,
+    "velocity": 0.005381618109014299
+   },
+   "channels": {
+    "planted_dup0": {
+     "share_vs_real": 0.2173842191696167,
+     "p_perm": 0.9630369630369631,
+     "vs_source": 1.0006866097094218,
+     "indicator": false
+    },
+    "planted_dup1": {
+     "share_vs_real": 0.21733492612838745,
+     "p_perm": 0.97002997002997,
+     "vs_source": 1.0003966522271777,
+     "indicator": false
+    },
+    "planted_dup2": {
+     "share_vs_real": 0.21316386759281158,
+     "p_perm": 0.9790209790209791,
+     "vs_source": 0.9759958843452986,
+     "indicator": false
+    },
+    "distractor": {
+     "share_vs_real": 0.5754184126853943,
+     "p_perm": 0.000999000999000999,
+     "vs_source": 4.882490851876466,
+     "indicator": true
+    }
+   }
+  }
+ ],
+ "secondary_dup0": {
+  "theta1_mean": 0.9998021896611513,
+  "theta1_bca": [
+   0.998644621001735,
+   1.0007575778263211
+  ],
+  "theta1_per_run": [
+   0.9984424405074885,
+   0.9992511624844745,
+   1.0008285459432207,
+   1.0006866097094218
+  ],
+  "par_band": [
+   0.9,
+   1.1
+  ],
+  "parity_bootstrap_independent": true
+ },
+ "collapsed_runs": [],
+ "primary": {
+  "statement": "distractor theta_1 under init-only ensemble (bootstrap off), banded per amendment 4 \u00a72; final-checkpoint scope; cell (a) compatible with a substantial bootstrap share \u2014 the point estimate is the headline",
+  "theta1_mean": 4.970537719855707,
+  "theta1_bca": [
+   4.803796032741058,
+   5.264673684517302
+  ],
+  "theta1_per_run": [
+   4.7308546517577,
+   5.392067962064247,
+   4.876737413724416,
+   4.882490851876466
+  ],
+  "n_p_lt_05": 4,
+  "cell": "a-MISPRICE-SURVIVES-LARGE",
+  "stage1_anchor": "5.26 [5.02, 5.46] (bootstrap on, n=8, DESCRIPTIVE cross-wave)"
+ },
+ "outcome_cell": "a-MISPRICE-SURVIVES-LARGE",
+ "fit_counters": {
+  "/scratch/midway3/rickybao/dreamerv3_runs/bundles/se_noboot_20260822_121232/runroot/se_noboot_s40": {
+   "expected": 500000.0,
+   "last_step": 498256,
+   "ratio": 0.996512,
+   "flag": "OK",
+   "config_steps": 500000.0
+  },
+  "/scratch/midway3/rickybao/dreamerv3_runs/bundles/se_noboot_20260822_121232/runroot/se_noboot_s41": {
+   "expected": 500000.0,
+   "last_step": 498352,
+   "ratio": 0.996704,
+   "flag": "OK",
+   "config_steps": 500000.0
+  },
+  "/scratch/midway3/rickybao/dreamerv3_runs/bundles/se_noboot_20260822_121232/runroot/se_noboot_s42": {
+   "expected": 500000.0,
+   "last_step": 499888,
+   "ratio": 0.999776,
+   "flag": "OK",
+   "config_steps": 500000.0
+  },
+  "/scratch/midway3/rickybao/dreamerv3_runs/bundles/se_noboot_20260822_121232/runroot/se_noboot_s43": {
+   "expected": 500000.0,
+   "last_step": 498144,
+   "ratio": 0.996288,
+   "flag": "OK",
+   "config_steps": 500000.0
+  }
+ }
+}

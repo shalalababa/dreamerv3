@@ -1,0 +1,1641 @@
+{
+ "label": "EXPLORATORY (post-read; family currency, not the house band)",
+ "n_runs": 80,
+ "devices": [
+  "Tesla V100-PCIE-16GB"
+ ],
+ "single_device": true,
+ "summary": {
+  "q1_s0": {
+   "n": 8,
+   "constant_mean": -2.0468568801879883,
+   "identity_mean": 0.4638189524412155,
+   "best_mean": -3.2935285568237305,
+   "info_gain_mean": 1.2466716766357422,
+   "best_members": [
+    "regime_affine"
+   ]
+  },
+  "q1_s1": {
+   "n": 8,
+   "constant_mean": -2.0468568801879883,
+   "identity_mean": 0.059059739112854004,
+   "best_mean": -3.2990402579307556,
+   "info_gain_mean": 1.2521833777427673,
+   "best_members": [
+    "regime_affine"
+   ]
+  },
+  "rlq1_s0": {
+   "n": 8,
+   "constant_mean": -2.0468568801879883,
+   "identity_mean": 1.3153290748596191,
+   "best_mean": -3.29671706371724,
+   "info_gain_mean": 1.2498601835292518,
+   "best_members": [
+    "mlp",
+    "regime_affine"
+   ]
+  },
+  "rlq1_s1": {
+   "n": 8,
+   "constant_mean": -2.0468568801879883,
+   "identity_mean": 1.1952747702598572,
+   "best_mean": -3.9216099405880698,
+   "info_gain_mean": 1.874753060400082,
+   "best_members": [
+    "isotonic",
+    "mlp",
+    "regime_affine"
+   ]
+  },
+  "shq1_s0": {
+   "n": 8,
+   "constant_mean": -2.0468568801879883,
+   "identity_mean": 1.2385692745447159,
+   "best_mean": -3.9276429349730417,
+   "info_gain_mean": 1.8807860547850532,
+   "best_members": [
+    "isotonic",
+    "mlp",
+    "regime_affine"
+   ]
+  },
+  "shq1_s1": {
+   "n": 8,
+   "constant_mean": -2.0468568801879883,
+   "identity_mean": 0.937549538910389,
+   "best_mean": -3.920361327957324,
+   "info_gain_mean": 1.8735044477693363,
+   "best_members": [
+    "isotonic",
+    "mlp",
+    "regime_affine"
+   ]
+  },
+  "srd0q1_s0": {
+   "n": 8,
+   "constant_mean": -2.0468568801879883,
+   "identity_mean": 1.4068121314048767,
+   "best_mean": -3.320599145231698,
+   "info_gain_mean": 1.2737422650437096,
+   "best_members": [
+    "mlp",
+    "regime_affine"
+   ]
+  },
+  "srd0q1_s1": {
+   "n": 8,
+   "constant_mean": -2.0468568801879883,
+   "identity_mean": 1.2684979289770126,
+   "best_mean": -3.2957746982574463,
+   "info_gain_mean": 1.248917818069458,
+   "best_members": [
+    "regime_affine"
+   ]
+  },
+  "srd1q1_s0": {
+   "n": 8,
+   "constant_mean": -2.0468568801879883,
+   "identity_mean": 1.4072694778442383,
+   "best_mean": -3.3239975882210184,
+   "info_gain_mean": 1.2771407080330301,
+   "best_members": [
+    "mlp",
+    "regime_affine"
+   ]
+  },
+  "srd1q1_s1": {
+   "n": 8,
+   "constant_mean": -2.0468568801879883,
+   "identity_mean": 1.2691290527582169,
+   "best_mean": -3.296383112668991,
+   "info_gain_mean": 1.2495262324810028,
+   "best_members": [
+    "regime_affine"
+   ]
+  }
+ },
+ "runs": [
+  {
+   "run_id": "ax1wm_finger_q1s0_seed1",
+   "arm": "q1",
+   "side": "0",
+   "seed": 1,
+   "device": "Tesla V100-PCIE-16GB",
+   "scores": {
+    "constant": -2.0468568801879883,
+    "identity": 0.5421380996704102,
+    "affine": -2.0469706058502197,
+    "isotonic": -2.046570321816773,
+    "regime_affine": -3.2935972213745117,
+    "mlp": -3.184967348942805
+   },
+   "best": "regime_affine",
+   "best_nll": -3.2935972213745117,
+   "identity_nll": 0.5421380996704102,
+   "constant_nll": -2.0468568801879883
+  },
+  {
+   "run_id": "ax1wm_finger_q1s0_seed2",
+   "arm": "q1",
+   "side": "0",
+   "seed": 2,
+   "device": "Tesla V100-PCIE-16GB",
+   "scores": {
+    "constant": -2.0468568801879883,
+    "identity": 0.43442007899284363,
+    "affine": -2.0469207763671875,
+    "isotonic": -2.096289437400941,
+    "regime_affine": -3.2935540676116943,
+    "mlp": -3.224769847090725
+   },
+   "best": "regime_affine",
+   "best_nll": -3.2935540676116943,
+   "identity_nll": 0.43442007899284363,
+   "constant_nll": -2.0468568801879883
+  },
+  {
+   "run_id": "ax1wm_finger_q1s0_seed3",
+   "arm": "q1",
+   "side": "0",
+   "seed": 3,
+   "device": "Tesla V100-PCIE-16GB",
+   "scores": {
+    "constant": -2.0468568801879883,
+    "identity": 0.3470916748046875,
+    "affine": -2.046919822692871,
+    "isotonic": -2.0537618561682875,
+    "regime_affine": -3.2935376167297363,
+    "mlp": -3.2066912245452937
+   },
+   "best": "regime_affine",
+   "best_nll": -3.2935376167297363,
+   "identity_nll": 0.3470916748046875,
+   "constant_nll": -2.0468568801879883
+  },
+  {
+   "run_id": "ax1wm_finger_q1s0_seed4",
+   "arm": "q1",
+   "side": "0",
+   "seed": 4,
+   "device": "Tesla V100-PCIE-16GB",
+   "scores": {
+    "constant": -2.0468568801879883,
+    "identity": 0.5679671764373779,
+    "affine": -2.046900749206543,
+    "isotonic": -2.0511725676500077,
+    "regime_affine": -3.2935845851898193,
+    "mlp": -3.1978552725303433
+   },
+   "best": "regime_affine",
+   "best_nll": -3.2935845851898193,
+   "identity_nll": 0.5679671764373779,
+   "constant_nll": -2.0468568801879883
+  },
+  {
+   "run_id": "ax1wm_finger_q1s0_seed5",
+   "arm": "q1",
+   "side": "0",
+   "seed": 5,
+   "device": "Tesla V100-PCIE-16GB",
+   "scores": {
+    "constant": -2.0468568801879883,
+    "identity": 0.3605731129646301,
+    "affine": -2.046776294708252,
+    "isotonic": -2.0463824143231535,
+    "regime_affine": -3.2934916019439697,
+    "mlp": -3.2188263778941457
+   },
+   "best": "regime_affine",
+   "best_nll": -3.2934916019439697,
+   "identity_nll": 0.3605731129646301,
+   "constant_nll": -2.0468568801879883
+  },
+  {
+   "run_id": "ax1wm_finger_q1s0_seed6",
+   "arm": "q1",
+   "side": "0",
+   "seed": 6,
+   "device": "Tesla V100-PCIE-16GB",
+   "scores": {
+    "constant": -2.0468568801879883,
+    "identity": 0.3293094038963318,
+    "affine": -2.046923875808716,
+    "isotonic": -2.046380540461288,
+    "regime_affine": -3.2935407161712646,
+    "mlp": -3.2609316977404705
+   },
+   "best": "regime_affine",
+   "best_nll": -3.2935407161712646,
+   "identity_nll": 0.3293094038963318,
+   "constant_nll": -2.0468568801879883
+  },
+  {
+   "run_id": "ax1wm_finger_q1s0_seed7",
+   "arm": "q1",
+   "side": "0",
+   "seed": 7,
+   "device": "Tesla V100-PCIE-16GB",
+   "scores": {
+    "constant": -2.0468568801879883,
+    "identity": 0.6420435905456543,
+    "affine": -2.046440362930298,
+    "isotonic": -2.075540639138511,
+    "regime_affine": -3.2934203147888184,
+    "mlp": -3.2187988635644036
+   },
+   "best": "regime_affine",
+   "best_nll": -3.2934203147888184,
+   "identity_nll": 0.6420435905456543,
+   "constant_nll": -2.0468568801879883
+  },
+  {
+   "run_id": "ax1wm_finger_q1s0_seed8",
+   "arm": "q1",
+   "side": "0",
+   "seed": 8,
+   "device": "Tesla V100-PCIE-16GB",
+   "scores": {
+    "constant": -2.0468568801879883,
+    "identity": 0.4870084822177887,
+    "affine": -2.046736478805542,
+    "isotonic": -2.047162264232345,
+    "regime_affine": -3.2935023307800293,
+    "mlp": -3.2235212031110057
+   },
+   "best": "regime_affine",
+   "best_nll": -3.2935023307800293,
+   "identity_nll": 0.4870084822177887,
+   "constant_nll": -2.0468568801879883
+  },
+  {
+   "run_id": "ax1wm_finger_q1s1_seed1",
+   "arm": "q1",
+   "side": "1",
+   "seed": 1,
+   "device": "Tesla V100-PCIE-16GB",
+   "scores": {
+    "constant": -2.0468568801879883,
+    "identity": 0.2100653201341629,
+    "affine": -2.051398754119873,
+    "isotonic": -2.0541561289370542,
+    "regime_affine": -3.2973153591156006,
+    "mlp": -3.2934804906655217
+   },
+   "best": "regime_affine",
+   "best_nll": -3.2973153591156006,
+   "identity_nll": 0.2100653201341629,
+   "constant_nll": -2.0468568801879883
+  },
+  {
+   "run_id": "ax1wm_finger_q1s1_seed2",
+   "arm": "q1",
+   "side": "1",
+   "seed": 2,
+   "device": "Tesla V100-PCIE-16GB",
+   "scores": {
+    "constant": -2.0468568801879883,
+    "identity": 0.22992542386054993,
+    "affine": -2.050067186355591,
+    "isotonic": -2.0489550163051367,
+    "regime_affine": -3.2962453365325928,
+    "mlp": -3.2358729473062833
+   },
+   "best": "regime_affine",
+   "best_nll": -3.2962453365325928,
+   "identity_nll": 0.22992542386054993,
+   "constant_nll": -2.0468568801879883
+  },
+  {
+   "run_id": "ax1wm_finger_q1s1_seed3",
+   "arm": "q1",
+   "side": "1",
+   "seed": 3,
+   "device": "Tesla V100-PCIE-16GB",
+   "scores": {
+    "constant": -2.0468568801879883,
+    "identity": 0.03980797901749611,
+    "affine": -2.0503203868865967,
+    "isotonic": -2.0463899926332347,
+    "regime_affine": -3.30057954788208,
+    "mlp": -3.214109999315368
+   },
+   "best": "regime_affine",
+   "best_nll": -3.30057954788208,
+   "identity_nll": 0.03980797901749611,
+   "constant_nll": -2.0468568801879883
+  },
+  {
+   "run_id": "ax1wm_finger_q1s1_seed4",
+   "arm": "q1",
+   "side": "1",
+   "seed": 4,
+   "device": "Tesla V100-PCIE-16GB",
+   "scores": {
+    "constant": -2.0468568801879883,
+    "identity": 0.17343002557754517,
+    "affine": -2.0464673042297363,
+    "isotonic": -2.0468707698443835,
+    "regime_affine": -3.2976489067077637,
+    "mlp": -3.2148431615596205
+   },
+   "best": "regime_affine",
+   "best_nll": -3.2976489067077637,
+   "identity_nll": 0.17343002557754517,
+   "constant_nll": -2.0468568801879883
+  },
+  {
+   "run_id": "ax1wm_finger_q1s1_seed5",
+   "arm": "q1",
+   "side": "1",
+   "seed": 5,
+   "device": "Tesla V100-PCIE-16GB",
+   "scores": {
+    "constant": -2.0468568801879883,
+    "identity": -0.15209434926509857,
+    "affine": -2.0538270473480225,
+    "isotonic": -2.046862237208984,
+    "regime_affine": -3.303762912750244,
+    "mlp": -3.2287300713025795
+   },
+   "best": "regime_affine",
+   "best_nll": -3.303762912750244,
+   "identity_nll": -0.15209434926509857,
+   "constant_nll": -2.0468568801879883
+  },
+  {
+   "run_id": "ax1wm_finger_q1s1_seed6",
+   "arm": "q1",
+   "side": "1",
+   "seed": 6,
+   "device": "Tesla V100-PCIE-16GB",
+   "scores": {
+    "constant": -2.0468568801879883,
+    "identity": -0.11590791493654251,
+    "affine": -2.044872760772705,
+    "isotonic": -2.04687067985853,
+    "regime_affine": -3.2999207973480225,
+    "mlp": -3.1922895209484143
+   },
+   "best": "regime_affine",
+   "best_nll": -3.2999207973480225,
+   "identity_nll": -0.11590791493654251,
+   "constant_nll": -2.0468568801879883
+  },
+  {
+   "run_id": "ax1wm_finger_q1s1_seed7",
+   "arm": "q1",
+   "side": "1",
+   "seed": 7,
+   "device": "Tesla V100-PCIE-16GB",
+   "scores": {
+    "constant": -2.0468568801879883,
+    "identity": 0.12831830978393555,
+    "affine": -2.0502030849456787,
+    "isotonic": -2.04686445273872,
+    "regime_affine": -3.3000903129577637,
+    "mlp": -3.2551557783589145
+   },
+   "best": "regime_affine",
+   "best_nll": -3.3000903129577637,
+   "identity_nll": 0.12831830978393555,
+   "constant_nll": -2.0468568801879883
+  },
+  {
+   "run_id": "ax1wm_finger_q1s1_seed8",
+   "arm": "q1",
+   "side": "1",
+   "seed": 8,
+   "device": "Tesla V100-PCIE-16GB",
+   "scores": {
+    "constant": -2.0468568801879883,
+    "identity": -0.04106688126921654,
+    "affine": -2.0493648052215576,
+    "isotonic": -2.0468777886076257,
+    "regime_affine": -3.2967588901519775,
+    "mlp": -3.2681924793907804
+   },
+   "best": "regime_affine",
+   "best_nll": -3.2967588901519775,
+   "identity_nll": -0.04106688126921654,
+   "constant_nll": -2.0468568801879883
+  },
+  {
+   "run_id": "ax1wm_finger_rlq1s0_seed1",
+   "arm": "rlq1",
+   "side": "0",
+   "seed": 1,
+   "device": "Tesla V100-PCIE-16GB",
+   "scores": {
+    "constant": -2.0468568801879883,
+    "identity": 1.3554792404174805,
+    "affine": -2.0468201637268066,
+    "isotonic": -2.048201146726821,
+    "regime_affine": -3.2933943271636963,
+    "mlp": -3.2905823286794273
+   },
+   "best": "regime_affine",
+   "best_nll": -3.2933943271636963,
+   "identity_nll": 1.3554792404174805,
+   "constant_nll": -2.0468568801879883
+  },
+  {
+   "run_id": "ax1wm_finger_rlq1s0_seed2",
+   "arm": "rlq1",
+   "side": "0",
+   "seed": 2,
+   "device": "Tesla V100-PCIE-16GB",
+   "scores": {
+    "constant": -2.0468568801879883,
+    "identity": 1.397099494934082,
+    "affine": -2.0505471229553223,
+    "isotonic": -2.0529449169287344,
+    "regime_affine": -3.2964277267456055,
+    "mlp": -3.290880978374416
+   },
+   "best": "regime_affine",
+   "best_nll": -3.2964277267456055,
+   "identity_nll": 1.397099494934082,
+   "constant_nll": -2.0468568801879883
+  },
+  {
+   "run_id": "ax1wm_finger_rlq1s0_seed3",
+   "arm": "rlq1",
+   "side": "0",
+   "seed": 3,
+   "device": "Tesla V100-PCIE-16GB",
+   "scores": {
+    "constant": -2.0468568801879883,
+    "identity": 1.2588824033737183,
+    "affine": -2.0459139347076416,
+    "isotonic": -2.0464412590786636,
+    "regime_affine": -3.2942967414855957,
+    "mlp": -3.2800679563165556
+   },
+   "best": "regime_affine",
+   "best_nll": -3.2942967414855957,
+   "identity_nll": 1.2588824033737183,
+   "constant_nll": -2.0468568801879883
+  },
+  {
+   "run_id": "ax1wm_finger_rlq1s0_seed4",
+   "arm": "rlq1",
+   "side": "0",
+   "seed": 4,
+   "device": "Tesla V100-PCIE-16GB",
+   "scores": {
+    "constant": -2.0468568801879883,
+    "identity": 1.2489469051361084,
+    "affine": -2.045107364654541,
+    "isotonic": -2.0468666179003967,
+    "regime_affine": -3.2952475547790527,
+    "mlp": -3.288397509005357
+   },
+   "best": "regime_affine",
+   "best_nll": -3.2952475547790527,
+   "identity_nll": 1.2489469051361084,
+   "constant_nll": -2.0468568801879883
+  },
+  {
+   "run_id": "ax1wm_finger_rlq1s0_seed5",
+   "arm": "rlq1",
+   "side": "0",
+   "seed": 5,
+   "device": "Tesla V100-PCIE-16GB",
+   "scores": {
+    "constant": -2.0468568801879883,
+    "identity": 1.2419508695602417,
+    "affine": -2.046031951904297,
+    "isotonic": -2.2164074361179176,
+    "regime_affine": -3.2954158782958984,
+    "mlp": -3.312199663961719
+   },
+   "best": "mlp",
+   "best_nll": -3.312199663961719,
+   "identity_nll": 1.2419508695602417,
+   "constant_nll": -2.0468568801879883
+  },
+  {
+   "run_id": "ax1wm_finger_rlq1s0_seed6",
+   "arm": "rlq1",
+   "side": "0",
+   "seed": 6,
+   "device": "Tesla V100-PCIE-16GB",
+   "scores": {
+    "constant": -2.0468568801879883,
+    "identity": 1.3320831060409546,
+    "affine": -2.0549514293670654,
+    "isotonic": -2.0480455793176997,
+    "regime_affine": -3.301482677459717,
+    "mlp": -3.312724647137286
+   },
+   "best": "mlp",
+   "best_nll": -3.312724647137286,
+   "identity_nll": 1.3320831060409546,
+   "constant_nll": -2.0468568801879883
+  },
+  {
+   "run_id": "ax1wm_finger_rlq1s0_seed7",
+   "arm": "rlq1",
+   "side": "0",
+   "seed": 7,
+   "device": "Tesla V100-PCIE-16GB",
+   "scores": {
+    "constant": -2.0468568801879883,
+    "identity": 1.3076343536376953,
+    "affine": -2.00533390045166,
+    "isotonic": -2.046857263974307,
+    "regime_affine": -3.2753989696502686,
+    "mlp": -3.2152822833097257
+   },
+   "best": "regime_affine",
+   "best_nll": -3.2753989696502686,
+   "identity_nll": 1.3076343536376953,
+   "constant_nll": -2.0468568801879883
+  },
+  {
+   "run_id": "ax1wm_finger_rlq1s0_seed8",
+   "arm": "rlq1",
+   "side": "0",
+   "seed": 8,
+   "device": "Tesla V100-PCIE-16GB",
+   "scores": {
+    "constant": -2.0468568801879883,
+    "identity": 1.3805562257766724,
+    "affine": -2.0476772785186768,
+    "isotonic": -2.0483954616739775,
+    "regime_affine": -3.2940468788146973,
+    "mlp": -3.290734714890245
+   },
+   "best": "regime_affine",
+   "best_nll": -3.2940468788146973,
+   "identity_nll": 1.3805562257766724,
+   "constant_nll": -2.0468568801879883
+  },
+  {
+   "run_id": "ax1wm_finger_rlq1s1_seed1",
+   "arm": "rlq1",
+   "side": "1",
+   "seed": 1,
+   "device": "Tesla V100-PCIE-16GB",
+   "scores": {
+    "constant": -2.0468568801879883,
+    "identity": 1.234653353691101,
+    "affine": -2.050234317779541,
+    "isotonic": -2.046857263974307,
+    "regime_affine": -3.2964816093444824,
+    "mlp": -3.3049936733292933
+   },
+   "best": "mlp",
+   "best_nll": -3.3049936733292933,
+   "identity_nll": 1.234653353691101,
+   "constant_nll": -2.0468568801879883
+  },
+  {
+   "run_id": "ax1wm_finger_rlq1s1_seed2",
+   "arm": "rlq1",
+   "side": "1",
+   "seed": 2,
+   "device": "Tesla V100-PCIE-16GB",
+   "scores": {
+    "constant": -2.0468568801879883,
+    "identity": 1.159719705581665,
+    "affine": -2.0485293865203857,
+    "isotonic": -3.1712512688599146,
+    "regime_affine": -3.294804096221924,
+    "mlp": -3.236935538366842
+   },
+   "best": "regime_affine",
+   "best_nll": -3.294804096221924,
+   "identity_nll": 1.159719705581665,
+   "constant_nll": -2.0468568801879883
+  },
+  {
+   "run_id": "ax1wm_finger_rlq1s1_seed3",
+   "arm": "rlq1",
+   "side": "1",
+   "seed": 3,
+   "device": "Tesla V100-PCIE-16GB",
+   "scores": {
+    "constant": -2.0468568801879883,
+    "identity": 1.3387469053268433,
+    "affine": -2.053521156311035,
+    "isotonic": -2.0695026389551483,
+    "regime_affine": -3.300077438354492,
+    "mlp": -3.296765262523242
+   },
+   "best": "regime_affine",
+   "best_nll": -3.300077438354492,
+   "identity_nll": 1.3387469053268433,
+   "constant_nll": -2.0468568801879883
+  },
+  {
+   "run_id": "ax1wm_finger_rlq1s1_seed4",
+   "arm": "rlq1",
+   "side": "1",
+   "seed": 4,
+   "device": "Tesla V100-PCIE-16GB",
+   "scores": {
+    "constant": -2.0468568801879883,
+    "identity": 1.1488302946090698,
+    "affine": -2.04917311668396,
+    "isotonic": -2.8949424054091133,
+    "regime_affine": -3.295639753341675,
+    "mlp": -3.2629572584515025
+   },
+   "best": "regime_affine",
+   "best_nll": -3.295639753341675,
+   "identity_nll": 1.1488302946090698,
+   "constant_nll": -2.0468568801879883
+  },
+  {
+   "run_id": "ax1wm_finger_rlq1s1_seed5",
+   "arm": "rlq1",
+   "side": "1",
+   "seed": 5,
+   "device": "Tesla V100-PCIE-16GB",
+   "scores": {
+    "constant": -2.0468568801879883,
+    "identity": 1.1914658546447754,
+    "affine": -2.0493836402893066,
+    "isotonic": -2.0532132616792222,
+    "regime_affine": -3.2956554889678955,
+    "mlp": -3.2905275621578505
+   },
+   "best": "regime_affine",
+   "best_nll": -3.2956554889678955,
+   "identity_nll": 1.1914658546447754,
+   "constant_nll": -2.0468568801879883
+  },
+  {
+   "run_id": "ax1wm_finger_rlq1s1_seed6",
+   "arm": "rlq1",
+   "side": "1",
+   "seed": 6,
+   "device": "Tesla V100-PCIE-16GB",
+   "scores": {
+    "constant": -2.0468568801879883,
+    "identity": 1.213686466217041,
+    "affine": -2.050138235092163,
+    "isotonic": -8.291401838771508,
+    "regime_affine": -3.296300172805786,
+    "mlp": -3.2919098521260652
+   },
+   "best": "isotonic",
+   "best_nll": -8.291401838771508,
+   "identity_nll": 1.213686466217041,
+   "constant_nll": -2.0468568801879883
+  },
+  {
+   "run_id": "ax1wm_finger_rlq1s1_seed7",
+   "arm": "rlq1",
+   "side": "1",
+   "seed": 7,
+   "device": "Tesla V100-PCIE-16GB",
+   "scores": {
+    "constant": -2.0468568801879883,
+    "identity": 1.1942883729934692,
+    "affine": -2.048842668533325,
+    "isotonic": -2.5930485963325784,
+    "regime_affine": -3.2951626777648926,
+    "mlp": -3.290688870539944
+   },
+   "best": "regime_affine",
+   "best_nll": -3.2951626777648926,
+   "identity_nll": 1.1942883729934692,
+   "constant_nll": -2.0468568801879883
+  },
+  {
+   "run_id": "ax1wm_finger_rlq1s1_seed8",
+   "arm": "rlq1",
+   "side": "1",
+   "seed": 8,
+   "device": "Tesla V100-PCIE-16GB",
+   "scores": {
+    "constant": -2.0468568801879883,
+    "identity": 1.0808072090148926,
+    "affine": -2.048680305480957,
+    "isotonic": -2.069325141962142,
+    "regime_affine": -3.295144557952881,
+    "mlp": -3.2870791759828695
+   },
+   "best": "regime_affine",
+   "best_nll": -3.295144557952881,
+   "identity_nll": 1.0808072090148926,
+   "constant_nll": -2.0468568801879883
+  },
+  {
+   "run_id": "ax1wm_finger_shq1s0_seed1",
+   "arm": "shq1",
+   "side": "0",
+   "seed": 1,
+   "device": "Tesla V100-PCIE-16GB",
+   "scores": {
+    "constant": -2.0468568801879883,
+    "identity": 1.209187626838684,
+    "affine": -2.047192096710205,
+    "isotonic": -2.046033439397876,
+    "regime_affine": -3.294262170791626,
+    "mlp": -3.2916529404471717
+   },
+   "best": "regime_affine",
+   "best_nll": -3.294262170791626,
+   "identity_nll": 1.209187626838684,
+   "constant_nll": -2.0468568801879883
+  },
+  {
+   "run_id": "ax1wm_finger_shq1s0_seed2",
+   "arm": "shq1",
+   "side": "0",
+   "seed": 2,
+   "device": "Tesla V100-PCIE-16GB",
+   "scores": {
+    "constant": -2.0468568801879883,
+    "identity": 1.2525479793548584,
+    "affine": -2.050143003463745,
+    "isotonic": -2.262447359871747,
+    "regime_affine": -3.2970521450042725,
+    "mlp": -3.305653606918814
+   },
+   "best": "mlp",
+   "best_nll": -3.305653606918814,
+   "identity_nll": 1.2525479793548584,
+   "constant_nll": -2.0468568801879883
+  },
+  {
+   "run_id": "ax1wm_finger_shq1s0_seed3",
+   "arm": "shq1",
+   "side": "0",
+   "seed": 3,
+   "device": "Tesla V100-PCIE-16GB",
+   "scores": {
+    "constant": -2.0468568801879883,
+    "identity": 1.2110331058502197,
+    "affine": -2.047635078430176,
+    "isotonic": -2.046981397091203,
+    "regime_affine": -3.294421434402466,
+    "mlp": -3.290721856693354
+   },
+   "best": "regime_affine",
+   "best_nll": -3.294421434402466,
+   "identity_nll": 1.2110331058502197,
+   "constant_nll": -2.0468568801879883
+  },
+  {
+   "run_id": "ax1wm_finger_shq1s0_seed4",
+   "arm": "shq1",
+   "side": "0",
+   "seed": 4,
+   "device": "Tesla V100-PCIE-16GB",
+   "scores": {
+    "constant": -2.0468568801879883,
+    "identity": 1.1839121580123901,
+    "affine": -2.0438268184661865,
+    "isotonic": -8.291401838771508,
+    "regime_affine": -3.2938778400421143,
+    "mlp": -3.3198294381593954
+   },
+   "best": "isotonic",
+   "best_nll": -8.291401838771508,
+   "identity_nll": 1.1839121580123901,
+   "constant_nll": -2.0468568801879883
+  },
+  {
+   "run_id": "ax1wm_finger_shq1s0_seed5",
+   "arm": "shq1",
+   "side": "0",
+   "seed": 5,
+   "device": "Tesla V100-PCIE-16GB",
+   "scores": {
+    "constant": -2.0468568801879883,
+    "identity": 1.2267165184020996,
+    "affine": -2.0500214099884033,
+    "isotonic": -2.046857263974307,
+    "regime_affine": -3.2974514961242676,
+    "mlp": -3.3468713135129557
+   },
+   "best": "mlp",
+   "best_nll": -3.3468713135129557,
+   "identity_nll": 1.2267165184020996,
+   "constant_nll": -2.0468568801879883
+  },
+  {
+   "run_id": "ax1wm_finger_shq1s0_seed6",
+   "arm": "shq1",
+   "side": "0",
+   "seed": 6,
+   "device": "Tesla V100-PCIE-16GB",
+   "scores": {
+    "constant": -2.0468568801879883,
+    "identity": 1.2425976991653442,
+    "affine": -2.048611879348755,
+    "isotonic": -2.053604258793281,
+    "regime_affine": -3.295992136001587,
+    "mlp": -3.294422475857746
+   },
+   "best": "regime_affine",
+   "best_nll": -3.295992136001587,
+   "identity_nll": 1.2425976991653442,
+   "constant_nll": -2.0468568801879883
+  },
+  {
+   "run_id": "ax1wm_finger_shq1s0_seed7",
+   "arm": "shq1",
+   "side": "0",
+   "seed": 7,
+   "device": "Tesla V100-PCIE-16GB",
+   "scores": {
+    "constant": -2.0468568801879883,
+    "identity": 1.1986883878707886,
+    "affine": -2.0469961166381836,
+    "isotonic": -2.0472790376323626,
+    "regime_affine": -3.293541193008423,
+    "mlp": -3.2898878099279605
+   },
+   "best": "regime_affine",
+   "best_nll": -3.293541193008423,
+   "identity_nll": 1.1986883878707886,
+   "constant_nll": -2.0468568801879883
+  },
+  {
+   "run_id": "ax1wm_finger_shq1s0_seed8",
+   "arm": "shq1",
+   "side": "0",
+   "seed": 8,
+   "device": "Tesla V100-PCIE-16GB",
+   "scores": {
+    "constant": -2.0468568801879883,
+    "identity": 1.3838707208633423,
+    "affine": -2.0534486770629883,
+    "isotonic": -2.1482381333096265,
+    "regime_affine": -3.298999786376953,
+    "mlp": -3.2985588616095005
+   },
+   "best": "regime_affine",
+   "best_nll": -3.298999786376953,
+   "identity_nll": 1.3838707208633423,
+   "constant_nll": -2.0468568801879883
+  },
+  {
+   "run_id": "ax1wm_finger_shq1s1_seed1",
+   "arm": "shq1",
+   "side": "1",
+   "seed": 1,
+   "device": "Tesla V100-PCIE-16GB",
+   "scores": {
+    "constant": -2.0468568801879883,
+    "identity": 0.9281013607978821,
+    "affine": -2.047490358352661,
+    "isotonic": -2.0468589422105237,
+    "regime_affine": -3.294144868850708,
+    "mlp": -3.287495798473355
+   },
+   "best": "regime_affine",
+   "best_nll": -3.294144868850708,
+   "identity_nll": 0.9281013607978821,
+   "constant_nll": -2.0468568801879883
+  },
+  {
+   "run_id": "ax1wm_finger_shq1s1_seed2",
+   "arm": "shq1",
+   "side": "1",
+   "seed": 2,
+   "device": "Tesla V100-PCIE-16GB",
+   "scores": {
+    "constant": -2.0468568801879883,
+    "identity": 0.9782043099403381,
+    "affine": -2.048645257949829,
+    "isotonic": -2.046857263974307,
+    "regime_affine": -3.295161008834839,
+    "mlp": -3.3028688619174833
+   },
+   "best": "mlp",
+   "best_nll": -3.3028688619174833,
+   "identity_nll": 0.9782043099403381,
+   "constant_nll": -2.0468568801879883
+  },
+  {
+   "run_id": "ax1wm_finger_shq1s1_seed3",
+   "arm": "shq1",
+   "side": "1",
+   "seed": 3,
+   "device": "Tesla V100-PCIE-16GB",
+   "scores": {
+    "constant": -2.0468568801879883,
+    "identity": 0.7673245668411255,
+    "affine": -2.047274589538574,
+    "isotonic": -2.0483665754013884,
+    "regime_affine": -3.2939670085906982,
+    "mlp": -3.2753662551639824
+   },
+   "best": "regime_affine",
+   "best_nll": -3.2939670085906982,
+   "identity_nll": 0.7673245668411255,
+   "constant_nll": -2.0468568801879883
+  },
+  {
+   "run_id": "ax1wm_finger_shq1s1_seed4",
+   "arm": "shq1",
+   "side": "1",
+   "seed": 4,
+   "device": "Tesla V100-PCIE-16GB",
+   "scores": {
+    "constant": -2.0468568801879883,
+    "identity": 0.9975571036338806,
+    "affine": -2.0479798316955566,
+    "isotonic": -2.046857263974307,
+    "regime_affine": -3.2945969104766846,
+    "mlp": -3.289352483181907
+   },
+   "best": "regime_affine",
+   "best_nll": -3.2945969104766846,
+   "identity_nll": 0.9975571036338806,
+   "constant_nll": -2.0468568801879883
+  },
+  {
+   "run_id": "ax1wm_finger_shq1s1_seed5",
+   "arm": "shq1",
+   "side": "1",
+   "seed": 5,
+   "device": "Tesla V100-PCIE-16GB",
+   "scores": {
+    "constant": -2.0468568801879883,
+    "identity": 0.9675643444061279,
+    "affine": -2.0482382774353027,
+    "isotonic": -2.046857263974307,
+    "regime_affine": -3.2947981357574463,
+    "mlp": -3.2947163173715523
+   },
+   "best": "regime_affine",
+   "best_nll": -3.2947981357574463,
+   "identity_nll": 0.9675643444061279,
+   "constant_nll": -2.0468568801879883
+  },
+  {
+   "run_id": "ax1wm_finger_shq1s1_seed6",
+   "arm": "shq1",
+   "side": "1",
+   "seed": 6,
+   "device": "Tesla V100-PCIE-16GB",
+   "scores": {
+    "constant": -2.0468568801879883,
+    "identity": 0.8746272325515747,
+    "affine": -2.048015832901001,
+    "isotonic": -8.291401838771508,
+    "regime_affine": -3.294651746749878,
+    "mlp": -3.291318153619848
+   },
+   "best": "isotonic",
+   "best_nll": -8.291401838771508,
+   "identity_nll": 0.8746272325515747,
+   "constant_nll": -2.0468568801879883
+  },
+  {
+   "run_id": "ax1wm_finger_shq1s1_seed7",
+   "arm": "shq1",
+   "side": "1",
+   "seed": 7,
+   "device": "Tesla V100-PCIE-16GB",
+   "scores": {
+    "constant": -2.0468568801879883,
+    "identity": 0.9654549360275269,
+    "affine": -2.048095226287842,
+    "isotonic": -2.090906218622881,
+    "regime_affine": -3.2946157455444336,
+    "mlp": -3.281068459243911
+   },
+   "best": "regime_affine",
+   "best_nll": -3.2946157455444336,
+   "identity_nll": 0.9654549360275269,
+   "constant_nll": -2.0468568801879883
+  },
+  {
+   "run_id": "ax1wm_finger_shq1s1_seed8",
+   "arm": "shq1",
+   "side": "1",
+   "seed": 8,
+   "device": "Tesla V100-PCIE-16GB",
+   "scores": {
+    "constant": -2.0468568801879883,
+    "identity": 1.0215624570846558,
+    "affine": -2.048419237136841,
+    "isotonic": -2.055891308454779,
+    "regime_affine": -3.294895648956299,
+    "mlp": -3.2964972537496346
+   },
+   "best": "mlp",
+   "best_nll": -3.2964972537496346,
+   "identity_nll": 1.0215624570846558,
+   "constant_nll": -2.0468568801879883
+  },
+  {
+   "run_id": "ax1wm_finger_srd0q1s0_seed1",
+   "arm": "srd0q1",
+   "side": "0",
+   "seed": 1,
+   "device": "Tesla V100-PCIE-16GB",
+   "scores": {
+    "constant": -2.0468568801879883,
+    "identity": 1.405875563621521,
+    "affine": -2.0468671321868896,
+    "isotonic": -2.0476756690303284,
+    "regime_affine": -3.293431043624878,
+    "mlp": -3.291797913935801
+   },
+   "best": "regime_affine",
+   "best_nll": -3.293431043624878,
+   "identity_nll": 1.405875563621521,
+   "constant_nll": -2.0468568801879883
+  },
+  {
+   "run_id": "ax1wm_finger_srd0q1s0_seed2",
+   "arm": "srd0q1",
+   "side": "0",
+   "seed": 2,
+   "device": "Tesla V100-PCIE-16GB",
+   "scores": {
+    "constant": -2.0468568801879883,
+    "identity": 1.4074013233184814,
+    "affine": -2.0936784744262695,
+    "isotonic": -2.046857263974307,
+    "regime_affine": -3.339104652404785,
+    "mlp": -3.369808931791131
+   },
+   "best": "mlp",
+   "best_nll": -3.369808931791131,
+   "identity_nll": 1.4074013233184814,
+   "constant_nll": -2.0468568801879883
+  },
+  {
+   "run_id": "ax1wm_finger_srd0q1s0_seed3",
+   "arm": "srd0q1",
+   "side": "0",
+   "seed": 3,
+   "device": "Tesla V100-PCIE-16GB",
+   "scores": {
+    "constant": -2.0468568801879883,
+    "identity": 1.4095462560653687,
+    "affine": -2.0468626022338867,
+    "isotonic": -2.051471031156917,
+    "regime_affine": -3.2934279441833496,
+    "mlp": -3.290684416942097
+   },
+   "best": "regime_affine",
+   "best_nll": -3.2934279441833496,
+   "identity_nll": 1.4095462560653687,
+   "constant_nll": -2.0468568801879883
+  },
+  {
+   "run_id": "ax1wm_finger_srd0q1s0_seed4",
+   "arm": "srd0q1",
+   "side": "0",
+   "seed": 4,
+   "device": "Tesla V100-PCIE-16GB",
+   "scores": {
+    "constant": -2.0468568801879883,
+    "identity": 1.406363844871521,
+    "affine": -2.0468688011169434,
+    "isotonic": -2.048042517329177,
+    "regime_affine": -3.293428421020508,
+    "mlp": -3.2919341744806636
+   },
+   "best": "regime_affine",
+   "best_nll": -3.293428421020508,
+   "identity_nll": 1.406363844871521,
+   "constant_nll": -2.0468568801879883
+  },
+  {
+   "run_id": "ax1wm_finger_srd0q1s0_seed5",
+   "arm": "srd0q1",
+   "side": "0",
+   "seed": 5,
+   "device": "Tesla V100-PCIE-16GB",
+   "scores": {
+    "constant": -2.0468568801879883,
+    "identity": 1.4082869291305542,
+    "affine": -2.092517375946045,
+    "isotonic": -2.3031879780755324,
+    "regime_affine": -3.3398277759552,
+    "mlp": -3.3546208308650804
+   },
+   "best": "mlp",
+   "best_nll": -3.3546208308650804,
+   "identity_nll": 1.4082869291305542,
+   "constant_nll": -2.0468568801879883
+  },
+  {
+   "run_id": "ax1wm_finger_srd0q1s0_seed6",
+   "arm": "srd0q1",
+   "side": "0",
+   "seed": 6,
+   "device": "Tesla V100-PCIE-16GB",
+   "scores": {
+    "constant": -2.0468568801879883,
+    "identity": 1.4054709672927856,
+    "affine": -2.046877384185791,
+    "isotonic": -2.0532927715469644,
+    "regime_affine": -3.293428421020508,
+    "mlp": -3.291109069469739
+   },
+   "best": "regime_affine",
+   "best_nll": -3.293428421020508,
+   "identity_nll": 1.4054709672927856,
+   "constant_nll": -2.0468568801879883
+  },
+  {
+   "run_id": "ax1wm_finger_srd0q1s0_seed7",
+   "arm": "srd0q1",
+   "side": "0",
+   "seed": 7,
+   "device": "Tesla V100-PCIE-16GB",
+   "scores": {
+    "constant": -2.0468568801879883,
+    "identity": 1.4026944637298584,
+    "affine": -2.046856641769409,
+    "isotonic": -2.0542772102832907,
+    "regime_affine": -3.293412685394287,
+    "mlp": -3.2911520356299606
+   },
+   "best": "regime_affine",
+   "best_nll": -3.293412685394287,
+   "identity_nll": 1.4026944637298584,
+   "constant_nll": -2.0468568801879883
+  },
+  {
+   "run_id": "ax1wm_finger_srd0q1s0_seed8",
+   "arm": "srd0q1",
+   "side": "0",
+   "seed": 8,
+   "device": "Tesla V100-PCIE-16GB",
+   "scores": {
+    "constant": -2.0468568801879883,
+    "identity": 1.4088577032089233,
+    "affine": -2.1046507358551025,
+    "isotonic": -2.211279708067723,
+    "regime_affine": -3.3492202758789062,
+    "mlp": -3.373234883953841
+   },
+   "best": "mlp",
+   "best_nll": -3.373234883953841,
+   "identity_nll": 1.4088577032089233,
+   "constant_nll": -2.0468568801879883
+  },
+  {
+   "run_id": "ax1wm_finger_srd0q1s1_seed1",
+   "arm": "srd0q1",
+   "side": "1",
+   "seed": 1,
+   "device": "Tesla V100-PCIE-16GB",
+   "scores": {
+    "constant": -2.0468568801879883,
+    "identity": 1.31351900100708,
+    "affine": -2.0486974716186523,
+    "isotonic": -2.0851181853736636,
+    "regime_affine": -3.295016288757324,
+    "mlp": -3.2819911346073556
+   },
+   "best": "regime_affine",
+   "best_nll": -3.295016288757324,
+   "identity_nll": 1.31351900100708,
+   "constant_nll": -2.0468568801879883
+  },
+  {
+   "run_id": "ax1wm_finger_srd0q1s1_seed2",
+   "arm": "srd0q1",
+   "side": "1",
+   "seed": 2,
+   "device": "Tesla V100-PCIE-16GB",
+   "scores": {
+    "constant": -2.0468568801879883,
+    "identity": 1.2214854955673218,
+    "affine": -2.049811363220215,
+    "isotonic": -2.0971505765290814,
+    "regime_affine": -3.296313524246216,
+    "mlp": -3.2870930644979057
+   },
+   "best": "regime_affine",
+   "best_nll": -3.296313524246216,
+   "identity_nll": 1.2214854955673218,
+   "constant_nll": -2.0468568801879883
+  },
+  {
+   "run_id": "ax1wm_finger_srd0q1s1_seed3",
+   "arm": "srd0q1",
+   "side": "1",
+   "seed": 3,
+   "device": "Tesla V100-PCIE-16GB",
+   "scores": {
+    "constant": -2.0468568801879883,
+    "identity": 1.2943329811096191,
+    "affine": -2.0496764183044434,
+    "isotonic": -2.047349504911655,
+    "regime_affine": -3.2961173057556152,
+    "mlp": -3.286212722335367
+   },
+   "best": "regime_affine",
+   "best_nll": -3.2961173057556152,
+   "identity_nll": 1.2943329811096191,
+   "constant_nll": -2.0468568801879883
+  },
+  {
+   "run_id": "ax1wm_finger_srd0q1s1_seed4",
+   "arm": "srd0q1",
+   "side": "1",
+   "seed": 4,
+   "device": "Tesla V100-PCIE-16GB",
+   "scores": {
+    "constant": -2.0468568801879883,
+    "identity": 1.2093546390533447,
+    "affine": -2.0484399795532227,
+    "isotonic": -2.0468954077479737,
+    "regime_affine": -3.2953031063079834,
+    "mlp": -3.2835571748864134
+   },
+   "best": "regime_affine",
+   "best_nll": -3.2953031063079834,
+   "identity_nll": 1.2093546390533447,
+   "constant_nll": -2.0468568801879883
+  },
+  {
+   "run_id": "ax1wm_finger_srd0q1s1_seed5",
+   "arm": "srd0q1",
+   "side": "1",
+   "seed": 5,
+   "device": "Tesla V100-PCIE-16GB",
+   "scores": {
+    "constant": -2.0468568801879883,
+    "identity": 1.2718323469161987,
+    "affine": -2.0498037338256836,
+    "isotonic": -2.0562236059848793,
+    "regime_affine": -3.296219825744629,
+    "mlp": -3.2841548387391186
+   },
+   "best": "regime_affine",
+   "best_nll": -3.296219825744629,
+   "identity_nll": 1.2718323469161987,
+   "constant_nll": -2.0468568801879883
+  },
+  {
+   "run_id": "ax1wm_finger_srd0q1s1_seed6",
+   "arm": "srd0q1",
+   "side": "1",
+   "seed": 6,
+   "device": "Tesla V100-PCIE-16GB",
+   "scores": {
+    "constant": -2.0468568801879883,
+    "identity": 1.3281581401824951,
+    "affine": -2.0497570037841797,
+    "isotonic": -2.282461300953552,
+    "regime_affine": -3.2959485054016113,
+    "mlp": -3.2846316717124227
+   },
+   "best": "regime_affine",
+   "best_nll": -3.2959485054016113,
+   "identity_nll": 1.3281581401824951,
+   "constant_nll": -2.0468568801879883
+  },
+  {
+   "run_id": "ax1wm_finger_srd0q1s1_seed7",
+   "arm": "srd0q1",
+   "side": "1",
+   "seed": 7,
+   "device": "Tesla V100-PCIE-16GB",
+   "scores": {
+    "constant": -2.0468568801879883,
+    "identity": 1.1821621656417847,
+    "affine": -2.047950267791748,
+    "isotonic": -2.0502741335391743,
+    "regime_affine": -3.2952558994293213,
+    "mlp": -3.2851274843235365
+   },
+   "best": "regime_affine",
+   "best_nll": -3.2952558994293213,
+   "identity_nll": 1.1821621656417847,
+   "constant_nll": -2.0468568801879883
+  },
+  {
+   "run_id": "ax1wm_finger_srd0q1s1_seed8",
+   "arm": "srd0q1",
+   "side": "1",
+   "seed": 8,
+   "device": "Tesla V100-PCIE-16GB",
+   "scores": {
+    "constant": -2.0468568801879883,
+    "identity": 1.3271386623382568,
+    "affine": -2.049830198287964,
+    "isotonic": -2.1325682962018706,
+    "regime_affine": -3.29602313041687,
+    "mlp": -3.2866834838550067
+   },
+   "best": "regime_affine",
+   "best_nll": -3.29602313041687,
+   "identity_nll": 1.3271386623382568,
+   "constant_nll": -2.0468568801879883
+  },
+  {
+   "run_id": "ax1wm_finger_srd1q1s0_seed1",
+   "arm": "srd1q1",
+   "side": "0",
+   "seed": 1,
+   "device": "Tesla V100-PCIE-16GB",
+   "scores": {
+    "constant": -2.0468568801879883,
+    "identity": 1.4074928760528564,
+    "affine": -2.0572609901428223,
+    "isotonic": -2.0529070414410926,
+    "regime_affine": -3.3035900592803955,
+    "mlp": -3.30260067190587
+   },
+   "best": "regime_affine",
+   "best_nll": -3.3035900592803955,
+   "identity_nll": 1.4074928760528564,
+   "constant_nll": -2.0468568801879883
+  },
+  {
+   "run_id": "ax1wm_finger_srd1q1s0_seed2",
+   "arm": "srd1q1",
+   "side": "0",
+   "seed": 2,
+   "device": "Tesla V100-PCIE-16GB",
+   "scores": {
+    "constant": -2.0468568801879883,
+    "identity": 1.4043978452682495,
+    "affine": -2.0611186027526855,
+    "isotonic": -2.064242522828666,
+    "regime_affine": -3.3100783824920654,
+    "mlp": -3.3041890157746163
+   },
+   "best": "regime_affine",
+   "best_nll": -3.3100783824920654,
+   "identity_nll": 1.4043978452682495,
+   "constant_nll": -2.0468568801879883
+  },
+  {
+   "run_id": "ax1wm_finger_srd1q1s0_seed3",
+   "arm": "srd1q1",
+   "side": "0",
+   "seed": 3,
+   "device": "Tesla V100-PCIE-16GB",
+   "scores": {
+    "constant": -2.0468568801879883,
+    "identity": 1.4065996408462524,
+    "affine": -2.0825443267822266,
+    "isotonic": -2.046857948845735,
+    "regime_affine": -3.3314242362976074,
+    "mlp": -3.3483704871621316
+   },
+   "best": "mlp",
+   "best_nll": -3.3483704871621316,
+   "identity_nll": 1.4065996408462524,
+   "constant_nll": -2.0468568801879883
+  },
+  {
+   "run_id": "ax1wm_finger_srd1q1s0_seed4",
+   "arm": "srd1q1",
+   "side": "0",
+   "seed": 4,
+   "device": "Tesla V100-PCIE-16GB",
+   "scores": {
+    "constant": -2.0468568801879883,
+    "identity": 1.4033397436141968,
+    "affine": -2.046842575073242,
+    "isotonic": -2.0468789221904244,
+    "regime_affine": -3.293419599533081,
+    "mlp": -3.290107041328484
+   },
+   "best": "regime_affine",
+   "best_nll": -3.293419599533081,
+   "identity_nll": 1.4033397436141968,
+   "constant_nll": -2.0468568801879883
+  },
+  {
+   "run_id": "ax1wm_finger_srd1q1s0_seed5",
+   "arm": "srd1q1",
+   "side": "0",
+   "seed": 5,
+   "device": "Tesla V100-PCIE-16GB",
+   "scores": {
+    "constant": -2.0468568801879883,
+    "identity": 1.409804105758667,
+    "affine": -2.096680164337158,
+    "isotonic": -2.0702460428372857,
+    "regime_affine": -3.3409197330474854,
+    "mlp": -3.3469223448928296
+   },
+   "best": "mlp",
+   "best_nll": -3.3469223448928296,
+   "identity_nll": 1.409804105758667,
+   "constant_nll": -2.0468568801879883
+  },
+  {
+   "run_id": "ax1wm_finger_srd1q1s0_seed6",
+   "arm": "srd1q1",
+   "side": "0",
+   "seed": 6,
+   "device": "Tesla V100-PCIE-16GB",
+   "scores": {
+    "constant": -2.0468568801879883,
+    "identity": 1.407223105430603,
+    "affine": -2.067708730697632,
+    "isotonic": -2.081878318098849,
+    "regime_affine": -3.315788745880127,
+    "mlp": -3.314236506815164
+   },
+   "best": "regime_affine",
+   "best_nll": -3.315788745880127,
+   "identity_nll": 1.407223105430603,
+   "constant_nll": -2.0468568801879883
+  },
+  {
+   "run_id": "ax1wm_finger_srd1q1s0_seed7",
+   "arm": "srd1q1",
+   "side": "0",
+   "seed": 7,
+   "device": "Tesla V100-PCIE-16GB",
+   "scores": {
+    "constant": -2.0468568801879883,
+    "identity": 1.4092223644256592,
+    "affine": -2.046863317489624,
+    "isotonic": -2.048272319762376,
+    "regime_affine": -3.2934205532073975,
+    "mlp": -3.2917442557794674
+   },
+   "best": "regime_affine",
+   "best_nll": -3.2934205532073975,
+   "identity_nll": 1.4092223644256592,
+   "constant_nll": -2.0468568801879883
+  },
+  {
+   "run_id": "ax1wm_finger_srd1q1s0_seed8",
+   "arm": "srd1q1",
+   "side": "0",
+   "seed": 8,
+   "device": "Tesla V100-PCIE-16GB",
+   "scores": {
+    "constant": -2.0468568801879883,
+    "identity": 1.4100761413574219,
+    "affine": -2.104445695877075,
+    "isotonic": -2.0468574781031226,
+    "regime_affine": -3.356492519378662,
+    "mlp": -3.3803905333201194
+   },
+   "best": "mlp",
+   "best_nll": -3.3803905333201194,
+   "identity_nll": 1.4100761413574219,
+   "constant_nll": -2.0468568801879883
+  },
+  {
+   "run_id": "ax1wm_finger_srd1q1s1_seed1",
+   "arm": "srd1q1",
+   "side": "1",
+   "seed": 1,
+   "device": "Tesla V100-PCIE-16GB",
+   "scores": {
+    "constant": -2.0468568801879883,
+    "identity": 1.2665488719940186,
+    "affine": -2.0498571395874023,
+    "isotonic": -2.091299116212679,
+    "regime_affine": -3.2961628437042236,
+    "mlp": -3.2891709656606722
+   },
+   "best": "regime_affine",
+   "best_nll": -3.2961628437042236,
+   "identity_nll": 1.2665488719940186,
+   "constant_nll": -2.0468568801879883
+  },
+  {
+   "run_id": "ax1wm_finger_srd1q1s1_seed2",
+   "arm": "srd1q1",
+   "side": "1",
+   "seed": 2,
+   "device": "Tesla V100-PCIE-16GB",
+   "scores": {
+    "constant": -2.0468568801879883,
+    "identity": 1.2294801473617554,
+    "affine": -2.049475908279419,
+    "isotonic": -2.046874316252969,
+    "regime_affine": -3.296194076538086,
+    "mlp": -3.286062412682287
+   },
+   "best": "regime_affine",
+   "best_nll": -3.296194076538086,
+   "identity_nll": 1.2294801473617554,
+   "constant_nll": -2.0468568801879883
+  },
+  {
+   "run_id": "ax1wm_finger_srd1q1s1_seed3",
+   "arm": "srd1q1",
+   "side": "1",
+   "seed": 3,
+   "device": "Tesla V100-PCIE-16GB",
+   "scores": {
+    "constant": -2.0468568801879883,
+    "identity": 1.317110300064087,
+    "affine": -2.050827980041504,
+    "isotonic": -2.060520408393211,
+    "regime_affine": -3.297048807144165,
+    "mlp": -3.2897970443160607
+   },
+   "best": "regime_affine",
+   "best_nll": -3.297048807144165,
+   "identity_nll": 1.317110300064087,
+   "constant_nll": -2.0468568801879883
+  },
+  {
+   "run_id": "ax1wm_finger_srd1q1s1_seed4",
+   "arm": "srd1q1",
+   "side": "1",
+   "seed": 4,
+   "device": "Tesla V100-PCIE-16GB",
+   "scores": {
+    "constant": -2.0468568801879883,
+    "identity": 1.2414116859436035,
+    "affine": -2.0489418506622314,
+    "isotonic": -2.0498716255560496,
+    "regime_affine": -3.2956714630126953,
+    "mlp": -3.2814850995748235
+   },
+   "best": "regime_affine",
+   "best_nll": -3.2956714630126953,
+   "identity_nll": 1.2414116859436035,
+   "constant_nll": -2.0468568801879883
+  },
+  {
+   "run_id": "ax1wm_finger_srd1q1s1_seed5",
+   "arm": "srd1q1",
+   "side": "1",
+   "seed": 5,
+   "device": "Tesla V100-PCIE-16GB",
+   "scores": {
+    "constant": -2.0468568801879883,
+    "identity": 1.2736568450927734,
+    "affine": -2.0497677326202393,
+    "isotonic": -2.057233520673715,
+    "regime_affine": -3.296231985092163,
+    "mlp": -3.2856150253377763
+   },
+   "best": "regime_affine",
+   "best_nll": -3.296231985092163,
+   "identity_nll": 1.2736568450927734,
+   "constant_nll": -2.0468568801879883
+  },
+  {
+   "run_id": "ax1wm_finger_srd1q1s1_seed6",
+   "arm": "srd1q1",
+   "side": "1",
+   "seed": 6,
+   "device": "Tesla V100-PCIE-16GB",
+   "scores": {
+    "constant": -2.0468568801879883,
+    "identity": 1.284379482269287,
+    "affine": -2.0501294136047363,
+    "isotonic": -2.0598486024385685,
+    "regime_affine": -3.296522855758667,
+    "mlp": -3.2877631291302496
+   },
+   "best": "regime_affine",
+   "best_nll": -3.296522855758667,
+   "identity_nll": 1.284379482269287,
+   "constant_nll": -2.0468568801879883
+  },
+  {
+   "run_id": "ax1wm_finger_srd1q1s1_seed7",
+   "arm": "srd1q1",
+   "side": "1",
+   "seed": 7,
+   "device": "Tesla V100-PCIE-16GB",
+   "scores": {
+    "constant": -2.0468568801879883,
+    "identity": 1.2573201656341553,
+    "affine": -2.050769090652466,
+    "isotonic": -2.052735728970512,
+    "regime_affine": -3.2973084449768066,
+    "mlp": -3.2876770873370855
+   },
+   "best": "regime_affine",
+   "best_nll": -3.2973084449768066,
+   "identity_nll": 1.2573201656341553,
+   "constant_nll": -2.0468568801879883
+  },
+  {
+   "run_id": "ax1wm_finger_srd1q1s1_seed8",
+   "arm": "srd1q1",
+   "side": "1",
+   "seed": 8,
+   "device": "Tesla V100-PCIE-16GB",
+   "scores": {
+    "constant": -2.0468568801879883,
+    "identity": 1.2831249237060547,
+    "affine": -2.049610137939453,
+    "isotonic": -2.0615762132950746,
+    "regime_affine": -3.295924425125122,
+    "mlp": -3.286317064313895
+   },
+   "best": "regime_affine",
+   "best_nll": -3.295924425125122,
+   "identity_nll": 1.2831249237060547,
+   "constant_nll": -2.0468568801879883
+  }
+ ]
+}

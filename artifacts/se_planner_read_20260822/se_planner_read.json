@@ -1,0 +1,889 @@
+{
+ "n_registered": 8,
+ "n_loaded": 8,
+ "n_valid": 8,
+ "excluded_runs": [],
+ "invalid_cem_runs": [],
+ "partial_flag": "COMPLETE",
+ "probe_ckpt_flag": "OK",
+ "devices": [
+  "[CudaDevice(id=0)]",
+  "[CudaDevice(id=0)]",
+  "[CudaDevice(id=0)]",
+  "[CudaDevice(id=0)]",
+  "[CudaDevice(id=0)]",
+  "[CudaDevice(id=0)]",
+  "[CudaDevice(id=0)]",
+  "[CudaDevice(id=0)]"
+ ],
+ "backends": [
+  "gpu",
+  "gpu",
+  "gpu",
+  "gpu",
+  "gpu",
+  "gpu",
+  "gpu",
+  "gpu"
+ ],
+ "per_run": [
+  {
+   "run_dir": "/tmp/claude-1000/-home-rickybao-projects-dreamerv3/ea924efe-0382-4de8-b4d2-30244c36a0ee/scratchpad/planner_readroot/se_cheetah_seed10",
+   "train_seed": 10,
+   "cem_ok": true,
+   "arms": {
+    "random": {
+     "attr_mean": {
+      "distractor": 0.0043016267071823095,
+      "planted_const": 2.1917097364731063e-09,
+      "planted_dup0": 0.018156939038561828,
+      "planted_dup1": 0.01806112746191054,
+      "planted_dup2": 0.00943490355019183,
+      "position": 0.018162755111080155,
+      "velocity": 0.004023851506349627
+     },
+     "intrinsic_mean": 4.9872061375026534e-05,
+     "occupancy": 0.725
+    },
+    "policy": {
+     "attr_mean": {
+      "distractor": 0.03569298893132923,
+      "planted_const": 1.0798066662676099e-08,
+      "planted_dup0": 0.17880068472482072,
+      "planted_dup1": 0.1770788234202002,
+      "planted_dup2": 0.08732426072255886,
+      "position": 0.177366892606268,
+      "velocity": 0.0309653732548876
+     },
+     "intrinsic_mean": 0.0002932410009743762,
+     "occupancy": 0.3095
+    },
+    "cem_disag": {
+     "attr_mean": {
+      "distractor": 0.00940624177301184,
+      "planted_const": 3.665616682470839e-09,
+      "planted_dup0": 0.03599718929002901,
+      "planted_dup1": 0.03573177530238888,
+      "planted_dup2": 0.018785284374413895,
+      "position": 0.03600151173683811,
+      "velocity": 0.008092219811020688
+     },
+     "intrinsic_mean": 0.00012493716883000161,
+     "occupancy": 0.599
+    },
+    "cem_real": {
+     "attr_mean": {
+      "distractor": 0.009167297763505512,
+      "planted_const": 3.286268785322272e-09,
+      "planted_dup0": 0.043145963067397985,
+      "planted_dup1": 0.04282549821695853,
+      "planted_dup2": 0.021659476378013156,
+      "position": 0.0432057774975907,
+      "velocity": 0.006336720297988968
+     },
+     "intrinsic_mean": 9.961033589934232e-05,
+     "occupancy": 0.646
+    },
+    "cem_distractor": {
+     "attr_mean": {
+      "distractor": 0.016099258987914637,
+      "planted_const": 4.312815187693382e-09,
+      "planted_dup0": 0.038422564899855384,
+      "planted_dup1": 0.03806493902087629,
+      "planted_dup2": 0.020392735021508263,
+      "position": 0.03842009269044662,
+      "velocity": 0.007947391356442611
+     },
+     "intrinsic_mean": 0.0001397736273447663,
+     "occupancy": 0.3825
+    }
+   }
+  },
+  {
+   "run_dir": "/tmp/claude-1000/-home-rickybao-projects-dreamerv3/ea924efe-0382-4de8-b4d2-30244c36a0ee/scratchpad/planner_readroot/se_cheetah_seed11",
+   "train_seed": 11,
+   "cem_ok": true,
+   "arms": {
+    "random": {
+     "attr_mean": {
+      "distractor": 0.008153964521843299,
+      "planted_const": 2.1416955168657846e-09,
+      "planted_dup0": 0.0504380640635266,
+      "planted_dup1": 0.050124047901234564,
+      "planted_dup2": 0.02435496151081469,
+      "position": 0.050472888105853896,
+      "velocity": 0.00848185775755229
+     },
+     "intrinsic_mean": 0.00011202751025666658,
+     "occupancy": 0.7395
+    },
+    "policy": {
+     "attr_mean": {
+      "distractor": 0.012032658301242505,
+      "planted_const": 3.714949500214146e-09,
+      "planted_dup0": 0.08335118643003978,
+      "planted_dup1": 0.08260410736561656,
+      "planted_dup2": 0.04076853142749216,
+      "position": 0.08343632809022168,
+      "velocity": 0.014545592263939248
+     },
+     "intrinsic_mean": 0.00016771028206130723,
+     "occupancy": 0.6515
+    },
+    "cem_disag": {
+     "attr_mean": {
+      "distractor": 0.01299660128277194,
+      "planted_const": 3.302221565326647e-09,
+      "planted_dup0": 0.07428460588186116,
+      "planted_dup1": 0.0737853450153053,
+      "planted_dup2": 0.03549158919810667,
+      "position": 0.07421889169336043,
+      "velocity": 0.011490276894874835
+     },
+     "intrinsic_mean": 0.00017765723793127108,
+     "occupancy": 0.512
+    },
+    "cem_real": {
+     "attr_mean": {
+      "distractor": 0.011951479229759403,
+      "planted_const": 3.3923572060500515e-09,
+      "planted_dup0": 0.10126222727054061,
+      "planted_dup1": 0.10060211980813642,
+      "planted_dup2": 0.047196567129569045,
+      "position": 0.1011316192300436,
+      "velocity": 0.010276596243903278
+     },
+     "intrinsic_mean": 0.00014613945311430144,
+     "occupancy": 0.618
+    },
+    "cem_distractor": {
+     "attr_mean": {
+      "distractor": 0.01595608160002994,
+      "planted_const": 3.1576685684706472e-09,
+      "planted_dup0": 0.06712591060416656,
+      "planted_dup1": 0.06668385730936115,
+      "planted_dup2": 0.03199601093924867,
+      "position": 0.06711589572888249,
+      "velocity": 0.010127476044816277
+     },
+     "intrinsic_mean": 0.00014956265988803351,
+     "occupancy": 0.785
+    }
+   }
+  },
+  {
+   "run_dir": "/tmp/claude-1000/-home-rickybao-projects-dreamerv3/ea924efe-0382-4de8-b4d2-30244c36a0ee/scratchpad/planner_readroot/se_cheetah_seed12",
+   "train_seed": 12,
+   "cem_ok": true,
+   "arms": {
+    "random": {
+     "attr_mean": {
+      "distractor": 0.004468458174244014,
+      "planted_const": 3.3103236616247973e-09,
+      "planted_dup0": 0.03402052063330685,
+      "planted_dup1": 0.03411686086904836,
+      "planted_dup2": 0.01661459867961141,
+      "position": 0.034028948437447026,
+      "velocity": 0.00478469234043693
+     },
+     "intrinsic_mean": 5.0610514796062487e-05,
+     "occupancy": 0.7135
+    },
+    "policy": {
+     "attr_mean": {
+      "distractor": 0.014355157562383479,
+      "planted_const": 1.0563622317502023e-08,
+      "planted_dup0": 0.12355243730185919,
+      "planted_dup1": 0.12280195751274951,
+      "planted_dup2": 0.059202823002592324,
+      "position": 0.12412552711827043,
+      "velocity": 0.02042017496083958
+     },
+     "intrinsic_mean": 0.0001539689116198133,
+     "occupancy": 0.5925
+    },
+    "cem_disag": {
+     "attr_mean": {
+      "distractor": 0.00796114003328048,
+      "planted_const": 5.070946562255014e-09,
+      "planted_dup0": 0.05083701621136567,
+      "planted_dup1": 0.05100411624308109,
+      "planted_dup2": 0.025022496671439468,
+      "position": 0.05074081127249062,
+      "velocity": 0.008385143670704916
+     },
+     "intrinsic_mean": 0.00010012339417153271,
+     "occupancy": 0.8555
+    },
+    "cem_real": {
+     "attr_mean": {
+      "distractor": 0.008857198794418542,
+      "planted_const": 5.3690697746955945e-09,
+      "planted_dup0": 0.07293344843785274,
+      "planted_dup1": 0.07311678127067299,
+      "planted_dup2": 0.035451464834205505,
+      "position": 0.07273104856251421,
+      "velocity": 0.007277752090176122
+     },
+     "intrinsic_mean": 9.785401975386776e-05,
+     "occupancy": 0.8445
+    },
+    "cem_distractor": {
+     "attr_mean": {
+      "distractor": 0.011934091343858444,
+      "planted_const": 7.96958753241154e-09,
+      "planted_dup0": 0.056568978526453984,
+      "planted_dup1": 0.056746275173402555,
+      "planted_dup2": 0.028072065813163398,
+      "position": 0.0564419941697025,
+      "velocity": 0.008144341514513678
+     },
+     "intrinsic_mean": 0.00010970992209695396,
+     "occupancy": 0.7005
+    }
+   }
+  },
+  {
+   "run_dir": "/tmp/claude-1000/-home-rickybao-projects-dreamerv3/ea924efe-0382-4de8-b4d2-30244c36a0ee/scratchpad/planner_readroot/se_cheetah_seed13",
+   "train_seed": 13,
+   "cem_ok": true,
+   "arms": {
+    "random": {
+     "attr_mean": {
+      "distractor": 0.008231407734205625,
+      "planted_const": 3.2477516846363843e-09,
+      "planted_dup0": 0.04369194784311705,
+      "planted_dup1": 0.04388485616169452,
+      "planted_dup2": 0.022085261523524396,
+      "position": 0.043898472052883976,
+      "velocity": 0.00862694857338762
+     },
+     "intrinsic_mean": 0.00011508340261570993,
+     "occupancy": 0.751
+    },
+    "policy": {
+     "attr_mean": {
+      "distractor": 0.01289558729138381,
+      "planted_const": 5.845935754242733e-09,
+      "planted_dup0": 0.08109270917776777,
+      "planted_dup1": 0.08117186694330353,
+      "planted_dup2": 0.04091220334615224,
+      "position": 0.081368252500124,
+      "velocity": 0.018873713894496963
+     },
+     "intrinsic_mean": 0.00018471792070704396,
+     "occupancy": 0.85
+    },
+    "cem_disag": {
+     "attr_mean": {
+      "distractor": 0.009181107307370031,
+      "planted_const": 3.7987138317670024e-09,
+      "planted_dup0": 0.04934238321859262,
+      "planted_dup1": 0.049528765117213595,
+      "planted_dup2": 0.024946568888398038,
+      "position": 0.04955021978419003,
+      "velocity": 0.010017862114458832
+     },
+     "intrinsic_mean": 0.00014640164615775574,
+     "occupancy": 0.6705
+    },
+    "cem_real": {
+     "attr_mean": {
+      "distractor": 0.00727353553460375,
+      "planted_const": 3.0050315552569172e-09,
+      "planted_dup0": 0.055264245032135034,
+      "planted_dup1": 0.055394279766913655,
+      "planted_dup2": 0.026754529647348535,
+      "position": 0.05559979198253384,
+      "velocity": 0.007299555510815284
+     },
+     "intrinsic_mean": 9.978435515949969e-05,
+     "occupancy": 0.765
+    },
+    "cem_distractor": {
+     "attr_mean": {
+      "distractor": 0.010510107759844692,
+      "planted_const": 3.4188932860849566e-09,
+      "planted_dup0": 0.045572089063394584,
+      "planted_dup1": 0.04574445824347304,
+      "planted_dup2": 0.022821930849654486,
+      "position": 0.045822485929363554,
+      "velocity": 0.007827501259627483
+     },
+     "intrinsic_mean": 0.00011913791589176981,
+     "occupancy": 0.81
+    }
+   }
+  },
+  {
+   "run_dir": "/tmp/claude-1000/-home-rickybao-projects-dreamerv3/ea924efe-0382-4de8-b4d2-30244c36a0ee/scratchpad/planner_readroot/se_cheetah_seed14",
+   "train_seed": 14,
+   "cem_ok": true,
+   "arms": {
+    "random": {
+     "attr_mean": {
+      "distractor": 0.003754117305763346,
+      "planted_const": 9.231983575793187e-10,
+      "planted_dup0": 0.019712710860584702,
+      "planted_dup1": 0.019605057070469813,
+      "planted_dup2": 0.010183221410059801,
+      "position": 0.01974517644413811,
+      "velocity": 0.004033189397455842
+     },
+     "intrinsic_mean": 4.812878209304472e-05,
+     "occupancy": 0.7445
+    },
+    "policy": {
+     "attr_mean": {
+      "distractor": 0.014284964098661639,
+      "planted_const": 2.764695124959975e-09,
+      "planted_dup0": 0.07337335522994162,
+      "planted_dup1": 0.07311196864234319,
+      "planted_dup2": 0.03741275553377149,
+      "position": 0.07347764981157986,
+      "velocity": 0.017469138271211628
+     },
+     "intrinsic_mean": 0.00016966923021755065,
+     "occupancy": 0.372
+    },
+    "cem_disag": {
+     "attr_mean": {
+      "distractor": 0.007735258238745736,
+      "planted_const": 1.434967110967904e-09,
+      "planted_dup0": 0.033065516296831146,
+      "planted_dup1": 0.03291851786859052,
+      "planted_dup2": 0.01713089451106769,
+      "position": 0.03313336646414649,
+      "velocity": 0.0068913371723603074
+     },
+     "intrinsic_mean": 0.00010607298108880058,
+     "occupancy": 0.788
+    },
+    "cem_real": {
+     "attr_mean": {
+      "distractor": 0.00561033170609645,
+      "planted_const": 1.0181743398923093e-09,
+      "planted_dup0": 0.030827482617063112,
+      "planted_dup1": 0.030630074369868664,
+      "planted_dup2": 0.015655035007815725,
+      "position": 0.030893010304239715,
+      "velocity": 0.005091928563019487
+     },
+     "intrinsic_mean": 7.047451780999836e-05,
+     "occupancy": 0.5395
+    },
+    "cem_distractor": {
+     "attr_mean": {
+      "distractor": 0.012874459824382477,
+      "planted_const": 1.6383684950959617e-09,
+      "planted_dup0": 0.038864380844736514,
+      "planted_dup1": 0.03875601989865359,
+      "planted_dup2": 0.020424580401447123,
+      "position": 0.038951048324003194,
+      "velocity": 0.0078366095226334
+     },
+     "intrinsic_mean": 0.0001322980774421012,
+     "occupancy": 0.754
+    }
+   }
+  },
+  {
+   "run_dir": "/tmp/claude-1000/-home-rickybao-projects-dreamerv3/ea924efe-0382-4de8-b4d2-30244c36a0ee/scratchpad/planner_readroot/se_cheetah_seed15",
+   "train_seed": 15,
+   "cem_ok": true,
+   "arms": {
+    "random": {
+     "attr_mean": {
+      "distractor": 0.009248834927283997,
+      "planted_const": 2.562454779280759e-09,
+      "planted_dup0": 0.040086564113551444,
+      "planted_dup1": 0.039868190193375765,
+      "planted_dup2": 0.02150021295269746,
+      "position": 0.04015217503607984,
+      "velocity": 0.010084541710259177
+     },
+     "intrinsic_mean": 0.00011499939649365842,
+     "occupancy": 0.739
+    },
+    "policy": {
+     "attr_mean": {
+      "distractor": 0.016300422633954394,
+      "planted_const": 5.035321993082141e-09,
+      "planted_dup0": 0.09658241358831055,
+      "planted_dup1": 0.09659342913669763,
+      "planted_dup2": 0.04723057014143646,
+      "position": 0.09693354046626675,
+      "velocity": 0.02477085630157599
+     },
+     "intrinsic_mean": 0.0001844787301706674,
+     "occupancy": 0.4975
+    },
+    "cem_disag": {
+     "attr_mean": {
+      "distractor": 0.010202029860187454,
+      "planted_const": 2.959467073300103e-09,
+      "planted_dup0": 0.04153269609581586,
+      "planted_dup1": 0.04139644155696544,
+      "planted_dup2": 0.022226564843890673,
+      "position": 0.04164481072736414,
+      "velocity": 0.012191024405768608
+     },
+     "intrinsic_mean": 0.00014851744719453564,
+     "occupancy": 0.8265
+    },
+    "cem_real": {
+     "attr_mean": {
+      "distractor": 0.00994184500995055,
+      "planted_const": 2.659467595150788e-09,
+      "planted_dup0": 0.049511784342895104,
+      "planted_dup1": 0.04929171585724029,
+      "planted_dup2": 0.02551015809223013,
+      "position": 0.04959564305068066,
+      "velocity": 0.0112122673577583
+     },
+     "intrinsic_mean": 0.0001261326036110404,
+     "occupancy": 0.4955
+    },
+    "cem_distractor": {
+     "attr_mean": {
+      "distractor": 0.014017879687097785,
+      "planted_const": 3.3506539366850956e-09,
+      "planted_dup0": 0.04188797010475696,
+      "planted_dup1": 0.04167178146758538,
+      "planted_dup2": 0.022625816190975562,
+      "position": 0.04190263767904805,
+      "velocity": 0.011336790175555642
+     },
+     "intrinsic_mean": 0.00013811480696494983,
+     "occupancy": 0.566
+    }
+   }
+  },
+  {
+   "run_dir": "/tmp/claude-1000/-home-rickybao-projects-dreamerv3/ea924efe-0382-4de8-b4d2-30244c36a0ee/scratchpad/planner_readroot/se_cheetah_seed16",
+   "train_seed": 16,
+   "cem_ok": true,
+   "arms": {
+    "random": {
+     "attr_mean": {
+      "distractor": 0.0033868898982021617,
+      "planted_const": 1.5137295850197634e-09,
+      "planted_dup0": 0.023611994300160102,
+      "planted_dup1": 0.023348758668065763,
+      "planted_dup2": 0.011745675516191113,
+      "position": 0.023548543995180315,
+      "velocity": 0.004848606248683844
+     },
+     "intrinsic_mean": 4.942185911568231e-05,
+     "occupancy": 0.7465
+    },
+    "policy": {
+     "attr_mean": {
+      "distractor": 0.012102257363259188,
+      "planted_const": 5.162099003478647e-09,
+      "planted_dup0": 0.08667876088082037,
+      "planted_dup1": 0.08643765675880015,
+      "planted_dup2": 0.041637767270868126,
+      "position": 0.08765040297881568,
+      "velocity": 0.02313307919447505
+     },
+     "intrinsic_mean": 0.00015508433104332653,
+     "occupancy": 0.733
+    },
+    "cem_disag": {
+     "attr_mean": {
+      "distractor": 0.004152761605202884,
+      "planted_const": 1.8094721127017922e-09,
+      "planted_dup0": 0.027900189905107967,
+      "planted_dup1": 0.027605607299567833,
+      "planted_dup2": 0.01385292270313104,
+      "position": 0.027917558684469077,
+      "velocity": 0.007058584656989195
+     },
+     "intrinsic_mean": 7.047166149641271e-05,
+     "occupancy": 0.8885
+    },
+    "cem_real": {
+     "attr_mean": {
+      "distractor": 0.003532395487156692,
+      "planted_const": 1.564447488055203e-09,
+      "planted_dup0": 0.027829440539865337,
+      "planted_dup1": 0.027518730362702363,
+      "planted_dup2": 0.013553341426767016,
+      "position": 0.02781412678447005,
+      "velocity": 0.004505514256662153
+     },
+     "intrinsic_mean": 4.717795117358037e-05,
+     "occupancy": 0.9245
+    },
+    "cem_distractor": {
+     "attr_mean": {
+      "distractor": 0.005480269109489762,
+      "planted_const": 1.8972588834397914e-09,
+      "planted_dup0": 0.028778155718535026,
+      "planted_dup1": 0.028429197678857984,
+      "planted_dup2": 0.01437191871708901,
+      "position": 0.028816334655209188,
+      "velocity": 0.005734762619929376
+     },
+     "intrinsic_mean": 6.377303330191353e-05,
+     "occupancy": 0.8085
+    }
+   }
+  },
+  {
+   "run_dir": "/tmp/claude-1000/-home-rickybao-projects-dreamerv3/ea924efe-0382-4de8-b4d2-30244c36a0ee/scratchpad/planner_readroot/se_cheetah_seed17",
+   "train_seed": 17,
+   "cem_ok": true,
+   "arms": {
+    "random": {
+     "attr_mean": {
+      "distractor": 0.004250600631421507,
+      "planted_const": 2.1251616685442522e-09,
+      "planted_dup0": 0.021273487397954313,
+      "planted_dup1": 0.020922188666796848,
+      "planted_dup2": 0.011238604248139484,
+      "position": 0.021143903022719193,
+      "velocity": 0.003950758961799902
+     },
+     "intrinsic_mean": 6.083489251614083e-05,
+     "occupancy": 0.7385
+    },
+    "policy": {
+     "attr_mean": {
+      "distractor": 0.016403941574948035,
+      "planted_const": 7.384976678385698e-09,
+      "planted_dup0": 0.10415519927968118,
+      "planted_dup1": 0.10228415063867294,
+      "planted_dup2": 0.051956857731903894,
+      "position": 0.1034936063694475,
+      "velocity": 0.022558186948784333
+     },
+     "intrinsic_mean": 0.00019412055617431178,
+     "occupancy": 0.438
+    },
+    "cem_disag": {
+     "attr_mean": {
+      "distractor": 0.006731391119953443,
+      "planted_const": 2.8647533471216707e-09,
+      "planted_dup0": 0.029975677204135423,
+      "planted_dup1": 0.029592563037980156,
+      "planted_dup2": 0.015999572801804036,
+      "position": 0.02997237406124186,
+      "velocity": 0.006834974459531081
+     },
+     "intrinsic_mean": 0.00010577919757997734,
+     "occupancy": 0.8385
+    },
+    "cem_real": {
+     "attr_mean": {
+      "distractor": 0.005666417054537322,
+      "planted_const": 2.2581378654689437e-09,
+      "planted_dup0": 0.03419369214922227,
+      "planted_dup1": 0.03360184610152508,
+      "planted_dup2": 0.017616184817859433,
+      "position": 0.034053823309615865,
+      "velocity": 0.00446401884160262
+     },
+     "intrinsic_mean": 7.148520899499999e-05,
+     "occupancy": 0.8385
+    },
+    "cem_distractor": {
+     "attr_mean": {
+      "distractor": 0.00715641763769231,
+      "planted_const": 2.553100406151925e-09,
+      "planted_dup0": 0.028245329595756697,
+      "planted_dup1": 0.027825065353965863,
+      "planted_dup2": 0.014896609796358753,
+      "position": 0.02814244002499832,
+      "velocity": 0.004650808954683165
+     },
+     "intrinsic_mean": 7.995869285878144e-05,
+     "occupancy": 0.8065
+    }
+   }
+  }
+ ],
+ "descriptive": {
+  "placement_pooled": null,
+  "placement_pairs": [
+   {
+    "num": 0.00023894400950632763,
+    "den": -0.019593729943414594
+   },
+   {
+    "num": 0.001045122053012536,
+    "den": 0.0039234232987874346
+   },
+   {
+    "num": -0.0008960587611380622,
+    "den": -0.0024210662185250344
+   },
+   {
+    "num": 0.001907571772766281,
+    "den": -0.0023854795315391177
+   },
+   {
+    "num": 0.002124926532649286,
+    "den": -0.0014105042742791618
+   },
+   {
+    "num": 0.00026018485023690356,
+    "den": -0.002282542946856609
+   },
+   {
+    "num": 0.000620366118046192,
+    "den": -0.006621988253769426
+   },
+   {
+    "num": 0.001064974065416121,
+    "den": -0.009247523937255725
+   }
+  ],
+  "distractor_minus_real_ceiling": [
+   0.006931961224409125,
+   0.004004602370270536,
+   0.0030768925494399028,
+   0.0032365722252409414,
+   0.007264128118286027,
+   0.004076034677147235,
+   0.0019478736223330702,
+   0.0014900005831549887
+  ],
+  "disag_minus_policy": [
+   -0.026286747158317393,
+   0.0009639429815294347,
+   -0.006394017529102999,
+   -0.003714479984013778,
+   -0.006549705859915903,
+   -0.0060983927737669405,
+   -0.007949495758056304,
+   -0.009672550454994593
+  ],
+  "occupancy": {
+   "random": [
+    0.725,
+    0.7395,
+    0.7135,
+    0.751,
+    0.7445,
+    0.739,
+    0.7465,
+    0.7385
+   ],
+   "policy": [
+    0.3095,
+    0.6515,
+    0.5925,
+    0.85,
+    0.372,
+    0.4975,
+    0.733,
+    0.438
+   ],
+   "cem_disag": [
+    0.599,
+    0.512,
+    0.8555,
+    0.6705,
+    0.788,
+    0.8265,
+    0.8885,
+    0.8385
+   ],
+   "cem_real": [
+    0.646,
+    0.618,
+    0.8445,
+    0.765,
+    0.5395,
+    0.4955,
+    0.9245,
+    0.8385
+   ],
+   "cem_distractor": [
+    0.3825,
+    0.785,
+    0.7005,
+    0.81,
+    0.754,
+    0.566,
+    0.8085,
+    0.8065
+   ]
+  },
+  "intrinsic": {
+   "random": [
+    4.9872061375026534e-05,
+    0.00011202751025666658,
+    5.0610514796062487e-05,
+    0.00011508340261570993,
+    4.812878209304472e-05,
+    0.00011499939649365842,
+    4.942185911568231e-05,
+    6.083489251614083e-05
+   ],
+   "policy": [
+    0.0002932410009743762,
+    0.00016771028206130723,
+    0.0001539689116198133,
+    0.00018471792070704396,
+    0.00016966923021755065,
+    0.0001844787301706674,
+    0.00015508433104332653,
+    0.00019412055617431178
+   ],
+   "cem_disag": [
+    0.00012493716883000161,
+    0.00017765723793127108,
+    0.00010012339417153271,
+    0.00014640164615775574,
+    0.00010607298108880058,
+    0.00014851744719453564,
+    7.047166149641271e-05,
+    0.00010577919757997734
+   ],
+   "cem_real": [
+    9.961033589934232e-05,
+    0.00014613945311430144,
+    9.785401975386776e-05,
+    9.978435515949969e-05,
+    7.047451780999836e-05,
+    0.0001261326036110404,
+    4.717795117358037e-05,
+    7.148520899499999e-05
+   ],
+   "cem_distractor": [
+    0.0001397736273447663,
+    0.00014956265988803351,
+    0.00010970992209695396,
+    0.00011913791589176981,
+    0.0001322980774421012,
+    0.00013811480696494983,
+    6.377303330191353e-05,
+    7.995869285878144e-05
+   ]
+  }
+ },
+ "steerability": {
+  "per_run": [
+   -0.019593729943414594,
+   0.0039234232987874346,
+   -0.0024210662185250344,
+   -0.0023854795315391177,
+   -0.0014105042742791618,
+   -0.002282542946856609,
+   -0.006621988253769426,
+   -0.009247523937255725
+  ],
+  "n_pos": 1,
+  "need": 7,
+  "of_registered": 8,
+  "passes": false,
+  "form": "attr_d(cem_distractor) - max(attr_d(policy), attr_d(random)) (#32 M1; distractor-real is descriptive only)"
+ },
+ "primary": {
+  "statement": "deployment-time transmission, CONJUNCTIVE (#32 B1): the deployed-objective planner must exceed BOTH the matched real-objective planner AND the trained policy on distractor attribution (>= 7/8 each, exact sign-flip p <= .05 each, gated on steerability) \u2014 comparator suppression cannot fire it",
+  "delta_vs_real": {
+   "per_run": [
+    0.00023894400950632763,
+    0.001045122053012536,
+    -0.0008960587611380622,
+    0.001907571772766281,
+    0.002124926532649286,
+    0.00026018485023690356,
+    0.000620366118046192,
+    0.001064974065416121
+   ],
+   "n_pos": 7,
+   "p_signflip": 0.03125,
+   "mean": 0.0007957538300619481,
+   "bca": [
+    0.00015587745363735973,
+    0.001380882476727215
+   ]
+  },
+  "delta_vs_policy": {
+   "per_run": [
+    -0.026286747158317393,
+    0.0009639429815294347,
+    -0.006394017529102999,
+    -0.003714479984013778,
+    -0.006549705859915903,
+    -0.0060983927737669405,
+    -0.007949495758056304,
+    -0.009672550454994593
+   ],
+   "n_pos": 1,
+   "p_signflip": 0.99609375,
+   "mean": -0.00821268081707981,
+   "bca": [
+    -0.015749577231845426,
+    -0.004646376093730353
+   ]
+  },
+  "need": 7,
+  "of_registered": 8,
+  "fires": false,
+  "note": "steerability gate FAILED \u2014 no planner moves distractor attribution above the passive anchors; transmission vacuously impossible at deployment (registered informative null); the primary numbers are reported, not adjudicated"
+ },
+ "outcome_cell": "UNSTEERABLE",
+ "fit_counters": {
+  "/tmp/claude-1000/-home-rickybao-projects-dreamerv3/ea924efe-0382-4de8-b4d2-30244c36a0ee/scratchpad/planner_readroot/se_cheetah_seed10": {
+   "expected": 500000.0,
+   "last_step": 497584,
+   "ratio": 0.995168,
+   "flag": "OK",
+   "config_steps": 500000.0
+  },
+  "/tmp/claude-1000/-home-rickybao-projects-dreamerv3/ea924efe-0382-4de8-b4d2-30244c36a0ee/scratchpad/planner_readroot/se_cheetah_seed11": {
+   "expected": 500000.0,
+   "last_step": 498512,
+   "ratio": 0.997024,
+   "flag": "OK",
+   "config_steps": 500000.0
+  },
+  "/tmp/claude-1000/-home-rickybao-projects-dreamerv3/ea924efe-0382-4de8-b4d2-30244c36a0ee/scratchpad/planner_readroot/se_cheetah_seed12": {
+   "expected": 500000.0,
+   "last_step": 498144,
+   "ratio": 0.996288,
+   "flag": "OK",
+   "config_steps": 500000.0
+  },
+  "/tmp/claude-1000/-home-rickybao-projects-dreamerv3/ea924efe-0382-4de8-b4d2-30244c36a0ee/scratchpad/planner_readroot/se_cheetah_seed13": {
+   "expected": 500000.0,
+   "last_step": 499200,
+   "ratio": 0.9984,
+   "flag": "OK",
+   "config_steps": 500000.0
+  },
+  "/tmp/claude-1000/-home-rickybao-projects-dreamerv3/ea924efe-0382-4de8-b4d2-30244c36a0ee/scratchpad/planner_readroot/se_cheetah_seed14": {
+   "expected": 500000.0,
+   "last_step": 497728,
+   "ratio": 0.995456,
+   "flag": "OK",
+   "config_steps": 500000.0
+  },
+  "/tmp/claude-1000/-home-rickybao-projects-dreamerv3/ea924efe-0382-4de8-b4d2-30244c36a0ee/scratchpad/planner_readroot/se_cheetah_seed15": {
+   "expected": 500000.0,
+   "last_step": 498416,
+   "ratio": 0.996832,
+   "flag": "OK",
+   "config_steps": 500000.0
+  },
+  "/tmp/claude-1000/-home-rickybao-projects-dreamerv3/ea924efe-0382-4de8-b4d2-30244c36a0ee/scratchpad/planner_readroot/se_cheetah_seed16": {
+   "expected": 500000.0,
+   "last_step": 499568,
+   "ratio": 0.999136,
+   "flag": "OK",
+   "config_steps": 500000.0
+  },
+  "/tmp/claude-1000/-home-rickybao-projects-dreamerv3/ea924efe-0382-4de8-b4d2-30244c36a0ee/scratchpad/planner_readroot/se_cheetah_seed17": {
+   "expected": 500000.0,
+   "last_step": 499440,
+   "ratio": 0.99888,
+   "flag": "OK",
+   "config_steps": 500000.0
+  }
+ }
+}

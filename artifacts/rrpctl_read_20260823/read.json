@@ -1,0 +1,71 @@
+{
+ "prereg": "PREREG_rrpctl_20260822.md",
+ "overall": "NO-CALL-UNDERPOWERED at E1: no fire and the CI does not fit inside the +/-BOUND band; this wave decides large separations only (disclosed); E2 descriptive",
+ "e1": {
+  "diff": -103.21873749999997,
+  "ci": [
+   -213.5171247242149,
+   8.94639296619374
+  ],
+  "perm_p": 0.11128887111288871,
+  "n": [
+   8,
+   8
+  ],
+  "alpha": 0.05,
+  "fire": false,
+  "reversed": false,
+  "bounded": false,
+  "bound": 100.54428125,
+  "realized_mde80": 170.06605227235391
+ },
+ "e2": {
+  "diff": -74.43489999999997,
+  "ci": [
+   -184.66909295863317,
+   25.31877156800383
+  ],
+  "perm_p": 0.20677932206779323,
+  "n": [
+   8,
+   8
+  ],
+  "alpha": 0.05,
+  "fire": false,
+  "reversed": false,
+  "bounded": false,
+  "bound": 100.54428125,
+  "role": "descriptive",
+  "realized_mde80": 159.69133362368626
+ },
+ "e3_descriptive": {
+  "mean": -28.783837500000004,
+  "ci": [
+   -173.23045000000002,
+   83.5713203374087
+  ],
+  "perm_p": 0.6796875,
+  "d_z": -0.1434288281921335,
+  "sd": 200.683766735108,
+  "n": 8,
+  "note": "paired within-seed rcb - rca; the phase-2 dose value; no alpha"
+ },
+ "arms": {
+  "repair_mean_pinned": 291.442725,
+  "rca_mean": 394.66146249999997,
+  "rcb_mean": 365.87762499999997,
+  "scratch": 147.6823
+ },
+ "disclosures": [
+  "repair = pinned constants seeds 1-8 (cross-cohort vs controls at 17-24; two_sample, not paired; venue/era differences disclosed with aptctl-vs-July-pin 90.35/89.90 as the cross-era stability anchor)",
+  "rca duplicates the registered valuefree q1uzs1 arm (different run_ids); all thresholds frozen pre-outcome",
+  "crashed cells may resume into their logdir; a from-zero restart doubles n_ep and refuses at STRICT modal n_ep (pinned 96)"
+ ],
+ "gates": {
+  "fits": 16,
+  "fit_updates": 500000,
+  "adapts": 16,
+  "adapt_steps": 125000,
+  "modal_n_ep": 96
+ }
+}

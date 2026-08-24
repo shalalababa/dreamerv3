@@ -1,0 +1,286 @@
+{
+ "stamp": {
+  "git": "7a866fcd",
+  "time": "2026-08-23T09:09:39"
+ },
+ "n_loaded": 4,
+ "excluded_runs": [],
+ "stage1_reference": {
+  "real_mean_min": 0.002872289559389982,
+  "intrinsic_min": 0.00188539270311594,
+  "n": 8
+ },
+ "per_run": [
+  {
+   "run_dir": "/home/rickybao/projects/dreamerv3/local_results/b4_alea_20260823_035808/runroot/se_alea_s120",
+   "train_seed": 120,
+   "valid": true,
+   "shares": {
+    "distractor": {
+     "raw": 0.40131623172473757,
+     "norm": 0.4273548311920591
+    },
+    "planted_dup0": {
+     "raw": 0.09437418429801171,
+     "norm": 0.09636610812841383
+    },
+    "planted_dup1": {
+     "raw": 0.09486726855590065,
+     "norm": 0.09696227876704543
+    },
+    "planted_dup2": {
+     "raw": 0.08594599637282095,
+     "norm": 0.08806245387422532
+    },
+    "position": {
+     "raw": 0.09428547827308578,
+     "norm": 0.09642884106517921
+    },
+    "velocity": {
+     "raw": 0.22921084077544326,
+     "norm": 0.19482548697307725
+    }
+   },
+   "theta1_distractor": 4.209503440701541,
+   "base_raw": 0.0001522589093738702,
+   "base_norm": 0.13066834451456089,
+   "gauss_diag": {
+    "logvar_min": -8.0,
+    "logvar_max": 6.0,
+    "alea_mean": 0.006535960998007795,
+    "alea_std": 0.0006539697789040574,
+    "lv_frac_lo": 0.030086899550951784,
+    "lv_frac_hi": 0.0,
+    "base_norm_deter_mean": 0.16150198187096976,
+    "base_norm_stoch_mean": 0.007333780248018229
+   },
+   "share_clip_frac": 0.051425933837890625,
+   "share_gain_mean": 1.138045915402472,
+   "share_gain_p95": 1.1965389132499695,
+   "coverage": -4.837708805258905,
+   "score_tail": 13.186293074889054,
+   "real_mean_level": 0.003643679357386039
+  },
+  {
+   "run_dir": "/home/rickybao/projects/dreamerv3/local_results/b4_alea_20260823_035808/runroot/se_alea_s121",
+   "train_seed": 121,
+   "valid": true,
+   "shares": {
+    "distractor": {
+     "raw": 0.43247489015317186,
+     "norm": 0.45605627846380165
+    },
+    "planted_dup0": {
+     "raw": 0.07601582255959499,
+     "norm": 0.07936479885740831
+    },
+    "planted_dup1": {
+     "raw": 0.07597638243582734,
+     "norm": 0.07928305024130902
+    },
+    "planted_dup2": {
+     "raw": 0.07303314027174526,
+     "norm": 0.07625633308368462
+    },
+    "position": {
+     "raw": 0.07587538023075581,
+     "norm": 0.07910809598768635
+    },
+    "velocity": {
+     "raw": 0.26662438434890484,
+     "norm": 0.22993144336610988
+    }
+   },
+   "theta1_distractor": 5.744048136649355,
+   "base_raw": 0.00018169831091086053,
+   "base_norm": 0.14665475161746144,
+   "gauss_diag": {
+    "logvar_min": -8.0,
+    "logvar_max": 6.0,
+    "alea_mean": 0.006722635525875376,
+    "alea_std": 0.0009180930122179175,
+    "lv_frac_lo": 0.02783126855501905,
+    "lv_frac_hi": 0.0,
+    "base_norm_deter_mean": 0.18108122824924067,
+    "base_norm_stoch_mean": 0.00894883283854142
+   },
+   "share_clip_frac": 0.06506729125976562,
+   "share_gain_mean": 1.124581457930617,
+   "share_gain_p95": 1.1838882565498352,
+   "coverage": -1.2908881297753858,
+   "score_tail": 16.57085327161656,
+   "real_mean_level": 0.004773481963638915
+  },
+  {
+   "run_dir": "/home/rickybao/projects/dreamerv3/local_results/b4_alea_20260823_035808/runroot/se_alea_s122",
+   "train_seed": 122,
+   "valid": true,
+   "shares": {
+    "distractor": {
+     "raw": 0.43260904759782576,
+     "norm": 0.4607908443802153
+    },
+    "planted_dup0": {
+     "raw": 0.0806691787448332,
+     "norm": 0.08550337431401246
+    },
+    "planted_dup1": {
+     "raw": 0.08037456166728393,
+     "norm": 0.0851729089062892
+    },
+    "planted_dup2": {
+     "raw": 0.07595133681017972,
+     "norm": 0.08059731903264188
+    },
+    "position": {
+     "raw": 0.08033341863129133,
+     "norm": 0.08515571289632151
+    },
+    "velocity": {
+     "raw": 0.25006245654858605,
+     "norm": 0.20277984047051964
+    }
+   },
+   "theta1_distractor": 5.466157838727341,
+   "base_raw": 0.00018746630190236147,
+   "base_norm": 0.13416576782765333,
+   "gauss_diag": {
+    "logvar_min": -8.0,
+    "logvar_max": 6.0,
+    "alea_mean": 0.007179827190157084,
+    "alea_std": 0.0009626073700371532,
+    "lv_frac_lo": 0.024040603719186038,
+    "lv_frac_hi": 0.0,
+    "base_norm_deter_mean": 0.16584184965176973,
+    "base_norm_stoch_mean": 0.007461427826456202
+   },
+   "share_clip_frac": 0.06108665466308594,
+   "share_gain_mean": 1.1247635569889098,
+   "share_gain_p95": 1.1784256756305695,
+   "coverage": -0.9417538040887568,
+   "score_tail": 20.748472792567455,
+   "real_mean_level": 0.005125542243654814
+  },
+  {
+   "run_dir": "/home/rickybao/projects/dreamerv3/local_results/b4_alea_20260823_035808/runroot/se_alea_s123",
+   "train_seed": 123,
+   "valid": true,
+   "shares": {
+    "distractor": {
+     "raw": 0.43246241839366184,
+     "norm": 0.4540615533802825
+    },
+    "planted_dup0": {
+     "raw": 0.08031745289774883,
+     "norm": 0.08261248906070304
+    },
+    "planted_dup1": {
+     "raw": 0.08035165765601447,
+     "norm": 0.08249406556007931
+    },
+    "planted_dup2": {
+     "raw": 0.07465732503156304,
+     "norm": 0.07683290959016345
+    },
+    "position": {
+     "raw": 0.08020627734429575,
+     "norm": 0.08227587903612786
+    },
+    "velocity": {
+     "raw": 0.2520048686767159,
+     "norm": 0.2217231033726439
+    }
+   },
+   "theta1_distractor": 5.497370780491621,
+   "base_raw": 0.0001955896505023702,
+   "base_norm": 0.12594929909391794,
+   "gauss_diag": {
+    "logvar_min": -8.0,
+    "logvar_max": 6.0,
+    "alea_mean": 0.007189678839495173,
+    "alea_std": 0.0016256797946975355,
+    "lv_frac_lo": 0.012575912660395261,
+    "lv_frac_hi": 0.0,
+    "base_norm_deter_mean": 0.1551981095544761,
+    "base_norm_stoch_mean": 0.008954047390488995
+   },
+   "share_clip_frac": 0.038654327392578125,
+   "share_gain_mean": 1.1336782280122861,
+   "share_gain_p95": 1.1850498080253602,
+   "coverage": -2.4667583522297747,
+   "score_tail": 23.776533013220142,
+   "real_mean_level": 0.005406131151378051
+  }
+ ],
+ "masked_descriptive": {
+  "distractor_raw": [
+   1.1291649570921436e-07,
+   -2.2092664835327014e-06,
+   1.3886731267120922e-06,
+   3.819690164164058e-08
+  ],
+  "distractor_norm": [
+   -9.958102600648999e-05,
+   -0.00011461760732345283,
+   0.00042048966861329973,
+   9.735554340295494e-05
+  ],
+  "velocity_raw": [
+   8.601313318479242e-06,
+   2.9723097796363618e-06,
+   5.8716903978961454e-06,
+   6.2337027628700525e-06
+  ],
+  "velocity_norm": [
+   0.00705366488546133,
+   0.0049586469831410795,
+   0.00634314346825704,
+   0.004635210774722509
+  ],
+  "note": "the distractor mask is a CONSTRUCTION-INERT exchangeability control (exogenous channel; population delta 0 for any statistic) \u2014 a materially nonzero value indicates an instrument defect; the velocity and dup masks are informative (R-A1-M12)"
+ },
+ "theta1": [
+  4.209503440701541,
+  5.744048136649355,
+  5.466157838727341,
+  5.497370780491621
+ ],
+ "collapsed_runs": [
+  "/home/rickybao/projects/dreamerv3/local_results/b4_alea_20260823_035808/runroot/se_alea_s120",
+  "/home/rickybao/projects/dreamerv3/local_results/b4_alea_20260823_035808/runroot/se_alea_s121",
+  "/home/rickybao/projects/dreamerv3/local_results/b4_alea_20260823_035808/runroot/se_alea_s122"
+ ],
+ "primary": "REPAIR-BY-DEATH: levels collapsed below 1/10 of the Stage-1 minima \u2014 the gauss arm did not preserve the substrate",
+ "outcome_cell": "REPAIR-BY-DEATH",
+ "fit_counters": {
+  "/home/rickybao/projects/dreamerv3/local_results/b4_alea_20260823_035808/runroot/se_alea_s120": {
+   "expected": 500000.0,
+   "last_step": 498528,
+   "ratio": 0.997056,
+   "flag": "OK",
+   "config_steps": 500000.0
+  },
+  "/home/rickybao/projects/dreamerv3/local_results/b4_alea_20260823_035808/runroot/se_alea_s121": {
+   "expected": 500000.0,
+   "last_step": 498288,
+   "ratio": 0.996576,
+   "flag": "OK",
+   "config_steps": 500000.0
+  },
+  "/home/rickybao/projects/dreamerv3/local_results/b4_alea_20260823_035808/runroot/se_alea_s122": {
+   "expected": 500000.0,
+   "last_step": 498336,
+   "ratio": 0.996672,
+   "flag": "OK",
+   "config_steps": 500000.0
+  },
+  "/home/rickybao/projects/dreamerv3/local_results/b4_alea_20260823_035808/runroot/se_alea_s123": {
+   "expected": 500000.0,
+   "last_step": 498752,
+   "ratio": 0.997504,
+   "flag": "OK",
+   "config_steps": 500000.0
+  }
+ },
+ "fit_flag": "OK"
+}

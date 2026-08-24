@@ -1,0 +1,598 @@
+{
+ "stamp": {
+  "git": "5a43cc16",
+  "time": "2026-08-22T19:29:42"
+ },
+ "n_loaded": 8,
+ "excluded_runs": [],
+ "invalid_cem": [],
+ "n_hetero": 4,
+ "n_flat": 4,
+ "per_run": [
+  {
+   "run_dir": "/home/rickybao/projects/dreamerv3/local_results/wavec_planloc_20260822_182736/runs/se_avoid_flat_s48",
+   "arm": "flat",
+   "train_seed": 48,
+   "cem_ok": true,
+   "ckpt": "20260821T215000F696859",
+   "ckpt_final_ok": true,
+   "devices": "[CudaDevice(id=0)]",
+   "backend": "gpu",
+   "delta_disag_minus_policy": -0.007354724038317453,
+   "delta_raw_approx": -0.0008246742300475751,
+   "norm_d_mean": 0.33464962616562843,
+   "norm_sq_mean": 0.11212850757568826,
+   "norm_floor_bound": false,
+   "attr_d": {
+    "random": 0.005370827294326267,
+    "policy": 0.016427546601152726,
+    "cem_disag": 0.009072822562835273,
+    "cem_real": 0.007078479744018729,
+    "cem_distractor": 0.010793477075874275
+   },
+   "share_d": {
+    "random": 0.05442426005409171,
+    "policy": 0.037994340422414535,
+    "cem_disag": 0.059746238112782186,
+    "cem_real": 0.03428916014867286,
+    "cem_distractor": 0.07168803993085412
+   },
+   "occupancy": {
+    "random": 0.757,
+    "policy": 0.6595,
+    "cem_disag": 0.6905,
+    "cem_real": 0.4515,
+    "cem_distractor": 0.7005
+   },
+   "intrinsic": {
+    "random": 7.518888147023972e-05,
+    "policy": 0.00017812051416331087,
+    "cem_disag": 0.00011552819928692771,
+    "cem_real": 9.838426339410943e-05,
+    "cem_distractor": 0.00010487057094360353
+   }
+  },
+  {
+   "run_dir": "/home/rickybao/projects/dreamerv3/local_results/wavec_planloc_20260822_182736/runs/se_avoid_flat_s49",
+   "arm": "flat",
+   "train_seed": 49,
+   "cem_ok": true,
+   "ckpt": "20260821T215131F797564",
+   "ckpt_final_ok": true,
+   "devices": "[CudaDevice(id=0)]",
+   "backend": "gpu",
+   "delta_disag_minus_policy": -0.004510369685742203,
+   "delta_raw_approx": -0.0004873856576544093,
+   "norm_d_mean": 0.3284458853304386,
+   "norm_sq_mean": 0.10805891570154247,
+   "norm_floor_bound": false,
+   "attr_d": {
+    "random": 0.006156534697533907,
+    "policy": 0.013142297276852595,
+    "cem_disag": 0.008631927591110393,
+    "cem_real": 0.005984961655219351,
+    "cem_distractor": 0.010444499739917065
+   },
+   "share_d": {
+    "random": 0.05393063006334086,
+    "policy": 0.04559660923840619,
+    "cem_disag": 0.05032770848143715,
+    "cem_real": 0.03160093770778187,
+    "cem_distractor": 0.0668948095834451
+   },
+   "occupancy": {
+    "random": 0.734,
+    "policy": 0.517,
+    "cem_disag": 0.6595,
+    "cem_real": 0.9845,
+    "cem_distractor": 0.452
+   },
+   "intrinsic": {
+    "random": 8.67660065923701e-05,
+    "policy": 0.0001787038449620013,
+    "cem_disag": 0.00013613049356354167,
+    "cem_real": 0.00010348738569882698,
+    "cem_distractor": 0.0001117421821145399
+   }
+  },
+  {
+   "run_dir": "/home/rickybao/projects/dreamerv3/local_results/wavec_planloc_20260822_182736/runs/se_avoid_flat_s50",
+   "arm": "flat",
+   "train_seed": 50,
+   "cem_ok": true,
+   "ckpt": "20260821T213318F824843",
+   "ckpt_final_ok": true,
+   "devices": "[CudaDevice(id=0)]",
+   "backend": "gpu",
+   "delta_disag_minus_policy": -0.009144202858002397,
+   "delta_raw_approx": -0.0010111709714105727,
+   "norm_d_mean": 0.33237890526652336,
+   "norm_sq_mean": 0.11058054891309232,
+   "norm_floor_bound": false,
+   "attr_d": {
+    "random": 0.007423649642714601,
+    "policy": 0.02054504315783927,
+    "cem_disag": 0.011400840299836871,
+    "cem_real": 0.010030784288052664,
+    "cem_distractor": 0.012118789436826205
+   },
+   "share_d": {
+    "random": 0.07335175266129414,
+    "policy": 0.04451392112227797,
+    "cem_disag": 0.0725537718682923,
+    "cem_real": 0.053077207347205946,
+    "cem_distractor": 0.09789220766245342
+   },
+   "occupancy": {
+    "random": 0.754,
+    "policy": 0.6815,
+    "cem_disag": 0.478,
+    "cem_real": 0.5945,
+    "cem_distractor": 0.5195
+   },
+   "intrinsic": {
+    "random": 6.508723469596589e-05,
+    "policy": 0.00017336982723645632,
+    "cem_disag": 0.00010094218825724966,
+    "cem_real": 7.959195990042644e-05,
+    "cem_distractor": 7.671345953531272e-05
+   }
+  },
+  {
+   "run_dir": "/home/rickybao/projects/dreamerv3/local_results/wavec_planloc_20260822_182736/runs/se_avoid_flat_s51",
+   "arm": "flat",
+   "train_seed": 51,
+   "cem_ok": true,
+   "ckpt": "20260821T213825F211836",
+   "ckpt_final_ok": true,
+   "devices": "[CudaDevice(id=0)]",
+   "backend": "gpu",
+   "delta_disag_minus_policy": -0.002063271121740661,
+   "delta_raw_approx": -0.00022972294495623316,
+   "norm_d_mean": 0.3336108885705471,
+   "norm_sq_mean": 0.11133919460978514,
+   "norm_floor_bound": false,
+   "attr_d": {
+    "random": 0.00781917474228457,
+    "policy": 0.01290573259189948,
+    "cem_disag": 0.01084246147015882,
+    "cem_real": 0.009680030772514368,
+    "cem_distractor": 0.01346699696803389
+   },
+   "share_d": {
+    "random": 0.07919987814504154,
+    "policy": 0.04420067623506345,
+    "cem_disag": 0.07058570321643333,
+    "cem_real": 0.05557840786851712,
+    "cem_distractor": 0.10216803346184226
+   },
+   "occupancy": {
+    "random": 0.7435,
+    "policy": 0.4375,
+    "cem_disag": 0.5555,
+    "cem_real": 0.71,
+    "cem_distractor": 0.579
+   },
+   "intrinsic": {
+    "random": 9.682872031589795e-05,
+    "policy": 0.00015970842844762956,
+    "cem_disag": 0.00016268985095302925,
+    "cem_real": 0.0001383962678082753,
+    "cem_distractor": 0.0001337722553034837
+   }
+  },
+  {
+   "run_dir": "/home/rickybao/projects/dreamerv3/local_results/wavec_planloc_20260822_182736/runs/se_avoid_het_s44",
+   "arm": "hetero",
+   "train_seed": 44,
+   "cem_ok": true,
+   "ckpt": "20260821T215437F360981",
+   "ckpt_final_ok": true,
+   "devices": "[CudaDevice(id=0)]",
+   "backend": "gpu",
+   "delta_disag_minus_policy": -0.016761118063419927,
+   "delta_raw_approx": -0.0022745307379209508,
+   "norm_d_mean": 0.3679325245320797,
+   "norm_sq_mean": 0.13570280510612054,
+   "norm_floor_bound": false,
+   "attr_d": {
+    "random": 0.007509475380510162,
+    "policy": 0.02770732870992266,
+    "cem_disag": 0.010946210646502731,
+    "cem_real": 0.011325455490585805,
+    "cem_distractor": 0.014609531417476198
+   },
+   "share_d": {
+    "random": 0.08157866290947458,
+    "policy": 0.058542945634964066,
+    "cem_disag": 0.07472624645142582,
+    "cem_real": 0.06335567509334548,
+    "cem_distractor": 0.09847824961371371
+   },
+   "occupancy": {
+    "random": 0.7445,
+    "policy": 0.7305,
+    "cem_disag": 0.752,
+    "cem_real": 0.9245,
+    "cem_distractor": 0.9935
+   },
+   "intrinsic": {
+    "random": 9.41636377992836e-05,
+    "policy": 0.00020197597220976605,
+    "cem_disag": 0.00014976651038159616,
+    "cem_real": 0.0001318027101588086,
+    "cem_distractor": 0.00013882075924993842
+   }
+  },
+  {
+   "run_dir": "/home/rickybao/projects/dreamerv3/local_results/wavec_planloc_20260822_182736/runs/se_avoid_het_s45",
+   "arm": "hetero",
+   "train_seed": 45,
+   "cem_ok": true,
+   "ckpt": "20260821T214749F303055",
+   "ckpt_final_ok": true,
+   "devices": "[CudaDevice(id=0)]",
+   "backend": "gpu",
+   "delta_disag_minus_policy": -0.015587307656737725,
+   "delta_raw_approx": -0.0020991626459558755,
+   "norm_d_mean": 0.36674125492572784,
+   "norm_sq_mean": 0.13467127820810654,
+   "norm_floor_bound": false,
+   "attr_d": {
+    "random": 0.007742723881106551,
+    "policy": 0.027597964716038224,
+    "cem_disag": 0.0120106570593005,
+    "cem_real": 0.009832096545068784,
+    "cem_distractor": 0.011835017168643307
+   },
+   "share_d": {
+    "random": 0.049222484314385855,
+    "policy": 0.03921580744911141,
+    "cem_disag": 0.04379056503327293,
+    "cem_real": 0.029252597581431276,
+    "cem_distractor": 0.0541060996589084
+   },
+   "occupancy": {
+    "random": 0.7555,
+    "policy": 0.8365,
+    "cem_disag": 0.6665,
+    "cem_real": 0.7295,
+    "cem_distractor": 0.9675
+   },
+   "intrinsic": {
+    "random": 9.835549700437696e-05,
+    "policy": 0.00018908873569307616,
+    "cem_disag": 0.00016864430520217865,
+    "cem_real": 0.00012671739161669392,
+    "cem_distractor": 0.00011656841835429077
+   }
+  },
+  {
+   "run_dir": "/home/rickybao/projects/dreamerv3/local_results/wavec_planloc_20260822_182736/runs/se_avoid_het_s46",
+   "arm": "hetero",
+   "train_seed": 46,
+   "cem_ok": true,
+   "ckpt": "20260821T214816F771484",
+   "ckpt_final_ok": true,
+   "devices": "[CudaDevice(id=0)]",
+   "backend": "gpu",
+   "delta_disag_minus_policy": -0.010904506010949647,
+   "delta_raw_approx": -0.0014606814251892338,
+   "norm_d_mean": 0.36586686596274376,
+   "norm_sq_mean": 0.13395209500755978,
+   "norm_floor_bound": false,
+   "attr_d": {
+    "random": 0.006706562739709966,
+    "policy": 0.020420332535636288,
+    "cem_disag": 0.009515826524686641,
+    "cem_real": 0.007769110630644441,
+    "cem_distractor": 0.011717633713457859
+   },
+   "share_d": {
+    "random": 0.058032493616627295,
+    "policy": 0.04949009447704676,
+    "cem_disag": 0.057894206554103066,
+    "cem_real": 0.04245510235600048,
+    "cem_distractor": 0.08512525429308868
+   },
+   "occupancy": {
+    "random": 0.741,
+    "policy": 0.778,
+    "cem_disag": 0.508,
+    "cem_real": 0.6685,
+    "cem_distractor": 1.0
+   },
+   "intrinsic": {
+    "random": 8.598712962884747e-05,
+    "policy": 0.0002004676759643189,
+    "cem_disag": 0.00014984086299955378,
+    "cem_real": 0.00010534128810104448,
+    "cem_distractor": 0.00011472376231540693
+   }
+  },
+  {
+   "run_dir": "/home/rickybao/projects/dreamerv3/local_results/wavec_planloc_20260822_182736/runs/se_avoid_het_s47",
+   "arm": "hetero",
+   "train_seed": 47,
+   "cem_ok": true,
+   "ckpt": "20260821T213323F038189",
+   "ckpt_final_ok": true,
+   "devices": "[CudaDevice(id=0)]",
+   "backend": "gpu",
+   "delta_disag_minus_policy": -0.0069939749984815475,
+   "delta_raw_approx": -0.0009284226222506205,
+   "norm_d_mean": 0.3639974519610405,
+   "norm_sq_mean": 0.13274605963735775,
+   "norm_floor_bound": false,
+   "attr_d": {
+    "random": 0.008173794117159666,
+    "policy": 0.019240403540999075,
+    "cem_disag": 0.012246428542517528,
+    "cem_real": 0.011870003107942076,
+    "cem_distractor": 0.01569388670364211
+   },
+   "share_d": {
+    "random": 0.08435065242190594,
+    "policy": 0.04240438253474607,
+    "cem_disag": 0.08782422025588706,
+    "cem_real": 0.06946897947081569,
+    "cem_distractor": 0.11100078701761448
+   },
+   "occupancy": {
+    "random": 0.747,
+    "policy": 0.547,
+    "cem_disag": 0.6635,
+    "cem_real": 0.6505,
+    "cem_distractor": 0.943
+   },
+   "intrinsic": {
+    "random": 0.00010265985057048966,
+    "policy": 0.00020430464337187004,
+    "cem_disag": 0.00016508624099151347,
+    "cem_real": 0.00014594128262251615,
+    "cem_distractor": 0.00015044477269111667
+   }
+  }
+ ],
+ "s1_region_entry": {
+  "hetero": [
+   {
+    "seed": 44,
+    "occ_disag": 0.752,
+    "occ_policy": 0.7305,
+    "delta": 0.021499999999999964
+   },
+   {
+    "seed": 45,
+    "occ_disag": 0.6665,
+    "occ_policy": 0.8365,
+    "delta": -0.17000000000000004
+   },
+   {
+    "seed": 46,
+    "occ_disag": 0.508,
+    "occ_policy": 0.778,
+    "delta": -0.27
+   },
+   {
+    "seed": 47,
+    "occ_disag": 0.6635,
+    "occ_policy": 0.547,
+    "delta": 0.11649999999999994
+   }
+  ],
+  "flat": [
+   {
+    "seed": 48,
+    "delta": 0.031000000000000028
+   },
+   {
+    "seed": 49,
+    "delta": 0.14249999999999996
+   },
+   {
+    "seed": 50,
+    "delta": -0.20350000000000001
+   },
+   {
+    "seed": 51,
+    "delta": 0.118
+   }
+  ]
+ },
+ "s2_share": {
+  "hetero": [
+   {
+    "seed": 44,
+    "disag": 0.07472624645142582,
+    "distractor_planner": 0.09847824961371371,
+    "policy": 0.058542945634964066
+   },
+   {
+    "seed": 45,
+    "disag": 0.04379056503327293,
+    "distractor_planner": 0.0541060996589084,
+    "policy": 0.03921580744911141
+   },
+   {
+    "seed": 46,
+    "disag": 0.057894206554103066,
+    "distractor_planner": 0.08512525429308868,
+    "policy": 0.04949009447704676
+   },
+   {
+    "seed": 47,
+    "disag": 0.08782422025588706,
+    "distractor_planner": 0.11100078701761448,
+    "policy": 0.04240438253474607
+   }
+  ],
+  "flat": [
+   {
+    "seed": 48,
+    "disag": 0.059746238112782186,
+    "distractor_planner": 0.07168803993085412,
+    "policy": 0.037994340422414535
+   },
+   {
+    "seed": 49,
+    "disag": 0.05032770848143715,
+    "distractor_planner": 0.0668948095834451,
+    "policy": 0.04559660923840619
+   },
+   {
+    "seed": 50,
+    "disag": 0.0725537718682923,
+    "distractor_planner": 0.09789220766245342,
+    "policy": 0.04451392112227797
+   },
+   {
+    "seed": 51,
+    "disag": 0.07058570321643333,
+    "distractor_planner": 0.10216803346184226,
+    "policy": 0.04420067623506345
+   }
+  ]
+ },
+ "s3_steerability_hetero": [
+  {
+   "seed": 44,
+   "ceil": -0.01309779729244646
+  },
+  {
+   "seed": 45,
+   "ceil": -0.015762947547394917
+  },
+  {
+   "seed": 46,
+   "ceil": -0.00870269882217843
+  },
+  {
+   "seed": 47,
+   "ceil": -0.0035465168373569646
+  }
+ ],
+ "matched_strength_control": {
+  "per_run": [
+   {
+    "seed": 44,
+    "ratio": 0.7415065700292967,
+    "policy_gt_random": true
+   },
+   {
+    "seed": 45,
+    "ratio": 0.8918791729398288,
+    "policy_gt_random": true
+   },
+   {
+    "seed": 46,
+    "ratio": 0.7474564778524386,
+    "policy_gt_random": true
+   },
+   {
+    "seed": 47,
+    "ratio": 0.8080395935545516,
+    "policy_gt_random": true
+   }
+  ],
+  "ratio_bar": 0.9,
+  "need": 3,
+  "passes": false
+ },
+ "denorm_robustness": {
+  "interaction_raw_approx": -0.0010524609068119726,
+  "note": "Delta * mean(norm_d^2); wing-asymmetric normalizers (Jensen) shrink hetero Delta \u2014 this row is the unshrunk comparator, descriptive"
+ },
+ "wing_bca_indicative": {
+  "hetero": [
+   -0.012561726682397212,
+   -0.016174212860078828,
+   -0.008949240504715596
+  ],
+  "flat": [
+   -0.005768141925950679,
+   -0.008249463448159924,
+   -0.003286820403741432
+  ]
+ },
+ "primary": {
+  "statement": "localized transmission: the deployed-objective planner's attribution gain over the policy is LARGER on the scarecrow field than on the flat comparator (exact C(8,4), one-sided) AND positive in >= 3/4 hetero runs; power note: fire requires near-complete separation (floor 1/70), no power against moderate effects",
+  "delta_hetero": [
+   -0.016761118063419927,
+   -0.015587307656737725,
+   -0.010904506010949647,
+   -0.0069939749984815475
+  ],
+  "delta_flat": [
+   -0.007354724038317453,
+   -0.004510369685742203,
+   -0.009144202858002397,
+   -0.002063271121740661
+  ],
+  "interaction": -0.006793584756446533,
+  "p": 0.9714285714285714,
+  "min_attainable_p": 0.014285714285714285,
+  "n_het_pos": 0,
+  "need": 3,
+  "fires": false
+ },
+ "outcome_cell": "NO-LOCALIZED-TRANSMISSION-WEAK-OPTIMIZER",
+ "fit_counters": {
+  "/home/rickybao/projects/dreamerv3/local_results/wavec_planloc_20260822_182736/runs/se_avoid_flat_s48": {
+   "expected": 500000.0,
+   "last_step": 499968,
+   "ratio": 0.999936,
+   "flag": "OK",
+   "config_steps": 500000.0
+  },
+  "/home/rickybao/projects/dreamerv3/local_results/wavec_planloc_20260822_182736/runs/se_avoid_flat_s49": {
+   "expected": 500000.0,
+   "last_step": 498576,
+   "ratio": 0.997152,
+   "flag": "OK",
+   "config_steps": 500000.0
+  },
+  "/home/rickybao/projects/dreamerv3/local_results/wavec_planloc_20260822_182736/runs/se_avoid_flat_s50": {
+   "expected": 500000.0,
+   "last_step": 499088,
+   "ratio": 0.998176,
+   "flag": "OK",
+   "config_steps": 500000.0
+  },
+  "/home/rickybao/projects/dreamerv3/local_results/wavec_planloc_20260822_182736/runs/se_avoid_flat_s51": {
+   "expected": 500000.0,
+   "last_step": 497840,
+   "ratio": 0.99568,
+   "flag": "OK",
+   "config_steps": 500000.0
+  },
+  "/home/rickybao/projects/dreamerv3/local_results/wavec_planloc_20260822_182736/runs/se_avoid_het_s44": {
+   "expected": 500000.0,
+   "last_step": 499264,
+   "ratio": 0.998528,
+   "flag": "OK",
+   "config_steps": 500000.0
+  },
+  "/home/rickybao/projects/dreamerv3/local_results/wavec_planloc_20260822_182736/runs/se_avoid_het_s45": {
+   "expected": 500000.0,
+   "last_step": 497856,
+   "ratio": 0.995712,
+   "flag": "OK",
+   "config_steps": 500000.0
+  },
+  "/home/rickybao/projects/dreamerv3/local_results/wavec_planloc_20260822_182736/runs/se_avoid_het_s46": {
+   "expected": 500000.0,
+   "last_step": 498848,
+   "ratio": 0.997696,
+   "flag": "OK",
+   "config_steps": 500000.0
+  },
+  "/home/rickybao/projects/dreamerv3/local_results/wavec_planloc_20260822_182736/runs/se_avoid_het_s47": {
+   "expected": 500000.0,
+   "last_step": 499120,
+   "ratio": 0.99824,
+   "flag": "OK",
+   "config_steps": 500000.0
+  }
+ }
+}

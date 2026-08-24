@@ -1,0 +1,43 @@
+{
+ "stamp": {
+  "git": "7a866fcd",
+  "time": "2026-08-23T09:07:42"
+ },
+ "n_loaded": 0,
+ "excluded_runs": [
+  {
+   "run_dir": "/home/rickybao/projects/dreamerv3/local_results/b4_alea_20260823_035808/runroot/se_alea_s120",
+   "error": "AssertionError: local_results/b4_alea_20260823_035808/runroot/se_alea_s120/distractor: cross-instrument share ratio 4.256394930324017 != se_probe 4.209503440701541"
+  },
+  {
+   "run_dir": "/home/rickybao/projects/dreamerv3/local_results/b4_alea_20260823_035808/runroot/se_alea_s121",
+   "error": "AssertionError: local_results/b4_alea_20260823_035808/runroot/se_alea_s121/distractor: cross-instrument share ratio 5.699805244308611 != se_probe 5.744048136649355"
+  },
+  {
+   "run_dir": "/home/rickybao/projects/dreamerv3/local_results/b4_alea_20260823_035808/runroot/se_alea_s122",
+   "error": "AssertionError: local_results/b4_alea_20260823_035808/runroot/se_alea_s122/distractor: cross-instrument share ratio 5.385169148388721 != se_probe 5.466157838727341"
+  },
+  {
+   "run_dir": "/home/rickybao/projects/dreamerv3/local_results/b4_alea_20260823_035808/runroot/se_alea_s123",
+   "error": "AssertionError: local_results/b4_alea_20260823_035808/runroot/se_alea_s123/distractor: cross-instrument share ratio 5.391877452898871 != se_probe 5.497370780491621"
+  }
+ ],
+ "stage1_reference": {
+  "real_mean_min": 0.002872289559389982,
+  "intrinsic_min": 0.00188539270311594,
+  "n": 8
+ },
+ "per_run": [],
+ "masked_descriptive": {
+  "distractor_raw": [],
+  "distractor_norm": [],
+  "velocity_raw": [],
+  "velocity_norm": [],
+  "note": "the distractor mask is a CONSTRUCTION-INERT exchangeability control (exogenous channel; population delta 0 for any statistic) \u2014 a materially nonzero value indicates an instrument defect; the velocity and dup masks are informative (R-A1-M12)"
+ },
+ "theta1": [],
+ "primary": "NOT-ADJUDICABLE (0/4 valid of 0 loaded; the 4/4 rules need the full wave)",
+ "outcome_cell": "NOT-ADJUDICABLE",
+ "fit_counters": {},
+ "fit_flag": "OK"
+}

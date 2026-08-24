@@ -1,0 +1,136 @@
+{
+ "prereg": "PREREG_valuefree_online_20260821.md",
+ "modal_n_ep": {
+  "auc100k": 96,
+  "auc50k": 48,
+  "auc125k": 112
+ },
+ "windows": {
+  "auc100k": {
+   "primary_online_minus_q1s1": {
+    "diff": 159.00652500000007,
+    "ci": [
+     65.01650692359469,
+     272.1901537366659
+    ],
+    "perm_p": 0.008399160083991601,
+    "n": [
+     8,
+     8
+    ]
+   },
+   "anchor_q1s1_minus_scratch": {
+    "diff": 119.81378749999999,
+    "ci": [
+     50.9652159986196,
+     165.356714482108
+    ],
+    "perm_p": 0.004299570042995701,
+    "n": [
+     8,
+     8
+    ]
+   },
+   "value_over_scratch": 119.81378749999999,
+   "p_match": 0.03558,
+   "p_noninf": 0.03558,
+   "secondary_online_minus_q1s0": {
+    "point_only": 171.4726875
+   },
+   "realized_mde80": 159.24638524998255,
+   "means": {
+    "online": 454.54037500000004,
+    "q1s1": 295.53385,
+    "q1s0": 283.06768750000003,
+    "scratch": 175.72006249999998
+   }
+  },
+  "auc50k": {
+   "primary_online_minus_q1s1": {
+    "diff": 169.6771,
+    "ci": [
+     101.35748182869665,
+     262.6877390953974
+    ],
+    "perm_p": 0.0004999500049995,
+    "n": [
+     8,
+     8
+    ]
+   },
+   "anchor_q1s1_minus_scratch": {
+    "diff": 83.8255125,
+    "ci": [
+     41.99477109420012,
+     130.30715499406108
+    ],
+    "perm_p": 0.004899510048995101,
+    "n": [
+     8,
+     8
+    ]
+   },
+   "value_over_scratch": 83.8255125,
+   "p_match": 0.001935,
+   "p_noninf": 0.001935,
+   "secondary_online_minus_q1s0": {
+    "point_only": 184.6119875
+   },
+   "realized_mde80": 122.94532474966813,
+   "means": {
+    "online": 343.6588625,
+    "q1s1": 173.9817625,
+    "q1s0": 159.046875,
+    "scratch": 90.15625
+   }
+  },
+  "auc125k": {
+   "primary_online_minus_q1s1": {
+    "diff": 148.76897499999995,
+    "ci": [
+     52.752024903029124,
+     260.06948482234765
+    ],
+    "perm_p": 0.018598140185981403,
+    "n": [
+     8,
+     8
+    ]
+   },
+   "anchor_q1s1_minus_scratch": {
+    "diff": 137.6685375,
+    "ci": [
+     53.032344057579266,
+     193.67615401827288
+    ],
+    "perm_p": 0.0065993400659934,
+    "n": [
+     8,
+     8
+    ]
+   },
+   "value_over_scratch": 137.6685375,
+   "p_match": 0.08458,
+   "p_noninf": 0.08458,
+   "secondary_online_minus_q1s0": {
+    "point_only": 165.13504999999998
+   },
+   "realized_mde80": 159.74757762540625,
+   "means": {
+    "online": 498.60491249999995,
+    "q1s1": 349.8359375,
+    "q1s0": 333.4698625,
+    "scratch": 212.1674
+   }
+  }
+ },
+ "overall": "ONLINE-SUPERIOR: online task pretraining beats the value-free recipe at matched updates. Registered asymmetric consequence: attribution ambiguous among onlineness / task-directed data / 2.5x unique frames \u2014 only \"the recipe does not match at these budgets\" is licensed",
+ "ladder": {
+  "online_superior_at": [
+   "auc50k",
+   "auc125k"
+  ],
+  "recipe_superior_at": [],
+  "divergent": false
+ }
+}

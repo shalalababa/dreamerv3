@@ -1,0 +1,35 @@
+{
+ "prereg": "PREREG_crowding_behavioral_20260820.md",
+ "amendment": "PREREG_crowding_behavioral_amend1_20260820.md",
+ "overall": "RESCUE-BEHAVIORAL-NULL (powered): the mechanism claim stays probe-level; the three downstream algorithm candidates gate CLOSED",
+ "primary": {
+  "mean": 1.1353999999999997,
+  "ci": [
+   -12.316976321112726,
+   21.04689126017413
+  ],
+  "perm_p": 0.9296875,
+  "d_z": 0.04531917313406931,
+  "sd": 25.053413852920613,
+  "n": 8,
+  "alpha": 0.05,
+  "fire": false
+ },
+ "realized_mde80": 24.8156557819367,
+ "nocall_bar": 33.22,
+ "frozen_secondary": {
+  "mean": 20.4505,
+  "n": 8,
+  "note": "look-0 FROZEN-protocol descriptive (amend1 B7); no alpha, first inspection is this read"
+ },
+ "context": {
+  "w1_mean": 84.1796875,
+  "w100_mean": 85.3150875,
+  "scratch": 147.6823
+ },
+ "gates": {
+  "adapts": 16,
+  "adapt_steps": 125000,
+  "modal_n_ep": 96
+ }
+}

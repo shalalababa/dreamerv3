@@ -46,3 +46,28 @@ consulted in the repair). The panel is uniform but is not the
 literal final save on any cell (the true final saves died with the
 instances); the probed checkpoints are 98.9–99.8% of training.
 Fixed at source in 015e555a (pull pass 2 now carries ckpt/latest).
+
+## DISCLOSURE (23 Aug 2026, dated addendum — ops lane-ledger check):
+the fired primary's arm contrast is training-device-confounded
+
+Ops verified (lane = i % nlanes against the generated lane files)
+that the A1 producer wave ran ARM-PURE BY CARD: all hetero
+collectors trained on one GPU, all flat collectors on the other.
+The registered primary (occupancy hetero−flat, p = .0143) and the
+gated ranking secondary are het-vs-flat CROSS-ARM contrasts, so
+any same-box cross-card training-device component is unidentifiable
+from the arm effect. Magnitude UNMEASURED — the house 0.113-AUROC
+figure is probe-side and cross-model; there is no measurement of
+same-model/same-box/cross-card training drift, and the probe panel
+itself was single-device (that rule was not violated). The result
+STANDS as the registered outcome of its executed read; this
+addendum attaches a standing caveat, does not re-adjudicate, and
+licenses no re-run (user decision 23 Aug: fact recorded,
+disclosure only, no further actions). Downstream: the same
+confound propagates into Wave B's LOCALIZED wing twice over — the
+A1 checkpoints are its sources AND its own leg-1 lanes were
+arm-pure (see PREREG_waveb_advd_amend1_20260823.md rev 2.1); the
+WB ambient carrier is unaffected (balanced 4/4). Any citation of
+the A1 primary carries this caveat; future cross-arm waves must
+use interleaved lane layouts (the A2 Amendment-1 cyclic pattern is
+the house fix).

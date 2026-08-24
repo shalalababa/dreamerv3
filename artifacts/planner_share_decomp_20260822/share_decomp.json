@@ -1,0 +1,169 @@
+{
+ "status": "VALUE-AWARE post-hoc re-analysis of the executed planner read's published json (Fable review F1/F5, verified 22 Aug); DESCRIPTIVE \u2014 licenses no registered claim; disclosed wherever cited",
+ "per_run": [
+  {
+   "train_seed": 10,
+   "share": {
+    "random": 0.05962787388114931,
+    "policy": 0.05193754504198525,
+    "cem_disag": 0.06531467089967062,
+    "cem_real": 0.055111561701422736,
+    "cem_distractor": 0.10103271710849551
+   },
+   "level": {
+    "random": 0.07214120556698603,
+    "policy": 0.6872290344581313,
+    "cem_disag": 0.14401422595331909,
+    "cem_real": 0.16634073650772363,
+    "cem_distractor": 0.159346986289859
+   },
+   "argmax_key": {}
+  },
+  {
+   "train_seed": 11,
+   "share": {
+    "random": 0.04246286236649622,
+    "policy": 0.037989261841226044,
+    "cem_disag": 0.046043592976736734,
+    "cem_real": 0.0320913473500057,
+    "cem_distractor": 0.061605247385686346
+   },
+   "level": {
+    "random": 0.19202578600252085,
+    "policy": 0.3167384075935014,
+    "cem_disag": 0.28226731326850185,
+    "cem_real": 0.37242061230430956,
+    "cem_distractor": 0.25900523538417364
+   },
+   "argmax_key": {}
+  },
+  {
+   "train_seed": 12,
+   "share": {
+    "random": 0.03490053655192825,
+    "policy": 0.03090732604853191,
+    "cem_disag": 0.04104722919688863,
+    "cem_real": 0.0327598260273714,
+    "cem_distractor": 0.0547667125048247
+   },
+   "level": {
+    "random": 0.12803408244441825,
+    "policy": 0.4644580880223168,
+    "cem_disag": 0.1939507291733088,
+    "cem_real": 0.27036769935890986,
+    "cem_distractor": 0.21790775451068212
+   },
+   "argmax_key": {}
+  },
+  {
+   "train_seed": 13,
+   "share": {
+    "random": 0.04830102689615109,
+    "policy": 0.040768266567320834,
+    "cem_disag": 0.04767749192452063,
+    "cem_real": 0.03503867129829146,
+    "cem_distractor": 0.058946672288295976
+   },
+   "level": {
+    "random": 0.17041889713656486,
+    "policy": 0.31631433899916406,
+    "cem_disag": 0.19256691022893696,
+    "cem_real": 0.20758594047938167,
+    "cem_distractor": 0.1782985765242511
+   },
+   "argmax_key": {}
+  },
+  {
+   "train_seed": 14,
+   "share": {
+    "random": 0.04873358475868267,
+    "policy": 0.04940674534908202,
+    "cem_disag": 0.05910421870324286,
+    "cem_real": 0.04726166857529899,
+    "cem_distractor": 0.0816352579389369
+   },
+   "level": {
+    "random": 0.07703347341166997,
+    "policy": 0.2891298343522046,
+    "cem_disag": 0.130874891986709,
+    "cem_real": 0.1187078635862775,
+    "cem_distractor": 0.1577071004542248
+   },
+   "argmax_key": {}
+  },
+  {
+   "train_seed": 15,
+   "share": {
+    "random": 0.057467409955739235,
+    "policy": 0.043075947612195506,
+    "cem_disag": 0.06029797605834531,
+    "cem_real": 0.0509672453961399,
+    "cem_distractor": 0.0808213043726443
+   },
+   "level": {
+    "random": 0.16094052149570248,
+    "policy": 0.37841123730356374,
+    "cem_disag": 0.16919357044945924,
+    "cem_real": 0.19506341637022265,
+    "cem_distractor": 0.17344287865567332
+   },
+   "argmax_key": {}
+  },
+  {
+   "train_seed": 16,
+   "share": {
+    "random": 0.03742813903999232,
+    "policy": 0.03584367932213804,
+    "cem_disag": 0.03827866580644084,
+    "cem_real": 0.03372100967388722,
+    "cem_distractor": 0.049101672475199226
+   },
+   "level": {
+    "random": 0.09049047014021289,
+    "policy": 0.3376399296091376,
+    "cem_disag": 0.1084876266639401,
+    "cem_real": 0.1047535504220711,
+    "cem_distractor": 0.11161064039636924
+   },
+   "argmax_key": {}
+  },
+  {
+   "train_seed": 17,
+   "share": {
+    "random": 0.05134844155822619,
+    "policy": 0.04092269372240176,
+    "cem_disag": 0.056515706368165476,
+    "cem_real": 0.043723708531388045,
+    "cem_distractor": 0.0645206656942869
+   },
+   "level": {
+    "random": 0.08277954505399292,
+    "policy": 0.40085194992841455,
+    "cem_disag": 0.11910655554939933,
+    "cem_real": 0.12959598453250043,
+    "cem_distractor": 0.11091667391655552
+   },
+   "argmax_key": {}
+  }
+ ],
+ "mean_share": {
+  "random": 0.04753373437604566,
+  "policy": 0.04135643318811017,
+  "cem_disag": 0.05178494399175139,
+  "cem_real": 0.041334379819225685,
+  "cem_distractor": 0.06905378122104623
+ },
+ "mean_level": {
+  "random": 0.12173299765650854,
+  "policy": 0.3988466025333043,
+  "cem_disag": 0.1675577279091968,
+  "cem_real": 0.19560447544517454,
+  "cem_distractor": 0.1710294807664736
+ },
+ "share_steer_count": 8,
+ "attacker_arithmetic": {
+  "policy_level_x_planner_share": 0.02754186603209238,
+  "policy_attr_d": 0.016758,
+  "ratio": 1.6435055515033048
+ }
+}

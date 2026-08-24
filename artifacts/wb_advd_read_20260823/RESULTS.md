@@ -91,3 +91,19 @@ roll registered: panel-2 cell is the consumed one, panel-1 value
 reported as instrument-sensitivity, changes disclosed as two-look.
 Wave spec `ops/waves/wb_advd_ext/spec.yaml` (16 runs); read bundle
 = `wb_advd_r2` (RCC-built, post-panel).
+
+## Rev 2.1 disclosure (23 Aug, pre-read; ops finding): leg-1
+training-card layout
+
+Leg 1 ran 2-lane on instance 16 with lane = i % 2 over the
+declared order ⇒ all 4 het actors trained on one card, all 4 flat
+on the other (ambient split 4/4). AMBIENT wing unaffected
+(balanced; within-run primary; per-run gate). LOCALIZED wing:
+training-device ≡ arm on the het-vs-flat interaction, and because
+the extension resumes the leg-1 actors the confound is PERMANENT —
+it applies equally to this panel-1 sensitivity row and to the
+panel-2 consumed cell (magnitude unmeasured; same-box cross-card
+training drift has no house measurement). The localized cell
+carries this caveat in all downstream use. Extension runs
+single-lane (no new leg-2 alignment). Registered in the amendment
+rev 2.1 BEFORE the re-read.

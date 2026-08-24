@@ -126,3 +126,43 @@ Limitation-4 capacity/budget confound either way):
    single job, do not split).
 2. The pixel-parity cell per §4 (ops chat can wire it into the existing
    pixel submission machinery; exact overrides above).
+
+## §5 Probe-family panel READ (22 Aug) — SCREEN-INSENSITIVE, candidate KILLED
+
+Bundle pfam_panel_20260822_212317 (161/161 sha-verified; 80/80 dumps,
+10 arms × 8 seeds; ONE device, Tesla V100 — the reader's
+single_device witness true, per the 16-Aug probe-panel rule).
+
+**Result: the family has NO discriminating power on this substrate.**
+Per-seed decomposition (probe_family.json):
+- EVERY arm × side × seed sits at an identical **+1.25 info gain via
+  regime_affine** — q1 (true-reward-trained), rl (polarity-flipped),
+  shq1 (binding destroyed), srd0/srd1 (random stamp) all alike, to
+  2 decimals. That gain is available from the family's `in_regime`
+  INPUT alone (the regime indicator predicts reward by itself); it
+  carries no information about the head.
+- Head-output channels are dead everywhere: identity is WORSE than
+  the constant base-rate member in all 10 cells (+0.06..+1.41 vs
+  −2.047), and affine collapses onto constant (−2.0475 ≈ −2.0469) —
+  i.e. even the q1 head's predicted mean has ~zero linear relation to
+  per-frame true reward on in-regime eval frames.
+- The three elevated cells (rl_s1 one seed, shq1_s0 one seed, shq1_s1
+  one seed; gain 6.24 each, isotonic) are ONE shared numeric artifact,
+  not signal: best_nll ≈ −8.29 = 0.5·log(2π·1e-8), the fit_score
+  sigma clamp — a degenerate zero-train-residual isotonic fit hitting
+  the floor. Identical magnitude across unrelated arms; arm-nonspecific.
+
+**Verdict**: the registered prediction (rl recodes toward the task
+anchor; shq1/srd do not) is UNMEASURABLE at tier-0 — the screen
+cannot even separate q1 from random-stamp controls, so it has no
+power over the rl question. The §3.3 misalignment-aware-readout
+candidate (honest prior ~0.30) is **KILLED as unmeasurable in this
+currency/domain** (not refuted): per-frame in-regime reward in finger
+is base-rate + regime-indicator dominated, and every recoding the
+family can express saturates on that structure. Consistent with the
+8-Aug own-label read (own_in_mean 1.690 vs bar 1.5, claimable False)
+— two independent instruments now fail to find recoverable
+misalignment structure. No build; recorded negative. fq1 remains
+structural-NA as registered (no reward head exists in reward-free
+fits). Panel cost: one V100-day; the tier-0 fence (exploratory, no
+registered α) held throughout.

@@ -1,0 +1,686 @@
+{
+ "stamp": {
+  "git": "5a43cc16",
+  "time": "2026-08-22T19:29:47"
+ },
+ "n_loaded": 8,
+ "n_valid": 8,
+ "excluded_runs": [],
+ "invalid_cem": [],
+ "degenerate_runs": [],
+ "per_run": [
+  {
+   "run_dir": "/home/rickybao/projects/dreamerv3/local_results/wavea_refine_20260822_182736/runs/se_cheetah_seed10",
+   "train_seed": 10,
+   "cem_ok": true,
+   "degenerate": false,
+   "ckpt": "20260813T091238F251815",
+   "ckpt_final_ok": true,
+   "attr_d": {
+    "random": 0.0038773270957071526,
+    "policy": 0.022115638358989952,
+    "refine_attr": 0.02069679114081576,
+    "refine_disag": 0.024252852011113248
+   },
+   "share_d": {
+    "random": 0.06829946225526656,
+    "policy": 0.04970367079827794,
+    "refine_attr": 0.04985051117330714,
+    "refine_disag": 0.0496340502410207
+   },
+   "intrinsic": {
+    "random": 4.8106662681675515e-05,
+    "policy": 0.00021868539725255687,
+    "refine_attr": 0.00020168755288614193,
+    "refine_disag": 0.00023147583265745197
+   },
+   "occupancy": {
+    "random": 0.764,
+    "policy": 0.4175,
+    "refine_attr": 0.4015,
+    "refine_disag": 0.5495
+   },
+   "return_mean": {
+    "random": 0.004158349899156747,
+    "policy": 0.07648398705506407,
+    "refine_attr": 0.06751659874810867,
+    "refine_disag": 0.10180573587758135
+   },
+   "inplan": {
+    "refine_attr": {
+     "gain": 0.027358333360403775,
+     "improves": true,
+     "refine_disp": 0.44399148312956094,
+     "clip_frac": 0.4106720682829618
+    },
+    "refine_disag": {
+     "gain": 0.0001956165845040232,
+     "improves": true,
+     "refine_disp": 0.44958878864720464,
+     "clip_frac": 0.41518858809769155
+    }
+   },
+   "repro_vs_ambient": {
+    "policy": [
+     0.022115638358989952,
+     0.035693
+    ],
+    "random": [
+     0.0038773270957071526,
+     0.004302
+    ]
+   }
+  },
+  {
+   "run_dir": "/home/rickybao/projects/dreamerv3/local_results/wavea_refine_20260822_182736/runs/se_cheetah_seed11",
+   "train_seed": 11,
+   "cem_ok": true,
+   "degenerate": false,
+   "ckpt": "20260813T090740F437213",
+   "ckpt_final_ok": true,
+   "attr_d": {
+    "random": 0.007806338669272231,
+    "policy": 0.01122307217596295,
+    "refine_attr": 0.011446454290372802,
+    "refine_disag": 0.010755863198517238
+   },
+   "share_d": {
+    "random": 0.04679471646489617,
+    "policy": 0.04083668106921324,
+    "refine_attr": 0.038328459982642143,
+    "refine_disag": 0.040795952087560663
+   },
+   "intrinsic": {
+    "random": 0.00011040085780769005,
+    "policy": 0.00016074336459496409,
+    "refine_attr": 0.00015330177778741927,
+    "refine_disag": 0.00015482145259011304
+   },
+   "occupancy": {
+    "random": 0.753,
+    "policy": 0.5545,
+    "refine_attr": 0.57,
+    "refine_disag": 0.572
+   },
+   "return_mean": {
+    "random": 0.0046725323935858255,
+    "policy": 0.037553789744364394,
+    "refine_attr": 0.0429975192481179,
+    "refine_disag": 0.036195632744424076
+   },
+   "inplan": {
+    "refine_attr": {
+     "gain": 0.016673371363431215,
+     "improves": true,
+     "refine_disp": 0.6066202336214482,
+     "clip_frac": 0.4287010939717293
+    },
+    "refine_disag": {
+     "gain": 0.00017490365548292175,
+     "improves": true,
+     "refine_disp": 0.5865615023635328,
+     "clip_frac": 0.42620906960964206
+    }
+   },
+   "repro_vs_ambient": {
+    "policy": [
+     0.01122307217596295,
+     0.012033
+    ],
+    "random": [
+     0.007806338669272231,
+     0.008154
+    ]
+   }
+  },
+  {
+   "run_dir": "/home/rickybao/projects/dreamerv3/local_results/wavea_refine_20260822_182736/runs/se_cheetah_seed12",
+   "train_seed": 12,
+   "cem_ok": true,
+   "degenerate": false,
+   "ckpt": "20260813T153547F545326",
+   "ckpt_final_ok": true,
+   "attr_d": {
+    "random": 0.0038700478744401585,
+    "policy": 0.01397229949535334,
+    "refine_attr": 0.013740889921463684,
+    "refine_disag": 0.013281386487032958
+   },
+   "share_d": {
+    "random": 0.038414291774346056,
+    "policy": 0.03226517497402679,
+    "refine_attr": 0.03280099488686812,
+    "refine_disag": 0.03367232549448718
+   },
+   "intrinsic": {
+    "random": 4.893131498738512e-05,
+    "policy": 0.00015488216105768516,
+    "refine_attr": 0.000147312435805361,
+    "refine_disag": 0.0001523968469718966
+   },
+   "occupancy": {
+    "random": 0.731,
+    "policy": 0.6425,
+    "refine_attr": 0.664,
+    "refine_disag": 0.7385
+   },
+   "return_mean": {
+    "random": 0.004483178977410717,
+    "policy": 0.013000635317479692,
+    "refine_attr": 0.040375848358999065,
+    "refine_disag": 0.040551269612667966
+   },
+   "inplan": {
+    "refine_attr": {
+     "gain": 0.02101113180629909,
+     "improves": true,
+     "refine_disp": 0.7186905986182391,
+     "clip_frac": 0.44510205437242983
+    },
+    "refine_disag": {
+     "gain": 0.0002017366214422509,
+     "improves": true,
+     "refine_disp": 0.7406160187926143,
+     "clip_frac": 0.4508684936761856
+    }
+   },
+   "repro_vs_ambient": {
+    "policy": [
+     0.01397229949535334,
+     0.014355
+    ],
+    "random": [
+     0.0038700478744401585,
+     0.004468
+    ]
+   }
+  },
+  {
+   "run_dir": "/home/rickybao/projects/dreamerv3/local_results/wavea_refine_20260822_182736/runs/se_cheetah_seed13",
+   "train_seed": 13,
+   "cem_ok": true,
+   "degenerate": false,
+   "ckpt": "20260813T152751F704709",
+   "ckpt_final_ok": true,
+   "attr_d": {
+    "random": 0.0077936550720120795,
+    "policy": 0.01249098635604112,
+    "refine_attr": 0.011640449856169901,
+    "refine_disag": 0.011597488693840453
+   },
+   "share_d": {
+    "random": 0.055728922477486925,
+    "policy": 0.04373466379721209,
+    "refine_attr": 0.044251766219313655,
+    "refine_disag": 0.042625629982582645
+   },
+   "intrinsic": {
+    "random": 0.00011437467645191645,
+    "policy": 0.00018385203982688837,
+    "refine_attr": 0.0001665605571724882,
+    "refine_disag": 0.00017276116511857252
+   },
+   "occupancy": {
+    "random": 0.72,
+    "policy": 0.915,
+    "refine_attr": 0.877,
+    "refine_disag": 0.843
+   },
+   "return_mean": {
+    "random": 0.004416067659355349,
+    "policy": 0.011958247470920697,
+    "refine_attr": 0.04257811241791569,
+    "refine_disag": 0.025573126886554748
+   },
+   "inplan": {
+    "refine_attr": {
+     "gain": 0.01763389278575778,
+     "improves": true,
+     "refine_disp": 0.6782073528468608,
+     "clip_frac": 0.4492851601243019
+    },
+    "refine_disag": {
+     "gain": 0.00021994607895612717,
+     "improves": true,
+     "refine_disp": 0.6746839212067425,
+     "clip_frac": 0.448474450007081
+    }
+   },
+   "repro_vs_ambient": {
+    "policy": [
+     0.01249098635604112,
+     0.012896
+    ],
+    "random": [
+     0.0077936550720120795,
+     0.008231
+    ]
+   }
+  },
+  {
+   "run_dir": "/home/rickybao/projects/dreamerv3/local_results/wavea_refine_20260822_182736/runs/se_cheetah_seed14",
+   "train_seed": 14,
+   "cem_ok": true,
+   "degenerate": false,
+   "ckpt": "20260813T215850F694009",
+   "ckpt_final_ok": true,
+   "attr_d": {
+    "random": 0.0034162834022284975,
+    "policy": 0.013855308703479282,
+    "refine_attr": 0.012853371469997278,
+    "refine_disag": 0.013129559459600577
+   },
+   "share_d": {
+    "random": 0.06238485059172833,
+    "policy": 0.05395903456897124,
+    "refine_attr": 0.05778282125350747,
+    "refine_disag": 0.055924365282421465
+   },
+   "intrinsic": {
+    "random": 4.6446555177681146e-05,
+    "policy": 0.00016302543802157742,
+    "refine_attr": 0.0001534803153044777,
+    "refine_disag": 0.0001604124572877481
+   },
+   "occupancy": {
+    "random": 0.733,
+    "policy": 0.2015,
+    "refine_attr": 0.5635,
+    "refine_disag": 0.404
+   },
+   "return_mean": {
+    "random": 0.0036758423500004938,
+    "policy": 0.02502112440759538,
+    "refine_attr": 0.021225416915903225,
+    "refine_disag": 0.026753906935601663
+   },
+   "inplan": {
+    "refine_attr": {
+     "gain": 0.018157679732888937,
+     "improves": true,
+     "refine_disp": 0.5432060006707907,
+     "clip_frac": 0.42754172459244727
+    },
+    "refine_disag": {
+     "gain": 0.0001598575565731153,
+     "improves": true,
+     "refine_disp": 0.5424540681652725,
+     "clip_frac": 0.4225756870014593
+    }
+   },
+   "repro_vs_ambient": {
+    "policy": [
+     0.013855308703479282,
+     0.014285
+    ],
+    "random": [
+     0.0034162834022284975,
+     0.003754
+    ]
+   }
+  },
+  {
+   "run_dir": "/home/rickybao/projects/dreamerv3/local_results/wavea_refine_20260822_182736/runs/se_cheetah_seed15",
+   "train_seed": 15,
+   "cem_ok": true,
+   "degenerate": false,
+   "ckpt": "20260813T214754F587996",
+   "ckpt_final_ok": true,
+   "attr_d": {
+    "random": 0.008401821261567279,
+    "policy": 0.010554007641361739,
+    "refine_attr": 0.012993159098362217,
+    "refine_disag": 0.010695739698425648
+   },
+   "share_d": {
+    "random": 0.062268530648268726,
+    "policy": 0.04428664544956932,
+    "refine_attr": 0.04749914649476359,
+    "refine_disag": 0.04480574806796235
+   },
+   "intrinsic": {
+    "random": 0.00011253329964529258,
+    "policy": 0.00014465767669389606,
+    "refine_attr": 0.00015478297810113872,
+    "refine_disag": 0.00013747706999492947
+   },
+   "occupancy": {
+    "random": 0.738,
+    "policy": 0.598,
+    "refine_attr": 0.598,
+    "refine_disag": 0.5975
+   },
+   "return_mean": {
+    "random": 0.0034953529480744694,
+    "policy": 0.04413080486438048,
+    "refine_attr": 0.02833171702614345,
+    "refine_disag": 0.03314096119971328
+   },
+   "inplan": {
+    "refine_attr": {
+     "gain": 0.022076256927102803,
+     "improves": true,
+     "refine_disp": 0.7368186103887856,
+     "clip_frac": 0.470807377576828
+    },
+    "refine_disag": {
+     "gain": 0.00017915220771101304,
+     "improves": true,
+     "refine_disp": 0.7557955190129578,
+     "clip_frac": 0.4712104801684618
+    }
+   },
+   "repro_vs_ambient": {
+    "policy": [
+     0.010554007641361739,
+     0.0163
+    ],
+    "random": [
+     0.008401821261567279,
+     0.009249
+    ]
+   }
+  },
+  {
+   "run_dir": "/home/rickybao/projects/dreamerv3/local_results/wavea_refine_20260822_182736/runs/se_cheetah_seed16",
+   "train_seed": 16,
+   "cem_ok": true,
+   "degenerate": false,
+   "ckpt": "20260813T213035F670985",
+   "ckpt_final_ok": true,
+   "attr_d": {
+    "random": 0.0029692083309313146,
+    "policy": 0.011367070323611873,
+    "refine_attr": 0.011508524864960826,
+    "refine_disag": 0.011641944978480286
+   },
+   "share_d": {
+    "random": 0.04189821420885935,
+    "policy": 0.0371710875522541,
+    "refine_attr": 0.03996107517361253,
+    "refine_disag": 0.03762069654998078
+   },
+   "intrinsic": {
+    "random": 4.8250770166305304e-05,
+    "policy": 0.0001563925216323696,
+    "refine_attr": 0.00014494876184107853,
+    "refine_disag": 0.00015205975121170923
+   },
+   "occupancy": {
+    "random": 0.7285,
+    "policy": 0.7745,
+    "refine_attr": 0.836,
+    "refine_disag": 0.8085
+   },
+   "return_mean": {
+    "random": 0.0036388848424053323,
+    "policy": 0.1326516325150642,
+    "refine_attr": 0.09558192672043515,
+    "refine_disag": 0.09423807740485063
+   },
+   "inplan": {
+    "refine_attr": {
+     "gain": 0.02007791971974075,
+     "improves": true,
+     "refine_disp": 0.5139014558419586,
+     "clip_frac": 0.43163181257247923
+    },
+    "refine_disag": {
+     "gain": 0.00019673480332130567,
+     "improves": true,
+     "refine_disp": 0.5057615098468959,
+     "clip_frac": 0.4331073442697525
+    }
+   },
+   "repro_vs_ambient": {
+    "policy": [
+     0.011367070323611873,
+     0.012102
+    ],
+    "random": [
+     0.0029692083309313146,
+     0.003387
+    ]
+   }
+  },
+  {
+   "run_dir": "/home/rickybao/projects/dreamerv3/local_results/wavea_refine_20260822_182736/runs/se_cheetah_seed17",
+   "train_seed": 17,
+   "cem_ok": true,
+   "degenerate": false,
+   "ckpt": "20260813T220036F793840",
+   "ckpt_final_ok": true,
+   "attr_d": {
+    "random": 0.003922831953163579,
+    "policy": 0.015851971097808715,
+    "refine_attr": 0.014766572062102898,
+    "refine_disag": 0.015367509726905119
+   },
+   "share_d": {
+    "random": 0.06192047919349351,
+    "policy": 0.043946940721093515,
+    "refine_attr": 0.0440720491760942,
+    "refine_disag": 0.0444485364539539
+   },
+   "intrinsic": {
+    "random": 5.96258622372261e-05,
+    "policy": 0.00018920768462339765,
+    "refine_attr": 0.00017621323792627662,
+    "refine_disag": 0.00018176823459361912
+   },
+   "occupancy": {
+    "random": 0.7555,
+    "policy": 0.3885,
+    "refine_attr": 0.388,
+    "refine_disag": 0.3005
+   },
+   "return_mean": {
+    "random": 0.004215122956362847,
+    "policy": 0.047254455734487236,
+    "refine_attr": 0.034851279897036874,
+    "refine_disag": 0.05006049025466018
+   },
+   "inplan": {
+    "refine_attr": {
+     "gain": 0.024052801474928855,
+     "improves": true,
+     "refine_disp": 0.4973486805539578,
+     "clip_frac": 0.4161618959605694
+    },
+    "refine_disag": {
+     "gain": 0.00017846804478904233,
+     "improves": true,
+     "refine_disp": 0.4829583996441215,
+     "clip_frac": 0.4168882684484124
+    }
+   },
+   "repro_vs_ambient": {
+    "policy": [
+     0.015851971097808715,
+     0.016404
+    ],
+    "random": [
+     0.003922831953163579,
+     0.004251
+    ]
+   }
+  }
+ ],
+ "s_refine_disag_attr": [
+  0.0021372136521232953,
+  -0.0004672089774457114,
+  -0.0006909130083203822,
+  -0.0008934976622006659,
+  -0.0007257492438787049,
+  0.00014173205706390947,
+  0.0002748746548684126,
+  -0.0004844613709035963
+ ],
+ "s_share": {
+  "random": [
+   0.06829946225526656,
+   0.04679471646489617,
+   0.038414291774346056,
+   0.055728922477486925,
+   0.06238485059172833,
+   0.062268530648268726,
+   0.04189821420885935,
+   0.06192047919349351
+  ],
+  "policy": [
+   0.04970367079827794,
+   0.04083668106921324,
+   0.03226517497402679,
+   0.04373466379721209,
+   0.05395903456897124,
+   0.04428664544956932,
+   0.0371710875522541,
+   0.043946940721093515
+  ],
+  "refine_attr": [
+   0.04985051117330714,
+   0.038328459982642143,
+   0.03280099488686812,
+   0.044251766219313655,
+   0.05778282125350747,
+   0.04749914649476359,
+   0.03996107517361253,
+   0.0440720491760942
+  ],
+  "refine_disag": [
+   0.0496340502410207,
+   0.040795952087560663,
+   0.03367232549448718,
+   0.042625629982582645,
+   0.055924365282421465,
+   0.04480574806796235,
+   0.03762069654998078,
+   0.0444485364539539
+  ]
+ },
+ "inplan_gate": {
+  "n_pass": 8,
+  "need": 6,
+  "passes": true,
+  "gains": [
+   0.0001956165845040232,
+   0.00017490365548292175,
+   0.0002017366214422509,
+   0.00021994607895612717,
+   0.0001598575565731153,
+   0.00017915220771101304,
+   0.00019673480332130567,
+   0.00017846804478904233
+  ],
+  "statement": "model-predicted improvement of the refiner's own objective over the policy's own plan \u2014 cannot fail for horizon/discount reasons"
+ },
+ "realized_strength_scope": {
+  "ratios": [
+   1.0584878348787212,
+   0.9631592133225972,
+   0.9839535162163516,
+   0.9396749977930144,
+   0.9839719447128032,
+   0.9503613851468031,
+   0.972295539611252,
+   0.9606810365837617
+  ],
+  "n_pass": 8,
+  "need": 6,
+  "bar": 0.9,
+  "passes": true,
+  "statement": "realized-intrinsic retention; fail scopes the null to greedy H-step execution, never voids it"
+ },
+ "primary": {
+  "statement": "greedy H-step replanning seeded at the policy's own imagined plan increases realized distractor attribution (one-sided; the NULL is the registered controller-class stationarity claim, NOT a neighborhood claim \u2014 rev A-M3)",
+  "per_run_delta": [
+   -0.0014188472181741914,
+   0.00022338211440985252,
+   -0.0002314095738896564,
+   -0.000850536499871218,
+   -0.0010019372334820042,
+   0.002439151457000478,
+   0.0001414545413489527,
+   -0.0010853990357058176
+  ],
+  "n_pos": 3,
+  "need": 7,
+  "p_signflip": 0.66796875,
+  "mean": -0.00022301768104545055,
+  "bca": [
+   -0.0007871874817779762,
+   0.0010997496111804766
+  ],
+  "fires": false,
+  "attr_inplan_gains": [
+   0.027358333360403775,
+   0.016673371363431215,
+   0.02101113180629909,
+   0.01763389278575778,
+   0.018157679732888937,
+   0.022076256927102803,
+   0.02007791971974075,
+   0.024052801474928855
+  ],
+  "predicted_vs_realized_note": "attr in-plan gains are the MODEL-PREDICTED headroom at the warm start; a null with large predicted gains is a predicted-but-unrealized dissociation (off-support imagination), a different finding from model-predicted stationarity \u2014 reported, not adjudicated"
+ },
+ "outcome_cell": "POLICY-STATIONARY",
+ "fit_counters": {
+  "/home/rickybao/projects/dreamerv3/local_results/wavea_refine_20260822_182736/runs/se_cheetah_seed10": {
+   "expected": 500000.0,
+   "last_step": 497584,
+   "ratio": 0.995168,
+   "flag": "OK",
+   "config_steps": 500000.0
+  },
+  "/home/rickybao/projects/dreamerv3/local_results/wavea_refine_20260822_182736/runs/se_cheetah_seed11": {
+   "expected": 500000.0,
+   "last_step": 498512,
+   "ratio": 0.997024,
+   "flag": "OK",
+   "config_steps": 500000.0
+  },
+  "/home/rickybao/projects/dreamerv3/local_results/wavea_refine_20260822_182736/runs/se_cheetah_seed12": {
+   "expected": 500000.0,
+   "last_step": 498144,
+   "ratio": 0.996288,
+   "flag": "OK",
+   "config_steps": 500000.0
+  },
+  "/home/rickybao/projects/dreamerv3/local_results/wavea_refine_20260822_182736/runs/se_cheetah_seed13": {
+   "expected": 500000.0,
+   "last_step": 499200,
+   "ratio": 0.9984,
+   "flag": "OK",
+   "config_steps": 500000.0
+  },
+  "/home/rickybao/projects/dreamerv3/local_results/wavea_refine_20260822_182736/runs/se_cheetah_seed14": {
+   "expected": 500000.0,
+   "last_step": 497728,
+   "ratio": 0.995456,
+   "flag": "OK",
+   "config_steps": 500000.0
+  },
+  "/home/rickybao/projects/dreamerv3/local_results/wavea_refine_20260822_182736/runs/se_cheetah_seed15": {
+   "expected": 500000.0,
+   "last_step": 498416,
+   "ratio": 0.996832,
+   "flag": "OK",
+   "config_steps": 500000.0
+  },
+  "/home/rickybao/projects/dreamerv3/local_results/wavea_refine_20260822_182736/runs/se_cheetah_seed16": {
+   "expected": 500000.0,
+   "last_step": 499568,
+   "ratio": 0.999136,
+   "flag": "OK",
+   "config_steps": 500000.0
+  },
+  "/home/rickybao/projects/dreamerv3/local_results/wavea_refine_20260822_182736/runs/se_cheetah_seed17": {
+   "expected": 500000.0,
+   "last_step": 499440,
+   "ratio": 0.99888,
+   "flag": "OK",
+   "config_steps": 500000.0
+  }
+ }
+}

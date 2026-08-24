@@ -1,0 +1,60 @@
+{
+ "prereg": "PREREG_wcem2_20260823.md",
+ "n_cells": 24,
+ "cem_minus_actor_fresh": {
+  "point": -0.12953125000000001,
+  "ci": [
+   -0.6586365411201053,
+   0.4597890765007302
+  ],
+  "perm_p": 0.6684331566843316,
+  "n_cells": 24,
+  "p_one_sided": 0.3318883405582972,
+  "alpha": 0.05,
+  "fires_anti": false,
+  "fires_pos": false
+ },
+ "planner_competence": {
+  "per_cell": [
+   0.05155929565429687,
+   0.3143269348144531,
+   0.16083633422851562,
+   0.16864227294921874,
+   0.2656597900390625,
+   2.487119560241699,
+   0.41604698181152344,
+   1.5487038421630859,
+   12.144315338134765,
+   0.6873198318481445,
+   8.37586296081543,
+   0.3257451629638672,
+   13.153207206726075,
+   4.5187841796875,
+   6.735832405090332,
+   16.819836730957032,
+   16.715092973709105,
+   18.878359069824217,
+   1.475953722000122,
+   0.704769606590271,
+   7.749287014007568,
+   1.786401777267456,
+   2.381763153076172,
+   8.918750381469726
+  ],
+  "pooled": 5.2826740219195685,
+  "gate": "PASS"
+ },
+ "realized_mde80_one_sided": 0.7265244792056734,
+ "look1_point_pinned": -0.4803125,
+ "pooled_descriptive": {
+  "point": -0.2172265625,
+  "ci": [
+   -0.63531146006969,
+   0.24512772084987955
+  ],
+  "perm_p": 0.35996400359964004,
+  "n_cells": 32,
+  "note": "descriptive, NO decision weight; cohorts have independent env_seed marks"
+ },
+ "verdict": "ANTI-HARVEST-RETIRED: the look-1 lean is retired as noise PERMANENTLY (LAST look, no third cohort)-QUALIFIED: realized one-sided MDE80 0.727 > |look-1 point| 0.480 \u2014 power shortfall disclosed"
+}
