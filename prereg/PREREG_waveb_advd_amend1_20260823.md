@@ -163,3 +163,38 @@ and any downstream writing.
 
 Compute: ~16 GPU-h training + ~1 GPU-h panel. Panel = RCC light
 GPU (substrate lives there — a registered RCC reason).
+
+## Rev 2.1 (23 Aug, pre-read; ops finding): leg-1 training-device
+layout + single-lane extension
+
+Ops verified (lane = i % nlanes, empirically checked against
+generated lane files) that leg 1 ran the wb_advd declaration order
+on 2 lanes of instance 16, so ALL 4 het actors trained on one card
+and ALL 4 flat actors on the other; the 8 ambient actors split
+4/4. Registered consequences, recorded BEFORE the re-read:
+
+- **AMBIENT wing: unaffected.** Training cards are balanced 4/4
+  across the ambient panel; the primary is a within-run contrast
+  and the gate is per-run — no cross-run arm contrast exists for a
+  card effect to align with.
+- **LOCALIZED wing: training-device ≡ arm, PERMANENTLY.** The
+  het-vs-flat interaction is exactly the contrast the card split
+  aligns with, and the extension RESUMES the leg-1 actors, so the
+  confound is carried in the actors themselves — it applies to the
+  panel-1 sensitivity row AND the panel-2 consumed cell alike, and
+  no panel or extension can remove it (only a full retrain would,
+  not warranted for a side-filed descriptive cell). The magnitude
+  of same-model/same-box/cross-card training drift has never been
+  measured here (the 0.113-AUROC figure is cross-model and
+  probe-side, not training-side). The localized cell therefore
+  carries a standing device-confound caveat in the read artifact
+  and all downstream writing; its per-run dominance gates (within-
+  run) are unaffected.
+- **Extension runs SINGLE-LANE** (user decision): all 16 legs on
+  one GPU, ~16 h. This adds zero new device-arm alignment in leg 2
+  and needs no reorder of the frozen runs list. (For the record:
+  the runs list's period-4 interleave IS lane-pure-by-arm on a
+  4-lane box under lane = i % nlanes — the list must not be run
+  4-lane as declared.)
+
+No estimand, bar, cell, gate, or reader changes; disclosure only.
