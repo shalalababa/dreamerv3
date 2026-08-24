@@ -39,13 +39,31 @@
 # (concurrent Triton GEMM autotuning with no scratch); at 0.18 five share
 # a card, executed clean for all 10 look-1 passes.
 #
-# LAYOUT: an explicit runs: list with a unique run_id FIRST survives
-# balanced_order untouched, so this order IS the lane assignment. With
-# per_gpu 5, pair_runs makes 6 units and assign_lanes round-robins them:
-# lane 0 = units 0,2,4 (15 runs), lane 1 = units 1,3,5 (11 runs), 3 rounds
-# each. Verified before writing: cup==finger and e1==e4 EXACTLY on both
-# lanes (7/7 and 5/5), all 6 seeds spread across both, and ONE dup gate per
-# lane in round 1 -- so no factor can align with card or with round.
+# LAYOUT -- READ BACK FROM THE GENERATED LANE FILES, NOT ASSUMED.
+# wavespec.balanced_order keys each run on (stage, kind, FIRST VAR VALUE).
+# `run_id` is a spec FIELD, not a var, so the real key here is `src` -- and
+# each dup gate SHARES its src with a cell (r3_finger_e1_seed33,
+# r3_cup_e4_seed38). Those two srcs therefore form 2-member classes, and
+# zip_longest emits the second member of each in a later tier: the cells
+# wcem_finger_e1_seed33 and wcem_cup_e4_seed38 are EXILED to the end of the
+# run list no matter where they are written. They are written last here so
+# the file reads in realized order. Everything else keeps its written order.
+# Then pair_runs(per_gpu=5) cuts 6 units and assign_lanes round-robins them:
+# lane 0 = units 0,2,4 (15 runs), lane 1 = units 1,3,5 (11 runs), 3 rounds each.
+#
+# The order below was SEARCHED against that exact transformation so the
+# REALIZED layout is balanced (verified by replaying balanced_order/pair_runs/
+# assign_lanes, then re-read off the generated .cmds after gen):
+#   lane 0 / GPU0: 14 cells -> cup 7 / finger 7, e1 7 / e4 7, seeds 3,2,2,2,3,2
+#   lane 1 / GPU1: 10 cells -> cup 5 / finger 5, e1 5 / e4 5, seeds 1,2,2,2,1,2
+#   every full round mixed in domain AND dose (each within 1 of even), so a
+#   mid-wave box death leaves an axis-BALANCED partial cohort rather than an
+#   arm-pure one -- the poolable case, per the instance-13/15 adjudication.
+#   ONE dup gate per lane, both in round 1: the CRN gate lands early on both
+#   cards, which is the whole point of running dups beside the cells.
+# Card cannot alias onto domain or dose, and the primary is a WITHIN-cell
+# paired difference (g_cem - g_actor from one pass), so a per-card term
+# largely cancels regardless.
 
 wave_id: p2_wcem2
 paper: paper2
@@ -108,32 +126,32 @@ stages:
     kind: wcem_main
     on_failure: continue
     runs:
-      - {run_id: wcemdup_finger_e1_seed33,            src: r3_finger_e1_seed33, out: wcemdup_finger_e1_seed33_late, dup: "--w1_dup_cand"}
-      - {run_id: wcem_cup_e1_seed33,                  src: r3_cup_e1_seed33,    out: wcem_cup_e1_seed33_late,    dup: ""}
-      - {run_id: wcem_finger_e4_seed34,               src: r3_finger_e4_seed34, out: wcem_finger_e4_seed34_late, dup: ""}
-      - {run_id: wcem_cup_e4_seed35,                  src: r3_cup_e4_seed35,    out: wcem_cup_e4_seed35_late,    dup: ""}
-      - {run_id: wcem_finger_e1_seed36,               src: r3_finger_e1_seed36, out: wcem_finger_e1_seed36_late, dup: ""}
-      - {run_id: wcemdup_cup_e4_seed38,               src: r3_cup_e4_seed38,    out: wcemdup_cup_e4_seed38_late,    dup: "--w1_dup_cand"}
-      - {run_id: wcem_cup_e1_seed37,                  src: r3_cup_e1_seed37,    out: wcem_cup_e1_seed37_late,    dup: ""}
-      - {run_id: wcem_finger_e4_seed38,               src: r3_finger_e4_seed38, out: wcem_finger_e4_seed38_late, dup: ""}
-      - {run_id: wcem_finger_e4_seed33,               src: r3_finger_e4_seed33, out: wcem_finger_e4_seed33_late, dup: ""}
-      - {run_id: wcem_cup_e4_seed34,                  src: r3_cup_e4_seed34,    out: wcem_cup_e4_seed34_late,    dup: ""}
-      - {run_id: wcem_finger_e1_seed35,               src: r3_finger_e1_seed35, out: wcem_finger_e1_seed35_late, dup: ""}
-      - {run_id: wcem_cup_e1_seed36,                  src: r3_cup_e1_seed36,    out: wcem_cup_e1_seed36_late,    dup: ""}
-      - {run_id: wcem_finger_e4_seed37,               src: r3_finger_e4_seed37, out: wcem_finger_e4_seed37_late, dup: ""}
-      - {run_id: wcem_cup_e4_seed38,                  src: r3_cup_e4_seed38,    out: wcem_cup_e4_seed38_late,    dup: ""}
-      - {run_id: wcem_cup_e4_seed33,                  src: r3_cup_e4_seed33,    out: wcem_cup_e4_seed33_late,    dup: ""}
-      - {run_id: wcem_finger_e1_seed34,               src: r3_finger_e1_seed34, out: wcem_finger_e1_seed34_late, dup: ""}
-      - {run_id: wcem_cup_e1_seed35,                  src: r3_cup_e1_seed35,    out: wcem_cup_e1_seed35_late,    dup: ""}
-      - {run_id: wcem_finger_e4_seed36,               src: r3_finger_e4_seed36, out: wcem_finger_e4_seed36_late, dup: ""}
-      - {run_id: wcem_cup_e4_seed37,                  src: r3_cup_e4_seed37,    out: wcem_cup_e4_seed37_late,    dup: ""}
-      - {run_id: wcem_finger_e1_seed38,               src: r3_finger_e1_seed38, out: wcem_finger_e1_seed38_late, dup: ""}
-      - {run_id: wcem_finger_e1_seed33,               src: r3_finger_e1_seed33, out: wcem_finger_e1_seed33_late, dup: ""}
-      - {run_id: wcem_cup_e1_seed34,                  src: r3_cup_e1_seed34,    out: wcem_cup_e1_seed34_late,    dup: ""}
-      - {run_id: wcem_finger_e4_seed35,               src: r3_finger_e4_seed35, out: wcem_finger_e4_seed35_late, dup: ""}
-      - {run_id: wcem_cup_e4_seed36,                  src: r3_cup_e4_seed36,    out: wcem_cup_e4_seed36_late,    dup: ""}
-      - {run_id: wcem_finger_e1_seed37,               src: r3_finger_e1_seed37, out: wcem_finger_e1_seed37_late, dup: ""}
-      - {run_id: wcem_cup_e1_seed38,                  src: r3_cup_e1_seed38,    out: wcem_cup_e1_seed38_late,    dup: ""}
+      - {run_id: wcemdup_finger_e1_seed33,          src: r3_finger_e1_seed33, out: wcemdup_finger_e1_seed33_late, dup: "--w1_dup_cand"}
+      - {run_id: wcem_cup_e4_seed35,                src: r3_cup_e4_seed35,    out: wcem_cup_e4_seed35_late,    dup: ""}
+      - {run_id: wcem_cup_e4_seed36,                src: r3_cup_e4_seed36,    out: wcem_cup_e4_seed36_late,    dup: ""}
+      - {run_id: wcem_cup_e1_seed37,                src: r3_cup_e1_seed37,    out: wcem_cup_e1_seed37_late,    dup: ""}
+      - {run_id: wcem_finger_e1_seed34,             src: r3_finger_e1_seed34, out: wcem_finger_e1_seed34_late, dup: ""}
+      - {run_id: wcemdup_cup_e4_seed38,             src: r3_cup_e4_seed38,    out: wcemdup_cup_e4_seed38_late,    dup: "--w1_dup_cand"}
+      - {run_id: wcem_cup_e1_seed34,                src: r3_cup_e1_seed34,    out: wcem_cup_e1_seed34_late,    dup: ""}
+      - {run_id: wcem_cup_e1_seed36,                src: r3_cup_e1_seed36,    out: wcem_cup_e1_seed36_late,    dup: ""}
+      - {run_id: wcem_finger_e4_seed35,             src: r3_finger_e4_seed35, out: wcem_finger_e4_seed35_late, dup: ""}
+      - {run_id: wcem_finger_e1_seed37,             src: r3_finger_e1_seed37, out: wcem_finger_e1_seed37_late, dup: ""}
+      - {run_id: wcem_cup_e4_seed37,                src: r3_cup_e4_seed37,    out: wcem_cup_e4_seed37_late,    dup: ""}
+      - {run_id: wcem_cup_e1_seed33,                src: r3_cup_e1_seed33,    out: wcem_cup_e1_seed33_late,    dup: ""}
+      - {run_id: wcem_finger_e1_seed35,             src: r3_finger_e1_seed35, out: wcem_finger_e1_seed35_late, dup: ""}
+      - {run_id: wcem_finger_e4_seed38,             src: r3_finger_e4_seed38, out: wcem_finger_e4_seed38_late, dup: ""}
+      - {run_id: wcem_finger_e4_seed33,             src: r3_finger_e4_seed33, out: wcem_finger_e4_seed33_late, dup: ""}
+      - {run_id: wcem_finger_e4_seed34,             src: r3_finger_e4_seed34, out: wcem_finger_e4_seed34_late, dup: ""}
+      - {run_id: wcem_finger_e1_seed38,             src: r3_finger_e1_seed38, out: wcem_finger_e1_seed38_late, dup: ""}
+      - {run_id: wcem_cup_e1_seed35,                src: r3_cup_e1_seed35,    out: wcem_cup_e1_seed35_late,    dup: ""}
+      - {run_id: wcem_cup_e4_seed33,                src: r3_cup_e4_seed33,    out: wcem_cup_e4_seed33_late,    dup: ""}
+      - {run_id: wcem_finger_e4_seed36,             src: r3_finger_e4_seed36, out: wcem_finger_e4_seed36_late, dup: ""}
+      - {run_id: wcem_cup_e4_seed34,                src: r3_cup_e4_seed34,    out: wcem_cup_e4_seed34_late,    dup: ""}
+      - {run_id: wcem_finger_e4_seed37,             src: r3_finger_e4_seed37, out: wcem_finger_e4_seed37_late, dup: ""}
+      - {run_id: wcem_finger_e1_seed36,             src: r3_finger_e1_seed36, out: wcem_finger_e1_seed36_late, dup: ""}
+      - {run_id: wcem_cup_e1_seed38,                src: r3_cup_e1_seed38,    out: wcem_cup_e1_seed38_late,    dup: ""}
+      - {run_id: wcem_finger_e1_seed33,             src: r3_finger_e1_seed33, out: wcem_finger_e1_seed33_late, dup: ""}
+      - {run_id: wcem_cup_e4_seed38,                src: r3_cup_e4_seed38,    out: wcem_cup_e4_seed38_late,    dup: ""}
     logdir: "wcem2_labels"
     cmd: >-
       W="${RUNROOT}/wcem2_labels/WCEM2_SMOKE_OK";
