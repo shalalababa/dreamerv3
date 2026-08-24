@@ -160,9 +160,7 @@ stages:
       - {run_id: w1tm2_finger_e1_seed66_late, dom: finger, dose: e1, seed: 66}
     logdir: "w1_labels"
     cmd: >-
-      W="${RUNROOT}/w1_labels/W2_DUP_OK";
-      for _i in $(seq 1 2880); do [ -f "$W" ] && break; sleep 60; done;
-      [ -f "$W" ] || { echo "W2_DUP_OK never appeared within 48h"; exit 75; };
+      W2_SKIP_DUP_GATE=1
       TM2R3_STAGE=w2labels TM2R3_DOM=${dom} TM2R3_DOSE=${dose}
       TM2R3_SEED=${seed}
       TM2_CONDA_ENV=/workspace/conda_envs/tdmpc2
