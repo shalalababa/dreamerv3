@@ -1,0 +1,973 @@
+{
+ "stamp": {
+  "git": "db44b3aa",
+  "time": "2026-08-24T09:59:40"
+ },
+ "n_registered": 8,
+ "n_loaded": 8,
+ "excluded_runs": [],
+ "partial_flag": "COMPLETE",
+ "per_run": [
+  {
+   "run_dir": "/home/rickybao/projects/dreamerv3/local_results/b5_tm2_20260822_203207/runroot/tm2_b5/tm2se_s132",
+   "train_seed": 132,
+   "base_qstd": 0.1146368167392211,
+   "channels": {
+    "distractor": {
+     "form": "batch_permutation",
+     "fixed_points": 1,
+     "delta_qstd_mean": -0.0013325700965651777,
+     "delta_qstd_bca": [
+      -0.004338269362222272,
+      0.0016701510760898013
+     ],
+     "p_reduce": 0.2047952047952048,
+     "p_inflate": 0.7962037962037962
+    },
+    "distractor_meansub": {
+     "form": "mean_substitution",
+     "sub_mean_norm": 0.32218483090400696,
+     "delta_qstd_mean": -0.009379837118103751,
+     "delta_qstd_bca": [
+      -0.011725157715486278,
+      -0.007200541951331133
+     ],
+     "p_reduce": 0.000999000999000999,
+     "p_inflate": 1.0
+    },
+    "velocity_meansub": {
+     "form": "mean_substitution",
+     "sub_mean_norm": 5.342730522155762,
+     "delta_qstd_mean": 0.046196289506042376,
+     "delta_qstd_bca": [
+      0.03871305638034104,
+      0.05400711828299664
+     ],
+     "p_reduce": 1.0,
+     "p_inflate": 0.000999000999000999
+    },
+    "planted_dup0": {
+     "form": "source_substitution",
+     "bitwise_noop": true,
+     "delta_qstd_mean": 0.0,
+     "delta_qstd_bca": [
+      0.0,
+      0.0
+     ],
+     "p_reduce": 1.0,
+     "p_inflate": 1.0
+    },
+    "planted_dup1": {
+     "form": "source_substitution",
+     "bitwise_noop": false,
+     "delta_qstd_mean": 3.858717354887631e-05,
+     "delta_qstd_bca": [
+      -8.790052037896292e-05,
+      0.00016195883227646234
+     ],
+     "p_reduce": 0.7002997002997003,
+     "p_inflate": 0.3006993006993007
+    },
+    "planted_dup2": {
+     "form": "source_substitution",
+     "bitwise_noop": false,
+     "delta_qstd_mean": -0.00011702966730808839,
+     "delta_qstd_bca": [
+      -0.0003363179875564778,
+      0.00010148526890746969
+     ],
+     "p_reduce": 0.14285714285714285,
+     "p_inflate": 0.8581418581418582
+    },
+    "planted_dup1_resample": {
+     "form": "fresh_resample",
+     "eps": 0.004880000000000001,
+     "delta_qstd_mean": 0.00010857419329113327,
+     "delta_qstd_bca": [
+      -8.129940285688939e-05,
+      0.00028264546214483156
+     ],
+     "p_reduce": 0.8751248751248751,
+     "p_inflate": 0.1258741258741259
+    },
+    "planted_dup2_resample": {
+     "form": "fresh_resample",
+     "eps": 0.0488,
+     "delta_qstd_mean": 0.00011398593414924107,
+     "delta_qstd_bca": [
+      -0.00021776495571873385,
+      0.0004342728898294881
+     ],
+     "p_reduce": 0.7422577422577422,
+     "p_inflate": 0.25874125874125875
+    },
+    "velocity_control": {
+     "form": "batch_permutation_real_key_control",
+     "fixed_points": 2,
+     "delta_qstd_mean": 0.11881617712424486,
+     "delta_qstd_bca": [
+      0.10291781121798356,
+      0.13725738003535118
+     ],
+     "p_reduce": 1.0,
+     "p_inflate": 0.000999000999000999
+    }
+   }
+  },
+  {
+   "run_dir": "/home/rickybao/projects/dreamerv3/local_results/b5_tm2_20260822_203207/runroot/tm2_b5/tm2se_s133",
+   "train_seed": 133,
+   "base_qstd": 0.1546590754769568,
+   "channels": {
+    "distractor": {
+     "form": "batch_permutation",
+     "fixed_points": 1,
+     "delta_qstd_mean": 0.001829949724196922,
+     "delta_qstd_bca": [
+      -0.003924674793594096,
+      0.007854242314371422
+     ],
+     "p_reduce": 0.7432567432567433,
+     "p_inflate": 0.25774225774225773
+    },
+    "distractor_meansub": {
+     "form": "mean_substitution",
+     "sub_mean_norm": 0.2511202394962311,
+     "delta_qstd_mean": -0.010745991063231486,
+     "delta_qstd_bca": [
+      -0.014936646687800308,
+      -0.006868771205477162
+     ],
+     "p_reduce": 0.000999000999000999,
+     "p_inflate": 1.0
+    },
+    "velocity_meansub": {
+     "form": "mean_substitution",
+     "sub_mean_norm": 4.169670104980469,
+     "delta_qstd_mean": 0.08812961243165773,
+     "delta_qstd_bca": [
+      0.07263646344907189,
+      0.10462234098469358
+     ],
+     "p_reduce": 1.0,
+     "p_inflate": 0.000999000999000999
+    },
+    "planted_dup0": {
+     "form": "source_substitution",
+     "bitwise_noop": true,
+     "delta_qstd_mean": 0.0,
+     "delta_qstd_bca": [
+      0.0,
+      0.0
+     ],
+     "p_reduce": 1.0,
+     "p_inflate": 1.0
+    },
+    "planted_dup1": {
+     "form": "source_substitution",
+     "bitwise_noop": false,
+     "delta_qstd_mean": -4.68121979793068e-05,
+     "delta_qstd_bca": [
+      -0.0002589344087274394,
+      0.00015492801459085595
+     ],
+     "p_reduce": 0.33466533466533466,
+     "p_inflate": 0.6663336663336663
+    },
+    "planted_dup2": {
+     "form": "source_substitution",
+     "bitwise_noop": false,
+     "delta_qstd_mean": 0.00035965180904895533,
+     "delta_qstd_bca": [
+      -4.1407652555384496e-05,
+      0.0007582562502972968
+     ],
+     "p_reduce": 0.957042957042957,
+     "p_inflate": 0.04395604395604396
+    },
+    "planted_dup1_resample": {
+     "form": "fresh_resample",
+     "eps": 0.004880000000000001,
+     "delta_qstd_mean": -5.869836786587257e-05,
+     "delta_qstd_bca": [
+      -0.00036334993506659756,
+      0.00030364124464367235
+     ],
+     "p_reduce": 0.35764235764235763,
+     "p_inflate": 0.6433566433566433
+    },
+    "planted_dup2_resample": {
+     "form": "fresh_resample",
+     "eps": 0.0488,
+     "delta_qstd_mean": 0.0005326323753251927,
+     "delta_qstd_bca": [
+      -4.143712044114764e-05,
+      0.0010836404989831463
+     ],
+     "p_reduce": 0.971028971028971,
+     "p_inflate": 0.029970029970029972
+    },
+    "velocity_control": {
+     "form": "batch_permutation_real_key_control",
+     "fixed_points": 2,
+     "delta_qstd_mean": 0.14972153388225706,
+     "delta_qstd_bca": [
+      0.12555522681351533,
+      0.17547632449207232
+     ],
+     "p_reduce": 1.0,
+     "p_inflate": 0.000999000999000999
+    }
+   }
+  },
+  {
+   "run_dir": "/home/rickybao/projects/dreamerv3/local_results/b5_tm2_20260822_203207/runroot/tm2_b5/tm2se_s134",
+   "train_seed": 134,
+   "base_qstd": 0.02907594537100522,
+   "channels": {
+    "distractor": {
+     "form": "batch_permutation",
+     "fixed_points": 1,
+     "delta_qstd_mean": 0.00031169381145446096,
+     "delta_qstd_bca": [
+      -0.0008489439452898059,
+      0.0014755857166800905
+     ],
+     "p_reduce": 0.6923076923076923,
+     "p_inflate": 0.3086913086913087
+    },
+    "distractor_meansub": {
+     "form": "mean_substitution",
+     "sub_mean_norm": 0.20454244315624237,
+     "delta_qstd_mean": -0.0033339738756694715,
+     "delta_qstd_bca": [
+      -0.004308416079116988,
+      -0.0024683979119119585
+     ],
+     "p_reduce": 0.000999000999000999,
+     "p_inflate": 1.0
+    },
+    "velocity_meansub": {
+     "form": "mean_substitution",
+     "sub_mean_norm": 3.7160472869873047,
+     "delta_qstd_mean": 0.027489999718454783,
+     "delta_qstd_bca": [
+      0.024717036520674064,
+      0.030400588698167263
+     ],
+     "p_reduce": 1.0,
+     "p_inflate": 0.000999000999000999
+    },
+    "planted_dup0": {
+     "form": "source_substitution",
+     "bitwise_noop": true,
+     "delta_qstd_mean": 0.0,
+     "delta_qstd_bca": [
+      0.0,
+      0.0
+     ],
+     "p_reduce": 1.0,
+     "p_inflate": 1.0
+    },
+    "planted_dup1": {
+     "form": "source_substitution",
+     "bitwise_noop": false,
+     "delta_qstd_mean": 3.5469310660118936e-05,
+     "delta_qstd_bca": [
+      -6.807060700464521e-05,
+      0.00015951649945763907
+     ],
+     "p_reduce": 0.7152847152847153,
+     "p_inflate": 0.2857142857142857
+    },
+    "planted_dup2": {
+     "form": "source_substitution",
+     "bitwise_noop": false,
+     "delta_qstd_mean": -0.00014891948285367107,
+     "delta_qstd_bca": [
+      -0.00025492708836057884,
+      -3.6924459136690426e-05
+     ],
+     "p_reduce": 0.001998001998001998,
+     "p_inflate": 0.999000999000999
+    },
+    "planted_dup1_resample": {
+     "form": "fresh_resample",
+     "eps": 0.004880000000000001,
+     "delta_qstd_mean": 0.00013657624822371872,
+     "delta_qstd_bca": [
+      -1.1659572599433515e-05,
+      0.0002995539431656908
+     ],
+     "p_reduce": 0.964035964035964,
+     "p_inflate": 0.03696303696303696
+    },
+    "planted_dup2_resample": {
+     "form": "fresh_resample",
+     "eps": 0.0488,
+     "delta_qstd_mean": -0.00011859287860715995,
+     "delta_qstd_bca": [
+      -0.0002809732649940017,
+      4.3448860760742076e-05
+     ],
+     "p_reduce": 0.058941058941058944,
+     "p_inflate": 0.942057942057942
+    },
+    "velocity_control": {
+     "form": "batch_permutation_real_key_control",
+     "fixed_points": 2,
+     "delta_qstd_mean": 0.0568976335998741,
+     "delta_qstd_bca": [
+      0.05050475234337715,
+      0.06364663703432716
+     ],
+     "p_reduce": 1.0,
+     "p_inflate": 0.000999000999000999
+    }
+   }
+  },
+  {
+   "run_dir": "/home/rickybao/projects/dreamerv3/local_results/b5_tm2_20260822_203207/runroot/tm2_b5/tm2se_s135",
+   "train_seed": 135,
+   "base_qstd": 0.1777414602038334,
+   "channels": {
+    "distractor": {
+     "form": "batch_permutation",
+     "fixed_points": 1,
+     "delta_qstd_mean": 0.0025213560802512802,
+     "delta_qstd_bca": [
+      -0.002589715440831921,
+      0.007998171359487502
+     ],
+     "p_reduce": 0.8201798201798202,
+     "p_inflate": 0.18081918081918083
+    },
+    "distractor_meansub": {
+     "form": "mean_substitution",
+     "sub_mean_norm": 0.2605896592140198,
+     "delta_qstd_mean": -0.01196662299480522,
+     "delta_qstd_bca": [
+      -0.016266505281713996,
+      -0.007667618573848981
+     ],
+     "p_reduce": 0.000999000999000999,
+     "p_inflate": 1.0
+    },
+    "velocity_meansub": {
+     "form": "mean_substitution",
+     "sub_mean_norm": 4.6986494064331055,
+     "delta_qstd_mean": 0.06937718903645873,
+     "delta_qstd_bca": [
+      0.054072443397526926,
+      0.08602834645622538
+     ],
+     "p_reduce": 1.0,
+     "p_inflate": 0.000999000999000999
+    },
+    "planted_dup0": {
+     "form": "source_substitution",
+     "bitwise_noop": true,
+     "delta_qstd_mean": 0.0,
+     "delta_qstd_bca": [
+      0.0,
+      0.0
+     ],
+     "p_reduce": 1.0,
+     "p_inflate": 1.0
+    },
+    "planted_dup1": {
+     "form": "source_substitution",
+     "bitwise_noop": false,
+     "delta_qstd_mean": -7.472405559383333e-05,
+     "delta_qstd_bca": [
+      -0.0002518651563880276,
+      9.706894019927683e-05
+     ],
+     "p_reduce": 0.2087912087912088,
+     "p_inflate": 0.7922077922077922
+    },
+    "planted_dup2": {
+     "form": "source_substitution",
+     "bitwise_noop": false,
+     "delta_qstd_mean": 0.00018057239503832534,
+     "delta_qstd_bca": [
+      -0.00019207699545885758,
+      0.000621001619102646
+     ],
+     "p_reduce": 0.8271728271728271,
+     "p_inflate": 0.17382617382617382
+    },
+    "planted_dup1_resample": {
+     "form": "fresh_resample",
+     "eps": 0.004880000000000001,
+     "delta_qstd_mean": -0.00020139021944487467,
+     "delta_qstd_bca": [
+      -0.0004971386679155096,
+      6.720389530395417e-05
+     ],
+     "p_reduce": 0.07992007992007992,
+     "p_inflate": 0.9210789210789211
+    },
+    "planted_dup2_resample": {
+     "form": "fresh_resample",
+     "eps": 0.0488,
+     "delta_qstd_mean": 0.00020672966638812795,
+     "delta_qstd_bca": [
+      -0.0003531328668017653,
+      0.0007514342863789832
+     ],
+     "p_reduce": 0.7532467532467533,
+     "p_inflate": 0.24775224775224775
+    },
+    "velocity_control": {
+     "form": "batch_permutation_real_key_control",
+     "fixed_points": 2,
+     "delta_qstd_mean": 0.18477896439435426,
+     "delta_qstd_bca": [
+      0.15740094279234257,
+      0.23985371557232127
+     ],
+     "p_reduce": 1.0,
+     "p_inflate": 0.000999000999000999
+    }
+   }
+  },
+  {
+   "run_dir": "/home/rickybao/projects/dreamerv3/local_results/b5_tm2_20260822_203207/runroot/tm2_b5/tm2se_s136",
+   "train_seed": 136,
+   "base_qstd": 0.04536059838392248,
+   "channels": {
+    "distractor": {
+     "form": "batch_permutation",
+     "fixed_points": 1,
+     "delta_qstd_mean": 0.0003990968862126465,
+     "delta_qstd_bca": [
+      -0.0014825946394751326,
+      0.002267385802766026
+     ],
+     "p_reduce": 0.6823176823176823,
+     "p_inflate": 0.31868131868131866
+    },
+    "distractor_meansub": {
+     "form": "mean_substitution",
+     "sub_mean_norm": 0.21307975053787231,
+     "delta_qstd_mean": -0.004232766176755831,
+     "delta_qstd_bca": [
+      -0.005594457720264953,
+      -0.002874958653675345
+     ],
+     "p_reduce": 0.000999000999000999,
+     "p_inflate": 1.0
+    },
+    "velocity_meansub": {
+     "form": "mean_substitution",
+     "sub_mean_norm": 4.017233371734619,
+     "delta_qstd_mean": 0.024150079634637223,
+     "delta_qstd_bca": [
+      0.019495110954032283,
+      0.029143200213908704
+     ],
+     "p_reduce": 1.0,
+     "p_inflate": 0.000999000999000999
+    },
+    "planted_dup0": {
+     "form": "source_substitution",
+     "bitwise_noop": true,
+     "delta_qstd_mean": 0.0,
+     "delta_qstd_bca": [
+      0.0,
+      0.0
+     ],
+     "p_reduce": 1.0,
+     "p_inflate": 1.0
+    },
+    "planted_dup1": {
+     "form": "source_substitution",
+     "bitwise_noop": false,
+     "delta_qstd_mean": -4.7587779590685386e-05,
+     "delta_qstd_bca": [
+      -0.00018148949354848407,
+      4.613047574372232e-05
+     ],
+     "p_reduce": 0.20679320679320679,
+     "p_inflate": 0.7942057942057942
+    },
+    "planted_dup2": {
+     "form": "source_substitution",
+     "bitwise_noop": false,
+     "delta_qstd_mean": -0.00022085413820605027,
+     "delta_qstd_bca": [
+      -0.0004078607565567357,
+      -4.932473358362792e-05
+     ],
+     "p_reduce": 0.006993006993006993,
+     "p_inflate": 0.994005994005994
+    },
+    "planted_dup1_resample": {
+     "form": "fresh_resample",
+     "eps": 0.004880000000000001,
+     "delta_qstd_mean": -9.902618512569461e-05,
+     "delta_qstd_bca": [
+      -0.0002822191703742704,
+      3.638187747185769e-05
+     ],
+     "p_reduce": 0.1038961038961039,
+     "p_inflate": 0.8971028971028971
+    },
+    "planted_dup2_resample": {
+     "form": "fresh_resample",
+     "eps": 0.0488,
+     "delta_qstd_mean": -6.0131773352622986e-05,
+     "delta_qstd_bca": [
+      -0.000328596605353035,
+      0.00016417153735385267
+     ],
+     "p_reduce": 0.31868131868131866,
+     "p_inflate": 0.6823176823176823
+    },
+    "velocity_control": {
+     "form": "batch_permutation_real_key_control",
+     "fixed_points": 2,
+     "delta_qstd_mean": 0.0781649777718485,
+     "delta_qstd_bca": [
+      0.06796365247460746,
+      0.09026514674465248
+     ],
+     "p_reduce": 1.0,
+     "p_inflate": 0.000999000999000999
+    }
+   }
+  },
+  {
+   "run_dir": "/home/rickybao/projects/dreamerv3/local_results/b5_tm2_20260822_203207/runroot/tm2_b5/tm2se_s137",
+   "train_seed": 137,
+   "base_qstd": 0.11067952441226225,
+   "channels": {
+    "distractor": {
+     "form": "batch_permutation",
+     "fixed_points": 1,
+     "delta_qstd_mean": -0.003548866518030991,
+     "delta_qstd_bca": [
+      -0.01421499417439681,
+      0.0009191614506452657
+     ],
+     "p_reduce": 0.17182817182817184,
+     "p_inflate": 0.8291708291708292
+    },
+    "distractor_meansub": {
+     "form": "mean_substitution",
+     "sub_mean_norm": 0.22154706716537476,
+     "delta_qstd_mean": -0.009277559163820115,
+     "delta_qstd_bca": [
+      -0.012666237650801323,
+      -0.006903371032469711
+     ],
+     "p_reduce": 0.000999000999000999,
+     "p_inflate": 1.0
+    },
+    "velocity_meansub": {
+     "form": "mean_substitution",
+     "sub_mean_norm": 4.797294616699219,
+     "delta_qstd_mean": 0.047074699084987515,
+     "delta_qstd_bca": [
+      0.014411637435894492,
+      0.12615947292489524
+     ],
+     "p_reduce": 1.0,
+     "p_inflate": 0.000999000999000999
+    },
+    "planted_dup0": {
+     "form": "source_substitution",
+     "bitwise_noop": true,
+     "delta_qstd_mean": 0.0,
+     "delta_qstd_bca": [
+      0.0,
+      0.0
+     ],
+     "p_reduce": 1.0,
+     "p_inflate": 1.0
+    },
+    "planted_dup1": {
+     "form": "source_substitution",
+     "bitwise_noop": false,
+     "delta_qstd_mean": -0.0014662095400126418,
+     "delta_qstd_bca": [
+      -0.007426202869493078,
+      -8.041754948774988e-05
+     ],
+     "p_reduce": 0.07192807192807193,
+     "p_inflate": 0.929070929070929
+    },
+    "planted_dup2": {
+     "form": "source_substitution",
+     "bitwise_noop": false,
+     "delta_qstd_mean": -7.779679253872018e-05,
+     "delta_qstd_bca": [
+      -0.0003180462640081687,
+      0.0002304918460306346
+     ],
+     "p_reduce": 0.3106893106893107,
+     "p_inflate": 0.6903096903096904
+    },
+    "planted_dup1_resample": {
+     "form": "fresh_resample",
+     "eps": 0.004880000000000001,
+     "delta_qstd_mean": -0.0012608926863322267,
+     "delta_qstd_bca": [
+      -0.005760298455728038,
+      -0.00019846772184574913
+     ],
+     "p_reduce": 0.022977022977022976,
+     "p_inflate": 0.978021978021978
+    },
+    "planted_dup2_resample": {
+     "form": "fresh_resample",
+     "eps": 0.0488,
+     "delta_qstd_mean": 4.441748023964465e-05,
+     "delta_qstd_bca": [
+      -0.00022081209812519414,
+      0.00034963375049213325
+     ],
+     "p_reduce": 0.5884115884115884,
+     "p_inflate": 0.4125874125874126
+    },
+    "velocity_control": {
+     "form": "batch_permutation_real_key_control",
+     "fixed_points": 2,
+     "delta_qstd_mean": 0.2162768016805785,
+     "delta_qstd_bca": [
+      0.16112817645467994,
+      0.2972823941080201
+     ],
+     "p_reduce": 1.0,
+     "p_inflate": 0.000999000999000999
+    }
+   }
+  },
+  {
+   "run_dir": "/home/rickybao/projects/dreamerv3/local_results/b5_tm2_20260822_203207/runroot/tm2_b5/tm2se_s138",
+   "train_seed": 138,
+   "base_qstd": 0.06072428553397913,
+   "channels": {
+    "distractor": {
+     "form": "batch_permutation",
+     "fixed_points": 1,
+     "delta_qstd_mean": 0.0012397769332892494,
+     "delta_qstd_bca": [
+      -0.0013815459670609264,
+      0.003675407546463478
+     ],
+     "p_reduce": 0.8471528471528471,
+     "p_inflate": 0.15384615384615385
+    },
+    "distractor_meansub": {
+     "form": "mean_substitution",
+     "sub_mean_norm": 0.26395371556282043,
+     "delta_qstd_mean": -0.005953018118816544,
+     "delta_qstd_bca": [
+      -0.007748165338668679,
+      -0.004284177007236642
+     ],
+     "p_reduce": 0.000999000999000999,
+     "p_inflate": 1.0
+    },
+    "velocity_meansub": {
+     "form": "mean_substitution",
+     "sub_mean_norm": 5.0248823165893555,
+     "delta_qstd_mean": 0.01958718749210675,
+     "delta_qstd_bca": [
+      0.015652586874709433,
+      0.02336434866440909
+     ],
+     "p_reduce": 1.0,
+     "p_inflate": 0.000999000999000999
+    },
+    "planted_dup0": {
+     "form": "source_substitution",
+     "bitwise_noop": true,
+     "delta_qstd_mean": 0.0,
+     "delta_qstd_bca": [
+      0.0,
+      0.0
+     ],
+     "p_reduce": 1.0,
+     "p_inflate": 1.0
+    },
+    "planted_dup1": {
+     "form": "source_substitution",
+     "bitwise_noop": false,
+     "delta_qstd_mean": 3.5047314668190666e-05,
+     "delta_qstd_bca": [
+      -3.1253395144219036e-05,
+      0.00010889990866392977
+     ],
+     "p_reduce": 0.8291708291708292,
+     "p_inflate": 0.17182817182817184
+    },
+    "planted_dup2": {
+     "form": "source_substitution",
+     "bitwise_noop": false,
+     "delta_qstd_mean": -7.799839477229398e-05,
+     "delta_qstd_bca": [
+      -0.00027598637603296674,
+      0.0001109745731762744
+     ],
+     "p_reduce": 0.1878121878121878,
+     "p_inflate": 0.8131868131868132
+    },
+    "planted_dup1_resample": {
+     "form": "fresh_resample",
+     "eps": 0.004880000000000001,
+     "delta_qstd_mean": 7.916927643236704e-05,
+     "delta_qstd_bca": [
+      -2.3100942644722888e-05,
+      0.00017299366459207295
+     ],
+     "p_reduce": 0.949050949050949,
+     "p_inflate": 0.05194805194805195
+    },
+    "planted_dup2_resample": {
+     "form": "fresh_resample",
+     "eps": 0.0488,
+     "delta_qstd_mean": -0.00010569827463768888,
+     "delta_qstd_bca": [
+      -0.00039306100324757386,
+      0.00019866509517416902
+     ],
+     "p_reduce": 0.2907092907092907,
+     "p_inflate": 0.7102897102897103
+    },
+    "velocity_control": {
+     "form": "batch_permutation_real_key_control",
+     "fixed_points": 2,
+     "delta_qstd_mean": 0.0716154838237344,
+     "delta_qstd_bca": [
+      0.060543984529941336,
+      0.08431392120623377
+     ],
+     "p_reduce": 1.0,
+     "p_inflate": 0.000999000999000999
+    }
+   }
+  },
+  {
+   "run_dir": "/home/rickybao/projects/dreamerv3/local_results/b5_tm2_20260822_203207/runroot/tm2_b5/tm2se_s139",
+   "train_seed": 139,
+   "base_qstd": 0.056205540866358206,
+   "channels": {
+    "distractor": {
+     "form": "batch_permutation",
+     "fixed_points": 1,
+     "delta_qstd_mean": -0.0009397016110597178,
+     "delta_qstd_bca": [
+      -0.0025881186846138764,
+      0.000613040036390783
+     ],
+     "p_reduce": 0.14285714285714285,
+     "p_inflate": 0.8581418581418582
+    },
+    "distractor_meansub": {
+     "form": "mean_substitution",
+     "sub_mean_norm": 0.28149259090423584,
+     "delta_qstd_mean": -0.0036328879032225814,
+     "delta_qstd_bca": [
+      -0.005061925237311697,
+      -0.0022254671575142183
+     ],
+     "p_reduce": 0.000999000999000999,
+     "p_inflate": 1.0
+    },
+    "velocity_meansub": {
+     "form": "mean_substitution",
+     "sub_mean_norm": 5.135524272918701,
+     "delta_qstd_mean": -0.0030994525077403523,
+     "delta_qstd_bca": [
+      -0.007988927212195516,
+      0.0010076574704551374
+     ],
+     "p_reduce": 0.0939060939060939,
+     "p_inflate": 0.9070929070929071
+    },
+    "planted_dup0": {
+     "form": "source_substitution",
+     "bitwise_noop": true,
+     "delta_qstd_mean": 0.0,
+     "delta_qstd_bca": [
+      0.0,
+      0.0
+     ],
+     "p_reduce": 1.0,
+     "p_inflate": 1.0
+    },
+    "planted_dup1": {
+     "form": "source_substitution",
+     "bitwise_noop": false,
+     "delta_qstd_mean": -1.4315650332719088e-05,
+     "delta_qstd_bca": [
+      -9.950104257876016e-05,
+      3.840652346629804e-05
+     ],
+     "p_reduce": 0.3336663336663337,
+     "p_inflate": 0.6673326673326674
+    },
+    "planted_dup2": {
+     "form": "source_substitution",
+     "bitwise_noop": false,
+     "delta_qstd_mean": -3.071552418987267e-05,
+     "delta_qstd_bca": [
+      -0.0001541530929122133,
+      0.00010611384774094101
+     ],
+     "p_reduce": 0.31368631368631367,
+     "p_inflate": 0.6873126873126874
+    },
+    "planted_dup1_resample": {
+     "form": "fresh_resample",
+     "eps": 0.004880000000000001,
+     "delta_qstd_mean": -8.1295602285536e-06,
+     "delta_qstd_bca": [
+      -7.718864089466917e-05,
+      5.652753847872268e-05
+     ],
+     "p_reduce": 0.4095904095904096,
+     "p_inflate": 0.5914085914085914
+    },
+    "planted_dup2_resample": {
+     "form": "fresh_resample",
+     "eps": 0.0488,
+     "delta_qstd_mean": 7.913559602457099e-05,
+     "delta_qstd_bca": [
+      -7.952963583168829e-05,
+      0.00023742618756036448
+     ],
+     "p_reduce": 0.8541458541458542,
+     "p_inflate": 0.14685314685314685
+    },
+    "velocity_control": {
+     "form": "batch_permutation_real_key_control",
+     "fixed_points": 2,
+     "delta_qstd_mean": 0.06430526165149786,
+     "delta_qstd_bca": [
+      0.04918655729613974,
+      0.08794334108090282
+     ],
+     "p_reduce": 1.0,
+     "p_inflate": 0.000999000999000999
+    }
+   }
+  }
+ ],
+ "primary": {
+  "statement": "TD-MPC2's Q-ensemble std prices the planted distractor (rev 2: MEAN-SUBSTITUTION fire channel \u2014 permutation is inert by exchangeability, R-A1-M12): delta < 0 in >= 7/8 registered runs; single channel, no BH; missing runs count against; specificity + inflation cells per the registered outcome map",
+  "per_run_delta": [
+   -0.009379837118103751,
+   -0.010745991063231486,
+   -0.0033339738756694715,
+   -0.01196662299480522,
+   -0.004232766176755831,
+   -0.009277559163820115,
+   -0.005953018118816544,
+   -0.0036328879032225814
+  ],
+  "n_neg": 8,
+  "n_pos": 0,
+  "n_registered": 8,
+  "n_loaded": 8,
+  "fires": true,
+  "binom_p_registered_7of8": 0.03515625,
+  "binom_p_attained": 0.00390625
+ },
+ "specificity": {
+  "channel": "velocity_meansub",
+  "nonspec_runs": 1,
+  "n_loaded": 8,
+  "ratio_threshold": 0.5,
+  "nonspecific": false
+ },
+ "exchangeability_null": {
+  "per_run": [
+   -0.0013325700965651777,
+   0.001829949724196922,
+   0.00031169381145446096,
+   0.0025213560802512802,
+   0.0003990968862126465,
+   -0.003548866518030991,
+   0.0012397769332892494,
+   -0.0009397016110597178
+  ],
+  "defect_flags": [],
+  "note": "population delta 0 by construction (exogenous channel); a BCa-separated, fire-comparable value here indicates an instrument defect"
+ },
+ "descriptive": {
+  "velocity_control": {
+   "per_run": [
+    0.11881617712424486,
+    0.14972153388225706,
+    0.0568976335998741,
+    0.18477896439435426,
+    0.0781649777718485,
+    0.2162768016805785,
+    0.0716154838237344,
+    0.06430526165149786
+   ],
+   "mean": 0.11757210424104869,
+   "n_neg": 0,
+   "note": "the coupling teeth row (velocity is state-coupled)"
+  },
+  "velocity_meansub": [
+   0.046196289506042376,
+   0.08812961243165773,
+   0.027489999718454783,
+   0.06937718903645873,
+   0.024150079634637223,
+   0.047074699084987515,
+   0.01958718749210675,
+   -0.0030994525077403523
+  ],
+  "dup_substitution": {
+   "planted_dup1": [
+    3.858717354887631e-05,
+    -4.68121979793068e-05,
+    3.5469310660118936e-05,
+    -7.472405559383333e-05,
+    -4.7587779590685386e-05,
+    -0.0014662095400126418,
+    3.5047314668190666e-05,
+    -1.4315650332719088e-05
+   ],
+   "planted_dup2": [
+    -0.00011702966730808839,
+    0.00035965180904895533,
+    -0.00014891948285367107,
+    0.00018057239503832534,
+    -0.00022085413820605027,
+    -7.779679253872018e-05,
+    -7.799839477229398e-05,
+    -3.071552418987267e-05
+   ]
+  },
+  "dup_resample": {
+   "planted_dup1": [
+    0.00010857419329113327,
+    -5.869836786587257e-05,
+    0.00013657624822371872,
+    -0.00020139021944487467,
+    -9.902618512569461e-05,
+    -0.0012608926863322267,
+    7.916927643236704e-05,
+    -8.1295602285536e-06
+   ],
+   "planted_dup2": [
+    0.00011398593414924107,
+    0.0005326323753251927,
+    -0.00011859287860715995,
+    0.00020672966638812795,
+    -6.0131773352622986e-05,
+    4.441748023964465e-05,
+    -0.00010569827463768888,
+    7.913559602457099e-05
+   ]
+  }
+ },
+ "outcome_cell": "i-TM2-PRICES-DISTRACTOR"
+}
