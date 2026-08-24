@@ -1,0 +1,654 @@
+{
+ "wave_id": "p2_wcem2",
+ "spec": "/home/rickybao/projects/dreamerv3/ops/waves/p2_wcem2/spec.yaml",
+ "prereg": "prereg/PREREG_wcem2_20260823.md",
+ "bundle": {
+  "prefix": "p2_wcem2",
+  "include_stages": [
+   "smoke",
+   "main"
+  ],
+  "cloud_logs": [
+   "wcem_*.out",
+   "wcemdup_*.out",
+   "wcem2_*.out"
+  ]
+ },
+ "stages": [
+  {
+   "name": "smoke",
+   "target": "vast",
+   "kind": "wcem_gate",
+   "on_failure": "abort",
+   "needs": null
+  },
+  {
+   "name": "main",
+   "target": "vast",
+   "kind": "wcem_main",
+   "on_failure": "continue",
+   "needs": null
+  }
+ ],
+ "runs": [
+  {
+   "stage": "smoke",
+   "kind": "wcem_gate",
+   "target": "vast",
+   "run_id": "wcem2_smoke_gate",
+   "cmd": "set -e; export XLA_PYTHON_CLIENT_MEM_FRACTION=0.18; S=\"${RUNROOT}/_wcem2_smoke\"; mkdir -p \"$S\"; t0=$(date +%s); python -m d0.oracle_labels --run_logdir \"${RUNROOT}/r3_local/r3_finger_e1_seed33\" --states 5 --horizon 100 --label_every 25 --actions 8 --seed 0 --ref_stride 5 --oracle_all --w1_repeats 8 --cem_consumer --env_seed 20260825 --output \"$S/smoke_r3_finger_e1_seed33.npz\"; t1=$(date +%s); echo \"WCEM2_SMOKE_SECONDS_5_STATES=$((t1-t0))\"; rm -rf \"$S\"; mkdir -p \"${RUNROOT}/wcem2_labels\"; touch \"${RUNROOT}/wcem2_labels/WCEM2_SMOKE_OK\"",
+   "vars": {
+    "src": "r3_finger_e1_seed33",
+    "run_id": "wcem2_smoke_gate"
+   },
+   "logdir": "wcem2_labels",
+   "outputs": [
+    "wcem2_labels"
+   ],
+   "inputs": [],
+   "done_when": [
+    {
+     "exists": "WCEM2_SMOKE_OK"
+    }
+   ]
+  },
+  {
+   "stage": "main",
+   "kind": "wcem_main",
+   "target": "vast",
+   "run_id": "wcemdup_finger_e1_seed33",
+   "cmd": "W=\"${RUNROOT}/wcem2_labels/WCEM2_SMOKE_OK\"; [ -f \"$W\" ] || { echo \"run the wcem2 smoke first\"; exit 1; }; export XLA_PYTHON_CLIENT_MEM_FRACTION=0.18; O=\"${RUNROOT}/wcem2_labels/wcemdup_finger_e1_seed33_late.npz\"; [ -f \"$O\" ] && { echo \"skip $O (exists)\"; exit 0; }; python -m d0.oracle_labels --run_logdir \"${RUNROOT}/r3_local/r3_finger_e1_seed33\" --states 200 --horizon 100 --label_every 25 --actions 8 --seed 0 --ref_stride 5 --oracle_all --w1_repeats 8 --w1_dup_cand --cem_consumer --env_seed 20260825 --output \"$O\" || { rc=$?; echo \"FATAL: labeler failed rc=$rc\"; exit $rc; }",
+   "vars": {
+    "src": "r3_finger_e1_seed33",
+    "out": "wcemdup_finger_e1_seed33_late",
+    "dup": "--w1_dup_cand",
+    "run_id": "wcemdup_finger_e1_seed33"
+   },
+   "logdir": "wcem2_labels",
+   "outputs": [
+    "wcem2_labels"
+   ],
+   "inputs": [],
+   "done_when": [
+    {
+     "exists": "wcemdup_finger_e1_seed33_late.npz"
+    }
+   ]
+  },
+  {
+   "stage": "main",
+   "kind": "wcem_main",
+   "target": "vast",
+   "run_id": "wcem_cup_e4_seed35",
+   "cmd": "W=\"${RUNROOT}/wcem2_labels/WCEM2_SMOKE_OK\"; [ -f \"$W\" ] || { echo \"run the wcem2 smoke first\"; exit 1; }; export XLA_PYTHON_CLIENT_MEM_FRACTION=0.18; O=\"${RUNROOT}/wcem2_labels/wcem_cup_e4_seed35_late.npz\"; [ -f \"$O\" ] && { echo \"skip $O (exists)\"; exit 0; }; python -m d0.oracle_labels --run_logdir \"${RUNROOT}/r3_local/r3_cup_e4_seed35\" --states 200 --horizon 100 --label_every 25 --actions 8 --seed 0 --ref_stride 5 --oracle_all --w1_repeats 8  --cem_consumer --env_seed 20260825 --output \"$O\" || { rc=$?; echo \"FATAL: labeler failed rc=$rc\"; exit $rc; }",
+   "vars": {
+    "src": "r3_cup_e4_seed35",
+    "out": "wcem_cup_e4_seed35_late",
+    "dup": "",
+    "run_id": "wcem_cup_e4_seed35"
+   },
+   "logdir": "wcem2_labels",
+   "outputs": [
+    "wcem2_labels"
+   ],
+   "inputs": [],
+   "done_when": [
+    {
+     "exists": "wcem_cup_e4_seed35_late.npz"
+    }
+   ]
+  },
+  {
+   "stage": "main",
+   "kind": "wcem_main",
+   "target": "vast",
+   "run_id": "wcem_cup_e4_seed36",
+   "cmd": "W=\"${RUNROOT}/wcem2_labels/WCEM2_SMOKE_OK\"; [ -f \"$W\" ] || { echo \"run the wcem2 smoke first\"; exit 1; }; export XLA_PYTHON_CLIENT_MEM_FRACTION=0.18; O=\"${RUNROOT}/wcem2_labels/wcem_cup_e4_seed36_late.npz\"; [ -f \"$O\" ] && { echo \"skip $O (exists)\"; exit 0; }; python -m d0.oracle_labels --run_logdir \"${RUNROOT}/r3_local/r3_cup_e4_seed36\" --states 200 --horizon 100 --label_every 25 --actions 8 --seed 0 --ref_stride 5 --oracle_all --w1_repeats 8  --cem_consumer --env_seed 20260825 --output \"$O\" || { rc=$?; echo \"FATAL: labeler failed rc=$rc\"; exit $rc; }",
+   "vars": {
+    "src": "r3_cup_e4_seed36",
+    "out": "wcem_cup_e4_seed36_late",
+    "dup": "",
+    "run_id": "wcem_cup_e4_seed36"
+   },
+   "logdir": "wcem2_labels",
+   "outputs": [
+    "wcem2_labels"
+   ],
+   "inputs": [],
+   "done_when": [
+    {
+     "exists": "wcem_cup_e4_seed36_late.npz"
+    }
+   ]
+  },
+  {
+   "stage": "main",
+   "kind": "wcem_main",
+   "target": "vast",
+   "run_id": "wcem_cup_e1_seed37",
+   "cmd": "W=\"${RUNROOT}/wcem2_labels/WCEM2_SMOKE_OK\"; [ -f \"$W\" ] || { echo \"run the wcem2 smoke first\"; exit 1; }; export XLA_PYTHON_CLIENT_MEM_FRACTION=0.18; O=\"${RUNROOT}/wcem2_labels/wcem_cup_e1_seed37_late.npz\"; [ -f \"$O\" ] && { echo \"skip $O (exists)\"; exit 0; }; python -m d0.oracle_labels --run_logdir \"${RUNROOT}/r3_local/r3_cup_e1_seed37\" --states 200 --horizon 100 --label_every 25 --actions 8 --seed 0 --ref_stride 5 --oracle_all --w1_repeats 8  --cem_consumer --env_seed 20260825 --output \"$O\" || { rc=$?; echo \"FATAL: labeler failed rc=$rc\"; exit $rc; }",
+   "vars": {
+    "src": "r3_cup_e1_seed37",
+    "out": "wcem_cup_e1_seed37_late",
+    "dup": "",
+    "run_id": "wcem_cup_e1_seed37"
+   },
+   "logdir": "wcem2_labels",
+   "outputs": [
+    "wcem2_labels"
+   ],
+   "inputs": [],
+   "done_when": [
+    {
+     "exists": "wcem_cup_e1_seed37_late.npz"
+    }
+   ]
+  },
+  {
+   "stage": "main",
+   "kind": "wcem_main",
+   "target": "vast",
+   "run_id": "wcem_finger_e1_seed34",
+   "cmd": "W=\"${RUNROOT}/wcem2_labels/WCEM2_SMOKE_OK\"; [ -f \"$W\" ] || { echo \"run the wcem2 smoke first\"; exit 1; }; export XLA_PYTHON_CLIENT_MEM_FRACTION=0.18; O=\"${RUNROOT}/wcem2_labels/wcem_finger_e1_seed34_late.npz\"; [ -f \"$O\" ] && { echo \"skip $O (exists)\"; exit 0; }; python -m d0.oracle_labels --run_logdir \"${RUNROOT}/r3_local/r3_finger_e1_seed34\" --states 200 --horizon 100 --label_every 25 --actions 8 --seed 0 --ref_stride 5 --oracle_all --w1_repeats 8  --cem_consumer --env_seed 20260825 --output \"$O\" || { rc=$?; echo \"FATAL: labeler failed rc=$rc\"; exit $rc; }",
+   "vars": {
+    "src": "r3_finger_e1_seed34",
+    "out": "wcem_finger_e1_seed34_late",
+    "dup": "",
+    "run_id": "wcem_finger_e1_seed34"
+   },
+   "logdir": "wcem2_labels",
+   "outputs": [
+    "wcem2_labels"
+   ],
+   "inputs": [],
+   "done_when": [
+    {
+     "exists": "wcem_finger_e1_seed34_late.npz"
+    }
+   ]
+  },
+  {
+   "stage": "main",
+   "kind": "wcem_main",
+   "target": "vast",
+   "run_id": "wcemdup_cup_e4_seed38",
+   "cmd": "W=\"${RUNROOT}/wcem2_labels/WCEM2_SMOKE_OK\"; [ -f \"$W\" ] || { echo \"run the wcem2 smoke first\"; exit 1; }; export XLA_PYTHON_CLIENT_MEM_FRACTION=0.18; O=\"${RUNROOT}/wcem2_labels/wcemdup_cup_e4_seed38_late.npz\"; [ -f \"$O\" ] && { echo \"skip $O (exists)\"; exit 0; }; python -m d0.oracle_labels --run_logdir \"${RUNROOT}/r3_local/r3_cup_e4_seed38\" --states 200 --horizon 100 --label_every 25 --actions 8 --seed 0 --ref_stride 5 --oracle_all --w1_repeats 8 --w1_dup_cand --cem_consumer --env_seed 20260825 --output \"$O\" || { rc=$?; echo \"FATAL: labeler failed rc=$rc\"; exit $rc; }",
+   "vars": {
+    "src": "r3_cup_e4_seed38",
+    "out": "wcemdup_cup_e4_seed38_late",
+    "dup": "--w1_dup_cand",
+    "run_id": "wcemdup_cup_e4_seed38"
+   },
+   "logdir": "wcem2_labels",
+   "outputs": [
+    "wcem2_labels"
+   ],
+   "inputs": [],
+   "done_when": [
+    {
+     "exists": "wcemdup_cup_e4_seed38_late.npz"
+    }
+   ]
+  },
+  {
+   "stage": "main",
+   "kind": "wcem_main",
+   "target": "vast",
+   "run_id": "wcem_cup_e1_seed34",
+   "cmd": "W=\"${RUNROOT}/wcem2_labels/WCEM2_SMOKE_OK\"; [ -f \"$W\" ] || { echo \"run the wcem2 smoke first\"; exit 1; }; export XLA_PYTHON_CLIENT_MEM_FRACTION=0.18; O=\"${RUNROOT}/wcem2_labels/wcem_cup_e1_seed34_late.npz\"; [ -f \"$O\" ] && { echo \"skip $O (exists)\"; exit 0; }; python -m d0.oracle_labels --run_logdir \"${RUNROOT}/r3_local/r3_cup_e1_seed34\" --states 200 --horizon 100 --label_every 25 --actions 8 --seed 0 --ref_stride 5 --oracle_all --w1_repeats 8  --cem_consumer --env_seed 20260825 --output \"$O\" || { rc=$?; echo \"FATAL: labeler failed rc=$rc\"; exit $rc; }",
+   "vars": {
+    "src": "r3_cup_e1_seed34",
+    "out": "wcem_cup_e1_seed34_late",
+    "dup": "",
+    "run_id": "wcem_cup_e1_seed34"
+   },
+   "logdir": "wcem2_labels",
+   "outputs": [
+    "wcem2_labels"
+   ],
+   "inputs": [],
+   "done_when": [
+    {
+     "exists": "wcem_cup_e1_seed34_late.npz"
+    }
+   ]
+  },
+  {
+   "stage": "main",
+   "kind": "wcem_main",
+   "target": "vast",
+   "run_id": "wcem_cup_e1_seed36",
+   "cmd": "W=\"${RUNROOT}/wcem2_labels/WCEM2_SMOKE_OK\"; [ -f \"$W\" ] || { echo \"run the wcem2 smoke first\"; exit 1; }; export XLA_PYTHON_CLIENT_MEM_FRACTION=0.18; O=\"${RUNROOT}/wcem2_labels/wcem_cup_e1_seed36_late.npz\"; [ -f \"$O\" ] && { echo \"skip $O (exists)\"; exit 0; }; python -m d0.oracle_labels --run_logdir \"${RUNROOT}/r3_local/r3_cup_e1_seed36\" --states 200 --horizon 100 --label_every 25 --actions 8 --seed 0 --ref_stride 5 --oracle_all --w1_repeats 8  --cem_consumer --env_seed 20260825 --output \"$O\" || { rc=$?; echo \"FATAL: labeler failed rc=$rc\"; exit $rc; }",
+   "vars": {
+    "src": "r3_cup_e1_seed36",
+    "out": "wcem_cup_e1_seed36_late",
+    "dup": "",
+    "run_id": "wcem_cup_e1_seed36"
+   },
+   "logdir": "wcem2_labels",
+   "outputs": [
+    "wcem2_labels"
+   ],
+   "inputs": [],
+   "done_when": [
+    {
+     "exists": "wcem_cup_e1_seed36_late.npz"
+    }
+   ]
+  },
+  {
+   "stage": "main",
+   "kind": "wcem_main",
+   "target": "vast",
+   "run_id": "wcem_finger_e4_seed35",
+   "cmd": "W=\"${RUNROOT}/wcem2_labels/WCEM2_SMOKE_OK\"; [ -f \"$W\" ] || { echo \"run the wcem2 smoke first\"; exit 1; }; export XLA_PYTHON_CLIENT_MEM_FRACTION=0.18; O=\"${RUNROOT}/wcem2_labels/wcem_finger_e4_seed35_late.npz\"; [ -f \"$O\" ] && { echo \"skip $O (exists)\"; exit 0; }; python -m d0.oracle_labels --run_logdir \"${RUNROOT}/r3_local/r3_finger_e4_seed35\" --states 200 --horizon 100 --label_every 25 --actions 8 --seed 0 --ref_stride 5 --oracle_all --w1_repeats 8  --cem_consumer --env_seed 20260825 --output \"$O\" || { rc=$?; echo \"FATAL: labeler failed rc=$rc\"; exit $rc; }",
+   "vars": {
+    "src": "r3_finger_e4_seed35",
+    "out": "wcem_finger_e4_seed35_late",
+    "dup": "",
+    "run_id": "wcem_finger_e4_seed35"
+   },
+   "logdir": "wcem2_labels",
+   "outputs": [
+    "wcem2_labels"
+   ],
+   "inputs": [],
+   "done_when": [
+    {
+     "exists": "wcem_finger_e4_seed35_late.npz"
+    }
+   ]
+  },
+  {
+   "stage": "main",
+   "kind": "wcem_main",
+   "target": "vast",
+   "run_id": "wcem_finger_e1_seed37",
+   "cmd": "W=\"${RUNROOT}/wcem2_labels/WCEM2_SMOKE_OK\"; [ -f \"$W\" ] || { echo \"run the wcem2 smoke first\"; exit 1; }; export XLA_PYTHON_CLIENT_MEM_FRACTION=0.18; O=\"${RUNROOT}/wcem2_labels/wcem_finger_e1_seed37_late.npz\"; [ -f \"$O\" ] && { echo \"skip $O (exists)\"; exit 0; }; python -m d0.oracle_labels --run_logdir \"${RUNROOT}/r3_local/r3_finger_e1_seed37\" --states 200 --horizon 100 --label_every 25 --actions 8 --seed 0 --ref_stride 5 --oracle_all --w1_repeats 8  --cem_consumer --env_seed 20260825 --output \"$O\" || { rc=$?; echo \"FATAL: labeler failed rc=$rc\"; exit $rc; }",
+   "vars": {
+    "src": "r3_finger_e1_seed37",
+    "out": "wcem_finger_e1_seed37_late",
+    "dup": "",
+    "run_id": "wcem_finger_e1_seed37"
+   },
+   "logdir": "wcem2_labels",
+   "outputs": [
+    "wcem2_labels"
+   ],
+   "inputs": [],
+   "done_when": [
+    {
+     "exists": "wcem_finger_e1_seed37_late.npz"
+    }
+   ]
+  },
+  {
+   "stage": "main",
+   "kind": "wcem_main",
+   "target": "vast",
+   "run_id": "wcem_cup_e4_seed37",
+   "cmd": "W=\"${RUNROOT}/wcem2_labels/WCEM2_SMOKE_OK\"; [ -f \"$W\" ] || { echo \"run the wcem2 smoke first\"; exit 1; }; export XLA_PYTHON_CLIENT_MEM_FRACTION=0.18; O=\"${RUNROOT}/wcem2_labels/wcem_cup_e4_seed37_late.npz\"; [ -f \"$O\" ] && { echo \"skip $O (exists)\"; exit 0; }; python -m d0.oracle_labels --run_logdir \"${RUNROOT}/r3_local/r3_cup_e4_seed37\" --states 200 --horizon 100 --label_every 25 --actions 8 --seed 0 --ref_stride 5 --oracle_all --w1_repeats 8  --cem_consumer --env_seed 20260825 --output \"$O\" || { rc=$?; echo \"FATAL: labeler failed rc=$rc\"; exit $rc; }",
+   "vars": {
+    "src": "r3_cup_e4_seed37",
+    "out": "wcem_cup_e4_seed37_late",
+    "dup": "",
+    "run_id": "wcem_cup_e4_seed37"
+   },
+   "logdir": "wcem2_labels",
+   "outputs": [
+    "wcem2_labels"
+   ],
+   "inputs": [],
+   "done_when": [
+    {
+     "exists": "wcem_cup_e4_seed37_late.npz"
+    }
+   ]
+  },
+  {
+   "stage": "main",
+   "kind": "wcem_main",
+   "target": "vast",
+   "run_id": "wcem_cup_e1_seed33",
+   "cmd": "W=\"${RUNROOT}/wcem2_labels/WCEM2_SMOKE_OK\"; [ -f \"$W\" ] || { echo \"run the wcem2 smoke first\"; exit 1; }; export XLA_PYTHON_CLIENT_MEM_FRACTION=0.18; O=\"${RUNROOT}/wcem2_labels/wcem_cup_e1_seed33_late.npz\"; [ -f \"$O\" ] && { echo \"skip $O (exists)\"; exit 0; }; python -m d0.oracle_labels --run_logdir \"${RUNROOT}/r3_local/r3_cup_e1_seed33\" --states 200 --horizon 100 --label_every 25 --actions 8 --seed 0 --ref_stride 5 --oracle_all --w1_repeats 8  --cem_consumer --env_seed 20260825 --output \"$O\" || { rc=$?; echo \"FATAL: labeler failed rc=$rc\"; exit $rc; }",
+   "vars": {
+    "src": "r3_cup_e1_seed33",
+    "out": "wcem_cup_e1_seed33_late",
+    "dup": "",
+    "run_id": "wcem_cup_e1_seed33"
+   },
+   "logdir": "wcem2_labels",
+   "outputs": [
+    "wcem2_labels"
+   ],
+   "inputs": [],
+   "done_when": [
+    {
+     "exists": "wcem_cup_e1_seed33_late.npz"
+    }
+   ]
+  },
+  {
+   "stage": "main",
+   "kind": "wcem_main",
+   "target": "vast",
+   "run_id": "wcem_finger_e1_seed35",
+   "cmd": "W=\"${RUNROOT}/wcem2_labels/WCEM2_SMOKE_OK\"; [ -f \"$W\" ] || { echo \"run the wcem2 smoke first\"; exit 1; }; export XLA_PYTHON_CLIENT_MEM_FRACTION=0.18; O=\"${RUNROOT}/wcem2_labels/wcem_finger_e1_seed35_late.npz\"; [ -f \"$O\" ] && { echo \"skip $O (exists)\"; exit 0; }; python -m d0.oracle_labels --run_logdir \"${RUNROOT}/r3_local/r3_finger_e1_seed35\" --states 200 --horizon 100 --label_every 25 --actions 8 --seed 0 --ref_stride 5 --oracle_all --w1_repeats 8  --cem_consumer --env_seed 20260825 --output \"$O\" || { rc=$?; echo \"FATAL: labeler failed rc=$rc\"; exit $rc; }",
+   "vars": {
+    "src": "r3_finger_e1_seed35",
+    "out": "wcem_finger_e1_seed35_late",
+    "dup": "",
+    "run_id": "wcem_finger_e1_seed35"
+   },
+   "logdir": "wcem2_labels",
+   "outputs": [
+    "wcem2_labels"
+   ],
+   "inputs": [],
+   "done_when": [
+    {
+     "exists": "wcem_finger_e1_seed35_late.npz"
+    }
+   ]
+  },
+  {
+   "stage": "main",
+   "kind": "wcem_main",
+   "target": "vast",
+   "run_id": "wcem_finger_e4_seed38",
+   "cmd": "W=\"${RUNROOT}/wcem2_labels/WCEM2_SMOKE_OK\"; [ -f \"$W\" ] || { echo \"run the wcem2 smoke first\"; exit 1; }; export XLA_PYTHON_CLIENT_MEM_FRACTION=0.18; O=\"${RUNROOT}/wcem2_labels/wcem_finger_e4_seed38_late.npz\"; [ -f \"$O\" ] && { echo \"skip $O (exists)\"; exit 0; }; python -m d0.oracle_labels --run_logdir \"${RUNROOT}/r3_local/r3_finger_e4_seed38\" --states 200 --horizon 100 --label_every 25 --actions 8 --seed 0 --ref_stride 5 --oracle_all --w1_repeats 8  --cem_consumer --env_seed 20260825 --output \"$O\" || { rc=$?; echo \"FATAL: labeler failed rc=$rc\"; exit $rc; }",
+   "vars": {
+    "src": "r3_finger_e4_seed38",
+    "out": "wcem_finger_e4_seed38_late",
+    "dup": "",
+    "run_id": "wcem_finger_e4_seed38"
+   },
+   "logdir": "wcem2_labels",
+   "outputs": [
+    "wcem2_labels"
+   ],
+   "inputs": [],
+   "done_when": [
+    {
+     "exists": "wcem_finger_e4_seed38_late.npz"
+    }
+   ]
+  },
+  {
+   "stage": "main",
+   "kind": "wcem_main",
+   "target": "vast",
+   "run_id": "wcem_finger_e4_seed33",
+   "cmd": "W=\"${RUNROOT}/wcem2_labels/WCEM2_SMOKE_OK\"; [ -f \"$W\" ] || { echo \"run the wcem2 smoke first\"; exit 1; }; export XLA_PYTHON_CLIENT_MEM_FRACTION=0.18; O=\"${RUNROOT}/wcem2_labels/wcem_finger_e4_seed33_late.npz\"; [ -f \"$O\" ] && { echo \"skip $O (exists)\"; exit 0; }; python -m d0.oracle_labels --run_logdir \"${RUNROOT}/r3_local/r3_finger_e4_seed33\" --states 200 --horizon 100 --label_every 25 --actions 8 --seed 0 --ref_stride 5 --oracle_all --w1_repeats 8  --cem_consumer --env_seed 20260825 --output \"$O\" || { rc=$?; echo \"FATAL: labeler failed rc=$rc\"; exit $rc; }",
+   "vars": {
+    "src": "r3_finger_e4_seed33",
+    "out": "wcem_finger_e4_seed33_late",
+    "dup": "",
+    "run_id": "wcem_finger_e4_seed33"
+   },
+   "logdir": "wcem2_labels",
+   "outputs": [
+    "wcem2_labels"
+   ],
+   "inputs": [],
+   "done_when": [
+    {
+     "exists": "wcem_finger_e4_seed33_late.npz"
+    }
+   ]
+  },
+  {
+   "stage": "main",
+   "kind": "wcem_main",
+   "target": "vast",
+   "run_id": "wcem_finger_e4_seed34",
+   "cmd": "W=\"${RUNROOT}/wcem2_labels/WCEM2_SMOKE_OK\"; [ -f \"$W\" ] || { echo \"run the wcem2 smoke first\"; exit 1; }; export XLA_PYTHON_CLIENT_MEM_FRACTION=0.18; O=\"${RUNROOT}/wcem2_labels/wcem_finger_e4_seed34_late.npz\"; [ -f \"$O\" ] && { echo \"skip $O (exists)\"; exit 0; }; python -m d0.oracle_labels --run_logdir \"${RUNROOT}/r3_local/r3_finger_e4_seed34\" --states 200 --horizon 100 --label_every 25 --actions 8 --seed 0 --ref_stride 5 --oracle_all --w1_repeats 8  --cem_consumer --env_seed 20260825 --output \"$O\" || { rc=$?; echo \"FATAL: labeler failed rc=$rc\"; exit $rc; }",
+   "vars": {
+    "src": "r3_finger_e4_seed34",
+    "out": "wcem_finger_e4_seed34_late",
+    "dup": "",
+    "run_id": "wcem_finger_e4_seed34"
+   },
+   "logdir": "wcem2_labels",
+   "outputs": [
+    "wcem2_labels"
+   ],
+   "inputs": [],
+   "done_when": [
+    {
+     "exists": "wcem_finger_e4_seed34_late.npz"
+    }
+   ]
+  },
+  {
+   "stage": "main",
+   "kind": "wcem_main",
+   "target": "vast",
+   "run_id": "wcem_finger_e1_seed38",
+   "cmd": "W=\"${RUNROOT}/wcem2_labels/WCEM2_SMOKE_OK\"; [ -f \"$W\" ] || { echo \"run the wcem2 smoke first\"; exit 1; }; export XLA_PYTHON_CLIENT_MEM_FRACTION=0.18; O=\"${RUNROOT}/wcem2_labels/wcem_finger_e1_seed38_late.npz\"; [ -f \"$O\" ] && { echo \"skip $O (exists)\"; exit 0; }; python -m d0.oracle_labels --run_logdir \"${RUNROOT}/r3_local/r3_finger_e1_seed38\" --states 200 --horizon 100 --label_every 25 --actions 8 --seed 0 --ref_stride 5 --oracle_all --w1_repeats 8  --cem_consumer --env_seed 20260825 --output \"$O\" || { rc=$?; echo \"FATAL: labeler failed rc=$rc\"; exit $rc; }",
+   "vars": {
+    "src": "r3_finger_e1_seed38",
+    "out": "wcem_finger_e1_seed38_late",
+    "dup": "",
+    "run_id": "wcem_finger_e1_seed38"
+   },
+   "logdir": "wcem2_labels",
+   "outputs": [
+    "wcem2_labels"
+   ],
+   "inputs": [],
+   "done_when": [
+    {
+     "exists": "wcem_finger_e1_seed38_late.npz"
+    }
+   ]
+  },
+  {
+   "stage": "main",
+   "kind": "wcem_main",
+   "target": "vast",
+   "run_id": "wcem_cup_e1_seed35",
+   "cmd": "W=\"${RUNROOT}/wcem2_labels/WCEM2_SMOKE_OK\"; [ -f \"$W\" ] || { echo \"run the wcem2 smoke first\"; exit 1; }; export XLA_PYTHON_CLIENT_MEM_FRACTION=0.18; O=\"${RUNROOT}/wcem2_labels/wcem_cup_e1_seed35_late.npz\"; [ -f \"$O\" ] && { echo \"skip $O (exists)\"; exit 0; }; python -m d0.oracle_labels --run_logdir \"${RUNROOT}/r3_local/r3_cup_e1_seed35\" --states 200 --horizon 100 --label_every 25 --actions 8 --seed 0 --ref_stride 5 --oracle_all --w1_repeats 8  --cem_consumer --env_seed 20260825 --output \"$O\" || { rc=$?; echo \"FATAL: labeler failed rc=$rc\"; exit $rc; }",
+   "vars": {
+    "src": "r3_cup_e1_seed35",
+    "out": "wcem_cup_e1_seed35_late",
+    "dup": "",
+    "run_id": "wcem_cup_e1_seed35"
+   },
+   "logdir": "wcem2_labels",
+   "outputs": [
+    "wcem2_labels"
+   ],
+   "inputs": [],
+   "done_when": [
+    {
+     "exists": "wcem_cup_e1_seed35_late.npz"
+    }
+   ]
+  },
+  {
+   "stage": "main",
+   "kind": "wcem_main",
+   "target": "vast",
+   "run_id": "wcem_cup_e4_seed33",
+   "cmd": "W=\"${RUNROOT}/wcem2_labels/WCEM2_SMOKE_OK\"; [ -f \"$W\" ] || { echo \"run the wcem2 smoke first\"; exit 1; }; export XLA_PYTHON_CLIENT_MEM_FRACTION=0.18; O=\"${RUNROOT}/wcem2_labels/wcem_cup_e4_seed33_late.npz\"; [ -f \"$O\" ] && { echo \"skip $O (exists)\"; exit 0; }; python -m d0.oracle_labels --run_logdir \"${RUNROOT}/r3_local/r3_cup_e4_seed33\" --states 200 --horizon 100 --label_every 25 --actions 8 --seed 0 --ref_stride 5 --oracle_all --w1_repeats 8  --cem_consumer --env_seed 20260825 --output \"$O\" || { rc=$?; echo \"FATAL: labeler failed rc=$rc\"; exit $rc; }",
+   "vars": {
+    "src": "r3_cup_e4_seed33",
+    "out": "wcem_cup_e4_seed33_late",
+    "dup": "",
+    "run_id": "wcem_cup_e4_seed33"
+   },
+   "logdir": "wcem2_labels",
+   "outputs": [
+    "wcem2_labels"
+   ],
+   "inputs": [],
+   "done_when": [
+    {
+     "exists": "wcem_cup_e4_seed33_late.npz"
+    }
+   ]
+  },
+  {
+   "stage": "main",
+   "kind": "wcem_main",
+   "target": "vast",
+   "run_id": "wcem_finger_e4_seed36",
+   "cmd": "W=\"${RUNROOT}/wcem2_labels/WCEM2_SMOKE_OK\"; [ -f \"$W\" ] || { echo \"run the wcem2 smoke first\"; exit 1; }; export XLA_PYTHON_CLIENT_MEM_FRACTION=0.18; O=\"${RUNROOT}/wcem2_labels/wcem_finger_e4_seed36_late.npz\"; [ -f \"$O\" ] && { echo \"skip $O (exists)\"; exit 0; }; python -m d0.oracle_labels --run_logdir \"${RUNROOT}/r3_local/r3_finger_e4_seed36\" --states 200 --horizon 100 --label_every 25 --actions 8 --seed 0 --ref_stride 5 --oracle_all --w1_repeats 8  --cem_consumer --env_seed 20260825 --output \"$O\" || { rc=$?; echo \"FATAL: labeler failed rc=$rc\"; exit $rc; }",
+   "vars": {
+    "src": "r3_finger_e4_seed36",
+    "out": "wcem_finger_e4_seed36_late",
+    "dup": "",
+    "run_id": "wcem_finger_e4_seed36"
+   },
+   "logdir": "wcem2_labels",
+   "outputs": [
+    "wcem2_labels"
+   ],
+   "inputs": [],
+   "done_when": [
+    {
+     "exists": "wcem_finger_e4_seed36_late.npz"
+    }
+   ]
+  },
+  {
+   "stage": "main",
+   "kind": "wcem_main",
+   "target": "vast",
+   "run_id": "wcem_cup_e4_seed34",
+   "cmd": "W=\"${RUNROOT}/wcem2_labels/WCEM2_SMOKE_OK\"; [ -f \"$W\" ] || { echo \"run the wcem2 smoke first\"; exit 1; }; export XLA_PYTHON_CLIENT_MEM_FRACTION=0.18; O=\"${RUNROOT}/wcem2_labels/wcem_cup_e4_seed34_late.npz\"; [ -f \"$O\" ] && { echo \"skip $O (exists)\"; exit 0; }; python -m d0.oracle_labels --run_logdir \"${RUNROOT}/r3_local/r3_cup_e4_seed34\" --states 200 --horizon 100 --label_every 25 --actions 8 --seed 0 --ref_stride 5 --oracle_all --w1_repeats 8  --cem_consumer --env_seed 20260825 --output \"$O\" || { rc=$?; echo \"FATAL: labeler failed rc=$rc\"; exit $rc; }",
+   "vars": {
+    "src": "r3_cup_e4_seed34",
+    "out": "wcem_cup_e4_seed34_late",
+    "dup": "",
+    "run_id": "wcem_cup_e4_seed34"
+   },
+   "logdir": "wcem2_labels",
+   "outputs": [
+    "wcem2_labels"
+   ],
+   "inputs": [],
+   "done_when": [
+    {
+     "exists": "wcem_cup_e4_seed34_late.npz"
+    }
+   ]
+  },
+  {
+   "stage": "main",
+   "kind": "wcem_main",
+   "target": "vast",
+   "run_id": "wcem_finger_e4_seed37",
+   "cmd": "W=\"${RUNROOT}/wcem2_labels/WCEM2_SMOKE_OK\"; [ -f \"$W\" ] || { echo \"run the wcem2 smoke first\"; exit 1; }; export XLA_PYTHON_CLIENT_MEM_FRACTION=0.18; O=\"${RUNROOT}/wcem2_labels/wcem_finger_e4_seed37_late.npz\"; [ -f \"$O\" ] && { echo \"skip $O (exists)\"; exit 0; }; python -m d0.oracle_labels --run_logdir \"${RUNROOT}/r3_local/r3_finger_e4_seed37\" --states 200 --horizon 100 --label_every 25 --actions 8 --seed 0 --ref_stride 5 --oracle_all --w1_repeats 8  --cem_consumer --env_seed 20260825 --output \"$O\" || { rc=$?; echo \"FATAL: labeler failed rc=$rc\"; exit $rc; }",
+   "vars": {
+    "src": "r3_finger_e4_seed37",
+    "out": "wcem_finger_e4_seed37_late",
+    "dup": "",
+    "run_id": "wcem_finger_e4_seed37"
+   },
+   "logdir": "wcem2_labels",
+   "outputs": [
+    "wcem2_labels"
+   ],
+   "inputs": [],
+   "done_when": [
+    {
+     "exists": "wcem_finger_e4_seed37_late.npz"
+    }
+   ]
+  },
+  {
+   "stage": "main",
+   "kind": "wcem_main",
+   "target": "vast",
+   "run_id": "wcem_finger_e1_seed36",
+   "cmd": "W=\"${RUNROOT}/wcem2_labels/WCEM2_SMOKE_OK\"; [ -f \"$W\" ] || { echo \"run the wcem2 smoke first\"; exit 1; }; export XLA_PYTHON_CLIENT_MEM_FRACTION=0.18; O=\"${RUNROOT}/wcem2_labels/wcem_finger_e1_seed36_late.npz\"; [ -f \"$O\" ] && { echo \"skip $O (exists)\"; exit 0; }; python -m d0.oracle_labels --run_logdir \"${RUNROOT}/r3_local/r3_finger_e1_seed36\" --states 200 --horizon 100 --label_every 25 --actions 8 --seed 0 --ref_stride 5 --oracle_all --w1_repeats 8  --cem_consumer --env_seed 20260825 --output \"$O\" || { rc=$?; echo \"FATAL: labeler failed rc=$rc\"; exit $rc; }",
+   "vars": {
+    "src": "r3_finger_e1_seed36",
+    "out": "wcem_finger_e1_seed36_late",
+    "dup": "",
+    "run_id": "wcem_finger_e1_seed36"
+   },
+   "logdir": "wcem2_labels",
+   "outputs": [
+    "wcem2_labels"
+   ],
+   "inputs": [],
+   "done_when": [
+    {
+     "exists": "wcem_finger_e1_seed36_late.npz"
+    }
+   ]
+  },
+  {
+   "stage": "main",
+   "kind": "wcem_main",
+   "target": "vast",
+   "run_id": "wcem_cup_e1_seed38",
+   "cmd": "W=\"${RUNROOT}/wcem2_labels/WCEM2_SMOKE_OK\"; [ -f \"$W\" ] || { echo \"run the wcem2 smoke first\"; exit 1; }; export XLA_PYTHON_CLIENT_MEM_FRACTION=0.18; O=\"${RUNROOT}/wcem2_labels/wcem_cup_e1_seed38_late.npz\"; [ -f \"$O\" ] && { echo \"skip $O (exists)\"; exit 0; }; python -m d0.oracle_labels --run_logdir \"${RUNROOT}/r3_local/r3_cup_e1_seed38\" --states 200 --horizon 100 --label_every 25 --actions 8 --seed 0 --ref_stride 5 --oracle_all --w1_repeats 8  --cem_consumer --env_seed 20260825 --output \"$O\" || { rc=$?; echo \"FATAL: labeler failed rc=$rc\"; exit $rc; }",
+   "vars": {
+    "src": "r3_cup_e1_seed38",
+    "out": "wcem_cup_e1_seed38_late",
+    "dup": "",
+    "run_id": "wcem_cup_e1_seed38"
+   },
+   "logdir": "wcem2_labels",
+   "outputs": [
+    "wcem2_labels"
+   ],
+   "inputs": [],
+   "done_when": [
+    {
+     "exists": "wcem_cup_e1_seed38_late.npz"
+    }
+   ]
+  },
+  {
+   "stage": "main",
+   "kind": "wcem_main",
+   "target": "vast",
+   "run_id": "wcem_finger_e1_seed33",
+   "cmd": "W=\"${RUNROOT}/wcem2_labels/WCEM2_SMOKE_OK\"; [ -f \"$W\" ] || { echo \"run the wcem2 smoke first\"; exit 1; }; export XLA_PYTHON_CLIENT_MEM_FRACTION=0.18; O=\"${RUNROOT}/wcem2_labels/wcem_finger_e1_seed33_late.npz\"; [ -f \"$O\" ] && { echo \"skip $O (exists)\"; exit 0; }; python -m d0.oracle_labels --run_logdir \"${RUNROOT}/r3_local/r3_finger_e1_seed33\" --states 200 --horizon 100 --label_every 25 --actions 8 --seed 0 --ref_stride 5 --oracle_all --w1_repeats 8  --cem_consumer --env_seed 20260825 --output \"$O\" || { rc=$?; echo \"FATAL: labeler failed rc=$rc\"; exit $rc; }",
+   "vars": {
+    "src": "r3_finger_e1_seed33",
+    "out": "wcem_finger_e1_seed33_late",
+    "dup": "",
+    "run_id": "wcem_finger_e1_seed33"
+   },
+   "logdir": "wcem2_labels",
+   "outputs": [
+    "wcem2_labels"
+   ],
+   "inputs": [],
+   "done_when": [
+    {
+     "exists": "wcem_finger_e1_seed33_late.npz"
+    }
+   ]
+  },
+  {
+   "stage": "main",
+   "kind": "wcem_main",
+   "target": "vast",
+   "run_id": "wcem_cup_e4_seed38",
+   "cmd": "W=\"${RUNROOT}/wcem2_labels/WCEM2_SMOKE_OK\"; [ -f \"$W\" ] || { echo \"run the wcem2 smoke first\"; exit 1; }; export XLA_PYTHON_CLIENT_MEM_FRACTION=0.18; O=\"${RUNROOT}/wcem2_labels/wcem_cup_e4_seed38_late.npz\"; [ -f \"$O\" ] && { echo \"skip $O (exists)\"; exit 0; }; python -m d0.oracle_labels --run_logdir \"${RUNROOT}/r3_local/r3_cup_e4_seed38\" --states 200 --horizon 100 --label_every 25 --actions 8 --seed 0 --ref_stride 5 --oracle_all --w1_repeats 8  --cem_consumer --env_seed 20260825 --output \"$O\" || { rc=$?; echo \"FATAL: labeler failed rc=$rc\"; exit $rc; }",
+   "vars": {
+    "src": "r3_cup_e4_seed38",
+    "out": "wcem_cup_e4_seed38_late",
+    "dup": "",
+    "run_id": "wcem_cup_e4_seed38"
+   },
+   "logdir": "wcem2_labels",
+   "outputs": [
+    "wcem2_labels"
+   ],
+   "inputs": [],
+   "done_when": [
+    {
+     "exists": "wcem_cup_e4_seed38_late.npz"
+    }
+   ]
+  }
+ ]
+}

@@ -1,0 +1,24 @@
+wave_id: p2_wcem
+spec:    /home/rickybao/projects/dreamerv3/ops/waves/p2_wcem/spec.yaml
+prereg:  prereg/PREREG_p2_cem_consumer_20260821.md
+
+=== stage smoke  [vast]  kind=wcem_gate  on_failure=abort  n=1 ===
+  wcem_smoke_gate
+
+=== stage main  [vast]  kind=wcem_main  on_failure=continue  n=10 ===
+  wcemdup_finger_e1_seed31
+  wcem_cup_e1_seed31
+  wcem_cup_e4_seed32
+  wcem_finger_e1_seed32
+  wcem_finger_e4_seed31
+  wcemdup_cup_e4_seed32
+  wcem_cup_e1_seed32
+  wcem_cup_e4_seed31
+  wcem_finger_e1_seed31
+  wcem_finger_e4_seed32
+
+TOTAL RUNS: 11
+
+Check this list against the prereg before submitting. run_ids are
+consumed by frozen readers and the ledger; a wrong expansion here
+propagates into every downstream artifact.

@@ -1,0 +1,27 @@
+wave_id: wb_advd
+spec:    /home/rickybao/projects/dreamerv3/ops/waves/wb_advd/spec.yaml
+prereg:  prereg/PREREG_waveb_advd_20260822.md
+
+=== stage adapt  [vast]  kind=advd_run  on_failure=continue  n=16 ===
+  se_advd_s10
+  se_advd_het_s44
+  se_advd_flat_s48
+  se_advd_s11
+  se_advd_s12
+  se_advd_het_s45
+  se_advd_flat_s49
+  se_advd_s13
+  se_advd_s14
+  se_advd_het_s46
+  se_advd_flat_s50
+  se_advd_s15
+  se_advd_s16
+  se_advd_het_s47
+  se_advd_flat_s51
+  se_advd_s17
+
+TOTAL RUNS: 16
+
+Check this list against the prereg before submitting. run_ids are
+consumed by frozen readers and the ledger; a wrong expansion here
+propagates into every downstream artifact.

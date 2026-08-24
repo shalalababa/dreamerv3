@@ -39,10 +39,11 @@ if [ ! -e "$REPO/scripts/tm2r3.sbatch" ]; then bad "MISSING producer scripts/tm2
   grep -qE '[$]\{?TM2R3_SEED\b' "$REPO/scripts/tm2r3.sbatch" && ok "scripts/tm2r3.sbatch reads \$TM2R3_SEED" || bad "STALE PRODUCER: scripts/tm2r3.sbatch never reads \$TM2R3_SEED -- the wave sets it and it would bind NOTHING (run push-repo)"
   grep -qE '[$]\{?TM2R3_STAGE\b' "$REPO/scripts/tm2r3.sbatch" && ok "scripts/tm2r3.sbatch reads \$TM2R3_STAGE" || bad "STALE PRODUCER: scripts/tm2r3.sbatch never reads \$TM2R3_STAGE -- the wave sets it and it would bind NOTHING (run push-repo)"
   grep -qE '[$]\{?TM2_CONDA_ENV\b' "$REPO/scripts/tm2r3.sbatch" && ok "scripts/tm2r3.sbatch reads \$TM2_CONDA_ENV" || bad "STALE PRODUCER: scripts/tm2r3.sbatch never reads \$TM2_CONDA_ENV -- the wave sets it and it would bind NOTHING (run push-repo)"
+  grep -qE '[$]\{?W2_SKIP_DUP_GATE\b' "$REPO/scripts/tm2r3.sbatch" && ok "scripts/tm2r3.sbatch reads \$W2_SKIP_DUP_GATE" || bad "STALE PRODUCER: scripts/tm2r3.sbatch never reads \$W2_SKIP_DUP_GATE -- the wave sets it and it would bind NOTHING (run push-repo)"
 fi
 
 echo "== repo generation stamp =="
-want=9e8cdd91
+want=2775e027
 got="$(cat "$REPO/scripts/ops/VERSION" 2>/dev/null | head -1)"
 case "$got" in
   "$want"*|*"${want%%-*}"*) ok "instance repo matches wave generation ($want)" ;;

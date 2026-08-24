@@ -1,0 +1,969 @@
+{
+ "wave_id": "wb_advd_ext",
+ "spec": "/home/rickybao/projects/dreamerv3/ops/waves/wb_advd_ext/spec.yaml",
+ "prereg": "prereg/PREREG_waveb_advd_amend1_20260823.md",
+ "bundle": {
+  "prefix": "wb_advd_extlegs",
+  "include_stages": [
+   "adapt_ext"
+  ],
+  "cloud_logs": [
+   "se_advd*_s*.out"
+  ]
+ },
+ "stages": [
+  {
+   "name": "adapt_ext",
+   "target": "vast",
+   "kind": "advd_run",
+   "on_failure": "continue",
+   "needs": null
+  }
+ ],
+ "runs": [
+  {
+   "stage": "adapt_ext",
+   "kind": "advd_run",
+   "target": "vast",
+   "run_id": "se_advd_s10",
+   "cmd": "SRCROOT=\"$RUNROOT/_wb_srcs\" RUN_ID=se_advd_s10 TASK=dmc_cheetah_run SEED=10 SRC_DIR=se_cheetah_seed10 STEPS=2e5 DISTRACTOR_SCALE=1.0 DISTRACTOR_MOD_KEY= DISTRACTOR_MOD_INDEX=0 DISTRACTOR_MOD_LO=0.0 DISTRACTOR_MOD_HI=1.0 PENALTY_MIX=False PENALTY_SCALE=0.0 PENALTY_GATE_KEY= PENALTY_GATE_INDEX=0 PENALTY_GATE_THRESHOLD=0.0 bash scripts/uncfield_advd.sbatch",
+   "vars": {
+    "seed": 10,
+    "src": "se_cheetah_seed10",
+    "scale": "1.0",
+    "modk": "",
+    "modlo": "0.0",
+    "modhi": "1.0",
+    "run_id": "se_advd_s10"
+   },
+   "logdir": "se_advd_s10",
+   "outputs": [
+    "se_advd_s10"
+   ],
+   "inputs": [],
+   "done_when": [
+    {
+     "exists": "TRAINING_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "file_contains": {
+      "file": "config.yaml",
+      "pattern": "mode:\\s+advd"
+     }
+    },
+    {
+     "file_contains": {
+      "file": "config.yaml",
+      "pattern": "from_checkpoint_regex:\\s+\\^\\(enc\\|dyn\\|dec\\|disag\\)/"
+     }
+    },
+    {
+     "file_contains": {
+      "file": "config.yaml",
+      "pattern": "penalty_mix:\\s+false"
+     }
+    },
+    {
+     "file_contains": {
+      "file": "ckpt_snapshots/nearest.json",
+      "pattern": "\"milestone\": 200000,\\s+\"step\": (19[0-9]\\d{3}|[2-9]\\d{5})"
+     }
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 185
+     }
+    }
+   ]
+  },
+  {
+   "stage": "adapt_ext",
+   "kind": "advd_run",
+   "target": "vast",
+   "run_id": "se_advd_het_s44",
+   "cmd": "SRCROOT=\"$RUNROOT/_wb_srcs\" RUN_ID=se_advd_het_s44 TASK=dmc_cheetah_run SEED=44 SRC_DIR=se_avoid_het_s44 STEPS=2e5 DISTRACTOR_SCALE=1.0 DISTRACTOR_MOD_KEY=position DISTRACTOR_MOD_INDEX=0 DISTRACTOR_MOD_LO=-0.32203162 DISTRACTOR_MOD_HI=0.19711795 PENALTY_MIX=False PENALTY_SCALE=0.0 PENALTY_GATE_KEY= PENALTY_GATE_INDEX=0 PENALTY_GATE_THRESHOLD=0.0 bash scripts/uncfield_advd.sbatch",
+   "vars": {
+    "seed": 44,
+    "src": "se_avoid_het_s44",
+    "scale": "1.0",
+    "modk": "position",
+    "modlo": "-0.32203162",
+    "modhi": "0.19711795",
+    "run_id": "se_advd_het_s44"
+   },
+   "logdir": "se_advd_het_s44",
+   "outputs": [
+    "se_advd_het_s44"
+   ],
+   "inputs": [],
+   "done_when": [
+    {
+     "exists": "TRAINING_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "file_contains": {
+      "file": "config.yaml",
+      "pattern": "mode:\\s+advd"
+     }
+    },
+    {
+     "file_contains": {
+      "file": "config.yaml",
+      "pattern": "from_checkpoint_regex:\\s+\\^\\(enc\\|dyn\\|dec\\|disag\\)/"
+     }
+    },
+    {
+     "file_contains": {
+      "file": "config.yaml",
+      "pattern": "penalty_mix:\\s+false"
+     }
+    },
+    {
+     "file_contains": {
+      "file": "ckpt_snapshots/nearest.json",
+      "pattern": "\"milestone\": 200000,\\s+\"step\": (19[0-9]\\d{3}|[2-9]\\d{5})"
+     }
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 185
+     }
+    }
+   ]
+  },
+  {
+   "stage": "adapt_ext",
+   "kind": "advd_run",
+   "target": "vast",
+   "run_id": "se_advd_flat_s48",
+   "cmd": "SRCROOT=\"$RUNROOT/_wb_srcs\" RUN_ID=se_advd_flat_s48 TASK=dmc_cheetah_run SEED=48 SRC_DIR=se_avoid_flat_s48 STEPS=2e5 DISTRACTOR_SCALE=0.35891393 DISTRACTOR_MOD_KEY= DISTRACTOR_MOD_INDEX=0 DISTRACTOR_MOD_LO=0.0 DISTRACTOR_MOD_HI=1.0 PENALTY_MIX=False PENALTY_SCALE=0.0 PENALTY_GATE_KEY= PENALTY_GATE_INDEX=0 PENALTY_GATE_THRESHOLD=0.0 bash scripts/uncfield_advd.sbatch",
+   "vars": {
+    "seed": 48,
+    "src": "se_avoid_flat_s48",
+    "scale": "0.35891393",
+    "modk": "",
+    "modlo": "0.0",
+    "modhi": "1.0",
+    "run_id": "se_advd_flat_s48"
+   },
+   "logdir": "se_advd_flat_s48",
+   "outputs": [
+    "se_advd_flat_s48"
+   ],
+   "inputs": [],
+   "done_when": [
+    {
+     "exists": "TRAINING_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "file_contains": {
+      "file": "config.yaml",
+      "pattern": "mode:\\s+advd"
+     }
+    },
+    {
+     "file_contains": {
+      "file": "config.yaml",
+      "pattern": "from_checkpoint_regex:\\s+\\^\\(enc\\|dyn\\|dec\\|disag\\)/"
+     }
+    },
+    {
+     "file_contains": {
+      "file": "config.yaml",
+      "pattern": "penalty_mix:\\s+false"
+     }
+    },
+    {
+     "file_contains": {
+      "file": "ckpt_snapshots/nearest.json",
+      "pattern": "\"milestone\": 200000,\\s+\"step\": (19[0-9]\\d{3}|[2-9]\\d{5})"
+     }
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 185
+     }
+    }
+   ]
+  },
+  {
+   "stage": "adapt_ext",
+   "kind": "advd_run",
+   "target": "vast",
+   "run_id": "se_advd_s11",
+   "cmd": "SRCROOT=\"$RUNROOT/_wb_srcs\" RUN_ID=se_advd_s11 TASK=dmc_cheetah_run SEED=11 SRC_DIR=se_cheetah_seed11 STEPS=2e5 DISTRACTOR_SCALE=1.0 DISTRACTOR_MOD_KEY= DISTRACTOR_MOD_INDEX=0 DISTRACTOR_MOD_LO=0.0 DISTRACTOR_MOD_HI=1.0 PENALTY_MIX=False PENALTY_SCALE=0.0 PENALTY_GATE_KEY= PENALTY_GATE_INDEX=0 PENALTY_GATE_THRESHOLD=0.0 bash scripts/uncfield_advd.sbatch",
+   "vars": {
+    "seed": 11,
+    "src": "se_cheetah_seed11",
+    "scale": "1.0",
+    "modk": "",
+    "modlo": "0.0",
+    "modhi": "1.0",
+    "run_id": "se_advd_s11"
+   },
+   "logdir": "se_advd_s11",
+   "outputs": [
+    "se_advd_s11"
+   ],
+   "inputs": [],
+   "done_when": [
+    {
+     "exists": "TRAINING_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "file_contains": {
+      "file": "config.yaml",
+      "pattern": "mode:\\s+advd"
+     }
+    },
+    {
+     "file_contains": {
+      "file": "config.yaml",
+      "pattern": "from_checkpoint_regex:\\s+\\^\\(enc\\|dyn\\|dec\\|disag\\)/"
+     }
+    },
+    {
+     "file_contains": {
+      "file": "config.yaml",
+      "pattern": "penalty_mix:\\s+false"
+     }
+    },
+    {
+     "file_contains": {
+      "file": "ckpt_snapshots/nearest.json",
+      "pattern": "\"milestone\": 200000,\\s+\"step\": (19[0-9]\\d{3}|[2-9]\\d{5})"
+     }
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 185
+     }
+    }
+   ]
+  },
+  {
+   "stage": "adapt_ext",
+   "kind": "advd_run",
+   "target": "vast",
+   "run_id": "se_advd_s12",
+   "cmd": "SRCROOT=\"$RUNROOT/_wb_srcs\" RUN_ID=se_advd_s12 TASK=dmc_cheetah_run SEED=12 SRC_DIR=se_cheetah_seed12 STEPS=2e5 DISTRACTOR_SCALE=1.0 DISTRACTOR_MOD_KEY= DISTRACTOR_MOD_INDEX=0 DISTRACTOR_MOD_LO=0.0 DISTRACTOR_MOD_HI=1.0 PENALTY_MIX=False PENALTY_SCALE=0.0 PENALTY_GATE_KEY= PENALTY_GATE_INDEX=0 PENALTY_GATE_THRESHOLD=0.0 bash scripts/uncfield_advd.sbatch",
+   "vars": {
+    "seed": 12,
+    "src": "se_cheetah_seed12",
+    "scale": "1.0",
+    "modk": "",
+    "modlo": "0.0",
+    "modhi": "1.0",
+    "run_id": "se_advd_s12"
+   },
+   "logdir": "se_advd_s12",
+   "outputs": [
+    "se_advd_s12"
+   ],
+   "inputs": [],
+   "done_when": [
+    {
+     "exists": "TRAINING_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "file_contains": {
+      "file": "config.yaml",
+      "pattern": "mode:\\s+advd"
+     }
+    },
+    {
+     "file_contains": {
+      "file": "config.yaml",
+      "pattern": "from_checkpoint_regex:\\s+\\^\\(enc\\|dyn\\|dec\\|disag\\)/"
+     }
+    },
+    {
+     "file_contains": {
+      "file": "config.yaml",
+      "pattern": "penalty_mix:\\s+false"
+     }
+    },
+    {
+     "file_contains": {
+      "file": "ckpt_snapshots/nearest.json",
+      "pattern": "\"milestone\": 200000,\\s+\"step\": (19[0-9]\\d{3}|[2-9]\\d{5})"
+     }
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 185
+     }
+    }
+   ]
+  },
+  {
+   "stage": "adapt_ext",
+   "kind": "advd_run",
+   "target": "vast",
+   "run_id": "se_advd_het_s45",
+   "cmd": "SRCROOT=\"$RUNROOT/_wb_srcs\" RUN_ID=se_advd_het_s45 TASK=dmc_cheetah_run SEED=45 SRC_DIR=se_avoid_het_s45 STEPS=2e5 DISTRACTOR_SCALE=1.0 DISTRACTOR_MOD_KEY=position DISTRACTOR_MOD_INDEX=0 DISTRACTOR_MOD_LO=-0.32203162 DISTRACTOR_MOD_HI=0.19711795 PENALTY_MIX=False PENALTY_SCALE=0.0 PENALTY_GATE_KEY= PENALTY_GATE_INDEX=0 PENALTY_GATE_THRESHOLD=0.0 bash scripts/uncfield_advd.sbatch",
+   "vars": {
+    "seed": 45,
+    "src": "se_avoid_het_s45",
+    "scale": "1.0",
+    "modk": "position",
+    "modlo": "-0.32203162",
+    "modhi": "0.19711795",
+    "run_id": "se_advd_het_s45"
+   },
+   "logdir": "se_advd_het_s45",
+   "outputs": [
+    "se_advd_het_s45"
+   ],
+   "inputs": [],
+   "done_when": [
+    {
+     "exists": "TRAINING_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "file_contains": {
+      "file": "config.yaml",
+      "pattern": "mode:\\s+advd"
+     }
+    },
+    {
+     "file_contains": {
+      "file": "config.yaml",
+      "pattern": "from_checkpoint_regex:\\s+\\^\\(enc\\|dyn\\|dec\\|disag\\)/"
+     }
+    },
+    {
+     "file_contains": {
+      "file": "config.yaml",
+      "pattern": "penalty_mix:\\s+false"
+     }
+    },
+    {
+     "file_contains": {
+      "file": "ckpt_snapshots/nearest.json",
+      "pattern": "\"milestone\": 200000,\\s+\"step\": (19[0-9]\\d{3}|[2-9]\\d{5})"
+     }
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 185
+     }
+    }
+   ]
+  },
+  {
+   "stage": "adapt_ext",
+   "kind": "advd_run",
+   "target": "vast",
+   "run_id": "se_advd_flat_s49",
+   "cmd": "SRCROOT=\"$RUNROOT/_wb_srcs\" RUN_ID=se_advd_flat_s49 TASK=dmc_cheetah_run SEED=49 SRC_DIR=se_avoid_flat_s49 STEPS=2e5 DISTRACTOR_SCALE=0.35891393 DISTRACTOR_MOD_KEY= DISTRACTOR_MOD_INDEX=0 DISTRACTOR_MOD_LO=0.0 DISTRACTOR_MOD_HI=1.0 PENALTY_MIX=False PENALTY_SCALE=0.0 PENALTY_GATE_KEY= PENALTY_GATE_INDEX=0 PENALTY_GATE_THRESHOLD=0.0 bash scripts/uncfield_advd.sbatch",
+   "vars": {
+    "seed": 49,
+    "src": "se_avoid_flat_s49",
+    "scale": "0.35891393",
+    "modk": "",
+    "modlo": "0.0",
+    "modhi": "1.0",
+    "run_id": "se_advd_flat_s49"
+   },
+   "logdir": "se_advd_flat_s49",
+   "outputs": [
+    "se_advd_flat_s49"
+   ],
+   "inputs": [],
+   "done_when": [
+    {
+     "exists": "TRAINING_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "file_contains": {
+      "file": "config.yaml",
+      "pattern": "mode:\\s+advd"
+     }
+    },
+    {
+     "file_contains": {
+      "file": "config.yaml",
+      "pattern": "from_checkpoint_regex:\\s+\\^\\(enc\\|dyn\\|dec\\|disag\\)/"
+     }
+    },
+    {
+     "file_contains": {
+      "file": "config.yaml",
+      "pattern": "penalty_mix:\\s+false"
+     }
+    },
+    {
+     "file_contains": {
+      "file": "ckpt_snapshots/nearest.json",
+      "pattern": "\"milestone\": 200000,\\s+\"step\": (19[0-9]\\d{3}|[2-9]\\d{5})"
+     }
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 185
+     }
+    }
+   ]
+  },
+  {
+   "stage": "adapt_ext",
+   "kind": "advd_run",
+   "target": "vast",
+   "run_id": "se_advd_s13",
+   "cmd": "SRCROOT=\"$RUNROOT/_wb_srcs\" RUN_ID=se_advd_s13 TASK=dmc_cheetah_run SEED=13 SRC_DIR=se_cheetah_seed13 STEPS=2e5 DISTRACTOR_SCALE=1.0 DISTRACTOR_MOD_KEY= DISTRACTOR_MOD_INDEX=0 DISTRACTOR_MOD_LO=0.0 DISTRACTOR_MOD_HI=1.0 PENALTY_MIX=False PENALTY_SCALE=0.0 PENALTY_GATE_KEY= PENALTY_GATE_INDEX=0 PENALTY_GATE_THRESHOLD=0.0 bash scripts/uncfield_advd.sbatch",
+   "vars": {
+    "seed": 13,
+    "src": "se_cheetah_seed13",
+    "scale": "1.0",
+    "modk": "",
+    "modlo": "0.0",
+    "modhi": "1.0",
+    "run_id": "se_advd_s13"
+   },
+   "logdir": "se_advd_s13",
+   "outputs": [
+    "se_advd_s13"
+   ],
+   "inputs": [],
+   "done_when": [
+    {
+     "exists": "TRAINING_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "file_contains": {
+      "file": "config.yaml",
+      "pattern": "mode:\\s+advd"
+     }
+    },
+    {
+     "file_contains": {
+      "file": "config.yaml",
+      "pattern": "from_checkpoint_regex:\\s+\\^\\(enc\\|dyn\\|dec\\|disag\\)/"
+     }
+    },
+    {
+     "file_contains": {
+      "file": "config.yaml",
+      "pattern": "penalty_mix:\\s+false"
+     }
+    },
+    {
+     "file_contains": {
+      "file": "ckpt_snapshots/nearest.json",
+      "pattern": "\"milestone\": 200000,\\s+\"step\": (19[0-9]\\d{3}|[2-9]\\d{5})"
+     }
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 185
+     }
+    }
+   ]
+  },
+  {
+   "stage": "adapt_ext",
+   "kind": "advd_run",
+   "target": "vast",
+   "run_id": "se_advd_s14",
+   "cmd": "SRCROOT=\"$RUNROOT/_wb_srcs\" RUN_ID=se_advd_s14 TASK=dmc_cheetah_run SEED=14 SRC_DIR=se_cheetah_seed14 STEPS=2e5 DISTRACTOR_SCALE=1.0 DISTRACTOR_MOD_KEY= DISTRACTOR_MOD_INDEX=0 DISTRACTOR_MOD_LO=0.0 DISTRACTOR_MOD_HI=1.0 PENALTY_MIX=False PENALTY_SCALE=0.0 PENALTY_GATE_KEY= PENALTY_GATE_INDEX=0 PENALTY_GATE_THRESHOLD=0.0 bash scripts/uncfield_advd.sbatch",
+   "vars": {
+    "seed": 14,
+    "src": "se_cheetah_seed14",
+    "scale": "1.0",
+    "modk": "",
+    "modlo": "0.0",
+    "modhi": "1.0",
+    "run_id": "se_advd_s14"
+   },
+   "logdir": "se_advd_s14",
+   "outputs": [
+    "se_advd_s14"
+   ],
+   "inputs": [],
+   "done_when": [
+    {
+     "exists": "TRAINING_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "file_contains": {
+      "file": "config.yaml",
+      "pattern": "mode:\\s+advd"
+     }
+    },
+    {
+     "file_contains": {
+      "file": "config.yaml",
+      "pattern": "from_checkpoint_regex:\\s+\\^\\(enc\\|dyn\\|dec\\|disag\\)/"
+     }
+    },
+    {
+     "file_contains": {
+      "file": "config.yaml",
+      "pattern": "penalty_mix:\\s+false"
+     }
+    },
+    {
+     "file_contains": {
+      "file": "ckpt_snapshots/nearest.json",
+      "pattern": "\"milestone\": 200000,\\s+\"step\": (19[0-9]\\d{3}|[2-9]\\d{5})"
+     }
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 185
+     }
+    }
+   ]
+  },
+  {
+   "stage": "adapt_ext",
+   "kind": "advd_run",
+   "target": "vast",
+   "run_id": "se_advd_het_s46",
+   "cmd": "SRCROOT=\"$RUNROOT/_wb_srcs\" RUN_ID=se_advd_het_s46 TASK=dmc_cheetah_run SEED=46 SRC_DIR=se_avoid_het_s46 STEPS=2e5 DISTRACTOR_SCALE=1.0 DISTRACTOR_MOD_KEY=position DISTRACTOR_MOD_INDEX=0 DISTRACTOR_MOD_LO=-0.32203162 DISTRACTOR_MOD_HI=0.19711795 PENALTY_MIX=False PENALTY_SCALE=0.0 PENALTY_GATE_KEY= PENALTY_GATE_INDEX=0 PENALTY_GATE_THRESHOLD=0.0 bash scripts/uncfield_advd.sbatch",
+   "vars": {
+    "seed": 46,
+    "src": "se_avoid_het_s46",
+    "scale": "1.0",
+    "modk": "position",
+    "modlo": "-0.32203162",
+    "modhi": "0.19711795",
+    "run_id": "se_advd_het_s46"
+   },
+   "logdir": "se_advd_het_s46",
+   "outputs": [
+    "se_advd_het_s46"
+   ],
+   "inputs": [],
+   "done_when": [
+    {
+     "exists": "TRAINING_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "file_contains": {
+      "file": "config.yaml",
+      "pattern": "mode:\\s+advd"
+     }
+    },
+    {
+     "file_contains": {
+      "file": "config.yaml",
+      "pattern": "from_checkpoint_regex:\\s+\\^\\(enc\\|dyn\\|dec\\|disag\\)/"
+     }
+    },
+    {
+     "file_contains": {
+      "file": "config.yaml",
+      "pattern": "penalty_mix:\\s+false"
+     }
+    },
+    {
+     "file_contains": {
+      "file": "ckpt_snapshots/nearest.json",
+      "pattern": "\"milestone\": 200000,\\s+\"step\": (19[0-9]\\d{3}|[2-9]\\d{5})"
+     }
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 185
+     }
+    }
+   ]
+  },
+  {
+   "stage": "adapt_ext",
+   "kind": "advd_run",
+   "target": "vast",
+   "run_id": "se_advd_flat_s50",
+   "cmd": "SRCROOT=\"$RUNROOT/_wb_srcs\" RUN_ID=se_advd_flat_s50 TASK=dmc_cheetah_run SEED=50 SRC_DIR=se_avoid_flat_s50 STEPS=2e5 DISTRACTOR_SCALE=0.35891393 DISTRACTOR_MOD_KEY= DISTRACTOR_MOD_INDEX=0 DISTRACTOR_MOD_LO=0.0 DISTRACTOR_MOD_HI=1.0 PENALTY_MIX=False PENALTY_SCALE=0.0 PENALTY_GATE_KEY= PENALTY_GATE_INDEX=0 PENALTY_GATE_THRESHOLD=0.0 bash scripts/uncfield_advd.sbatch",
+   "vars": {
+    "seed": 50,
+    "src": "se_avoid_flat_s50",
+    "scale": "0.35891393",
+    "modk": "",
+    "modlo": "0.0",
+    "modhi": "1.0",
+    "run_id": "se_advd_flat_s50"
+   },
+   "logdir": "se_advd_flat_s50",
+   "outputs": [
+    "se_advd_flat_s50"
+   ],
+   "inputs": [],
+   "done_when": [
+    {
+     "exists": "TRAINING_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "file_contains": {
+      "file": "config.yaml",
+      "pattern": "mode:\\s+advd"
+     }
+    },
+    {
+     "file_contains": {
+      "file": "config.yaml",
+      "pattern": "from_checkpoint_regex:\\s+\\^\\(enc\\|dyn\\|dec\\|disag\\)/"
+     }
+    },
+    {
+     "file_contains": {
+      "file": "config.yaml",
+      "pattern": "penalty_mix:\\s+false"
+     }
+    },
+    {
+     "file_contains": {
+      "file": "ckpt_snapshots/nearest.json",
+      "pattern": "\"milestone\": 200000,\\s+\"step\": (19[0-9]\\d{3}|[2-9]\\d{5})"
+     }
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 185
+     }
+    }
+   ]
+  },
+  {
+   "stage": "adapt_ext",
+   "kind": "advd_run",
+   "target": "vast",
+   "run_id": "se_advd_s15",
+   "cmd": "SRCROOT=\"$RUNROOT/_wb_srcs\" RUN_ID=se_advd_s15 TASK=dmc_cheetah_run SEED=15 SRC_DIR=se_cheetah_seed15 STEPS=2e5 DISTRACTOR_SCALE=1.0 DISTRACTOR_MOD_KEY= DISTRACTOR_MOD_INDEX=0 DISTRACTOR_MOD_LO=0.0 DISTRACTOR_MOD_HI=1.0 PENALTY_MIX=False PENALTY_SCALE=0.0 PENALTY_GATE_KEY= PENALTY_GATE_INDEX=0 PENALTY_GATE_THRESHOLD=0.0 bash scripts/uncfield_advd.sbatch",
+   "vars": {
+    "seed": 15,
+    "src": "se_cheetah_seed15",
+    "scale": "1.0",
+    "modk": "",
+    "modlo": "0.0",
+    "modhi": "1.0",
+    "run_id": "se_advd_s15"
+   },
+   "logdir": "se_advd_s15",
+   "outputs": [
+    "se_advd_s15"
+   ],
+   "inputs": [],
+   "done_when": [
+    {
+     "exists": "TRAINING_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "file_contains": {
+      "file": "config.yaml",
+      "pattern": "mode:\\s+advd"
+     }
+    },
+    {
+     "file_contains": {
+      "file": "config.yaml",
+      "pattern": "from_checkpoint_regex:\\s+\\^\\(enc\\|dyn\\|dec\\|disag\\)/"
+     }
+    },
+    {
+     "file_contains": {
+      "file": "config.yaml",
+      "pattern": "penalty_mix:\\s+false"
+     }
+    },
+    {
+     "file_contains": {
+      "file": "ckpt_snapshots/nearest.json",
+      "pattern": "\"milestone\": 200000,\\s+\"step\": (19[0-9]\\d{3}|[2-9]\\d{5})"
+     }
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 185
+     }
+    }
+   ]
+  },
+  {
+   "stage": "adapt_ext",
+   "kind": "advd_run",
+   "target": "vast",
+   "run_id": "se_advd_s16",
+   "cmd": "SRCROOT=\"$RUNROOT/_wb_srcs\" RUN_ID=se_advd_s16 TASK=dmc_cheetah_run SEED=16 SRC_DIR=se_cheetah_seed16 STEPS=2e5 DISTRACTOR_SCALE=1.0 DISTRACTOR_MOD_KEY= DISTRACTOR_MOD_INDEX=0 DISTRACTOR_MOD_LO=0.0 DISTRACTOR_MOD_HI=1.0 PENALTY_MIX=False PENALTY_SCALE=0.0 PENALTY_GATE_KEY= PENALTY_GATE_INDEX=0 PENALTY_GATE_THRESHOLD=0.0 bash scripts/uncfield_advd.sbatch",
+   "vars": {
+    "seed": 16,
+    "src": "se_cheetah_seed16",
+    "scale": "1.0",
+    "modk": "",
+    "modlo": "0.0",
+    "modhi": "1.0",
+    "run_id": "se_advd_s16"
+   },
+   "logdir": "se_advd_s16",
+   "outputs": [
+    "se_advd_s16"
+   ],
+   "inputs": [],
+   "done_when": [
+    {
+     "exists": "TRAINING_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "file_contains": {
+      "file": "config.yaml",
+      "pattern": "mode:\\s+advd"
+     }
+    },
+    {
+     "file_contains": {
+      "file": "config.yaml",
+      "pattern": "from_checkpoint_regex:\\s+\\^\\(enc\\|dyn\\|dec\\|disag\\)/"
+     }
+    },
+    {
+     "file_contains": {
+      "file": "config.yaml",
+      "pattern": "penalty_mix:\\s+false"
+     }
+    },
+    {
+     "file_contains": {
+      "file": "ckpt_snapshots/nearest.json",
+      "pattern": "\"milestone\": 200000,\\s+\"step\": (19[0-9]\\d{3}|[2-9]\\d{5})"
+     }
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 185
+     }
+    }
+   ]
+  },
+  {
+   "stage": "adapt_ext",
+   "kind": "advd_run",
+   "target": "vast",
+   "run_id": "se_advd_het_s47",
+   "cmd": "SRCROOT=\"$RUNROOT/_wb_srcs\" RUN_ID=se_advd_het_s47 TASK=dmc_cheetah_run SEED=47 SRC_DIR=se_avoid_het_s47 STEPS=2e5 DISTRACTOR_SCALE=1.0 DISTRACTOR_MOD_KEY=position DISTRACTOR_MOD_INDEX=0 DISTRACTOR_MOD_LO=-0.32203162 DISTRACTOR_MOD_HI=0.19711795 PENALTY_MIX=False PENALTY_SCALE=0.0 PENALTY_GATE_KEY= PENALTY_GATE_INDEX=0 PENALTY_GATE_THRESHOLD=0.0 bash scripts/uncfield_advd.sbatch",
+   "vars": {
+    "seed": 47,
+    "src": "se_avoid_het_s47",
+    "scale": "1.0",
+    "modk": "position",
+    "modlo": "-0.32203162",
+    "modhi": "0.19711795",
+    "run_id": "se_advd_het_s47"
+   },
+   "logdir": "se_advd_het_s47",
+   "outputs": [
+    "se_advd_het_s47"
+   ],
+   "inputs": [],
+   "done_when": [
+    {
+     "exists": "TRAINING_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "file_contains": {
+      "file": "config.yaml",
+      "pattern": "mode:\\s+advd"
+     }
+    },
+    {
+     "file_contains": {
+      "file": "config.yaml",
+      "pattern": "from_checkpoint_regex:\\s+\\^\\(enc\\|dyn\\|dec\\|disag\\)/"
+     }
+    },
+    {
+     "file_contains": {
+      "file": "config.yaml",
+      "pattern": "penalty_mix:\\s+false"
+     }
+    },
+    {
+     "file_contains": {
+      "file": "ckpt_snapshots/nearest.json",
+      "pattern": "\"milestone\": 200000,\\s+\"step\": (19[0-9]\\d{3}|[2-9]\\d{5})"
+     }
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 185
+     }
+    }
+   ]
+  },
+  {
+   "stage": "adapt_ext",
+   "kind": "advd_run",
+   "target": "vast",
+   "run_id": "se_advd_flat_s51",
+   "cmd": "SRCROOT=\"$RUNROOT/_wb_srcs\" RUN_ID=se_advd_flat_s51 TASK=dmc_cheetah_run SEED=51 SRC_DIR=se_avoid_flat_s51 STEPS=2e5 DISTRACTOR_SCALE=0.35891393 DISTRACTOR_MOD_KEY= DISTRACTOR_MOD_INDEX=0 DISTRACTOR_MOD_LO=0.0 DISTRACTOR_MOD_HI=1.0 PENALTY_MIX=False PENALTY_SCALE=0.0 PENALTY_GATE_KEY= PENALTY_GATE_INDEX=0 PENALTY_GATE_THRESHOLD=0.0 bash scripts/uncfield_advd.sbatch",
+   "vars": {
+    "seed": 51,
+    "src": "se_avoid_flat_s51",
+    "scale": "0.35891393",
+    "modk": "",
+    "modlo": "0.0",
+    "modhi": "1.0",
+    "run_id": "se_advd_flat_s51"
+   },
+   "logdir": "se_advd_flat_s51",
+   "outputs": [
+    "se_advd_flat_s51"
+   ],
+   "inputs": [],
+   "done_when": [
+    {
+     "exists": "TRAINING_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "file_contains": {
+      "file": "config.yaml",
+      "pattern": "mode:\\s+advd"
+     }
+    },
+    {
+     "file_contains": {
+      "file": "config.yaml",
+      "pattern": "from_checkpoint_regex:\\s+\\^\\(enc\\|dyn\\|dec\\|disag\\)/"
+     }
+    },
+    {
+     "file_contains": {
+      "file": "config.yaml",
+      "pattern": "penalty_mix:\\s+false"
+     }
+    },
+    {
+     "file_contains": {
+      "file": "ckpt_snapshots/nearest.json",
+      "pattern": "\"milestone\": 200000,\\s+\"step\": (19[0-9]\\d{3}|[2-9]\\d{5})"
+     }
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 185
+     }
+    }
+   ]
+  },
+  {
+   "stage": "adapt_ext",
+   "kind": "advd_run",
+   "target": "vast",
+   "run_id": "se_advd_s17",
+   "cmd": "SRCROOT=\"$RUNROOT/_wb_srcs\" RUN_ID=se_advd_s17 TASK=dmc_cheetah_run SEED=17 SRC_DIR=se_cheetah_seed17 STEPS=2e5 DISTRACTOR_SCALE=1.0 DISTRACTOR_MOD_KEY= DISTRACTOR_MOD_INDEX=0 DISTRACTOR_MOD_LO=0.0 DISTRACTOR_MOD_HI=1.0 PENALTY_MIX=False PENALTY_SCALE=0.0 PENALTY_GATE_KEY= PENALTY_GATE_INDEX=0 PENALTY_GATE_THRESHOLD=0.0 bash scripts/uncfield_advd.sbatch",
+   "vars": {
+    "seed": 17,
+    "src": "se_cheetah_seed17",
+    "scale": "1.0",
+    "modk": "",
+    "modlo": "0.0",
+    "modhi": "1.0",
+    "run_id": "se_advd_s17"
+   },
+   "logdir": "se_advd_s17",
+   "outputs": [
+    "se_advd_s17"
+   ],
+   "inputs": [],
+   "done_when": [
+    {
+     "exists": "TRAINING_DONE"
+    },
+    {
+     "exists": "config.yaml"
+    },
+    {
+     "file_contains": {
+      "file": "config.yaml",
+      "pattern": "mode:\\s+advd"
+     }
+    },
+    {
+     "file_contains": {
+      "file": "config.yaml",
+      "pattern": "from_checkpoint_regex:\\s+\\^\\(enc\\|dyn\\|dec\\|disag\\)/"
+     }
+    },
+    {
+     "file_contains": {
+      "file": "config.yaml",
+      "pattern": "penalty_mix:\\s+false"
+     }
+    },
+    {
+     "file_contains": {
+      "file": "ckpt_snapshots/nearest.json",
+      "pattern": "\"milestone\": 200000,\\s+\"step\": (19[0-9]\\d{3}|[2-9]\\d{5})"
+     }
+    },
+    {
+     "jsonl_min_lines": {
+      "file": "scores.jsonl",
+      "n": 185
+     }
+    }
+   ]
+  }
+ ]
+}
