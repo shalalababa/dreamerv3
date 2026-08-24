@@ -1,0 +1,82 @@
+{
+ "prereg": "PREREG_rrp2_20260823.md",
+ "overall": "NO-CALL-UNDERPOWERED at E1: no fire and the CI does not fit inside the +/-BOUND band even paired; realized MDE80 reported; E2 descriptive",
+ "e1": {
+  "mean": -7.748687500000003,
+  "ci": [
+   -106.91272500000001,
+   122.20509705123105
+  ],
+  "perm_p": 0.9609375,
+  "d_z": -0.04382638320405265,
+  "sd": 176.80417441527496,
+  "n": 8,
+  "alpha": 0.05,
+  "bound": 100.54428125,
+  "realized_mde80": 175.12629451844091,
+  "e1_fire": false,
+  "e1_rev": false,
+  "e1_bounded": false
+ },
+ "e2": {
+  "mean": -28.1640625,
+  "ci": [
+   -122.75133847744985,
+   75.6393
+  ],
+  "perm_p": 0.625,
+  "d_z": -0.1810102737782893,
+  "sd": 155.5937235612206,
+  "n": 8,
+  "alpha": 0.05,
+  "bound": 100.54428125,
+  "role": "descriptive",
+  "realized_mde80": 154.11713183650411,
+  "e2_fire": false,
+  "e2_rev": false,
+  "e2_bounded": false
+ },
+ "e3_descriptive": {
+  "mean": 20.415374999999997,
+  "ci": [
+   -34.74590334396074,
+   53.1657607978059
+  ],
+  "perm_p": 0.3984375,
+  "d_z": 0.3184018087480847,
+  "sd": 64.11827583602822,
+  "n": 8,
+  "note": "paired rcb' - rca'; no alpha"
+ },
+ "s1_invocation_shift": {
+  "per_seed": [
+   -209.0,
+   -38.552099999999996,
+   128.375,
+   63.72910000000002,
+   192.9479,
+   -58.79169999999999,
+   -38.614599999999996,
+   -8.635400000000004
+  ],
+  "mean": 3.932275000000004,
+  "sd": 124.11752178735108,
+  "note": "repair' - REPAIR_PINNED on the SAME refits re-adapted; the direct adapt-level invocation-shift instrument; descriptive, no alpha"
+ },
+ "arms": {
+  "repair_prime_mean": 295.375,
+  "rca_prime_mean": 303.1236875,
+  "rcb_prime_mean": 323.5390625,
+  "repair_pinned_mean": 291.442725,
+  "scratch": 147.6823
+ },
+ "rca_source_prefix": "ax1wm_finger_rgoq1s1",
+ "gates": {
+  "fits": 24,
+  "fit_updates": 500000,
+  "adapts": 24,
+  "adapt_steps": 125000,
+  "modal_n_ep": 96,
+  "invocation_paired": true
+ }
+}

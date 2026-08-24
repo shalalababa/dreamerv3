@@ -156,7 +156,7 @@ Root: `README.md` (layout + conventions), `PATHMAP.md` (reorg
 redirects), `TODO.md` (shared working list), `Roadmap_20260718.md` (the
 live status board, bands A–D + standing tracks, updated every read).
 
-- `paper1_wm_transfer/` — `Paper1_FullRecord_20260817.md` (complete
+- `paper1_wm_transfer/` — `Paper1_FullRecord_20260824.md` (complete
   research record; entry doc). `plan/` = `Research_Plan_v4_20260711.tex`
   (plan of record). `theory/` = `Theory_SpectralTransfer_20260717.tex`
   + decoder-free addendum 18 Jul + `Theory_HighFR_Prediction_20260730.md`
@@ -177,7 +177,8 @@ live status board, bands A–D + standing tracks, updated every read).
   `Direction_Review_TheoryMapping_20260724.md` (ledger sweep + λ/βa²/g
   method mapping + SOTA sequencing). `figures/paper1_20260730/` +
   `figures/theory_20260804/`.
-- `paper2_evpi/` — `plan/` = `EVPI_Plan_Revision_20260712/23/24.md`
+- `paper2_evpi/` — `Paper2_FullRecord_20260824.md` (complete research
+  record; entry doc); `plan/` = `EVPI_Plan_Revision_20260712/23/24.md`
   (v4 = 24 Jul current); `theory/` = `EVPI_theory_note_20260702.tex` +
   addendum + memo; `design/` = competence-repair note + estimator
   checks (`evpi_estimator_check_20260702.py`); `writing/` = Route-B
@@ -190,7 +191,8 @@ live status board, bands A–D + standing tracks, updated every read).
 - `paper4_collusion/` — `Plan_Collusion_Launch_20260724.md`,
   `Design_Collusion_Pilot_20260724.md` (pilot design of record),
   innovation audit, venue scan.
-- `paper5_uncertainty_field/` — `ideation/` =
+- `paper5_uncertainty_field/` — `Paper5_FullRecord_20260824.md` (complete
+  research record, three parts: NFI / CEI / EVM; entry doc); `ideation/` =
   `Research_Idea_Uncertainty_field_20260727.tex` (external review, 7
   directions, recommends Belief Hydrodynamics) + the Fable companion
   (Riccati/determinism backbone, constitutive-laws program, repo
