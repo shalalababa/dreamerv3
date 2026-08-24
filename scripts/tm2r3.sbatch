@@ -308,7 +308,20 @@ elif [ "$STAGE" = w2labels ]; then
   # fence, so the two waves cannot cross in either direction. All dials
   # reader-pinned (env_seed 20260809 LOAD-BEARING, repeats 8,
   # states 200, horizon 100).
-  [ -f "$W1_LABELS/W2_DUP_OK" ] || { echo "run w2dup first"; exit 1; }
+  # ORDERING BYPASS (20260823, USER decision, ops-recorded): the registered
+  # chain runs the dup gate before the 32 labels so a CRN breakage costs 2
+  # passes, not 34. The user waived that ordering to run the labels
+  # CONCURRENTLY with the dup on another box, on the ground that concurrency
+  # makes the labels nearly free in wall-clock, so a tripped gate costs about
+  # one round either way. W2_SKIP_DUP_GATE=1 makes the bypass EXPLICIT and
+  # logged -- never forge W2_DUP_OK, which would make the marker assert a gate
+  # that has not passed. The gate itself is untouched: the frozen reader still
+  # refuses the whole read unless both dup passes are exactly zero.
+  if [ "${W2_SKIP_DUP_GATE:-0}" = "1" ]; then
+    echo "[$(date)] W2_SKIP_DUP_GATE=1 -- running labels WITHOUT a local W2_DUP_OK (user-waived ordering; the dup gate still governs the READ)"
+  else
+    [ -f "$W1_LABELS/W2_DUP_OK" ] || { echo "run w2dup first"; exit 1; }
+  fi
   : "${TM2R3_DOM:?cup|finger}"; : "${TM2R3_DOSE:?e1|e4}"; : "${TM2R3_SEED:?59..66}"
   check_cell
   case "$TM2R3_SEED" in 59|6[0-6]) ;; *) echo "ERROR: w2labels seeds are 59-66 only (PREREG_p2_wave2_freshcohort_20260821; 51-58 = look-1, already read — relabeling them would collide with the look-1 cohort)"; exit 2;; esac
