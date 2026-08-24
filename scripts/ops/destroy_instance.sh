@@ -143,8 +143,22 @@ case "$inst_json" in *'"entries"'*) ;; *) die "could not inventory instance $N (
 INST_NAMES="$(printf '%s' "$inst_json" | python3 -c '
 import json, shlex, sys
 print(" ".join(shlex.quote(k) for k in sorted(json.load(sys.stdin)["entries"])))')"
-[ -n "$INST_NAMES" ] || die "instance $N inventory listed no run dirs"
-
+# An EMPTY inventory is not the same as a FAILED one. The check above already
+# asserted the instance inventory returned valid JSON carrying an "entries"
+# key, so zero entries means zero run dirs -- not a probe that silently died.
+# Zero run dirs is trivially safe: nothing here can be the only copy of
+# anything. It is also the NORMAL end state under continuous harvest (pull +
+# verify + delete each round as it finishes), which otherwise leaves every
+# fully-drained box undestroyable: the old die fired BEFORE the --force-unsafe
+# check, so there was no way through at all. 24 Aug 2026, inst 25.
+#
+# NOTE: the else-block below is deliberately NOT indented -- it carries two
+# heredocs (PYEOF, PY) whose terminators must stay at column 0.
+if [ -z "$INST_NAMES" ]; then
+  echo "  instance $N holds NO run dirs -- nothing at risk on this box."
+  echo "  (skipping the instance-vs-RCC comparison: it has no subject)"
+  report='{"n_inst":0,"covered":[],"missing":[],"short":[],"differ":[],"unverifiable":[],"boxes":[]}'
+else
 rcc_json="$(ssh "${RCC_SSH[@]}" "$RCC_HOST" "python3 - '$RCC_RUNROOT' --only $INST_NAMES <<'PYEOF'
 $(cat "$INV")
 PYEOF" 2>/dev/null | tail -1)"
@@ -201,6 +215,7 @@ print(json.dumps({
 }))
 PY
 )"
+fi
 python3 - "$report" <<'PY'
 import json, sys
 r = json.loads(sys.argv[1])
