@@ -670,6 +670,33 @@ for pat in {' '.join(shlex.quote(g) for g in globs) or "''"}; do
 done
 
 cp -a "$HERE/runs.json" "$HERE/RUN_IDS.txt" "$bundle/" 2>/dev/null || true
+
+# LINK-VS-COPY MODE (25 Aug 2026). The loop above prefers `cp -al`, which HARD
+# LINKS into the live runroot instead of duplicating bytes. A hard-linked bundle
+# is a VIEW, not an archive: if anything later writes to those run dirs the
+# bundle mutates with them. This is not hypothetical -- an in-place RESUME
+# appended into wb_advd_20260823_083129, the WB panel-1 archive a prereg called
+# "NEVER touched", and its manifest then failed on 1282 files. Record the mode
+# inside the bundle so a reader knows what it is holding.
+mode_f="$bundle/_BUNDLE_MODE.txt"
+shared=0; total=0
+for f in $(find "$bundle/runroot" -type f 2>/dev/null | head -500); do
+  total=$((total+1))
+  [ "$(stat -c %h "$f")" -gt 1 ] && shared=$((shared+1))
+done
+echo "runroot storage mode: $shared of $total sampled files are HARD LINKS (nlink>1)" > "$mode_f"
+if [ "$shared" -gt 0 ]; then
+  echo "=> This bundle SHARES STORAGE with \$RUNROOT. It is a VIEW, not an archive." >> "$mode_f"
+  echo "   An in-place RESUME/EXTENSION appends to scores.jsonl / metrics.jsonl /" >> "$mode_f"
+  echo "   scope/* and will mutate this bundle too, breaking its manifest." >> "$mode_f"
+  echo "   ARCHIVE OF RECORD = the local rsync copy + its committed manifest." >> "$mode_f"
+  echo "   Before any registered in-place resume of these runs, either" >> "$mode_f"
+  echo "   materialize this bundle (real copy) or mark it superseded." >> "$mode_f"
+else
+  echo "=> All sampled files are unshared real copies." >> "$mode_f"
+fi
+cat "$mode_f"
+
 "$DV3OPS_ROOT/scripts/bundle_manifest.sh" generate "$bundle"
 echo "$bundle"
 """, executable=True)
