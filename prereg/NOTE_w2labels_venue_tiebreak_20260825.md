@@ -6,12 +6,26 @@ outcome-independent rather than a selection.
 
 ## Why two venues exist
 `PREREG_p2_wave2_freshcohort_20260821` pins no venue. The 32 fresh-cohort label
-passes were started on vast instance 30 at 8 passes/GPU. That box is a measured
-pathology, not merely slow: BLAS/torch thread pools were left unbounded and
-sized themselves to the whole machine (162 threads/proc, **5184 threads on 64
-hardware threads**, **1,073,346 involuntary vs 3,581 voluntary context
-switches**). It has burned 1173 core-hours against ~530 implied by the
-identical-dial predecessor wave, which finished all 32 in 20.6 h wall-clock. No
+passes were started on vast instance 30 at 8 passes/GPU. It is far slower than the
+identical-dial predecessor wave, which finished all 32 in 20.6 h wall-clock;
+instance 30 passed 46 h with 0/32 and 1173+ core-hours against ~530 implied.
+
+**CORRECTION (25 Aug, same day): the original text here blamed thread
+oversubscription and that was WRONG.** The thread counts are real (162
+threads/proc, 5184 on 64 hardware threads) but they are mostly idle pool
+threads, and the arithmetic refutes the story: 1,073,346 involuntary context
+switches over 38.2 h is 7.8/sec, which even at a pessimistic 50 us each costs
+54 seconds -- **0.04% of elapsed**. The 300:1 involuntary:voluntary ratio is
+high because VOLUNTARY switches are near zero (0.026/sec; a compute-bound loop
+rarely blocks), not because preemption is high. Load 30.6 with 32 procs on 32
+physical cores is ~1 core each, not oversubscribed.
+
+The likeliest real cause is CPU CLOCK: this labeler is CPU-bound (measured 27%
+GPU utilisation on a 1648 MHz core vs 47% on a 3095 MHz core), and instance 30
+is an EPYC 7502 measured at 2435 MHz under load. Both waves ran 32 passes at
+8/GPU on four RTX 5060 Ti (the predecessor's logs record gpu=0..3), so GPU
+count, GPU model, packing and dials are all identical -- per-core CPU speed is
+the axis that differs. Any re-run should prioritise CPU CLOCK over thread caps. No
 progress reading is obtainable (vast containers run `ptrace_scope=1` without
 `CAP_SYS_PTRACE`, so py-spy cannot attach; the labeler writes its npz only at
 completion), so the remaining time is genuinely unknown.
