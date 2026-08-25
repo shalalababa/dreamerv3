@@ -1,0 +1,1262 @@
+{
+ "stamp": {
+  "git": "c5234a01",
+  "time": "2026-08-25T08:12:38"
+ },
+ "n_loaded": 16,
+ "excluded_runs": [],
+ "degenerate_runs": [],
+ "per_run": [
+  {
+   "run_dir": "/home/rickybao/projects/dreamerv3/local_results/wb_advd_r2_20260825_061600_light/runroot/se_advd_flat_s48",
+   "wing": "flat",
+   "train_seed": 48,
+   "degenerate": false,
+   "delta_advd_minus_policy": 0.0048248055171745685,
+   "attr_d": {
+    "random": 0.005378010494838941,
+    "policy": 0.013061499286061491,
+    "advd": 0.01788630480323606
+   },
+   "share_d": {
+    "random": 0.053551459938729125,
+    "policy": 0.03886831496885366,
+    "advd": 0.07472547816453083
+   },
+   "occupancy": {
+    "random": 0.756,
+    "policy": 0.466,
+    "advd": 0.7835
+   },
+   "intrinsic": {
+    "random": 7.47403338773438e-05,
+    "policy": 0.0001549232093457249,
+    "advd": 0.0001657497391170182
+   },
+   "return_mean": {
+    "random": 0.003926512233176254,
+    "policy": 0.051118154449635765,
+    "advd": 0.033531921450463416
+   },
+   "imag": {
+    "imag_policystates_policypol": 0.012889615676367235,
+    "imag_policystates_advdpol": 0.013719795096175054,
+    "imag_advdstates_advdpol": 0.0184058562135222
+   },
+   "imag_blocks": {
+    "imag_policystates_policypol": [
+     0.012411720270417393,
+     0.013643854083125812,
+     0.01332623128214256,
+     0.012176657069783173
+    ],
+    "imag_policystates_advdpol": [
+     0.013170289909421682,
+     0.014477974963178928,
+     0.014132345293844191,
+     0.013098570218255412
+    ],
+    "imag_advdstates_advdpol": [
+     0.017911949701409215,
+     0.01848301764060046,
+     0.018716478927151683,
+     0.018511978584927452
+    ]
+   },
+   "gate_margin": 0.06440684040951905,
+   "intrinsic_policy_over_random": 2.072819337413839,
+   "plateau": {
+    "n": 64,
+    "decile5_mean": 0.0016207547636143745,
+    "last_decile_mean": 0.001850453563648523,
+    "ratio": 1.1417233533356441
+   },
+   "imag_vs_realized_ratio": 1.0290474424986955,
+   "gate_pass": true
+  },
+  {
+   "run_dir": "/home/rickybao/projects/dreamerv3/local_results/wb_advd_r2_20260825_061600_light/runroot/se_advd_flat_s49",
+   "wing": "flat",
+   "train_seed": 49,
+   "degenerate": false,
+   "delta_advd_minus_policy": 0.004590657755273222,
+   "attr_d": {
+    "random": 0.006195659488291792,
+    "policy": 0.015295332627190914,
+    "advd": 0.019885990382464136
+   },
+   "share_d": {
+    "random": 0.05501698142787236,
+    "policy": 0.04190541649410374,
+    "advd": 0.05810238387831404
+   },
+   "occupancy": {
+    "random": 0.758,
+    "policy": 0.668,
+    "advd": 0.972
+   },
+   "intrinsic": {
+    "random": 8.71099089672498e-05,
+    "policy": 0.00017725401902498561,
+    "advd": 0.00019127607672271552
+   },
+   "return_mean": {
+    "random": 0.003841200627221042,
+    "policy": 0.010286766641314898,
+    "advd": 0.03035012417760845
+   },
+   "imag": {
+    "imag_policystates_policypol": 0.015121156302664635,
+    "imag_policystates_advdpol": 0.01514907198540819,
+    "imag_advdstates_advdpol": 0.02018840622245601
+   },
+   "imag_blocks": {
+    "imag_policystates_policypol": [
+     0.013130906690820654,
+     0.015256901444197793,
+     0.015286261887695047,
+     0.01681055518794505
+    ],
+    "imag_policystates_advdpol": [
+     0.013628757293555225,
+     0.015462785682526667,
+     0.015266392134159028,
+     0.016238352831391828
+    ],
+    "imag_advdstates_advdpol": [
+     0.02179444951003311,
+     0.017862139917816256,
+     0.02189359373151366,
+     0.019203441730461023
+    ]
+   },
+   "gate_margin": 0.0018461341305382462,
+   "intrinsic_policy_over_random": 2.034831870753381,
+   "plateau": {
+    "n": 64,
+    "decile5_mean": 0.001781293429142469,
+    "last_decile_mean": 0.002095214940767167,
+    "ratio": 1.1762323413362743
+   },
+   "imag_vs_realized_ratio": 1.0152074819596892,
+   "gate_pass": true
+  },
+  {
+   "run_dir": "/home/rickybao/projects/dreamerv3/local_results/wb_advd_r2_20260825_061600_light/runroot/se_advd_flat_s50",
+   "wing": "flat",
+   "train_seed": 50,
+   "degenerate": false,
+   "delta_advd_minus_policy": 0.004022144076137657,
+   "attr_d": {
+    "random": 0.007376449232987649,
+    "policy": 0.020123662623016892,
+    "advd": 0.02414580669915455
+   },
+   "share_d": {
+    "random": 0.07217083438224348,
+    "policy": 0.04352385181310101,
+    "advd": 0.06910546928156286
+   },
+   "occupancy": {
+    "random": 0.7385,
+    "policy": 0.543,
+    "advd": 0.76
+   },
+   "intrinsic": {
+    "random": 6.505136027226399e-05,
+    "policy": 0.00017009776192935532,
+    "advd": 0.00017856258966276073
+   },
+   "return_mean": {
+    "random": 0.003456460719644383,
+    "policy": 0.09113983763791657,
+    "advd": 0.00035233419598080216
+   },
+   "imag": {
+    "imag_policystates_policypol": 0.019385160116022083,
+    "imag_policystates_advdpol": 0.02084224538834986,
+    "imag_advdstates_advdpol": 0.024017770349386455
+   },
+   "imag_blocks": {
+    "imag_policystates_policypol": [
+     0.01821780442781164,
+     0.017669490196453305,
+     0.020244163135541823,
+     0.021409182704281562
+    ],
+    "imag_policystates_advdpol": [
+     0.01965483117162984,
+     0.018770165048605267,
+     0.022570889159063447,
+     0.022373096174100895
+    ],
+    "imag_advdstates_advdpol": [
+     0.024643082653155818,
+     0.02386759105039974,
+     0.023368947894129972,
+     0.024191459799860288
+    ]
+   },
+   "gate_margin": 0.07516498515395176,
+   "intrinsic_policy_over_random": 2.6148225220415577,
+   "plateau": {
+    "n": 64,
+    "decile5_mean": 0.002375503565832668,
+    "last_decile_mean": 0.00255836602965705,
+    "ratio": 1.0769784000556886
+   },
+   "imag_vs_realized_ratio": 0.9946973670681883,
+   "gate_pass": true
+  },
+  {
+   "run_dir": "/home/rickybao/projects/dreamerv3/local_results/wb_advd_r2_20260825_061600_light/runroot/se_advd_flat_s51",
+   "wing": "flat",
+   "train_seed": 51,
+   "degenerate": false,
+   "delta_advd_minus_policy": 0.004374717803244343,
+   "attr_d": {
+    "random": 0.007834828368074975,
+    "policy": 0.015019812843504995,
+    "advd": 0.019394530646749338
+   },
+   "share_d": {
+    "random": 0.08073029791480957,
+    "policy": 0.043330406779920526,
+    "advd": 0.14878463985386334
+   },
+   "occupancy": {
+    "random": 0.7455,
+    "policy": 0.572,
+    "advd": 0.017
+   },
+   "intrinsic": {
+    "random": 9.661104624683503e-05,
+    "policy": 0.00017483330317918445,
+    "advd": 0.0001627713390516874
+   },
+   "return_mean": {
+    "random": 0.004207422943534766,
+    "policy": 0.02089974173622613,
+    "advd": 0.001295709778037235
+   },
+   "imag": {
+    "imag_policystates_policypol": 0.01468213000146644,
+    "imag_policystates_advdpol": 0.014898684286471906,
+    "imag_advdstates_advdpol": 0.019937970286423266
+   },
+   "imag_blocks": {
+    "imag_policystates_policypol": [
+     0.017582419678964088,
+     0.014460004817115337,
+     0.013814501670242436,
+     0.012871593839543899
+    ],
+    "imag_policystates_advdpol": [
+     0.01757876993440454,
+     0.015003488811576324,
+     0.013908773754397544,
+     0.013103704645509218
+    ],
+    "imag_advdstates_advdpol": [
+     0.019558451430816637,
+     0.020294282028942647,
+     0.019748518363241065,
+     0.020150629322692723
+    ]
+   },
+   "gate_margin": 0.01474951420426307,
+   "intrinsic_policy_over_random": 1.8096616274343678,
+   "plateau": {
+    "n": 63,
+    "decile5_mean": 0.0018397622608267274,
+    "last_decile_mean": 0.0021169405866394353,
+    "ratio": 1.1506598606322935
+   },
+   "imag_vs_realized_ratio": 1.028020252182025,
+   "gate_pass": true
+  },
+  {
+   "run_dir": "/home/rickybao/projects/dreamerv3/local_results/wb_advd_r2_20260825_061600_light/runroot/se_advd_het_s44",
+   "wing": "hetero",
+   "train_seed": 44,
+   "degenerate": false,
+   "delta_advd_minus_policy": -0.008923849915780248,
+   "attr_d": {
+    "random": 0.007455227702461064,
+    "policy": 0.029158629687892908,
+    "advd": 0.02023477977211266
+   },
+   "share_d": {
+    "random": 0.0797582037052097,
+    "policy": 0.06139255833443119,
+    "advd": 0.05700865038340946
+   },
+   "occupancy": {
+    "random": 0.748,
+    "policy": 0.8085,
+    "advd": 0.6065
+   },
+   "intrinsic": {
+    "random": 9.437805039669911e-05,
+    "policy": 0.00019622014687411139,
+    "advd": 0.00019230079874250805
+   },
+   "return_mean": {
+    "random": 0.004876191178855151,
+    "policy": 0.00748879144473176,
+    "advd": 0.03642066684825522
+   },
+   "imag": {
+    "imag_policystates_policypol": 0.02799354077851944,
+    "imag_policystates_advdpol": 0.03064678109216499,
+    "imag_advdstates_advdpol": 0.020123836121680404
+   },
+   "imag_blocks": {
+    "imag_policystates_policypol": [
+     0.023378037761429243,
+     0.034146266606409494,
+     0.026569776597878438,
+     0.027880082148360595
+    ],
+    "imag_policystates_advdpol": [
+     0.024558785706298637,
+     0.03891124998800991,
+     0.027945974315855274,
+     0.031171114358496118
+    ],
+    "imag_advdstates_advdpol": [
+     0.03145559261981466,
+     0.010515106068260487,
+     0.014585740002392055,
+     0.02393890579625441
+    ]
+   },
+   "gate_margin": 0.09478044719807244,
+   "intrinsic_policy_over_random": 2.0790866737481815,
+   "plateau": {
+    "n": 64,
+    "decile5_mean": 0.002334678157020766,
+    "last_decile_mean": 0.001930887126672328,
+    "ratio": 0.8270463836164437
+   },
+   "imag_vs_realized_ratio": 0.9945171802371106,
+   "gate_pass": true
+  },
+  {
+   "run_dir": "/home/rickybao/projects/dreamerv3/local_results/wb_advd_r2_20260825_061600_light/runroot/se_advd_het_s45",
+   "wing": "hetero",
+   "train_seed": 45,
+   "degenerate": false,
+   "delta_advd_minus_policy": 0.006355287197822804,
+   "attr_d": {
+    "random": 0.007885305206367514,
+    "policy": 0.022331735689956004,
+    "advd": 0.02868702288777881
+   },
+   "share_d": {
+    "random": 0.05019847860570836,
+    "policy": 0.033047544250656855,
+    "advd": 0.04603029293370477
+   },
+   "occupancy": {
+    "random": 0.7055,
+    "policy": 0.6355,
+    "advd": 0.9555
+   },
+   "intrinsic": {
+    "random": 9.883760902448558e-05,
+    "policy": 0.00019094373217376414,
+    "advd": 0.0001826062049549364
+   },
+   "return_mean": {
+    "random": 0.0027404677895119674,
+    "policy": 0.08429116777834315,
+    "advd": 0.009272689686662488
+   },
+   "imag": {
+    "imag_policystates_policypol": 0.021519448420181456,
+    "imag_policystates_advdpol": 0.023032372692951185,
+    "imag_advdstates_advdpol": 0.03032015702441341
+   },
+   "imag_blocks": {
+    "imag_policystates_policypol": [
+     0.021807958635559288,
+     0.026366243898127098,
+     0.019146575717733868,
+     0.01875701542930556
+    ],
+    "imag_policystates_advdpol": [
+     0.023490509047065972,
+     0.028784886117510126,
+     0.01960728111265033,
+     0.02024681449457832
+    ],
+    "imag_advdstates_advdpol": [
+     0.03029371617635227,
+     0.029121686677345084,
+     0.03074985788238684,
+     0.031115367361569456
+    ]
+   },
+   "gate_margin": 0.0703049745155584,
+   "intrinsic_policy_over_random": 1.9318934771728504,
+   "plateau": {
+    "n": 64,
+    "decile5_mean": 0.0034582167389082294,
+    "last_decile_mean": 0.003901196932625036,
+    "ratio": 1.128094977024678
+   },
+   "imag_vs_realized_ratio": 1.0569293698765216,
+   "gate_pass": true
+  },
+  {
+   "run_dir": "/home/rickybao/projects/dreamerv3/local_results/wb_advd_r2_20260825_061600_light/runroot/se_advd_het_s46",
+   "wing": "hetero",
+   "train_seed": 46,
+   "degenerate": false,
+   "delta_advd_minus_policy": 0.0013950512772733271,
+   "attr_d": {
+    "random": 0.006660040350185809,
+    "policy": 0.02429451944133627,
+    "advd": 0.025689570718609597
+   },
+   "share_d": {
+    "random": 0.05997703004821054,
+    "policy": 0.05718874688898537,
+    "advd": 0.1040195509588476
+   },
+   "occupancy": {
+    "random": 0.765,
+    "policy": 0.8835,
+    "advd": 1.0
+   },
+   "intrinsic": {
+    "random": 8.633338675099367e-05,
+    "policy": 0.000199318360806501,
+    "advd": 0.00016770662386988988
+   },
+   "return_mean": {
+    "random": 0.004684865974247259,
+    "policy": 0.08286972076133316,
+    "advd": 0.0
+   },
+   "imag": {
+    "imag_policystates_policypol": 0.02313627111745087,
+    "imag_policystates_advdpol": 0.023905366488635168,
+    "imag_advdstates_advdpol": 0.02616372371904702
+   },
+   "imag_blocks": {
+    "imag_policystates_policypol": [
+     0.02672694213621075,
+     0.01995241078370983,
+     0.02044993446402635,
+     0.025415797085856534
+    ],
+    "imag_policystates_advdpol": [
+     0.02711409652721023,
+     0.02102933221718922,
+     0.021109757807329012,
+     0.026368279402812198
+    ],
+    "imag_advdstates_advdpol": [
+     0.02617533576783805,
+     0.026181423499308968,
+     0.026223995977309737,
+     0.02607413963173132
+    ]
+   },
+   "gate_margin": 0.03324197608508306,
+   "intrinsic_policy_over_random": 2.308705453446223,
+   "plateau": {
+    "n": 64,
+    "decile5_mean": 0.0031104088190289296,
+    "last_decile_mean": 0.003398656067258509,
+    "ratio": 1.0926718206513992
+   },
+   "imag_vs_realized_ratio": 1.0184570231099248,
+   "gate_pass": true
+  },
+  {
+   "run_dir": "/home/rickybao/projects/dreamerv3/local_results/wb_advd_r2_20260825_061600_light/runroot/se_advd_het_s47",
+   "wing": "hetero",
+   "train_seed": 47,
+   "degenerate": false,
+   "delta_advd_minus_policy": 0.012927781120269901,
+   "attr_d": {
+    "random": 0.008204187262498233,
+    "policy": 0.019342120265367625,
+    "advd": 0.032269901385637526
+   },
+   "share_d": {
+    "random": 0.08444137386935956,
+    "policy": 0.0431257736184671,
+    "advd": 0.11096055256638669
+   },
+   "occupancy": {
+    "random": 0.7295,
+    "policy": 0.5805,
+    "advd": 0.9585
+   },
+   "intrinsic": {
+    "random": 0.0001024518272424757,
+    "policy": 0.00020253334769950015,
+    "advd": 0.000198721761804336
+   },
+   "return_mean": {
+    "random": 0.0035008351170645255,
+    "policy": 0.02429751038796712,
+    "advd": 0.07428312656223715
+   },
+   "imag": {
+    "imag_policystates_policypol": 0.018365387433897852,
+    "imag_policystates_advdpol": 0.019373308432142352,
+    "imag_advdstates_advdpol": 0.03267855799896559
+   },
+   "imag_blocks": {
+    "imag_policystates_policypol": [
+     0.019271863838952297,
+     0.019778065151503477,
+     0.012596560675295626,
+     0.02181506006983999
+    ],
+    "imag_policystates_advdpol": [
+     0.02026182828075779,
+     0.02074093912912883,
+     0.01328860381030688,
+     0.023201862508375918
+    ],
+    "imag_advdstates_advdpol": [
+     0.03259405266090135,
+     0.033074355977281124,
+     0.033013430319285914,
+     0.03203239303839398
+    ]
+   },
+   "gate_margin": 0.054881553785472104,
+   "intrinsic_policy_over_random": 1.9768641824235953,
+   "plateau": {
+    "n": 64,
+    "decile5_mean": 0.003552503307595628,
+    "last_decile_mean": 0.0037212413405261525,
+    "ratio": 1.0474983464673333
+   },
+   "imag_vs_realized_ratio": 1.0126637081546814,
+   "gate_pass": true
+  },
+  {
+   "run_dir": "/home/rickybao/projects/dreamerv3/local_results/wb_advd_r2_20260825_061600_light/runroot/se_advd_s10",
+   "wing": "ambient",
+   "train_seed": 10,
+   "degenerate": false,
+   "delta_advd_minus_policy": -0.010587859470333642,
+   "attr_d": {
+    "random": 0.003898384974795392,
+    "policy": 0.032907075328298035,
+    "advd": 0.022319215857964394
+   },
+   "share_d": {
+    "random": 0.07050916599735507,
+    "policy": 0.05315909676008306,
+    "advd": 0.07012638500318426
+   },
+   "occupancy": {
+    "random": 0.746,
+    "policy": 0.512,
+    "advd": 0.038
+   },
+   "intrinsic": {
+    "random": 4.862100447189732e-05,
+    "policy": 0.00028652166185565874,
+    "advd": 0.00023504264196162695
+   },
+   "return_mean": {
+    "random": 0.004274080856714136,
+    "policy": 0.10039596965052669,
+    "advd": 0.0044741389904411335
+   },
+   "imag": {
+    "imag_policystates_policypol": 0.033137931153150044,
+    "imag_policystates_advdpol": 0.029583321757891648,
+    "imag_advdstates_advdpol": 0.02366921569756014
+   },
+   "imag_blocks": {
+    "imag_policystates_policypol": [
+     0.03414866800546377,
+     0.03603526252460515,
+     0.019480691271404636,
+     0.042887102811126614
+    ],
+    "imag_policystates_advdpol": [
+     0.03017497296301336,
+     0.03203895633843646,
+     0.01966362466490026,
+     0.03645573306521651
+    ],
+    "imag_advdstates_advdpol": [
+     0.023698734356861758,
+     0.02402433515475016,
+     0.023650499950229487,
+     0.023303293328399158
+    ]
+   },
+   "gate_margin": -0.10726708854666989,
+   "intrinsic_policy_over_random": 5.892960562369021,
+   "plateau": {
+    "n": 64,
+    "decile5_mean": 0.0086366615476337,
+    "last_decile_mean": 0.010127409480521878,
+    "ratio": 1.1726069644695778
+   },
+   "imag_vs_realized_ratio": 1.060485988763535,
+   "gate_pass": false
+  },
+  {
+   "run_dir": "/home/rickybao/projects/dreamerv3/local_results/wb_advd_r2_20260825_061600_light/runroot/se_advd_s11",
+   "wing": "ambient",
+   "train_seed": 11,
+   "degenerate": false,
+   "delta_advd_minus_policy": 0.004107322415381096,
+   "attr_d": {
+    "random": 0.007753621709508264,
+    "policy": 0.010905514982068995,
+    "advd": 0.015012837397450091
+   },
+   "share_d": {
+    "random": 0.04656665948548938,
+    "policy": 0.041398866869122725,
+    "advd": 0.04644106566854352
+   },
+   "occupancy": {
+    "random": 0.733,
+    "policy": 0.5335,
+    "advd": 0.9135
+   },
+   "intrinsic": {
+    "random": 0.00011008958714592155,
+    "policy": 0.00016279018255954724,
+    "advd": 0.00018626894348926725
+   },
+   "return_mean": {
+    "random": 0.003346261304934842,
+    "policy": 0.0284451495309695,
+    "advd": 0.033607810360539586
+   },
+   "imag": {
+    "imag_policystates_policypol": 0.010982473962431225,
+    "imag_policystates_advdpol": 0.011476025720728167,
+    "imag_advdstates_advdpol": 0.017299912247344795
+   },
+   "imag_blocks": {
+    "imag_policystates_policypol": [
+     0.010717065353793558,
+     0.01122111786221016,
+     0.011071427327703373,
+     0.010920285306017814
+    ],
+    "imag_policystates_advdpol": [
+     0.011395497125712443,
+     0.011719274958297186,
+     0.011538040700058576,
+     0.011251290098844452
+    ],
+    "imag_advdstates_advdpol": [
+     0.01719315673717595,
+     0.017847209903974717,
+     0.017143794037666752,
+     0.017015488310561756
+    ]
+   },
+   "gate_margin": 0.04493994340303309,
+   "intrinsic_policy_over_random": 1.4787064497187377,
+   "plateau": {
+    "n": 64,
+    "decile5_mean": 0.007597669273260495,
+    "last_decile_mean": 0.00851480488857778,
+    "ratio": 1.1207127583909298
+   },
+   "imag_vs_realized_ratio": 1.1523412789565788,
+   "gate_pass": true
+  },
+  {
+   "run_dir": "/home/rickybao/projects/dreamerv3/local_results/wb_advd_r2_20260825_061600_light/runroot/se_advd_s12",
+   "wing": "ambient",
+   "train_seed": 12,
+   "degenerate": false,
+   "delta_advd_minus_policy": 0.0007276016940538036,
+   "attr_d": {
+    "random": 0.003864029614786744,
+    "policy": 0.015212570989090185,
+    "advd": 0.01594017268314399
+   },
+   "share_d": {
+    "random": 0.03816520650852617,
+    "policy": 0.032901467235225135,
+    "advd": 0.045790459755634415
+   },
+   "occupancy": {
+    "random": 0.7685,
+    "policy": 0.824,
+    "advd": 0.988
+   },
+   "intrinsic": {
+    "random": 4.8615191021781354e-05,
+    "policy": 0.00016547184917726555,
+    "advd": 0.0001576469378596812
+   },
+   "return_mean": {
+    "random": 0.004863642214912033,
+    "policy": 0.03632129626588721,
+    "advd": 0.0812766995086713
+   },
+   "imag": {
+    "imag_policystates_policypol": 0.015014892930406037,
+    "imag_policystates_advdpol": 0.016207738214188513,
+    "imag_advdstates_advdpol": 0.016360540024456176
+   },
+   "imag_blocks": {
+    "imag_policystates_policypol": [
+     0.015909022126306783,
+     0.015190740837363097,
+     0.014197694223812764,
+     0.01476211453414151
+    ],
+    "imag_policystates_advdpol": [
+     0.016868771327116755,
+     0.016790745165885745,
+     0.01553263057883692,
+     0.015638805784914625
+    ],
+    "imag_advdstates_advdpol": [
+     0.016224564772008735,
+     0.016469999072390648,
+     0.016373666988267758,
+     0.01637392926515756
+    ]
+   },
+   "gate_margin": 0.07944414184711857,
+   "intrinsic_policy_over_random": 3.4037066542251826,
+   "plateau": {
+    "n": 63,
+    "decile5_mean": 0.007238900923258519,
+    "last_decile_mean": 0.008029657798427533,
+    "ratio": 1.1092371457424317
+   },
+   "imag_vs_realized_ratio": 1.0263715675901497,
+   "gate_pass": true
+  },
+  {
+   "run_dir": "/home/rickybao/projects/dreamerv3/local_results/wb_advd_r2_20260825_061600_light/runroot/se_advd_s13",
+   "wing": "ambient",
+   "train_seed": 13,
+   "degenerate": false,
+   "delta_advd_minus_policy": 0.005306039787152826,
+   "attr_d": {
+    "random": 0.0077971861478776895,
+    "policy": 0.012310521752301093,
+    "advd": 0.01761656153945392
+   },
+   "share_d": {
+    "random": 0.05417523843072191,
+    "policy": 0.04174194270056183,
+    "advd": 0.04367374986006736
+   },
+   "occupancy": {
+    "random": 0.742,
+    "policy": 0.868,
+    "advd": 0.609
+   },
+   "intrinsic": {
+    "random": 0.00011438312057362054,
+    "policy": 0.00018132470671480404,
+    "advd": 0.00020428947612526828
+   },
+   "return_mean": {
+    "random": 0.0035492371156735773,
+    "policy": 0.026167534276635707,
+    "advd": 0.030522926140620257
+   },
+   "imag": {
+    "imag_policystates_policypol": 0.012246461964948914,
+    "imag_policystates_advdpol": 0.01214093916409954,
+    "imag_advdstates_advdpol": 0.01766171002950152
+   },
+   "imag_blocks": {
+    "imag_policystates_policypol": [
+     0.011718177270371041,
+     0.012610894832700798,
+     0.012153374860802328,
+     0.012503400895921484
+    ],
+    "imag_policystates_advdpol": [
+     0.011852580877132828,
+     0.01241284988733023,
+     0.01183901875517146,
+     0.012459307136763647
+    ],
+    "imag_advdstates_advdpol": [
+     0.02674568345636354,
+     0.014119002420316827,
+     0.014881259981366855,
+     0.014900894259958863
+    ]
+   },
+   "gate_margin": -0.008616594829706448,
+   "intrinsic_policy_over_random": 1.5852400756814273,
+   "plateau": {
+    "n": 64,
+    "decile5_mean": 0.007621795456268443,
+    "last_decile_mean": 0.008007183227122723,
+    "ratio": 1.0505639088670797
+   },
+   "imag_vs_realized_ratio": 1.002562843489434,
+   "gate_pass": false
+  },
+  {
+   "run_dir": "/home/rickybao/projects/dreamerv3/local_results/wb_advd_r2_20260825_061600_light/runroot/se_advd_s14",
+   "wing": "ambient",
+   "train_seed": 14,
+   "degenerate": false,
+   "delta_advd_minus_policy": 0.0019669356651860325,
+   "attr_d": {
+    "random": 0.003414133050357001,
+    "policy": 0.014618922640226994,
+    "advd": 0.016585858305413027
+   },
+   "share_d": {
+    "random": 0.06051227224617736,
+    "policy": 0.052759915922078245,
+    "advd": 0.06141173415673202
+   },
+   "occupancy": {
+    "random": 0.7515,
+    "policy": 0.25,
+    "advd": 0.628
+   },
+   "intrinsic": {
+    "random": 4.635413417054224e-05,
+    "policy": 0.00016863812965675607,
+    "advd": 0.0002002464292017976
+   },
+   "return_mean": {
+    "random": 0.003083297736608074,
+    "policy": 0.02249504344080924,
+    "advd": 0.00013520678420172772
+   },
+   "imag": {
+    "imag_policystates_policypol": 0.014486395304823879,
+    "imag_policystates_advdpol": 0.01457786698290719,
+    "imag_advdstates_advdpol": 0.017210746273356014
+   },
+   "imag_blocks": {
+    "imag_policystates_policypol": [
+     0.013941104032628762,
+     0.016230887839259557,
+     0.01381863920274632,
+     0.013954950144660876
+    ],
+    "imag_policystates_advdpol": [
+     0.013966740608690948,
+     0.01620183756012888,
+     0.013955054016665882,
+     0.01418783574614305
+    ],
+    "imag_advdstates_advdpol": [
+     0.017302230590549736,
+     0.01734644013816385,
+     0.017114506944409576,
+     0.017079807420300894
+    ]
+   },
+   "gate_margin": 0.006314316029526701,
+   "intrinsic_policy_over_random": 3.6380386059270746,
+   "plateau": {
+    "n": 63,
+    "decile5_mean": 0.007309846929893203,
+    "last_decile_mean": 0.008103990392335905,
+    "ratio": 1.1086402314657366
+   },
+   "imag_vs_realized_ratio": 1.0376759499831882,
+   "gate_pass": true
+  },
+  {
+   "run_dir": "/home/rickybao/projects/dreamerv3/local_results/wb_advd_r2_20260825_061600_light/runroot/se_advd_s15",
+   "wing": "ambient",
+   "train_seed": 15,
+   "degenerate": false,
+   "delta_advd_minus_policy": 0.008622975431758243,
+   "attr_d": {
+    "random": 0.008336411768639187,
+    "policy": 0.011714729037042642,
+    "advd": 0.020337704468800885
+   },
+   "share_d": {
+    "random": 0.06233037782866763,
+    "policy": 0.045660064804181624,
+    "advd": 0.08375433240614052
+   },
+   "occupancy": {
+    "random": 0.723,
+    "policy": 0.642,
+    "advd": 0.0355
+   },
+   "intrinsic": {
+    "random": 0.00011167709499386547,
+    "policy": 0.00015355193200230132,
+    "advd": 0.00021301401978416834
+   },
+   "return_mean": {
+    "random": 0.003284356395710802,
+    "policy": 0.04014856907037029,
+    "advd": 0.007892195110716557
+   },
+   "imag": {
+    "imag_policystates_policypol": 0.011741346015380051,
+    "imag_policystates_advdpol": 0.01070395313955449,
+    "imag_advdstates_advdpol": 0.021633713504579485
+   },
+   "imag_blocks": {
+    "imag_policystates_policypol": [
+     0.010624053367294353,
+     0.011206342028383047,
+     0.014020373354002533,
+     0.011114615311840265
+    ],
+    "imag_policystates_advdpol": [
+     0.009624129285379382,
+     0.010292939222770327,
+     0.0133623089995401,
+     0.009536435050528145
+    ],
+    "imag_advdstates_advdpol": [
+     0.021626381398371253,
+     0.02126210327554407,
+     0.021834612060363363,
+     0.02181175728403925
+    ]
+   },
+   "gate_margin": -0.08835382880861142,
+   "intrinsic_policy_over_random": 1.3749635232787536,
+   "plateau": {
+    "n": 64,
+    "decile5_mean": 0.008989996718994923,
+    "last_decile_mean": 0.010230555006056201,
+    "ratio": 1.137993185741671
+   },
+   "imag_vs_realized_ratio": 1.0637244502085643,
+   "gate_pass": false
+  },
+  {
+   "run_dir": "/home/rickybao/projects/dreamerv3/local_results/wb_advd_r2_20260825_061600_light/runroot/se_advd_s16",
+   "wing": "ambient",
+   "train_seed": 16,
+   "degenerate": false,
+   "delta_advd_minus_policy": -0.00018509423091906708,
+   "attr_d": {
+    "random": 0.002970816932937524,
+    "policy": 0.012349547323710627,
+    "advd": 0.01216445309279156
+   },
+   "share_d": {
+    "random": 0.04428521585559154,
+    "policy": 0.04051678730900314,
+    "advd": 0.04008809448943657
+   },
+   "occupancy": {
+    "random": 0.734,
+    "policy": 0.8955,
+    "advd": 0.5255
+   },
+   "intrinsic": {
+    "random": 4.849362793538603e-05,
+    "policy": 0.0001566685181860521,
+    "advd": 0.0001615284689287364
+   },
+   "return_mean": {
+    "random": 0.004108174196328264,
+    "policy": 0.0995844254040162,
+    "advd": 0.04423138065126841
+   },
+   "imag": {
+    "imag_policystates_policypol": 0.012126363243071791,
+    "imag_policystates_advdpol": 0.01419367345491572,
+    "imag_advdstates_advdpol": 0.01237455996285777
+   },
+   "imag_blocks": {
+    "imag_policystates_policypol": [
+     0.012351377701241582,
+     0.011971554934585647,
+     0.012312166325168817,
+     0.011870354011291122
+    ],
+    "imag_policystates_advdpol": [
+     0.01446614650931508,
+     0.014122602044117631,
+     0.014572308902435797,
+     0.013613636363794377
+    ],
+    "imag_advdstates_advdpol": [
+     0.013707737571452024,
+     0.010124299062277999,
+     0.012829423600022974,
+     0.01283677961767808
+    ]
+   },
+   "gate_margin": 0.17048064373505012,
+   "intrinsic_policy_over_random": 3.2307031842369196,
+   "plateau": {
+    "n": 63,
+    "decile5_mean": 0.006116597938811547,
+    "last_decile_mean": 0.005888531632089098,
+    "ratio": 0.9627135363475007
+   },
+   "imag_vs_realized_ratio": 1.0172722002759593,
+   "gate_pass": true
+  },
+  {
+   "run_dir": "/home/rickybao/projects/dreamerv3/local_results/wb_advd_r2_20260825_061600_light/runroot/se_advd_s17",
+   "wing": "ambient",
+   "train_seed": 17,
+   "degenerate": false,
+   "delta_advd_minus_policy": 0.0057638782969721,
+   "attr_d": {
+    "random": 0.003918660526998146,
+    "policy": 0.016231962673141934,
+    "advd": 0.021995840970114033
+   },
+   "share_d": {
+    "random": 0.0633186728139896,
+    "policy": 0.04454350709043156,
+    "advd": 0.06805314367864647
+   },
+   "occupancy": {
+    "random": 0.743,
+    "policy": 0.459,
+    "advd": 0.9755
+   },
+   "intrinsic": {
+    "random": 5.948790324873698e-05,
+    "policy": 0.00019167199590447125,
+    "advd": 0.0002655828838433081
+   },
+   "return_mean": {
+    "random": 0.004220477162685256,
+    "policy": 0.04134505856120086,
+    "advd": 0.0018024009412620217
+   },
+   "imag": {
+    "imag_policystates_policypol": 0.015892666420317173,
+    "imag_policystates_advdpol": 0.0190318505874193,
+    "imag_advdstates_advdpol": 0.022299187243889382
+   },
+   "imag_blocks": {
+    "imag_policystates_policypol": [
+     0.01574359536723508,
+     0.01744825966404973,
+     0.015461115777489164,
+     0.014917694872494726
+    ],
+    "imag_policystates_advdpol": [
+     0.018799128653880785,
+     0.020462161965668534,
+     0.0185715791574583,
+     0.018294532572669598
+    ],
+    "imag_advdstates_advdpol": [
+     0.022069052312591212,
+     0.02201496258414572,
+     0.023165916466966155,
+     0.021946817611854432
+    ]
+   },
+   "gate_margin": 0.19752407079336898,
+   "intrinsic_policy_over_random": 3.2220331434952825,
+   "plateau": {
+    "n": 64,
+    "decile5_mean": 0.009436587364816815,
+    "last_decile_mean": 0.010303663789598195,
+    "ratio": 1.0918845331750089
+   },
+   "imag_vs_realized_ratio": 1.0137910741484042,
+   "gate_pass": true
+  }
+ ],
+ "n_ambient": 8,
+ "n_hetero": 4,
+ "n_flat": 4,
+ "ambient": {
+  "gate": {
+   "n_pass": 5,
+   "need": 7
+  },
+  "cell": "NOT-ADJUDICABLE-INSTRUMENT-WEAK"
+ },
+ "localized": {
+  "gate": {
+   "het_pass": 4,
+   "flat_pass": 4,
+   "pooled": 8,
+   "pooled_need": 7,
+   "each_need": 3
+  },
+  "primary": {
+   "delta_hetero": [
+    -0.008923849915780248,
+    0.006355287197822804,
+    0.0013950512772733271,
+    0.012927781120269901
+   ],
+   "delta_flat": [
+    0.0048248055171745685,
+    0.004590657755273222,
+    0.004022144076137657,
+    0.004374717803244343
+   ],
+   "interaction": -0.001514513868061001,
+   "p": 0.6571428571428571,
+   "min_attainable_p": 0.014285714285714285,
+   "n_het_pos": 3,
+   "need": 3,
+   "fires": false
+  },
+  "region_entry_hetero": [
+   {
+    "seed": 44,
+    "occ_advd": 0.6065,
+    "occ_policy": 0.8085
+   },
+   {
+    "seed": 45,
+    "occ_advd": 0.9555,
+    "occ_policy": 0.6355
+   },
+   {
+    "seed": 46,
+    "occ_advd": 1.0,
+    "occ_policy": 0.8835
+   },
+   {
+    "seed": 47,
+    "occ_advd": 0.9585,
+    "occ_policy": 0.5805
+   }
+  ],
+  "cell": "LOCALIZED-CONTAINED-MATCHED"
+ },
+ "carrier_adjudicated": false,
+ "any_wing_adjudicated": true,
+ "fit_counters": {
+  "/home/rickybao/projects/dreamerv3/local_results/wb_advd_r2_20260825_061600_light/runroot/se_advd_flat_s48": {
+   "expected": 200000.0,
+   "last_step": 199936,
+   "ratio": 0.99968,
+   "flag": "OK",
+   "config_steps": 200000.0
+  },
+  "/home/rickybao/projects/dreamerv3/local_results/wb_advd_r2_20260825_061600_light/runroot/se_advd_flat_s49": {
+   "expected": 200000.0,
+   "last_step": 199856,
+   "ratio": 0.99928,
+   "flag": "OK",
+   "config_steps": 200000.0
+  },
+  "/home/rickybao/projects/dreamerv3/local_results/wb_advd_r2_20260825_061600_light/runroot/se_advd_flat_s50": {
+   "expected": 200000.0,
+   "last_step": 199984,
+   "ratio": 0.99992,
+   "flag": "OK",
+   "config_steps": 200000.0
+  },
+  "/home/rickybao/projects/dreamerv3/local_results/wb_advd_r2_20260825_061600_light/runroot/se_advd_flat_s51": {
+   "expected": 200000.0,
+   "last_step": 196912,
+   "ratio": 0.98456,
+   "flag": "OK",
+   "config_steps": 200000.0
+  },
+  "/home/rickybao/projects/dreamerv3/local_results/wb_advd_r2_20260825_061600_light/runroot/se_advd_het_s44": {
+   "expected": 200000.0,
+   "last_step": 199360,
+   "ratio": 0.9968,
+   "flag": "OK",
+   "config_steps": 200000.0
+  },
+  "/home/rickybao/projects/dreamerv3/local_results/wb_advd_r2_20260825_061600_light/runroot/se_advd_het_s45": {
+   "expected": 200000.0,
+   "last_step": 199440,
+   "ratio": 0.9972,
+   "flag": "OK",
+   "config_steps": 200000.0
+  },
+  "/home/rickybao/projects/dreamerv3/local_results/wb_advd_r2_20260825_061600_light/runroot/se_advd_het_s46": {
+   "expected": 200000.0,
+   "last_step": 199568,
+   "ratio": 0.99784,
+   "flag": "OK",
+   "config_steps": 200000.0
+  },
+  "/home/rickybao/projects/dreamerv3/local_results/wb_advd_r2_20260825_061600_light/runroot/se_advd_het_s47": {
+   "expected": 200000.0,
+   "last_step": 199680,
+   "ratio": 0.9984,
+   "flag": "OK",
+   "config_steps": 200000.0
+  },
+  "/home/rickybao/projects/dreamerv3/local_results/wb_advd_r2_20260825_061600_light/runroot/se_advd_s10": {
+   "expected": 200000.0,
+   "last_step": 199968,
+   "ratio": 0.99984,
+   "flag": "OK",
+   "config_steps": 200000.0
+  },
+  "/home/rickybao/projects/dreamerv3/local_results/wb_advd_r2_20260825_061600_light/runroot/se_advd_s11": {
+   "expected": 200000.0,
+   "last_step": 199488,
+   "ratio": 0.99744,
+   "flag": "OK",
+   "config_steps": 200000.0
+  },
+  "/home/rickybao/projects/dreamerv3/local_results/wb_advd_r2_20260825_061600_light/runroot/se_advd_s12": {
+   "expected": 200000.0,
+   "last_step": 197104,
+   "ratio": 0.98552,
+   "flag": "OK",
+   "config_steps": 200000.0
+  },
+  "/home/rickybao/projects/dreamerv3/local_results/wb_advd_r2_20260825_061600_light/runroot/se_advd_s13": {
+   "expected": 200000.0,
+   "last_step": 199472,
+   "ratio": 0.99736,
+   "flag": "OK",
+   "config_steps": 200000.0
+  },
+  "/home/rickybao/projects/dreamerv3/local_results/wb_advd_r2_20260825_061600_light/runroot/se_advd_s14": {
+   "expected": 200000.0,
+   "last_step": 196880,
+   "ratio": 0.9844,
+   "flag": "OK",
+   "config_steps": 200000.0
+  },
+  "/home/rickybao/projects/dreamerv3/local_results/wb_advd_r2_20260825_061600_light/runroot/se_advd_s15": {
+   "expected": 200000.0,
+   "last_step": 199808,
+   "ratio": 0.99904,
+   "flag": "OK",
+   "config_steps": 200000.0
+  },
+  "/home/rickybao/projects/dreamerv3/local_results/wb_advd_r2_20260825_061600_light/runroot/se_advd_s16": {
+   "expected": 200000.0,
+   "last_step": 196944,
+   "ratio": 0.98472,
+   "flag": "OK",
+   "config_steps": 200000.0
+  },
+  "/home/rickybao/projects/dreamerv3/local_results/wb_advd_r2_20260825_061600_light/runroot/se_advd_s17": {
+   "expected": 200000.0,
+   "last_step": 199712,
+   "ratio": 0.99856,
+   "flag": "OK",
+   "config_steps": 200000.0
+  }
+ },
+ "fit_flag": "OK"
+}

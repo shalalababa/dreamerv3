@@ -92,6 +92,62 @@ reported as instrument-sensitivity, changes disclosed as two-look.
 Wave spec `ops/waves/wb_advd_ext/spec.yaml` (16 runs); read bundle
 = `wb_advd_r2` (RCC-built, post-panel).
 
+## SECOND INVOCATION (25 Aug, panel 2 after the Amendment-1 uniform
+extension): carrier gate 5/8 — **INSTRUMENT-WEAK-FINAL, fork (b)
+in effect**
+
+Bundle `wb_advd_r2_20260825_061600` (light copy verified byte-exact
+vs the committed manifest; reader-complete per bundle NOTES; ops
+compliance complete — single-lane extension per rev 2.1, all 16
+uniform +1e5, fresh 16-pair panel on RCC job 54939215 under the
+registered `--constraint=v100` GPU-MODEL pin with FRESH_PANEL
+machinery; node differs from panel 1's, disclosed in NOTES — the
+scheduler priced the node pin at a 23 h hold; job logs are the
+device provenance). Pinned invocation executed (`--expect_steps
+2e5`): **valid look** — 16/16 loaded, excluded_runs = [], fit
+counters 16/16 OK at 2e5, plateau rows show EVERY actor converged
+(last/5th-decile 1.0–1.1).
+
+**Carrier gate: 5/8 vs the 7/8 bar** (side file
+`se_advd_read_NOTADJ_20260825T081239.json`; the execution remains
+unconsumed and, per §4, now PERMANENTLY so). Failures: s10 −10.7 %
+(stable from −11.9 %), s13 −0.9 % (improved from −2.2 %, still
+under), **s15 −8.8 % (FLIPPED from +5.6 % with more training)**.
+Under §4's single-retry finality the ambient wing is
+**INSTRUMENT-WEAK-FINAL**: Tier-2 is unreachable under this
+prereg; no bar change, no third look, no further Wave-B compute.
+
+**The instrument-weak verdict is now a PROPERTY, not a training
+artifact**: at convergence the in-model dominance margins are
+UNSTABLE across panels (±0.05–0.13 jitter; one pass→fail flip),
+i.e. the amortized actor's imagined-reward attribution is not
+stably channel-dominant at the registered bar. This is
+mechanism-coherent with B4's representational entanglement — the
+distractor's variance lives in shared latent dims, so an actor
+optimizing decoded distractor variance harvests it WITHOUT clean
+channel-dominant attribution.
+
+**Amendment §5 sensitivity row (panel 1 vs panel 2, descriptive —
+carrier never adjudicated, so all rows ride the side files):**
+- **The closed imagined-vs-realized gap REPLICATES: 16/16 in both
+  panels** (p1 0.998–1.106; p2 0.995–1.152). This is the wave's
+  durable mechanism finding, now twice-measured on two panels:
+  amortized training on the frozen WM eliminates the off-support-
+  imagination defense that contained Wave A's planner.
+- Ambient deltas: 6/8 positive (p1 7/8); s10 the lone substantial
+  negative both panels; not tightening with convergence.
+- LOCALIZED: LOCALIZED-CONTAINED-MATCHED in BOTH panels (gates 8/8
+  both) — stable across devices/panels; carries the rev 2.1
+  training-device≡arm caveat permanently.
+
+**Fork (b), registered consequences:** the paper ships the landed
+Tier-1 (Wave A: policy-stationary under the greedy planner, with
+the ~10× off-support-imagination containment) plus the twice-
+replicated closed-gap finding as DESCRIPTIVE (the containment
+defense is defeated by amortization, but the amplified-transmission
+claim could not be certified at the registered bar); the security
+wording stays scoped to Tier-1. WAVE B IS CLOSED.
+
 ## Rev 2.1 disclosure (23 Aug, pre-read; ops finding): leg-1
 training-card layout
 
