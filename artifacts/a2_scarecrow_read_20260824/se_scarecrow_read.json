@@ -1,0 +1,1003 @@
+{
+ "stamp": {
+  "git": "d17fc288",
+  "time": "2026-08-24T19:07:45"
+ },
+ "n_loaded": 20,
+ "excluded_runs": [],
+ "missing_seeds": [],
+ "n_per_arm": {
+  "sc_ctrl": 4,
+  "sc_scare": 4,
+  "sc_scare2": 4,
+  "sc_pen1": 4,
+  "sc_pen2": 4
+ },
+ "stage1_reference": {
+  "real_mean_min": 0.002872289559389982,
+  "intrinsic_min": 0.00188539270311594,
+  "n": 8
+ },
+ "collapse_rows": {
+  "sc_ctrl": [
+   false,
+   false,
+   false,
+   false
+  ],
+  "sc_scare": [
+   false,
+   false,
+   false,
+   false
+  ],
+  "sc_scare2": [
+   false,
+   false,
+   false,
+   false
+  ],
+  "sc_pen1": [
+   false,
+   false,
+   false,
+   false
+  ],
+  "sc_pen2": [
+   false,
+   false,
+   false,
+   false
+  ]
+ },
+ "per_run": [
+  {
+   "run_dir": "/scratch/midway3/rickybao/dreamerv3_runs/bundles/a2_scarecrow_20260824_184000/runroot/sc_ctrl_s76",
+   "arm": "sc_ctrl",
+   "train_seed": 76,
+   "valid": true,
+   "collapsed": false,
+   "occupancy": 0.4995996959306463,
+   "occ_steps": 494624,
+   "coverage_all": {
+    "proxy": 9.194999987978333,
+    "min_dim_std": 0.27664215476115045,
+    "n": 494624
+   },
+   "coverage_off": {
+    "proxy": 9.254074208932513,
+    "min_dim_std": 0.2854008258763332,
+    "n": 247510
+   },
+   "gated_dim_off_std": 0.15642421058767803,
+   "theta1_distractor": 7.628546405929981,
+   "real_mean_level": 0.0029177898727034014,
+   "intrinsic_mean": 0.0026486837305128574,
+   "penalty_delivery": null,
+   "penalty_training": null
+  },
+  {
+   "run_dir": "/scratch/midway3/rickybao/dreamerv3_runs/bundles/a2_scarecrow_20260824_184000/runroot/sc_ctrl_s77",
+   "arm": "sc_ctrl",
+   "train_seed": 77,
+   "valid": true,
+   "collapsed": false,
+   "occupancy": 0.5253805365444215,
+   "occ_steps": 495616,
+   "coverage_all": {
+    "proxy": 9.835317208782042,
+    "min_dim_std": 0.28218055803322595,
+    "n": 495616
+   },
+   "coverage_off": {
+    "proxy": 9.80272620866252,
+    "min_dim_std": 0.2881210216973716,
+    "n": 235229
+   },
+   "gated_dim_off_std": 0.15726874986893458,
+   "theta1_distractor": 6.4004749066764175,
+   "real_mean_level": 0.002707561276717267,
+   "intrinsic_mean": 0.002655681688338518,
+   "penalty_delivery": null,
+   "penalty_training": null
+  },
+  {
+   "run_dir": "/scratch/midway3/rickybao/dreamerv3_runs/bundles/a2_scarecrow_20260824_184000/runroot/sc_ctrl_s78",
+   "arm": "sc_ctrl",
+   "train_seed": 78,
+   "valid": true,
+   "collapsed": false,
+   "occupancy": 0.5038046784936595,
+   "occ_steps": 499648,
+   "coverage_all": {
+    "proxy": 9.108993399634759,
+    "min_dim_std": 0.254276802018693,
+    "n": 499648
+   },
+   "coverage_off": {
+    "proxy": 8.68515891886415,
+    "min_dim_std": 0.25740172398162997,
+    "n": 247923
+   },
+   "gated_dim_off_std": 0.15765050612293166,
+   "theta1_distractor": 7.169314475697073,
+   "real_mean_level": 0.0030551084095754456,
+   "intrinsic_mean": 0.002342242281883955,
+   "penalty_delivery": null,
+   "penalty_training": null
+  },
+  {
+   "run_dir": "/scratch/midway3/rickybao/dreamerv3_runs/bundles/a2_scarecrow_20260824_184000/runroot/sc_ctrl_s79",
+   "arm": "sc_ctrl",
+   "train_seed": 79,
+   "valid": true,
+   "collapsed": false,
+   "occupancy": 0.5813107776306012,
+   "occ_steps": 495248,
+   "coverage_all": {
+    "proxy": 9.992430788110834,
+    "min_dim_std": 0.24632299726538215,
+    "n": 495248
+   },
+   "coverage_off": {
+    "proxy": 9.736246020301081,
+    "min_dim_std": 0.25878553961047635,
+    "n": 207355
+   },
+   "gated_dim_off_std": 0.15548001517370483,
+   "theta1_distractor": 6.368383979766974,
+   "real_mean_level": 0.00254000174350545,
+   "intrinsic_mean": 0.0023495382629334927,
+   "penalty_delivery": null,
+   "penalty_training": null
+  },
+  {
+   "run_dir": "/scratch/midway3/rickybao/dreamerv3_runs/bundles/a2_scarecrow_20260824_184000/runroot/sc_pen1_s88",
+   "arm": "sc_pen1",
+   "train_seed": 88,
+   "valid": true,
+   "collapsed": false,
+   "occupancy": 0.049893248469223335,
+   "occ_steps": 496480,
+   "coverage_all": {
+    "proxy": 1.3902088804669859,
+    "min_dim_std": 0.1358069941671956,
+    "n": 496480
+   },
+   "coverage_off": {
+    "proxy": 1.4061122859871964,
+    "min_dim_std": 0.13092611574847188,
+    "n": 471709
+   },
+   "gated_dim_off_std": 0.04527361792139957,
+   "theta1_distractor": 6.670579408356294,
+   "real_mean_level": 0.0026234129990269947,
+   "intrinsic_mean": 0.003910515457391739,
+   "penalty_delivery": {
+    "n_steps": 496480,
+    "frac_in_region": 0.049893248469223335
+   },
+   "penalty_training": {
+    "rew_loss_first": 2.589634377284338,
+    "rew_loss_last": 0.04339000960266552,
+    "penalty_rew_first": -0.1854799070857276,
+    "penalty_rew_last": -0.018440201487846235,
+    "intr_rew_raw_last": 0.0002471514455890751
+   }
+  },
+  {
+   "run_dir": "/scratch/midway3/rickybao/dreamerv3_runs/bundles/a2_scarecrow_20260824_184000/runroot/sc_pen1_s89",
+   "arm": "sc_pen1",
+   "train_seed": 89,
+   "valid": true,
+   "collapsed": false,
+   "occupancy": 0.045318933350488935,
+   "occ_steps": 497408,
+   "coverage_all": {
+    "proxy": 2.2161371738873354,
+    "min_dim_std": 0.13436499566561594,
+    "n": 497408
+   },
+   "coverage_off": {
+    "proxy": 2.254799718629062,
+    "min_dim_std": 0.12940459666309997,
+    "n": 474866
+   },
+   "gated_dim_off_std": 0.04487390968292071,
+   "theta1_distractor": 6.162962702462672,
+   "real_mean_level": 0.0023762986909585176,
+   "intrinsic_mean": 0.003616548143327236,
+   "penalty_delivery": {
+    "n_steps": 497408,
+    "frac_in_region": 0.045318933350488935
+   },
+   "penalty_training": {
+    "rew_loss_first": 2.5636942481720135,
+    "rew_loss_last": 0.03847574036361622,
+    "penalty_rew_first": -0.17312434377049307,
+    "penalty_rew_last": -0.010840024887269753,
+    "intr_rew_raw_last": 0.0002289108777819629
+   }
+  },
+  {
+   "run_dir": "/scratch/midway3/rickybao/dreamerv3_runs/bundles/a2_scarecrow_20260824_184000/runroot/sc_pen1_s90",
+   "arm": "sc_pen1",
+   "train_seed": 90,
+   "valid": true,
+   "collapsed": false,
+   "occupancy": 0.04943309745899003,
+   "occ_steps": 497440,
+   "coverage_all": {
+    "proxy": 2.0801187963442755,
+    "min_dim_std": 0.14741339162283193,
+    "n": 497440
+   },
+   "coverage_off": {
+    "proxy": 2.068119592847696,
+    "min_dim_std": 0.14026149898184478,
+    "n": 472850
+   },
+   "gated_dim_off_std": 0.050567465050974335,
+   "theta1_distractor": 5.377162399857107,
+   "real_mean_level": 0.0027620144432552885,
+   "intrinsic_mean": 0.004079762846231461,
+   "penalty_delivery": {
+    "n_steps": 497440,
+    "frac_in_region": 0.04943309745899003
+   },
+   "penalty_training": {
+    "rew_loss_first": 2.5823129586233997,
+    "rew_loss_last": 0.04281076120445143,
+    "penalty_rew_first": -0.18663466552167654,
+    "penalty_rew_last": -0.015379430732762435,
+    "intr_rew_raw_last": 0.0002565767370820225
+   }
+  },
+  {
+   "run_dir": "/scratch/midway3/rickybao/dreamerv3_runs/bundles/a2_scarecrow_20260824_184000/runroot/sc_pen1_s91",
+   "arm": "sc_pen1",
+   "train_seed": 91,
+   "valid": true,
+   "collapsed": false,
+   "occupancy": 0.049127328993361766,
+   "occ_steps": 498928,
+   "coverage_all": {
+    "proxy": 2.9780025784720623,
+    "min_dim_std": 0.25778920357858026,
+    "n": 498928
+   },
+   "coverage_off": {
+    "proxy": 3.023340248725447,
+    "min_dim_std": 0.2561199428392742,
+    "n": 474417
+   },
+   "gated_dim_off_std": 0.05057417287353614,
+   "theta1_distractor": 5.6647221308417395,
+   "real_mean_level": 0.002584779715107288,
+   "intrinsic_mean": 0.004389968700706959,
+   "penalty_delivery": {
+    "n_steps": 498928,
+    "frac_in_region": 0.049127328993361766
+   },
+   "penalty_training": {
+    "rew_loss_first": 2.549136727558155,
+    "rew_loss_last": 0.042655094328595475,
+    "penalty_rew_first": -0.19016494513902968,
+    "penalty_rew_last": -0.013901704934215487,
+    "intr_rew_raw_last": 0.0002772380981741101
+   }
+  },
+  {
+   "run_dir": "/scratch/midway3/rickybao/dreamerv3_runs/bundles/a2_scarecrow_20260824_184000/runroot/sc_pen2_s92",
+   "arm": "sc_pen2",
+   "train_seed": 92,
+   "valid": true,
+   "collapsed": false,
+   "occupancy": 0.03407527038404248,
+   "occ_steps": 494112,
+   "coverage_all": {
+    "proxy": 2.0509071378615995,
+    "min_dim_std": 0.1378068499893761,
+    "n": 494112
+   },
+   "coverage_off": {
+    "proxy": 2.056373609352636,
+    "min_dim_std": 0.13164576953672566,
+    "n": 477275
+   },
+   "gated_dim_off_std": 0.05026431611350968,
+   "theta1_distractor": 4.465603972194009,
+   "real_mean_level": 0.002718644768821024,
+   "intrinsic_mean": 0.00516175851225853,
+   "penalty_delivery": {
+    "n_steps": 494112,
+    "frac_in_region": 0.03407527038404248
+   },
+   "penalty_training": {
+    "rew_loss_first": 2.3385697756487653,
+    "rew_loss_last": 0.008976349438109892,
+    "penalty_rew_first": -0.7368149799151232,
+    "penalty_rew_last": -0.0382474813377642,
+    "intr_rew_raw_last": 0.0003172456553495422
+   }
+  },
+  {
+   "run_dir": "/scratch/midway3/rickybao/dreamerv3_runs/bundles/a2_scarecrow_20260824_184000/runroot/sc_pen2_s93",
+   "arm": "sc_pen2",
+   "train_seed": 93,
+   "valid": true,
+   "collapsed": false,
+   "occupancy": 0.028563869320752278,
+   "occ_steps": 495136,
+   "coverage_all": {
+    "proxy": 2.430389338739717,
+    "min_dim_std": 0.13200262898397835,
+    "n": 495136
+   },
+   "coverage_off": {
+    "proxy": 2.50203594355197,
+    "min_dim_std": 0.13069408085297438,
+    "n": 480993
+   },
+   "gated_dim_off_std": 0.0416172607018802,
+   "theta1_distractor": 4.376562048189916,
+   "real_mean_level": 0.0026656026473372346,
+   "intrinsic_mean": 0.005413961596786976,
+   "penalty_delivery": {
+    "n_steps": 495136,
+    "frac_in_region": 0.028563869320752278
+   },
+   "penalty_training": {
+    "rew_loss_first": 2.313424803000065,
+    "rew_loss_last": 0.009032131559195725,
+    "penalty_rew_first": -0.7124930703314133,
+    "penalty_rew_last": -0.024992910532891648,
+    "intr_rew_raw_last": 0.00032808470712799686
+   }
+  },
+  {
+   "run_dir": "/scratch/midway3/rickybao/dreamerv3_runs/bundles/a2_scarecrow_20260824_184000/runroot/sc_pen2_s94",
+   "arm": "sc_pen2",
+   "train_seed": 94,
+   "valid": true,
+   "collapsed": false,
+   "occupancy": 0.029429260450160772,
+   "occ_steps": 497600,
+   "coverage_all": {
+    "proxy": 2.692155545599933,
+    "min_dim_std": 0.18713613427997847,
+    "n": 497600
+   },
+   "coverage_off": {
+    "proxy": 2.7291898335027986,
+    "min_dim_std": 0.18464274207267165,
+    "n": 482956
+   },
+   "gated_dim_off_std": 0.0449648114227406,
+   "theta1_distractor": 6.359945310603394,
+   "real_mean_level": 0.0022470373741169977,
+   "intrinsic_mean": 0.004327260889112949,
+   "penalty_delivery": {
+    "n_steps": 497600,
+    "frac_in_region": 0.029429260450160772
+   },
+   "penalty_training": {
+    "rew_loss_first": 2.3249843149193077,
+    "rew_loss_last": 0.008966853828767976,
+    "penalty_rew_first": -0.7308936078673172,
+    "penalty_rew_last": -0.025476162057655582,
+    "intr_rew_raw_last": 0.00027916100705014464
+   }
+  },
+  {
+   "run_dir": "/scratch/midway3/rickybao/dreamerv3_runs/bundles/a2_scarecrow_20260824_184000/runroot/sc_pen2_s95",
+   "arm": "sc_pen2",
+   "train_seed": 95,
+   "valid": true,
+   "collapsed": false,
+   "occupancy": 0.036538214721170505,
+   "occ_steps": 498656,
+   "coverage_all": {
+    "proxy": 2.753323743309517,
+    "min_dim_std": 0.13833732201358068,
+    "n": 498656
+   },
+   "coverage_off": {
+    "proxy": 2.835062800420686,
+    "min_dim_std": 0.13706810515719572,
+    "n": 480436
+   },
+   "gated_dim_off_std": 0.042702219605644326,
+   "theta1_distractor": 4.472816749147214,
+   "real_mean_level": 0.00239946499884051,
+   "intrinsic_mean": 0.005316899158060551,
+   "penalty_delivery": {
+    "n_steps": 498656,
+    "frac_in_region": 0.036538214721170505
+   },
+   "penalty_training": {
+    "rew_loss_first": 2.343989722087587,
+    "rew_loss_last": 0.009922782867098799,
+    "penalty_rew_first": -0.7211091159356013,
+    "penalty_rew_last": -0.033358800899185234,
+    "intr_rew_raw_last": 0.0003183278611709003
+   }
+  },
+  {
+   "run_dir": "/scratch/midway3/rickybao/dreamerv3_runs/bundles/a2_scarecrow_20260824_184000/runroot/sc_scare2_s84",
+   "arm": "sc_scare2",
+   "train_seed": 84,
+   "valid": true,
+   "collapsed": false,
+   "occupancy": 0.4622882171736619,
+   "occ_steps": 498624,
+   "coverage_all": {
+    "proxy": 7.802783477203886,
+    "min_dim_std": 0.2373335995103157,
+    "n": 498624
+   },
+   "coverage_off": {
+    "proxy": 7.607596486906658,
+    "min_dim_std": 0.24676982534836597,
+    "n": 268116
+   },
+   "gated_dim_off_std": 0.1648854879169864,
+   "theta1_distractor": 5.532233005944576,
+   "real_mean_level": 0.004296536526655675,
+   "intrinsic_mean": 0.0030435025691986084,
+   "penalty_delivery": null,
+   "penalty_training": null
+  },
+  {
+   "run_dir": "/scratch/midway3/rickybao/dreamerv3_runs/bundles/a2_scarecrow_20260824_184000/runroot/sc_scare2_s85",
+   "arm": "sc_scare2",
+   "train_seed": 85,
+   "valid": true,
+   "collapsed": false,
+   "occupancy": 0.46555680359435175,
+   "occ_steps": 498560,
+   "coverage_all": {
+    "proxy": 8.227281942567911,
+    "min_dim_std": 0.254148716701325,
+    "n": 498560
+   },
+   "coverage_off": {
+    "proxy": 8.778857292494788,
+    "min_dim_std": 0.27251290003184014,
+    "n": 266452
+   },
+   "gated_dim_off_std": 0.1627817358901096,
+   "theta1_distractor": 5.45104309742245,
+   "real_mean_level": 0.0036838748848013994,
+   "intrinsic_mean": 0.0030579352751374245,
+   "penalty_delivery": null,
+   "penalty_training": null
+  },
+  {
+   "run_dir": "/scratch/midway3/rickybao/dreamerv3_runs/bundles/a2_scarecrow_20260824_184000/runroot/sc_scare2_s86",
+   "arm": "sc_scare2",
+   "train_seed": 86,
+   "valid": true,
+   "collapsed": false,
+   "occupancy": 0.4448612638251083,
+   "occ_steps": 494752,
+   "coverage_all": {
+    "proxy": 8.316259619953845,
+    "min_dim_std": 0.2634145968263187,
+    "n": 494752
+   },
+   "coverage_off": {
+    "proxy": 8.536047943106585,
+    "min_dim_std": 0.27910190639767674,
+    "n": 274656
+   },
+   "gated_dim_off_std": 0.1609289214984836,
+   "theta1_distractor": 5.890768536208747,
+   "real_mean_level": 0.004025418014255896,
+   "intrinsic_mean": 0.0028936155140399933,
+   "penalty_delivery": null,
+   "penalty_training": null
+  },
+  {
+   "run_dir": "/scratch/midway3/rickybao/dreamerv3_runs/bundles/a2_scarecrow_20260824_184000/runroot/sc_scare2_s87",
+   "arm": "sc_scare2",
+   "train_seed": 87,
+   "valid": true,
+   "collapsed": false,
+   "occupancy": 0.44292187651449066,
+   "occ_steps": 495216,
+   "coverage_all": {
+    "proxy": 8.116620363454366,
+    "min_dim_std": 0.25326454463293363,
+    "n": 495216
+   },
+   "coverage_off": {
+    "proxy": 8.272794776833745,
+    "min_dim_std": 0.26321823037044584,
+    "n": 275874
+   },
+   "gated_dim_off_std": 0.16309740821112692,
+   "theta1_distractor": 6.427801033414855,
+   "real_mean_level": 0.004078353072852931,
+   "intrinsic_mean": 0.003144663292914629,
+   "penalty_delivery": null,
+   "penalty_training": null
+  },
+  {
+   "run_dir": "/scratch/midway3/rickybao/dreamerv3_runs/bundles/a2_scarecrow_20260824_184000/runroot/sc_scare_s80",
+   "arm": "sc_scare",
+   "train_seed": 80,
+   "valid": true,
+   "collapsed": false,
+   "occupancy": 0.48048719358385616,
+   "occ_steps": 494752,
+   "coverage_all": {
+    "proxy": 9.241583140441477,
+    "min_dim_std": 0.27107179402096343,
+    "n": 494752
+   },
+   "coverage_off": {
+    "proxy": 9.236147261495057,
+    "min_dim_std": 0.2824825971007838,
+    "n": 257030
+   },
+   "gated_dim_off_std": 0.15911654321039315,
+   "theta1_distractor": 7.2624915689557445,
+   "real_mean_level": 0.00288603727232031,
+   "intrinsic_mean": 0.0023687470238655806,
+   "penalty_delivery": null,
+   "penalty_training": null
+  },
+  {
+   "run_dir": "/scratch/midway3/rickybao/dreamerv3_runs/bundles/a2_scarecrow_20260824_184000/runroot/sc_scare_s81",
+   "arm": "sc_scare",
+   "train_seed": 81,
+   "valid": true,
+   "collapsed": false,
+   "occupancy": 0.45456496966584276,
+   "occ_steps": 498448,
+   "coverage_all": {
+    "proxy": 9.600420544895526,
+    "min_dim_std": 0.27031435149369953,
+    "n": 498448
+   },
+   "coverage_off": {
+    "proxy": 9.571458126507501,
+    "min_dim_std": 0.2751038053818005,
+    "n": 271871
+   },
+   "gated_dim_off_std": 0.16047458160868794,
+   "theta1_distractor": 6.371816608210282,
+   "real_mean_level": 0.0034694088717515115,
+   "intrinsic_mean": 0.002780637703835964,
+   "penalty_delivery": null,
+   "penalty_training": null
+  },
+  {
+   "run_dir": "/scratch/midway3/rickybao/dreamerv3_runs/bundles/a2_scarecrow_20260824_184000/runroot/sc_scare_s82",
+   "arm": "sc_scare",
+   "train_seed": 82,
+   "valid": true,
+   "collapsed": false,
+   "occupancy": 0.44867966555831745,
+   "occ_steps": 495632,
+   "coverage_all": {
+    "proxy": 8.403911184233879,
+    "min_dim_std": 0.2653454112092589,
+    "n": 495632
+   },
+   "coverage_off": {
+    "proxy": 8.159366765277568,
+    "min_dim_std": 0.2716852929371758,
+    "n": 273252
+   },
+   "gated_dim_off_std": 0.15958761506583338,
+   "theta1_distractor": 7.4262125785474185,
+   "real_mean_level": 0.003514251496704269,
+   "intrinsic_mean": 0.0027306072879582644,
+   "penalty_delivery": null,
+   "penalty_training": null
+  },
+  {
+   "run_dir": "/scratch/midway3/rickybao/dreamerv3_runs/bundles/a2_scarecrow_20260824_184000/runroot/sc_scare_s83",
+   "arm": "sc_scare",
+   "train_seed": 83,
+   "valid": true,
+   "collapsed": false,
+   "occupancy": 0.47361929779600204,
+   "occ_steps": 499456,
+   "coverage_all": {
+    "proxy": 8.70640979675401,
+    "min_dim_std": 0.23809267646987584,
+    "n": 499456
+   },
+   "coverage_off": {
+    "proxy": 8.34660514700056,
+    "min_dim_std": 0.24607944081699387,
+    "n": 262904
+   },
+   "gated_dim_off_std": 0.16132218431086354,
+   "theta1_distractor": 7.53679255059622,
+   "real_mean_level": 0.0033564736659172922,
+   "intrinsic_mean": 0.0026337257586419582,
+   "penalty_delivery": null,
+   "penalty_training": null
+  }
+ ],
+ "occupancy_rows": {
+  "sc_ctrl": [
+   0.4995996959306463,
+   0.5253805365444215,
+   0.5038046784936595,
+   0.5813107776306012
+  ],
+  "sc_scare": [
+   0.48048719358385616,
+   0.45456496966584276,
+   0.44867966555831745,
+   0.47361929779600204
+  ],
+  "sc_scare2": [
+   0.4622882171736619,
+   0.46555680359435175,
+   0.4448612638251083,
+   0.44292187651449066
+  ],
+  "sc_pen1": [
+   0.049893248469223335,
+   0.045318933350488935,
+   0.04943309745899003,
+   0.049127328993361766
+  ],
+  "sc_pen2": [
+   0.03407527038404248,
+   0.028563869320752278,
+   0.029429260450160772,
+   0.036538214721170505
+  ]
+ },
+ "coverage_rows": {
+  "sc_ctrl": {
+   "off": [
+    9.254074208932513,
+    9.80272620866252,
+    8.68515891886415,
+    9.736246020301081
+   ],
+   "all": [
+    9.194999987978333,
+    9.835317208782042,
+    9.108993399634759,
+    9.992430788110834
+   ],
+   "gated_dim_off_std": [
+    0.15642421058767803,
+    0.15726874986893458,
+    0.15765050612293166,
+    0.15548001517370483
+   ]
+  },
+  "sc_scare": {
+   "off": [
+    9.236147261495057,
+    9.571458126507501,
+    8.159366765277568,
+    8.34660514700056
+   ],
+   "all": [
+    9.241583140441477,
+    9.600420544895526,
+    8.403911184233879,
+    8.70640979675401
+   ],
+   "gated_dim_off_std": [
+    0.15911654321039315,
+    0.16047458160868794,
+    0.15958761506583338,
+    0.16132218431086354
+   ]
+  },
+  "sc_scare2": {
+   "off": [
+    7.607596486906658,
+    8.778857292494788,
+    8.536047943106585,
+    8.272794776833745
+   ],
+   "all": [
+    7.802783477203886,
+    8.227281942567911,
+    8.316259619953845,
+    8.116620363454366
+   ],
+   "gated_dim_off_std": [
+    0.1648854879169864,
+    0.1627817358901096,
+    0.1609289214984836,
+    0.16309740821112692
+   ]
+  },
+  "sc_pen1": {
+   "off": [
+    1.4061122859871964,
+    2.254799718629062,
+    2.068119592847696,
+    3.023340248725447
+   ],
+   "all": [
+    1.3902088804669859,
+    2.2161371738873354,
+    2.0801187963442755,
+    2.9780025784720623
+   ],
+   "gated_dim_off_std": [
+    0.04527361792139957,
+    0.04487390968292071,
+    0.050567465050974335,
+    0.05057417287353614
+   ]
+  },
+  "sc_pen2": {
+   "off": [
+    2.056373609352636,
+    2.50203594355197,
+    2.7291898335027986,
+    2.835062800420686
+   ],
+   "all": [
+    2.0509071378615995,
+    2.430389338739717,
+    2.692155545599933,
+    2.753323743309517
+   ],
+   "gated_dim_off_std": [
+    0.05026431611350968,
+    0.0416172607018802,
+    0.0449648114227406,
+    0.042702219605644326
+   ]
+  }
+ },
+ "theta1_rows": {
+  "sc_ctrl": [
+   7.628546405929981,
+   6.4004749066764175,
+   7.169314475697073,
+   6.368383979766974
+  ],
+  "sc_scare": [
+   7.2624915689557445,
+   6.371816608210282,
+   7.4262125785474185,
+   7.53679255059622
+  ],
+  "sc_scare2": [
+   5.532233005944576,
+   5.45104309742245,
+   5.890768536208747,
+   6.427801033414855
+  ],
+  "sc_pen1": [
+   6.670579408356294,
+   6.162962702462672,
+   5.377162399857107,
+   5.6647221308417395
+  ],
+  "sc_pen2": [
+   4.465603972194009,
+   4.376562048189916,
+   6.359945310603394,
+   4.472816749147214
+  ]
+ },
+ "primary": {
+  "statement": "SCARECROW fences: occupancy(sc_scare) < occupancy(sc_ctrl), one-sided exact C(8,4) permutation, full 4+4 only",
+  "occ_scare": [
+   0.48048719358385616,
+   0.45456496966584276,
+   0.44867966555831745,
+   0.47361929779600204
+  ],
+  "occ_ctrl": [
+   0.4995996959306463,
+   0.5253805365444215,
+   0.5038046784936595,
+   0.5813107776306012
+  ],
+  "delta": -0.06318614049882765,
+  "p": 0.014285714285714285,
+  "min_attainable_p": 0.014285714285714285,
+  "fires": true
+ },
+ "outcome_cell": "SCARECROW-FENCES",
+ "s1_scare2_vs_ctrl": {
+  "occ": [
+   0.4622882171736619,
+   0.46555680359435175,
+   0.4448612638251083,
+   0.44292187651449066
+  ],
+  "delta": -0.07361688187292909,
+  "p": 0.014285714285714285
+ },
+ "s1_scare2_minus_scare": -0.010430741374101438,
+ "s2_pen1_vs_ctrl": {
+  "occ": [
+   0.049893248469223335,
+   0.045318933350488935,
+   0.04943309745899003,
+   0.049127328993361766
+  ],
+  "delta": -0.4790807700818162,
+  "p": 0.014285714285714285
+ },
+ "s2_pen2_vs_ctrl": {
+  "occ": [
+   0.03407527038404248,
+   0.028563869320752278,
+   0.029429260450160772,
+   0.036538214721170505
+  ],
+  "delta": -0.49537226843080073,
+  "p": 0.014285714285714285
+ },
+ "s3_scare_vs_pen2": {
+  "occ_scare": [
+   0.48048719358385616,
+   0.45456496966584276,
+   0.44867966555831745,
+   0.47361929779600204
+  ],
+  "occ_pen2": [
+   0.03407527038404248,
+   0.028563869320752278,
+   0.029429260450160772,
+   0.036538214721170505
+  ],
+  "delta": 0.4321861279319731,
+  "note": "REGISTERED DESCRIPTIVE (pre-declared P(scarecrow wins) ~ 0.10); no fire either way; scores are NOT cross-arm comparable (penalty arms' reward is the penalty, #34 m3); deployability asymmetry is prose"
+ },
+ "fit_counters": {
+  "/scratch/midway3/rickybao/dreamerv3_runs/bundles/a2_scarecrow_20260824_184000/runroot/sc_ctrl_s76": {
+   "expected": 500000.0,
+   "last_step": 498224,
+   "ratio": 0.996448,
+   "flag": "OK",
+   "config_steps": 500000.0
+  },
+  "/scratch/midway3/rickybao/dreamerv3_runs/bundles/a2_scarecrow_20260824_184000/runroot/sc_ctrl_s77": {
+   "expected": 500000.0,
+   "last_step": 497904,
+   "ratio": 0.995808,
+   "flag": "OK",
+   "config_steps": 500000.0
+  },
+  "/scratch/midway3/rickybao/dreamerv3_runs/bundles/a2_scarecrow_20260824_184000/runroot/sc_ctrl_s78": {
+   "expected": 500000.0,
+   "last_step": 497760,
+   "ratio": 0.99552,
+   "flag": "OK",
+   "config_steps": 500000.0
+  },
+  "/scratch/midway3/rickybao/dreamerv3_runs/bundles/a2_scarecrow_20260824_184000/runroot/sc_ctrl_s79": {
+   "expected": 500000.0,
+   "last_step": 499088,
+   "ratio": 0.998176,
+   "flag": "OK",
+   "config_steps": 500000.0
+  },
+  "/scratch/midway3/rickybao/dreamerv3_runs/bundles/a2_scarecrow_20260824_184000/runroot/sc_pen1_s88": {
+   "expected": 500000.0,
+   "last_step": 497696,
+   "ratio": 0.995392,
+   "flag": "OK",
+   "config_steps": 500000.0
+  },
+  "/scratch/midway3/rickybao/dreamerv3_runs/bundles/a2_scarecrow_20260824_184000/runroot/sc_pen1_s89": {
+   "expected": 500000.0,
+   "last_step": 499632,
+   "ratio": 0.999264,
+   "flag": "OK",
+   "config_steps": 500000.0
+  },
+  "/scratch/midway3/rickybao/dreamerv3_runs/bundles/a2_scarecrow_20260824_184000/runroot/sc_pen1_s90": {
+   "expected": 500000.0,
+   "last_step": 499744,
+   "ratio": 0.999488,
+   "flag": "OK",
+   "config_steps": 500000.0
+  },
+  "/scratch/midway3/rickybao/dreamerv3_runs/bundles/a2_scarecrow_20260824_184000/runroot/sc_pen1_s91": {
+   "expected": 500000.0,
+   "last_step": 498512,
+   "ratio": 0.997024,
+   "flag": "OK",
+   "config_steps": 500000.0
+  },
+  "/scratch/midway3/rickybao/dreamerv3_runs/bundles/a2_scarecrow_20260824_184000/runroot/sc_pen2_s92": {
+   "expected": 500000.0,
+   "last_step": 497792,
+   "ratio": 0.995584,
+   "flag": "OK",
+   "config_steps": 500000.0
+  },
+  "/scratch/midway3/rickybao/dreamerv3_runs/bundles/a2_scarecrow_20260824_184000/runroot/sc_pen2_s93": {
+   "expected": 500000.0,
+   "last_step": 498496,
+   "ratio": 0.996992,
+   "flag": "OK",
+   "config_steps": 500000.0
+  },
+  "/scratch/midway3/rickybao/dreamerv3_runs/bundles/a2_scarecrow_20260824_184000/runroot/sc_pen2_s94": {
+   "expected": 500000.0,
+   "last_step": 499712,
+   "ratio": 0.999424,
+   "flag": "OK",
+   "config_steps": 500000.0
+  },
+  "/scratch/midway3/rickybao/dreamerv3_runs/bundles/a2_scarecrow_20260824_184000/runroot/sc_pen2_s95": {
+   "expected": 500000.0,
+   "last_step": 498320,
+   "ratio": 0.99664,
+   "flag": "OK",
+   "config_steps": 500000.0
+  },
+  "/scratch/midway3/rickybao/dreamerv3_runs/bundles/a2_scarecrow_20260824_184000/runroot/sc_scare2_s84": {
+   "expected": 500000.0,
+   "last_step": 499488,
+   "ratio": 0.998976,
+   "flag": "OK",
+   "config_steps": 500000.0
+  },
+  "/scratch/midway3/rickybao/dreamerv3_runs/bundles/a2_scarecrow_20260824_184000/runroot/sc_scare2_s85": {
+   "expected": 500000.0,
+   "last_step": 498272,
+   "ratio": 0.996544,
+   "flag": "OK",
+   "config_steps": 500000.0
+  },
+  "/scratch/midway3/rickybao/dreamerv3_runs/bundles/a2_scarecrow_20260824_184000/runroot/sc_scare2_s86": {
+   "expected": 500000.0,
+   "last_step": 498288,
+   "ratio": 0.996576,
+   "flag": "OK",
+   "config_steps": 500000.0
+  },
+  "/scratch/midway3/rickybao/dreamerv3_runs/bundles/a2_scarecrow_20260824_184000/runroot/sc_scare2_s87": {
+   "expected": 500000.0,
+   "last_step": 497472,
+   "ratio": 0.994944,
+   "flag": "OK",
+   "config_steps": 500000.0
+  },
+  "/scratch/midway3/rickybao/dreamerv3_runs/bundles/a2_scarecrow_20260824_184000/runroot/sc_scare_s80": {
+   "expected": 500000.0,
+   "last_step": 498480,
+   "ratio": 0.99696,
+   "flag": "OK",
+   "config_steps": 500000.0
+  },
+  "/scratch/midway3/rickybao/dreamerv3_runs/bundles/a2_scarecrow_20260824_184000/runroot/sc_scare_s81": {
+   "expected": 500000.0,
+   "last_step": 498112,
+   "ratio": 0.996224,
+   "flag": "OK",
+   "config_steps": 500000.0
+  },
+  "/scratch/midway3/rickybao/dreamerv3_runs/bundles/a2_scarecrow_20260824_184000/runroot/sc_scare_s82": {
+   "expected": 500000.0,
+   "last_step": 498016,
+   "ratio": 0.996032,
+   "flag": "OK",
+   "config_steps": 500000.0
+  },
+  "/scratch/midway3/rickybao/dreamerv3_runs/bundles/a2_scarecrow_20260824_184000/runroot/sc_scare_s83": {
+   "expected": 500000.0,
+   "last_step": 497584,
+   "ratio": 0.995168,
+   "flag": "OK",
+   "config_steps": 500000.0
+  }
+ },
+ "fit_flag": "OK"
+}
