@@ -30,8 +30,20 @@ cd "$dir"
 
 case "$mode" in
   generate)
-    find . -type f ! -name MANIFEST.sha256 -print0 | LC_ALL=C sort -z \
-      | xargs -0 sha256sum > MANIFEST.sha256
+    # Write to a temp file and rename ATOMICALLY. `> MANIFEST.sha256` truncates
+    # the old manifest the instant the shell opens the redirect, then refills it
+    # over however long the hashing takes -- minutes on a large bundle. Any
+    # concurrent reader then sees a VALID-LOOKING but SHORT manifest, and since
+    # the entries are path-sorted, what is missing is always the TAIL.
+    # 24 Aug 2026: regenerating a2_scarecrow's 81 G manifest took 18:57->19:07;
+    # the Paper-5 read sampled it mid-write and found the last two arms
+    # (sc_scare2_*, sc_scare_* -- the tail in C-sort order) absent, reported as
+    # "full MANIFEST had a gap". Nothing was actually wrong with the bundle.
+    # Both names are excluded from find so the manifest can never hash itself
+    # (the shell creates the redirect target before find runs).
+    find . -type f ! -name MANIFEST.sha256 ! -name MANIFEST.sha256.tmp -print0 \
+      | LC_ALL=C sort -z | xargs -0 sha256sum > MANIFEST.sha256.tmp
+    mv -f MANIFEST.sha256.tmp MANIFEST.sha256
     echo "generate: $(wc -l < MANIFEST.sha256) files -> $dir/MANIFEST.sha256"
     ;;
   verify)
