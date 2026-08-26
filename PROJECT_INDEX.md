@@ -177,7 +177,7 @@ live status board, bands A–D + standing tracks, updated every read).
   `Direction_Review_TheoryMapping_20260724.md` (ledger sweep + λ/βa²/g
   method mapping + SOTA sequencing). `figures/paper1_20260730/` +
   `figures/theory_20260804/`.
-- `paper2_evpi/` — `Paper2_FullRecord_20260824.md` (complete research
+- `paper2_evpi/` — `Paper2_FullRecord_20260825.md` (complete research
   record; entry doc); `plan/` = `EVPI_Plan_Revision_20260712/23/24.md`
   (v4 = 24 Jul current); `theory/` = `EVPI_theory_note_20260702.tex` +
   addendum + memo; `design/` = competence-repair note + estimator
