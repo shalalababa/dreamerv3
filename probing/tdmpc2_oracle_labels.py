@@ -100,7 +100,8 @@ def save_labels(rows, output, meta, extra_arrays=None):
   outputs the shared per-file summary line (it prints mean delta_real,
   an estimand-adjacent number) is suppressed — smoke stdout is for
   crash/dial/determinism sanity only, never estimand values."""
-  wv1_pass = str(meta.get('labeler_version', '')).endswith('_wv1')
+  wv1_pass = str(meta.get('labeler_version', '')).endswith(
+      ('_wv1', '_wfb'))
   if os.path.basename(output).endswith('_smoke.npz') or wv1_pass:
     # review B1 (PREREG_p2_wave1 build review): wv1 rows have no
     # delta_real, so the shared summary line both CRASHES and would be
@@ -109,9 +110,12 @@ def save_labels(rows, output, meta, extra_arrays=None):
     import io
     with contextlib.redirect_stdout(io.StringIO()):
       save_rows(rows, output, meta, extra_arrays=extra_arrays)
-    print(f'wrote {output}: {len(rows)} labeled states '
-          + ('(WAVE-1 pass: estimand summary redacted)' if wv1_pass
-             else '(smoke pass: estimand summary suppressed)'))
+    ver = str(meta.get('labeler_version', ''))
+    kind = ('wfb pass: estimand summary redacted' if ver.endswith('_wfb')
+            else 'WAVE-1 pass: estimand summary redacted'
+            if ver.endswith('_wv1')
+            else 'smoke pass: estimand summary suppressed')
+    print(f'wrote {output}: {len(rows)} labeled states ({kind})')
   else:
     save_rows(rows, output, meta, extra_arrays=extra_arrays)
 
@@ -373,6 +377,50 @@ def _w1_label_state_tm2(enode, oracle, obs, qfull, cands, zlat, snap,
       cost_real_calls=cost_real['policy_calls'])
 
 
+def _wfb_label_state_tm2(enode, oracle, obs, qfull, cands, zlat, snap,
+                        pstate, m_now, horizon, run_id, ep, t, w1, fb):
+  """FB-consumer labeling of ONE state (PREREG_p2_fbconsumer_20260829).
+
+  ADDITIVE wrapper around the W1 pass: the full W1 row is produced
+  unchanged, then three things are added, all CRN-paired by
+  recomputing the SAME per-repeat marks (_w1_seed is deterministic):
+    fb_q       (K, M)  each FB policy's Q(s, cand_m, z) over the SAME
+                       candidate set — the SELECTOR instrument (level
+                       vs selection decomposed per the 22-Aug lesson)
+    fb_acts    (K+1, A) the K FB policies' own eval-mode actions at s,
+                       plus slot K = candidate 0's action VERBATIM —
+                       the in-file CRN witness
+    g_fb_rep   (R, K+1) ground-truth returns of those actions under
+                       the same repeat marks as the candidate panel;
+                       the reader gates g_fb_rep[:, K] ==
+                       g_all_rep[:, 0] BITWISE (end-to-end CRN proof)
+    obs_now    (D,)    the raw flat observation (for the B-diversity
+                       descriptive exhibit)
+  """
+  row = _w1_label_state_tm2(enode, oracle, obs, qfull, cands, zlat,
+                            snap, pstate, m_now, horizon, run_id, ep,
+                            t, w1)
+  seed_base = int(w1['seed_base'])
+  repeats = int(w1['repeats'])
+  obs_v = np.asarray(fb['obs_flat'](obs), np.float32).reshape(-1)
+  cands_eval = np.asarray(row['cands'], np.float32)
+  acts = [np.clip(np.asarray(pol(obs_v), np.float32).reshape(-1),
+                  -1.0, 1.0) for pol in fb['policies']]
+  qs = [np.asarray(qpol(obs_v, cands_eval), np.float32).reshape(-1)
+        for qpol in fb['q_of']]
+  acts.append(cands_eval[0].copy())          # CRN witness slot
+  fb_acts = np.stack(acts).astype(np.float32)
+  g_fb = np.zeros((repeats, fb_acts.shape[0]), np.float32)
+  for r in range(repeats):
+    mark_r = oracle.w1_mark(_w1_seed(seed_base, ep, t, 2 + r))
+    for k in range(fb_acts.shape[0]):
+      g_fb[r, k] = rollout_return(enode, oracle, fb_acts[k], horizon,
+                                  snap, pstate, mark_r)[0]
+  row.update(obs_now=obs_v, fb_acts=fb_acts,
+             fb_q=np.stack(qs).astype(np.float32), g_fb_rep=g_fb)
+  return row
+
+
 W2_ITERS_LOW = 1
 W2_ITERS_HIGH = 12
 
@@ -520,7 +568,7 @@ def _wave1_label_state_tm2(enode, oracle, obs, qfull, cands, zlat, snap,
 
 def label_run(enode, oracle, n_states, horizon, label_every, max_steps,
               run_id, oracle_all=False, ref_stride=5, obs_flat=None,
-              w1=None, w2=None, wv1=None):
+              w1=None, w2=None, wv1=None, fb=None):
   """obs_flat: callable obs->1-D vector for the determinism assert
   (defaults to reward-only comparison when None)."""
   rows = []
@@ -554,7 +602,16 @@ def label_run(enode, oracle, n_states, horizon, label_every, max_steps,
       restore_env(enode, snap)
 
       m_now = plugin_choice(qfull)
-      if wv1 is not None:
+      if fb is not None:
+        # PREREG_p2_fbconsumer_20260829: the W1 row + FB selector/
+        # consumer additions (fb requires the w1 mode; asserted at
+        # mode assembly).
+        rows.append(_wfb_label_state_tm2(
+            enode, oracle, obs, qfull, cands, zlat, snap, pstate,
+            m_now, horizon, run_id, ep, t, w1, fb))
+        restore_env(enode, snap)
+        oracle.set_plan_state(pstate)
+      elif wv1 is not None:
         rows.append(_wave1_label_state_tm2(
             enode, oracle, obs, qfull, cands, zlat, snap, pstate,
             m_now, horizon, run_id, ep, t, wv1))
@@ -754,6 +811,56 @@ def main_real(args):
   if not args.smoke_random_init and obs_dim != int(audit['obs_dim']):
     raise SystemExit(f'obs_dim {obs_dim} != trained {audit["obs_dim"]}')
 
+  fb = None
+  if getattr(args, 'fb_ckpts', None):
+    # PREREG_p2_fbconsumer_20260829 — the wfb path rides the W1 mode.
+    assert w1 is not None, '--fb_ckpts requires the W1 mode (--w1_repeats)'
+    assert wv1 is None and w2 is None, 'fb excludes wave1/w2 modes'
+    base_out = os.path.basename(str(args.output))
+    assert base_out.startswith(('wfb_', 'wfbdup_')) or \
+        base_out.endswith('_smoke.npz'), (
+        'fb-consumer outputs must be named wfb_*/wfbdup_* (orphan-file '
+        f'guard); got {base_out}')
+    # obs-order gate (fb_zeroshot's OBS_KEYS gate, static form): the
+    # labeler's canonical flatten order must EQUAL the FB export's
+    # pinned key order, with no extra (distractor) keys appended —
+    # a scrambled obs corrupts every FB quantity silently.
+    from probing.fb_export import OBS_KEYS as _FB_OBS_KEYS
+    from probing.tdmpc2_compat import obs_keys as _obs_keys
+    assert tuple(_obs_keys(task)) == tuple(_FB_OBS_KEYS), (
+        'obs order mismatch', _obs_keys(task), _FB_OBS_KEYS)
+    assert tuple(getattr(env, '_extra_keys', ()) or ()) == (), (
+        'fb consumer requires NO extra obs keys (e1 cells only); got',
+        env._extra_keys)
+    from probing.fb_consumer import build_fb_consumer
+    assert args.fb_datas and args.fb_seeds, (
+        '--fb_ckpts requires --fb_datas and --fb_seeds (review m13)')
+    ckpts = [c.strip() for c in args.fb_ckpts.split(',') if c.strip()]
+    datas = [c.strip() for c in args.fb_datas.split(',') if c.strip()]
+    zseeds = [int(x) for x in args.fb_seeds.split(',')]
+    assert len(ckpts) == len(datas) == len(zseeds) and ckpts, (
+        'fb_ckpts/fb_datas/fb_seeds must be equal-length lists')
+    want_shas = ([x.strip() for x in args.fb_shas.split(',')]
+                 if getattr(args, 'fb_shas', None) else None)
+    pols, qofs, recs = [], [], []
+    for i, (cpath, dpath, zs) in enumerate(zip(ckpts, datas, zseeds)):
+      pol, qof, rec = build_fb_consumer(
+          cpath, dpath, zs, device=getattr(args, 'fb_device', 'cpu'))
+      # review m3: order/sha checked at STARTUP so a swapped
+      # --fb_ckpts order costs 0 seconds, not 18 passes.
+      if want_shas is not None:
+        assert rec['ckpt_sha256'] == want_shas[i], (
+            'fb ckpt sha/order mismatch at slot', i,
+            rec['ckpt_sha256'], want_shas[i])
+      pols.append(pol)
+      qofs.append(qof)
+      recs.append(rec)
+    fb = dict(policies=pols, q_of=qofs, records=recs,
+              obs_flat=lambda o: flatten_obs(o, task,
+                                             extra=env._extra_keys))
+    w1 = dict(w1, fb=True)
+
+
   cfg = build_cfg(root, task, obs_dim, act_dim, env.max_episode_steps,
                   overrides=dict(seed=args.seed, mpc=True))
   from tdmpc2 import TDMPC2
@@ -771,7 +878,7 @@ def main_real(args):
       env.max_episode_steps, run_id=run_id, oracle_all=args.oracle_all,
       ref_stride=args.ref_stride,
       obs_flat=lambda o: flatten_obs(o, task, extra=env._extra_keys),
-      w1=w1, w2=w2, wv1=wv1)
+      w1=w1, w2=w2, wv1=wv1, fb=fb)
   smoke = bool(args.smoke_random_init)
   save_labels(rows, args.output, meta=dict(
       run_logdir=str(args.run_logdir or ''),
@@ -789,10 +896,14 @@ def main_real(args):
       early_step_realized=(None if smoke else audit['early_step_realized']),
       late_step_realized=(None if smoke else audit['late_step_realized']),
       mass_scale=1.0, behavior_checkpoint='',
-      labeler_version=(LABELER_VERSION + '_w1' if w1 is not None else
+      labeler_version=(LABELER_VERSION + '_wfb' if fb is not None else
+                       LABELER_VERSION + '_w1' if w1 is not None else
                        LABELER_VERSION + '_w2' if w2 is not None else
                        LABELER_VERSION + '_wv1' if wv1 is not None else
                        LABELER_VERSION),
+      **({} if fb is None else dict(fb=dict(
+          records=fb['records'], k=len(fb['policies']),
+          obs_keys_ok=True))),
       **({} if w1 is None else dict(w1=dict(w1),
                                     env_seed=int(env_seed))),
       **({} if wv1 is None else dict(wv1=dict(wv1),
@@ -1169,6 +1280,46 @@ def selfcheck():
         assert needle in str(e), (needle, e)
   legs.append('driver-stage guard refusals')
 
+  # ---- wfb path (PREREG_p2_fbconsumer_20260829): the in-file CRN
+  # witness must be BITWISE (fb slot K = candidate 0's action rolled
+  # through the fb branch path == the candidate panel's own column 0),
+  # the W1 row fields must be unchanged, and the additions must
+  # round-trip through save.
+  env_fb, oracle_fb = _W1ChaosEnv(), _W1Mock()
+  fbfix = dict(
+      policies=[lambda v: np.array([0.25], np.float32)],
+      q_of=[lambda v, c: np.asarray(c, np.float32).reshape(-1) * 2.0],
+      records=[dict(mock=True)],
+      obs_flat=lambda o: np.array([o['pos']], np.float32))
+  rows_fb, _ = label_run(env_fb, oracle_fb, n_states=2, horizon=4,
+                         label_every=7, max_steps=400, run_id='mock',
+                         oracle_all=True,
+                         obs_flat=lambda o: np.array([o['pos']]),
+                         w1=dict(repeats=3, seed_base=41), fb=fbfix)
+  env_pl, oracle_pl = _W1ChaosEnv(), _W1Mock()
+  rows_pl, _ = label_run(env_pl, oracle_pl, n_states=2, horizon=4,
+                         label_every=7, max_steps=400, run_id='mock',
+                         oracle_all=True,
+                         obs_flat=lambda o: np.array([o['pos']]),
+                         w1=dict(repeats=3, seed_base=41))
+  for r, rp in zip(rows_fb, rows_pl):
+    assert r['g_fb_rep'].shape == (3, 2), r['g_fb_rep'].shape
+    assert np.array_equal(r['g_fb_rep'][:, 1], r['g_all_rep'][:, 0]), (
+        'wfb CRN witness NOT bitwise', r['g_fb_rep'][:, 1],
+        r['g_all_rep'][:, 0])
+    assert np.array_equal(r['g_all_rep'], rp['g_all_rep']), (
+        'wfb wrapper changed the W1 candidate panel')
+    assert np.array_equal(r['g_plan_rep'], rp['g_plan_rep']), (
+        'wfb wrapper changed the W1 consumer branch')
+    m = r['cands'].shape[0]
+    assert r['fb_q'].shape == (1, m)
+    assert np.allclose(r['fb_q'][0],
+                       np.asarray(r['cands'], np.float32
+                                  ).reshape(-1) * 2.0)
+    assert r['obs_now'].shape == (1,) and r['fb_acts'].shape == (2, 1)
+  legs.append('wfb: CRN witness bitwise + W1 fields unchanged + '
+              'fb_q/obs_now/fb_acts')
+
   print('SELFCHECK PASS (' + '; '.join(legs) + ')')
   selfcheck_w1_tm2()
   selfcheck_w2_tm2()
@@ -1530,6 +1681,23 @@ def main():
   p.add_argument('--w1_dup_cand', action='store_true',
                  help='W1 duplicate-candidate NULL pass (requires '
                       '--w1_repeats > 0).')
+  p.add_argument('--fb_ckpts', default=None,
+                 help='FB-consumer mode (PREREG_p2_fbconsumer_20260829; '
+                      'rides the W1 path): comma list of fb_ckpt.pt '
+                      'paths. Adds fb_q/fb_acts/g_fb_rep/obs_now.')
+  p.add_argument('--fb_datas', default=None,
+                 help='comma list of fb training exports (z inference '
+                      'per the fb_zeroshot protocol), matched to '
+                      '--fb_ckpts')
+  p.add_argument('--fb_seeds', default=None,
+                 help='comma list of z-inference rng seeds (= fit '
+                      'seeds), matched to --fb_ckpts')
+  p.add_argument('--fb_shas', default=None,
+                 help='comma list of expected fb_ckpt sha256s, matched '
+                      'to --fb_ckpts; asserted at startup (review m3)')
+  p.add_argument('--fb_device', default='cpu',
+                 help='torch device for the FB nets (cpu keeps the '
+                      'GPU free for the TM2 oracle)')
   p.add_argument('--env_seed', type=int, default=None,
                  help='Override the env seed (W1 constraint 6; also '
                       'the W1 mark seed base). REQUIRED for W1.')

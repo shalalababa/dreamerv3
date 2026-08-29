@@ -870,6 +870,7 @@ def save_rows(rows, output, meta, extra_arrays=None):
   # the primaries before the ONE read. Default path byte-identical.
   version = str(meta.get('labeler_version', ''))
   if version.endswith(('_xc1', '_xc2', '_cm1', '_w1', '_w2', '_wv1',
+                       '_wfb',
                        '_wdc', '_w1sb', '_wcem')):
     # '_wv1' added 21 Aug (PREREG_p2_wave1_firstupdate build-review B1):
     # wv1 rows carry no delta_real, so the else-branch both crashes AND
