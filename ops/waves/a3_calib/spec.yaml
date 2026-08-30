@@ -1,0 +1,95 @@
+# A3 CALIBRATION PILOT (Track-A generality leg), 30 Aug 2026.
+#
+# PHASE B of a two-phase pilot. Phase A (the random-policy proprio
+# inventory, `SMOKE=1` in uncfield_se.sbatch) already ran on the
+# execution site and is PINNED into uncfield/se_a3cal_read.py:
+#
+#   dmc_finger_spin  position dim 4  basesd 0.54193702  (all-key 1.35803102)
+#   dmc_hopper_hop   position dim 6  basesd 0.59473863  (all-key 1.27894744)
+#
+# Site reproduction control: the same inventory on dmc_cheetah_run
+# returns 0.09712176 / 1.21378463 against the REGISTERED cheetah pins
+# 0.0976 / 1.215 -- within 0.5%, residual = dm_control version drift.
+#
+# WHY PHASE B NEEDS A GPU AT ALL. The A1 ramp constants are NOT in the
+# random inventory: under a random policy cheetah's position[0] spans
+# only [-0.215, -0.065], while the registered pins span
+# [-0.32203162, +0.19711795]. They come from the 2e4-step p2e smoke
+# RUN's replay -- an agent that locomotes. So each candidate needs one
+# short p2e run whose replay is then scanned.
+#
+# NON-CIRCULARITY: DISTRACTOR_DIM=0. The OU channel whose amplitude
+# ramp is being calibrated must not shape the visitation used to set
+# that ramp. `planted` stays ON (Stage-1 substrate, no gate and no
+# modulation -- it carries no spatial structure and cannot induce the
+# region asymmetry being measured). The frozen reader hard-gates
+# distractor.dim == 0 and REJECTS the run otherwise.
+#
+# WALKER IS EXCLUDED, and this is a finding, not a preference:
+# dmc_walker_* exposes NO `position` key at all (obs are orientations
+# (14), height (), velocity (9)). Hosting A1 there would mean re-keying
+# the manipulation to `height`, turning "avoid a spatial region" into
+# "avoid a posture" -- a change of meaning, not a re-calibration. See
+# the prereg s2.
+#
+# NO PRODUCER DELTA. TASK, STEPS, DISTRACTOR_DIM, SOURCE_KEY and
+# BASESD_PLANTED are all pre-existing env overrides of
+# scripts/uncfield_se.sbatch; nothing in this wave changes it, so there
+# is no stale-producer hazard and no preflight grep to satisfy.
+#
+# Seeds 200/201 are calibration-only and disjoint from every registered
+# arm seed ({0, 10-17, 20-51, 52-67, 76-95, 140-147}); the A3 main wave
+# will draw fresh analysis seeds.
+
+wave_id: a3_calib
+paper: paper5_uncertainty_field
+prereg: prereg/PREREG_a3_calib_20260830.md
+notes: >-
+  2 SE runs (2e4 steps, ~16 min each, <1 GPU-h total) re-deriving the
+  A1 ramp constants for the two position-carrying candidate second
+  environments. Selection between them is made by the frozen reader
+  under a pre-registered rule, NOT by inspection. Short enough to run
+  ahead of phisweep on the same 4-lane box.
+
+defaults:
+  target: vast
+
+kinds:
+  se_run: {per_gpu: 1}
+
+stages:
+
+  - name: pilot
+    kind: se_run
+    on_failure: continue
+    runs:
+      - {run_id: se_a3cal_finger_s200, seed: 200, task: dmc_finger_spin, basesd: "0.54193702"}
+      - {run_id: se_a3cal_hopper_s201, seed: 201, task: dmc_hopper_hop,  basesd: "0.59473863"}
+    logdir: "${run_id}"
+    cmd: >-
+      RUN_ID=${run_id} TASK=${task} SEED=${seed} STEPS=2e4
+      DISTRACTOR_DIM=0
+      SOURCE_KEY=position BASESD_PLANTED=${basesd}
+      GATE_KEY= GATE_INDEX=0 GATE_THRESHOLD=0.0
+      DISTRACTOR_GATE_KEY= DISTRACTOR_GATE_INDEX=0 DISTRACTOR_GATE_THRESHOLD=0.0
+      DISTRACTOR_MOD_KEY= DISTRACTOR_MOD_INDEX=0
+      DISTRACTOR_MOD_LO=0.0 DISTRACTOR_MOD_HI=1.0
+      PENALTY_MIX=False PENALTY_SCALE=0.0
+      PENALTY_GATE_KEY= PENALTY_GATE_INDEX=0 PENALTY_GATE_THRESHOLD=0.0
+      bash scripts/uncfield_se.sbatch
+    outputs:
+      - "${run_id}"
+    done_when:
+      - exists: TRAINING_DONE
+      - exists: config.yaml
+      # the per-env Phase-A basesd actually landed (a stale or default
+      # 0.0976 fails here), and the 2e4 pilot length is on-grid.
+      - file_contains: {file: config.yaml, pattern: 'basesd:\s+0\.(54193702|59473863)\b'}
+      - file_contains: {file: config.yaml, pattern: 'task:\s+dmc_(finger_spin|hopper_hop)\b'}
+      - file_contains: {file: config.yaml, pattern: 'steps:\s+20000\b'}
+      - jsonl_min_lines: {file: scores.jsonl, n: 8}
+
+bundle:
+  prefix: a3_calib
+  include_stages: [pilot]
+  cloud_logs: ["se_a3cal_*.out"]
