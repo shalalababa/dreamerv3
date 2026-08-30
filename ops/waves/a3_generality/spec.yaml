@@ -1,0 +1,103 @@
+# A3 GENERALITY LEG (Track A), drafted 30 Aug 2026 -- NOT YET SUBMITTED.
+#
+# The A1 avoidance design, transplanted to a SECOND environment with a
+# re-calibrated planted quadruple. Environment and ramp come from
+# prereg/PREREG_a3_calib_amend1_20260830.md s6, which selected
+# dmc_finger_spin and SOLVED the ramp endpoints so that BOTH cheetah
+# targets are met at once (m-bar 0.16%, amplitude ratio 0.33%).
+#
+# PIN PROVENANCE (every constant traces to amendment 1 s6):
+#   BASESD_PLANTED 0.54193702    Phase-A random-policy inventory, on-site
+#   BASESD_N       1.35803102    same inventory, all-key mean
+#   MOD_LO   -4.589493315966835  solved under the no-clip gate G6
+#   MOD_HI    7.469163326854745  solved under the no-clip gate G6
+#   GATE_THRESHOLD -0.21752405166625977   pilot visitation median
+#   FLAT_SCALE 0.35948428173662794        realized m-bar of the solved ramp
+#
+# ARM CONSTRUCTION mirrors A1 exactly: hetero carries the mod quadruple
+# at scale 1.0; flat carries an EMPTY mod at scale = FLAT_SCALE, so the
+# two arms are amplitude-matched and differ only in whether the
+# amplitude has a followable spatial gradient. Incentive-immune: the
+# flat arm's constant-m-via-scale is exact.
+#
+# LANE LAYOUT -- BLOCKED, NOT ALTERNATING. `assign_lanes` is i % nlanes.
+# At 4 lanes the declaration order below (4 hetero, then 4 flat) gives
+#   L0 {het_s210, flat_s214}   L1 {het_s211, flat_s215}
+#   L2 {het_s212, flat_s216}   L3 {het_s213, flat_s217}
+# i.e. one run of EACH arm per lane. An alternating (A,B,A,B,...) order
+# would give L0 {A,A} / L1 {B,B} -- ARM-PURE lanes, confounding arm with
+# GPU. `seed` is the FIRST var of every entry because balanced_order
+# classes on the first var only. VERIFY arm x lane after `gen`.
+#
+# SEEDS 210-217 are disjoint from every registered seed
+# ({0, 10-17, 20-51, 52-67, 76-95, 140-147}) and from the calibration
+# pilot's 200/201. Arms are never seed-paired.
+#
+# NO PRODUCER DELTA. Every override is pre-existing in
+# scripts/uncfield_se.sbatch.
+#
+# DISK: ~4.4 G/run measured on this producer (ckpt_snapshots dominate at
+# ~43 MB per SAVE_EVERY=300 s, no rotation) => ~35 G for 8 runs. Instance
+# 3 is 50 G total, so the phisweep runroot MUST be pulled and deleted
+# before this wave starts. They cannot coexist.
+
+wave_id: a3_generality
+paper: paper5_uncertainty_field
+prereg: prereg/PREREG_a3_generality_20260830.md
+notes: >-
+  8 SE runs (dmc_finger_spin, 5e5 steps, ~7.3 h each, ~58 GPU-h) testing
+  whether the A1 avoidance result transplants to a second environment at
+  a dose-matched, contrast-matched manipulation. ALL ON ONE INSTANCE.
+  BLOCKED declaration order IS the registered lane layout.
+
+defaults:
+  target: vast
+
+kinds:
+  se_run: {per_gpu: 1}
+
+stages:
+
+  - name: train
+    kind: se_run
+    on_failure: continue
+    runs:
+      # -- hetero: the solved mod quadruple at scale 1.0 --
+      - {run_id: se_a3gen_het_s210,  seed: 210, modk: position, modlo: "-4.589493315966835", modhi: "7.469163326854745", scale: "1.0"}
+      - {run_id: se_a3gen_het_s211,  seed: 211, modk: position, modlo: "-4.589493315966835", modhi: "7.469163326854745", scale: "1.0"}
+      - {run_id: se_a3gen_het_s212,  seed: 212, modk: position, modlo: "-4.589493315966835", modhi: "7.469163326854745", scale: "1.0"}
+      - {run_id: se_a3gen_het_s213,  seed: 213, modk: position, modlo: "-4.589493315966835", modhi: "7.469163326854745", scale: "1.0"}
+      # -- flat: amplitude-matched comparator, no gradient --
+      - {run_id: se_a3gen_flat_s214, seed: 214, modk: "",       modlo: "0.0",                 modhi: "1.0",               scale: "0.35948428173662794"}
+      - {run_id: se_a3gen_flat_s215, seed: 215, modk: "",       modlo: "0.0",                 modhi: "1.0",               scale: "0.35948428173662794"}
+      - {run_id: se_a3gen_flat_s216, seed: 216, modk: "",       modlo: "0.0",                 modhi: "1.0",               scale: "0.35948428173662794"}
+      - {run_id: se_a3gen_flat_s217, seed: 217, modk: "",       modlo: "0.0",                 modhi: "1.0",               scale: "0.35948428173662794"}
+    logdir: "${run_id}"
+    cmd: >-
+      RUN_ID=${run_id} TASK=dmc_finger_spin SEED=${seed} STEPS=5e5
+      SOURCE_KEY=position BASESD_PLANTED=0.54193702 BASESD_N=1.35803102
+      DISTRACTOR_DIM=8 DISTRACTOR_SCALE=${scale}
+      DISTRACTOR_MOD_KEY=${modk} DISTRACTOR_MOD_INDEX=0
+      DISTRACTOR_MOD_LO=${modlo} DISTRACTOR_MOD_HI=${modhi}
+      GATE_KEY= GATE_INDEX=0 GATE_THRESHOLD=0.0
+      DISTRACTOR_GATE_KEY= DISTRACTOR_GATE_INDEX=0 DISTRACTOR_GATE_THRESHOLD=0.0
+      PENALTY_MIX=False PENALTY_SCALE=0.0
+      PENALTY_GATE_KEY= PENALTY_GATE_INDEX=0 PENALTY_GATE_THRESHOLD=0.0
+      bash scripts/uncfield_se.sbatch
+    outputs:
+      - "${run_id}"
+    done_when:
+      - exists: TRAINING_DONE
+      - exists: config.yaml
+      - file_contains: {file: config.yaml, pattern: 'task:\s+dmc_finger_spin\b'}
+      # the finger Phase-A basesd landed (a cheetah 0.0976 leak fails here)
+      - file_contains: {file: config.yaml, pattern: 'basesd:\s+0\.54193702\b'}
+      # arm identity: hetero carries the solved ramp, flat the solved scale
+      - file_contains: {file: config.yaml, pattern: '(mod_lo:\s+-4\.5894|scale:\s+0\.3594)'}
+      - file_contains: {file: config.yaml, pattern: 'penalty_mix:\s+false'}
+      - jsonl_min_lines: {file: scores.jsonl, n: 400}
+
+bundle:
+  prefix: a3_generality
+  include_stages: [train]
+  cloud_logs: ["se_a3gen_*.out"]
