@@ -191,7 +191,7 @@ live status board, bands A–D + standing tracks, updated every read).
 - `paper4_collusion/` — `Plan_Collusion_Launch_20260724.md`,
   `Design_Collusion_Pilot_20260724.md` (pilot design of record),
   innovation audit, venue scan.
-- `paper5_uncertainty_field/` — `Paper5_FullRecord_20260825.md` (complete
+- `paper5_uncertainty_field/` — `Paper5_FullRecord_20260826.md` (complete
   research record, three parts: NFI / CEI / EVM; entry doc); `ideation/` =
   `Research_Idea_Uncertainty_field_20260727.tex` (external review, 7
   directions, recommends Belief Hydrodynamics) + the Fable companion

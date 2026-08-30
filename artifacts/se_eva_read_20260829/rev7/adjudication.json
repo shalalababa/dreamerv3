@@ -1,0 +1,64 @@
+{
+ "n_cells": 12,
+ "A5": {
+  "scaling": "c_recon",
+  "n_det": 8,
+  "n_gauss": 4,
+  "pooled": "resolved+aligned distractor only (review F3)",
+  "pb_median_det": 0.9369039522551773,
+  "pb_median_gauss": 0.9920256859071248,
+  "mwu_U_forward": 30.0,
+  "mwu_p_forward": 0.00808080808080808,
+  "mwu_U_reverse": 2.0,
+  "mwu_p_reverse": 0.9959595959595959,
+  "arrangements": 495,
+  "bars": {
+   "p_max": 0.05,
+   "u_min": 26
+  },
+  "q_median_det": 1.7306561073010658,
+  "q_median_gauss": 1.6736527452532788,
+  "pb_ordering": true,
+  "q_ordering": false,
+  "agree": false,
+  "verdict": "TIMING-NOT-REPORTABLE",
+  "caveat": "the pb leg is a reproduction bar on a statistic this programme ALREADY declared construct-invalid (rev-3 adjudication); it is interpretable only through the q_hat conjunction, and TIMING-REPLICATES asserts reproduction of an ordering, never that pb measures what it was named for."
+ },
+ "A6": {
+  "n_compared": 12,
+  "n_quantities_checked": 3456,
+  "bitwise_mismatches": 0,
+  "examples": [],
+  "floor_band_violations": [],
+  "resolution_gate_flips": [
+   [
+    "det_s13",
+    "h15",
+    false,
+    true
+   ],
+   [
+    "det_s16",
+    "h15",
+    false,
+    true
+   ],
+   [
+    "det_s17",
+    "h15",
+    true,
+    false
+   ]
+  ],
+  "tolerance": {
+   "bitwise": [
+    "rho",
+    "log10e_pooled"
+   ],
+   "floor_abs": 0.05,
+   "gates": "exact boolean"
+  },
+  "verdict": "A6-INSTRUMENT-ALARM",
+  "note": "an INSTRUMENT ALARM, not a finding: failure means the rev-4/5/6 edits perturbed a rev-3 certified quantity they should not have touched."
+ }
+}

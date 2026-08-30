@@ -1,0 +1,707 @@
+{
+ "instrument": "se_lic_probe",
+ "revision": 2,
+ "run_logdir": "/scratch/midway3/rickybao/dreamerv3_runs/se_cheetah_seed11",
+ "ckpt": "/scratch/midway3/rickybao/dreamerv3_runs/se_cheetah_seed11/ckpt/20260813T090740F437213",
+ "seed": 0,
+ "burn_in": 16,
+ "n_eval_requested": 512,
+ "n_eval": 512,
+ "n_eval_horizon": 512,
+ "window_primary": 16,
+ "window_horizon": 30,
+ "horizons": [
+  1,
+  2,
+  4,
+  8,
+  15
+ ],
+ "horizon_weights": {
+  "1": 0.996996996996997,
+  "2": 1.491004518031545,
+  "4": 2.9641259637206394,
+  "8": 5.369248334268383,
+  "15": 3.345613726502396
+ },
+ "gamma": 0.996996996996997,
+ "ens": 8,
+ "disag_head": "det",
+ "dec_symlog": true,
+ "task": "dmc_cheetah_run",
+ "train_seed": 11,
+ "source_key": "position",
+ "share_universe": [
+  "distractor",
+  "planted_dup0",
+  "planted_dup1",
+  "planted_dup2",
+  "position",
+  "velocity"
+ ],
+ "gate_keys": [
+  "distractor",
+  "planted_dup0",
+  "planted_dup1",
+  "planted_dup2",
+  "position"
+ ],
+ "fire_theta1_bar": 2.36,
+ "action_source": "replay_recorded_PRIMARY",
+ "estimand": "within-anchor ratio of decoder-projected ensemble variance AFTER the model's own decode->re-encode round trip to the STOCH-CARRIED claim before it (h=1) / to the full claim (h>=2); per obs key; oracle-free",
+ "substrate": {
+  "deter_frac": {
+   "distractor": 0.9855908526996503,
+   "planted_const": 0.9510850643155287,
+   "planted_dup0": 0.9823721838482049,
+   "planted_dup1": 0.9827260710873168,
+   "planted_dup2": 0.9826323725571011,
+   "position": 0.9834625489337521,
+   "velocity": 0.9217382832561609
+  },
+  "stoch_frac": {
+   "distractor": 0.0412353254414859,
+   "planted_const": 0.16574602285840276,
+   "planted_dup0": 0.13571697512850467,
+   "planted_dup1": 0.13650601084716457,
+   "planted_dup2": 0.1360269869283667,
+   "position": 0.13638913544254283,
+   "velocity": 0.07076216912007934
+  },
+  "deter_frac_universe_mean": 0.9730870520636977,
+  "claim": {
+   "distractor": 0.012630627369134121,
+   "planted_const": 1.0379908464626975e-09,
+   "planted_dup0": 0.0022535681702485935,
+   "planted_dup1": 0.0022548953902939498,
+   "planted_dup2": 0.0022033642235341697,
+   "position": 0.002250924370120135,
+   "velocity": 0.003982930372332476
+  },
+  "claim_deter": {
+   "distractor": 0.01244863079887644,
+   "planted_const": 9.872175909669047e-10,
+   "planted_dup0": 0.002213842684857914,
+   "planted_dup1": 0.002215944487616475,
+   "planted_dup2": 0.002165097014578816,
+   "position": 0.0022136998184954485,
+   "velocity": 0.003671219403722558
+  },
+  "claim_stoch": {
+   "distractor": 0.0005208280300963844,
+   "planted_const": 1.7204285456461908e-10,
+   "planted_dup0": 0.00030584745531201816,
+   "planted_dup1": 0.00030780677460668726,
+   "planted_dup2": 0.0002997169964331134,
+   "position": 0.0003070016287872355,
+   "velocity": 0.0002818407926004912
+  },
+  "lic1_deter_var_max": 0.0,
+  "note": "deter_frac is the fraction of the deployed obs-space claim carried by Var_e[mu_deter] \u2014 member disagreement about a DETERMINISTIC function of inputs every member already holds (rssm.py:80).  That component is architecturally unlicensable at h=1 and lic1_deter_var_max is its structural witness (must be 0).  REPORT PER ARM."
+ },
+ "share_claim": {
+  "distractor": 0.4938408793395051,
+  "planted_dup0": 0.0881115446067806,
+  "planted_dup1": 0.0881634371608969,
+  "planted_dup2": 0.08614863647346399,
+  "position": 0.08800817550704558,
+  "velocity": 0.15572732691230784
+ },
+ "share_stoch": {
+  "distractor": 0.2574479981319613,
+  "planted_dup0": 0.15118198436682065,
+  "planted_dup1": 0.15215048606213175,
+  "planted_dup2": 0.14815166672874677,
+  "position": 0.1517524983052443,
+  "velocity": 0.13931536640509523
+ },
+ "theta1_raw": 5.611306864326147,
+ "theta1_stoch": 1.6964992405865673,
+ "primary": {
+  "statistic": "theta1_lic(h=1) vs theta1_stoch, on L_stochnorm",
+  "theta1_lic": 15.91020948775628,
+  "theta1_ref": 1.6964992405865673,
+  "ratio": 9.378259127457847,
+  "floor": 0.002331329172595668,
+  "outcome": "ANTI-FIRES"
+ },
+ "legs": {
+  "1": {
+   "h": 1,
+   "license": {
+    "distractor": 0.006216577546003506,
+    "planted_const": 4.085423020312908e-10,
+    "planted_dup0": 0.00039016737729192326,
+    "planted_dup1": 0.00039242150392008275,
+    "planted_dup2": 0.0003818434790979012,
+    "position": 0.0003907288304901001,
+    "velocity": 0.0008469967086047955
+   },
+   "shares": {
+    "distractor": 0.7212865025710274,
+    "planted_dup0": 0.04526967787365925,
+    "planted_dup1": 0.04553121585013356,
+    "planted_dup2": 0.0443038867495731,
+    "position": 0.04533482121188249,
+    "velocity": 0.09827389574372408
+   },
+   "primary_ratio": "L_stochnorm",
+   "ratios": {
+    "distractor": 11.935950422739474,
+    "planted_const": 2.374654286370509,
+    "planted_dup0": 1.2756927367399018,
+    "planted_dup1": 1.2748956043008326,
+    "planted_dup2": 1.2740134314775693,
+    "position": 1.2727255944328912,
+    "velocity": 3.0052310767001416
+   },
+   "ratios_full": {
+    "distractor": 0.4921828001351034,
+    "planted_const": 0.3935895036295705,
+    "planted_dup0": 0.17313315942374333,
+    "planted_dup1": 0.17403091318969188,
+    "planted_dup2": 0.17330020839016297,
+    "position": 0.17358594348029843,
+    "velocity": 0.21265666969437355
+   },
+   "ratios_stochnorm": {
+    "distractor": 11.935950422739474,
+    "planted_const": 2.374654286370509,
+    "planted_dup0": 1.2756927367399018,
+    "planted_dup1": 1.2748956043008326,
+    "planted_dup2": 1.2740134314775693,
+    "position": 1.2727255944328912,
+    "velocity": 3.0052310767001416
+   },
+   "theta1": 15.91020948775628,
+   "theta1_vs_raw": 2.835383961783547,
+   "theta1_vs_stoch": 9.378259127457847,
+   "dup_floor_L": 0.002331329172595668,
+   "dup_floor_share": 0.0014369382404482353,
+   "deflation_guard": {
+    "spread": 9.378259127457845,
+    "dshare": 0.22744562323152234,
+    "floor_used": 0.002331329172595668,
+    "uniform_like": false
+   },
+   "degenerate_keys": [],
+   "license_over_claim_quantiles": {
+    "50": 0.17380842833499516,
+    "90": 0.3524197349147385,
+    "99": 0.47820649361306694
+   },
+   "calibration": {
+    "distractor": 0.2293831855459401,
+    "planted_const": 4.3058131179153945e-05,
+    "planted_dup0": 0.024459587456312618,
+    "planted_dup1": 0.024544510714784442,
+    "planted_dup2": 0.024363825274068693,
+    "position": 0.024494192526406472,
+    "velocity": 0.048208312353559234
+   }
+  },
+  "2": {
+   "h": 2,
+   "license": {
+    "distractor": 0.0055912069354325505,
+    "planted_const": 3.125289412633269e-10,
+    "planted_dup0": 0.0003778071636644032,
+    "planted_dup1": 0.0003799382752528098,
+    "planted_dup2": 0.0003691384215270041,
+    "position": 0.00037809588498381914,
+    "velocity": 0.00047308289095411636
+   },
+   "shares": {
+    "distractor": 0.7386719263179948,
+    "planted_dup0": 0.04991329217170758,
+    "planted_dup1": 0.05019484002360892,
+    "planted_dup2": 0.04876803739445953,
+    "position": 0.04995143605292051,
+    "velocity": 0.06250046803930866
+   },
+   "primary_ratio": "L_full",
+   "ratios": {
+    "distractor": 0.44267056354587475,
+    "planted_const": 0.30109026715252285,
+    "planted_dup0": 0.1676484291232809,
+    "planted_dup1": 0.1684948565189451,
+    "planted_dup2": 0.1675339998644938,
+    "position": 0.1679736067558945,
+    "velocity": 0.11877759506929832
+   },
+   "ratios_full": {
+    "distractor": 0.44267056354587475,
+    "planted_const": 0.30109026715252285,
+    "planted_dup0": 0.1676484291232809,
+    "planted_dup1": 0.1684948565189451,
+    "planted_dup2": 0.1675339998644938,
+    "position": 0.1679736067558945,
+    "velocity": 0.11877759506929832
+   },
+   "ratios_stochnorm": {
+    "distractor": 10.735226624415438,
+    "planted_const": 1.8165761202592776,
+    "planted_dup0": 1.2352797353797613,
+    "planted_dup1": 1.2343401984517448,
+    "planted_dup2": 1.2316232510003255,
+    "position": 1.231576153121503,
+    "velocity": 1.678546553141122
+   },
+   "theta1": 14.787801606652847,
+   "theta1_vs_raw": 2.6353578523153343,
+   "theta1_vs_stoch": 8.716656779368755,
+   "dup_floor_L": 0.0019358852792044313,
+   "dup_floor_share": 0.000763619311615431,
+   "deflation_guard": {
+    "spread": 3.726886062035587,
+    "dshare": 0.24483104697848973,
+    "floor_used": 0.0019358852792044313,
+    "uniform_like": false
+   },
+   "degenerate_keys": [],
+   "license_over_claim_quantiles": {
+    "50": 0.1678110179395877,
+    "90": 0.30558271003240994,
+    "99": 0.4289617781945283
+   },
+   "calibration": {
+    "distractor": 0.2380425121899806,
+    "planted_const": 4.434631741507089e-05,
+    "planted_dup0": 0.024355977729835877,
+    "planted_dup1": 0.024418715068932725,
+    "planted_dup2": 0.024272321078137035,
+    "position": 0.024410758344459545,
+    "velocity": 0.04819096603394078
+   }
+  },
+  "4": {
+   "h": 4,
+   "license": {
+    "distractor": 0.0035515988876790115,
+    "planted_const": 2.4718552185756006e-10,
+    "planted_dup0": 0.00036842528563142435,
+    "planted_dup1": 0.000369505162401422,
+    "planted_dup2": 0.00035928609570834143,
+    "position": 0.00036942198480976356,
+    "velocity": 0.0003283152628452607
+   },
+   "shares": {
+    "distractor": 0.664278293110042,
+    "planted_dup0": 0.06890894147051586,
+    "planted_dup1": 0.06911091774098711,
+    "planted_dup2": 0.06719958022942103,
+    "position": 0.06909536050314599,
+    "velocity": 0.06140690694588806
+   },
+   "primary_ratio": "L_full",
+   "ratios": {
+    "distractor": 0.28118942819563897,
+    "planted_const": 0.2381384409120059,
+    "planted_dup0": 0.16348530765358785,
+    "planted_dup1": 0.16386798429405325,
+    "planted_dup2": 0.16306250771924166,
+    "position": 0.1641201231430299,
+    "velocity": 0.08243058054087785
+   },
+   "ratios_full": {
+    "distractor": 0.28118942819563897,
+    "planted_const": 0.2381384409120059,
+    "planted_dup0": 0.16348530765358785,
+    "planted_dup1": 0.16386798429405325,
+    "planted_dup2": 0.16306250771924166,
+    "position": 0.1641201231430299,
+    "velocity": 0.08243058054087785
+   },
+   "ratios_stochnorm": {
+    "distractor": 6.819139298285757,
+    "planted_const": 1.4367671501562855,
+    "planted_dup0": 1.2046047113766756,
+    "planted_dup1": 1.2004451912196292,
+    "planted_dup2": 1.1987511552035783,
+    "position": 1.2033225565255483,
+    "velocity": 1.1648961806272202
+   },
+   "theta1": 9.613934832568052,
+   "theta1_vs_raw": 1.7133147526984474,
+   "theta1_vs_stoch": 5.666925514946897,
+   "dup_floor_L": 0.003867993011977054,
+   "dup_floor_share": 0.0026979963817055424,
+   "deflation_guard": {
+    "spread": 3.4112270755656677,
+    "dshare": 0.17043741377053695,
+    "floor_used": 0.003867993011977054,
+    "uniform_like": false
+   },
+   "degenerate_keys": [],
+   "license_over_claim_quantiles": {
+    "50": 0.16367664597382053,
+    "90": 0.22265477566933445,
+    "99": 0.27533596294300855
+   },
+   "calibration": {
+    "distractor": 0.2389960460309676,
+    "planted_const": 4.4377755866481173e-05,
+    "planted_dup0": 0.024125877622129963,
+    "planted_dup1": 0.024183377774603165,
+    "planted_dup2": 0.024013735984736866,
+    "position": 0.02421100866610537,
+    "velocity": 0.04802409819667219
+   }
+  },
+  "8": {
+   "h": 8,
+   "license": {
+    "distractor": 0.001813641921605994,
+    "planted_const": 1.9635843341179522e-10,
+    "planted_dup0": 0.0003544438757737544,
+    "planted_dup1": 0.0003566566763441266,
+    "planted_dup2": 0.0003463622632582065,
+    "position": 0.00035592247857240506,
+    "velocity": 0.0003029794664252724
+   },
+   "shares": {
+    "distractor": 0.513778608653748,
+    "planted_dup0": 0.10040883989912708,
+    "planted_dup1": 0.10103569439820445,
+    "planted_dup2": 0.0981194355881371,
+    "position": 0.1008277067545919,
+    "velocity": 0.08582971470619151
+   },
+   "primary_ratio": "L_full",
+   "ratios": {
+    "distractor": 0.14359080262616647,
+    "planted_const": 0.18917164258331617,
+    "planted_dup0": 0.15728118654367368,
+    "planted_dup1": 0.15816994343920876,
+    "planted_dup2": 0.1571970079021459,
+    "position": 0.15812280647768232,
+    "velocity": 0.07606948605728255
+   },
+   "ratios_full": {
+    "distractor": 0.14359080262616647,
+    "planted_const": 0.18917164258331617,
+    "planted_dup0": 0.15728118654367368,
+    "planted_dup1": 0.15816994343920876,
+    "planted_dup2": 0.1571970079021459,
+    "position": 0.15812280647768232,
+    "velocity": 0.07606948605728255
+   },
+   "ratios_stochnorm": {
+    "distractor": 3.4822279462769345,
+    "planted_const": 1.141334430358706,
+    "planted_dup0": 1.158891040673068,
+    "planted_dup1": 1.1587031403056651,
+    "planted_dup2": 1.1556310365451787,
+    "position": 1.1593504567986306,
+    "velocity": 1.0750021798822615
+   },
+   "theta1": 5.095609383482774,
+   "theta1_vs_raw": 0.9080967244686052,
+   "theta1_vs_stoch": 3.0036025136804416,
+   "dup_floor_L": 0.005322571441504382,
+   "dup_floor_share": 0.00415428327140597,
+   "deflation_guard": {
+    "spread": 2.0792823987282123,
+    "dshare": 0.06989761220611633,
+    "floor_used": 0.005322571441504382,
+    "uniform_like": false
+   },
+   "degenerate_keys": [],
+   "license_over_claim_quantiles": {
+    "50": 0.1572390972229098,
+    "90": 0.15814637495844552,
+    "99": 0.15816758659113245
+   },
+   "calibration": {
+    "distractor": 0.24161586862953555,
+    "planted_const": 4.3845842673428376e-05,
+    "planted_dup0": 0.02417360253838332,
+    "planted_dup1": 0.02420600027436938,
+    "planted_dup2": 0.02405583359720285,
+    "position": 0.024196441704009565,
+    "velocity": 0.04784917655536885
+   }
+  },
+  "15": {
+   "h": 15,
+   "license": {
+    "distractor": 0.0008859634574662702,
+    "planted_const": 1.7738808971140867e-10,
+    "planted_dup0": 0.00033627277498266244,
+    "planted_dup1": 0.00033780410993248866,
+    "planted_dup2": 0.0003282317601061615,
+    "position": 0.00033666844372449945,
+    "velocity": 0.0003446857813551447
+   },
+   "shares": {
+    "distractor": 0.34478299352772,
+    "planted_dup0": 0.13086446514619346,
+    "planted_dup1": 0.1314604019691462,
+    "planted_dup2": 0.1277352105965198,
+    "position": 0.1310184442433066,
+    "velocity": 0.13413848451711388
+   },
+   "primary_ratio": "L_full",
+   "ratios": {
+    "distractor": 0.07014405789781497,
+    "planted_const": 0.17089562043434023,
+    "planted_dup0": 0.14921792889254726,
+    "planted_dup1": 0.1498092157119769,
+    "planted_dup2": 0.14896845315010232,
+    "position": 0.14956897183823684,
+    "velocity": 0.08654074993364509
+   },
+   "ratios_full": {
+    "distractor": 0.07014405789781497,
+    "planted_const": 0.17089562043434023,
+    "planted_dup0": 0.14921792889254726,
+    "planted_dup1": 0.1498092157119769,
+    "planted_dup2": 0.14896845315010232,
+    "position": 0.14956897183823684,
+    "velocity": 0.08654074993364509
+   },
+   "ratios_stochnorm": {
+    "distractor": 1.7010671589666821,
+    "planted_const": 1.0310692074966818,
+    "planted_dup0": 1.0994787406016018,
+    "planted_dup1": 1.0974550848145943,
+    "planted_dup2": 1.0951389611279907,
+    "position": 1.0966340636512526,
+    "velocity": 1.222980457068669
+   },
+   "theta1": 2.631560735734611,
+   "theta1_vs_raw": 0.4689746612263792,
+   "theta1_vs_stoch": 1.5511711840346858,
+   "dup_floor_L": 0.0023470305463438043,
+   "dup_floor_share": 0.0011752474852105854,
+   "deflation_guard": {
+    "spread": 2.135736371714011,
+    "dshare": 0.14905788581178508,
+    "floor_used": 0.0023470305463438043,
+    "uniform_like": false
+   },
+   "degenerate_keys": [],
+   "license_over_claim_quantiles": {
+    "50": 0.1490931910213248,
+    "90": 0.14968909377510686,
+    "99": 0.1497972035182899
+   },
+   "calibration": {
+    "distractor": 0.2421033682275547,
+    "planted_const": 4.471563982911292e-05,
+    "planted_dup0": 0.024294070597800126,
+    "planted_dup1": 0.024328262338422862,
+    "planted_dup2": 0.02419071178798984,
+    "position": 0.024345443556397194,
+    "velocity": 0.047593341392447246
+   }
+  }
+ },
+ "horizon_summed": {
+  "license": {
+   "distractor": 0.037763795793655366,
+   "planted_const": 3.2537557542768605e-09,
+   "planted_dup0": 0.005072502847706755,
+   "planted_dup1": 0.005098132923968745,
+   "planted_dup2": 0.00495389478808997,
+   "position": 0.0050857101819510656,
+   "velocity": 0.005302947174500131
+  },
+  "shares": {
+   "distractor": 0.5968014525914218,
+   "planted_dup0": 0.08016347414668848,
+   "planted_dup1": 0.08056851994311116,
+   "planted_dup2": 0.07828904757539981,
+   "position": 0.0803721967100911,
+   "velocity": 0.0838053090332876
+  },
+  "theta1": 7.42547145680405
+ },
+ "persistence": {
+  "measured": {
+   "1": {
+    "distractor": 1.0,
+    "planted_dup0": 1.0,
+    "planted_dup1": 1.0,
+    "planted_dup2": 1.0,
+    "position": 1.0,
+    "velocity": 1.0
+   },
+   "2": {
+    "distractor": 0.8994027491906714,
+    "planted_dup0": 0.9683207404132298,
+    "planted_dup1": 0.9681892339166632,
+    "planted_dup2": 0.9667270537108225,
+    "position": 0.9676682534779039,
+    "velocity": 0.558541593075841
+   },
+   "4": {
+    "distractor": 0.5713109603148524,
+    "planted_dup0": 0.9442749626803588,
+    "planted_dup1": 0.941602737643736,
+    "planted_dup2": 0.9409250527392763,
+    "position": 0.9454689697363492,
+    "velocity": 0.38762283195418057
+   },
+   "8": {
+    "distractor": 0.2917428292633368,
+    "planted_dup0": 0.9084405729507197,
+    "planted_dup1": 0.9088611933375604,
+    "planted_dup2": 0.9070791625837934,
+    "position": 0.9109194172489482,
+    "velocity": 0.35771032324830576
+   },
+   "15": {
+    "distractor": 0.14251627216262033,
+    "planted_dup0": 0.8618679944916643,
+    "planted_dup1": 0.8608195691571554,
+    "planted_dup2": 0.8595976573479885,
+    "position": 0.8616421862246728,
+    "velocity": 0.4069505558326477
+   }
+  },
+  "predicted_ar1": {
+   "1": 1.0,
+   "2": 0.81,
+   "4": 0.531441,
+   "8": 0.2287679245496101,
+   "15": 0.05233476330273609
+  },
+  "note": "AR(1) coefficient 0.9 from the ENV (distractor.py:60-63); variance responsiveness decays as coef^(2(h-1)); at h=15 that is 0.0523"
+ },
+ "transplant_null": {
+  "shares": {
+   "distractor": 0.7332440486877132,
+   "planted_dup0": 0.045641912016337445,
+   "planted_dup1": 0.04588506318931605,
+   "planted_dup2": 0.04473776919038161,
+   "position": 0.045656062653649104,
+   "velocity": 0.08483514426260262
+  },
+  "L_null": {
+   "distractor": 12.10612770767548,
+   "planted_const": 2.3701847552330304,
+   "planted_dup0": 1.268129946857277,
+   "planted_dup1": 1.2673121184054827,
+   "planted_dup2": 1.267650813625555,
+   "position": 1.2659387682694792,
+   "velocity": 2.8504495944171
+  },
+  "claim_scale_match": {
+   "distractor": 0.9923005897052786,
+   "planted_const": 0.9909092206872431,
+   "planted_dup0": 0.9814757027131545,
+   "planted_dup1": 0.9810898502906023,
+   "planted_dup2": 0.9806596173546602,
+   "position": 0.9819687285344293,
+   "velocity": 0.9862947577600578
+  },
+  "null_scale_ok": true,
+  "gate": {
+   "tau": 0.002331329172595668,
+   "per_key_delta": {
+    "distractor": 0.01425753952628667,
+    "planted_dup0": 0.0059283788837363825,
+    "planted_dup1": 0.005948319117084666,
+    "planted_dup2": 0.004994152883172503,
+    "position": 0.005332513303023658
+   },
+   "gate_keys": [
+    "distractor",
+    "planted_dup0",
+    "planted_dup1",
+    "planted_dup2",
+    "position"
+   ],
+   "scale_ok": true,
+   "passed": true
+  },
+  "note": "member deviations transplanted across anchors; if L_k were a state-independent decode->encode fidelity map the null would REPRODUCE the license, so the gate requires a divergence above the in-run L-floor on every fire-bearing key"
+ },
+ "l2_obs_space_aleatoric": null,
+ "gates": {
+  "dup_floor_L_h1": 0.002331329172595668,
+  "dup_floor_share_claim": 0.0011745397417850406,
+  "floor_diagnostic_share": 4.05840720796395e-08,
+  "share_floor_bound_keys": [
+   "planted_const"
+  ],
+  "norm_floor": 0.04590473481837441,
+  "calibration_anchor": {
+   "distractor": 0.2032464006009901,
+   "planted_const": 4.015533938058728e-05,
+   "planted_dup0": 0.02355996924008816,
+   "planted_dup1": 0.023592694592114608,
+   "planted_dup2": 0.023499017414138793,
+   "position": 0.02367939366064142,
+   "velocity": 0.04239421918001788
+  },
+  "roundtrip_err": {
+   "distractor": 0.06277618185174627,
+   "planted_const": 4.0943724572575405e-05,
+   "planted_dup0": 0.05632236662669587,
+   "planted_dup1": 0.05635838207543613,
+   "planted_dup2": 0.05600754189913298,
+   "position": 0.05636186804566987,
+   "velocity": 0.09309573413913903
+  },
+  "base_intrinsic_mean": 0.00016639715698829605,
+  "min_frac": 0.9,
+  "cross_instrument_tolerance": 0.05
+ },
+ "provenance": {
+  "status": "compared",
+  "base_tolerance": 0.05,
+  "n_boot": 2000,
+  "ckpt": "20260813T090740F437213",
+  "skipped": {},
+  "rel_se": {
+   "distractor": 0.013582717598273177,
+   "planted_dup0": 0.0006266311683045427,
+   "planted_dup1": 0.0006773595106894769,
+   "planted_dup2": 0.0006835684873703953,
+   "position": 0.0,
+   "velocity": 0.01627699866372942
+  },
+  "refs": {
+   "se_probe": {
+    "per_key": {
+     "distractor": {
+      "dev": 0.0002253310849121354,
+      "tol": 0.07716543519654635,
+      "pass_": true
+     },
+     "planted_dup0": {
+      "dev": 7.045304692595165e-06,
+      "tol": 0.05125326233660909,
+      "pass_": true
+     },
+     "planted_dup1": {
+      "dev": 3.293955991188672e-05,
+      "tol": 0.051354719021378954,
+      "pass_": true
+     },
+     "planted_dup2": {
+      "dev": 7.924926833178469e-05,
+      "tol": 0.051367136974740796,
+      "pass_": true
+     },
+     "position": {
+      "dev": 0.0,
+      "tol": 0.05,
+      "pass_": true
+     },
+     "velocity": {
+      "dev": 0.00020359697889346442,
+      "tol": 0.08255399732745884,
+      "pass_": true
+     }
+    },
+    "max_dev": 0.0002253310849121354,
+    "theta1_ref": 5.610042747307492,
+    "theta1_here": 5.611306864326147,
+    "pass_": true
+   }
+  }
+ }
+}

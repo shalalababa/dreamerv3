@@ -1,0 +1,855 @@
+{
+ "instrument": "se_lic_collate",
+ "n_runs": 8,
+ "expected_n": 8,
+ "n_match": 4,
+ "arm": "det",
+ "share_universe": [
+  "distractor",
+  "planted_dup0",
+  "planted_dup1",
+  "planted_dup2",
+  "position",
+  "velocity"
+ ],
+ "horizons": [
+  1,
+  2,
+  4,
+  8,
+  15
+ ],
+ "min_license": {
+  "1": {
+   "n_runs": 8,
+   "n_match": 4,
+   "n_subsets": 70,
+   "B_matched": {
+    "distractor": 9.629836907985668,
+    "planted_dup0": 1.2520346900241364,
+    "planted_dup1": 1.2552775719894054,
+    "planted_dup2": 1.2567449627395584,
+    "position": 1.2541386080909451,
+    "velocity": 2.391264626821987
+   },
+   "B_all_runs": {
+    "distractor": 9.445765654611684,
+    "planted_dup0": 1.2305062980981742,
+    "planted_dup1": 1.2366727667580317,
+    "planted_dup2": 1.238690311617228,
+    "position": 1.2354243363785353,
+    "velocity": 2.2790380863765827
+   },
+   "argmin": {
+    "distractor": "/scratch/midway3/rickybao/dreamerv3_runs/se_cheetah_seed16",
+    "planted_dup0": "/scratch/midway3/rickybao/dreamerv3_runs/se_cheetah_seed17",
+    "planted_dup1": "/scratch/midway3/rickybao/dreamerv3_runs/se_cheetah_seed17",
+    "planted_dup2": "/scratch/midway3/rickybao/dreamerv3_runs/se_cheetah_seed17",
+    "position": "/scratch/midway3/rickybao/dreamerv3_runs/se_cheetah_seed17",
+    "velocity": "/scratch/midway3/rickybao/dreamerv3_runs/se_cheetah_seed17"
+   },
+   "min_vs_second_gap": {
+    "distractor": 0.15784400752960082,
+    "planted_dup0": 0.03940447849965145,
+    "planted_dup1": 0.03445790553107142,
+    "planted_dup2": 0.032294664613292,
+    "position": 0.03469651453900058,
+    "velocity": 0.15897477718281783
+   },
+   "per_run": [
+    {
+     "run": "/scratch/midway3/rickybao/dreamerv3_runs/se_cheetah_seed10",
+     "n_runs": 8,
+     "n_match": 4,
+     "shares": {
+      "distractor": 0.8278305153622454,
+      "planted_dup0": 0.022808822182119853,
+      "planted_dup1": 0.022859058432086517,
+      "planted_dup2": 0.022040162065870204,
+      "position": 0.022866485770209975,
+      "velocity": 0.08159495618746818
+     },
+     "theta1": 36.20278706930679,
+     "theta1_raw": 4.714857937673067
+    },
+    {
+     "run": "/scratch/midway3/rickybao/dreamerv3_runs/se_cheetah_seed11",
+     "n_runs": 8,
+     "n_match": 4,
+     "shares": {
+      "distractor": 0.8541540963587981,
+      "planted_dup0": 0.01981433199158955,
+      "planted_dup1": 0.01987735259520436,
+      "planted_dup2": 0.019445800236118863,
+      "position": 0.019824343499531175,
+      "velocity": 0.06688407531875781
+     },
+     "theta1": 43.08612269450426,
+     "theta1_raw": 5.611306864326147
+    },
+    {
+     "run": "/scratch/midway3/rickybao/dreamerv3_runs/se_cheetah_seed12",
+     "n_runs": 8,
+     "n_match": 4,
+     "shares": {
+      "distractor": 0.836045882788004,
+      "planted_dup0": 0.020820631471564304,
+      "planted_dup1": 0.020881566363931358,
+      "planted_dup2": 0.020455252459841797,
+      "position": 0.020859688188574112,
+      "velocity": 0.08093697872808449
+     },
+     "theta1": 40.07950048102578,
+     "theta1_raw": 5.219740419961934
+    },
+    {
+     "run": "/scratch/midway3/rickybao/dreamerv3_runs/se_cheetah_seed13",
+     "n_runs": 8,
+     "n_match": 4,
+     "shares": {
+      "distractor": 0.837453070550571,
+      "planted_dup0": 0.02026021309173375,
+      "planted_dup1": 0.020341286431749175,
+      "planted_dup2": 0.019884151780308078,
+      "position": 0.020299983860125652,
+      "velocity": 0.08176129428551221
+     },
+     "theta1": 41.25387863955609,
+     "theta1_raw": 5.372685168994
+    },
+    {
+     "run": "/scratch/midway3/rickybao/dreamerv3_runs/se_cheetah_seed14",
+     "n_runs": 8,
+     "n_match": 4,
+     "shares": {
+      "distractor": 0.8428674492895162,
+      "planted_dup0": 0.019915158547637347,
+      "planted_dup1": 0.019998978770525144,
+      "planted_dup2": 0.019280645165954978,
+      "position": 0.019976299415110733,
+      "velocity": 0.07796146881125557
+     },
+     "theta1": 42.19337284521994,
+     "theta1_raw": 5.495039884516098
+    },
+    {
+     "run": "/scratch/midway3/rickybao/dreamerv3_runs/se_cheetah_seed15",
+     "n_runs": 8,
+     "n_match": 4,
+     "shares": {
+      "distractor": 0.8384570304897128,
+      "planted_dup0": 0.0193448540700704,
+      "planted_dup1": 0.019367460609946565,
+      "planted_dup2": 0.01906481749641622,
+      "position": 0.019359932986172827,
+      "velocity": 0.08440590434768108
+     },
+     "theta1": 43.30888082559749,
+     "theta1_raw": 5.64031769546894
+    },
+    {
+     "run": "/scratch/midway3/rickybao/dreamerv3_runs/se_cheetah_seed16",
+     "n_runs": 8,
+     "n_match": 4,
+     "shares": {
+      "distractor": 0.8105509293259976,
+      "planted_dup0": 0.021768143107446684,
+      "planted_dup1": 0.021858529080347203,
+      "planted_dup2": 0.021256783098417567,
+      "position": 0.02185608387747099,
+      "velocity": 0.10270953151031999
+     },
+     "theta1": 37.085826256436754,
+     "theta1_raw": 4.829860252625934
+    },
+    {
+     "run": "/scratch/midway3/rickybao/dreamerv3_runs/se_cheetah_seed17",
+     "n_runs": 8,
+     "n_match": 4,
+     "shares": {
+      "distractor": 0.8332697610250791,
+      "planted_dup0": 0.020938881258168947,
+      "planted_dup1": 0.020987103250799805,
+      "planted_dup2": 0.020453955744932428,
+      "position": 0.02095912329926417,
+      "velocity": 0.08339117542175552
+     },
+     "theta1": 39.75689961489627,
+     "theta1_raw": 5.177726603416287
+    }
+   ],
+   "refusal_certificate": {
+    "n_runs": 8,
+    "n_match": 4,
+    "distractor_min_license": 9.629836907985668,
+    "distractor_min_vs_second_gap": 0.15784400752960082,
+    "note": "corrdef: the min-license LEVEL, not the spread, splits safe from leaking; bands must be re-derived on this family, never transported.  Compare arms only at equal n_match."
+   }
+  },
+  "2": {
+   "n_runs": 8,
+   "n_match": 4,
+   "n_subsets": 70,
+   "B_matched": {
+    "distractor": 0.4083109123773428,
+    "planted_dup0": 0.17012115039826167,
+    "planted_dup1": 0.17016528211287124,
+    "planted_dup2": 0.16998358441583847,
+    "position": 0.16993161969598047,
+    "velocity": 0.08737806054936606
+   },
+   "B_all_runs": {
+    "distractor": 0.4007837406719782,
+    "planted_dup0": 0.16519957867259588,
+    "planted_dup1": 0.1647554763680328,
+    "planted_dup2": 0.16536995792012713,
+    "position": 0.1646718927144336,
+    "velocity": 0.0850345854473489
+   },
+   "argmin": {
+    "distractor": "/scratch/midway3/rickybao/dreamerv3_runs/se_cheetah_seed13",
+    "planted_dup0": "/scratch/midway3/rickybao/dreamerv3_runs/se_cheetah_seed10",
+    "planted_dup1": "/scratch/midway3/rickybao/dreamerv3_runs/se_cheetah_seed10",
+    "planted_dup2": "/scratch/midway3/rickybao/dreamerv3_runs/se_cheetah_seed10",
+    "position": "/scratch/midway3/rickybao/dreamerv3_runs/se_cheetah_seed10",
+    "velocity": "/scratch/midway3/rickybao/dreamerv3_runs/se_cheetah_seed15"
+   },
+   "min_vs_second_gap": {
+    "distractor": 0.010264583626190482,
+    "planted_dup0": 0.0024488504506850195,
+    "planted_dup1": 0.003739380150912297,
+    "planted_dup2": 0.0021640419443666736,
+    "position": 0.0033017140414609014,
+    "velocity": 0.003187356390577198
+   },
+   "per_run": [
+    {
+     "run": "/scratch/midway3/rickybao/dreamerv3_runs/se_cheetah_seed10",
+     "n_runs": 8,
+     "n_match": 4,
+     "shares": {
+      "distractor": 0.6970003417076971,
+      "planted_dup0": 0.06154096657748868,
+      "planted_dup1": 0.06153313345872734,
+      "planted_dup2": 0.05919623944017008,
+      "position": 0.0615244286620482,
+      "velocity": 0.0592048901538687
+     },
+     "theta1": 11.328838915941805,
+     "theta1_raw": 4.714857937673067
+    },
+    {
+     "run": "/scratch/midway3/rickybao/dreamerv3_runs/se_cheetah_seed11",
+     "n_runs": 8,
+     "n_match": 4,
+     "shares": {
+      "distractor": 0.7336681712523558,
+      "planted_dup0": 0.054539704392588845,
+      "planted_dup1": 0.0545859817588344,
+      "planted_dup2": 0.053281573913528536,
+      "position": 0.05441502950082108,
+      "velocity": 0.049509539181871426
+     },
+     "theta1": 13.482822264045366,
+     "theta1_raw": 5.611306864326147
+    },
+    {
+     "run": "/scratch/midway3/rickybao/dreamerv3_runs/se_cheetah_seed12",
+     "n_runs": 8,
+     "n_match": 4,
+     "shares": {
+      "distractor": 0.7138427561827092,
+      "planted_dup0": 0.056968690319809036,
+      "planted_dup1": 0.057002598123024203,
+      "planted_dup2": 0.055714092776423745,
+      "position": 0.05691632635693141,
+      "velocity": 0.05955553624110254
+     },
+     "theta1": 12.541968216748334,
+     "theta1_raw": 5.219740419961934
+    },
+    {
+     "run": "/scratch/midway3/rickybao/dreamerv3_runs/se_cheetah_seed13",
+     "n_runs": 8,
+     "n_match": 4,
+     "shares": {
+      "distractor": 0.7181198813818946,
+      "planted_dup0": 0.05567373705430828,
+      "planted_dup1": 0.05576658114690595,
+      "planted_dup2": 0.05439153502303947,
+      "position": 0.055627400828480666,
+      "velocity": 0.06042086456537093
+     },
+     "theta1": 12.909463154608233,
+     "theta1_raw": 5.372685168994
+    },
+    {
+     "run": "/scratch/midway3/rickybao/dreamerv3_runs/se_cheetah_seed14",
+     "n_runs": 8,
+     "n_match": 4,
+     "shares": {
+      "distractor": 0.7246392975794156,
+      "planted_dup0": 0.05486763771302388,
+      "planted_dup1": 0.05497048305416421,
+      "planted_dup2": 0.05287762457742348,
+      "position": 0.05488254515215217,
+      "velocity": 0.05776241192382061
+     },
+     "theta1": 13.203456500978245,
+     "theta1_raw": 5.495039884516098
+    },
+    {
+     "run": "/scratch/midway3/rickybao/dreamerv3_runs/se_cheetah_seed15",
+     "n_runs": 8,
+     "n_match": 4,
+     "shares": {
+      "distractor": 0.7241855816065432,
+      "planted_dup0": 0.05354321132404176,
+      "planted_dup1": 0.05348116736603263,
+      "planted_dup2": 0.05252783366905242,
+      "position": 0.05343545567157953,
+      "velocity": 0.06282675036275041
+     },
+     "theta1": 13.552529355367929,
+     "theta1_raw": 5.64031769546894
+    },
+    {
+     "run": "/scratch/midway3/rickybao/dreamerv3_runs/se_cheetah_seed16",
+     "n_runs": 8,
+     "n_match": 4,
+     "shares": {
+      "distractor": 0.6890331622471224,
+      "planted_dup0": 0.05929950855554741,
+      "planted_dup1": 0.059407309475096225,
+      "planted_dup2": 0.05764280845401666,
+      "position": 0.05937296935928027,
+      "velocity": 0.07524424190893694
+     },
+     "theta1": 11.60516594812052,
+     "theta1_raw": 4.829860252625934
+    },
+    {
+     "run": "/scratch/midway3/rickybao/dreamerv3_runs/se_cheetah_seed17",
+     "n_runs": 8,
+     "n_match": 4,
+     "shares": {
+      "distractor": 0.7112484095064115,
+      "planted_dup0": 0.057274202995331466,
+      "planted_dup1": 0.057272655408043084,
+      "planted_dup2": 0.05569302060091712,
+      "position": 0.05716963287775561,
+      "velocity": 0.06134207861154095
+     },
+     "theta1": 12.441017612046874,
+     "theta1_raw": 5.177726603416287
+    }
+   ],
+   "refusal_certificate": {
+    "n_runs": 8,
+    "n_match": 4,
+    "distractor_min_license": 0.4083109123773428,
+    "distractor_min_vs_second_gap": 0.010264583626190482,
+    "note": "corrdef: the min-license LEVEL, not the spread, splits safe from leaking; bands must be re-derived on this family, never transported.  Compare arms only at equal n_match."
+   }
+  },
+  "4": {
+   "n_runs": 8,
+   "n_match": 4,
+   "n_subsets": 70,
+   "B_matched": {
+    "distractor": 0.26877981767683445,
+    "planted_dup0": 0.16505065614756378,
+    "planted_dup1": 0.16502462666255208,
+    "planted_dup2": 0.16485899190825082,
+    "position": 0.16498374754529807,
+    "velocity": 0.06579268270476753
+   },
+   "B_all_runs": {
+    "distractor": 0.2663773447866679,
+    "planted_dup0": 0.15994711734060788,
+    "planted_dup1": 0.15979913378279484,
+    "planted_dup2": 0.16035655675194277,
+    "position": 0.15974219601548906,
+    "velocity": 0.061497087999647475
+   },
+   "argmin": {
+    "distractor": "/scratch/midway3/rickybao/dreamerv3_runs/se_cheetah_seed13",
+    "planted_dup0": "/scratch/midway3/rickybao/dreamerv3_runs/se_cheetah_seed10",
+    "planted_dup1": "/scratch/midway3/rickybao/dreamerv3_runs/se_cheetah_seed10",
+    "planted_dup2": "/scratch/midway3/rickybao/dreamerv3_runs/se_cheetah_seed10",
+    "position": "/scratch/midway3/rickybao/dreamerv3_runs/se_cheetah_seed10",
+    "velocity": "/scratch/midway3/rickybao/dreamerv3_runs/se_cheetah_seed15"
+   },
+   "min_vs_second_gap": {
+    "distractor": 0.0014167773554116248,
+    "planted_dup0": 0.003538190312979972,
+    "planted_dup1": 0.0040688505112584095,
+    "planted_dup2": 0.0027059509672988924,
+    "position": 0.004377927127540843,
+    "velocity": 0.0071110753498746584
+   },
+   "per_run": [
+    {
+     "run": "/scratch/midway3/rickybao/dreamerv3_runs/se_cheetah_seed10",
+     "n_runs": 8,
+     "n_match": 4,
+     "shares": {
+      "distractor": 0.6200879969438668,
+      "planted_dup0": 0.08069338296418699,
+      "planted_dup1": 0.08064946629819426,
+      "planted_dup2": 0.07759155235582621,
+      "position": 0.08072893484677389,
+      "velocity": 0.060248666591151794
+     },
+     "theta1": 7.681112083552369,
+     "theta1_raw": 4.714857937673067
+    },
+    {
+     "run": "/scratch/midway3/rickybao/dreamerv3_runs/se_cheetah_seed11",
+     "n_runs": 8,
+     "n_match": 4,
+     "shares": {
+      "distractor": 0.6610463582533717,
+      "planted_dup0": 0.07242663274365413,
+      "planted_dup1": 0.07245785895643297,
+      "planted_dup2": 0.07073091439645329,
+      "position": 0.07231233855864763,
+      "velocity": 0.05102589709144029
+     },
+     "theta1": 9.141543081437502,
+     "theta1_raw": 5.611306864326147
+    },
+    {
+     "run": "/scratch/midway3/rickybao/dreamerv3_runs/se_cheetah_seed12",
+     "n_runs": 8,
+     "n_match": 4,
+     "shares": {
+      "distractor": 0.6396796697521081,
+      "planted_dup0": 0.07524012406332754,
+      "planted_dup1": 0.07525351237863825,
+      "planted_dup2": 0.07355717529071316,
+      "position": 0.07522429938657157,
+      "velocity": 0.06104521912864157
+     },
+     "theta1": 8.503630807710765,
+     "theta1_raw": 5.219740419961934
+    },
+    {
+     "run": "/scratch/midway3/rickybao/dreamerv3_runs/se_cheetah_seed13",
+     "n_runs": 8,
+     "n_match": 4,
+     "shares": {
+      "distractor": 0.6448485299039062,
+      "planted_dup0": 0.07368251034838791,
+      "planted_dup1": 0.07377460902124296,
+      "planted_dup2": 0.0719601513300533,
+      "position": 0.0736734200388454,
+      "velocity": 0.062060779357564315
+     },
+     "theta1": 8.752797543047414,
+     "theta1_raw": 5.372685168994
+    },
+    {
+     "run": "/scratch/midway3/rickybao/dreamerv3_runs/se_cheetah_seed14",
+     "n_runs": 8,
+     "n_match": 4,
+     "shares": {
+      "distractor": 0.6519974943034474,
+      "planted_dup0": 0.07276014952744668,
+      "planted_dup1": 0.07286613438391677,
+      "planted_dup2": 0.0700964413452421,
+      "position": 0.07283155573676871,
+      "velocity": 0.05944822470317834
+     },
+     "theta1": 8.95212916582378,
+     "theta1_raw": 5.495039884516098
+    },
+    {
+     "run": "/scratch/midway3/rickybao/dreamerv3_runs/se_cheetah_seed15",
+     "n_runs": 8,
+     "n_match": 4,
+     "shares": {
+      "distractor": 0.6524443717172579,
+      "planted_dup0": 0.07109700503315991,
+      "planted_dup1": 0.07098500646705523,
+      "planted_dup2": 0.0697241284391224,
+      "position": 0.0710042642518503,
+      "velocity": 0.06474522409155432
+     },
+     "theta1": 9.188805469528624,
+     "theta1_raw": 5.64031769546894
+    },
+    {
+     "run": "/scratch/midway3/rickybao/dreamerv3_runs/se_cheetah_seed16",
+     "n_runs": 8,
+     "n_match": 4,
+     "shares": {
+      "distractor": 0.6138288684232571,
+      "planted_dup0": 0.07785949013970905,
+      "planted_dup1": 0.07796850404486408,
+      "planted_dup2": 0.0756575556754415,
+      "position": 0.07801125302808015,
+      "velocity": 0.07667432868864815
+     },
+     "theta1": 7.868465696895157,
+     "theta1_raw": 4.829860252625934
+    },
+    {
+     "run": "/scratch/midway3/rickybao/dreamerv3_runs/se_cheetah_seed17",
+     "n_runs": 8,
+     "n_match": 4,
+     "shares": {
+      "distractor": 0.6369896039758404,
+      "planted_dup0": 0.07560027353787017,
+      "planted_dup1": 0.07556670545066106,
+      "planted_dup2": 0.07348721658319399,
+      "position": 0.07551578455859545,
+      "velocity": 0.06284041589383882
+     },
+     "theta1": 8.4351848782234,
+     "theta1_raw": 5.177726603416287
+    }
+   ],
+   "refusal_certificate": {
+    "n_runs": 8,
+    "n_match": 4,
+    "distractor_min_license": 0.26877981767683445,
+    "distractor_min_vs_second_gap": 0.0014167773554116248,
+    "note": "corrdef: the min-license LEVEL, not the spread, splits safe from leaking; bands must be re-derived on this family, never transported.  Compare arms only at equal n_match."
+   }
+  },
+  "8": {
+   "n_runs": 8,
+   "n_match": 4,
+   "n_subsets": 70,
+   "B_matched": {
+    "distractor": 0.14163677485780604,
+    "planted_dup0": 0.159671664476298,
+    "planted_dup1": 0.1597903434685682,
+    "planted_dup2": 0.15960926724329097,
+    "position": 0.15989445785526518,
+    "velocity": 0.06862317427443693
+   },
+   "B_all_runs": {
+    "distractor": 0.14002779635676077,
+    "planted_dup0": 0.154472897098044,
+    "planted_dup1": 0.15416248167661203,
+    "planted_dup2": 0.15468858140370162,
+    "position": 0.15448158151775174,
+    "velocity": 0.06686317863932374
+   },
+   "argmin": {
+    "distractor": "/scratch/midway3/rickybao/dreamerv3_runs/se_cheetah_seed14",
+    "planted_dup0": "/scratch/midway3/rickybao/dreamerv3_runs/se_cheetah_seed10",
+    "planted_dup1": "/scratch/midway3/rickybao/dreamerv3_runs/se_cheetah_seed10",
+    "planted_dup2": "/scratch/midway3/rickybao/dreamerv3_runs/se_cheetah_seed10",
+    "position": "/scratch/midway3/rickybao/dreamerv3_runs/se_cheetah_seed10",
+    "velocity": "/scratch/midway3/rickybao/dreamerv3_runs/se_cheetah_seed15"
+   },
+   "min_vs_second_gap": {
+    "distractor": 0.002832728071951063,
+    "planted_dup0": 0.0028082894456296914,
+    "planted_dup1": 0.004007461762596726,
+    "planted_dup2": 0.002508426498444294,
+    "position": 0.003641224959930578,
+    "velocity": 0.002395119737677781
+   },
+   "per_run": [
+    {
+     "run": "/scratch/midway3/rickybao/dreamerv3_runs/se_cheetah_seed10",
+     "n_runs": 8,
+     "n_match": 4,
+     "shares": {
+      "distractor": 0.4673930550109338,
+      "planted_dup0": 0.1116601164699912,
+      "planted_dup1": 0.111699910511523,
+      "planted_dup2": 0.10745075236856916,
+      "position": 0.11191054867528248,
+      "velocity": 0.08988561696370038
+     },
+     "theta1": 4.176487923110025,
+     "theta1_raw": 4.714857937673067
+    },
+    {
+     "run": "/scratch/midway3/rickybao/dreamerv3_runs/se_cheetah_seed11",
+     "n_runs": 8,
+     "n_match": 4,
+     "shares": {
+      "distractor": 0.5120078055770021,
+      "planted_dup0": 0.10298504962660718,
+      "planted_dup1": 0.10312229247836782,
+      "planted_dup2": 0.10065144802925761,
+      "position": 0.10300776021925431,
+      "velocity": 0.0782256440695109
+     },
+     "theta1": 4.970575075966918,
+     "theta1_raw": 5.611306864326147
+    },
+    {
+     "run": "/scratch/midway3/rickybao/dreamerv3_runs/se_cheetah_seed12",
+     "n_runs": 8,
+     "n_match": 4,
+     "shares": {
+      "distractor": 0.4881555982149394,
+      "planted_dup0": 0.10540869879398956,
+      "planted_dup1": 0.10552245782461213,
+      "planted_dup2": 0.10313043726359337,
+      "position": 0.10557637591670503,
+      "velocity": 0.09220643198616041
+     },
+     "theta1": 4.623719975007212,
+     "theta1_raw": 5.219740419961934
+    },
+    {
+     "run": "/scratch/midway3/rickybao/dreamerv3_runs/se_cheetah_seed13",
+     "n_runs": 8,
+     "n_match": 4,
+     "shares": {
+      "distractor": 0.49367649555389564,
+      "planted_dup0": 0.10355721766849212,
+      "planted_dup1": 0.10378009173676118,
+      "planted_dup2": 0.10121453733495718,
+      "position": 0.10373097020074677,
+      "velocity": 0.09404068750514695
+     },
+     "theta1": 4.759200599382243,
+     "theta1_raw": 5.372685168994
+    },
+    {
+     "run": "/scratch/midway3/rickybao/dreamerv3_runs/se_cheetah_seed14",
+     "n_runs": 8,
+     "n_match": 4,
+     "shares": {
+      "distractor": 0.5015906578796612,
+      "planted_dup0": 0.1027609992421503,
+      "planted_dup1": 0.10300341891381054,
+      "planted_dup2": 0.0990753402713261,
+      "position": 0.1030471469139748,
+      "velocity": 0.09052243677907726
+     },
+     "theta1": 4.867584138922314,
+     "theta1_raw": 5.495039884516098
+    },
+    {
+     "run": "/scratch/midway3/rickybao/dreamerv3_runs/se_cheetah_seed15",
+     "n_runs": 8,
+     "n_match": 4,
+     "shares": {
+      "distractor": 0.5017889709470829,
+      "planted_dup0": 0.10038299572942593,
+      "planted_dup1": 0.10031517750620848,
+      "planted_dup2": 0.09852054520658142,
+      "position": 0.10043265104351709,
+      "velocity": 0.09855965956718428
+     },
+     "theta1": 4.996273280983687,
+     "theta1_raw": 5.64031769546894
+    },
+    {
+     "run": "/scratch/midway3/rickybao/dreamerv3_runs/se_cheetah_seed16",
+     "n_runs": 8,
+     "n_match": 4,
+     "shares": {
+      "distractor": 0.46004945149881615,
+      "planted_dup0": 0.10712725738714113,
+      "planted_dup1": 0.10737391952390986,
+      "planted_dup2": 0.1041779011885131,
+      "position": 0.10752942758730374,
+      "velocity": 0.11374204281431598
+     },
+     "theta1": 4.278358602116611,
+     "theta1_raw": 4.829860252625934
+    },
+    {
+     "run": "/scratch/midway3/rickybao/dreamerv3_runs/se_cheetah_seed17",
+     "n_runs": 8,
+     "n_match": 4,
+     "shares": {
+      "distractor": 0.4851743832135558,
+      "planted_dup0": 0.10571098222337337,
+      "planted_dup1": 0.10575926003628222,
+      "planted_dup2": 0.10283558099482819,
+      "position": 0.105783060851077,
+      "velocity": 0.09473673268088348
+     },
+     "theta1": 4.586503541399617,
+     "theta1_raw": 5.177726603416287
+    }
+   ],
+   "refusal_certificate": {
+    "n_runs": 8,
+    "n_match": 4,
+    "distractor_min_license": 0.14163677485780604,
+    "distractor_min_vs_second_gap": 0.002832728071951063,
+    "note": "corrdef: the min-license LEVEL, not the spread, splits safe from leaking; bands must be re-derived on this family, never transported.  Compare arms only at equal n_match."
+   }
+  },
+  "15": {
+   "n_runs": 8,
+   "n_match": 4,
+   "n_subsets": 70,
+   "B_matched": {
+    "distractor": 0.07022238412693659,
+    "planted_dup0": 0.15484862147388462,
+    "planted_dup1": 0.15493090713812308,
+    "planted_dup2": 0.15453993275039443,
+    "position": 0.1547927673946115,
+    "velocity": 0.08088228824896526
+   },
+   "B_all_runs": {
+    "distractor": 0.0696579690263588,
+    "planted_dup0": 0.14921792889254726,
+    "planted_dup1": 0.1498092157119769,
+    "planted_dup2": 0.14896845315010232,
+    "position": 0.14956897183823684,
+    "velocity": 0.07921385625173623
+   },
+   "argmin": {
+    "distractor": "/scratch/midway3/rickybao/dreamerv3_runs/se_cheetah_seed15",
+    "planted_dup0": "/scratch/midway3/rickybao/dreamerv3_runs/se_cheetah_seed11",
+    "planted_dup1": "/scratch/midway3/rickybao/dreamerv3_runs/se_cheetah_seed11",
+    "planted_dup2": "/scratch/midway3/rickybao/dreamerv3_runs/se_cheetah_seed11",
+    "position": "/scratch/midway3/rickybao/dreamerv3_runs/se_cheetah_seed11",
+    "velocity": "/scratch/midway3/rickybao/dreamerv3_runs/se_cheetah_seed15"
+   },
+   "min_vs_second_gap": {
+    "distractor": 0.00048608887145616675,
+    "planted_dup0": 0.007669045342255015,
+    "planted_dup1": 0.006736246998540835,
+    "planted_dup2": 0.007990486624056159,
+    "position": 0.007102704853176323,
+    "velocity": 0.00285732011275687
+   },
+   "per_run": [
+    {
+     "run": "/scratch/midway3/rickybao/dreamerv3_runs/se_cheetah_seed10",
+     "n_runs": 8,
+     "n_match": 4,
+     "shares": {
+      "distractor": 0.3022662976569151,
+      "planted_dup0": 0.1412490377676384,
+      "planted_dup1": 0.14126946133834273,
+      "planted_dup2": 0.13570629898001446,
+      "position": 0.14131758575147266,
+      "velocity": 0.13819131850561664
+     },
+     "theta1": 2.1389149556269236,
+     "theta1_raw": 4.714857937673067
+    },
+    {
+     "run": "/scratch/midway3/rickybao/dreamerv3_runs/se_cheetah_seed11",
+     "n_runs": 8,
+     "n_match": 4,
+     "shares": {
+      "distractor": 0.34161515304583995,
+      "planted_dup0": 0.13440476845828428,
+      "planted_dup1": 0.13455538899976616,
+      "planted_dup2": 0.13114859609635632,
+      "position": 0.13419866683326717,
+      "velocity": 0.12407742656648611
+     },
+     "theta1": 2.545592747730302,
+     "theta1_raw": 5.611306864326147
+    },
+    {
+     "run": "/scratch/midway3/rickybao/dreamerv3_runs/se_cheetah_seed12",
+     "n_runs": 8,
+     "n_match": 4,
+     "shares": {
+      "distractor": 0.3195862787837818,
+      "planted_dup0": 0.13498523059777656,
+      "planted_dup1": 0.13510229961198705,
+      "planted_dup2": 0.13185596572438762,
+      "position": 0.13496287265134796,
+      "velocity": 0.14350735263071884
+     },
+     "theta1": 2.367956998139591,
+     "theta1_raw": 5.219740419961934
+    },
+    {
+     "run": "/scratch/midway3/rickybao/dreamerv3_runs/se_cheetah_seed13",
+     "n_runs": 8,
+     "n_match": 4,
+     "shares": {
+      "distractor": 0.3241540986361998,
+      "planted_dup0": 0.13300543565140655,
+      "planted_dup1": 0.1332634675043333,
+      "planted_dup2": 0.12978814790720283,
+      "position": 0.13299497109302427,
+      "velocity": 0.14679387920783316
+     },
+     "theta1": 2.4373410210335544,
+     "theta1_raw": 5.372685168994
+    },
+    {
+     "run": "/scratch/midway3/rickybao/dreamerv3_runs/se_cheetah_seed14",
+     "n_runs": 8,
+     "n_match": 4,
+     "shares": {
+      "distractor": 0.3313170427260504,
+      "planted_dup0": 0.13277081024822368,
+      "planted_dup1": 0.13305584875545143,
+      "planted_dup2": 0.1278035695319509,
+      "position": 0.1329070509937082,
+      "velocity": 0.1421456777446155
+     },
+     "theta1": 2.4928477477220894,
+     "theta1_raw": 5.495039884516098
+    },
+    {
+     "run": "/scratch/midway3/rickybao/dreamerv3_runs/se_cheetah_seed15",
+     "n_runs": 8,
+     "n_match": 4,
+     "shares": {
+      "distractor": 0.3307472149395676,
+      "planted_dup0": 0.12942410975840205,
+      "planted_dup1": 0.12930928869194352,
+      "planted_dup2": 0.1268191870738903,
+      "position": 0.1292610631900717,
+      "velocity": 0.15443913634612477
+     },
+     "theta1": 2.55875363219952,
+     "theta1_raw": 5.64031769546894
+    },
+    {
+     "run": "/scratch/midway3/rickybao/dreamerv3_runs/se_cheetah_seed16",
+     "n_runs": 8,
+     "n_match": 4,
+     "shares": {
+      "distractor": 0.29426347782550183,
+      "planted_dup0": 0.13403301364961306,
+      "planted_dup1": 0.13431318424322541,
+      "planted_dup2": 0.13013392355592077,
+      "position": 0.13430027221414795,
+      "velocity": 0.17295612851159092
+     },
+     "theta1": 2.191086235151372,
+     "theta1_raw": 4.829860252625934
+    },
+    {
+     "run": "/scratch/midway3/rickybao/dreamerv3_runs/se_cheetah_seed17",
+     "n_runs": 8,
+     "n_match": 4,
+     "shares": {
+      "distractor": 0.316822247928704,
+      "planted_dup0": 0.13502614433856688,
+      "planted_dup1": 0.13505920984160608,
+      "planted_dup2": 0.13114275072638662,
+      "position": 0.13488127130076275,
+      "velocity": 0.14706837586397378
+     },
+     "theta1": 2.348897255144068,
+     "theta1_raw": 5.177726603416287
+    }
+   ],
+   "refusal_certificate": {
+    "n_runs": 8,
+    "n_match": 4,
+    "distractor_min_license": 0.07022238412693659,
+    "distractor_min_vs_second_gap": 0.00048608887145616675,
+    "note": "corrdef: the min-license LEVEL, not the spread, splits safe from leaking; bands must be re-derived on this family, never transported.  Compare arms only at equal n_match."
+   }
+  }
+ },
+ "note": "L4 cross-SEED min-license; registered prediction is that the min does NOT remove the distractor share (every seed shares the defect) => the deployed read confirms the impossibility boundary at scale and the min-license LEVEL is the refusal certificate.  Compare arms only at equal n_match."
+}
