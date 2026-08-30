@@ -1,0 +1,74 @@
+{
+  "chosen": "dmc_finger_spin",
+  "rows": [
+    {
+      "calib": {
+        "flat_scale": 0.4375164393705325,
+        "gate_threshold": -0.21752405166625977,
+        "mean_m_above": 0.7334125602888857,
+        "mean_m_below": 0.1416203184521793,
+        "meansq_m_above": 0.5697174364340167,
+        "meansq_m_below": 0.03837728282105906,
+        "mod_hi": 2.2306735515594482,
+        "mod_lo": -2.1877121925354004,
+        "n_steps": 19232,
+        "ratio_amp": 5.17872412874524,
+        "ratio_var": 14.845173877744969,
+        "spread": 4.418385744094849,
+        "w_above": 0.5,
+        "w_below": 0.5
+      },
+      "fails": [],
+      "run_id": "se_a3cal_finger_s200",
+      "solved": {
+        "clipped_frac": 0.0,
+        "mbar": 0.35948428173662794,
+        "mod_hi": 7.469163326854745,
+        "mod_lo": -4.589493315966835,
+        "ratio": 1.8636677250074283,
+        "resid_mbar": 0.001589104487050558,
+        "resid_ratio": 0.0033290452676080417
+      },
+      "task": "dmc_finger_spin",
+      "valid": true
+    },
+    {
+      "calib": {
+        "flat_scale": 0.1352373895292154,
+        "gate_threshold": -0.8554169237613678,
+        "mean_m_above": 0.223827992660764,
+        "mean_m_below": 0.04664678639766682,
+        "meansq_m_above": 0.0756104782941231,
+        "meansq_m_below": 0.002644128670523853,
+        "mod_hi": 0.0,
+        "mod_lo": -0.9520627856254578,
+        "n_steps": 19232,
+        "ratio_amp": 4.798358256721398,
+        "ratio_var": 28.59561228506448,
+        "spread": 0.9520627856254578,
+        "w_above": 0.5,
+        "w_below": 0.5
+      },
+      "fails": [
+        "G6b m-bar residual 10.58% > 2%",
+        "G6c ratio residual 16.36% > 2%"
+      ],
+      "run_id": "se_a3cal_hopper_s201",
+      "solved": {
+        "clipped_frac": 0.0,
+        "mbar": 0.32092789848910835,
+        "mod_hi": 0.0,
+        "mod_lo": -1.2124018907532057,
+        "ratio": 1.55352832683044,
+        "resid_mbar": 0.10583604685081918,
+        "resid_ratio": 0.16363841470251503
+      },
+      "task": "dmc_hopper_hop",
+      "valid": false
+    }
+  ],
+  "targets": {
+    "mbar": 0.35891393,
+    "ratio": 1.8574840764331213
+  }
+}
