@@ -95,7 +95,7 @@ stages:
       # arm identity: hetero carries the solved ramp, flat the solved scale
       - file_contains: {file: config.yaml, pattern: '(mod_lo:\s+-4\.5894|scale:\s+0\.3594)'}
       - file_contains: {file: config.yaml, pattern: 'penalty_mix:\s+false'}
-      - jsonl_min_lines: {file: scores.jsonl, n: 400}
+      - jsonl_min_lines: {file: scores.jsonl, n: 350}   # finger cadence measured 1202 steps/line in the pilot => ~416 lines at 5e5; 350 keeps margin
 
 bundle:
   prefix: a3_generality
