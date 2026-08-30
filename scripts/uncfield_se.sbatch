@@ -43,6 +43,12 @@
 #   DISTRACTOR_MOD_HI          config defaults, Stage-1-inert
 #   DISTRACTOR_SCALE           flat arm (amendment 3): 0.35891393;
 #                              default 1.0 = the Stage-1 hardcoded value
+#   DISTRACTOR_THETA           PHI-SWEEP (PREREG_phisweep_20260830): the
+#                              OU persistence knob, phi = 1 - theta.
+#                              Arms 0.20 (phi 0.80) / 0.05 (phi 0.95);
+#                              default 0.1 = phi 0.9 = the config default
+#                              = every prior SE consumer, so passing it
+#                              is inert for all earlier waves.
 #   EXPL_CONFIG                B2 APT column: expl_apt; default
 #                              expl_p2e = the Stage-1 hardcoded value
 #   DISAG_BOOTSTRAP            noboot arm (amendment 4, seeds 40-43):
@@ -115,6 +121,7 @@ STOP_STEP=$("$PYTHON" -c "print(int(float('$STEPS')))")
   --task "$TASK" --seed "$SEED" \
   --env.dmc.render False \
   --distractor.dim "${DISTRACTOR_DIM:-8}" --distractor.scale "${DISTRACTOR_SCALE:-1.0}" --distractor.basesd "$BASESD_N" \
+  --distractor.theta "${DISTRACTOR_THETA:-0.1}" \
   --distractor.gate_key "${DISTRACTOR_GATE_KEY:-}" \
   --distractor.gate_index "${DISTRACTOR_GATE_INDEX:-0}" \
   --distractor.gate_threshold "${DISTRACTOR_GATE_THRESHOLD:-0.0}" \
@@ -187,6 +194,11 @@ want('distractor.mod_lo', float(env.get('DISTRACTOR_MOD_LO', '0.0')))
 want('distractor.mod_hi', float(env.get('DISTRACTOR_MOD_HI', '1.0')))
 want('distractor.dim', int(env.get('DISTRACTOR_DIM', '8')))
 want('distractor.scale', float(env.get('DISTRACTOR_SCALE', '1.0')))
+# PHI-SWEEP (PREREG_phisweep_20260830): the OU persistence knob is the
+# WHOLE registered axis of that wave (phi = 1 - theta), so it must bind
+# or the run is worthless. Default 0.1 = phi 0.9 = the config default =
+# every prior consumer, so this line is bitwise-inert outside phisweep.
+want('distractor.theta', float(env.get('DISTRACTOR_THETA', '0.1')))
 want('distractor.mod_key', env.get('DISTRACTOR_MOD_KEY', ''))
 want('distractor.gate_key', env.get('DISTRACTOR_GATE_KEY', ''))
 want('planted.gate_key', env.get('GATE_KEY', ''))

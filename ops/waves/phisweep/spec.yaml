@@ -1,0 +1,158 @@
+# PHI-SWEEP -- PREREG_phisweep_20260830.md. The decisive falsifier for
+# theta_1 = Lambda = 1/(1-phi^2): 2 phi arms (0.80, 0.95) x 4 seeds =
+# 8 SE runs, dmc_cheetah_run, 5e5 steps, ~7 h each = ~56 GPU-h.
+#
+# THE AXIS. phi is set through the OU persistence knob theta = 1 - phi
+# (distractor.py:23,63 -> _ar = 1 - theta). The wrapper is
+# unit-stationary by construction (_noisesd = sqrt(1 - _ar^2)), so the
+# emitted amplitude is untouched: this wave moves PERSISTENCE ONLY.
+#   phi 0.80 -> DISTRACTOR_THETA=0.20
+#   phi 0.95 -> DISTRACTOR_THETA=0.05
+#
+# PRODUCER DELTA (registered in the prereg, applied 30 Aug):
+# scripts/uncfield_se.sbatch gained `--distractor.theta
+# "${DISTRACTOR_THETA:-0.1}"` and the matching BIND-CHECK want() line.
+# Both default to 0.1 = configs.yaml:44 = every prior SE consumer, so
+# the delta is bitwise-inert for earlier waves. Because the cmd below
+# SETS DISTRACTOR_THETA, wavegen's stale-producer gate greps the
+# INSTANCE'S OWN copy of the producer for it at preflight -- the exact
+# check that would have caught the 21-Aug NOBOOT incident. DO NOT
+# hand-queue these commands: a raw .cmds file bypasses that gate.
+#
+# THE s/s0 CONTROL. theta_1 is a scale PLATEAU above an onset that
+# moves with phi (s_0 ∝ sqrt(1-phi^2)), so a fixed s=1.0 would put the
+# arms at different dose-curve positions and confound phi with dose.
+# Each arm runs at s_arm = k*s_0(phi), k = 1/s_0(0.90), which reduces
+# to s_arm = sqrt((1-phi^2)/0.19) -- the onset-convention constant
+# cancels, so the control does not depend on which onset accounting is
+# right. All arms then sit at s/s_0 = 3.6364, the position the
+# flagship phi=0.9 s=1.0 measurement occupies.
+#   phi 0.80 -> DISTRACTOR_SCALE=1.3764944032233706
+#   phi 0.95 -> DISTRACTOR_SCALE=0.7163503994113789
+# These are passed to FULL precision; the reader pins them to 1e-6.
+#
+# LANE LAYOUT -- READ THIS BEFORE REORDERING. Standing memory
+# (wavegen silent layout traps): `assign_lanes` is `i % len(lanes)`,
+# so a PERIODIC runs list is ARM-PURE. The naive "interleave the arms"
+# order (A,B,A,B,...) is exactly the trap: at 2 lanes it puts every
+# phi=0.80 run on lane 0 and every phi=0.95 run on lane 1, and at 4
+# lanes lanes 0/2 are pure 0.80 and 1/3 pure 0.95. A slow or hot GPU
+# would then load entirely onto one arm -- and the arm IS the primary.
+# The BLOCKED order below (four 0.80 runs, then four 0.95) is what
+# actually interleaves the arms ACROSS lanes under i%n. VERIFIED by
+# replaying wavespec.balanced_order -> pair_runs -> assign_lanes:
+#   2 lanes  L0 A A B B    L1 A A B B
+#   3 lanes  L0 A A B      L1 A B B      L2 A B
+#   4 lanes  L0 A B        L1 A B        L2 A B    L3 A B
+#   5 lanes  L0 A B  L1 A B  L2 A B      L3 A      L4 B
+#   6 lanes  L0 A B  L1 A B  L2 A  L3 A  L4 B  L5 B
+#   8 lanes  one run per lane, 4 lanes per arm
+# i.e. every multi-run lane holds BOTH arms at 2, 3 and 4 lanes, and
+# from 5 lanes up the residual single-run lanes split evenly between
+# the arms. Under the naive A/B alternating order the same replay
+# gives L0 = AAAA / L1 = BBBB at 2 lanes and pure lanes at 4 -- the
+# trap, reproduced.
+# `seed` MUST stay the FIRST var of every entry: wavespec.balanced_order
+# classes on the first var only, so distinct seeds make every run its
+# own class and the declaration order survives verbatim. Putting `phi`
+# or `theta` first would regenerate the periodic order and reinstate
+# the trap. Reordering this list, or reordering the keys inside an
+# entry, silently breaks the registered layout.
+#
+# CO-TENANCY. per_gpu: 1 -- SE runs measured 15243 MiB of a 16311 MiB
+# card, so an SE run owns its GPU. This wave can share a BOX with the
+# A3 wave (different GPUs on the same instance); it must not share a
+# GPU. 22-Aug memory: never split one registered wave's arms across
+# BOXES -- rented boxes run different drivers on the same card model,
+# and the probe panel shifts up to 0.113 AUROC across GPUs. Both arms
+# on ONE instance.
+#
+# DISK -- 8 x 4.6 G = 36.8 G total; at 4 lanes only ~18.4 G is in
+# flight. Pull each finished run to RCC, VERIFY, delete instance-side
+# before its lane starts the next. replay/ is REQUIRED in the bundle
+# (the reader's coverage proxy) -- never trim it instance-side.
+#
+# Variables NOT passed, each deliberately: DISTRACTOR_DIM / BASESD_N /
+# planted source_key+basesd -- producer defaults, pinned FATALLY by the
+# reader's Stage-1 pin block and live under BIND-CHECK; DISAG_BOOTSTRAP
+# / DISAG_HEAD -- Stage-1 defaults (True/det), reader-pinned,
+# BIND-CHECK live; STEPS -- producer default 5e5, gated by
+# nearest.json + fit counters. The mod quadruple and the penalty block
+# ARE passed inert (the reader cannot distinguish unset from
+# deliberately-default).
+# done_when regexes are newline-tolerant (\s+) and anchored against
+# key-suffix collisions ((?<![\w.]), which is also what stops `scale:`
+# matching `disag_scale:`). They are ON-GRID checks only, shared
+# across runs; the EXACT per-run seed<->phi<->scale map is enforced
+# FATALLY by the reader (SEED_ARM / THETA_OU / SCALES gates).
+#
+# The 8 se_probe passes are NOT in this wave: they run afterwards in
+# ONE CPU job, arm block == seed block, per the B1 rule.
+
+wave_id: phisweep
+paper: paper5_uncertainty_field
+prereg: prereg/PREREG_phisweep_20260830.md
+notes: >-
+  8 SE runs (dmc_cheetah_run, 5e5 steps, ~7 h each, ~56 GPU-h) across
+  two OU-persistence arms phi in {0.80, 0.95} at s/s0-matched
+  distractor scales -- the registered falsifier for theta_1 = Lambda.
+  ALL ON ONE INSTANCE; may share the box (not a GPU) with A3.
+  BLOCKED declaration order is the registered lane layout.
+
+defaults:
+  target: vast
+
+kinds:
+  se_run: {per_gpu: 1}
+
+stages:
+
+  - name: train
+    kind: se_run
+    on_failure: continue
+    runs:
+      # -- arm A: phi = 0.80, theta = 0.20, s = sqrt(0.36/0.19) --
+      - {run_id: se_phi080_s140, seed: 140, theta: "0.20", scale: "1.3764944032233706"}
+      - {run_id: se_phi080_s141, seed: 141, theta: "0.20", scale: "1.3764944032233706"}
+      - {run_id: se_phi080_s142, seed: 142, theta: "0.20", scale: "1.3764944032233706"}
+      - {run_id: se_phi080_s143, seed: 143, theta: "0.20", scale: "1.3764944032233706"}
+      # -- arm B: phi = 0.95, theta = 0.05, s = sqrt(0.0975/0.19) --
+      - {run_id: se_phi095_s144, seed: 144, theta: "0.05", scale: "0.7163503994113789"}
+      - {run_id: se_phi095_s145, seed: 145, theta: "0.05", scale: "0.7163503994113789"}
+      - {run_id: se_phi095_s146, seed: 146, theta: "0.05", scale: "0.7163503994113789"}
+      - {run_id: se_phi095_s147, seed: 147, theta: "0.05", scale: "0.7163503994113789"}
+    logdir: "${run_id}"
+    cmd: >-
+      RUN_ID=${run_id} TASK=dmc_cheetah_run SEED=${seed}
+      DISTRACTOR_THETA=${theta}
+      DISTRACTOR_SCALE=${scale}
+      DISTRACTOR_MOD_KEY= DISTRACTOR_MOD_INDEX=0
+      DISTRACTOR_MOD_LO=0.0 DISTRACTOR_MOD_HI=1.0
+      PENALTY_MIX=False PENALTY_SCALE=0.0
+      PENALTY_GATE_KEY= PENALTY_GATE_INDEX=0 PENALTY_GATE_THRESHOLD=0.0
+      bash scripts/uncfield_se.sbatch
+    outputs:
+      - "${run_id}"
+    done_when:
+      - exists: TRAINING_DONE
+      - exists: config.yaml
+      # the phi axis actually landed in the composed config. VERIFIED
+      # to match theta 0.2 / 0.05 and the two arm scales, and to
+      # REJECT the producer defaults (theta 0.1, scale 1.0) -- so a
+      # stale producer that never read DISTRACTOR_THETA fails
+      # done_when even if it somehow got past the preflight grep.
+      # On-grid only; the per-run map is the reader's FATAL job.
+      - file_contains: {file: config.yaml, pattern: '(?<![\w.])theta:\s+0\.(2|05)\d*\b'}
+      - file_contains: {file: config.yaml, pattern: '(?<![\w.])scale:\s+(1\.3764|0\.71635)\d*\b'}
+      - file_contains: {file: config.yaml, pattern: 'penalty_mix:\s+false'}
+      - file_contains:
+          file: ckpt_snapshots/nearest.json
+          pattern: '"milestone": 500000,\s+"step": (49\d{4}|[5-9]\d{5})'
+      - jsonl_min_lines: {file: scores.jsonl, n: 464}
+
+bundle:
+  prefix: phisweep
+  include_stages: [train]
+  # full-tree run dirs: replay/ (the reader's coverage proxy) and
+  # ckpt_snapshots/ (degeneracy gate) ride along -- no excludes
+  cloud_logs: ["se_phi*_s1*.out"]
