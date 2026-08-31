@@ -34,6 +34,8 @@ dv3ops <verb> [args]
     rcc-connect [--status|--close]
                             open/reuse ONE shared ssh connection to RCC, so
                             every later RCC command skips password + 2FA
+    rcc-nodes               probe EVERY login node: up / sshd-down / filtered,
+                            plus which ControlMaster sockets are live
 
   P1 -- built  (all take --wave <wave_id>)
     gen --wave W [--lanes 0,1,2,3]    spec -> commands, checker, rsync filters, bundle
@@ -195,6 +197,10 @@ case "$verb" in
 
   rcc-connect)
     exec bash "$DV3OPS_ROOT/scripts/ops/rcc_connect.sh" "$@"
+    ;;
+
+  rcc-nodes)
+    exec bash "$DV3OPS_ROOT/scripts/ops/rcc_nodes.sh" "$@"
     ;;
 
   selfcheck)
