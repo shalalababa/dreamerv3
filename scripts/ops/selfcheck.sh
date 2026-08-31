@@ -633,8 +633,13 @@ done
 grep -q 'TOTAL RUNS: 21' "$TMP/ref_turn_easy_poscontrol/RUN_IDS.txt" 2>/dev/null \
   && ok "turn_easy = 21 runs (16 adapt + 5 floor, as submitted by hand)" \
   || bad "turn_easy run count"
-grep -q 'TOTAL RUNS: 48' "$TMP/ref_tm2_bridge_fit2/RUN_IDS.txt" 2>/dev/null \
-  && ok "tm2_bridge = 48 runs (3 arms x 2 sides x 8 seeds)" || bad "tm2_bridge run count"
+# 96 = 48 fit + 48 adapt (3 arms x 2 sides x 8 seeds, PER STAGE). The wave
+# carried only the fit stage when this check was written; the adapt stage was
+# added in 0d8f1870/9056da98 and the assertion was never moved, so selfcheck
+# sat permanently red -- which is worse than no check, because a standing FAIL
+# teaches you to skim past SELFCHECK FAIL and miss a real regression.
+grep -q 'TOTAL RUNS: 96' "$TMP/ref_tm2_bridge_fit2/RUN_IDS.txt" 2>/dev/null \
+  && ok "tm2_bridge = 96 runs (48 fit + 48 adapt)" || bad "tm2_bridge run count"
 [ "$(cat "$TMP/ref_tm2_bridge_fit2"/lane_fit_*.cmds | grep -c '^DV3_TASK_NAME=')" = "24" ] \
   && ok "tm2_bridge = 24 pairs" || bad "tm2_bridge pairing count"
 grep -q 'TOTAL RUNS: 32' "$TMP/ref_lewm_graft/RUN_IDS.txt" 2>/dev/null \
