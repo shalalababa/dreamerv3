@@ -1,0 +1,241 @@
+# A3 PERSISTENCE LEG (Track A), drafted 31 Aug 2026 -- NOT YET SUBMITTED.
+#
+# The EIGHT A2 primary-pair runs, resumed IN PLACE and trained 5e5 ->
+# 1e6, to test whether the scarecrow fence A2 measured at 5e5 still
+# displaces visitation at 1e6. Registration:
+# prereg/PREREG_a3_persistence_20260831.md. Reader:
+# uncfield/se_a3per_read.py (frozen, selfchecked).
+#
+# WHICH RUNS, AND WHY ONLY THESE. A2 had five arms; this leg extends
+# ONLY the registered A2 PRIMARY pair -- sc_scare (seeds 80-83) and
+# sc_ctrl (seeds 76-79). A2's scale-2 (84-87) and explicit-penalty
+# (88-95) arms are NOT extended: they carry A2's secondaries, not the
+# claim on trial, and the frozen reader refuses their seeds FATALLY.
+#
+# ============================ STAGING ============================
+# THIS WAVE CONSUMES STAGED INPUTS. Each run dir must exist on the
+# instance BEFORE its lane task starts (`inputs:` below makes it a
+# declared donor, so preflight_remote.sh and push_donors.sh both
+# check it).
+#
+# SOURCE: the FULL A2 bundle on RCC,
+#   $RUNROOT/bundles/a2_scarecrow_20260824_184000/runroot/sc_<arm>_s<seed>
+# -- the very tree the frozen A2 reader consumed on 24 Aug (its
+# per_run.run_dir paths name it). The light bundle is NOT usable: it
+# carries REPLAY_OMITTED.txt markers instead of replay/.
+#
+# WHAT TO STAGE, per run, into $RUNROOT/<new run_id> on RCC and from
+# there to the instance:
+#   ckpt/      the complete latest save (agent.pkl + step.pkl +
+#              replay.pkl + done) AND the `latest` pointer file
+#   replay/    ALL *.npz chunks -- see CAPACITY below
+# NOTHING ELSE. In particular metrics.jsonl, scores.jsonl and
+# ckpt_snapshots/ must NOT be staged: metrics.jsonl is recreated at
+# resume and its FIRST rows are the registered resume-integrity
+# witnesses (prereg s5.1.k). The cmd below REFUSES to start if
+# metrics.jsonl is present before the manifest is taken.
+#
+# CAPACITY -- why "all the chunks", not "the newest few".
+# embodied/core/replay.py:Replay.load walks the replay dir
+# NEWEST-FIRST and stops once it has `capacity` items. capacity is
+# int(config.replay.size) = 5,000,000 (dreamerv3/main.py:186,
+# configs.yaml:58; confirmed in every A2 config.yaml as
+# `replay: size: 5000000.0`). A2 produced ~4.95e5 items per run, so
+# the cutoff NEVER fires and a partial stage is simply a smaller
+# resumed buffer -- silently. Stage the whole tree: ~568 MB of
+# replay + ~44 MB of ckpt per run, ~5 G for the eight.
+#
+# MATERIALIZED BYTES, NEVER `cp -al`. The A2 bundle is hard-linked to
+# the A2 runroot (8-Aug standing lesson). An in-place resume MUTATES
+# its inputs -- it writes new chunks into replay/ and Checkpoint's
+# keep=1 cleanup DELETES the staged save folder on the first save. A
+# hard-linked stage would therefore rewrite the A2 archive. Copy
+# content (rsync / cp -r), verify, then push.
+#
+# ============================ CANARY ============================
+# CANARY-FIRST, REGISTERED. Let the FIRST queued run reach its first
+# metrics.jsonl report (~2 min of training after the buffer load) and
+# check, in $RUNROOT/<run_id>/metrics.jsonl:
+#     head -1 -> "step" must be >= 490000     (resumed, not restarted)
+#             -> "replay/items" must be >= 400000  (buffer repopulated)
+# A from-scratch run shows step ~4160 and replay/items ~3136 --
+# measured on a real SE run, so the two witnesses are ~100x separated
+# from their failure values. If either is wrong, STOP the wave: the
+# staging is broken and every further lane burns 7 h producing a
+# fresh-start run wearing an extension's name. These are the same two
+# quantities the frozen reader gates FATALLY.
+#
+# ======================= LANE LAYOUT (registered) =======================
+# `balanced_order` classes on the FIRST var only, and `seed` is first
+# in every entry below and unique, so the order is the identity; then
+# per_gpu 1 => one unit per run and `assign_lanes` is i % nlanes.
+#
+# The declaration order is DOUBLE-BALANCED -- scare, ctrl, scare,
+# ctrl, ctrl, scare, ctrl, scare -- chosen so that at 4 lanes:
+#   * every LANE carries one scare and one ctrl (no arm-pure lane, so
+#     arm is never confounded with GPU), AND
+#   * every ROUND carries 2 scare and 2 ctrl (no arm-pure round, so a
+#     round-wide disturbance -- or an early instance release -- cannot
+#     load onto one arm. A2 Amendment 1 exists because round 1 of the
+#     original A2 layout WAS the entire ctrl arm).
+# A blocked order (4 scare then 4 ctrl) balances lanes but makes
+# round 1 arm-pure; a strictly alternating order balances rounds but
+# makes lanes arm-pure. This order is the one that does both.
+#
+# REPLAYED 31 Aug through wavespec.balanced_order -> pair_runs ->
+# assign_lanes on this exact runs list:
+#   4 lanes: L0{scare_s80, ctrl_s78} L1{ctrl_s76, scare_s82}
+#            L2{scare_s81, ctrl_s79} L3{ctrl_s77, scare_s83}   (1+1 each)
+#   2 lanes: L0{s80,s81,c78,c79} L1{c76,c77,s82,s83}           (2+2 each)
+#   8 lanes: one run per lane
+#   3 lanes is ARM-IMBALANCED (1/2, 1/2, 2/0) -- run this wave at
+#   4, 2 or 8 lanes, NEVER 3.
+# Reordering this list silently breaks both properties.
+#
+# ONE INSTANCE, NON-NEGOTIABLE (the 1-Aug cross-invocation rule): the
+# primary and the registered secondary are cross-arm exact
+# permutations over C(8,4), so a device term is indistinguishable from
+# the effect. The box is APPARATUS until the wave is COMPLETE.
+#
+# ====================== NO PRODUCER DELTA ======================
+# scripts/uncfield_se.sbatch is UNCHANGED. Verified 31 Aug by
+# inspection: it `rm -f`s the stale TRAINING_DONE, `mkdir -p`s the
+# existing logdir, and dreamerv3/main.py rewrites config.yaml and
+# calls `cp.load_or_save()` (embodied/run/train.py:86,90), which finds
+# the staged ckpt and loads agent + step + replay. `while step <
+# args.steps` with run.steps 1e6 then continues from ~4.99e5. Every
+# variable the cmd sets is already consumed AND BIND-CHECKed by the
+# producer (STEPS included: `want('run.steps', float(env['STEPS']))`).
+#
+# EXPLICIT INERT OVERRIDES. A2's cmd left SOURCE_KEY / BASESD_* /
+# DISTRACTOR_DIM / DISTRACTOR_THETA / the distractor+planted gate
+# triples / EXPL_CONFIG / DISAG_BOOTSTRAP / DISAG_HEAD at producer
+# defaults. They are passed EXPLICITLY here at exactly the values A2
+# realized (verified against A2's own config.yaml), so each is
+# BIND-CHECKed instead of assumed. The composed config is
+# behaviourally identical to A2's apart from run.steps. Other waves
+# move DISTRACTOR_THETA (phi-sweep), DISAG_HEAD (b4_alea) and the
+# basesd pair (A3 generality, finger) on this same producer.
+#
+# TRAINING_DONE IS A LYING MARKER for this producer (touched on the
+# failure path too, uncfield_se.sbatch:237). The realized-step
+# invariant is a >= ~1e6 entry in ckpt_snapshots/manifest.json.
+# NOTE ckpt_snapshots/nearest.json is NOT usable as the 1e6 witness
+# here: probing/checkpoint_watcher.py's --milestones default is
+# [1e5..5e5] and uncfield_se.sbatch does not pass the flag, so
+# nearest.json carries no 1000000 row at any STEPS. manifest.json is
+# the watcher's own append-only record of every retained snapshot and
+# carries the exact steps.
+#
+# A staging refusal exits 91 from inside the logged subshell, so its
+# cloud log ends at the FATAL line with no "DONE rc=" banner. That is
+# the signature of a staging fault, not of a training fault.
+
+wave_id: a3_persistence
+paper: paper5_uncertainty_field
+prereg: prereg/PREREG_a3_persistence_20260831.md
+notes: >-
+  8 SE runs (dmc_cheetah_run) RESUMED from the A2 scarecrow primary
+  pair and trained 5e5 -> 1e6 (~7 h of new training each, ~56 GPU-h),
+  testing whether A2's occupancy displacement persists. Consumes
+  STAGED A2 run dirs (ckpt + FULL replay, materialized bytes). ALL ON
+  ONE INSTANCE. The double-balanced declaration order IS the
+  registered lane layout. CANARY-FIRST: check run 1's first
+  metrics.jsonl row before feeding the rest.
+
+defaults:
+  target: vast
+
+kinds:
+  se_run: {per_gpu: 1}
+
+stages:
+
+  - name: extend
+    kind: se_run
+    on_failure: continue
+    runs:
+      # DOUBLE-BALANCED order (see header): scare ctrl scare ctrl /
+      # ctrl scare ctrl scare. seed is FIRST in every entry.
+      # a2_src is the bundle dir each run is staged FROM; it is
+      # documentation, not a substitution used by the cmd.
+      - {run_id: a3per_scare_s80, seed: 80, scale: "1.0",        modk: position, modlo: "-0.32203162", modhi: "0.19711795", a2_src: sc_scare_s80, armpat: 'mod_hi:\s+0\.19711795,\s+mod_index:\s+0,\s+mod_key:\s+position,\s+mod_lo:\s+-0\.32203162,\s+scale:\s+1\.0,'}
+      - {run_id: a3per_ctrl_s76,  seed: 76, scale: "0.35891393", modk: "",       modlo: "0.0",         modhi: "1.0",        a2_src: sc_ctrl_s76,  armpat: "mod_hi:\\s+1\\.0,\\s+mod_index:\\s+0,\\s+mod_key:\\s+'',\\s+mod_lo:\\s+0\\.0,\\s+scale:\\s+0\\.35891393,"}
+      - {run_id: a3per_scare_s81, seed: 81, scale: "1.0",        modk: position, modlo: "-0.32203162", modhi: "0.19711795", a2_src: sc_scare_s81, armpat: 'mod_hi:\s+0\.19711795,\s+mod_index:\s+0,\s+mod_key:\s+position,\s+mod_lo:\s+-0\.32203162,\s+scale:\s+1\.0,'}
+      - {run_id: a3per_ctrl_s77,  seed: 77, scale: "0.35891393", modk: "",       modlo: "0.0",         modhi: "1.0",        a2_src: sc_ctrl_s77,  armpat: "mod_hi:\\s+1\\.0,\\s+mod_index:\\s+0,\\s+mod_key:\\s+'',\\s+mod_lo:\\s+0\\.0,\\s+scale:\\s+0\\.35891393,"}
+      - {run_id: a3per_ctrl_s78,  seed: 78, scale: "0.35891393", modk: "",       modlo: "0.0",         modhi: "1.0",        a2_src: sc_ctrl_s78,  armpat: "mod_hi:\\s+1\\.0,\\s+mod_index:\\s+0,\\s+mod_key:\\s+'',\\s+mod_lo:\\s+0\\.0,\\s+scale:\\s+0\\.35891393,"}
+      - {run_id: a3per_scare_s82, seed: 82, scale: "1.0",        modk: position, modlo: "-0.32203162", modhi: "0.19711795", a2_src: sc_scare_s82, armpat: 'mod_hi:\s+0\.19711795,\s+mod_index:\s+0,\s+mod_key:\s+position,\s+mod_lo:\s+-0\.32203162,\s+scale:\s+1\.0,'}
+      - {run_id: a3per_ctrl_s79,  seed: 79, scale: "0.35891393", modk: "",       modlo: "0.0",         modhi: "1.0",        a2_src: sc_ctrl_s79,  armpat: "mod_hi:\\s+1\\.0,\\s+mod_index:\\s+0,\\s+mod_key:\\s+'',\\s+mod_lo:\\s+0\\.0,\\s+scale:\\s+0\\.35891393,"}
+      - {run_id: a3per_scare_s83, seed: 83, scale: "1.0",        modk: position, modlo: "-0.32203162", modhi: "0.19711795", a2_src: sc_scare_s83, armpat: 'mod_hi:\s+0\.19711795,\s+mod_index:\s+0,\s+mod_key:\s+position,\s+mod_lo:\s+-0\.32203162,\s+scale:\s+1\.0,'}
+    logdir: "${run_id}"
+    inputs:
+      - "${run_id}"
+    outputs:
+      - "${run_id}"
+    # The cmd's own preflight copies the PRODUCER'S consumption path
+    # rather than checking a marker (16-Aug "readiness must test the
+    # file that is consumed"): Checkpoint.exists() tests
+    # <save>/done, and Replay.load globs replay/*.npz and returns
+    # SILENTLY when there is nothing there. STAGED_MANIFEST.txt is
+    # written ONCE (the `[ ! -f ]` guard) so a re-queued run cannot
+    # recapture its own extension chunks into the staged window.
+    cmd: >-
+      d="$RUNROOT/${run_id}";
+      test -d "$d/replay" || { echo "A3PER-STAGING FATAL: $d/replay is missing -- the A2 run dir was not staged"; exit 91; };
+      test -s "$d/ckpt/latest" || { echo "A3PER-STAGING FATAL: $d/ckpt/latest is missing or empty"; exit 91; };
+      s="$d/ckpt/$(cat "$d/ckpt/latest")";
+      test -f "$s/done" || { echo "A3PER-STAGING FATAL: $s has no done marker -- Checkpoint.exists() would be False and the run would train FROM SCRATCH"; exit 91; };
+      { test -f "$s/agent.pkl" || test -f "$s/agent-0000.pkl"; } || { echo "A3PER-STAGING FATAL: $s carries no agent payload"; exit 91; };
+      test -f "$s/step.pkl" || { echo "A3PER-STAGING FATAL: $s carries no step.pkl -- the step counter would restart at 0"; exit 91; };
+      if [ ! -f "$d/STAGED_MANIFEST.txt" ]; then
+      test ! -e "$d/metrics.jsonl" || { echo "A3PER-STAGING FATAL: metrics.jsonl exists before the resume -- it must NOT be staged; its first rows are the registered resume witnesses"; exit 91; };
+      ( cd "$d/replay" && ls -1 *.npz ) | sort > "$d/.staged_manifest.tmp" || { echo "A3PER-STAGING FATAL: no staged replay chunks -- Replay.load returns SILENTLY on an empty replay dir and training would refill from fresh interaction"; exit 91; };
+      test -s "$d/.staged_manifest.tmp" || { echo "A3PER-STAGING FATAL: empty replay listing"; exit 91; };
+      mv "$d/.staged_manifest.tmp" "$d/STAGED_MANIFEST.txt";
+      fi;
+      test -s "$d/STAGED_MANIFEST.txt" || { echo "A3PER FATAL: STAGED_MANIFEST.txt is empty"; exit 91; };
+      echo "A3PER window: $(wc -l < "$d/STAGED_MANIFEST.txt") staged chunks recorded";
+      RUN_ID=${run_id} TASK=dmc_cheetah_run SEED=${seed} STEPS=1e6
+      SOURCE_KEY=position BASESD_PLANTED=0.0976 BASESD_N=1.215
+      DISTRACTOR_DIM=8 DISTRACTOR_SCALE=${scale} DISTRACTOR_THETA=0.1
+      DISTRACTOR_MOD_KEY=${modk} DISTRACTOR_MOD_INDEX=0
+      DISTRACTOR_MOD_LO=${modlo} DISTRACTOR_MOD_HI=${modhi}
+      GATE_KEY= GATE_INDEX=0 GATE_THRESHOLD=0.0
+      DISTRACTOR_GATE_KEY= DISTRACTOR_GATE_INDEX=0 DISTRACTOR_GATE_THRESHOLD=0.0
+      EXPL_CONFIG=expl_p2e DISAG_BOOTSTRAP=True DISAG_HEAD=det
+      PENALTY_MIX=False PENALTY_SCALE=0.0
+      PENALTY_GATE_KEY= PENALTY_GATE_INDEX=0 PENALTY_GATE_THRESHOLD=0.0
+      bash scripts/uncfield_se.sbatch
+    done_when:
+      - exists: TRAINING_DONE
+      - exists: config.yaml
+      # the window definition must survive into the pull, or the read
+      # has no estimand
+      - exists: STAGED_MANIFEST.txt
+      # realized STEP at 1e6. nearest.json cannot serve here (its
+      # milestones stop at 5e5, see the header); manifest.json is the
+      # checkpoint watcher's own record of every retained snapshot.
+      - file_contains:
+          file: ckpt_snapshots/manifest.json
+          pattern: '"step":\s+(99\d{4}|1\d{6})'
+      # the extension target actually bound
+      - file_contains: {file: config.yaml, pattern: 'steps:\s+1000000\.0'}
+      - file_contains: {file: config.yaml, pattern: 'task:\s+dmc_cheetah_run\b'}
+      # A2 arm identity, PER RUN, re-asserted on the REWRITTEN config:
+      # main.py overwrites config.yaml at resume, so a dropped override
+      # would silently switch the manipulation off mid-run.
+      - file_contains: {file: config.yaml, pattern: '${armpat}'}
+      # cheetah planted basesd (a finger/A3-generality leak fails here)
+      - file_contains: {file: config.yaml, pattern: 'basesd:\s+0\.0976\b'}
+      # the penalty machinery stays inert on BOTH extended arms
+      - file_contains: {file: config.yaml, pattern: 'penalty_mix:\s+false'}
+      - file_contains: {file: config.yaml, pattern: 'gate_threshold:\s+0\.0,\s+scale:\s+0\.0\}'}
+      # scores.jsonl is recreated at resume, so it covers the EXTENSION
+      # only: A2 realized 496 rows per 5e5 cheetah steps; 464 is A1/A2's
+      # registered floor, kept verbatim as a loose sanity check.
+      - jsonl_min_lines: {file: scores.jsonl, n: 464}
+
+bundle:
+  prefix: a3_persistence
+  include_stages: [extend]
+  cloud_logs: ["a3per_*.out"]
