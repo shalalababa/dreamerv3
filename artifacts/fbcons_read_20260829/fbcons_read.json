@@ -1,0 +1,73 @@
+{
+ "prereg": "PREREG_p2_fbconsumer_20260829.md",
+ "n_cells": 16,
+ "p_fb1_fb_selector": {
+  "point": 0.10890625,
+  "ci": [
+   0.0227734375,
+   0.3850672551284788
+  ],
+  "perm_p": 0.0206979302069793,
+  "n_cells": 16,
+  "alpha": 0.05,
+  "fire": true,
+  "reversed": false,
+  "realized_mde80": 0.2089832373411402
+ },
+ "native_identity_note": "value(nativeQ-mean) === 0 by construction: m_now = plugin_choice = argmax head-mean (review B1)",
+ "secondaries": {
+  "natq_min_disagreement": {
+   "point": 0.004374999999999999,
+   "ci": [
+    -0.032345504086646285,
+    0.025234374999999996
+   ],
+   "perm_p": 0.7793220677932207,
+   "n_cells": 16,
+   "note": "pessimistic min-over-heads selector vs the deployed mean-argmax baseline: the ensemble-disagreement value; descriptive, no alpha"
+  },
+  "fb0_selector": {
+   "point": 0.1880859375,
+   "ci": [
+    0.028085937499999998,
+    0.7273345252913256
+   ],
+   "perm_p": 0.07729227077292271,
+   "n_cells": 16
+  },
+  "s1_gt_s0_prediction": {
+   "point": -0.0791796875,
+   "note": "registered cross-paper prediction (FB support gate): descriptive, no alpha"
+  },
+  "split_ceiling": {
+   "point": 0.19429687499999998,
+   "ci": [
+    0.022812499999999996,
+    0.7392789749829825
+   ],
+   "perm_p": 0.1347865213478652,
+   "n_cells": 16
+  },
+  "capture_ratio_fb1": 0.5605146763168476,
+  "action_level_fb1": {
+   "point": 0.5239892578125,
+   "ci": [
+    0.030967805734421115,
+    2.182550294805797
+   ],
+   "perm_p": 0.23127687231276872,
+   "n_cells": 16,
+   "note": "level-confounded consumer form (F1/F5 lesson): disclosed, never verdict-bearing"
+  },
+  "action_level_fb0": {
+   "point": 0.2806689453125,
+   "ci": [
+    -0.03515783046056992,
+    0.7361467391483169
+   ],
+   "perm_p": 0.1892810718928107,
+   "n_cells": 16
+  }
+ },
+ "verdict": "FB-SEES-OPPORTUNITY: a foreign, visitation-independent value surface selects real value where the native surface definitionally cannot (its best pick IS the baseline) \u2014 existence proof + critic-pathway localization"
+}
